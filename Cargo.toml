@@ -3,6 +3,9 @@ name = "stalwart"
 version = "0.1.0"
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+encoding_rs = {version=">=0.8.28", optional=true}
+
+[features]
+default = ["multibytedecode"]
+multibytedecode = ["encoding_rs"]
