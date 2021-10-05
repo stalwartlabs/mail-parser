@@ -6,25 +6,25 @@ pub struct SingleByteDecoder {
 }
 
 impl CharsetDecoder for SingleByteDecoder {
-    fn ingest(&mut self, ch: u8) -> () {
+    fn ingest(&mut self, ch: &u8) {
         self.result
-            .push(unsafe { *self.table.get_unchecked(ch as usize) });
+            .push(unsafe { *self.table.get_unchecked(*ch as usize) });
     }
 
-    fn to_string(&self) -> Option<&str> {
-        if self.result.len() > 0 {
-            Some(&self.result)
+    fn to_string(&mut self) -> Option<String> {
+        if !self.result.is_empty() {
+            Some(std::mem::take(&mut self.result))
         } else {
             None
         }
-    }
+    }    
 }
 
 impl SingleByteDecoder {
     pub fn new(table: &'static [char], capacity: usize) -> SingleByteDecoder {
         SingleByteDecoder {
             result: String::with_capacity(capacity),
-            table: table,
+            table,
         }
     }
 

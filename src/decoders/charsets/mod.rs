@@ -2,19 +2,15 @@ pub mod parser;
 pub mod single_byte;
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
-pub mod utf8;
 
 pub trait CharsetDecoder {
-    fn ingest(&mut self, ch: u8) -> ();
-    fn ingest_slice(&mut self, chs: &[u8]) -> () {
+    fn ingest(&mut self, ch: &u8);
+    fn ingest_slice(&mut self, chs: &[u8]) {
         for ch in chs {
-            self.ingest(*ch);
+            self.ingest(ch);
         }
     }
-    fn needs_slice(&self) -> bool {
-        false
-    }
-    fn to_string(&self) -> Option<&str>;
+    fn to_string(&mut self) -> Option<String>;
 }
 
 #[cfg(test)]

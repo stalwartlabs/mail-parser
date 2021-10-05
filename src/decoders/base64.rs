@@ -21,12 +21,12 @@ impl Base64Decoder {
 }
 
 impl Decoder for Base64Decoder {
-    fn ingest(&mut self, ch: u8) -> DecoderResult {
-        if ch != b'=' {
+    fn ingest(&mut self, ch: &u8) -> DecoderResult {
+        if *ch != b'=' {
             let val = unsafe {
                 BASE64_MAP
                     .get_unchecked(self.count as usize)
-                    .get_unchecked(ch as usize)
+                    .get_unchecked(*ch as usize)
             };
             if *val >= 0x01ffffff {
                 return DecoderResult::Error;
@@ -41,7 +41,7 @@ impl Decoder for Base64Decoder {
 
                 if self.count == 0 {
                     return DecoderResult::ByteArray(unsafe {
-                        &self.chunk.bytes.get_unchecked(0..3)
+                        self.chunk.bytes.get_unchecked(0..3)
                     });
                 }
             }
@@ -54,7 +54,7 @@ impl Decoder for Base64Decoder {
                 3 => {
                     self.count = 0;
                     return DecoderResult::ByteArray(unsafe {
-                        &self.chunk.bytes.get_unchecked(0..2)
+                        self.chunk.bytes.get_unchecked(0..2)
                     });
                 }
                 0 => (),
@@ -96,7 +96,7 @@ mod tests {
             let mut output = Vec::new();
 
             for ch in input.0 {
-                match decoder.ingest(*ch) {
+                match decoder.ingest(ch) {
                     DecoderResult::Byte(v) => {
                         output.push(v);
                     }
@@ -107,7 +107,7 @@ mod tests {
                     DecoderResult::Error => {
                         panic!(
                             "Failed to decode Base64: {}",
-                            std::str::from_utf8(&input.0).unwrap()
+                            std::str::from_utf8(input.0).unwrap()
                         );
                     }
                 }
@@ -133,7 +133,7 @@ mod tests {
             let mut is_empty = true;
 
             for ch in input {
-                match decoder.ingest(*ch) {
+                match decoder.ingest(ch) {
                     DecoderResult::Byte(_) => {
                         is_empty = false;
                     }
@@ -169,7 +169,7 @@ mod tests {
  *
  */
 
-static BASE64_MAP: &'static [&[u32]] = &[
+static BASE64_MAP: &[&[u32]] = &[
     &[
         0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
         0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,

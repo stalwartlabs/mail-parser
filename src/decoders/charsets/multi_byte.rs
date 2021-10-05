@@ -7,27 +7,21 @@ pub struct MultiByteDecoder {
 }
 
 impl CharsetDecoder for MultiByteDecoder {
-    fn ingest(&mut self, ch: u8) -> () {
-        self.ingest_slice(&[ch]);
+    fn ingest(&mut self, ch: &u8) {
+        self.ingest_slice(&[*ch]);
     }
 
-    fn ingest_slice(&mut self, chs: &[u8]) -> () {
-        match self.decoder.decode_to_string(chs, &mut self.result, false) {
-            (_, _, _) => (),
-        }
+    fn ingest_slice(&mut self, chs: &[u8]){
+        let (_, _, _) = self.decoder.decode_to_string(chs, &mut self.result, false);
     }
 
-    fn to_string(&self) -> Option<&str> {
-        if self.result.len() > 0 {
-            Some(&self.result)
+    fn to_string(&mut self) -> Option<String> {
+        if !self.result.is_empty() {
+            Some(std::mem::take(&mut self.result))
         } else {
             None
         }
-    }
-
-    fn needs_slice(&self) -> bool {
-        true
-    }
+    }   
 }
 
 impl MultiByteDecoder {

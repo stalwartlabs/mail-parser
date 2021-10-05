@@ -57,17 +57,17 @@ impl<'x> Header<'x> {
             }
         };
 
-        while let Some(ch) = (*s).get_lower_char() {
+        while let Some(ch) = s.next() {
             match ch {
                 10 => return None,
                 13 | 9 | 32 => (),         // CR TAB SPACE
                 58 if start_pos != -1 => { // :
                     let field_len: u32 = (end_pos - start_pos + 1) as u32;
 
-                    if field_len >= 2 && field_len <= 25 {
+                    if (2..=25).contains(&field_len) {
                         let hash = field_len + hash_ch(ch_hash_2) + hash_ch(ch_hash_1);
 
-                        if hash >= 2 && hash <= 37 {
+                        if (2..=37).contains(&hash) {
                             let field = (*s).get_bytes(start_pos as usize, (end_pos + 1) as usize).unwrap();
 
                             match hash - 2 {
@@ -129,12 +129,12 @@ impl<'x> Header<'x> {
                 },
                 _ => {
                     if start_pos != -1 {
+                        ch_hash_2 = *ch;
                         end_pos = (*s).get_read_pos();
-                        ch_hash_2 = ch;
                     } else {
-                        start_pos = (*s).get_read_pos();
                         end_pos = start_pos;
-                        ch_hash_1 = ch;
+                        ch_hash_1 = *ch;
+                        start_pos = (*s).get_read_pos();
                     }
                 }
             }

@@ -10,5 +10,5 @@ pub enum DecoderResult<'x> {
 }
 
 pub trait Decoder {
-    fn ingest(&mut self, ch: u8) -> DecoderResult;
+    fn ingest(&mut self, ch: &u8) -> DecoderResult;
 }
