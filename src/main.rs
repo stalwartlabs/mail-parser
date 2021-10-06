@@ -89,9 +89,13 @@ fn main() {
 
     //let hdr = Header::parse(&mut parser);
 
-    let val = (HEX_TO_VAL['3' as usize] << 4) as u8 | HEX_TO_VAL['f' as usize] as u8;
+    let pepe = "coco".as_bytes();
 
-    println!("{}", val);
+    let t = pepe.iter();
+
+    
+
+
 
 
     /*static HASH_VALUES: &'static [i8] = 

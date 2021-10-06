@@ -8,7 +8,7 @@ use crate::{
     parsers::message_stream::MessageStream,
 };
 
-enum Rfc2047Parser {
+pub enum Rfc2047Parser {
     Charset,
     Language,
     Encoding,
@@ -116,17 +116,17 @@ mod tests {
                 ("iso-8859-1?q?this=20is=20some=20text?=".to_string(), "this is some text", true),
                 ("iso-8859-1?q?this is some text?=".to_string(), "this is some text", true),
                 ("US-ASCII?Q?Keith_Moore?=".to_string(), "Keith Moore", false),
-                ("ISO-8859-1?Q?Keld_J=F8rn_Simonsen?=".to_string(), "Keld Jørn Simonsen", true),
+                ("iso_8859-1:1987?Q?Keld_J=F8rn_Simonsen?=".to_string(), "Keld Jørn Simonsen", true),
                 ("ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=".to_string(), "If you can read this yo", true),
                 ("ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=".to_string(), "u understand the example.", true),
                 ("ISO-8859-1?Q?Olle_J=E4rnefors?=".to_string(), "Olle Järnefors", true),
                 ("ISO-8859-1?Q?Patrik_F=E4ltstr=F6m?=".to_string(), "Patrik Fältström", true),
-                ("ISO-8859-1?Q?a?=".to_string(), "a", true),
-                ("ISO-8859-1?Q?a_b?=".to_string(), "a b", true),
+                ("ISO-8859-1*?Q?a?=".to_string(), "a", true),
+                ("ISO-8859-1**?Q?a_b?=".to_string(), "a b", true),
                 ("utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=".to_string(), "Thís ís válíd ÚTF8", false),
-                ("utf-8?q?Th=C3=ADs_=C3=ADs_v=C3=A1l=C3=ADd_=C3=9ATF8?=".to_string(), "Thís ís válíd ÚTF8", false),
+                ("utf-8*unknown?q?Th=C3=ADs_=C3=ADs_v=C3=A1l=C3=ADd_=C3=9ATF8?=".to_string(), "Thís ís válíd ÚTF8", false),
                 ("Iso-8859-6?Q?=E5=D1=CD=C8=C7 =C8=C7=E4=D9=C7=E4=E5?=".to_string(), "مرحبا بالعالم", true),
-                ("Iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=".to_string(), "مرحبا بالعالم", true),
+                ("Iso-8859-6*arabic?b?5dHNyMcgyMfk2cfk5Q==?=".to_string(), "مرحبا بالعالم", true),
                 #[cfg(feature = "multibytedecode")]
                 ("shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=".to_string(), "ハロー・ワールド", true),
                 #[cfg(feature = "multibytedecode")]
