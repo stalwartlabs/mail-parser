@@ -44,7 +44,7 @@ mod decoders;
     headers: Vec<Header<'x>>,
 }*/
 use crate::parsers::message_stream::MessageStream;
-use crate::parsers::header::Header;
+//use crate::parsers::header::Header;
 
 static HEX_TO_VAL: &'static [i8] = &[
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -85,17 +85,24 @@ fn main() {
     )
     .to_string();
 
-    //let mut parser = MessageStream::new(unsafe { mail.as_bytes_mut() });
+    unsafe {
+    let counter: usize = 0;
+    //let mut parser = MessageStream::new(mail.into_bytes().into_boxed_slice() );
 
-    //let hdr = Header::parse(&mut parser);
+    }
+    /*let coco = mail.as_bytes();
 
-    let pepe = "coco".as_bytes();
+    for ch in coco {
 
-    let t = pepe.iter();
+        println!("{:?}", std::str::from_utf8(&coco[1..3]).unwrap());
 
-    
+    }*/
 
-
+    /*while let Some(&ch) = parser.next_test() {
+        
+        println!("{}", std::str::from_utf8(parser.get_bytes(1, 3).unwrap()).unwrap());
+        println!("{}", ch);
+    }*/
 
 
     /*static HASH_VALUES: &'static [i8] = 

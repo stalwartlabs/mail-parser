@@ -1,7 +1,8 @@
-pub mod parser;
-pub mod single_byte;
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
+pub mod parser;
+pub mod single_byte;
+pub mod utf8;
 
 pub trait CharsetDecoder {
     fn ingest(&mut self, ch: &u8);
@@ -77,4 +78,3 @@ mod tests {
         }
     }
 }
-
