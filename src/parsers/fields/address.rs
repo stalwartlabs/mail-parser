@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use crate::parsers::{message_stream::MessageStream, rfc2047::Rfc2047Parser};
+use crate::parsers::{encoded_word::{Rfc2047Parser, parse_encoded_word}, message_stream::MessageStream};
 
 #[derive(PartialEq, Debug)]
 
@@ -146,7 +146,7 @@ pub fn add_token<'x>(
 
     if parser.add_space {
         if !list.is_empty() {
-            list.push(Cow::from(" ".to_string()));
+            list.push(Cow::from(" "));
         }
     } else {
         parser.add_space = true;
@@ -192,10 +192,12 @@ pub fn add_address(mut parser: AddressParser) -> AddressParser {
             email: concat_tokens(&mut parser.mail_tokens),
         }));
     } else if has_mail && has_comment {
-        parser.addresses.push(Address::EmailWithComment(AdressWithComment {
-            comment: concat_tokens(&mut parser.comment_tokens),
-            email: concat_tokens(&mut parser.mail_tokens),
-        }));
+        parser
+            .addresses
+            .push(Address::EmailWithComment(AdressWithComment {
+                comment: concat_tokens(&mut parser.comment_tokens),
+                email: concat_tokens(&mut parser.mail_tokens),
+            }));
     } else if has_mail {
         parser
             .addresses
@@ -244,53 +246,52 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
     let mut parser = AddressParser::new();
 
     while let Some(ch) = stream.next() {
-        //print!("[{} {:?}]", char::from(*ch), parser.state);
         match ch {
-            b'\n' => match stream.peek() {
-                Some(b' ' | b'\t') => {
-                    if parser.token_start > 0 {
-                        parser = add_token(parser, stream);
-                    }
-                    stream.advance(1);
-                    if !parser.is_token_start {
-                        parser.is_token_start = true;
-                    }
-                    continue;
+            b'\n' => {
+                if parser.token_start > 0 {
+                    parser = add_token(parser, stream);
                 }
-                _ => {
-                    if parser.token_start > 0 {
-                        parser = add_token(parser, stream);
-                    }
-                    if !parser.is_group_end {
-                        parser = add_address(parser);
-                    } else {
-                        parser = add_group(parser);
-                    }
 
-                    if parser.group_name.is_none() {
-                        if !parser.addresses.is_empty() {
-                            if parser.addresses.len() == 1 {
-                                return AddressField::Address(parser.addresses.pop().unwrap());
-                            } else {
-                                return AddressField::List(parser.addresses);
-                            }
+                match stream.peek() {
+                    Some(b' ' | b'\t') => {
+                        stream.advance(1);
+                        if !parser.is_token_start {
+                            parser.is_token_start = true;
                         }
-                    } else if parser.group_comment.is_none() {
-                        return AddressField::Group(Group {
-                            name: parser.group_name.unwrap(),
-                            list: parser.addresses,
-                        });
-                    } else {
-                        return AddressField::GroupWithComment(GroupWithComment {
-                            name: parser.group_name.unwrap(),
-                            comment: parser.group_comment.unwrap(),
-                            list: parser.addresses,
-                        });
+                        continue;
                     }
+                    _ => {
+                        if !parser.is_group_end {
+                            parser = add_address(parser);
+                        } else {
+                            parser = add_group(parser);
+                        }
 
-                    return AddressField::Empty;
+                        if parser.group_name.is_none() {
+                            if !parser.addresses.is_empty() {
+                                if parser.addresses.len() == 1 {
+                                    return AddressField::Address(parser.addresses.pop().unwrap());
+                                } else {
+                                    return AddressField::List(parser.addresses);
+                                }
+                            }
+                        } else if parser.group_comment.is_none() {
+                            return AddressField::Group(Group {
+                                name: parser.group_name.unwrap(),
+                                list: parser.addresses,
+                            });
+                        } else {
+                            return AddressField::GroupWithComment(GroupWithComment {
+                                name: parser.group_name.unwrap(),
+                                comment: parser.group_comment.unwrap(),
+                                list: parser.addresses,
+                            });
+                        }
+
+                        return AddressField::Empty;
+                    }
                 }
-            },
+            }
             b'\\' if parser.state != AddressState::Name => {
                 if parser.token_start > 0 {
                     parser = add_token(parser, stream);
@@ -347,7 +348,7 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
             }
             b'=' if parser.is_token_start && !parser.is_escaped && stream.skip_byte(&b'?') => {
                 let pos_back = stream.get_pos() - 1;
-                if let Some(token) = Rfc2047Parser::parse(stream) {
+                if let Some(token) = parse_encoded_word(stream) {
                     let mut add_space = false;
                     if parser.token_start > 0 {
                         parser = add_token(parser, stream);
@@ -444,7 +445,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_parse_address() {
+    fn parse_addresses() {
         let inputs = [
             ("John Doe <jdoe@machine.example>\n".to_string(), AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("John Doe"), email: Cow::from("jdoe@machine.example") }))),
             (" Mary Smith <mary@example.net>\n".to_string(), AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Mary Smith"), email: Cow::from("mary@example.net") }))),
@@ -455,7 +456,7 @@ mod tests {
             ("Undisclosed recipients:;\n".to_string(), AddressField::Group(Group { name: Cow::from("Undisclosed recipients"), list: AddressList::from([]) })),
             ("\"Mary Smith: Personal Account\" <smith@home.example >\n".to_string(), AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Mary Smith: Personal Account"), email: Cow::from("smith@home.example") }))),
             ("Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n".to_string(), AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Pete"), comment: Cow::from("A nice ) chap his account his host"), email: Cow::from("pete@silly.test") }))),
-            ("Pete(A nice \n \\) chap) <pete(his\n account)@silly\n .test(his host)>\n".to_string(), AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Pete"), comment: Cow::from("A nice ) chap his account his host"), email: Cow::from("pete@silly.test") }))),
+            ("Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n".to_string(), AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Pete"), comment: Cow::from("A nice ) chap his account his host"), email: Cow::from("pete@silly.test") }))),
             ("A Group(Some people)\n        :Chris Jones <c@(Chris's host.)public.example>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear friend); (the end of the group)\n".to_string(), AddressField::GroupWithComment(GroupWithComment { name: Cow::from("A Group"), comment: Cow::from("the end of the group"), list: AddressList::from([Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Chris Jones"), comment: Cow::from("Chris's host."), email: Cow::from("c@public.example") }), Address::Email(Cow::from("joe@example.org")), Address::MailboxWithComment(MailboxWithComment { name: Cow::from("John"), comment: Cow::from("my dear friend"), email: Cow::from("jdoe@one.test") })]) }),),
             ("(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n".to_string(), AddressField::GroupWithComment(GroupWithComment { name: Cow::from("Hidden recipients"), comment: Cow::from("Empty list start"), list: AddressList::from([Address::Invalid(Cow::from("nobody(that I know)"))]) })),
             ("Joe Q. Public <john.q.public@example.com>\n".to_string(), AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Joe Q. Public"), email: Cow::from("john.q.public@example.com") }))),
@@ -484,7 +485,6 @@ mod tests {
         for input in inputs {
             let stream = &MessageStream::new(input.0.as_bytes());
             let result = parse_address(stream);
-            //println!("{:?},", result);
             //println!("{} ->\n{:?}\n{}\n", input.0.escape_debug(), result, "-".repeat(50) );
             assert_eq!(result, input.1, "Failed for {}", input.0.escape_debug());
         }

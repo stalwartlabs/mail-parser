@@ -14,91 +14,88 @@ pub enum Rfc2047Parser {
     Encoding,
 }
 
-impl Rfc2047Parser {
-    pub fn parse(stream: &MessageStream) -> Option<String> {
-        let mut ch_parser = CharsetParser::new();
-        let mut ch_decoder: Option<Box<dyn CharsetDecoder>> = None;
-        let mut decoder: Option<Box<dyn Decoder>> = None;
-        let mut state = Rfc2047Parser::Charset;
+pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
+    let mut ch_parser = CharsetParser::new();
+    let mut ch_decoder: Option<Box<dyn CharsetDecoder>> = None;
+    let mut decoder: Option<Box<dyn Decoder>> = None;
+    let mut state = Rfc2047Parser::Charset;
 
-        while let Some(ch) = stream.next() {
-            match state {
-                Rfc2047Parser::Charset => match ch {
-                    b'?' => {
-                        ch_decoder = Some(
-                            ch_parser
-                                .get_decoder(75)
-                                .unwrap_or_else(|| Box::new(Utf8Decoder::new(75))),
-                        );
-                        state = Rfc2047Parser::Encoding;
-                    }
-                    b'*' => {
-                        ch_decoder = Some(
-                            ch_parser
-                                .get_decoder(75)
-                                .unwrap_or_else(|| Box::new(Utf8Decoder::new(75))),
-                        );
-                        state = Rfc2047Parser::Language;
-                    }
-                    b' '..=b'z' => ch_parser.ingest(*ch),
-                    _ => return None,
-                },
-                Rfc2047Parser::Language => {
-                    // Ignore language
-                    match ch {
-                        b'?' => state = Rfc2047Parser::Encoding,
-                        b'\n' | b'=' => return None,
-                        _ => (),
-                    }
-                }
-                Rfc2047Parser::Encoding => {
-                    if decoder.is_none() {
-                        match ch {
-                            b'q' | b'Q' => {
-                                decoder = Some(Box::new(QuotedPrintableDecoder::new(true)))
-                            }
-                            b'b' | b'B' => decoder = Some(Box::new(Base64Decoder::new())),
-                            _ => return None,
-                        }
-                    } else if *ch == b'?' {
-                        break;
-                    } else {
-                        return None;
-                    }
-                }
-            }
-        }
-
-        // Unwrap decoders and proceed to decode data
-        let mut ch_decoder = ch_decoder?;
-        let mut decoder = decoder?;
-
-        while let Some(ch) = stream.next() {
-            match ch {
+    while let Some(ch) = stream.next() {
+        match state {
+            Rfc2047Parser::Charset => match ch {
                 b'?' => {
-                    stream.skip_byte(&b'=');
-                    return ch_decoder.to_string();
+                    ch_decoder = Some(
+                        ch_parser
+                            .get_decoder(75)
+                            .unwrap_or_else(|| Box::new(Utf8Decoder::new(75))),
+                    );
+                    state = Rfc2047Parser::Encoding;
                 }
-                b'\n' => return None,
-                _ => match decoder.ingest(ch) {
-                    DecoderResult::Byte(b) => ch_decoder.ingest(&b),
-                    DecoderResult::ByteArray(ba) => {
-                        ch_decoder.ingest_slice(ba)
+                b'*' => {
+                    ch_decoder = Some(
+                        ch_parser
+                            .get_decoder(75)
+                            .unwrap_or_else(|| Box::new(Utf8Decoder::new(75))),
+                    );
+                    state = Rfc2047Parser::Language;
+                }
+                b' '..=b'z' => ch_parser.ingest(*ch),
+                _ => return None,
+            },
+            Rfc2047Parser::Language => {
+                // Ignore language
+                match ch {
+                    b'?' => state = Rfc2047Parser::Encoding,
+                    b'\n' | b'=' => return None,
+                    _ => (),
+                }
+            }
+            Rfc2047Parser::Encoding => {
+                if decoder.is_none() {
+                    match ch {
+                        b'q' | b'Q' => {
+                            decoder = Some(Box::new(QuotedPrintableDecoder::new(true)))
+                        }
+                        b'b' | b'B' => decoder = Some(Box::new(Base64Decoder::new())),
+                        _ => return None,
                     }
-                    DecoderResult::NeedData => (),
-                    DecoderResult::Error => return None,
-                },
+                } else if *ch == b'?' {
+                    break;
+                } else {
+                    return None;
+                }
             }
         }
-
-        None
     }
+
+    // Unwrap decoders and proceed to decode data
+    let mut ch_decoder = ch_decoder?;
+    let mut decoder = decoder?;
+
+    while let Some(ch) = stream.next() {
+        match ch {
+            b'?' => {
+                stream.skip_byte(&b'=');
+                return ch_decoder.to_string();
+            }
+            b'\n' => return None,
+            _ => match decoder.ingest(ch) {
+                DecoderResult::Byte(b) => ch_decoder.ingest(&b),
+                DecoderResult::ByteArray(ba) => {
+                    ch_decoder.ingest_slice(ba)
+                }
+                DecoderResult::NeedData => (),
+                DecoderResult::Error => return None,
+            },
+        }
+    }
+
+    None
 }
 
 #[cfg(test)]
 mod tests {
-    use super::Rfc2047Parser;
-    use crate::parsers::message_stream::MessageStream;
+    use crate::parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream};
 
     #[test]
     fn decode_rfc2047() {
@@ -176,7 +173,7 @@ mod tests {
         ];
 
         for input in inputs {
-            match Rfc2047Parser::parse(&MessageStream::new(input.0.as_bytes())) {
+            match parse_encoded_word(&MessageStream::new(input.0.as_bytes())) {
                 Some(string) => {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);

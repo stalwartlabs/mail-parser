@@ -1,109 +1,108 @@
 use std::borrow::Cow;
 
-use crate::parsers::{message_stream::MessageStream, rfc2047::Rfc2047Parser};
-enum UnstructuredState {
-    Lf,
-    Space,
-    Char,
-}
-
-fn add_token<'x>(
-    mut tokens: Vec<Cow<'x, str>>,
-    stream: &'x MessageStream,
+use crate::parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream};
+pub struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
     is_token_safe: bool,
-) -> Vec<Cow<'x, str>> {
-    let bytes = stream.get_bytes(token_start - 1, token_end).unwrap();
+    is_token_start: bool,
+    tokens: Vec<Cow<'x, str>>,
+}
 
-    if !tokens.is_empty() {
-        tokens.push(Cow::from(" ".to_string()));
+impl<'x> UnstructuredParser<'x> {
+    
+    pub fn new() -> UnstructuredParser<'x> {
+        UnstructuredParser {
+            token_start: 0,
+            token_end: 0,
+            is_token_safe: true,
+            is_token_start: true,
+            tokens: Vec::new(),          
+        }
     }
-    tokens.push(if is_token_safe {
+}
+
+pub fn add_token<'x>(mut parser: UnstructuredParser<'x>, stream: &'x MessageStream) -> UnstructuredParser<'x> {
+    let bytes = stream.get_bytes(parser.token_start - 1, parser.token_end).unwrap();
+
+    if !parser.tokens.is_empty() {
+        parser.tokens.push(Cow::from(" "));
+    }
+    parser.tokens.push(if parser.is_token_safe {
         Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
     } else {
         String::from_utf8_lossy(bytes)
     });
-
-    tokens
+    parser.token_start = 0;
+    parser.is_token_safe = true;
+    parser.is_token_start = true;
+    parser
 }
 
 pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
-    let mut token_start: usize = 0;
-    let mut token_end: usize = 0;
-    let mut is_token_safe = true;
-    let mut state = UnstructuredState::Space;
-    let mut tokens: Vec<Cow<str>> = Vec::new();
+    let mut parser = UnstructuredParser::new();
 
     while let Some(ch) = stream.next() {
         match ch {
             b'\n' => {
-                if let UnstructuredState::Lf = state {
-                    stream.rewind(1);
-                    break;
-                } else if token_start > 0 {
-                    tokens = add_token(tokens, stream, token_start, token_end, is_token_safe);
-                    token_start = 0;
-                    is_token_safe = true;
+                if parser.token_start > 0 {
+                    parser = add_token(parser, stream);
                 }
-
-                state = UnstructuredState::Lf;
+                match stream.peek() {
+                    Some(b' ' | b'\t') => {
+                        stream.advance(1);
+                        continue;
+                    },
+                    _ => {
+                        return match parser.tokens.len() {
+                            1 => parser.tokens.pop(),
+                            0 => None,
+                            _ => Some(Cow::from(parser.tokens.concat())),
+                        };
+                    },
+                }
             }
             b' ' | b'\t' | b'\r' => {
-                state = UnstructuredState::Space;
-            }
-            _ => {
-                if *ch > 0x7f && is_token_safe {
-                    is_token_safe = false;
+                if !parser.is_token_start {
+                    parser.is_token_start = true;
                 }
+                continue;
+            },
+            b'=' if parser.is_token_start && stream.skip_byte(&b'?') => {
+                let pos_back = stream.get_pos() - 1;
 
-                match state {
-                    UnstructuredState::Lf => {
-                        stream.rewind(1);
-                        break;
+                if let Some(token) = parse_encoded_word(stream) {
+                    if parser.token_start > 0 {
+                        parser = add_token(parser, stream);
+                        parser.tokens.push(Cow::from(" "));
                     }
-                    UnstructuredState::Space => {
-                        if *ch == b'=' && stream.skip_byte(&b'?') {
-                            let pos_back = stream.get_pos() - 1;
-
-                            if let Some(token) = Rfc2047Parser::parse(stream) {
-                                if token_start > 0 {
-                                    tokens = add_token(
-                                        tokens,
-                                        stream,
-                                        token_start,
-                                        token_end,
-                                        is_token_safe,
-                                    );
-                                    tokens.push(Cow::from(" ".to_string()));
-                                    token_start = 0;
-                                    is_token_safe = true;
-                                }
-                                tokens.push(Cow::from(token));
-                                state = UnstructuredState::Space;
-                                continue;
-                            } else {
-                                stream.set_pos(pos_back);
-                            }
-                        }
-                        state = UnstructuredState::Char;
-
-                        if token_start == 0 {
-                            token_start = stream.get_pos();
-                            token_end = stream.get_pos()
-                        }
-                    }
-                    UnstructuredState::Char => token_end = stream.get_pos(),
+                    parser.tokens.push(Cow::from(token));
+                    continue;
+                } else {
+                    stream.set_pos(pos_back);
+                }
+            },
+            0..=0x7f => (),
+            _ => {
+                if parser.is_token_safe {
+                    parser.is_token_safe = false;
                 }
             }
         }
+
+        if parser.is_token_start {
+            parser.is_token_start = false;
+        }
+
+        if parser.token_start == 0 {
+            parser.token_start = stream.get_pos();
+        }
+        parser.token_end = stream.get_pos()
+
     }
 
-    match tokens.len() {
-        1 => tokens.pop(),
-        0 => None,
-        _ => Some(Cow::from(tokens.concat())),
-    }
+    None
+
 }
 
 mod tests {
@@ -112,7 +111,7 @@ mod tests {
     use crate::parsers::{fields::unstructured::parse_unstructured, message_stream::MessageStream};
 
     #[test]
-    fn test_unstructured() {
+    fn parse_unstructured_text() {
         let inputs = [
             ("Saying Hello\n".to_string(), "Saying Hello", true),
             ("Re: Saying Hello\r\n".to_string(), "Re: Saying Hello", true),

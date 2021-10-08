@@ -24,6 +24,12 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
+    pub fn set_pos_2(&mut self, pos: usize) {
+        self.pos.set(pos)
+    }
+
+
+    #[inline(always)]
     pub fn get_pos(&self) -> usize {
         self.pos.get()
     }
