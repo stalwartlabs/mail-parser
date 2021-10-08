@@ -35,6 +35,16 @@ impl<'x> MessageStream<'x> {
         self.data.get(pos)
     }
 
+    #[inline(always)]
+    pub fn peek(&self) -> Option<&u8> {
+        self.data.get(self.pos.get())
+    }
+
+    #[inline(always)]
+    pub fn advance(&self, pos: usize) {
+        self.pos.set(self.pos.get() + pos);
+    }    
+
     pub fn skip_byte(&self, ch: &u8) -> bool {
         let pos = self.pos.get();
         match self.data.get(pos) {
