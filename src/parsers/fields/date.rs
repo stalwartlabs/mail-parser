@@ -65,7 +65,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             b'\n' => match stream.peek() {
                 Some(b' ' | b'\t') => {
                     stream.advance(1);
-                    if !is_new_token && !ignore {
+                    if !is_new_token && !ignore && comment_count == 0 {
                         next_part = true;
                     } else {
                         continue;
@@ -76,7 +76,12 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             _ if comment_count > 0 => {
                 if *ch == b')' {
                     comment_count -= 1;
+                } else if *ch == b'(' {
+                    comment_count += 1;
+                } else if *ch == b'\\' {
+                    stream.skip_byte(&b')');
                 }
+                continue;
             }
             b'0'..=b'9' => {
                 if pos < 7 && parts_sizes[pos] > 0 {
@@ -120,6 +125,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             b'(' => {
                 comment_count += 1;
                 is_new_token = true;
+                continue;
             }
             b',' | b'\r' => (),
             _ => {
@@ -139,43 +145,43 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
         }
     }
 
-    if pos < 6 {
-        return None;
+    if pos >= 6 {
+        Some(DateTime {
+            year: if (1..=99).contains(&parts[2]) {
+                parts[2] + 1900
+            } else {
+                parts[2]
+            },
+            month: if month_pos == 3 {
+                match &month {
+                    b"jan" => 1,
+                    b"feb" => 2,
+                    b"mar" => 3,
+                    b"apr" => 4,
+                    b"may" => 5,
+                    b"jun" => 6,
+                    b"jul" => 7,
+                    b"aug" => 8,
+                    b"sep" => 9,
+                    b"oct" => 10,
+                    b"nov" => 11,
+                    b"dec" => 12,
+                    _ => parts[1],
+                }
+            } else {
+                parts[1]
+            },
+            day: parts[0],
+            hour: parts[3],
+            minute: parts[4],
+            second: parts[5],
+            tz_hour: parts[6] / 100,
+            tz_minute: parts[6] % 100,
+            tz_before_gmt: !is_plus,
+        })
+    } else {
+        None
     }
-
-    if month_pos == 3 {
-        parts[1] = match &month {
-            b"jan" => 1,
-            b"feb" => 2,
-            b"mar" => 3,
-            b"apr" => 4,
-            b"may" => 5,
-            b"jun" => 6,
-            b"jul" => 7,
-            b"aug" => 8,
-            b"sep" => 9,
-            b"oct" => 10,
-            b"nov" => 11,
-            b"dec" => 12,
-            _ => 0,
-        }
-    }
-
-    if (1..=99).contains(&parts[2]) {
-        parts[2] += 1900;
-    }
-
-    Some(DateTime {
-        year: parts[2],
-        month: parts[1],
-        day: parts[0],
-        hour: parts[3],
-        minute: parts[4],
-        second: parts[5],
-        tz_hour: parts[6] / 100,
-        tz_minute: parts[6] % 100,
-        tz_before_gmt: !is_plus,
-    })
 }
 
 mod tests {
@@ -212,21 +218,38 @@ mod tests {
                 " 1 Jul 2003 (comment about date) 10:52:37 +0200",
                 "2003-07-01T10:52:37+02:00",
             ),
+            (
+                "Tue, 1 Jul 2003 ((tricky)\n comment) 10:52:37 +0200",
+                "2003-07-01T10:52:37+02:00",
+            ),
             ("21 Nov 97 09:55:06 GMT", "1997-11-21T09:55:06+00:00"),
             (
                 "20 11 (some \n 79 comments(more comments\n )) 79 05:34:27 -0300",
                 "1979-11-20T05:34:27-03:00",
             ),
             (" Wed, 27 Jun 99 04:11 +0900 ", "1999-06-27T04:11:00+09:00"),
+            (
+                " 4 8 15 16 23 42, 4 8 15 16 23 42, 4 8 15 16 23 42, ",
+                "1915-08-04T16:23:42+00:04",
+            ),
+            (" some numbers 0 1 2 but invalid ", ""),
+            (
+                "Tue, 1 Jul 2003 ((invalid)\ncomment) 10:52:37 +0200",
+                "",
+            ),
         ];
 
         for input in inputs {
-            let result = parse_date(&MessageStream::new(input.0.as_bytes()), false)
-                .unwrap()
-                .to_iso8601();
+            let result = parse_date(&MessageStream::new(input.0.as_bytes()), false);
 
-            println!("{} -> {}", input.0.escape_debug(), result);
-            assert_eq!(input.1, result);
+            if !input.1.is_empty() {
+                let result = result.unwrap().to_iso8601();
+                //println!("{} -> {}", input.0.escape_debug(), result);
+                assert_eq!(input.1, result);
+            } else {
+                //println!("{} -> None", input.0.escape_debug());
+                assert!(result.is_none());
+            }
         }
     }
 }
