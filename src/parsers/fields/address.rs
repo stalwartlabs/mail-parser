@@ -124,6 +124,7 @@ pub fn add_token<'x>(
     let token = if parser.is_token_safe {
         Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
     } else {
+        parser.is_token_safe = true;
         String::from_utf8_lossy(bytes)
     };
 
@@ -155,7 +156,6 @@ pub fn add_token<'x>(
     list.push(token);
 
     parser.token_start = 0;
-    parser.is_token_safe = true;
     parser.is_token_email = false;
     parser.is_token_start = true;
     parser.is_escaped = false;

@@ -31,10 +31,11 @@ pub fn add_token<'x>(mut parser: UnstructuredParser<'x>, stream: &'x MessageStre
     parser.tokens.push(if parser.is_token_safe {
         Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
     } else {
+        parser.is_token_safe = true;
         String::from_utf8_lossy(bytes)
     });
+    
     parser.token_start = 0;
-    parser.is_token_safe = true;
     parser.is_token_start = true;
     parser
 }
