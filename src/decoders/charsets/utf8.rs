@@ -6,7 +6,7 @@ enum Utf8State {
     Start,
     Shift12,
     Shift6,
-    Shift0
+    Shift0,
 }
 
 pub struct Utf8Decoder {
@@ -20,9 +20,10 @@ impl CharsetDecoder for Utf8Decoder {
         match self.state {
             Utf8State::Start => {
                 if *ch < 0x80 {
-                    self.result.push(unsafe{ char::from_u32_unchecked(*ch as u32) });
+                    self.result
+                        .push(unsafe { char::from_u32_unchecked(*ch as u32) });
                 } else if (*ch & 0xe0) == 0xc0 {
-                    self.char = (*ch as u32 & 0x1f) <<  6;
+                    self.char = (*ch as u32 & 0x1f) << 6;
                     self.state = Utf8State::Shift0;
                 } else if (*ch & 0xf0) == 0xe0 {
                     self.char = (*ch as u32 & 0x0f) << 12;
@@ -33,21 +34,22 @@ impl CharsetDecoder for Utf8Decoder {
                 } else {
                     self.result.push(REPLACEMENT_CHARACTER);
                 }
-            },
+            }
             Utf8State::Shift12 => {
                 self.char |= (*ch as u32 & 0x3f) << 12;
                 self.state = Utf8State::Shift6;
-            },
+            }
             Utf8State::Shift6 => {
                 self.char |= (*ch as u32 & 0x3f) << 6;
                 self.state = Utf8State::Shift0;
-            },
+            }
             Utf8State::Shift0 => {
                 self.char |= *ch as u32 & 0x3f;
                 self.state = Utf8State::Start;
-                self.result.push(char::from_u32(self.char).unwrap_or(REPLACEMENT_CHARACTER));
+                self.result
+                    .push(char::from_u32(self.char).unwrap_or(REPLACEMENT_CHARACTER));
                 self.char = 0;
-            },
+            }
         }
     }
 
@@ -57,7 +59,7 @@ impl CharsetDecoder for Utf8Decoder {
         } else {
             None
         }
-    }    
+    }
 }
 
 impl Utf8Decoder {
@@ -65,7 +67,7 @@ impl Utf8Decoder {
         Utf8Decoder {
             result: String::with_capacity(capacity),
             state: Utf8State::Start,
-            char: 0
+            char: 0,
         }
     }
 }
@@ -95,4 +97,3 @@ mod tests {
         }
     }
 }
-

@@ -18,20 +18,19 @@ pub enum Header<'x> {
 impl<'x> Header<'x> {
     pub fn parse(stream: &'x MessageStream) -> Option<Header<'x>> {
         while let Some(name) = Header::parse_hdr_name(stream) {
-            let mut hash = name.len();            
+            let mut hash = name.len();
 
             if !(2..=25).contains(&hash) {
                 return None;
             }
 
             hash += unsafe {
-                    *HDR_HASH.get_unchecked(name.get_unchecked(0).to_ascii_lowercase() as usize)
+                *HDR_HASH.get_unchecked(name.get_unchecked(0).to_ascii_lowercase() as usize)
+                    as usize
+                    + *HDR_HASH
+                        .get_unchecked(name.get_unchecked(hash - 1).to_ascii_lowercase() as usize)
                         as usize
-                        + *HDR_HASH.get_unchecked(
-                            name.get_unchecked(hash - 1)
-                                .to_ascii_lowercase() as usize,
-                        ) as usize
-                };
+            };
 
             if !(2..=44).contains(&hash) {
                 return None;
@@ -113,6 +112,7 @@ impl<'x> Header<'x> {
                 31 if name.eq_ignore_ascii_case(b"keywords") => {
                     println!("Got 'keywords'");
                 }
+                // content disposition!
                 32 if name.eq_ignore_ascii_case(b"content-description") => {
                     println!("Got 'content-description'");
                 }
@@ -185,10 +185,10 @@ mod tests {
         ];
 
         for input in inputs {
-            match Header::parse_hdr_name(&MessageStream::new(
-                input.0.as_bytes(),
-            )) {
-                Some(string) => assert_eq!(input.1, std::str::from_utf8(string).unwrap().to_lowercase()),
+            match Header::parse_hdr_name(&MessageStream::new(input.0.as_bytes())) {
+                Some(string) => {
+                    assert_eq!(input.1, std::str::from_utf8(string).unwrap().to_lowercase())
+                }
                 None => panic!("Failed to parse '{}'", input.0),
             }
         }

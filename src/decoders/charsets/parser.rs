@@ -1,4 +1,4 @@
-use super::{CharsetDecoder, single_byte::SingleByteDecoder};
+use super::{single_byte::SingleByteDecoder, CharsetDecoder};
 
 #[cfg(feature = "multibytedecode")]
 use super::multi_byte::MultiByteDecoder;
@@ -6,7 +6,7 @@ use super::multi_byte::MultiByteDecoder;
 pub struct CharsetParser {
     charset: [u8; 45],
     len: u32,
-    hash: u32
+    hash: u32,
 }
 
 impl CharsetParser {
@@ -14,12 +14,15 @@ impl CharsetParser {
         CharsetParser {
             charset: [0; 45],
             len: 0,
-            hash: 0
+            hash: 0,
         }
     }
 
     pub fn get_default_decoder(capacity: usize) -> Box<dyn CharsetDecoder> {
-        Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_1,
+            capacity,
+        ))
     }
 
     pub fn ingest(&mut self, mut ch: u8) {
@@ -35,14 +38,14 @@ impl CharsetParser {
                 match self.len {
                     2 | 9 | 11 => {
                         self.hash += *CH_HASH.get_unchecked((ch as usize) + 1);
-                    },
+                    }
                     8 => {
                         self.hash += *CH_HASH.get_unchecked((ch as usize) + 3);
-                    },
+                    }
                     1..=10 | 22 => {
                         self.hash += *CH_HASH.get_unchecked(ch as usize);
-                    },
-                    _ => ()
+                    }
+                    _ => (),
                 }
             }
         }
@@ -69,10 +72,11 @@ impl CharsetParser {
             return None;
         }
 
-        let hash = self.hash + 
-                    self.len + 
-                    unsafe { CH_HASH.get_unchecked(*self.charset
-                                    .get_unchecked((self.len - 1) as usize) as usize) };
+        let hash = self.hash
+            + self.len
+            + unsafe {
+                CH_HASH.get_unchecked(*self.charset.get_unchecked((self.len - 1) as usize) as usize)
+            };
 
         if !(30..=5355).contains(&hash) {
             return None;
@@ -85,193 +89,574 @@ impl CharsetParser {
 
         match hash - 30 {
             // ISO_8859-1:1987
-            1399 if charset == b"iso-8859-1" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            3227 if charset == b"iso_8859-1:1987" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            140 if charset == b"iso-ir-100" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            2114 if charset == b"iso_8859-1" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            1596 if charset == b"latin1" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            622 if charset == b"l1" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            841 if charset == b"ibm819" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            1065 if charset == b"cp819" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-            2891 if charset == b"csisolatin1" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),        
-            
+            1399 if charset == b"iso-8859-1" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            3227 if charset == b"iso_8859-1:1987" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            140 if charset == b"iso-ir-100" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            2114 if charset == b"iso_8859-1" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            1596 if charset == b"latin1" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            622 if charset == b"l1" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            841 if charset == b"ibm819" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            1065 if charset == b"cp819" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+            2891 if charset == b"csisolatin1" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_1,
+                capacity,
+            ))),
+
             // ISO_8859-2:1987
-            1389 if charset == b"iso-8859-2" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            3222 if charset == b"iso_8859-2:1987" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            40 if charset == b"iso-ir-101" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            2104 if charset == b"iso_8859-2" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            1586 if charset == b"latin2" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            1052 if charset == b"l2" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-            3321 if charset == b"csisolatin2" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-    
+            1389 if charset == b"iso-8859-2" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            3222 if charset == b"iso_8859-2:1987" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            40 if charset == b"iso-ir-101" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            2104 if charset == b"iso_8859-2" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            1586 if charset == b"latin2" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            1052 if charset == b"l2" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+            3321 if charset == b"csisolatin2" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_2,
+                capacity,
+            ))),
+
             // ISO_8859-3:1988
-            2259 if charset == b"iso-8859-3" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            3537 if charset == b"iso_8859-3:1988" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            770 if charset == b"iso-ir-109" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            2974 if charset == b"iso_8859-3" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            2456 if charset == b"latin3" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            1087 if charset == b"l3" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-            3356 if charset == b"csisolatin3" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, capacity))),
-    
+            2259 if charset == b"iso-8859-3" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            3537 if charset == b"iso_8859-3:1988" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            770 if charset == b"iso-ir-109" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            2974 if charset == b"iso_8859-3" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            2456 if charset == b"latin3" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            1087 if charset == b"l3" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+            3356 if charset == b"csisolatin3" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_3,
+                capacity,
+            ))),
+
             // ISO_8859-4:1988
-            1459 if charset == b"iso-8859-4" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            3137 if charset == b"iso_8859-4:1988" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            135 if charset == b"iso-ir-110" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            2174 if charset == b"iso_8859-4" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            1656 if charset == b"latin4" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            672 if charset == b"l4" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-            2941 if charset == b"csisolatin4" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, capacity))),
-    
+            1459 if charset == b"iso-8859-4" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            3137 if charset == b"iso_8859-4:1988" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            135 if charset == b"iso-ir-110" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            2174 if charset == b"iso_8859-4" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            1656 if charset == b"latin4" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            672 if charset == b"l4" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+            2941 if charset == b"csisolatin4" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_4,
+                capacity,
+            ))),
+
             // ISO_8859-5:1988
-            1429 if charset == b"iso-8859-5" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-            3122 if charset == b"iso_8859-5:1988" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-            115 if charset == b"iso-ir-144" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-            2144 if charset == b"iso_8859-5" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-            1483 if charset == b"cyrillic" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-            3228 if charset == b"csisolatincyrillic" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, capacity))),
-    
+            1429 if charset == b"iso-8859-5" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+            3122 if charset == b"iso_8859-5:1988" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+            115 if charset == b"iso-ir-144" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+            2144 if charset == b"iso_8859-5" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+            1483 if charset == b"cyrillic" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+            3228 if charset == b"csisolatincyrillic" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_5,
+                capacity,
+            ))),
+
             // ISO_8859-6:1987
-            1679 if charset == b"iso-8859-6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            3367 if charset == b"iso_8859-6:1987" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            840 if charset == b"iso-ir-127" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            2394 if charset == b"iso_8859-6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            1448 if charset == b"ecma-114" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            1926 if charset == b"asmo-708" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            1766 if charset == b"arabic" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-            3241 if charset == b"csisolatinarabic" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, capacity))),
-    
+            1679 if charset == b"iso-8859-6" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            3367 if charset == b"iso_8859-6:1987" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            840 if charset == b"iso-ir-127" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            2394 if charset == b"iso_8859-6" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            1448 if charset == b"ecma-114" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            1926 if charset == b"asmo-708" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            1766 if charset == b"arabic" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+            3241 if charset == b"csisolatinarabic" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_6,
+                capacity,
+            ))),
+
             // ISO_8859-7:1987
-            1769 if charset == b"iso-8859-7" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            3412 if charset == b"iso_8859-7:1987" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            750 if charset == b"iso-ir-126" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            2484 if charset == b"iso_8859-7" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            2291 if charset == b"elot_928" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            2216 if charset == b"ecma-118" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            2952 if charset == b"greek" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            2177 if charset == b"greek8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-            4612 if charset == b"csisolatingreek" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, capacity))),
-    
+            1769 if charset == b"iso-8859-7" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            3412 if charset == b"iso_8859-7:1987" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            750 if charset == b"iso-ir-126" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            2484 if charset == b"iso_8859-7" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            2291 if charset == b"elot_928" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            2216 if charset == b"ecma-118" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            2952 if charset == b"greek" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            2177 if charset == b"greek8" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+            4612 if charset == b"csisolatingreek" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_7,
+                capacity,
+            ))),
+
             // ISO_8859-8:1988
-            1529 if charset == b"iso-8859-8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-            3172 if charset == b"iso_8859-8:1988" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-            200 if charset == b"iso-ir-138" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-            2244 if charset == b"iso_8859-8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-            1692 if charset == b"hebrew" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-            3066 if charset == b"csisolatinhebrew" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, capacity))),
-    
+            1529 if charset == b"iso-8859-8" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+            3172 if charset == b"iso_8859-8:1988" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+            200 if charset == b"iso-ir-138" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+            2244 if charset == b"iso_8859-8" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+            1692 if charset == b"hebrew" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+            3066 if charset == b"csisolatinhebrew" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_8,
+                capacity,
+            ))),
+
             // ISO_8859-9:1989
-            2129 if charset == b"iso-8859-9" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            3772 if charset == b"iso_8859-9:1989" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            185 if charset == b"iso-ir-148" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            2844 if charset == b"iso_8859-9" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            1626 if charset == b"latin5" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            782 if charset == b"l5" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-            3051 if charset == b"csisolatin5" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, capacity))),
-    
+            2129 if charset == b"iso-8859-9" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            3772 if charset == b"iso_8859-9:1989" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            185 if charset == b"iso-ir-148" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            2844 if charset == b"iso_8859-9" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            1626 if charset == b"latin5" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            782 if charset == b"l5" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+            3051 if charset == b"csisolatin5" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_9,
+                capacity,
+            ))),
+
             // ISO-8859-10
-            1455 if charset == b"iso-8859-10" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-            550 if charset == b"iso-ir-157" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-            952 if charset == b"l6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-            2120 if charset == b"iso_8859-10:1992" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-            3221 if charset == b"csisolatin6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-            1876 if charset == b"latin6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, capacity))),
-    
+            1455 if charset == b"iso-8859-10" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+            550 if charset == b"iso-ir-157" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+            952 if charset == b"l6" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+            2120 if charset == b"iso_8859-10:1992" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+            3221 if charset == b"csisolatin6" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+            1876 if charset == b"latin6" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_10,
+                capacity,
+            ))),
+
             // ISO-8859-13
-            1865 if charset == b"iso-8859-13" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_13, capacity))),
-            844 if charset == b"csiso885913" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_13, capacity))),
-    
+            1865 if charset == b"iso-8859-13" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_13,
+                capacity,
+            ))),
+            844 if charset == b"csiso885913" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_13,
+                capacity,
+            ))),
+
             // ISO-8859-14
-            1450 if charset == b"iso-8859-14" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            853 if charset == b"iso-ir-199" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            2205 if charset == b"iso_8859-14:1998" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            2165 if charset == b"iso_8859-14" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            1726 if charset == b"latin8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            1735 if charset == b"iso-celtic" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            1057 if charset == b"l8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-            429 if charset == b"csiso885914" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, capacity))),
-    
+            1450 if charset == b"iso-8859-14" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            853 if charset == b"iso-ir-199" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            2205 if charset == b"iso_8859-14:1998" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            2165 if charset == b"iso_8859-14" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            1726 if charset == b"latin8" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            1735 if charset == b"iso-celtic" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            1057 if charset == b"l8" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+            429 if charset == b"csiso885914" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_14,
+                capacity,
+            ))),
+
             // ISO-8859-15
-            1560 if charset == b"iso-8859-15" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_15, capacity))),
-            2275 if charset == b"iso_8859-15" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_15, capacity))),
-            2327 if charset == b"latin-9" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_15, capacity))),
-            539 if charset == b"csiso885915" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_15, capacity))),
-    
+            1560 if charset == b"iso-8859-15" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_15,
+                capacity,
+            ))),
+            2275 if charset == b"iso_8859-15" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_15,
+                capacity,
+            ))),
+            2327 if charset == b"latin-9" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_15,
+                capacity,
+            ))),
+            539 if charset == b"csiso885915" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_15,
+                capacity,
+            ))),
+
             // ISO-8859-16
-            1730 if charset == b"iso-8859-16" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            735 if charset == b"iso-ir-226" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            2310 if charset == b"iso_8859-16:2001" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            2445 if charset == b"iso_8859-16" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            1702 if charset == b"latin10" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            728 if charset == b"l10" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
-            709 if charset == b"csiso885916" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, capacity))),
+            1730 if charset == b"iso-8859-16" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            735 if charset == b"iso-ir-226" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            2310 if charset == b"iso_8859-16:2001" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            2445 if charset == b"iso_8859-16" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            1702 if charset == b"latin10" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            728 if charset == b"l10" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
+            709 if charset == b"csiso885916" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::ISO_8859_16,
+                capacity,
+            ))),
 
             // IBM850
-            226 if charset == b"ibm850" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::IBM850, capacity))),
-            450 if charset == b"cp850" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::IBM850, capacity))),
-            298 if charset == b"850" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::IBM850, capacity))),
-            2899 if charset == b"cspc850multilingual" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::IBM850, capacity))),
+            226 if charset == b"ibm850" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::IBM850,
+                capacity,
+            ))),
+            450 if charset == b"cp850" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::IBM850,
+                capacity,
+            ))),
+            298 if charset == b"850" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::IBM850,
+                capacity,
+            ))),
+            2899 if charset == b"cspc850multilingual" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::IBM850,
+                capacity,
+            ))),
 
             // KOI8-R
-            1032 if charset == b"koi8-r" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_R, capacity))),
-            978 if charset == b"cskoi8r" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_R, capacity))),
-            
+            1032 if charset == b"koi8-r" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::KOI8_R,
+                capacity,
+            ))),
+            978 if charset == b"cskoi8r" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::KOI8_R,
+                capacity,
+            ))),
+
             // KOI8-U
-            1822 if charset == b"koi8-u" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_U, capacity))),
-            1768 if charset == b"cskoi8u" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_U, capacity))),
+            1822 if charset == b"koi8-u" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::KOI8_U,
+                capacity,
+            ))),
+            1768 if charset == b"cskoi8u" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::KOI8_U,
+                capacity,
+            ))),
 
             // TIS-620
-            1012 if charset == b"tis-620" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::TIS_620, capacity))),
-            703 if charset == b"cstis620" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::TIS_620, capacity))),
-            1400 if charset == b"iso-8859-11" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::TIS_620, capacity))),
-            
+            1012 if charset == b"tis-620" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::TIS_620,
+                capacity,
+            ))),
+            703 if charset == b"cstis620" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::TIS_620,
+                capacity,
+            ))),
+            1400 if charset == b"iso-8859-11" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::TIS_620,
+                capacity,
+            ))),
+
             // WINDOWS-1250
-            2302 if charset == b"windows-1250" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1250, capacity))),
-            1763 if charset == b"cswindows1250" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1250, capacity))),
-            
+            2302 if charset == b"windows-1250" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1250,
+                capacity,
+            ))),
+            1763 if charset == b"cswindows1250" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1250,
+                capacity,
+            ))),
+
             // WINDOWS-1251
-            2252 if charset == b"windows-1251" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1251, capacity))),
-            1713 if charset == b"cswindows1251" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1251, capacity))),
-            
+            2252 if charset == b"windows-1251" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1251,
+                capacity,
+            ))),
+            1713 if charset == b"cswindows1251" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1251,
+                capacity,
+            ))),
+
             // WINDOWS-1252
-            2247 if charset == b"windows-1252" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1252, capacity))),
-            1708 if charset == b"cswindows1252" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1252, capacity))),
-            
+            2247 if charset == b"windows-1252" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1252,
+                capacity,
+            ))),
+            1708 if charset == b"cswindows1252" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1252,
+                capacity,
+            ))),
+
             // WINDOWS-1253
-            2682 if charset == b"windows-1253" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1253, capacity))),
-            2143 if charset == b"cswindows1253" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1253, capacity))),
-            
+            2682 if charset == b"windows-1253" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1253,
+                capacity,
+            ))),
+            2143 if charset == b"cswindows1253" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1253,
+                capacity,
+            ))),
+
             // WINDOWS-1254
-            2282 if charset == b"windows-1254" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1254, capacity))),
-            1743 if charset == b"cswindows1254" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1254, capacity))),
-            
+            2282 if charset == b"windows-1254" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1254,
+                capacity,
+            ))),
+            1743 if charset == b"cswindows1254" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1254,
+                capacity,
+            ))),
+
             // WINDOWS-1255
-            2267 if charset == b"windows-1255" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1255, capacity))),
-            1728 if charset == b"cswindows1255" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1255, capacity))),
-            
+            2267 if charset == b"windows-1255" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1255,
+                capacity,
+            ))),
+            1728 if charset == b"cswindows1255" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1255,
+                capacity,
+            ))),
+
             // WINDOWS-1256
-            2392 if charset == b"windows-1256" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1256, capacity))),
-            1853 if charset == b"cswindows1256" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1256, capacity))),
-            
+            2392 if charset == b"windows-1256" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1256,
+                capacity,
+            ))),
+            1853 if charset == b"cswindows1256" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1256,
+                capacity,
+            ))),
+
             // WINDOWS-1257
-            2437 if charset == b"windows-1257" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1257, capacity))),
-            1898 if charset == b"cswindows1257" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1257, capacity))),
+            2437 if charset == b"windows-1257" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1257,
+                capacity,
+            ))),
+            1898 if charset == b"cswindows1257" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1257,
+                capacity,
+            ))),
 
             // WINDOWS-1258
-            2317 if charset == b"windows-1258" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1258, capacity))),
-            1778 if charset == b"cswindows1258" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1258, capacity))),
+            2317 if charset == b"windows-1258" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1258,
+                capacity,
+            ))),
+            1778 if charset == b"cswindows1258" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::CP1258,
+                capacity,
+            ))),
 
             // MACINTOSH
-            2730 if charset == b"macintosh" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::MACINTOSH, capacity))),
-            368 if charset == b"mac" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::MACINTOSH, capacity))),
-            2457 if charset == b"csmacintosh" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::MACINTOSH, capacity))),
+            2730 if charset == b"macintosh" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::MACINTOSH,
+                capacity,
+            ))),
+            368 if charset == b"mac" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::MACINTOSH,
+                capacity,
+            ))),
+            2457 if charset == b"csmacintosh" => Some(Box::new(SingleByteDecoder::new(
+                SingleByteDecoder::MACINTOSH,
+                capacity,
+            ))),
 
             // SHIFT_JIS
             #[cfg(feature = "multibytedecode")]
-            2234 if charset == b"shift_jis" => Some(Box::new(MultiByteDecoder::get_shift_jis(capacity))),
+            2234 if charset == b"shift_jis" => {
+                Some(Box::new(MultiByteDecoder::get_shift_jis(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            4294 if charset == b"ms_kanji" => Some(Box::new(MultiByteDecoder::get_shift_jis(capacity))),
+            4294 if charset == b"ms_kanji" => {
+                Some(Box::new(MultiByteDecoder::get_shift_jis(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            1796 if charset == b"csshiftjis" => Some(Box::new(MultiByteDecoder::get_shift_jis(capacity))),
+            1796 if charset == b"csshiftjis" => {
+                Some(Box::new(MultiByteDecoder::get_shift_jis(capacity)))
+            }
 
             // BIG5
             #[cfg(feature = "multibytedecode")]
@@ -283,9 +668,13 @@ impl CharsetParser {
             #[cfg(feature = "multibytedecode")]
             1951 if charset == b"euc-jp" => Some(Box::new(MultiByteDecoder::get_euc_jp(capacity))),
             #[cfg(feature = "multibytedecode")]
-            2835 if charset == b"extended_unix_code_packed_format_for_japanese" => Some(Box::new(MultiByteDecoder::get_euc_jp(capacity))),
+            2835 if charset == b"extended_unix_code_packed_format_for_japanese" => {
+                Some(Box::new(MultiByteDecoder::get_euc_jp(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            3555 if charset == b"cseucpkdfmtjapanese" => Some(Box::new(MultiByteDecoder::get_euc_jp(capacity))),
+            3555 if charset == b"cseucpkdfmtjapanese" => {
+                Some(Box::new(MultiByteDecoder::get_euc_jp(capacity)))
+            }
 
             // EUC-KR
             #[cfg(feature = "multibytedecode")]
@@ -295,15 +684,23 @@ impl CharsetParser {
 
             // ISO-2022-JP
             #[cfg(feature = "multibytedecode")]
-            2280 if charset == b"iso-2022-jp" => Some(Box::new(MultiByteDecoder::get_iso2022_jp(capacity))),
+            2280 if charset == b"iso-2022-jp" => {
+                Some(Box::new(MultiByteDecoder::get_iso2022_jp(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            1616 if charset == b"csiso2022jp" => Some(Box::new(MultiByteDecoder::get_iso2022_jp(capacity))),
+            1616 if charset == b"csiso2022jp" => {
+                Some(Box::new(MultiByteDecoder::get_iso2022_jp(capacity)))
+            }
 
             // GB18030
             #[cfg(feature = "multibytedecode")]
-            1332 if charset == b"gb18030" => Some(Box::new(MultiByteDecoder::get_gb18030(capacity))),
+            1332 if charset == b"gb18030" => {
+                Some(Box::new(MultiByteDecoder::get_gb18030(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            1334 if charset == b"csgb18030" => Some(Box::new(MultiByteDecoder::get_gb18030(capacity))),
+            1334 if charset == b"csgb18030" => {
+                Some(Box::new(MultiByteDecoder::get_gb18030(capacity)))
+            }
 
             // GBK
             #[cfg(feature = "multibytedecode")]
@@ -313,30 +710,44 @@ impl CharsetParser {
             #[cfg(feature = "multibytedecode")]
             1105 if charset == b"ms936" => Some(Box::new(MultiByteDecoder::get_gbk(capacity))),
             #[cfg(feature = "multibytedecode")]
-            2959 if charset == b"windows-936" => Some(Box::new(MultiByteDecoder::get_gbk(capacity))),
+            2959 if charset == b"windows-936" => {
+                Some(Box::new(MultiByteDecoder::get_gbk(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
             2827 if charset == b"csgbk" => Some(Box::new(MultiByteDecoder::get_gbk(capacity))),
 
             // UTF-16BE
             #[cfg(feature = "multibytedecode")]
-            2294 if charset == b"utf-16be" => Some(Box::new(MultiByteDecoder::get_utf16_be(capacity))),
+            2294 if charset == b"utf-16be" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_be(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            994 if charset == b"csutf16be" => Some(Box::new(MultiByteDecoder::get_utf16_be(capacity))),
+            994 if charset == b"csutf16be" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_be(capacity)))
+            }
 
             // UTF-16LE
             #[cfg(feature = "multibytedecode")]
-            2599 if charset == b"utf-16le" => Some(Box::new(MultiByteDecoder::get_utf16_le(capacity))),
+            2599 if charset == b"utf-16le" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_le(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            794 if charset == b"csutf16le" => Some(Box::new(MultiByteDecoder::get_utf16_le(capacity))),
+            794 if charset == b"csutf16le" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_le(capacity)))
+            }
 
             // UTF-16
             #[cfg(feature = "multibytedecode")]
-            1091 if charset == b"utf-16" => Some(Box::new(MultiByteDecoder::get_utf16_le(capacity))),
+            1091 if charset == b"utf-16" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_le(capacity)))
+            }
             #[cfg(feature = "multibytedecode")]
-            707 if charset == b"csutf16" => Some(Box::new(MultiByteDecoder::get_utf16_le(capacity))),
-            
+            707 if charset == b"csutf16" => {
+                Some(Box::new(MultiByteDecoder::get_utf16_le(capacity)))
+            }
+
             // UTF-8, US-ASCII and other encodings fall back here
-            _ => None
+            _ => None,
         }
     }
 }
@@ -358,7 +769,7 @@ static CH_HASH: &[u32] = &[
     5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356,
     5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356,
     5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356, 5356,
-    5356, 5356, 5356, 5356, 5356, 5356
+    5356, 5356, 5356, 5356, 5356, 5356,
 ];
 
 #[cfg(test)]
@@ -373,8 +784,8 @@ mod tests {
             "csisolatincyrillic".as_bytes(),
             "Cspc850MultiLingual".as_bytes(),
             #[cfg(feature = "multibytedecode")]
-            "extended_unix_code_packed_format_for_japanese".as_bytes()
-            ];
+            "extended_unix_code_packed_format_for_japanese".as_bytes(),
+        ];
         let mut parser = CharsetParser::new();
 
         for input in inputs {
@@ -382,7 +793,10 @@ mod tests {
             match parser.get_decoder(1) {
                 Some(_) => (),
                 None => {
-                    panic!("Could not find a decoder for '{}'.", std::str::from_utf8(input).unwrap());
+                    panic!(
+                        "Could not find a decoder for '{}'.",
+                        std::str::from_utf8(input).unwrap()
+                    );
                 }
             }
             parser.reset();
@@ -391,7 +805,7 @@ mod tests {
 }
 
 /*
-    
+
     Generated from http://www.iana.org/assignments/character-sets/character-sets.xhtml
     Keep for future support of additional character sets.
 

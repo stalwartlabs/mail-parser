@@ -3,7 +3,7 @@ use encoding_rs::*;
 
 pub struct MultiByteDecoder {
     decoder: Decoder,
-    result: String
+    result: String,
 }
 
 impl CharsetDecoder for MultiByteDecoder {
@@ -11,7 +11,7 @@ impl CharsetDecoder for MultiByteDecoder {
         self.ingest_slice(&[*ch]);
     }
 
-    fn ingest_slice(&mut self, chs: &[u8]){
+    fn ingest_slice(&mut self, chs: &[u8]) {
         let (_, _, _) = self.decoder.decode_to_string(chs, &mut self.result, false);
     }
 
@@ -21,7 +21,7 @@ impl CharsetDecoder for MultiByteDecoder {
         } else {
             None
         }
-    }   
+    }
 }
 
 impl MultiByteDecoder {
@@ -87,5 +87,4 @@ impl MultiByteDecoder {
             result: String::with_capacity(capacity),
         }
     }
-
 }

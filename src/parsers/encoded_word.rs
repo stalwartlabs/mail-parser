@@ -53,9 +53,7 @@ pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
             Rfc2047Parser::Encoding => {
                 if decoder.is_none() {
                     match ch {
-                        b'q' | b'Q' => {
-                            decoder = Some(Box::new(QuotedPrintableDecoder::new(true)))
-                        }
+                        b'q' | b'Q' => decoder = Some(Box::new(QuotedPrintableDecoder::new(true))),
                         b'b' | b'B' => decoder = Some(Box::new(Base64Decoder::new())),
                         _ => return None,
                     }
@@ -81,9 +79,7 @@ pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
             b'\n' => return None,
             _ => match decoder.ingest(ch) {
                 DecoderResult::Byte(b) => ch_decoder.ingest(&b),
-                DecoderResult::ByteArray(ba) => {
-                    ch_decoder.ingest_slice(ba)
-                }
+                DecoderResult::ByteArray(ba) => ch_decoder.ingest_slice(ba),
                 DecoderResult::NeedData => (),
                 DecoderResult::Error => return None,
             },

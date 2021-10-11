@@ -10,20 +10,24 @@ pub struct UnstructuredParser<'x> {
 }
 
 impl<'x> UnstructuredParser<'x> {
-    
     pub fn new() -> UnstructuredParser<'x> {
         UnstructuredParser {
             token_start: 0,
             token_end: 0,
             is_token_safe: true,
             is_token_start: true,
-            tokens: Vec::new(),          
+            tokens: Vec::new(),
         }
     }
 }
 
-pub fn add_token<'x>(mut parser: UnstructuredParser<'x>, stream: &'x MessageStream) -> UnstructuredParser<'x> {
-    let bytes = stream.get_bytes(parser.token_start - 1, parser.token_end).unwrap();
+pub fn add_token<'x>(
+    mut parser: UnstructuredParser<'x>,
+    stream: &'x MessageStream,
+) -> UnstructuredParser<'x> {
+    let bytes = stream
+        .get_bytes(parser.token_start - 1, parser.token_end)
+        .unwrap();
 
     if !parser.tokens.is_empty() {
         parser.tokens.push(Cow::from(" "));
@@ -34,7 +38,7 @@ pub fn add_token<'x>(mut parser: UnstructuredParser<'x>, stream: &'x MessageStre
         parser.is_token_safe = true;
         String::from_utf8_lossy(bytes)
     });
-    
+
     parser.token_start = 0;
     parser.is_token_start = true;
     parser
@@ -51,24 +55,27 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                 }
                 match stream.peek() {
                     Some(b' ' | b'\t') => {
+                        if !parser.is_token_start {
+                            parser.is_token_start = true;
+                        }
                         stream.advance(1);
                         continue;
-                    },
+                    }
                     _ => {
                         return match parser.tokens.len() {
                             1 => parser.tokens.pop(),
                             0 => None,
                             _ => Some(Cow::from(parser.tokens.concat())),
                         };
-                    },
+                    }
                 }
             }
-            b' ' | b'\t' | b'\r' => {
+            b' ' | b'\t' => {
                 if !parser.is_token_start {
                     parser.is_token_start = true;
                 }
                 continue;
-            },
+            }
             b'=' if parser.is_token_start && stream.skip_byte(&b'?') => {
                 let pos_back = stream.get_pos() - 1;
 
@@ -82,7 +89,8 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                 } else {
                     stream.set_pos(pos_back);
                 }
-            },
+            }
+            b'\r' => continue,
             0..=0x7f => (),
             _ => {
                 if parser.is_token_safe {
@@ -98,12 +106,11 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
         if parser.token_start == 0 {
             parser.token_start = stream.get_pos();
         }
-        parser.token_end = stream.get_pos()
 
+        parser.token_end = stream.get_pos();
     }
 
     None
-
 }
 
 mod tests {

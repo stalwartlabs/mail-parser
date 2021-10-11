@@ -10,9 +10,9 @@ pub struct DateTime {
     hour: u32,
     minute: u32,
     second: u32,
+    tz_before_gmt: bool,
     tz_hour: u32,
     tz_minute: u32,
-    tz_before_gmt: bool,
 }
 
 impl DateTime {
@@ -50,7 +50,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
         2, // Second (5)
         4, // TZ (6)
     ];
-    let mut month: [u8; 3] = [0; 3];
+    let mut month_hash: usize = 0;
     let mut month_pos: usize = 0;
 
     let mut is_plus = true;
@@ -114,8 +114,13 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
                 }
             }
             b'a'..=b'z' | b'A'..=b'Z' => {
-                if pos == 1 && month_pos < 3 {
-                    month[month_pos] = if *ch <= b'Z' { *ch + 32 } else { *ch };
+                if pos == 1 {
+                    if (1..=2).contains(&month_pos) {
+                        month_hash += unsafe {
+                            *MONTH_HASH
+                                .get_unchecked((if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize)
+                        } as usize;
+                    }
                     month_pos += 1;
                 }
                 if is_new_token {
@@ -152,22 +157,8 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             } else {
                 parts[2]
             },
-            month: if month_pos == 3 {
-                match &month {
-                    b"jan" => 1,
-                    b"feb" => 2,
-                    b"mar" => 3,
-                    b"apr" => 4,
-                    b"may" => 5,
-                    b"jun" => 6,
-                    b"jul" => 7,
-                    b"aug" => 8,
-                    b"sep" => 9,
-                    b"oct" => 10,
-                    b"nov" => 11,
-                    b"dec" => 12,
-                    _ => parts[1],
-                }
+            month: if month_pos == 3 && month_hash <= 30 {
+                (unsafe { *MONTH_MAP.get_unchecked(month_hash) }) as u32
             } else {
                 parts[1]
             },
@@ -183,6 +174,24 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
         None
     }
 }
+
+static MONTH_HASH: &[u8] = &[
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 0, 14, 4, 31, 10, 31, 14, 31, 31, 31, 31, 4, 31, 10, 15, 15, 31, 5, 31, 0, 5, 15, 31, 31,
+    0, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+    31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
+];
+
+pub static MONTH_MAP: &[u8] = &[
+    5, 0, 0, 0, 10, 3, 0, 0, 0, 7, 1, 0, 0, 0, 12, 6, 0, 0, 0, 8, 4, 0, 0, 0, 2, 9, 0, 0, 0, 0, 11,
+];
 
 mod tests {
     use crate::parsers::{fields::date::parse_date, message_stream::MessageStream};
@@ -224,7 +233,7 @@ mod tests {
             ),
             ("21 Nov 97 09:55:06 GMT", "1997-11-21T09:55:06+00:00"),
             (
-                "20 11 (some \n 79 comments(more comments\n )) 79 05:34:27 -0300",
+                "20 11 (some \n 44 comments(more comments\n )) 79 05:34:27 -0300",
                 "1979-11-20T05:34:27-03:00",
             ),
             (" Wed, 27 Jun 99 04:11 +0900 ", "1999-06-27T04:11:00+09:00"),
@@ -233,10 +242,20 @@ mod tests {
                 "1915-08-04T16:23:42+00:04",
             ),
             (" some numbers 0 1 2 but invalid ", ""),
-            (
-                "Tue, 1 Jul 2003 ((invalid)\ncomment) 10:52:37 +0200",
-                "",
-            ),
+            ("Tue, 1 Jul 2003 ((invalid)\ncomment) 10:52:37 +0200", ""),
+            ("1 jan 2021 09:55:06 +0200", "2021-01-01T09:55:06+02:00"),
+            ("2 feb 2021 09:55:06 +0200", "2021-02-02T09:55:06+02:00"),
+            ("3 mar 2021 09:55:06 +0200", "2021-03-03T09:55:06+02:00"),
+            ("4 apr 2021 09:55:06 +0200", "2021-04-04T09:55:06+02:00"),
+            ("5 may 2021 09:55:06 +0200", "2021-05-05T09:55:06+02:00"),
+            ("6 jun 2021 09:55:06 +0200", "2021-06-06T09:55:06+02:00"),
+            ("7 jul 2021 09:55:06 +0200", "2021-07-07T09:55:06+02:00"),
+            ("8 aug 2021 09:55:06 +0200", "2021-08-08T09:55:06+02:00"),
+            ("9 sep 2021 09:55:06 +0200", "2021-09-09T09:55:06+02:00"),
+            ("10 oct 2021 09:55:06 +0200", "2021-10-10T09:55:06+02:00"),
+            ("11 nov 2021 09:55:06 +0200", "2021-11-11T09:55:06+02:00"),
+            ("12 dec 2021 09:55:06 +0200", "2021-12-12T09:55:06+02:00"),
+            ("13 zzz 2021 09:55:06 +0200", "2021-00-13T09:55:06+02:00"),
         ];
 
         for input in inputs {

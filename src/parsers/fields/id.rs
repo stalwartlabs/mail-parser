@@ -6,7 +6,7 @@ use crate::parsers::message_stream::MessageStream;
 pub enum IdField<'x> {
     One(Cow<'x, str>),
     Many(Vec<Cow<'x, str>>),
-    Empty
+    Empty,
 }
 
 pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
@@ -18,21 +18,19 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
 
     while let Some(ch) = stream.next() {
         match ch {
-            b'\n' => {
-                match stream.peek() {
-                    Some(b' ' | b'\t') => {
-                        stream.advance(1);
-                        continue;
-                    },
-                    _ => {
-                        return match ids.len() {
-                            1 => IdField::One(ids.pop().unwrap()),
-                            0 => IdField::Empty,
-                            _ => IdField::Many(ids),
-                        };
-                    },
+            b'\n' => match stream.peek() {
+                Some(b' ' | b'\t') => {
+                    stream.advance(1);
+                    continue;
                 }
-            }
+                _ => {
+                    return match ids.len() {
+                        1 => IdField::One(ids.pop().unwrap()),
+                        0 => IdField::Empty,
+                        _ => IdField::Many(ids),
+                    };
+                }
+            },
             b'<' => {
                 is_id_part = true;
                 continue;
@@ -59,33 +57,55 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
                 if is_token_safe {
                     is_token_safe = false;
                 }
-            }            
+            }
         }
         if is_id_part {
             if token_start == 0 {
                 token_start = stream.get_pos();
             }
-            token_end = stream.get_pos();        
+            token_end = stream.get_pos();
         }
-
     }
     IdField::Empty
 }
 
 mod tests {
-    use crate::parsers::{fields::id::{IdField, parse_id}, message_stream::MessageStream};
-
+    use crate::parsers::{
+        fields::id::{parse_id, IdField},
+        message_stream::MessageStream,
+    };
 
     #[test]
     fn parse_message_ids() {
         let inputs = [
-            ("<1234@local.machine.example>\n".to_string(), vec!["1234@local.machine.example"]),
-            ("<1234@local.machine.example> <3456@example.net>\n".to_string(), vec!["1234@local.machine.example", "3456@example.net"]),
-            ("<1234@local.machine.example>\n <3456@example.net> \n".to_string(), vec!["1234@local.machine.example", "3456@example.net"]),
-            ("<1234@local.machine.example>\n\n <3456@example.net>\n".to_string(), vec!["1234@local.machine.example"]),
-            ("              <testabcd.1234@silly.test>  \n".to_string(), vec!["testabcd.1234@silly.test"]),
-            ("<5678.21-Nov-1997@example.com>\n".to_string(), vec!["5678.21-Nov-1997@example.com"]),
-            ("<1234   @   local(blah)  .machine .example>\n".to_string(), vec!["1234   @   local(blah)  .machine .example"]),
+            (
+                "<1234@local.machine.example>\n".to_string(),
+                vec!["1234@local.machine.example"],
+            ),
+            (
+                "<1234@local.machine.example> <3456@example.net>\n".to_string(),
+                vec!["1234@local.machine.example", "3456@example.net"],
+            ),
+            (
+                "<1234@local.machine.example>\n <3456@example.net> \n".to_string(),
+                vec!["1234@local.machine.example", "3456@example.net"],
+            ),
+            (
+                "<1234@local.machine.example>\n\n <3456@example.net>\n".to_string(),
+                vec!["1234@local.machine.example"],
+            ),
+            (
+                "              <testabcd.1234@silly.test>  \n".to_string(),
+                vec!["testabcd.1234@silly.test"],
+            ),
+            (
+                "<5678.21-Nov-1997@example.com>\n".to_string(),
+                vec!["5678.21-Nov-1997@example.com"],
+            ),
+            (
+                "<1234   @   local(blah)  .machine .example>\n".to_string(),
+                vec!["1234   @   local(blah)  .machine .example"],
+            ),
         ];
 
         for input in inputs {
@@ -97,4 +117,3 @@ mod tests {
         }
     }
 }
-

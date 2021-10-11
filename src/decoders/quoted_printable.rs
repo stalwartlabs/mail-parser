@@ -9,7 +9,7 @@ enum QuotedPrintableState {
 pub struct QuotedPrintableDecoder {
     state: QuotedPrintableState,
     hex_1: i8,
-    is_header: bool
+    is_header: bool,
 }
 
 impl QuotedPrintableDecoder {
@@ -17,7 +17,7 @@ impl QuotedPrintableDecoder {
         QuotedPrintableDecoder {
             state: QuotedPrintableState::None,
             hex_1: 0,
-            is_header
+            is_header,
         }
     }
 }
@@ -25,20 +25,18 @@ impl QuotedPrintableDecoder {
 impl Decoder for QuotedPrintableDecoder {
     fn ingest(&mut self, ch: &u8) -> DecoderResult {
         match self.state {
-            QuotedPrintableState::None => {
-                match ch {
-                    b'=' => {
-                        self.state = QuotedPrintableState::Eq;
-                    },
-                    b'_' if self.is_header => {
-                        return DecoderResult::Byte(b' ');
-                    },
-                    0..=126 => {
-                        return DecoderResult::Byte(*ch);
-                    },
-                    _ => {
-                        return DecoderResult::Byte(b'!');
-                    }
+            QuotedPrintableState::None => match ch {
+                b'=' => {
+                    self.state = QuotedPrintableState::Eq;
+                }
+                b'_' if self.is_header => {
+                    return DecoderResult::Byte(b' ');
+                }
+                0..=126 => {
+                    return DecoderResult::Byte(*ch);
+                }
+                _ => {
+                    return DecoderResult::Byte(b'!');
                 }
             },
             QuotedPrintableState::Eq => {
@@ -53,7 +51,7 @@ impl Decoder for QuotedPrintableDecoder {
                 } else {
                     self.state = QuotedPrintableState::None;
                 }
-            },
+            }
             QuotedPrintableState::Hex1 => {
                 let hex2 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
 
@@ -62,7 +60,7 @@ impl Decoder for QuotedPrintableDecoder {
                     return DecoderResult::Error;
                 } else {
                     return DecoderResult::Byte(((self.hex_1 as u8) << 4) | hex2 as u8);
-                }                
+                }
             }
         }
 
@@ -183,7 +181,7 @@ mod tests {
  *
  */
 
-static HEX_MAP: &[i8] = &[
+pub static HEX_MAP: &[i8] = &[
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, -1, -1, -1, -1, -1, 10, 11, 12, 13, 14, 15, -1, -1, -1,

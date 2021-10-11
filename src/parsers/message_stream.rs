@@ -1,15 +1,15 @@
-use std::cell::Cell;
+use std::{borrow::Cow, cell::UnsafeCell};
 
 pub struct MessageStream<'x> {
-    data: &'x [u8],
-    pos: Cell<usize>
+    pub data: &'x [u8],
+    pos: UnsafeCell<usize>,
 }
 
 impl<'x> MessageStream<'x> {
     pub fn new(data: &'x [u8]) -> MessageStream<'x> {
         MessageStream {
             data,
-            pos: Cell::new(0)
+            pos: 0.into(),
         }
     }
 
@@ -18,65 +18,86 @@ impl<'x> MessageStream<'x> {
         self.data.get(from..to)
     }
 
+    pub fn get_string(&self, from: usize, to: usize, utf8_valid: bool) -> Option<Cow<str>> {
+        let bytes = self.data.get(from..to)?;
+
+        Some(if utf8_valid {
+            Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
+        } else {
+            String::from_utf8_lossy(bytes)
+        })
+    }
+
     #[inline(always)]
     pub fn set_pos(&self, pos: usize) {
-        self.pos.set(pos)
+        unsafe {
+            *self.pos.get() = pos;
+        }
     }
-
-    #[inline(always)]
-    pub fn set_pos_2(&mut self, pos: usize) {
-        self.pos.set(pos)
-    }
-
 
     #[inline(always)]
     pub fn get_pos(&self) -> usize {
-        self.pos.get()
+        unsafe { *self.pos.get() }
     }
 
     #[inline(always)]
     pub fn next(&self) -> Option<&u8> {
-        let pos = self.pos.get();
-        self.pos.set(pos + 1);
-        self.data.get(pos)
+        unsafe {
+            let pos = &mut *self.pos.get();
+
+            if *pos < self.data.len() {
+                let result = self.data.get_unchecked(*pos);
+                *pos += 1;
+                Some(result)
+            } else {
+                None
+            }
+        }
     }
 
     #[inline(always)]
     pub fn peek(&self) -> Option<&u8> {
-        self.data.get(self.pos.get())
+        unsafe { self.data.get(*self.pos.get()) }
     }
 
     #[inline(always)]
     pub fn advance(&self, pos: usize) {
-        self.pos.set(self.pos.get() + pos);
-    }    
+        unsafe {
+            *self.pos.get() += pos;
+        }
+    }
 
     pub fn skip_byte(&self, ch: &u8) -> bool {
-        let pos = self.pos.get();
-        match self.data.get(pos) {
-            Some(byte) if byte == ch => {
-                self.pos.set(pos + 1);
+        unsafe {
+            let pos = &mut *self.pos.get();
+
+            if *pos < self.data.len() && self.data.get_unchecked(*pos) == ch {
+                *pos += 1;
                 true
-            },
-            _ => false
+            } else {
+                false
+            }
         }
     }
 
     pub fn skip_bytes(&self, chs: &[u8]) -> bool {
-        let from = self.pos.get();
-        let to = from + chs.len();
+        unsafe {
+            let pos = &mut *self.pos.get();
+            let to = *pos + chs.len();
 
-        match self.data.get(from..to) {
-            Some(bytes) if bytes == chs => {
-                self.pos.set(to);
-                true
-            },
-            _ => false
-        }        
+            match self.data.get(*pos..to) {
+                Some(bytes) if bytes == chs => {
+                    *pos = to;
+                    true
+                }
+                _ => false,
+            }
+        }
     }
 
     pub fn rewind(&self, r: usize) {
-        let pos = self.pos.get() - r;
-        self.pos.set(pos);
+        unsafe {
+            *self.pos.get() -= r;
+        }
     }
 }

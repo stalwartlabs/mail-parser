@@ -17,7 +17,7 @@ impl CharsetDecoder for SingleByteDecoder {
         } else {
             None
         }
-    }    
+    }
 }
 
 impl SingleByteDecoder {
@@ -520,7 +520,7 @@ impl SingleByteDecoder {
         '\u{f7}', '\u{b8}', '\u{b0}', '\u{a8}', '\u{b7}', '\u{b9}', '\u{b3}', '\u{b2}', '\u{25a0}',
         '\u{a0}',
     ];
-    
+
     pub const KOI8_R: &'static [char] = &[
         '\u{0}', '\u{1}', '\u{2}', '\u{3}', '\u{4}', '\u{5}', '\u{6}', '\u{7}', '\u{8}', '\u{9}',
         '\u{a}', '\u{b}', '\u{c}', '\u{d}', '\u{e}', '\u{f}', '\u{10}', '\u{11}', '\u{12}',
