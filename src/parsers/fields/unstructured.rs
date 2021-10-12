@@ -9,49 +9,38 @@ pub struct UnstructuredParser<'x> {
     tokens: Vec<Cow<'x, str>>,
 }
 
-impl<'x> UnstructuredParser<'x> {
-    pub fn new() -> UnstructuredParser<'x> {
-        UnstructuredParser {
-            token_start: 0,
-            token_end: 0,
-            is_token_safe: true,
-            is_token_start: true,
-            tokens: Vec::new(),
-        }
-    }
-}
-
-pub fn add_token<'x>(
-    mut parser: UnstructuredParser<'x>,
-    stream: &'x MessageStream,
-) -> UnstructuredParser<'x> {
-    let bytes = stream
-        .get_bytes(parser.token_start - 1, parser.token_end)
-        .unwrap();
-
+pub fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream) {
     if !parser.tokens.is_empty() {
-        parser.tokens.push(Cow::from(" "));
+        parser.tokens.push(" ".into());
     }
-    parser.tokens.push(if parser.is_token_safe {
-        Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
-    } else {
-        parser.is_token_safe = true;
-        String::from_utf8_lossy(bytes)
-    });
-
+    parser.tokens.push(
+        stream
+            .get_string(
+                parser.token_start - 1,
+                parser.token_end,
+                parser.is_token_safe,
+            )
+            .unwrap(),
+    );
     parser.token_start = 0;
+    parser.is_token_safe = true;
     parser.is_token_start = true;
-    parser
 }
 
 pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
-    let mut parser = UnstructuredParser::new();
+    let mut parser = UnstructuredParser {
+        token_start: 0,
+        token_end: 0,
+        is_token_safe: true,
+        is_token_start: true,
+        tokens: Vec::new(),
+    };
 
     while let Some(ch) = stream.next() {
         match ch {
             b'\n' => {
                 if parser.token_start > 0 {
-                    parser = add_token(parser, stream);
+                    add_token(&mut parser, stream);
                 }
                 match stream.peek() {
                     Some(b' ' | b'\t') => {
@@ -65,7 +54,7 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                         return match parser.tokens.len() {
                             1 => parser.tokens.pop(),
                             0 => None,
-                            _ => Some(Cow::from(parser.tokens.concat())),
+                            _ => Some(parser.tokens.concat().into()),
                         };
                     }
                 }
@@ -81,10 +70,10 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
 
                 if let Some(token) = parse_encoded_word(stream) {
                     if parser.token_start > 0 {
-                        parser = add_token(parser, stream);
-                        parser.tokens.push(Cow::from(" "));
+                        add_token(&mut parser, stream);
+                        parser.tokens.push(" ".into());
                     }
-                    parser.tokens.push(Cow::from(token));
+                    parser.tokens.push(token.into());
                     continue;
                 } else {
                     stream.set_pos(pos_back);

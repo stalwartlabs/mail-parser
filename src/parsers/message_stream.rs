@@ -22,7 +22,7 @@ impl<'x> MessageStream<'x> {
         let bytes = self.data.get(from..to)?;
 
         Some(if utf8_valid {
-            Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
+            (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
         } else {
             String::from_utf8_lossy(bytes)
         })
@@ -54,6 +54,10 @@ impl<'x> MessageStream<'x> {
             }
         }
     }
+
+    pub fn next2(&mut self) -> Option<&u8> {
+        None
+    }   
 
     #[inline(always)]
     pub fn peek(&self) -> Option<&u8> {

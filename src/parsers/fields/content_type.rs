@@ -46,34 +46,7 @@ struct ContentTypeParser<'x> {
     is_token_start: bool,
 }
 
-impl<'x> ContentTypeParser<'x> {
-    fn new() -> ContentTypeParser<'x> {
-        ContentTypeParser {
-            state: ContentState::Type,
-            state_stack: Vec::new(),
-
-            c_type: None,
-            c_subtype: None,
-            attr_name: None,
-            attributes: HashMap::new(),
-            values: Vec::new(),
-
-            is_encoded_attribute: false,
-            is_lower_case: true,
-            is_token_safe: true,
-            is_token_start: true,
-            is_escaped: false,
-
-            token_start: 0,
-            token_end: 0,
-        }
-    }
-}
-
-fn add_attribute<'x>(
-    mut parser: ContentTypeParser<'x>,
-    stream: &'x MessageStream,
-) -> ContentTypeParser<'x> {
+fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
     let mut attr = stream.get_string(
         parser.token_start - 1,
         parser.token_end,
@@ -95,15 +68,11 @@ fn add_attribute<'x>(
     parser.token_start = 0;
     parser.is_token_safe = true;
     parser.is_token_start = true;
-    parser
 }
 
-fn add_value<'x>(
-    mut parser: ContentTypeParser<'x>,
-    stream: &'x MessageStream,
-) -> ContentTypeParser<'x> {
+fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
     if parser.attr_name.is_none() {
-        return parser;
+        return;
     }
 
     let has_values = !parser.values.is_empty();
@@ -115,7 +84,7 @@ fn add_value<'x>(
         )
     } else {
         if !has_values {
-            return parser;
+            return;
         }
         None
     };
@@ -129,7 +98,7 @@ fn add_value<'x>(
                 if let Some(value) = value {
                     parser.values.push(value);
                 }
-                Cow::from(parser.values.concat())
+                parser.values.concat().into()
             },
         );
     } else {
@@ -141,7 +110,7 @@ fn add_value<'x>(
                 value
             }
         } else {
-            Cow::from(parser.values.concat())
+            parser.values.concat().into()
         };
 
         if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
@@ -183,11 +152,28 @@ fn add_value<'x>(
     parser.token_start = 0;
     parser.is_token_start = true;
     parser.is_token_safe = true;
-    parser
 }
 
 pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'x>> {
-    let mut parser = ContentTypeParser::new();
+    let mut parser = ContentTypeParser {
+        state: ContentState::Type,
+        state_stack: Vec::new(),
+
+        c_type: None,
+        c_subtype: None,
+        attr_name: None,
+        attributes: HashMap::new(),
+        values: Vec::new(),
+
+        is_encoded_attribute: false,
+        is_lower_case: true,
+        is_token_safe: true,
+        is_token_start: true,
+        is_escaped: false,
+
+        token_start: 0,
+        token_end: 0,
+    };
 
     while let Some(ch) = stream.next() {
         match ch {
@@ -220,10 +206,10 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                     ContentState::Type | ContentState::AttributeName | ContentState::SubType
                         if parser.token_start > 0 =>
                     {
-                        parser = add_attribute(parser, stream)
+                        add_attribute(&mut parser, stream)
                     }
                     ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
-                        parser = add_value(parser, stream)
+                        add_value(&mut parser, stream)
                     }
                     _ => (),
                 }
@@ -250,7 +236,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             }
             b'/' if parser.state == ContentState::Type => {
                 if parser.token_start > 0 {
-                    parser = add_attribute(parser, stream);
+                    add_attribute(&mut parser, stream);
                 }
                 parser.state = ContentState::SubType;
                 continue;
@@ -258,14 +244,14 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             b';' => match parser.state {
                 ContentState::Type | ContentState::SubType | ContentState::AttributeName => {
                     if parser.token_start > 0 {
-                        parser = add_attribute(parser, stream);
+                        add_attribute(&mut parser, stream);
                     }
                     parser.state = ContentState::AttributeName;
                     continue;
                 }
                 ContentState::AttributeValue => {
                     if !parser.is_escaped {
-                        parser = add_value(parser, stream);
+                        add_value(&mut parser, stream);
                         parser.state = ContentState::AttributeName;
                     } else {
                         parser.is_escaped = false;
@@ -277,7 +263,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             b'*' if parser.state == ContentState::AttributeName => {
                 if !parser.is_encoded_attribute {
                     if parser.token_start > 0 {
-                        parser = add_attribute(parser, stream);
+                        add_attribute(&mut parser, stream);
                     }
                     parser.is_encoded_attribute = true;
                 }
@@ -287,7 +273,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 ContentState::AttributeName => {
                     if parser.token_start > 0 {
                         if !parser.is_encoded_attribute {
-                            parser = add_attribute(parser, stream);
+                            add_attribute(&mut parser, stream);
                         } else {
                             parser.token_start = 0;
                         }
@@ -313,12 +299,12 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                                     .unwrap(),
                             );
                             if parser.state != ContentState::AttributeQuotedValue {
-                                parser.values.push(Cow::from(" "));
+                                parser.values.push(" ".into());
                             }
                             parser.token_start = 0;
                             parser.is_token_safe = true;
                         }
-                        parser.values.push(Cow::from(token));
+                        parser.values.push(token.into());
                         continue;
                     } else {
                         stream.set_pos(pos_back);
@@ -336,7 +322,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 }
                 ContentState::AttributeQuotedValue => {
                     if !parser.is_escaped {
-                        parser = add_value(parser, stream);
+                        add_value(&mut parser, stream);
                         parser.state = ContentState::AttributeName;
                         continue;
                     } else {
@@ -406,9 +392,9 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                         | ContentState::SubType
                             if parser.token_start > 0 =>
                         {
-                            parser = add_attribute(parser, stream)
+                            add_attribute(&mut parser, stream);
                         }
-                        ContentState::AttributeValue => parser = add_value(parser, stream),
+                        ContentState::AttributeValue => add_value(&mut parser, stream),
                         _ => (),
                     }
 
@@ -467,79 +453,104 @@ mod tests {
         let inputs = [
             (
                 "audio/basic\n".to_string(), 
-                "audio||basic".to_string()),
+                "audio||basic".to_string()
+            ),
             (
                 "application/postscript \n".to_string(), 
-                "application||postscript".to_string()),
+                "application||postscript".to_string()
+            ),
             (
                 "image/ jpeg\n".to_string(), 
-                "image||jpeg".to_string()),
+                "image||jpeg".to_string()
+            ),
             (
                 " message / rfc822\n".to_string(), 
-                "message||rfc822".to_string()),
+                "message||rfc822".to_string()
+            ),
             (
                 "inline\n".to_string(), 
-                "inline".to_string()),
+                "inline".to_string()
+            ),
             (
                 " text/plain; charset =us-ascii (Plain text)\n".to_string(), 
-                "text||plain||charset~~us-ascii".to_string()),
+                "text||plain||charset~~us-ascii".to_string()
+            ),
             (
                 "text/plain; charset= \"us-ascii\"\n".to_string(), 
-                "text||plain||charset~~us-ascii".to_string()),
+                "text||plain||charset~~us-ascii".to_string()
+            ),
             (
                 "text/plain; charset =ISO-8859-1\n".to_string(), 
-                "text||plain||charset~~ISO-8859-1".to_string()),
+                "text||plain||charset~~ISO-8859-1".to_string()
+            ),
             (
                 "text/foo; charset= bar\n".to_string(), 
-                "text||foo||charset~~bar".to_string()),
+                "text||foo||charset~~bar".to_string()
+            ),
             (
                 " text /plain; charset=\"iso-8859-1\"; format=flowed\n".to_string(), 
-                "text||plain||charset~~iso-8859-1||format~~flowed".to_string()),
+                "text||plain||charset~~iso-8859-1||format~~flowed".to_string()
+            ),
             (
                 "application/pgp-signature; x-mac-type=70674453;\n    name=PGP.sig\n".to_string(), 
-                "application||pgp-signature||x-mac-type~~70674453||name~~PGP.sig".to_string()),
+                "application||pgp-signature||x-mac-type~~70674453||name~~PGP.sig".to_string()
+            ),
             (
                 "multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p\n".to_string(), 
-                "multipart||mixed||boundary~~gc0p4Jq0M2Yt08j34c0p".to_string()),
+                "multipart||mixed||boundary~~gc0p4Jq0M2Yt08j34c0p".to_string()
+            ),
             (
                 "multipart/mixed; boundary=gc0pJq0M:08jU534c0p\n".to_string(), 
-                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()),
+                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()
+            ),
             (
                 "multipart/mixed; boundary=\"gc0pJq0M:08jU534c0p\"\n".to_string(), 
-                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()),
+                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()
+            ),
             (
                 "multipart/mixed; boundary=\"simple boundary\"\n".to_string(), 
-                "multipart||mixed||boundary~~simple boundary".to_string()),
+                "multipart||mixed||boundary~~simple boundary".to_string()
+            ),
             (
                 "multipart/alternative; boundary=boundary42\n".to_string(), 
-                "multipart||alternative||boundary~~boundary42".to_string()),
+                "multipart||alternative||boundary~~boundary42".to_string()
+            ),
             (
                 " multipart/mixed;\n     boundary=\"---- main boundary ----\"\n".to_string(), 
-                "multipart||mixed||boundary~~---- main boundary ----".to_string()),
+                "multipart||mixed||boundary~~---- main boundary ----".to_string()
+            ),
             (
                 "multipart/alternative; boundary=42\n".to_string(), 
-                "multipart||alternative||boundary~~42".to_string()),
+                "multipart||alternative||boundary~~42".to_string()
+            ),
             (
                 "message/partial; id=\"ABC@host.com\";\n".to_string(), 
-                "message||partial||id~~ABC@host.com".to_string()),
+                "message||partial||id~~ABC@host.com".to_string()
+            ),
             (
                 "multipart/parallel;boundary=unique-boundary-2\n".to_string(), 
-                "multipart||parallel||boundary~~unique-boundary-2".to_string()),
+                "multipart||parallel||boundary~~unique-boundary-2".to_string()
+            ),
             (
                 "message/external-body; name=\"BodyFormats.ps\";\n   site=\"thumper.bellcore.com\"; mode=\"image\";\n  access-type=ANON-FTP; directory=\"pub\";\n  expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||name~~BodyFormats.ps||site~~thumper.bellcore.com||mode~~image||access-type~~ANON-FTP||directory~~pub||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()),
+                "message||external-body||name~~BodyFormats.ps||site~~thumper.bellcore.com||mode~~image||access-type~~ANON-FTP||directory~~pub||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()
+            ),
             (
                 "message/external-body; access-type=local-file;\n   name=\"/u/nsb/writing/rfcs/RFC-MIME.ps\";\n    site=\"thumper.bellcore.com\";\n  expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||access-type~~local-file||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)||name~~/u/nsb/writing/rfcs/RFC-MIME.ps||site~~thumper.bellcore.com".to_string()),
+                "message||external-body||access-type~~local-file||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)||name~~/u/nsb/writing/rfcs/RFC-MIME.ps||site~~thumper.bellcore.com".to_string()
+            ),
             (
                 "message/external-body;\n    access-type=mail-server\n     server=\"listserv@bogus.bitnet\";\n     expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||access-type~~mail-server||server~~listserv@bogus.bitnet||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()),
+                "message||external-body||access-type~~mail-server||server~~listserv@bogus.bitnet||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()
+            ),
             (
                 "Message/Partial; number=2; total=3;\n     id=\"oc=jpbe0M2Yt4s@thumper.bellcore.com\"\n".to_string(), 
-                "message||partial||number~~2||total~~3||id~~oc=jpbe0M2Yt4s@thumper.bellcore.com".to_string()),
+                "message||partial||number~~2||total~~3||id~~oc=jpbe0M2Yt4s@thumper.bellcore.com".to_string()
+            ),
             (
                 "multipart/signed; micalg=pgp-sha1; protocol=\"application/pgp-signature\";\n   boundary=\"=-J1qXPoyGtE2XNN5N6Z6j\"\n".to_string(), 
-                "multipart||signed||protocol~~application/pgp-signature||boundary~~=-J1qXPoyGtE2XNN5N6Z6j||micalg~~pgp-sha1".to_string()),
+                "multipart||signed||protocol~~application/pgp-signature||boundary~~=-J1qXPoyGtE2XNN5N6Z6j||micalg~~pgp-sha1".to_string()
+            ),
             (
                 "message/external-body;\n    access-type=local-file;\n     name=\"/u/nsb/Me.jpeg\"\n".to_string(), 
                 "message||external-body||access-type~~local-file||name~~/u/nsb/Me.jpeg".to_string()
@@ -565,22 +576,28 @@ mod tests {
             ),
             (
                 " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n".to_string(), 
-                "image||png||name~~ハロー・ワールド.png".to_string()),
+                "image||png||name~~ハロー・ワールド.png".to_string()
+            ),
             (
                 " image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=.gif\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()),
+                "image||gif||name~~مرحبا بالعالم.gif".to_string()
+            ),
             (
                 "image/jpeg;\n   name=\"=?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-1?q?=ED?=.jpeg\"\n".to_string(), 
-                "image||jpeg||name~~á é í.jpeg".to_string()),
+                "image||jpeg||name~~á é í.jpeg".to_string()
+            ),
             (
                 "image/jpeg;\n   name==?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-1?q?=ED?=.jpeg\n".to_string(), 
-                "image||jpeg||name~~áéí.jpeg".to_string()),
+                "image||jpeg||name~~áéí.jpeg".to_string()
+            ),
             (
                 "image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()),
+                "image||gif||name~~مرحبا بالعالم.gif".to_string()
+            ),
             (
                 " image/gif;\n   name=\"=?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\"\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()),
+                "image||gif||name~~مرحبا بالعالم.gif".to_string()
+            ),
             (
                 " inline; filename=\"  best \\\"file\\\" ever with \\\\ escaped \\' stuff.  \"\n".to_string(), 
                 "inline||||filename~~  best \"file\" ever with \\ escaped ' stuff.  ".to_string()
@@ -591,61 +608,79 @@ mod tests {
             ),
             (
                 "/invalid\n".to_string(), 
-                "".to_string()),
+                "".to_string()
+            ),
             (
                 "/\n".to_string(), 
-                "".to_string()),
+                "".to_string()
+            ),
             (
                 ";\n".to_string(), 
-                "".to_string()),
+                "".to_string()
+            ),
             (
                 "/ ; name=value\n".to_string(),
-                "".to_string()),
+                "".to_string()
+            ),
             (
                 "text/plain;\n".to_string(), 
-                "text||plain".to_string()),
+                "text||plain".to_string()
+            ),
             (
                 "text/plain;;\n".to_string(), 
-                "text||plain".to_string()),
+                "text||plain".to_string()
+            ),
             (
                 "text/plain ;;;;; = ;; name=\"value\"\n".to_string(), 
-                "text||plain||name~~value".to_string()),
+                "text||plain||name~~value".to_string()
+            ),
             (
                 "=\n".to_string(), 
-                "=".to_string()),
+                "=".to_string()
+            ),
             (
                 "name=value\n".to_string(), 
-                "name=value".to_string()),
+                "name=value".to_string()
+            ),
             (
                 "text/plain; name=  \n".to_string(), 
-                "text||plain".to_string()),
+                "text||plain".to_string()
+            ),
             (
                 "a/b; = \n".to_string(), 
-                "a||b".to_string()),
+                "a||b".to_string()
+            ),
             (
                 "a/b; = \n \n".to_string(), 
                 "a||b".to_string()),
             (
                 "a/b; =value\n".to_string(), 
-                "a||b".to_string()),
+                "a||b".to_string()
+            ),
             (
                 "test/test; =\"value\"\n".to_string(), 
-                "test||test".to_string()),
+                "test||test".to_string()
+            ),
             (
                 "á/é; á=é\n".to_string(), 
-                "á||é||á~~é".to_string()),
+                "á||é||á~~é".to_string()
+            ),
             (
                 "inva/lid; name=\"   \n".to_string(), 
-                "inva||lid||name~~   ".to_string()),
+                "inva||lid||name~~   ".to_string()
+            ),
             (
                 "inva/lid; name=\"   \n    \n".to_string(), 
-                "inva||lid||name~~   ".to_string()),
+                "inva||lid||name~~   ".to_string()
+            ),
             (
                 "inva/lid; name=\"   \n    \"; test=test\n".to_string(), 
-                "inva||lid||name~~   ||test~~test".to_string()),
+                "inva||lid||name~~   ||test~~test".to_string()
+            ),
             (
                 "name=value\n".to_string(), 
-                "name=value".to_string()),
+                "name=value".to_string()
+            ),
 
         ];
 
