@@ -55,10 +55,6 @@ impl<'x> MessageStream<'x> {
         }
     }
 
-    pub fn next2(&mut self) -> Option<&u8> {
-        None
-    }   
-
     #[inline(always)]
     pub fn peek(&self) -> Option<&u8> {
         unsafe { self.data.get(*self.pos.get()) }
@@ -69,6 +65,10 @@ impl<'x> MessageStream<'x> {
         unsafe {
             *self.pos.get() += pos;
         }
+    }
+
+    pub fn match_bytes(&self, start_pos: usize, bytes: &[u8]) -> bool {
+        self.data.get(start_pos..start_pos + bytes.len()).unwrap_or(&[]) == bytes
     }
 
     pub fn skip_byte(&self, ch: &u8) -> bool {
