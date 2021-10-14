@@ -40,15 +40,15 @@ impl fmt::Display for DateTime {
 
 pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
     let mut pos = 0;
-    let mut parts: [u32; 7] = [0; 7];
-    let mut parts_sizes: [u32; 7] = [
-        2, // Day (0)
-        2, // Month (1)
-        4, // Year (2)
-        2, // Hour (3)
-        2, // Minute (4)
-        2, // Second (5)
-        4, // TZ (6)
+    let mut parts = [0u32; 7];
+    let mut parts_sizes = [
+        2u32, // Day (0)
+        2u32, // Month (1)
+        4u32, // Year (2)
+        2u32, // Hour (3)
+        2u32, // Minute (4)
+        2u32, // Second (5)
+        4u32, // TZ (6)
     ];
     let mut month_hash: usize = 0;
     let mut month_pos: usize = 0;

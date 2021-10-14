@@ -9,22 +9,29 @@ pub struct UnstructuredParser<'x> {
     tokens: Vec<Cow<'x, str>>,
 }
 
-pub fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream) {
-    if !parser.tokens.is_empty() {
-        parser.tokens.push(" ".into());
+pub fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream, add_space: bool) {
+    if parser.token_start > 0 {
+        if !parser.tokens.is_empty() {
+            parser.tokens.push(" ".into());
+        }
+        parser.tokens.push(
+            stream
+                .get_string(
+                    parser.token_start - 1,
+                    parser.token_end,
+                    parser.is_token_safe,
+                )
+                .unwrap(),
+        );
+
+        if add_space {
+            parser.tokens.push(" ".into());
+        }
+
+        parser.token_start = 0;
+        parser.is_token_safe = true;
+        parser.is_token_start = true;
     }
-    parser.tokens.push(
-        stream
-            .get_string(
-                parser.token_start - 1,
-                parser.token_end,
-                parser.is_token_safe,
-            )
-            .unwrap(),
-    );
-    parser.token_start = 0;
-    parser.is_token_safe = true;
-    parser.is_token_start = true;
 }
 
 pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
@@ -39,9 +46,8 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
     while let Some(ch) = stream.next() {
         match ch {
             b'\n' => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
+
                 match stream.peek() {
                     Some(b' ' | b'\t') => {
                         if !parser.is_token_start {
@@ -69,10 +75,7 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                 let pos_back = stream.get_pos() - 1;
 
                 if let Some(token) = parse_encoded_word(stream) {
-                    if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                        parser.tokens.push(" ".into());
-                    }
+                    add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
                     continue;
                 } else {

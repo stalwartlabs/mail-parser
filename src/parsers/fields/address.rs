@@ -88,43 +88,49 @@ pub struct AddressParser<'x> {
     group_comment: Option<Cow<'x, str>>,
 }
 
-pub fn add_token<'x>(parser: &mut AddressParser<'x>, stream: &'x MessageStream) {
-    let token = stream
-        .get_string(
-            parser.token_start - 1,
-            parser.token_end,
-            parser.is_token_safe,
-        )
-        .unwrap();
-    let mut add_space = false;
-    let list = match parser.state {
-        AddressState::Address => &mut parser.mail_tokens,
-        AddressState::Name => {
-            if parser.is_token_email {
-                &mut parser.mail_tokens
-            } else {
-                add_space = true;
-                &mut parser.name_tokens
+pub fn add_token<'x>(parser: &mut AddressParser<'x>, stream: &'x MessageStream, add_trail_space: bool) {
+    if parser.token_start > 0 {
+        let token = stream
+            .get_string(
+                parser.token_start - 1,
+                parser.token_end,
+                parser.is_token_safe,
+            )
+            .unwrap();
+        let mut add_space = false;
+        let list = match parser.state {
+            AddressState::Address => &mut parser.mail_tokens,
+            AddressState::Name => {
+                if parser.is_token_email {
+                    &mut parser.mail_tokens
+                } else {
+                    add_space = true;
+                    &mut parser.name_tokens
+                }
             }
-        }
-        AddressState::Quote => &mut parser.name_tokens,
-        AddressState::Comment => {
-            add_space = true;
-            &mut parser.comment_tokens
-        }
-    };
+            AddressState::Quote => &mut parser.name_tokens,
+            AddressState::Comment => {
+                add_space = true;
+                &mut parser.comment_tokens
+            }
+        };
 
-    if add_space && !list.is_empty() {
-        list.push(" ".into());
+        if add_space && !list.is_empty() {
+            list.push(" ".into());
+        }
+
+        list.push(token);
+
+        if add_trail_space {
+            list.push(" ".into());
+        }
+
+        parser.token_start = 0;
+        parser.is_token_safe = true;
+        parser.is_token_email = false;
+        parser.is_token_start = true;
+        parser.is_escaped = false;
     }
-
-    list.push(token);
-
-    parser.token_start = 0;
-    parser.is_token_safe = true;
-    parser.is_token_email = false;
-    parser.is_token_start = true;
-    parser.is_escaped = false;
 }
 
 fn concat_tokens<'x>(tokens: &mut Vec<Cow<'x, str>>) -> Cow<'x, str> {
@@ -229,10 +235,7 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
     while let Some(ch) = stream.next() {
         match ch {
             b'\n' => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
-
+                add_token(&mut parser, stream, false);
                 match stream.peek() {
                     Some(b' ' | b'\t') => {
                         stream.advance(1);
@@ -249,31 +252,24 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
                     if parser.state == AddressState::Quote {
                         parser.token_end = stream.get_pos() - 1;
                     }
-                    add_token(&mut parser, stream);
+                    add_token(&mut parser, stream, false);
                 }
-
                 parser.is_escaped = true;
                 continue;
             }
             b',' if parser.state == AddressState::Name => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
                 add_address(&mut parser);
                 continue;
             }
             b'<' if parser.state == AddressState::Name => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
                 parser.state_stack.push(AddressState::Name);
                 parser.state = AddressState::Address;
                 continue;
             }
             b'>' if parser.state == AddressState::Address => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
                 parser.state = parser.state_stack.pop().unwrap();
                 continue;
             }
@@ -281,15 +277,11 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
                 AddressState::Name => {
                     parser.state_stack.push(AddressState::Name);
                     parser.state = AddressState::Quote;
-                    if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                    }
+                    add_token(&mut parser, stream, false);
                     continue;
                 }
                 AddressState::Quote => {
-                    if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                    }
+                    add_token(&mut parser, stream, false);
                     parser.state = parser.state_stack.pop().unwrap();
                     continue;
                 }
@@ -301,21 +293,13 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
             b'=' if parser.is_token_start && !parser.is_escaped && stream.skip_byte(&b'?') => {
                 let pos_back = stream.get_pos() - 1;
                 if let Some(token) = parse_encoded_word(stream) {
-                    let add_space = if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                        parser.state != AddressState::Quote
-                    } else {
-                        false
-                    };
-                    let list = if parser.state != AddressState::Comment {
+                    let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
+                    add_token(&mut parser, stream, add_space);
+                    (if parser.state != AddressState::Comment {
                         &mut parser.name_tokens
                     } else {
                         &mut parser.comment_tokens
-                    };
-                    if add_space {
-                        list.push(" ".into());
-                    }
-                    list.push(token.into());
+                    }).push(token.into());
                     continue;
                 }
                 stream.set_pos(pos_back);
@@ -340,11 +324,8 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
             b'\r' => continue,
             b'(' if parser.state != AddressState::Quote && !parser.is_escaped => {
                 parser.state_stack.push(parser.state);
-
                 if parser.state != AddressState::Comment {
-                    if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                    }
+                    add_token(&mut parser, stream, false);
                     parser.state = AddressState::Comment;
                     continue;
                 }
@@ -352,24 +333,18 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
             b')' if parser.state == AddressState::Comment && !parser.is_escaped => {
                 let new_state = parser.state_stack.pop().unwrap();
                 if parser.state != new_state {
-                    if parser.token_start > 0 {
-                        add_token(&mut parser, stream);
-                    }
+                    add_token(&mut parser, stream, false);
                     parser.state = new_state;
                     continue;
                 }
             }
             b':' if parser.state == AddressState::Name && !parser.is_escaped => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
                 add_group(&mut parser);
                 continue;
             }
             b';' if parser.state == AddressState::Name => {
-                if parser.token_start > 0 {
-                    add_token(&mut parser, stream);
-                }
+                add_token(&mut parser, stream, false);
                 add_address(&mut parser);
                 parser.is_group_end = true;
                 continue;

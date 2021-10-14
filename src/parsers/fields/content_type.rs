@@ -47,27 +47,78 @@ struct ContentTypeParser<'x> {
 }
 
 fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
-    let mut attr = stream.get_string(
-        parser.token_start - 1,
-        parser.token_end,
-        parser.is_token_safe,
-    );
+    if parser.token_start > 0 {
+        let mut attr = stream.get_string(
+            parser.token_start - 1,
+            parser.token_end,
+            parser.is_token_safe,
+        );
 
-    if !parser.is_lower_case {
-        attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
-        parser.is_lower_case = true;
+        if !parser.is_lower_case {
+            attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
+            parser.is_lower_case = true;
+        }
+
+        match parser.state {
+            ContentState::Type => parser.c_type = attr,
+            ContentState::SubType => parser.c_subtype = attr,
+            ContentState::AttributeName => parser.attr_name = attr,
+            _ => unreachable!(),
+        }
+
+        parser.token_start = 0;
+        parser.is_token_safe = true;
+        parser.is_token_start = true;
     }
+}
 
-    match parser.state {
-        ContentState::Type => parser.c_type = attr,
-        ContentState::SubType => parser.c_subtype = attr,
-        ContentState::AttributeName => parser.attr_name = attr,
-        _ => unreachable!(),
+fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
+    if parser.token_start > 0 {
+        let attr_part = stream
+            .get_string(
+                parser.token_start - 1,
+                parser.token_end,
+                parser.is_token_safe,
+            )
+            .unwrap();
+        let mut attr_name = parser.attr_name.as_ref().unwrap().clone() + "-charset";
+
+        if parser.attributes.contains_key(&attr_name) {
+            attr_name = parser.attr_name.as_ref().unwrap().clone() + "-language";
+        }
+        parser.attributes.insert(attr_name, attr_part);
+        parser.token_start = 0;
+        parser.is_token_safe = true;
     }
+}
 
-    parser.token_start = 0;
-    parser.is_token_safe = true;
-    parser.is_token_start = true;
+fn add_partial_value<'x>(
+    parser: &mut ContentTypeParser<'x>,
+    stream: &'x MessageStream,
+    to_cur_pos: bool,
+) {
+    if parser.token_start > 0 {
+        let in_quote = parser.state == ContentState::AttributeQuotedValue;
+
+        parser.values.push(
+            stream
+                .get_string(
+                    parser.token_start - 1,
+                    if in_quote && to_cur_pos {
+                        stream.get_pos() - 1
+                    } else {
+                        parser.token_end
+                    },
+                    parser.is_token_safe,
+                )
+                .unwrap(),
+        );
+        if !in_quote {
+            parser.values.push(" ".into());
+        }
+        parser.token_start = 0;
+        parser.is_token_safe = true;
+    }
 }
 
 fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
@@ -203,9 +254,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             }
             b'\n' => {
                 match parser.state {
-                    ContentState::Type | ContentState::AttributeName | ContentState::SubType
-                        if parser.token_start > 0 =>
-                    {
+                    ContentState::Type | ContentState::AttributeName | ContentState::SubType => {
                         add_attribute(&mut parser, stream)
                     }
                     ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
@@ -235,17 +284,13 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 }
             }
             b'/' if parser.state == ContentState::Type => {
-                if parser.token_start > 0 {
-                    add_attribute(&mut parser, stream);
-                }
+                add_attribute(&mut parser, stream);
                 parser.state = ContentState::SubType;
                 continue;
             }
             b';' => match parser.state {
                 ContentState::Type | ContentState::SubType | ContentState::AttributeName => {
-                    if parser.token_start > 0 {
-                        add_attribute(&mut parser, stream);
-                    }
+                    add_attribute(&mut parser, stream);
                     parser.state = ContentState::AttributeName;
                     continue;
                 }
@@ -262,24 +307,19 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             },
             b'*' if parser.state == ContentState::AttributeName => {
                 if !parser.is_encoded_attribute {
-                    if parser.token_start > 0 {
-                        add_attribute(&mut parser, stream);
-                    }
+                    add_attribute(&mut parser, stream);
                     parser.is_encoded_attribute = true;
                 }
                 continue;
             }
             b'=' => match parser.state {
                 ContentState::AttributeName => {
-                    if parser.token_start > 0 {
-                        if !parser.is_encoded_attribute {
-                            add_attribute(&mut parser, stream);
-                        } else {
-                            parser.token_start = 0;
-                        }
+                    if !parser.is_encoded_attribute {
+                        add_attribute(&mut parser, stream);
+                    } else {
+                        parser.token_start = 0;
                     }
                     parser.state = ContentState::AttributeValue;
-
                     continue;
                 }
                 ContentState::AttributeValue | ContentState::AttributeQuotedValue
@@ -288,22 +328,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                     let pos_back = stream.get_pos() - 1;
 
                     if let Some(token) = parse_encoded_word(stream) {
-                        if parser.token_start > 0 {
-                            parser.values.push(
-                                stream
-                                    .get_string(
-                                        parser.token_start - 1,
-                                        parser.token_end,
-                                        parser.is_token_safe,
-                                    )
-                                    .unwrap(),
-                            );
-                            if parser.state != ContentState::AttributeQuotedValue {
-                                parser.values.push(" ".into());
-                            }
-                            parser.token_start = 0;
-                            parser.is_token_safe = true;
-                        }
+                        add_partial_value(&mut parser, stream, false);
                         parser.values.push(token.into());
                         continue;
                     } else {
@@ -334,23 +359,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
             b'\\' => match parser.state {
                 ContentState::AttributeQuotedValue | ContentState::AttributeValue => {
                     if !parser.is_escaped {
-                        if parser.token_start > 0 {
-                            parser.values.push(
-                                stream
-                                    .get_string(
-                                        parser.token_start - 1,
-                                        if parser.state == ContentState::AttributeQuotedValue {
-                                            stream.get_pos() - 1
-                                        } else {
-                                            parser.token_end
-                                        },
-                                        parser.is_token_safe,
-                                    )
-                                    .unwrap(),
-                            );
-                            parser.token_start = 0;
-                            parser.is_token_safe = true;
-                        }
+                        add_partial_value(&mut parser, stream, true);
                         parser.is_escaped = true;
                         continue;
                     } else {
@@ -365,23 +374,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                     && !parser.is_escaped
                     && parser.state == ContentState::AttributeValue =>
             {
-                if parser.token_start > 0 {
-                    let attr_part = stream
-                        .get_string(
-                            parser.token_start - 1,
-                            parser.token_end,
-                            parser.is_token_safe,
-                        )
-                        .unwrap();
-                    let mut attr_name = parser.attr_name.as_ref().unwrap().clone() + "-charset";
-
-                    if parser.attributes.contains_key(&attr_name) {
-                        attr_name = parser.attr_name.as_ref().unwrap().clone() + "-language";
-                    }
-                    parser.attributes.insert(attr_name, attr_part);
-                    parser.token_start = 0;
-                    parser.is_token_safe = true;
-                }
+                add_attribute_parameter(&mut parser, stream);
                 continue;
             }
             b'(' if parser.state != ContentState::AttributeQuotedValue => {
@@ -389,11 +382,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                     match parser.state {
                         ContentState::Type
                         | ContentState::AttributeName
-                        | ContentState::SubType
-                            if parser.token_start > 0 =>
-                        {
-                            add_attribute(&mut parser, stream);
-                        }
+                        | ContentState::SubType => add_attribute(&mut parser, stream),
                         ContentState::AttributeValue => add_value(&mut parser, stream),
                         _ => (),
                     }

@@ -1,6 +1,6 @@
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
-pub mod parser;
+pub mod map;
 pub mod single_byte;
 pub mod utf8;
 
@@ -14,12 +14,13 @@ pub trait CharsetDecoder {
     fn to_string(&mut self) -> Option<String>;
 }
 
+/*
 #[cfg(test)]
 mod tests {
     use super::parser::CharsetParser;
 
     #[test]
-    fn decode() {
+    fn decode_charset() {
         let mut parser = CharsetParser::new();
         let inputs = [
             ("iso-8859-1".as_bytes(), b"\xe1\xe9\xed\xf3\xfa".to_vec(), "áéíóú"),
@@ -68,9 +69,9 @@ mod tests {
             }
             //parser.ingest_slice(input.0);
             decoder = parser.get_decoder(50).unwrap();
-            decoder.ingest_slice(&input.1);
+            decoder.write_bytes(&input.1);
 
-            let result = decoder.to_string().unwrap();
+            let result = decoder.get_string().unwrap();
             //println!("{}", result);
             assert_eq!(result, input.2);
 
@@ -78,3 +79,4 @@ mod tests {
         }
     }
 }
+*/

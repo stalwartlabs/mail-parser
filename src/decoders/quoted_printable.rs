@@ -10,76 +10,21 @@ enum QuotedPrintableState {
 }
 
 pub trait QuotedPrintableDecoder<'y> {
-    fn decode_qp_word(&self, dest: &mut dyn Writer) -> bool;
-    fn decode_qp_text(&self, boundary: &[u8], dest: &mut dyn Writer) -> bool;
-}
-
-#[inline(always)]
-fn decode_digit(
-    dest: &mut dyn Writer,
-    state: &mut QuotedPrintableState,
-    ch: &u8,
-    hex1: &mut i8,
-) -> bool {
-    match state {
-        QuotedPrintableState::None => dest.write_byte(ch),
-        QuotedPrintableState::Eq => {
-            *hex1 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
-            if *hex1 != -1 {
-                *state = QuotedPrintableState::Hex1;
-                true
-            } else {
-                false
-            }
-        }
-        QuotedPrintableState::Hex1 => {
-            let hex2 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
-
-            *state = QuotedPrintableState::None;
-            if hex2 != -1 {
-                dest.write_byte(&(((*hex1 as u8) << 4) | hex2 as u8))
-            } else {
-                false
-            }
-        }
-    }
+    fn decode_quoted_printable(
+        &self,
+        boundary: &[u8],
+        is_word: bool,
+        dest: &mut dyn Writer,
+    ) -> bool;
 }
 
 impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
-    fn decode_qp_word(&self, dest: &mut dyn Writer) -> bool {
-        let mut pos = self.get_pos();
-        let mut state = QuotedPrintableState::None;
-        let mut hex1: i8 = 0;
-
-        for ch in self.data[pos..].iter() {
-            pos += 1;
-            match ch {
-                b'=' => {
-                    if let QuotedPrintableState::None = state {
-                        state = QuotedPrintableState::Eq
-                    } else {
-                        return false;
-                    }
-                }
-                b'_' => {
-                    dest.write_byte(&b' ');
-                }
-                b'?' if self.data.get(pos).map_or_else(|| false, |ch| ch == &b'=') => {
-                    self.set_pos(pos + 1);
-                    return true;
-                }
-                b'\n' => return false,
-                _ => {
-                    if !decode_digit(dest, &mut state, ch, &mut hex1) {
-                        return false;
-                    }
-                }
-            }
-        }
-        false
-    }
-
-    fn decode_qp_text(&self, boundary: &[u8], dest: &mut dyn Writer) -> bool {
+    fn decode_quoted_printable(
+        &self,
+        boundary: &[u8],
+        is_word: bool,
+        dest: &mut dyn Writer,
+    ) -> bool {
         let mut pos = self.get_pos();
         let mut state = QuotedPrintableState::None;
         let mut match_count = 0;
@@ -122,14 +67,41 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                         return false;
                     }
                 }
-                b'\n' if QuotedPrintableState::Eq == state => {
-                    state = QuotedPrintableState::None;
-                }
-                _ => {
-                    if !decode_digit(dest, &mut state, ch, &mut hex1) {
+                b'\n' => {
+                    if is_word {
                         return false;
+                    } else if QuotedPrintableState::Eq == state {
+                        state = QuotedPrintableState::None;
+                    } else {
+                        dest.write_byte(&b'\n');
                     }
                 }
+                b'_' if is_word => {
+                    dest.write_byte(&b' ');
+                }
+                _ => match state {
+                    QuotedPrintableState::None => {
+                        dest.write_byte(ch);
+                    }
+                    QuotedPrintableState::Eq => {
+                        hex1 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
+                        if hex1 != -1 {
+                            state = QuotedPrintableState::Hex1;
+                        } else {
+                            return false;
+                        }
+                    }
+                    QuotedPrintableState::Hex1 => {
+                        let hex2 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
+
+                        state = QuotedPrintableState::None;
+                        if hex2 != -1 {
+                            dest.write_byte(&(((hex1 as u8) << 4) | hex2 as u8));
+                        } else {
+                            return false;
+                        }
+                    }
+                },
             }
         }
 
@@ -145,7 +117,7 @@ mod tests {
     };
 
     #[test]
-    fn qp_decode_body() {
+    fn decode_quoted_printable() {
         let inputs = [
             (
                 concat!(
@@ -165,77 +137,64 @@ mod tests {
                     "est vulgaire ils te fabriquent pour te la vendre une âme vulgaire.\n",
                     "— Antoine de Saint-Exupéry, Citadelle (1948)"
                 ),
-                "".as_bytes(),
+                "",
+                false,
             ),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry\n--boundary",
                 "— Antoine de Saint-Exupéry",
-                "\n--boundary".as_bytes(),
+                "\n--boundary",
+                false,
             ),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry\n--\n--boundary",
                 "— Antoine de Saint-Exupéry\n--",
-                "\n--boundary".as_bytes(),
+                "\n--boundary",
+                false,
             ),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry=\n--\n--boundary",
                 "— Antoine de Saint-Exupéry--",
-                "\n--boundary".as_bytes(),
+                "\n--boundary",
+                false,
             ),
+            ("this=20is=20some=20text?=", "this is some text", "?=", true),
+            ("this is some text?=", "this is some text", "?=", true),
+            ("Keith_Moore?=", "Keith Moore", "?=", true),
+            ("=2=123?=", "", "?=", true),
+            ("= 20?=", "", "?=", true),
+            ("=====?=", "", "?=", true),
+            ("=20=20=XX?=", "", "?=", true),
+            ("=AX?=", "", "?=", true),
+            ("=\n=\n==?=", "", "?=", true),
+            ("=\r=1z?=", "", "?=", true),
+            ("=|?=", "", "?=", true),
+            ("????????=", "???????", "?=", true),
         ];
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
             let mut writer = BufferWriter::with_capacity(input.0.len());
 
-            assert!(
-                stream.decode_qp_text(input.2, &mut writer),
-                "{}",
+            assert_eq!(
+                stream.decode_quoted_printable(input.2.as_bytes(), input.3, &mut writer),
+                !input.1.is_empty(),
+                "Failed for '{}'",
                 input.0.escape_debug()
             );
 
-            let result = &writer.get_bytes().unwrap();
-            let result_str = std::str::from_utf8(result).unwrap();
-
-            /*println!(
-                "Decoded '{}'\n -> to ->\n'{}'\n{}",
-                input.0.escape_debug(),
-                result_str.escape_debug(),
-                "-".repeat(50)
-            );*/
-
-            assert_eq!(input.1, result_str);
-        }
-    }
-
-    #[test]
-    fn qp_decode_headers() {
-        let inputs = [
-            ("this=20is=20some=20text?=", "this is some text"),
-            ("this is some text?=", "this is some text"),
-            ("Keith_Moore?=", "Keith Moore"),
-            ("=2=123?=", ""),
-            ("= 20?=", ""),
-            ("=====?=", ""),
-            ("=20=20=XX?=", ""),
-            ("=AX?=", ""),
-            ("=\n=\n==?=", ""),
-            ("=\r=1z?=", ""),
-            ("=|?=", ""),
-            ("????????=", "???????"),
-        ];
-
-        for input in inputs {
-            let stream = MessageStream::new(input.0.as_bytes());
-            let mut writer = BufferWriter::with_capacity(input.0.len());
-
-            let success = stream.decode_qp_word(&mut writer);
-            assert_eq!(success, !input.1.is_empty(), "{}", input.0.escape_debug());
             if !input.1.is_empty() {
-                assert_eq!(
-                    std::str::from_utf8(&writer.get_bytes().unwrap()).unwrap(),
-                    input.1
-                );
+                let result = &writer.get_bytes().unwrap();
+                let result_str = std::str::from_utf8(result).unwrap();
+
+                /*println!(
+                    "Decoded '{}'\n -> to ->\n'{}'\n{}",
+                    input.0.escape_debug(),
+                    result_str.escape_debug(),
+                    "-".repeat(50)
+                );*/
+
+                assert_eq!(input.1, result_str, "Failed for '{}'", input.0.escape_debug());
             }
         }
     }

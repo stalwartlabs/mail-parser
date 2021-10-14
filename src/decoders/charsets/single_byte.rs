@@ -1,22 +1,27 @@
-use super::CharsetDecoder;
+use crate::decoders::Writer;
 
 pub struct SingleByteDecoder {
     table: &'static [char],
     result: String,
 }
 
-impl CharsetDecoder for SingleByteDecoder {
-    fn ingest(&mut self, ch: &u8) {
-        self.result
-            .push(unsafe { *self.table.get_unchecked(*ch as usize) });
-    }
-
-    fn to_string(&mut self) -> Option<String> {
+impl Writer for SingleByteDecoder {
+    fn get_string(&mut self) -> Option<String> {
         if !self.result.is_empty() {
             Some(std::mem::take(&mut self.result))
         } else {
             None
         }
+    }
+
+    fn write_byte(&mut self, byte: &u8) -> bool {
+        self.result
+            .push(unsafe { *self.table.get_unchecked(*byte as usize) });
+        true
+    }
+
+    fn get_bytes(&mut self) -> Option<Box<[u8]>> {
+        None
     }
 }
 
@@ -26,6 +31,202 @@ impl SingleByteDecoder {
             result: String::with_capacity(capacity),
             table,
         }
+    }
+
+    pub fn get_iso_8859_1(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_1,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_2(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_2,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_3(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_3,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_4(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_4,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_5(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_5,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_6(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_6,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_7(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_7,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_8(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_8,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_9(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_9,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_10(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_10,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_13(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_13,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_14(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_14,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_15(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_15,
+            capacity,
+        ))
+    }
+
+    pub fn get_iso_8859_16(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::ISO_8859_16,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1250(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1250,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1251(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1251,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1252(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1252,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1253(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1253,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1254(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1254,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1255(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1255,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1256(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1256,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1257(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1257,
+            capacity,
+        ))
+    }
+
+    pub fn get_cp1258(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::CP1258,
+            capacity,
+        ))
+    }
+
+    pub fn get_koi8_r(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::KOI8_R,
+            capacity,
+        ))
+    }
+
+    pub fn get_koi8_u(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::KOI8_U,
+            capacity,
+        ))
+    }
+
+    pub fn get_macintosh(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::MACINTOSH,
+            capacity,
+        ))
+    }
+
+    pub fn get_ibm_850(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::IBM850,
+            capacity,
+        ))
+    }
+
+    pub fn get_tis_620(capacity: usize) -> Box<dyn Writer> {
+        Box::new(SingleByteDecoder::new(
+            SingleByteDecoder::TIS_620,
+            capacity,
+        ))
     }
 
     pub const ISO_8859_1: &'static [char] = &[

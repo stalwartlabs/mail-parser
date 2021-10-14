@@ -1,6 +1,6 @@
 use std::char::REPLACEMENT_CHARACTER;
 
-use super::CharsetDecoder;
+use crate::decoders::Writer;
 
 enum Utf8State {
     Start,
@@ -15,50 +15,55 @@ pub struct Utf8Decoder {
     result: String,
 }
 
-impl CharsetDecoder for Utf8Decoder {
-    fn ingest(&mut self, ch: &u8) {
+impl Writer for Utf8Decoder {
+    fn write_byte(&mut self, byte: &u8) -> bool {
         match self.state {
             Utf8State::Start => {
-                if *ch < 0x80 {
+                if *byte < 0x80 {
                     self.result
-                        .push(unsafe { char::from_u32_unchecked(*ch as u32) });
-                } else if (*ch & 0xe0) == 0xc0 {
-                    self.char = (*ch as u32 & 0x1f) << 6;
+                        .push(unsafe { char::from_u32_unchecked(*byte as u32) });
+                } else if (*byte & 0xe0) == 0xc0 {
+                    self.char = (*byte as u32 & 0x1f) << 6;
                     self.state = Utf8State::Shift0;
-                } else if (*ch & 0xf0) == 0xe0 {
-                    self.char = (*ch as u32 & 0x0f) << 12;
+                } else if (*byte & 0xf0) == 0xe0 {
+                    self.char = (*byte as u32 & 0x0f) << 12;
                     self.state = Utf8State::Shift6;
-                } else if (*ch & 0xf8) == 0xf0 && (*ch <= 0xf4) {
-                    self.char = (*ch as u32 & 0x07) << 18;
+                } else if (*byte & 0xf8) == 0xf0 && (*byte <= 0xf4) {
+                    self.char = (*byte as u32 & 0x07) << 18;
                     self.state = Utf8State::Shift12;
                 } else {
                     self.result.push(REPLACEMENT_CHARACTER);
                 }
             }
             Utf8State::Shift12 => {
-                self.char |= (*ch as u32 & 0x3f) << 12;
+                self.char |= (*byte as u32 & 0x3f) << 12;
                 self.state = Utf8State::Shift6;
             }
             Utf8State::Shift6 => {
-                self.char |= (*ch as u32 & 0x3f) << 6;
+                self.char |= (*byte as u32 & 0x3f) << 6;
                 self.state = Utf8State::Shift0;
             }
             Utf8State::Shift0 => {
-                self.char |= *ch as u32 & 0x3f;
+                self.char |= *byte as u32 & 0x3f;
                 self.state = Utf8State::Start;
                 self.result
                     .push(char::from_u32(self.char).unwrap_or(REPLACEMENT_CHARACTER));
                 self.char = 0;
             }
         }
+        true
     }
 
-    fn to_string(&mut self) -> Option<String> {
+    fn get_string(&mut self) -> Option<String> {
         if !self.result.is_empty() {
             Some(std::mem::take(&mut self.result))
         } else {
             None
         }
+    }
+
+    fn get_bytes(&mut self) -> Option<Box<[u8]>> {
+        None
     }
 }
 
@@ -70,11 +75,15 @@ impl Utf8Decoder {
             char: 0,
         }
     }
+
+    pub fn get_utf8(capacity: usize) -> Box<dyn Writer> {
+        Box::new(Utf8Decoder::new(capacity))
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::charsets::CharsetDecoder;
+    use crate::decoders::Writer;
 
     use super::Utf8Decoder;
 
@@ -91,9 +100,9 @@ mod tests {
 
         for input in inputs {
             let mut parser = Utf8Decoder::new(10);
-            parser.ingest_slice(&input.0);
+            parser.write_bytes(&input.0);
 
-            assert_eq!(parser.to_string().unwrap(), input.1);
+            assert_eq!(parser.get_string().unwrap(), input.1);
         }
     }
 }

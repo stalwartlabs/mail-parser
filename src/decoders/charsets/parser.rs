@@ -1,4 +1,6 @@
-use super::{single_byte::SingleByteDecoder, CharsetDecoder};
+use crate::decoders::Writer;
+
+use super::{single_byte::SingleByteDecoder};
 
 #[cfg(feature = "multibytedecode")]
 use super::multi_byte::MultiByteDecoder;
@@ -18,7 +20,7 @@ impl CharsetParser {
         }
     }
 
-    pub fn get_default_decoder(capacity: usize) -> Box<dyn CharsetDecoder> {
+    pub fn get_default_decoder(capacity: usize) -> Box<dyn Writer> {
         Box::new(SingleByteDecoder::new(
             SingleByteDecoder::ISO_8859_1,
             capacity,
@@ -67,7 +69,7 @@ impl CharsetParser {
         &self.charset[0..self.len as usize]
     }
 
-    pub fn get_decoder(&mut self, capacity: usize) -> Option<Box<dyn CharsetDecoder>> {
+    pub fn get_decoder(&mut self, capacity: usize) -> Option<Box<dyn Writer>> {
         if self.len < 2 {
             return None;
         }
@@ -88,6 +90,23 @@ impl CharsetParser {
         // As of 2021, Rust does not support fallthrough or multiple guards per match arm.
 
         match hash - 30 {
+            // UTF-8
+            935 if charset == b"utf-8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+            551 if charset == b"csutf8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+
+            // US-ASCII
+            1788 if charset == b"us-ascii" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            503 if charset == b"iso-ir-6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            2695 if charset == b"ansi_x3.4-1968" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            2770 if charset == b"ansi_x3.4-1986" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            1916 if charset == b"iso_646.irv:1991" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            1095 if charset == b"iso646-us" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            442 if charset == b"us" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            986 if charset == b"ibm367" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            1210 if charset == b"cp367" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+            762 if charset == b"csascii" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
+
+
             // ISO_8859-1:1987
             1399 if charset == b"iso-8859-1" => Some(Box::new(SingleByteDecoder::new(
                 SingleByteDecoder::ISO_8859_1,
@@ -658,6 +677,22 @@ impl CharsetParser {
                 Some(Box::new(MultiByteDecoder::get_shift_jis(capacity)))
             }
 
+            // IBM866
+            #[cfg(feature = "multibytedecode")]
+            531 if charset == b"ibm866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+            #[cfg(feature = "multibytedecode")]
+            755 if charset == b"cp866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+            #[cfg(feature = "multibytedecode")]
+            523 if charset == b"866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+            #[cfg(feature = "multibytedecode")]
+            1098 if charset == b"csibm866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+
+            // WINDOWS-874
+            #[cfg(feature = "multibytedecode")]
+            2716 if charset == b"windows-874" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+            #[cfg(feature = "multibytedecode")]
+            1442 if charset == b"cswindows874" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+
             // BIG5
             #[cfg(feature = "multibytedecode")]
             1729 if charset == b"big5" => Some(Box::new(MultiByteDecoder::get_big5(capacity))),
@@ -745,7 +780,7 @@ impl CharsetParser {
             707 if charset == b"csutf16" => {
                 Some(Box::new(MultiByteDecoder::get_utf16_le(capacity)))
             }
-
+            
             // UTF-8, US-ASCII and other encodings fall back here
             _ => None,
         }
@@ -809,21 +844,6 @@ mod tests {
     Generated from http://www.iana.org/assignments/character-sets/character-sets.xhtml
     Keep for future support of additional character sets.
 
-        // UTF-8
-        935 if charset == b"utf-8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        551 if charset == b"csutf8" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-
-        // US-ASCII
-        1788 if charset == b"us-ascii" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        503 if charset == b"iso-ir-6" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        2695 if charset == b"ansi_x3.4-1968" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        2770 if charset == b"ansi_x3.4-1986" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        1916 if charset == b"iso_646.irv:1991" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        1095 if charset == b"iso646-us" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        442 if charset == b"us" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        986 if charset == b"ibm367" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        1210 if charset == b"cp367" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
-        762 if charset == b"csascii" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, capacity))),
 
         // ISO_6937-2-ADD
         4435 if charset == b"iso_6937-2-add" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
@@ -1652,11 +1672,7 @@ mod tests {
 
         // HZ-GB-2312
         1941 if charset == b"hz-gb-2312" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        // IBM866
-        531 if charset == b"ibm866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        755 if charset == b"cp866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        523 if charset == b"866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        1098 if charset == b"csibm866" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
+
         // IBM775
         446 if charset == b"ibm775" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
         670 if charset == b"cp775" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
@@ -1767,9 +1783,6 @@ mod tests {
         // CP51932
         1082 if charset == b"cp51932" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
         1039 if charset == b"cscp51932" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        // WINDOWS-874
-        2716 if charset == b"windows-874" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
-        1442 if charset == b"cswindows874" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),
 
         // CP50220
         437 if charset == b"cp50220" => Some(Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, capacity))),

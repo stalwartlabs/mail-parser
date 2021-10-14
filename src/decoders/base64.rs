@@ -1,9 +1,6 @@
-use super::{Decoder, DecoderResult};
+use crate::parsers::message_stream::MessageStream;
 
-pub struct Base64Decoder {
-    chunk: Base64Chunk,
-    count: u8,
-}
+use super::Writer;
 
 #[repr(C)]
 union Base64Chunk {
@@ -11,148 +8,163 @@ union Base64Chunk {
     bytes: [u8; std::mem::size_of::<u32>()],
 }
 
-impl Base64Decoder {
-    pub fn new() -> Base64Decoder {
-        Base64Decoder {
-            chunk: Base64Chunk { val: 0 },
-            count: 0,
-        }
-    }
+pub trait Base64Decoder<'y> {
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Writer) -> bool;
 }
 
-impl Decoder for Base64Decoder {
-    fn ingest(&mut self, ch: &u8) -> DecoderResult {
-        if *ch != b'=' {
+impl<'x> Base64Decoder<'x> for MessageStream<'x> {
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Writer) -> bool {
+        let mut chunk = Base64Chunk { val: 0 };
+        let mut byte_count: u8 = 0;
+        let mut match_count: usize = 0;
+        let mut pos = self.get_pos();
+
+        for ch in self.data[pos..].iter() {
+            pos += 1;
+
+            if match_count < boundary.len() {
+                if ch == unsafe { boundary.get_unchecked(match_count) } {
+                    match_count += 1;
+                    if match_count == boundary.len() {
+                        self.set_pos(pos + match_count);
+                        return true;
+                    } else {
+                        continue;
+                    }
+                } else if match_count > 0 {
+                    if ch == unsafe { boundary.get_unchecked(0) } {
+                        match_count = 1;
+                        continue;
+                    } else {
+                        match_count = 0;
+                    }
+                }
+            }
+
             let val = unsafe {
                 BASE64_MAP
-                    .get_unchecked(self.count as usize)
+                    .get_unchecked(byte_count as usize)
                     .get_unchecked(*ch as usize)
             };
+
             if *val >= 0x01ffffff {
-                return DecoderResult::Error;
+                if *ch == b'=' {
+                    match byte_count {
+                        1 | 2 => {
+                            byte_count = 0;
+                            dest.write_byte(unsafe { chunk.bytes.get_unchecked(0) });
+                        }
+                        3 => {
+                            byte_count = 0;
+                            dest.write_bytes(unsafe { chunk.bytes.get_unchecked(0..2) });
+                        }
+                        0 => (),
+                        _ => {
+                            return false;
+                        }
+                    }
+                } else if !(*ch).is_ascii_whitespace() || is_word {
+                    return false;
+                }
+                continue;
             }
 
-            self.count = (self.count + 1) & 3;
+            byte_count = (byte_count + 1) & 3;
 
-            if self.count == 1 {
-                self.chunk.val = *val;
+            if byte_count == 1 {
+                chunk.val = *val;
             } else {
-                self.chunk.val = unsafe { self.chunk.val } | *val;
+                chunk.val = unsafe { chunk.val } | *val;
 
-                if self.count == 0 {
-                    return DecoderResult::ByteArray(unsafe {
-                        self.chunk.bytes.get_unchecked(0..3)
-                    });
-                }
-            }
-        } else {
-            match self.count {
-                1 | 2 => {
-                    self.count = 0;
-                    return DecoderResult::Byte(unsafe { *self.chunk.bytes.get_unchecked(0) });
-                }
-                3 => {
-                    self.count = 0;
-                    return DecoderResult::ByteArray(unsafe {
-                        self.chunk.bytes.get_unchecked(0..2)
-                    });
-                }
-                0 => (),
-                _ => {
-                    return DecoderResult::Error;
+                if byte_count == 0 {
+                    dest.write_bytes(unsafe { chunk.bytes.get_unchecked(0..3) });
                 }
             }
         }
 
-        DecoderResult::NeedData
+        boundary.is_empty()
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::{
+        decoders::{buffer_writer::BufferWriter, Writer},
+        parsers::message_stream::MessageStream,
+    };
+
     use super::Base64Decoder;
-    use crate::decoders::{Decoder, DecoderResult};
 
     #[test]
-    fn decode_success() {
+    fn decode_base64() {
         let inputs = [
-            ("VGVzdA==".as_bytes(), "Test".as_bytes()),
-            ("WWU=".as_bytes(), "Ye".as_bytes()),
-            ("QQ==".as_bytes(), "A".as_bytes()),
-            ("cm8=".as_bytes(), "ro".as_bytes()),
+            ("VGVzdA==", "Test", "", true),
+            ("WWU=", "Ye", "", true),
+            ("QQ==", "A", "", true),
+            ("cm8=", "ro", "", true),
             (
-                "QXJlIHlvdSBhIFNoaW1hbm8gb3IgQ2FtcGFnbm9sbyBwZXJzb24/".as_bytes(),
-                "Are you a Shimano or Campagnolo person?".as_bytes(),
+                "QXJlIHlvdSBhIFNoaW1hbm8gb3IgQ2FtcGFnbm9sbyBwZXJzb24/",
+                "Are you a Shimano or Campagnolo person?",
+                "",
+                true,
             ),
             (
-                "PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8Ym9keT4KPC9ib2R5Pgo8L2h0bWw+Cg==".as_bytes(),
-                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n".as_bytes(),
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8Ym9keT4KPC9ib2R5Pgo8L2h0bWw+Cg==",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
+                "",
+                true,
             ),
-            ("w6HDqcOtw7PDug==".as_bytes(), "áéíóú".as_bytes()),
+            (
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
+                "",
+                false,
+            ),
+            (
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
+                "",
+                "",
+                true,
+            ),
+            ("w6HDqcOtw7PDug==", "áéíóú", "", true),
+            ("====", "", "\n--boundary", true),
+            ("w6HDq!cOtw7PDug=", "", "", true),
+            ("w6 HD", "", "", true),
+            ("cmáé", "", "", true),
+            ("áé", "", "", true),
+            ("w6HDqcOtw7PDug==?=", "áéíóú", "?=", true),
+            (
+                "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",
+                "áéíóú",
+                "\n--boundary",
+                false,
+            ),
+            ("w6HDqcOtw7PDug================?=", "áéíóú", "?=", false),
+            (
+                "w6HDqcOtw7PDug==\n--\n--boundary",
+                "áéíóú",
+                "\n--boundary",
+                false,
+            ),
         ];
 
         for input in inputs {
-            let mut decoder = Base64Decoder::new();
-            let mut output = Vec::new();
+            let stream = MessageStream::new(input.0.as_bytes());
+            let mut writer = BufferWriter::with_capacity(input.0.len());
 
-            for ch in input.0 {
-                match decoder.ingest(ch) {
-                    DecoderResult::Byte(v) => {
-                        output.push(v);
-                    }
-                    DecoderResult::ByteArray(v) => {
-                        output.extend_from_slice(v);
-                    }
-                    DecoderResult::NeedData => (),
-                    DecoderResult::Error => {
-                        panic!(
-                            "Failed to decode Base64: {}",
-                            std::str::from_utf8(input.0).unwrap()
-                        );
-                    }
-                }
-            }
-            //println!("'{}'", std::str::from_utf8(&output).unwrap());
-            assert_eq!(output, input.1);
-        }
-    }
-
-    #[test]
-    fn decode_invalid() {
-        let inputs = [
-            "====".as_bytes(),
-            "w6HDq!cOtw7PDug=".as_bytes(),
-            "w6 HD".as_bytes(),
-            "cmáé".as_bytes(),
-            "áé".as_bytes(),
-        ];
-
-        for input in inputs {
-            let mut decoder = Base64Decoder::new();
-            let mut failed = false;
-            let mut is_empty = true;
-
-            for ch in input {
-                match decoder.ingest(ch) {
-                    DecoderResult::Byte(_) => {
-                        is_empty = false;
-                    }
-                    DecoderResult::ByteArray(_) => {
-                        is_empty = false;
-                    }
-                    DecoderResult::NeedData => (),
-                    DecoderResult::Error => {
-                        failed = true;
-                        break;
-                    }
-                }
-            }
-
-            assert!(
-                failed || is_empty,
-                "Test failed on '{}'",
-                std::str::from_utf8(input).unwrap()
+            assert_eq!(
+                stream.decode_base64(input.2.as_bytes(), input.3, &mut writer),
+                !input.1.is_empty(),
+                "Failed for '{}'",
+                input.0.escape_debug()
             );
+
+            if !input.1.is_empty() {
+                let result = writer.get_bytes().unwrap_or_else(|| [].into());
+                let result_str = std::str::from_utf8(result.as_ref()).unwrap();
+                //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
+                assert_eq!(result_str, input.1, "Failed for '{}'", input.0.escape_debug());
+            }
         }
     }
 }

@@ -1,7 +1,10 @@
 mod decoders;
 mod parsers;
 
+
+use crate::decoders::buffer_writer::BufferWriter;
 use crate::parsers::message_stream::MessageStream;
+use crate::decoders::quoted_printable::QuotedPrintableDecoder;
 
 fn main() {
     let mail = concat!(
@@ -25,5 +28,8 @@ fn main() {
     )
     .to_string();
 
+    //println!("{}", vec![0u8; 100].as_mut_slice().len());
+
     let mut parser = MessageStream::new(mail.as_bytes());
+
 }
