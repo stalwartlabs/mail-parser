@@ -1,15 +1,8 @@
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
 
-#[derive(PartialEq, Debug)]
-pub enum IdField<'x> {
-    One(Cow<'x, str>),
-    Many(Vec<Cow<'x, str>>),
-    Empty,
-}
-
-pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
+pub fn parse_id<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -25,9 +18,9 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
                 }
                 _ => {
                     return match ids.len() {
-                        1 => IdField::One(ids.pop().unwrap()),
-                        0 => IdField::Empty,
-                        _ => IdField::Many(ids),
+                        1 => ids.pop().unwrap(),
+                        0 => HeaderValue::Empty,
+                        _ => HeaderValue::Array(ids),
                     };
                 }
             },
@@ -38,14 +31,12 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
             b'>' => {
                 is_id_part = false;
                 if token_start > 0 {
-                    let bytes = stream.get_bytes(token_start - 1, token_end).unwrap();
-
-                    ids.push(if is_token_safe {
-                        Cow::from(unsafe { std::str::from_utf8_unchecked(bytes) })
-                    } else {
-                        is_token_safe = true;
-                        String::from_utf8_lossy(bytes)
-                    });
+                    ids.push(HeaderValue::String(
+                        stream
+                            .get_string(token_start - 1, token_end, is_token_safe)
+                            .unwrap(),
+                    ));
+                    is_token_safe = true;
                     token_start = 0;
                 } else {
                     continue;
@@ -66,54 +57,66 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> IdField<'x> {
             token_end = stream.get_pos();
         }
     }
-    IdField::Empty
+    HeaderValue::Empty
 }
 
 mod tests {
+    use std::borrow::Cow;
+
     use crate::parsers::{
-        fields::id::{parse_id, IdField},
-        message_stream::MessageStream,
+        fields::id::parse_id, header::HeaderValue, message_stream::MessageStream,
     };
 
     #[test]
     fn parse_message_ids() {
         let inputs = [
             (
-                "<1234@local.machine.example>\n".to_string(),
+                "<1234@local.machine.example>\n",
                 vec!["1234@local.machine.example"],
             ),
             (
-                "<1234@local.machine.example> <3456@example.net>\n".to_string(),
+                "<1234@local.machine.example> <3456@example.net>\n",
                 vec!["1234@local.machine.example", "3456@example.net"],
             ),
             (
-                "<1234@local.machine.example>\n <3456@example.net> \n".to_string(),
+                "<1234@local.machine.example>\n <3456@example.net> \n",
                 vec!["1234@local.machine.example", "3456@example.net"],
             ),
             (
-                "<1234@local.machine.example>\n\n <3456@example.net>\n".to_string(),
+                "<1234@local.machine.example>\n\n <3456@example.net>\n",
                 vec!["1234@local.machine.example"],
             ),
             (
-                "              <testabcd.1234@silly.test>  \n".to_string(),
+                "              <testabcd.1234@silly.test>  \n",
                 vec!["testabcd.1234@silly.test"],
             ),
             (
-                "<5678.21-Nov-1997@example.com>\n".to_string(),
+                "<5678.21-Nov-1997@example.com>\n",
                 vec!["5678.21-Nov-1997@example.com"],
             ),
             (
-                "<1234   @   local(blah)  .machine .example>\n".to_string(),
+                "<1234   @   local(blah)  .machine .example>\n",
                 vec!["1234   @   local(blah)  .machine .example"],
             ),
         ];
 
         for input in inputs {
-            match parse_id(&MessageStream::new(input.0.as_bytes())) {
-                IdField::One(val) => assert_eq!(val, *input.1.first().unwrap()),
-                IdField::Many(val) => assert_eq!(val, input.1),
-                IdField::Empty => panic!("Failed to parse '{}'", input.0),
-            }
+            assert_eq!(
+                if input.1.len() == 1 {
+                    HeaderValue::String((*input.1.first().unwrap()).into())
+                } else {
+                    HeaderValue::Array(
+                        input
+                            .1
+                            .iter()
+                            .map(|x| HeaderValue::String(Cow::Borrowed(x)))
+                            .collect::<Vec<HeaderValue>>(),
+                    )
+                },
+                parse_id(&MessageStream::new(input.0.as_bytes())),
+                "Failed to parse '{}'",
+                input.0
+            );
         }
     }
 }

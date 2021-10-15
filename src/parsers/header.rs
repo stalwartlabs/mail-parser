@@ -1,210 +1,207 @@
-use std::borrow::Cow;
+use std::{borrow::Cow, collections::HashMap};
 
-use crate::parsers::fields::address::{Address, AddressList};
 use crate::parsers::message_stream::MessageStream;
 
-use super::fields::unstructured::parse_unstructured;
+use super::fields::date::DateTime;
 
-pub enum Header<'x> {
-    /*Sender(Address),
-    From(Address),
-    To(AddressList),
-    Cc(AddressList),
-    Bcc(AddressList),*/
-    Subject(Cow<'x, str>),
-    Other((&'x str, &'x str)),
+pub struct Message<'x> {
+    subject: Option<Cow<'x, str>>,
 }
 
-impl<'x> Header<'x> {
-    pub fn parse(stream: &'x MessageStream) -> Option<Header<'x>> {
-        while let Some(name) = Header::parse_hdr_name(stream) {
-            let mut hash = name.len();
+#[derive(PartialEq, Debug)]
+pub enum HeaderValue<'x> {
+    Empty,
+    DateTime(Box<DateTime>),
+    String(Cow<'x, str>),
+    Array(Vec<HeaderValue<'x>>),
+    Map(HashMap<Cow<'x, str>, Cow<'x, str>>),
+}
 
-            if !(2..=25).contains(&hash) {
-                return None;
-            }
+pub trait MessageHeader<'x> {
 
-            hash += unsafe {
-                *HDR_HASH.get_unchecked(name.get_unchecked(0).to_ascii_lowercase() as usize)
-                    as usize
-                    + *HDR_HASH
-                        .get_unchecked(name.get_unchecked(hash - 1).to_ascii_lowercase() as usize)
-                        as usize
-            };
+    fn set_subject(&mut self, stream: &'x MessageStream);
+    fn set_from(&mut self, stream: &'x MessageStream);
 
-            if !(2..=44).contains(&hash) {
-                return None;
-            }
+}
 
-            match hash - 2 {
-                0 if name.eq_ignore_ascii_case(b"cc") => {
-                    println!("Got 'cc'");
-                }
-                1 if name.eq_ignore_ascii_case(b"bcc") => {
-                    println!("Got 'bcc'");
-                }
-                7 if name.eq_ignore_ascii_case(b"resent-cc") => {
-                    println!("Got 'resent-cc'");
-                }
-                8 if name.eq_ignore_ascii_case(b"resent-bcc") => {
-                    println!("Got 'resent-bcc'");
-                }
-                9 if name.eq_ignore_ascii_case(b"resent-date") => {
-                    println!("Got 'resent-date'");
-                }
-                10 if name.eq_ignore_ascii_case(b"content-type") => {
-                    println!("Got 'content-type'");
-                }
-                11 if name.eq_ignore_ascii_case(b"resent-sender") => {
-                    println!("Got 'resent-sender'");
-                }
-                12 if name.eq_ignore_ascii_case(b"date") => {
-                    println!("Got 'date'");
-                }
-                13 if name.eq_ignore_ascii_case(b"list-owner") => {
-                    println!("Got 'list-owner'");
-                }
-                14 if name.eq_ignore_ascii_case(b"resent-from") => {
-                    println!("Got 'resent-from'");
-                }
-                15 if name.eq_ignore_ascii_case(b"list-archive") => {
-                    println!("Got 'list-archive'");
-                }
-                16 if name.eq_ignore_ascii_case(b"received") => {
-                    println!("Got 'received'");
-                }
-                17 if name.eq_ignore_ascii_case(b"list-subscribe") => {
-                    println!("Got 'list-subscribe'");
-                }
-                18 if name.eq_ignore_ascii_case(b"content-id") => {
-                    println!("Got 'content-id'");
-                }
-                19 if name.eq_ignore_ascii_case(b"list-unsubscribe") => {
-                    println!("Got 'list-unsubscribe'");
-                }
-                22 if name.eq_ignore_ascii_case(b"list-post") => {
-                    println!("Got 'list-post'");
-                }
-                23 if name.eq_ignore_ascii_case(b"message-id") => {
-                    println!("Got 'message-id'");
-                }
-                24 if name.eq_ignore_ascii_case(b"sender") => {
-                    println!("Got 'sender'");
-                }
-                25 if name.eq_ignore_ascii_case(b"resent-message-id") => {
-                    println!("Got 'resent-message-id'");
-                }
-                26 if name.eq_ignore_ascii_case(b"comments") => {
-                    println!("Got 'comments'");
-                }
-                27 if name.eq_ignore_ascii_case(b"list-help") => {
-                    println!("Got 'list-help'");
-                }
-                28 if name.eq_ignore_ascii_case(b"references") => {
-                    println!("Got 'references'");
-                }
-                29 if name.eq_ignore_ascii_case(b"return-path") => {
-                    println!("Got 'return-path'");
-                }
-                30 if name.eq_ignore_ascii_case(b"mime-version") => {
-                    println!("Got 'mime-version'");
-                }
-                31 if name.eq_ignore_ascii_case(b"keywords") => {
-                    println!("Got 'keywords'");
-                }
-                // content disposition!
-                32 if name.eq_ignore_ascii_case(b"content-description") => {
-                    println!("Got 'content-description'");
-                }
-                33 if name.eq_ignore_ascii_case(b"content-transfer-encoding") => {
-                    println!("Got 'content-transfer-encoding'");
-                }
-                35 if name.eq_ignore_ascii_case(b"subject") => {
-                    println!("Got 'subject'");
-                }
-                36 if name.eq_ignore_ascii_case(b"reply-to") => {
-                    println!("Got 'reply-to'");
-                }
-                37 if name.eq_ignore_ascii_case(b"resent-to") => {
-                    println!("Got 'resent-to'");
-                }
-                39 if name.eq_ignore_ascii_case(b"in-reply-to") => {
-                    println!("Got 'in-reply-to'");
-                }
-                40 if name.eq_ignore_ascii_case(b"to") => {
-                    println!("Got 'to'");
-                }
-                42 if name.eq_ignore_ascii_case(b"from") => {
-                    println!("Got 'from'");
-                }
-                _ => return None,
-            }
-        }
+enum HeaderParserResult<'x, T> {
+    Supported(HeaderParserFnc<'x, T>),
+    Unsupported(&'x [u8]),
+    Eof,
+}
 
-        None
-    }
+type HeaderParserFnc<'x, T> = fn(&'x mut T, &MessageStream<'x>);
 
-    pub fn parse_hdr_name(stream: &'x MessageStream) -> Option<&'x [u8]> {
-        let mut token_start: usize = 0;
-        let mut token_end: usize = 0;
+pub fn parse_headers<'x>(stream: &'x MessageStream) {
 
-        while let Some(ch) = stream.next() {
-            match ch {
-                b':' => {
-                    if token_start != 0 {
-                        return stream.get_bytes(token_start - 1, token_end);
+}
+
+
+fn parse_header_name<'x, T>(stream: &'x MessageStream) -> HeaderParserResult<'x, T> {
+    let mut token_start: usize = 0;
+    let mut token_end: usize = 0;
+    let mut token_len: usize = 0;
+    let mut token_hash: usize = 0;
+    let mut last_ch: u8 = 0;
+
+    while let Some(ch) = stream.next() {
+        match ch {
+            b':' => {
+                if token_start != 0 {
+                    let field = stream.get_bytes(token_start - 1, token_end).unwrap();
+
+                    if (2..=25).contains(&token_len) {
+                        token_hash += token_len
+                            + unsafe {
+                                *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
+                            } as usize;
+
+                        if (4..=62).contains(&token_hash) {
+                            let token_hash = token_hash - 4;
+
+                            if field.eq_ignore_ascii_case(unsafe {
+                                HDR_NAMES.get_unchecked(token_hash)
+                            }) {
+                                println!("Supported '{}'", std::str::from_utf8(field).unwrap());
+                                return HeaderParserResult::Eof;
+                            }
+                        }
                     }
+                    return HeaderParserResult::Unsupported(field);
                 }
-                b' ' | b'\n' | b'\r' => (),
-                _ => {
+            }
+            b'\n' => {
+                if token_start == 0 {
+                    break;
+                }
+            }
+            _ => {
+                if !(*ch).is_ascii_whitespace() {
                     if token_start == 0 {
                         token_start = stream.get_pos();
+                        token_end = token_start;
+                    } else {
+                        token_end = stream.get_pos();
+                        last_ch = *ch;
                     }
 
-                    token_end = stream.get_pos();
+                    if let 0 | 9 = token_len {
+                        token_hash +=
+                            unsafe { *HDR_HASH.get_unchecked((*ch).to_ascii_lowercase() as usize) }
+                                as usize;
+                    }
+                    token_len += 1;
                 }
             }
         }
-        None
     }
+    HeaderParserResult::Eof
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{header::Header, message_stream::MessageStream};
+    use crate::parsers::{header::parse_header_name, message_stream::MessageStream};
 
     #[test]
-    fn parse_field_name() {
+    fn header_name_parse() {
         let inputs = [
             ("From: ".to_string(), "from"),
-            ("\n\n \nreceived-FROM: ".to_string(), "received-from"),
+            ("\n\n \nreceiVED: ".to_string(), "received"),
             (" subject   : ".to_string(), "subject"),
             ("X-Custom-Field : ".to_string(), "x-custom-field"),
             (" T : ".to_string(), "t"),
             ("mal formed: ".to_string(), "mal formed"),
+            ("MIME-version : ".to_string(), "x-custom-field"),
         ];
 
         for input in inputs {
-            match Header::parse_hdr_name(&MessageStream::new(input.0.as_bytes())) {
-                Some(string) => {
-                    assert_eq!(input.1, std::str::from_utf8(string).unwrap().to_lowercase())
-                }
-                None => panic!("Failed to parse '{}'", input.0),
-            }
+            unreachable!();
+            /*match parse_header_name(&MessageStream::new(input.0.as_bytes())) {
+                super::HeaderParserResult::Supported(_) => (),
+                super::HeaderParserResult::Unsupported(_) => (),
+                super::HeaderParserResult::Eof => (),
+            }*/
         }
     }
 }
 
 static HDR_HASH: &[u8] = &[
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 0, 0, 10, 0, 35, 10, 20, 0, 45, 5, 5, 5, 15, 30, 15, 45, 0, 20, 10, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
-    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 20, 5, 0, 0, 0, 0, 5, 5, 63, 15, 15, 25, 20, 10, 0, 63, 0, 0, 15, 63, 63, 63, 63, 20,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+    63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,
+];
+
+/*static HDR_FNCS: &[for<'r, 's> fn(&'r mut T, &MessageStream<'s>)] = &[
+    MessageHeader::set_subject,
+    MessageHeader::set_from,
+];*/
+
+static HDR_NAMES: &[&[u8]] = &[
+    b"date",
+    b"",
+    b"sender",
+    b"",
+    b"received",
+    b"",
+    b"references",
+    b"",
+    b"cc",
+    b"comments",
+    b"resent-cc",
+    b"content-id",
+    b"",
+    b"resent-message-id",
+    b"reply-to",
+    b"resent-to",
+    b"resent-bcc",
+    b"",
+    b"subject",
+    b"keywords",
+    b"list-help",
+    b"list-owner",
+    b"resent-date",
+    b"to",
+    b"bcc",
+    b"from",
+    b"content-transfer-encoding",
+    b"return-path",
+    b"list-archive",
+    b"resent-sender",
+    b"list-subscribe",
+    b"message-id",
+    b"",
+    b"content-type",
+    b"",
+    b"list-post",
+    b"",
+    b"in-reply-to",
+    b"",
+    b"",
+    b"content-description",
+    b"",
+    b"resent-from",
+    b"",
+    b"",
+    b"content-disposition",
+    b"",
+    b"list-unsubscribe",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"",
+    b"mime-version",
 ];

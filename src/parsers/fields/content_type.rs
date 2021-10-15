@@ -2,11 +2,15 @@ use std::{borrow::Cow, collections::HashMap};
 
 use crate::{
     decoders::{
-        charsets::{parser::CharsetParser, utf8::Utf8Decoder},
-        hex::HexDecoder,
-        Decoder, DecoderResult,
+        charsets::{
+            map::{get_charset_decoder, get_default_decoder},
+            utf8::Utf8Decoder,
+        },
+        hex::decode_hex,
     },
-    parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream},
+    parsers::{
+        encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream,
+    },
 };
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -17,13 +21,6 @@ enum ContentState {
     AttributeValue,
     AttributeQuotedValue,
     Comment,
-}
-
-#[derive(PartialEq, Debug)]
-pub struct ContentType<'x> {
-    c_type: Option<Cow<'x, str>>,
-    c_subtype: Option<Cow<'x, str>>,
-    attributes: HashMap<Cow<'x, str>, Cow<'x, str>>,
 }
 
 struct ContentTypeParser<'x> {
@@ -165,24 +162,13 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) 
         };
 
         if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
-            let mut decoder = CharsetParser::new();
-            decoder.ingest_slice(charset.as_bytes());
-            let mut charset_decoder = decoder
-                .get_decoder(75)
-                .unwrap_or_else(|| Box::new(Utf8Decoder::new(75)));
-            let mut qp_decoder = HexDecoder::new();
+            let mut decoder = get_charset_decoder(charset.as_bytes(), 80)
+                .unwrap_or_else(|| get_default_decoder(80));
 
-            for ch in value.as_bytes() {
-                match qp_decoder.ingest(ch) {
-                    DecoderResult::Byte(b) => charset_decoder.ingest(&b),
-                    DecoderResult::ByteArray(ba) => charset_decoder.ingest_slice(ba),
-                    DecoderResult::NeedData => (),
-                    DecoderResult::Error => break,
+            if decode_hex(value.as_bytes(), decoder.as_mut()) {
+                if let Some(result) = decoder.get_string() {
+                    value = result.into();
                 }
-            }
-
-            if let Some(result) = charset_decoder.to_string() {
-                value = result.into();
             }
         }
 
@@ -205,7 +191,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) 
     parser.is_token_safe = true;
 }
 
-pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'x>> {
+pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -273,14 +259,33 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                         }
                         continue;
                     }
-                    _ if parser.c_type.is_some() => {
-                        return Some(ContentType {
-                            c_type: parser.c_type,
-                            c_subtype: parser.c_subtype,
-                            attributes: parser.attributes,
-                        });
+                    _ => {
+                        return if let Some(content_type) = parser.c_type {
+                            if let Some(content_subtype) = parser.c_subtype {
+                                if !parser.attributes.is_empty() {
+                                    HeaderValue::Array(vec![
+                                        HeaderValue::String(content_type),
+                                        HeaderValue::String(content_subtype),
+                                        HeaderValue::Map(parser.attributes),
+                                    ])
+                                } else {
+                                    HeaderValue::Array(vec![
+                                        HeaderValue::String(content_type),
+                                        HeaderValue::String(content_subtype),
+                                    ])
+                                }
+                            } else if !parser.attributes.is_empty() {
+                                HeaderValue::Array(vec![
+                                    HeaderValue::String(content_type),
+                                    HeaderValue::Map(parser.attributes),
+                                ])
+                            } else {
+                                HeaderValue::String(content_type)
+                            }
+                        } else {
+                            HeaderValue::Empty
+                        }
                     }
-                    _ => return None,
                 }
             }
             b'/' if parser.state == ContentState::Type => {
@@ -323,16 +328,12 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                     continue;
                 }
                 ContentState::AttributeValue | ContentState::AttributeQuotedValue
-                    if parser.is_token_start && stream.skip_byte(&b'?') =>
+                    if parser.is_token_start =>
                 {
-                    let pos_back = stream.get_pos() - 1;
-
                     if let Some(token) = parse_encoded_word(stream) {
                         add_partial_value(&mut parser, stream, false);
                         parser.values.push(token.into());
                         continue;
-                    } else {
-                        stream.set_pos(pos_back);
                     }
                 }
                 _ => (),
@@ -427,15 +428,15 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
         }
     }
 
-    None
+    HeaderValue::Empty
 }
 
 mod tests {
-    use std::collections::HashMap;
+    use std::{borrow::Cow, collections::HashMap};
 
-    use crate::parsers::message_stream::MessageStream;
+    use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
 
-    use super::{parse_content_type, ContentType};
+    use super::parse_content_type;
 
     #[test]
     fn parse_content_fields() {
@@ -674,17 +675,18 @@ mod tests {
         ];
 
         for input in inputs {
-            if let Some(result) = parse_content_type(&MessageStream::new(input.0.as_bytes())) {
-                let mut ct = ContentType {
-                    c_type: None,
-                    c_subtype: None,
-                    attributes: HashMap::new(),
-                };
+            let stream = MessageStream::new(input.0.as_bytes());
+            let result = parse_content_type(&stream);
+            let expected = if !input.1.is_empty() {
+                let mut c_type: Option<Cow<str>> = None;
+                let mut c_subtype: Option<Cow<str>> = None;
+                let mut attributes: HashMap<Cow<str>, Cow<str>> = HashMap::new();
+
                 for (count, part) in input.1.split("||").enumerate() {
                     match count {
-                        0 => ct.c_type = Some(part.into()),
+                        0 => c_type = Some(part.into()),
                         1 => {
-                            ct.c_subtype = if part.is_empty() {
+                            c_subtype = if part.is_empty() {
                                 None
                             } else {
                                 Some(part.into())
@@ -692,14 +694,41 @@ mod tests {
                         }
                         _ => {
                             let attr: Vec<&str> = part.split("~~").collect();
-                            ct.attributes.insert(attr[0].into(), attr[1].into());
+                            attributes.insert(attr[0].into(), attr[1].into());
                         }
                     }
                 }
-                assert_eq!(result, ct, "failed for {}", input.0.escape_debug());
+
+                if let Some(content_type) = c_type {
+                    if let Some(content_subtype) = c_subtype {
+                        if !attributes.is_empty() {
+                            HeaderValue::Array(vec![
+                                HeaderValue::String(content_type),
+                                HeaderValue::String(content_subtype),
+                                HeaderValue::Map(attributes),
+                            ])
+                        } else {
+                            HeaderValue::Array(vec![
+                                HeaderValue::String(content_type),
+                                HeaderValue::String(content_subtype),
+                            ])
+                        }
+                    } else if !attributes.is_empty() {
+                        HeaderValue::Array(vec![
+                            HeaderValue::String(content_type),
+                            HeaderValue::Map(attributes),
+                        ])
+                    } else {
+                        HeaderValue::String(content_type)
+                    }
+                } else {
+                    HeaderValue::Empty
+                }
             } else {
-                assert!(input.1.is_empty(), "failed for {}", input.0.escape_debug())
-            }
+                HeaderValue::Empty
+            };
+
+            assert_eq!(result, expected, "failed for '{}'", input.0.escape_debug());
         }
     }
 }

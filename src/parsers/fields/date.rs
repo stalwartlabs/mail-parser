@@ -1,8 +1,8 @@
 use std::fmt;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
 
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct DateTime {
     year: u32,
     month: u32,
@@ -38,7 +38,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
+pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> HeaderValue<'x> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -151,7 +151,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
     }
 
     if pos >= 6 {
-        Some(DateTime {
+        HeaderValue::DateTime(Box::new(DateTime {
             year: if (1..=99).contains(&parts[2]) {
                 parts[2] + 1900
             } else {
@@ -169,9 +169,9 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             tz_hour: parts[6] / 100,
             tz_minute: parts[6] % 100,
             tz_before_gmt: !is_plus,
-        })
+        }))
     } else {
-        None
+        HeaderValue::Empty
     }
 }
 
@@ -194,7 +194,9 @@ pub static MONTH_MAP: &[u8] = &[
 ];
 
 mod tests {
-    use crate::parsers::{fields::date::parse_date, message_stream::MessageStream};
+    use crate::parsers::{
+        fields::date::parse_date, header::HeaderValue, message_stream::MessageStream,
+    };
 
     #[test]
     fn parse_dates() {
@@ -259,15 +261,16 @@ mod tests {
         ];
 
         for input in inputs {
-            let result = parse_date(&MessageStream::new(input.0.as_bytes()), false);
-
-            if !input.1.is_empty() {
-                let result = result.unwrap().to_iso8601();
-                //println!("{} -> {}", input.0.escape_debug(), result);
-                assert_eq!(input.1, result);
-            } else {
-                //println!("{} -> None", input.0.escape_debug());
-                assert!(result.is_none());
+            match parse_date(&MessageStream::new(input.0.as_bytes()), false) {
+                HeaderValue::DateTime(date) => {
+                    //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
+                    assert_eq!(input.1, date.to_iso8601());
+                }
+                HeaderValue::Empty => {
+                    //println!("{} -> None", input.0.escape_debug());
+                    assert!(input.1.is_empty());
+                }
+                _ => unreachable!(),
             }
         }
     }

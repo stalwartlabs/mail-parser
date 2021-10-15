@@ -26,7 +26,7 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
                 if ch == unsafe { boundary.get_unchecked(match_count) } {
                     match_count += 1;
                     if match_count == boundary.len() {
-                        self.set_pos(pos + match_count);
+                        self.set_pos(pos);
                         return true;
                     } else {
                         continue;

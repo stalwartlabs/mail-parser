@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
-use crate::parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream};
-pub struct UnstructuredParser<'x> {
+use crate::parsers::{encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream};
+struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
     is_token_safe: bool,
@@ -9,7 +9,7 @@ pub struct UnstructuredParser<'x> {
     tokens: Vec<Cow<'x, str>>,
 }
 
-pub fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream, add_space: bool) {
+fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream, add_space: bool) {
     if parser.token_start > 0 {
         if !parser.tokens.is_empty() {
             parser.tokens.push(" ".into());
@@ -34,7 +34,7 @@ pub fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStr
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
+pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -58,9 +58,9 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                     }
                     _ => {
                         return match parser.tokens.len() {
-                            1 => parser.tokens.pop(),
-                            0 => None,
-                            _ => Some(parser.tokens.concat().into()),
+                            1 => HeaderValue::String(parser.tokens.pop().unwrap()),
+                            0 => HeaderValue::Empty,
+                            _ => HeaderValue::String(parser.tokens.concat().into()),
                         };
                     }
                 }
@@ -71,15 +71,11 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                 }
                 continue;
             }
-            b'=' if parser.is_token_start && stream.skip_byte(&b'?') => {
-                let pos_back = stream.get_pos() - 1;
-
+            b'=' if parser.is_token_start => {
                 if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
                     continue;
-                } else {
-                    stream.set_pos(pos_back);
                 }
             }
             b'\r' => continue,
@@ -102,16 +98,16 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
         parser.token_end = stream.get_pos();
     }
 
-    None
+    HeaderValue::Empty
 }
 
 mod tests {
-    use std::borrow::Cow;
-
-    use crate::parsers::{fields::unstructured::parse_unstructured, message_stream::MessageStream};
 
     #[test]
     fn parse_unstructured_text() {
+        use std::borrow::Cow;
+        use crate::parsers::{fields::unstructured::parse_unstructured, header::HeaderValue, message_stream::MessageStream};
+
         let inputs = [
             ("Saying Hello\n".to_string(), "Saying Hello", true),
             ("Re: Saying Hello\r\n".to_string(), "Re: Saying Hello", true),
@@ -138,7 +134,7 @@ mod tests {
 
         for input in inputs {
             match parse_unstructured(&MessageStream::new(input.0.as_bytes())) {
-                Some(cow) => {
+                HeaderValue::String(cow) => {
                     assert_eq!(cow, input.1);
                     if let Cow::Borrowed(_) = cow {
                         assert!(
@@ -156,7 +152,7 @@ mod tests {
                         //println!("'{}' -> Owned", cow);
                     }
                 }
-                None => panic!("Failed to parse '{}'", input.0),
+                _ => panic!("Failed to parse '{}'", input.0),
             }
         }
     }

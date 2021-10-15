@@ -37,11 +37,8 @@ pub fn get_charset_decoder(charset: &[u8], capacity: usize) -> Option<Box<dyn Wr
     None
 }
 
-fn get_default_decoder(capacity: usize) -> Box<dyn Writer> {
-    Box::new(SingleByteDecoder::new(
-        SingleByteDecoder::ISO_8859_1,
-        capacity,
-    ))
+pub fn get_default_decoder(capacity: usize) -> Box<dyn Writer> {
+    SingleByteDecoder::get_iso_8859_1(capacity)
 }
 
 #[cfg(test)]
@@ -53,6 +50,8 @@ mod tests {
         let inputs = [
             "l8",
             "utf-8",
+            "US-Ascii",
+            "csgb18030",
             "iso-8859-1",
             "extended_unix_code_packed_format_for_japanese",
         ];

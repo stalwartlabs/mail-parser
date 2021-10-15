@@ -7,7 +7,7 @@ enum HexState {
     Hex1,
 }
 
-fn decode_hex(src: &[u8], dest: &mut dyn Writer) -> bool {
+pub fn decode_hex(src: &[u8], dest: &mut dyn Writer) -> bool {
     let mut state = HexState::None;
     let mut hex1 = 0;
 

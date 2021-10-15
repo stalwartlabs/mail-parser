@@ -12,7 +12,7 @@ pub trait Writer {
                 return false;
             }
         }
-        return true;
+        true
     }
 
     fn get_bytes(&mut self) -> Option<Box<[u8]>>;
