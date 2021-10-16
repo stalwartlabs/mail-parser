@@ -1,59 +1,10 @@
 use std::borrow::Cow;
 
-use crate::parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream};
-
-#[derive(PartialEq, Debug)]
-
-pub struct Mailbox<'x> {
-    name: Cow<'x, str>,
-    email: Cow<'x, str>,
-}
-
-#[derive(PartialEq, Debug)]
-pub struct AdressWithComment<'x> {
-    comment: Cow<'x, str>,
-    email: Cow<'x, str>,
-}
-
-#[derive(PartialEq, Debug)]
-pub struct MailboxWithComment<'x> {
-    name: Cow<'x, str>,
-    comment: Cow<'x, str>,
-    email: Cow<'x, str>,
-}
-
-#[derive(PartialEq, Debug)]
-pub enum Address<'x> {
-    Email(Cow<'x, str>),
-    EmailWithComment(AdressWithComment<'x>),
-    Mailbox(Mailbox<'x>),
-    MailboxWithComment(MailboxWithComment<'x>),
-    Invalid(Cow<'x, str>),
-}
-
-#[derive(PartialEq, Debug)]
-pub struct Group<'x> {
-    name: Cow<'x, str>,
-    list: AddressList<'x>,
-}
-
-#[derive(PartialEq, Debug)]
-pub struct GroupWithComment<'x> {
-    name: Cow<'x, str>,
-    comment: Cow<'x, str>,
-    list: AddressList<'x>,
-}
-
-pub type AddressList<'x> = Vec<Address<'x>>;
-
-#[derive(PartialEq, Debug)]
-pub enum AddressField<'x> {
-    Address(Address<'x>),
-    List(AddressList<'x>),
-    Group(Group<'x>),
-    GroupWithComment(GroupWithComment<'x>),
-    Empty,
-}
+use crate::parsers::{
+    encoded_word::parse_encoded_word,
+    header::{HeaderValue, NamedValue},
+    message_stream::MessageStream,
+};
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -70,7 +21,6 @@ pub struct AddressParser<'x> {
     is_token_safe: bool,
     is_token_email: bool,
     is_token_start: bool,
-    is_group_end: bool,
     is_escaped: bool,
 
     name_tokens: Vec<Cow<'x, str>>,
@@ -80,9 +30,10 @@ pub struct AddressParser<'x> {
     state: AddressState,
     state_stack: Vec<AddressState>,
 
-    addresses: AddressList<'x>,
+    addresses: Vec<HeaderValue<'x>>,
     group_name: Option<Cow<'x, str>>,
     group_comment: Option<Cow<'x, str>>,
+    result: Vec<HeaderValue<'x>>,
 }
 
 pub fn add_token<'x>(
@@ -135,14 +86,13 @@ pub fn add_token<'x>(
 }
 
 fn concat_tokens<'x>(tokens: &mut Vec<Cow<'x, str>>) -> Cow<'x, str> {
-    let result;
     if tokens.len() == 1 {
-        result = tokens.pop().unwrap();
+        tokens.pop().unwrap()
     } else {
-        result = tokens.concat().into();
+        let result = tokens.concat();
         tokens.clear();
+        result.into()
     }
-    result
 }
 
 pub fn add_address(parser: &mut AddressParser) {
@@ -150,67 +100,94 @@ pub fn add_address(parser: &mut AddressParser) {
     let has_name = !parser.name_tokens.is_empty();
     let has_comment = !parser.comment_tokens.is_empty();
 
-    if has_mail && has_name && has_comment {
-        parser
-            .addresses
-            .push(Address::MailboxWithComment(MailboxWithComment {
-                name: concat_tokens(&mut parser.name_tokens),
-                comment: concat_tokens(&mut parser.comment_tokens),
-                email: concat_tokens(&mut parser.mail_tokens),
-            }));
-    } else if has_name && has_mail {
-        parser.addresses.push(Address::Mailbox(Mailbox {
-            name: concat_tokens(&mut parser.name_tokens),
-            email: concat_tokens(&mut parser.mail_tokens),
-        }));
-    } else if has_mail && has_comment {
-        parser
-            .addresses
-            .push(Address::EmailWithComment(AdressWithComment {
-                comment: concat_tokens(&mut parser.comment_tokens),
-                email: concat_tokens(&mut parser.mail_tokens),
-            }));
-    } else if has_mail {
-        parser
-            .addresses
-            .push(Address::Email(concat_tokens(&mut parser.mail_tokens)));
-    } else if has_name && has_comment {
-        parser.addresses.push(Address::Invalid(
-            concat_tokens(&mut parser.name_tokens)
-                + " "
-                + concat_tokens(&mut parser.comment_tokens),
-        ));
-    } else if has_name {
-        parser
-            .addresses
-            .push(Address::Invalid(concat_tokens(&mut parser.name_tokens)));
-    } else if has_comment {
-        parser
-            .addresses
-            .push(Address::Invalid(concat_tokens(&mut parser.comment_tokens)));
+    parser
+        .addresses
+        .push(if has_mail && has_name && has_comment {
+            NamedValue::new(
+                concat_tokens(&mut parser.name_tokens),
+                concat_tokens(&mut parser.comment_tokens).into(),
+                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
+            )
+        } else if has_name && has_mail {
+            NamedValue::new(
+                concat_tokens(&mut parser.name_tokens),
+                None,
+                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
+            )
+        } else if has_mail && has_comment {
+            NamedValue::new(
+                concat_tokens(&mut parser.comment_tokens),
+                None,
+                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
+            )
+        } else if has_mail {
+            HeaderValue::String(concat_tokens(&mut parser.mail_tokens))
+        } else if has_name && has_comment {
+            NamedValue::new(
+                concat_tokens(&mut parser.name_tokens),
+                concat_tokens(&mut parser.comment_tokens).into(),
+                HeaderValue::Empty,
+            )
+        } else if has_name {
+            NamedValue::new(
+                concat_tokens(&mut parser.name_tokens),
+                None,
+                HeaderValue::Empty,
+            )
+        } else if has_comment {
+            NamedValue::new(
+                concat_tokens(&mut parser.comment_tokens),
+                None,
+                HeaderValue::Empty,
+            )
+        } else {
+            return;
+        });
+}
+
+pub fn add_group_details(parser: &mut AddressParser) {
+    if !parser.name_tokens.is_empty() {
+        parser.group_name = concat_tokens(&mut parser.name_tokens).into();
+    }
+
+    if !parser.comment_tokens.is_empty() {
+        parser.group_comment = concat_tokens(&mut parser.comment_tokens).into();
+    }
+
+    if !parser.mail_tokens.is_empty() {
+        if parser.group_name.is_none() {
+            parser.group_name = concat_tokens(&mut parser.mail_tokens).into();
+        } else {
+            parser.group_name = Some(
+                (parser.group_name.as_ref().unwrap().as_ref().to_owned()
+                    + " "
+                    + concat_tokens(&mut parser.mail_tokens).as_ref())
+                .into(),
+            );
+        }
     }
 }
 
 pub fn add_group(parser: &mut AddressParser) {
-    let has_mail = !parser.mail_tokens.is_empty();
-    let has_name = !parser.name_tokens.is_empty();
-    let has_comment = !parser.comment_tokens.is_empty();
+    let has_name = parser.group_name.is_some();
+    let has_addresses = !parser.addresses.is_empty();
 
-    if has_name && has_mail {
-        parser.group_name = Some(
-            concat_tokens(&mut parser.name_tokens) + " " + concat_tokens(&mut parser.mail_tokens),
-        );
+    parser.result.push(if has_name && has_addresses {
+        NamedValue::new(
+            parser.group_name.take().unwrap(),
+            parser.group_comment.take(),
+            HeaderValue::Array(std::mem::take(&mut parser.addresses)),
+        )
+    } else if has_addresses {
+        HeaderValue::Array(std::mem::take(&mut parser.addresses))
     } else if has_name {
-        parser.group_name = Some(concat_tokens(&mut parser.name_tokens));
-    } else if has_mail {
-        parser.group_name = Some(concat_tokens(&mut parser.mail_tokens));
-    }
-    if has_comment {
-        parser.group_comment = Some(concat_tokens(&mut parser.comment_tokens));
-    }
+        NamedValue::new(parser.group_name.take().unwrap(), None, HeaderValue::Empty)
+    } else {
+        return;
+    });
 }
 
-pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
+pub fn parse_address<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -218,7 +195,6 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
         is_token_safe: true,
         is_token_email: false,
         is_token_start: true,
-        is_group_end: false,
         is_escaped: false,
 
         name_tokens: Vec::with_capacity(3),
@@ -228,9 +204,10 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
         state: AddressState::Name,
         state_stack: Vec::with_capacity(5),
 
-        addresses: AddressList::new(),
+        addresses: Vec::new(),
         group_name: None,
         group_comment: None,
+        result: Vec::new(),
     };
 
     while let Some(ch) = stream.next() {
@@ -339,14 +316,15 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
                 }
             }
             b':' if parser.state == AddressState::Name && !parser.is_escaped => {
-                add_token(&mut parser, stream, false);
                 add_group(&mut parser);
+                add_token(&mut parser, stream, false);
+                add_group_details(&mut parser);
                 continue;
             }
             b';' if parser.state == AddressState::Name => {
                 add_token(&mut parser, stream, false);
                 add_address(&mut parser);
-                parser.is_group_end = true;
+                add_group(&mut parser);
                 continue;
             }
             0..=0x7f => (),
@@ -373,33 +351,23 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> AddressField<'x> {
         }
     }
 
-    if !parser.is_group_end {
-        add_address(&mut parser);
-    } else {
-        add_group(&mut parser);
-    }
+    add_address(&mut parser);
 
-    if parser.group_name.is_none() {
-        if !parser.addresses.is_empty() {
-            if parser.addresses.len() == 1 {
-                AddressField::Address(parser.addresses.pop().unwrap())
-            } else {
-                AddressField::List(parser.addresses)
-            }
+    if parser.group_name.is_some() || !parser.result.is_empty() {
+        add_group(&mut parser);
+        if parser.result.len() > 1 {
+            HeaderValue::Array(parser.result)
         } else {
-            AddressField::Empty
+            parser.result.pop().unwrap()
         }
-    } else if parser.group_comment.is_none() {
-        AddressField::Group(Group {
-            name: parser.group_name.unwrap(),
-            list: parser.addresses,
-        })
+    } else if !parser.addresses.is_empty() {
+        if parser.addresses.len() > 1 {
+            HeaderValue::Array(parser.addresses)
+        } else {
+            parser.addresses.pop().unwrap()
+        }
     } else {
-        AddressField::GroupWithComment(GroupWithComment {
-            name: parser.group_name.unwrap(),
-            comment: parser.group_comment.unwrap(),
-            list: parser.addresses,
-        })
+        HeaderValue::Empty
     }
 }
 
@@ -412,144 +380,483 @@ mod tests {
     fn parse_addresses() {
         let inputs = [
             (
-                "John Doe <jdoe@machine.example>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: ("John Doe").into(), email: Cow::from("jdoe@machine.example") }))
+                concat!("John Doe <jdoe@machine.example>\n"),
+                NamedValue::new(
+                    "John Doe".into(),
+                    None,
+                    HeaderValue::String("jdoe@machine.example".into()),
+                ),
             ),
             (
-                " Mary Smith <mary@example.net>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Mary Smith"), email: Cow::from("mary@example.net") }))
+                concat!(" Mary Smith <mary@example.net>\n"),
+                NamedValue::new(
+                    "Mary Smith".into(),
+                    None,
+                    HeaderValue::String("mary@example.net".into()),
+                ),
             ),
             (
-                "\"Joe Q. Public\" <john.q.public@example.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Joe Q. Public"), email: Cow::from("john.q.public@example.com") }))
+                concat!("\"Joe Q. Public\" <john.q.public@example.com>\n"),
+                NamedValue::new(
+                    "Joe Q. Public".into(),
+                    None,
+                    HeaderValue::String("john.q.public@example.com".into()),
+                ),
             ),
             (
-                "Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n".to_string(), 
-                AddressField::List(AddressList::from([Address::Mailbox(Mailbox { name: Cow::from("Mary Smith"), email: Cow::from("mary@x.test") }), Address::Email(Cow::from("jdoe@example.org")), Address::Mailbox(Mailbox { name: Cow::from("Who?"), email: Cow::from("one@y.test") })]))
+                concat!("Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n"),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "Mary Smith".into(),
+                        None,
+                        HeaderValue::String("mary@x.test".into()),
+                    ),
+                    HeaderValue::String("jdoe@example.org".into()),
+                    NamedValue::new(
+                        "Who?".into(),
+                        None,
+                        HeaderValue::String("one@y.test".into()),
+                    ),
+                ]),
             ),
             (
-                "<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n".to_string(), 
-                AddressField::List(AddressList::from([Address::Email(Cow::from("boss@nil.test")), Address::Mailbox(Mailbox { name: Cow::from("Giant; \"Big\" Box"), email: Cow::from("sysservices@example.net") })]))
+                concat!("<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n"),
+                HeaderValue::Array(vec![
+                    HeaderValue::String("boss@nil.test".into()),
+                    NamedValue::new(
+                        "Giant; \"Big\" Box".into(),
+                        None,
+                        HeaderValue::String("sysservices@example.net".into()),
+                    ),
+                ]),
             ),
             (
-                "A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n".to_string(), 
-                AddressField::Group(Group { name: Cow::from("A Group"), list: AddressList::from([Address::Mailbox(Mailbox { name: Cow::from("Ed Jones"), email: Cow::from("c@a.test") }), Address::Email(Cow::from("joe@where.test")), Address::Mailbox(Mailbox { name: Cow::from("John"), email: Cow::from("jdoe@one.test") })]) })
+                concat!("A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n"),
+                NamedValue::new(
+                    "A Group".into(),
+                    None,
+                    HeaderValue::Array(vec![
+                        NamedValue::new(
+                            "Ed Jones".into(),
+                            None,
+                            HeaderValue::String("c@a.test".into()),
+                        ),
+                        HeaderValue::String("joe@where.test".into()),
+                        NamedValue::new(
+                            "John".into(),
+                            None,
+                            HeaderValue::String("jdoe@one.test".into()),
+                        ),
+                    ]),
+                ),
             ),
             (
-                "Undisclosed recipients:;\n".to_string(), 
-                AddressField::Group(Group { name: Cow::from("Undisclosed recipients"), list: AddressList::from([]) })
+                concat!("Undisclosed recipients:;\n"),
+                NamedValue::new("Undisclosed recipients".into(), None, HeaderValue::Empty),
             ),
             (
-                "\"Mary Smith: Personal Account\" <smith@home.example >\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Mary Smith: Personal Account"), email: Cow::from("smith@home.example") }))
+                concat!("\"Mary Smith: Personal Account\" <smith@home.example >\n"),
+                NamedValue::new(
+                    "Mary Smith: Personal Account".into(),
+                    None,
+                    HeaderValue::String("smith@home.example".into()),
+                ),
             ),
             (
-                "Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n".to_string(), 
-                AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Pete"), comment: Cow::from("A nice ) chap his account his host"), email: Cow::from("pete@silly.test") }))
+                concat!("Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n"),
+                NamedValue::new(
+                    "Pete".into(),
+                    Some("A nice ) chap his account his host".into()),
+                    HeaderValue::String("pete@silly.test".into()),
+                ),
             ),
             (
-                "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n".to_string(), 
-                AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Pete"), comment: Cow::from("A nice ) chap his account his host"), email: Cow::from("pete@silly.test") }))
+                concat!(
+                    "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n"
+                ),
+                NamedValue::new(
+                    "Pete".into(),
+                    Some("A nice ) chap his account his host".into()),
+                    HeaderValue::String("pete@silly.test".into()),
+                ),
             ),
             (
-                "A Group(Some people)\n        :Chris Jones <c@(Chris's host.)public.example>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear friend); (the end of the group)\n".to_string(), 
-                AddressField::GroupWithComment(GroupWithComment { name: Cow::from("A Group"), comment: Cow::from("the end of the group"), list: AddressList::from([Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Chris Jones"), comment: Cow::from("Chris's host."), email: Cow::from("c@public.example") }), Address::Email(Cow::from("joe@example.org")), Address::MailboxWithComment(MailboxWithComment { name: Cow::from("John"), comment: Cow::from("my dear friend"), email: Cow::from("jdoe@one.test") })]) }),
+                concat!(
+                    "A Group(Some people)\n        :Chris Jones <c@(Chris's host.)public.exa",
+                    "mple>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear",
+                    " friend); (the end of the group)\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "A Group".into(),
+                        Some("Some people".into()),
+                        HeaderValue::Array(vec![
+                            NamedValue::new(
+                                "Chris Jones".into(),
+                                Some("Chris's host.".into()),
+                                HeaderValue::String("c@public.example".into()),
+                            ),
+                            HeaderValue::String("joe@example.org".into()),
+                            NamedValue::new(
+                                "John".into(),
+                                Some("my dear friend".into()),
+                                HeaderValue::String("jdoe@one.test".into()),
+                            ),
+                        ]),
+                    ),
+                    HeaderValue::Array(vec![NamedValue::new(
+                        "the end of the group".into(),
+                        None,
+                        HeaderValue::Empty,
+                    )]),
+                ]),
             ),
             (
-                "(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n".to_string(), 
-                AddressField::GroupWithComment(GroupWithComment { name: Cow::from("Hidden recipients"), comment: Cow::from("Empty list start"), list: AddressList::from([Address::Invalid(Cow::from("nobody(that I know)"))]) })
+                concat!("(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n"),
+                NamedValue::new(
+                    "Hidden recipients".into(),
+                    Some("Empty list start".into()),
+                    HeaderValue::Array(vec![NamedValue::new(
+                        "nobody(that I know)".into(),
+                        None,
+                        HeaderValue::Empty,
+                    )]),
+                ),
             ),
             (
-                "Joe Q. Public <john.q.public@example.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Joe Q. Public"), email: Cow::from("john.q.public@example.com") }))
+                concat!("Joe Q. Public <john.q.public@example.com>\n"),
+                NamedValue::new(
+                    "Joe Q. Public".into(),
+                    None,
+                    HeaderValue::String("john.q.public@example.com".into()),
+                ),
             ),
             (
-                "Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n".to_string(), 
-                AddressField::List(AddressList::from([Address::Mailbox(Mailbox { name: Cow::from("Mary Smith"), email: Cow::from("@node.test:mary@example.net") }), Address::Email(Cow::from("jdoe@test  . example"))]))
+                concat!("Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n"),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "Mary Smith".into(),
+                        None,
+                        HeaderValue::String("@node.test:mary@example.net".into()),
+                    ),
+                    HeaderValue::String("jdoe@test  . example".into()),
+                ]),
             ),
             (
-                "John Doe <jdoe@machine(comment).  example>\n".to_string(), 
-                AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("John Doe"), comment: Cow::from("comment"), email: Cow::from("jdoe@machine.  example") }))
+                concat!("John Doe <jdoe@machine(comment).  example>\n"),
+                NamedValue::new(
+                    "John Doe".into(),
+                    Some("comment".into()),
+                    HeaderValue::String("jdoe@machine.  example".into()),
+                ),
             ),
             (
-                "Mary Smith\n    \n\t<mary@example.net>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Mary Smith"), email: Cow::from("mary@example.net") }))
+                concat!("Mary Smith\n    \n\t<mary@example.net>\n"),
+                NamedValue::new(
+                    "Mary Smith".into(),
+                    None,
+                    HeaderValue::String("mary@example.net".into()),
+                ),
             ),
             (
-                "=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Keith Moore"), email: Cow::from("moore@cs.utk.edu") }))
+                concat!("=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n"),
+                NamedValue::new(
+                    "Keith Moore".into(),
+                    None,
+                    HeaderValue::String("moore@cs.utk.edu".into()),
+                ),
             ),
             (
-                "John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("John Doe"), email: Cow::from("moore@cs.utk.edu") }))
+                concat!("John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n"),
+                NamedValue::new(
+                    "John Doe".into(),
+                    None,
+                    HeaderValue::String("moore@cs.utk.edu".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Keld Jørn Simonsen"), email: Cow::from("keld@dkuug.dk") }))
+                concat!("=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n"),
+                NamedValue::new(
+                    "Keld Jørn Simonsen".into(),
+                    None,
+                    HeaderValue::String("keld@dkuug.dk".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("André Pirard"), email: Cow::from("PIRARD@vm1.ulg.ac.be") }))
+                concat!("=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n"),
+                NamedValue::new(
+                    "André Pirard".into(),
+                    None,
+                    HeaderValue::String("PIRARD@vm1.ulg.ac.be".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("Olle Järnefors"), email: Cow::from("ojarnef@admin.kth.se") }))
+                concat!("=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n"),
+                NamedValue::new(
+                    "Olle Järnefors".into(),
+                    None,
+                    HeaderValue::String("ojarnef@admin.kth.se".into()),
+                ),
             ),
             (
-                "ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n".to_string(), 
-                AddressField::List(AddressList::from([Address::Email(Cow::from("ietf-822@dimacs.rutgers.edu")), Address::Email(Cow::from("ojarnef@admin.kth.se"))]))
+                concat!("ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n"),
+                HeaderValue::Array(vec![
+                    HeaderValue::String("ietf-822@dimacs.rutgers.edu".into()),
+                    HeaderValue::String("ojarnef@admin.kth.se".into()),
+                ]),
             ),
             (
-                "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7eXs+SDv4SDp7Oj08A==?=)\n".to_string(), 
-                AddressField::Address(Address::MailboxWithComment(MailboxWithComment { name: Cow::from("Nathaniel Borenstein"), comment: Cow::from("םולש ןב ילטפנ"), email: Cow::from("nsb@thumper.bellcore.com") })),
+                concat!(
+                    "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7e",
+                    "Xs+SDv4SDp7Oj08A==?=)\n"
+                ),
+                NamedValue::new(
+                    "Nathaniel Borenstein".into(),
+                    Some("םולש ןב ילטפנ".into()),
+                    HeaderValue::String("nsb@thumper.bellcore.com".into()),
+                ),
             ),
             (
-                "Greg Vaudreuil <gvaudre@NRI.Reston.VA.US>, Ned Freed\n      <ned@innosoft.com>, Keith Moore <moore@cs.utk.edu>\n".to_string(), 
-                AddressField::List(AddressList::from([Address::Mailbox(Mailbox { name: Cow::from("Greg Vaudreuil"), email: Cow::from("gvaudre@NRI.Reston.VA.US") }), Address::Mailbox(Mailbox { name: Cow::from("Ned Freed"), email: Cow::from("ned@innosoft.com") }), Address::Mailbox(Mailbox { name: Cow::from("Keith Moore"), email: Cow::from("moore@cs.utk.edu") })]))
+                concat!(
+                    "Greg Vaudreuil <gvaudre@NRI.Reston.VA.US>, Ned Freed\n      <ned@innoso",
+                    "ft.com>, Keith Moore <moore@cs.utk.edu>\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "Greg Vaudreuil".into(),
+                        None,
+                        HeaderValue::String("gvaudre@NRI.Reston.VA.US".into()),
+                    ),
+                    NamedValue::new(
+                        "Ned Freed".into(),
+                        None,
+                        HeaderValue::String("ned@innosoft.com".into()),
+                    ),
+                    NamedValue::new(
+                        "Keith Moore".into(),
+                        None,
+                        HeaderValue::String("moore@cs.utk.edu".into()),
+                    ),
+                ]),
             ),
             (
-                "=?ISO-8859-1?Q?a?= <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("a"), email: Cow::from("test@test.com") })),
+                concat!("=?ISO-8859-1?Q?a?= <test@test.com>\n"),
+                NamedValue::new(
+                    "a".into(),
+                    None,
+                    HeaderValue::String("test@test.com".into()),
+                ),
             ),
             (
-                "\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("a b"), email: Cow::from("test@test.com") }))
+                concat!("\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n"),
+                NamedValue::new(
+                    "a b".into(),
+                    None,
+                    HeaderValue::String("test@test.com".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("ab"), email: Cow::from("test@test.com") }))
+                concat!("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n"),
+                NamedValue::new(
+                    "ab".into(),
+                    None,
+                    HeaderValue::String("test@test.com".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("ab"), email: Cow::from("test@test.com") }))
+                concat!("=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n"),
+                NamedValue::new(
+                    "ab".into(),
+                    None,
+                    HeaderValue::String("test@test.com".into()),
+                ),
             ),
             (
-                "=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("a b"), email: Cow::from("test@test.com") }))
+                concat!("=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n"),
+                NamedValue::new(
+                    "a b".into(),
+                    None,
+                    HeaderValue::String("test@test.com".into()),
+                ),
             ),
             (
-                " <test@test.com>\n".to_string(), 
-                AddressField::Address(Address::Email(Cow::from("test@test.com")))
+                concat!(" <test@test.com>\n"),
+                HeaderValue::String("test@test.com".into()),
             ),
             (
-                "test@test.com\ninvalid@address.com\n".to_string(), 
-                AddressField::Address(Address::Email(Cow::from("test@test.com")))
+                concat!("test@test.com\ninvalid@address.com\n"),
+                HeaderValue::String("test@test.com".into()),
             ),
             (
-                "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@address.com>\n\nbody@content.com".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("=?ISO-8859-1?Q a \" b"), email: Cow::from("last@address.com") }))
+                concat!(
+                    "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@addres",
+                    "s.com>\n\nbody@content.com"
+                ),
+                NamedValue::new(
+                    "=?ISO-8859-1?Q a \" b".into(),
+                    None,
+                    HeaderValue::String("last@address.com".into()),
+                ),
             ),
             (
-                "=? <name@domain.com>\n".to_string(), 
-                AddressField::Address(Address::Mailbox(Mailbox { name: Cow::from("=?"), email: Cow::from("name@domain.com") }))
+                concat!("=? <name@domain.com>\n"),
+                NamedValue::new(
+                    "=?".into(),
+                    None,
+                    HeaderValue::String("name@domain.com".into()),
+                ),
+            ),
+            (
+                concat!(
+                    "\"  James Smythe\" <james@example.com>, Friends:\n  jane@example.com, =?U",
+                    "TF-8?Q?John_Sm=C3=AEth?=\n   <john@example.com>;\n"
+                ),
+                HeaderValue::Array(vec![
+                    HeaderValue::Array(vec![NamedValue::new(
+                        "  James Smythe".into(),
+                        None,
+                        HeaderValue::String("james@example.com".into()),
+                    )]),
+                    NamedValue::new(
+                        "Friends".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("jane@example.com".into()),
+                            NamedValue::new(
+                                "John Smîth".into(),
+                                None,
+                                HeaderValue::String("john@example.com".into()),
+                            ),
+                        ]),
+                    ),
+                ]),
+            ),
+            (
+                concat!(
+                    "List 1: addr1@test.com, addr2@test.com; List 2: addr3@test.com, addr4@",
+                    "test.com; addr5@test.com, addr6@test.com\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "List 1".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr1@test.com".into()),
+                            HeaderValue::String("addr2@test.com".into()),
+                        ]),
+                    ),
+                    NamedValue::new(
+                        "List 2".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr3@test.com".into()),
+                            HeaderValue::String("addr4@test.com".into()),
+                        ]),
+                    ),
+                    HeaderValue::Array(vec![
+                        HeaderValue::String("addr5@test.com".into()),
+                        HeaderValue::String("addr6@test.com".into()),
+                    ]),
+                ]),
+            ),
+            (
+                concat!(
+                    "\"List 1\": addr1@test.com, addr2@test.com; \"List 2\": addr3@test.com, ad",
+                    "dr4@test.com; addr5@test.com, addr6@test.com\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "List 1".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr1@test.com".into()),
+                            HeaderValue::String("addr2@test.com".into()),
+                        ]),
+                    ),
+                    NamedValue::new(
+                        "List 2".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr3@test.com".into()),
+                            HeaderValue::String("addr4@test.com".into()),
+                        ]),
+                    ),
+                    HeaderValue::Array(vec![
+                        HeaderValue::String("addr5@test.com".into()),
+                        HeaderValue::String("addr6@test.com".into()),
+                    ]),
+                ]),
+            ),
+            (
+                concat!(
+                    "\"=?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=\": addr1@test.com, addr2@",
+                    "test.com; =?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=: addr3@test.com",
+                    ", addr4@test.com; addr5@test.com, addr6@test.com\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::new(
+                        "Thís ís válíd ÚTF8".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr1@test.com".into()),
+                            HeaderValue::String("addr2@test.com".into()),
+                        ]),
+                    ),
+                    NamedValue::new(
+                        "Thís ís válíd ÚTF8".into(),
+                        None,
+                        HeaderValue::Array(vec![
+                            HeaderValue::String("addr3@test.com".into()),
+                            HeaderValue::String("addr4@test.com".into()),
+                        ]),
+                    ),
+                    HeaderValue::Array(vec![
+                        HeaderValue::String("addr5@test.com".into()),
+                        HeaderValue::String("addr6@test.com".into()),
+                    ]),
+                ]),
             ),
         ];
 
         for input in inputs {
             let stream = &MessageStream::new(input.0.as_bytes());
             let result = parse_address(stream);
-            //println!("{} ->\n{:?}\n{}\n", input.0.escape_debug(), result, "-".repeat(50) );
-            assert_eq!(result, input.1, "Failed for {}", input.0.escape_debug());
+
+            /*println!(
+                "(concat!({}), {}),",
+                format!(
+                    "{:?}",
+                    input
+                        .0
+                        .chars()
+                        .collect::<Vec<char>>()
+                        .chunks(70)
+                        .map(|c| c.iter().collect::<String>())
+                        .collect::<Vec<String>>()
+                )
+                .replace("[\"", "\"")
+                .replace("\"]", "\""),
+                format!("{:?}", result)
+                    .replace("NamedValue(NamedValue {", "NamedValue::new(")
+                    .replace("Array([", "HeaderValue::Array(vec![")
+                    .replace("String(", "HeaderValue::String(")
+                    .replace("})", ")")
+                    .replace(", subname:", ".into(),")
+                    .replace("name: ", "")
+                    .replace("\", value:", "\".into(),")
+                    .replace(", value:", ", ")
+                    .replace("\")", "\".into())")
+                    .replace(" Empty", " HeaderValue::Empty")
+            );*/
+
+            /*println!(
+                "{} ->\n{}\n{}\n",
+                input.0.escape_debug(),
+                str,
+                "-".repeat(50)
+            );*/
+
+            assert_eq!(result, input.1, "Failed for '{}'", input.0.escape_debug());
         }
     }
 }

@@ -9,7 +9,9 @@ use crate::{
         hex::decode_hex,
     },
     parsers::{
-        encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream,
+        encoded_word::parse_encoded_word,
+        header::{HeaderValue, NamedValue},
+        message_stream::MessageStream,
     },
 };
 
@@ -261,24 +263,16 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     }
                     _ => {
                         return if let Some(content_type) = parser.c_type {
-                            if let Some(content_subtype) = parser.c_subtype {
-                                if !parser.attributes.is_empty() {
-                                    HeaderValue::Array(vec![
-                                        HeaderValue::String(content_type),
-                                        HeaderValue::String(content_subtype),
-                                        HeaderValue::Map(parser.attributes),
-                                    ])
-                                } else {
-                                    HeaderValue::Array(vec![
-                                        HeaderValue::String(content_type),
-                                        HeaderValue::String(content_subtype),
-                                    ])
-                                }
-                            } else if !parser.attributes.is_empty() {
-                                HeaderValue::Array(vec![
-                                    HeaderValue::String(content_type),
-                                    HeaderValue::Map(parser.attributes),
-                                ])
+                            if parser.c_subtype.is_some() || !parser.attributes.is_empty() {
+                                NamedValue::new(
+                                    content_type,
+                                    parser.c_subtype.take(),
+                                    if !parser.attributes.is_empty() {
+                                        HeaderValue::Map(parser.attributes)
+                                    } else {
+                                        HeaderValue::Empty
+                                    },
+                                )
                             } else {
                                 HeaderValue::String(content_type)
                             }
@@ -434,244 +428,253 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
 mod tests {
     use std::{borrow::Cow, collections::HashMap};
 
-    use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
+    use crate::parsers::{
+        header::{HeaderValue, NamedValue},
+        message_stream::MessageStream,
+    };
 
     use super::parse_content_type;
 
     #[test]
     fn parse_content_fields() {
         let inputs = [
+            ("audio/basic\n", "audio||basic"),
+            ("application/postscript \n", "application||postscript"),
+            ("image/ jpeg\n", "image||jpeg"),
+            (" message / rfc822\n", "message||rfc822"),
+            ("inline\n", "inline"),
             (
-                "audio/basic\n".to_string(), 
-                "audio||basic".to_string()
+                " text/plain; charset =us-ascii (Plain text)\n",
+                "text||plain||charset~~us-ascii",
             ),
             (
-                "application/postscript \n".to_string(), 
-                "application||postscript".to_string()
+                "text/plain; charset= \"us-ascii\"\n",
+                "text||plain||charset~~us-ascii",
             ),
             (
-                "image/ jpeg\n".to_string(), 
-                "image||jpeg".to_string()
+                "text/plain; charset =ISO-8859-1\n",
+                "text||plain||charset~~ISO-8859-1",
+            ),
+            ("text/foo; charset= bar\n", "text||foo||charset~~bar"),
+            (
+                " text /plain; charset=\"iso-8859-1\"; format=flowed\n",
+                "text||plain||charset~~iso-8859-1||format~~flowed",
             ),
             (
-                " message / rfc822\n".to_string(), 
-                "message||rfc822".to_string()
+                "application/pgp-signature; x-mac-type=70674453;\n    name=PGP.sig\n",
+                "application||pgp-signature||x-mac-type~~70674453||name~~PGP.sig",
             ),
             (
-                "inline\n".to_string(), 
-                "inline".to_string()
+                "multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p\n",
+                "multipart||mixed||boundary~~gc0p4Jq0M2Yt08j34c0p",
             ),
             (
-                " text/plain; charset =us-ascii (Plain text)\n".to_string(), 
-                "text||plain||charset~~us-ascii".to_string()
+                "multipart/mixed; boundary=gc0pJq0M:08jU534c0p\n",
+                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p",
             ),
             (
-                "text/plain; charset= \"us-ascii\"\n".to_string(), 
-                "text||plain||charset~~us-ascii".to_string()
+                "multipart/mixed; boundary=\"gc0pJq0M:08jU534c0p\"\n",
+                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p",
             ),
             (
-                "text/plain; charset =ISO-8859-1\n".to_string(), 
-                "text||plain||charset~~ISO-8859-1".to_string()
+                "multipart/mixed; boundary=\"simple boundary\"\n",
+                "multipart||mixed||boundary~~simple boundary",
             ),
             (
-                "text/foo; charset= bar\n".to_string(), 
-                "text||foo||charset~~bar".to_string()
+                "multipart/alternative; boundary=boundary42\n",
+                "multipart||alternative||boundary~~boundary42",
             ),
             (
-                " text /plain; charset=\"iso-8859-1\"; format=flowed\n".to_string(), 
-                "text||plain||charset~~iso-8859-1||format~~flowed".to_string()
+                " multipart/mixed;\n     boundary=\"---- main boundary ----\"\n",
+                "multipart||mixed||boundary~~---- main boundary ----",
             ),
             (
-                "application/pgp-signature; x-mac-type=70674453;\n    name=PGP.sig\n".to_string(), 
-                "application||pgp-signature||x-mac-type~~70674453||name~~PGP.sig".to_string()
+                "multipart/alternative; boundary=42\n",
+                "multipart||alternative||boundary~~42",
             ),
             (
-                "multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p\n".to_string(), 
-                "multipart||mixed||boundary~~gc0p4Jq0M2Yt08j34c0p".to_string()
+                "message/partial; id=\"ABC@host.com\";\n",
+                "message||partial||id~~ABC@host.com",
             ),
             (
-                "multipart/mixed; boundary=gc0pJq0M:08jU534c0p\n".to_string(), 
-                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()
+                "multipart/parallel;boundary=unique-boundary-2\n",
+                "multipart||parallel||boundary~~unique-boundary-2",
             ),
             (
-                "multipart/mixed; boundary=\"gc0pJq0M:08jU534c0p\"\n".to_string(), 
-                "multipart||mixed||boundary~~gc0pJq0M:08jU534c0p".to_string()
+                concat!(
+                    "message/external-body; name=\"BodyFormats.ps\";\n   site=\"thumper.bellcor",
+                    "e.com\"; mode=\"image\";\n  access-type=ANON-FTP; directory=\"pub\";\n  expir",
+                    "ation=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
+                ),
+                concat!(
+                    "message||external-body||name~~BodyFormats.ps||site~~thumper.bellcore.c",
+                    "om||mode~~image||access-type~~ANON-FTP||directory~~pub||expiration~~Fr",
+                    "i, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ),
             ),
             (
-                "multipart/mixed; boundary=\"simple boundary\"\n".to_string(), 
-                "multipart||mixed||boundary~~simple boundary".to_string()
+                concat!(
+                    "message/external-body; access-type=local-file;\n   name=\"/u/nsb/writing",
+                    "/rfcs/RFC-MIME.ps\";\n    site=\"thumper.bellcore.com\";\n  expiration=\"Fri",
+                    ", 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
+                ),
+                concat!(
+                    "message||external-body||access-type~~local-file||expiration~~Fri, 14 J",
+                    "un 1991 19:13:14 -0400 (EDT)||name~~/u/nsb/writing/rfcs/RFC-MIME.ps||s",
+                    "ite~~thumper.bellcore.com"
+                ),
             ),
             (
-                "multipart/alternative; boundary=boundary42\n".to_string(), 
-                "multipart||alternative||boundary~~boundary42".to_string()
+                concat!(
+                    "message/external-body;\n    access-type=mail-server\n     server=\"listse",
+                    "rv@bogus.bitnet\";\n     expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (ED",
+                    "T)\"\n"
+                ),
+                concat!(
+                    "message||external-body||access-type~~mail-server||server~~listserv@bog",
+                    "us.bitnet||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ),
             ),
             (
-                " multipart/mixed;\n     boundary=\"---- main boundary ----\"\n".to_string(), 
-                "multipart||mixed||boundary~~---- main boundary ----".to_string()
+                concat!(
+                    "Message/Partial; number=2; total=3;\n     id=\"oc=jpbe0M2Yt4s@thumper.be",
+                    "llcore.com\"\n"
+                ),
+                concat!(
+                    "message||partial||number~~2||total~~3||id~~oc=jpbe0M2Yt4s@thumper.bell",
+                    "core.com"
+                ),
             ),
             (
-                "multipart/alternative; boundary=42\n".to_string(), 
-                "multipart||alternative||boundary~~42".to_string()
+                concat!(
+                    "multipart/signed; micalg=pgp-sha1; protocol=\"application/pgp-signature",
+                    "\";\n   boundary=\"=-J1qXPoyGtE2XNN5N6Z6j\"\n"
+                ),
+                concat!(
+                    "multipart||signed||protocol~~application/pgp-signature||boundary~~=-J1",
+                    "qXPoyGtE2XNN5N6Z6j||micalg~~pgp-sha1"
+                ),
             ),
             (
-                "message/partial; id=\"ABC@host.com\";\n".to_string(), 
-                "message||partial||id~~ABC@host.com".to_string()
+                concat!(
+                    "message/external-body;\n    access-type=local-file;\n     name=\"/u/nsb/M",
+                    "e.jpeg\"\n"
+                ),
+                concat!("message||external-body||access-type~~local-file||name~~/u/nsb/Me.jpeg"),
             ),
             (
-                "multipart/parallel;boundary=unique-boundary-2\n".to_string(), 
-                "multipart||parallel||boundary~~unique-boundary-2".to_string()
+                concat!(
+                    "message/external-body; access-type=URL;\n    URL*0=\"ftp://\";\n    URL*1=",
+                    "\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n"
+                ),
+                concat!(
+                    "message||external-body||url~~ftp://cs.utk.edu/pub/moore/bulk-mailer/bu",
+                    "lk-mailer.tar||access-type~~URL"
+                ),
             ),
             (
-                "message/external-body; name=\"BodyFormats.ps\";\n   site=\"thumper.bellcore.com\"; mode=\"image\";\n  access-type=ANON-FTP; directory=\"pub\";\n  expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||name~~BodyFormats.ps||site~~thumper.bellcore.com||mode~~image||access-type~~ANON-FTP||directory~~pub||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()
+                concat!(
+                    "message/external-body; access-type=URL;\n     URL=\"ftp://cs.utk.edu/pub",
+                    "/moore/bulk-mailer/bulk-mailer.tar\"\n"
+                ),
+                concat!(
+                    "message||external-body||access-type~~URL||url~~ftp://cs.utk.edu/pub/mo",
+                    "ore/bulk-mailer/bulk-mailer.tar"
+                ),
             ),
             (
-                "message/external-body; access-type=local-file;\n   name=\"/u/nsb/writing/rfcs/RFC-MIME.ps\";\n    site=\"thumper.bellcore.com\";\n  expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||access-type~~local-file||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)||name~~/u/nsb/writing/rfcs/RFC-MIME.ps||site~~thumper.bellcore.com".to_string()
+                concat!(
+                    "application/x-stuff;\n     title*=us-ascii'en-us'This%20is%20%2A%2A%2Af",
+                    "un%2A%2A%2A\n"
+                ),
+                concat!(
+                    "application||x-stuff||title-language~~en-us||title~~This is ***fun***|",
+                    "|title-charset~~us-ascii"
+                ),
             ),
             (
-                "message/external-body;\n    access-type=mail-server\n     server=\"listserv@bogus.bitnet\";\n     expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n".to_string(), 
-                "message||external-body||access-type~~mail-server||server~~listserv@bogus.bitnet||expiration~~Fri, 14 Jun 1991 19:13:14 -0400 (EDT)".to_string()
+                concat!(
+                    "application/x-stuff\n   title*0*=us-ascii'en'This%20is%20even%20more%20",
+                    "\n   title*1*=%2A%2A%2Afun%2A%2A%2A%20\n   title*2=\"isn't it!\"\n"
+                ),
+                concat!(
+                    "application||x-stuff||title~~This is even more ***fun*** isn't it!||ti",
+                    "tle-charset~~us-ascii||title-language~~en"
+                ),
             ),
             (
-                "Message/Partial; number=2; total=3;\n     id=\"oc=jpbe0M2Yt4s@thumper.bellcore.com\"\n".to_string(), 
-                "message||partial||number~~2||total~~3||id~~oc=jpbe0M2Yt4s@thumper.bellcore.com".to_string()
+                concat!(
+                    "application/pdf\n   filename*0*=iso-8859-1'es'%D1and%FA\n   filename*1*=",
+                    "%20r%E1pido\n   filename*2=\" (versi%F3n \\'99 \\\"oficial\\\").pdf\"\n"
+                ),
+                concat!(
+                    "application||pdf||filename~~Ñandú rápido (versión '99 \"oficial\").pdf||",
+                    "filename-charset~~iso-8859-1||filename-language~~es"
+                ),
             ),
             (
-                "multipart/signed; micalg=pgp-sha1; protocol=\"application/pgp-signature\";\n   boundary=\"=-J1qXPoyGtE2XNN5N6Z6j\"\n".to_string(), 
-                "multipart||signed||protocol~~application/pgp-signature||boundary~~=-J1qXPoyGtE2XNN5N6Z6j||micalg~~pgp-sha1".to_string()
+                concat!(
+                    " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3",
+                    "=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n"
+                ),
+                concat!("image||png||name~~ハロー・ワールド.png"),
             ),
             (
-                "message/external-body;\n    access-type=local-file;\n     name=\"/u/nsb/Me.jpeg\"\n".to_string(), 
-                "message||external-body||access-type~~local-file||name~~/u/nsb/Me.jpeg".to_string()
+                " image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=.gif\n",
+                "image||gif||name~~مرحبا بالعالم.gif",
             ),
             (
-                "message/external-body; access-type=URL;\n    URL*0=\"ftp://\";\n    URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n".to_string(),
-                "message||external-body||url~~ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar||access-type~~URL".to_string()
+                concat!(
+                    "image/jpeg;\n   name=\"=?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859",
+                    "-1?q?=ED?=.jpeg\"\n"
+                ),
+                concat!("image||jpeg||name~~á é í.jpeg"),
             ),
             (
-                "message/external-body; access-type=URL;\n     URL=\"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n".to_string(), 
-                "message||external-body||access-type~~URL||url~~ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar".to_string()),
-            (
-                "application/x-stuff;\n     title*=us-ascii\'en-us\'This%20is%20%2A%2A%2Afun%2A%2A%2A\n".to_string(), 
-                "application||x-stuff||title-language~~en-us||title~~This is ***fun***||title-charset~~us-ascii".to_string()
+                concat!(
+                    "image/jpeg;\n   name==?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-",
+                    "1?q?=ED?=.jpeg\n"
+                ),
+                concat!("image||jpeg||name~~áéí.jpeg"),
             ),
             (
-                "application/x-stuff\n   title*0*=us-ascii\'en\'This%20is%20even%20more%20\n   title*1*=%2A%2A%2Afun%2A%2A%2A%20\n   title*2=\"isn't it!\"\n".to_string(), 
-                "application||x-stuff||title~~This is even more ***fun*** isn't it!||title-charset~~us-ascii||title-language~~en".to_string()
+                "image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\n",
+                "image||gif||name~~مرحبا بالعالم.gif",
             ),
             (
-                "application/pdf\n   filename*0*=iso-8859-1\'es\'%D1and%FA\n   filename*1*=%20r%E1pido\n   filename*2=\" (versi%F3n \\\'99 \\\"oficial\\\").pdf\"\n".to_string(), 
-                "application||pdf||filename~~Ñandú rápido (versión \'99 \"oficial\").pdf||filename-charset~~iso-8859-1||filename-language~~es".to_string()
+                " image/gif;\n   name=\"=?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\"\n",
+                "image||gif||name~~مرحبا بالعالم.gif",
             ),
             (
-                " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n".to_string(), 
-                "image||png||name~~ハロー・ワールド.png".to_string()
+                " inline; filename=\"  best \\\"file\\\" ever with \\\\ escaped ' stuff.  \"\n",
+                "inline||||filename~~  best \"file\" ever with \\ escaped ' stuff.  ",
             ),
+            ("test/\n", "test"),
+            ("/invalid\n", ""),
+            ("/\n", ""),
+            (";\n", ""),
+            ("/ ; name=value\n", ""),
+            ("text/plain;\n", "text||plain"),
+            ("text/plain;;\n", "text||plain"),
             (
-                " image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=.gif\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()
+                "text/plain ;;;;; = ;; name=\"value\"\n",
+                "text||plain||name~~value",
             ),
+            ("=\n", "="),
+            ("name=value\n", "name=value"),
+            ("text/plain; name=  \n", "text||plain"),
+            ("a/b; = \n", "a||b"),
+            ("a/b; = \n \n", "a||b"),
+            ("a/b; =value\n", "a||b"),
+            ("test/test; =\"value\"\n", "test||test"),
+            ("á/é; á=é\n", "á||é||á~~é"),
+            ("inva/lid; name=\"   \n", "inva||lid||name~~   "),
+            ("inva/lid; name=\"   \n    \n", "inva||lid||name~~   "),
             (
-                "image/jpeg;\n   name=\"=?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-1?q?=ED?=.jpeg\"\n".to_string(), 
-                "image||jpeg||name~~á é í.jpeg".to_string()
+                "inva/lid; name=\"   \n    \"; test=test\n",
+                "inva||lid||name~~   ||test~~test",
             ),
-            (
-                "image/jpeg;\n   name==?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-1?q?=ED?=.jpeg\n".to_string(), 
-                "image||jpeg||name~~áéí.jpeg".to_string()
-            ),
-            (
-                "image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()
-            ),
-            (
-                " image/gif;\n   name=\"=?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\"\n".to_string(), 
-                "image||gif||name~~مرحبا بالعالم.gif".to_string()
-            ),
-            (
-                " inline; filename=\"  best \\\"file\\\" ever with \\\\ escaped \\' stuff.  \"\n".to_string(), 
-                "inline||||filename~~  best \"file\" ever with \\ escaped ' stuff.  ".to_string()
-            ),
-            (
-                "test/\n".to_string(), 
-                "test".to_string()
-            ),
-            (
-                "/invalid\n".to_string(), 
-                "".to_string()
-            ),
-            (
-                "/\n".to_string(), 
-                "".to_string()
-            ),
-            (
-                ";\n".to_string(), 
-                "".to_string()
-            ),
-            (
-                "/ ; name=value\n".to_string(),
-                "".to_string()
-            ),
-            (
-                "text/plain;\n".to_string(), 
-                "text||plain".to_string()
-            ),
-            (
-                "text/plain;;\n".to_string(), 
-                "text||plain".to_string()
-            ),
-            (
-                "text/plain ;;;;; = ;; name=\"value\"\n".to_string(), 
-                "text||plain||name~~value".to_string()
-            ),
-            (
-                "=\n".to_string(), 
-                "=".to_string()
-            ),
-            (
-                "name=value\n".to_string(), 
-                "name=value".to_string()
-            ),
-            (
-                "text/plain; name=  \n".to_string(), 
-                "text||plain".to_string()
-            ),
-            (
-                "a/b; = \n".to_string(), 
-                "a||b".to_string()
-            ),
-            (
-                "a/b; = \n \n".to_string(), 
-                "a||b".to_string()),
-            (
-                "a/b; =value\n".to_string(), 
-                "a||b".to_string()
-            ),
-            (
-                "test/test; =\"value\"\n".to_string(), 
-                "test||test".to_string()
-            ),
-            (
-                "á/é; á=é\n".to_string(), 
-                "á||é||á~~é".to_string()
-            ),
-            (
-                "inva/lid; name=\"   \n".to_string(), 
-                "inva||lid||name~~   ".to_string()
-            ),
-            (
-                "inva/lid; name=\"   \n    \n".to_string(), 
-                "inva||lid||name~~   ".to_string()
-            ),
-            (
-                "inva/lid; name=\"   \n    \"; test=test\n".to_string(), 
-                "inva||lid||name~~   ||test~~test".to_string()
-            ),
-            (
-                "name=value\n".to_string(), 
-                "name=value".to_string()
-            ),
-
+            ("name=value\n", "name=value"),
         ];
 
         for input in inputs {
@@ -700,24 +703,16 @@ mod tests {
                 }
 
                 if let Some(content_type) = c_type {
-                    if let Some(content_subtype) = c_subtype {
-                        if !attributes.is_empty() {
-                            HeaderValue::Array(vec![
-                                HeaderValue::String(content_type),
-                                HeaderValue::String(content_subtype),
-                                HeaderValue::Map(attributes),
-                            ])
-                        } else {
-                            HeaderValue::Array(vec![
-                                HeaderValue::String(content_type),
-                                HeaderValue::String(content_subtype),
-                            ])
-                        }
-                    } else if !attributes.is_empty() {
-                        HeaderValue::Array(vec![
-                            HeaderValue::String(content_type),
-                            HeaderValue::Map(attributes),
-                        ])
+                    if c_subtype.is_some() || !attributes.is_empty() {
+                        NamedValue::new(
+                            content_type,
+                            c_subtype.take(),
+                            if !attributes.is_empty() {
+                                HeaderValue::Map(attributes)
+                            } else {
+                                HeaderValue::Empty
+                            },
+                        )
                     } else {
                         HeaderValue::String(content_type)
                     }

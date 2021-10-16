@@ -9,19 +9,39 @@ pub struct Message<'x> {
 }
 
 #[derive(PartialEq, Debug)]
+pub struct NamedValue<'x> {
+    name: Cow<'x, str>,
+    subname: Option<Cow<'x, str>>,
+    value: HeaderValue<'x>,
+}
+
+impl<'x> NamedValue<'x> {
+    pub fn new(
+        name: Cow<'x, str>,
+        subname: Option<Cow<'x, str>>,
+        value: HeaderValue<'x>,
+    ) -> HeaderValue<'x> {
+        HeaderValue::NamedValue(Box::new(NamedValue {
+            name,
+            subname,
+            value,
+        }))
+    }
+}
+
+#[derive(PartialEq, Debug)]
 pub enum HeaderValue<'x> {
     Empty,
     DateTime(Box<DateTime>),
     String(Cow<'x, str>),
     Array(Vec<HeaderValue<'x>>),
     Map(HashMap<Cow<'x, str>, Cow<'x, str>>),
+    NamedValue(Box<NamedValue<'x>>),
 }
 
 pub trait MessageHeader<'x> {
-
     fn set_subject(&mut self, stream: &'x MessageStream);
     fn set_from(&mut self, stream: &'x MessageStream);
-
 }
 
 enum HeaderParserResult<'x, T> {
@@ -32,10 +52,7 @@ enum HeaderParserResult<'x, T> {
 
 type HeaderParserFnc<'x, T> = fn(&'x mut T, &MessageStream<'x>);
 
-pub fn parse_headers<'x>(stream: &'x MessageStream) {
-
-}
-
+pub fn parse_headers<'x>(stream: &'x MessageStream) {}
 
 fn parse_header_name<'x, T>(stream: &'x MessageStream) -> HeaderParserResult<'x, T> {
     let mut token_start: usize = 0;
@@ -105,17 +122,17 @@ mod tests {
     #[test]
     fn header_name_parse() {
         let inputs = [
-            ("From: ".to_string(), "from"),
-            ("\n\n \nreceiVED: ".to_string(), "received"),
-            (" subject   : ".to_string(), "subject"),
-            ("X-Custom-Field : ".to_string(), "x-custom-field"),
-            (" T : ".to_string(), "t"),
-            ("mal formed: ".to_string(), "mal formed"),
-            ("MIME-version : ".to_string(), "x-custom-field"),
+            ("From: ", "from"),
+            ("\n\n \nreceiVED: ", "received"),
+            (" subject   : ", "subject"),
+            ("X-Custom-Field : ", "x-custom-field"),
+            (" T : ", "t"),
+            ("mal formed: ", "mal formed"),
+            ("MIME-version : ", "x-custom-field"),
         ];
 
         for input in inputs {
-            unreachable!();
+            //unreachable!();
             /*match parse_header_name(&MessageStream::new(input.0.as_bytes())) {
                 super::HeaderParserResult::Supported(_) => (),
                 super::HeaderParserResult::Unsupported(_) => (),

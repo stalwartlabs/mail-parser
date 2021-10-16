@@ -1,6 +1,8 @@
 use std::borrow::Cow;
 
-use crate::parsers::{encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream};
+use crate::parsers::{
+    encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream,
+};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -105,31 +107,79 @@ mod tests {
 
     #[test]
     fn parse_unstructured_text() {
+        use crate::parsers::{
+            fields::unstructured::parse_unstructured, header::HeaderValue,
+            message_stream::MessageStream,
+        };
         use std::borrow::Cow;
-        use crate::parsers::{fields::unstructured::parse_unstructured, header::HeaderValue, message_stream::MessageStream};
 
         let inputs = [
-            ("Saying Hello\n".to_string(), "Saying Hello", true),
-            ("Re: Saying Hello\r\n".to_string(), "Re: Saying Hello", true),
-            (" Fwd: \n\tSaying \n Hello\r\n".to_string(), "Fwd: Saying Hello", false),
-            (" FWD: \n Saying Hello \nX-Mailer: 123\r\n".to_string(), "FWD: Saying Hello", false),
-            (" from x.y.test\n      by example.net\n      via TCP\n      with ESMTP\n      id ABC12345\n      for <mary@example.net>;  21 Nov 1997 10:05:43 -0600\n".to_string(), "from x.y.test by example.net via TCP with ESMTP id ABC12345 for <mary@example.net>;  21 Nov 1997 10:05:43 -0600", false),
-            ("=?iso-8859-1?q?this is some text?=\n".to_string(), "this is some text", false),
-            ("=?iso-8859-1?q?this=20is=20some=20text?=\r\n".to_string(), "this is some text", false),
-            (" =?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=\n     =?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=\n".to_string(), "If you can read this you understand the example.", false),
-            (" =?ISO-8859-1?Q?a?=\n".to_string(), "a", false),
-            ("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n".to_string(), "ab", false),
-            ("=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?=\n".to_string(), "ab", false),
-            ("=?ISO-8859-1?Q?a?=\r\n    =?ISO-8859-1?Q?b?=\nFrom: unknown@domain.com\n".to_string(), "ab", false),
-            ("=?ISO-8859-1?Q?a_b?=\n".to_string(), "a b", false),
-            ("=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=\r\n".to_string(), "a b", false),
-            (" this =?iso-8859-1?q?is?= some =?iso-8859-1?q?t?=\n =?iso-8859-1?q?e?= \n =?iso-8859-1?q?x?=\n =?iso-8859-1?q?t?=\n".to_string(), "this is some text", false),
-            (" =\n".to_string(), "=", true),
-            (" =? \n".to_string(), "=?", true),
-            ("=?utf-8 \n".to_string(), "=?utf-8", true),
-            ("=?utf-8? \n".to_string(), "=?utf-8?", true),
-            (" let's = try =?iso-8859-1? to break\n =? the \n parser\n".to_string(), "let's = try =?iso-8859-1? to break =? the parser", false),
-            ("ハロー・ワールド \n".to_string(), "ハロー・ワールド", true),
+            ("Saying Hello\n", "Saying Hello", true),
+            ("Re: Saying Hello\r\n", "Re: Saying Hello", true),
+            (" Fwd: \n\tSaying \n Hello\r\n", "Fwd: Saying Hello", false),
+            (
+                " FWD: \n Saying Hello \nX-Mailer: 123\r\n",
+                "FWD: Saying Hello",
+                false,
+            ),
+            (
+                concat!(
+                    " from x.y.test\n      by example.net\n      via TCP\n",
+                    "      with ESMTP\n      id ABC12345\n      ",
+                    "for <mary@example.net>;  21 Nov 1997 10:05:43 -0600\n"
+                ),
+                concat!(
+                    "from x.y.test by example.net via TCP with ESMTP id ABC12345",
+                    " for <mary@example.net>;  21 Nov 1997 10:05:43 -0600"
+                ),
+                false,
+            ),
+            (
+                "=?iso-8859-1?q?this is some text?=\n",
+                "this is some text",
+                false,
+            ),
+            (
+                "=?iso-8859-1?q?this=20is=20some=20text?=\r\n",
+                "this is some text",
+                false,
+            ),
+            (
+                concat!(
+                    " =?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=\n     ",
+                    "=?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=\n"
+                ),
+                "If you can read this you understand the example.",
+                false,
+            ),
+            (" =?ISO-8859-1?Q?a?=\n", "a", false),
+            ("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n", "ab", false),
+            ("=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?=\n", "ab", false),
+            (
+                "=?ISO-8859-1?Q?a?=\r\n    =?ISO-8859-1?Q?b?=\nFrom: unknown@domain.com\n",
+                "ab",
+                false,
+            ),
+            ("=?ISO-8859-1?Q?a_b?=\n", "a b", false),
+            ("=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=\r\n", "a b", false),
+            (
+                concat!(
+                    " this =?iso-8859-1?q?is?= some =?iso-8859-1?q?t?=\n =?iso-8859-1?q?e?=",
+                    " \n =?iso-8859-1?q?x?=\n =?iso-8859-1?q?t?=\n"
+                ),
+                "this is some text",
+                false,
+            ),
+            (" =\n", "=", true),
+            (" =? \n", "=?", true),
+            ("=?utf-8 \n", "=?utf-8", true),
+            ("=?utf-8? \n", "=?utf-8?", true),
+            (
+                " let's = try =?iso-8859-1? to break\n =? the \n parser\n",
+                "let's = try =?iso-8859-1? to break =? the parser",
+                false,
+            ),
+            ("ハロー・ワールド \n", "ハロー・ワールド", true),
         ];
 
         for input in inputs {
