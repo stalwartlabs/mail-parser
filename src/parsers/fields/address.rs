@@ -1,9 +1,11 @@
 use std::borrow::Cow;
 
-use crate::parsers::{
-    encoded_word::parse_encoded_word,
-    header::{HeaderValue, NamedValue},
-    message_stream::MessageStream,
+use crate::{
+    decoders::encoded_word::parse_encoded_word,
+    parsers::{
+        header::{HeaderValue, NamedValue},
+        message_stream::MessageStream,
+    },
 };
 
 #[derive(PartialEq, Clone, Copy, Debug)]
@@ -103,19 +105,19 @@ pub fn add_address(parser: &mut AddressParser) {
     parser
         .addresses
         .push(if has_mail && has_name && has_comment {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.name_tokens),
                 concat_tokens(&mut parser.comment_tokens).into(),
                 HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
             )
         } else if has_name && has_mail {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.name_tokens),
                 None,
                 HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
             )
         } else if has_mail && has_comment {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.comment_tokens),
                 None,
                 HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
@@ -123,19 +125,19 @@ pub fn add_address(parser: &mut AddressParser) {
         } else if has_mail {
             HeaderValue::String(concat_tokens(&mut parser.mail_tokens))
         } else if has_name && has_comment {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.name_tokens),
                 concat_tokens(&mut parser.comment_tokens).into(),
                 HeaderValue::Empty,
             )
         } else if has_name {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.name_tokens),
                 None,
                 HeaderValue::Empty,
             )
         } else if has_comment {
-            NamedValue::new(
+            NamedValue::boxed(
                 concat_tokens(&mut parser.comment_tokens),
                 None,
                 HeaderValue::Empty,
@@ -173,7 +175,7 @@ pub fn add_group(parser: &mut AddressParser) {
     let has_addresses = !parser.addresses.is_empty();
 
     parser.result.push(if has_name && has_addresses {
-        NamedValue::new(
+        NamedValue::boxed(
             parser.group_name.take().unwrap(),
             parser.group_comment.take(),
             HeaderValue::Array(std::mem::take(&mut parser.addresses)),
@@ -181,7 +183,7 @@ pub fn add_group(parser: &mut AddressParser) {
     } else if has_addresses {
         HeaderValue::Array(std::mem::take(&mut parser.addresses))
     } else if has_name {
-        NamedValue::new(parser.group_name.take().unwrap(), None, HeaderValue::Empty)
+        NamedValue::boxed(parser.group_name.take().unwrap(), None, HeaderValue::Empty)
     } else {
         return;
     });
@@ -381,7 +383,7 @@ mod tests {
         let inputs = [
             (
                 concat!("John Doe <jdoe@machine.example>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "John Doe".into(),
                     None,
                     HeaderValue::String("jdoe@machine.example".into()),
@@ -389,7 +391,7 @@ mod tests {
             ),
             (
                 concat!(" Mary Smith <mary@example.net>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Mary Smith".into(),
                     None,
                     HeaderValue::String("mary@example.net".into()),
@@ -397,7 +399,7 @@ mod tests {
             ),
             (
                 concat!("\"Joe Q. Public\" <john.q.public@example.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Joe Q. Public".into(),
                     None,
                     HeaderValue::String("john.q.public@example.com".into()),
@@ -406,13 +408,13 @@ mod tests {
             (
                 concat!("Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n"),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Mary Smith".into(),
                         None,
                         HeaderValue::String("mary@x.test".into()),
                     ),
                     HeaderValue::String("jdoe@example.org".into()),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Who?".into(),
                         None,
                         HeaderValue::String("one@y.test".into()),
@@ -423,7 +425,7 @@ mod tests {
                 concat!("<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n"),
                 HeaderValue::Array(vec![
                     HeaderValue::String("boss@nil.test".into()),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Giant; \"Big\" Box".into(),
                         None,
                         HeaderValue::String("sysservices@example.net".into()),
@@ -432,17 +434,17 @@ mod tests {
             ),
             (
                 concat!("A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "A Group".into(),
                     None,
                     HeaderValue::Array(vec![
-                        NamedValue::new(
+                        NamedValue::boxed(
                             "Ed Jones".into(),
                             None,
                             HeaderValue::String("c@a.test".into()),
                         ),
                         HeaderValue::String("joe@where.test".into()),
-                        NamedValue::new(
+                        NamedValue::boxed(
                             "John".into(),
                             None,
                             HeaderValue::String("jdoe@one.test".into()),
@@ -452,11 +454,11 @@ mod tests {
             ),
             (
                 concat!("Undisclosed recipients:;\n"),
-                NamedValue::new("Undisclosed recipients".into(), None, HeaderValue::Empty),
+                NamedValue::boxed("Undisclosed recipients".into(), None, HeaderValue::Empty),
             ),
             (
                 concat!("\"Mary Smith: Personal Account\" <smith@home.example >\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Mary Smith: Personal Account".into(),
                     None,
                     HeaderValue::String("smith@home.example".into()),
@@ -464,7 +466,7 @@ mod tests {
             ),
             (
                 concat!("Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Pete".into(),
                     Some("A nice ) chap his account his host".into()),
                     HeaderValue::String("pete@silly.test".into()),
@@ -474,7 +476,7 @@ mod tests {
                 concat!(
                     "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n"
                 ),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Pete".into(),
                     Some("A nice ) chap his account his host".into()),
                     HeaderValue::String("pete@silly.test".into()),
@@ -487,24 +489,24 @@ mod tests {
                     " friend); (the end of the group)\n"
                 ),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "A Group".into(),
                         Some("Some people".into()),
                         HeaderValue::Array(vec![
-                            NamedValue::new(
+                            NamedValue::boxed(
                                 "Chris Jones".into(),
                                 Some("Chris's host.".into()),
                                 HeaderValue::String("c@public.example".into()),
                             ),
                             HeaderValue::String("joe@example.org".into()),
-                            NamedValue::new(
+                            NamedValue::boxed(
                                 "John".into(),
                                 Some("my dear friend".into()),
                                 HeaderValue::String("jdoe@one.test".into()),
                             ),
                         ]),
                     ),
-                    HeaderValue::Array(vec![NamedValue::new(
+                    HeaderValue::Array(vec![NamedValue::boxed(
                         "the end of the group".into(),
                         None,
                         HeaderValue::Empty,
@@ -513,10 +515,10 @@ mod tests {
             ),
             (
                 concat!("(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Hidden recipients".into(),
                     Some("Empty list start".into()),
-                    HeaderValue::Array(vec![NamedValue::new(
+                    HeaderValue::Array(vec![NamedValue::boxed(
                         "nobody(that I know)".into(),
                         None,
                         HeaderValue::Empty,
@@ -525,7 +527,7 @@ mod tests {
             ),
             (
                 concat!("Joe Q. Public <john.q.public@example.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Joe Q. Public".into(),
                     None,
                     HeaderValue::String("john.q.public@example.com".into()),
@@ -534,7 +536,7 @@ mod tests {
             (
                 concat!("Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n"),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Mary Smith".into(),
                         None,
                         HeaderValue::String("@node.test:mary@example.net".into()),
@@ -544,7 +546,7 @@ mod tests {
             ),
             (
                 concat!("John Doe <jdoe@machine(comment).  example>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "John Doe".into(),
                     Some("comment".into()),
                     HeaderValue::String("jdoe@machine.  example".into()),
@@ -552,7 +554,7 @@ mod tests {
             ),
             (
                 concat!("Mary Smith\n    \n\t<mary@example.net>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Mary Smith".into(),
                     None,
                     HeaderValue::String("mary@example.net".into()),
@@ -560,7 +562,7 @@ mod tests {
             ),
             (
                 concat!("=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Keith Moore".into(),
                     None,
                     HeaderValue::String("moore@cs.utk.edu".into()),
@@ -568,7 +570,7 @@ mod tests {
             ),
             (
                 concat!("John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "John Doe".into(),
                     None,
                     HeaderValue::String("moore@cs.utk.edu".into()),
@@ -576,7 +578,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Keld Jørn Simonsen".into(),
                     None,
                     HeaderValue::String("keld@dkuug.dk".into()),
@@ -584,7 +586,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "André Pirard".into(),
                     None,
                     HeaderValue::String("PIRARD@vm1.ulg.ac.be".into()),
@@ -592,7 +594,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Olle Järnefors".into(),
                     None,
                     HeaderValue::String("ojarnef@admin.kth.se".into()),
@@ -610,7 +612,7 @@ mod tests {
                     "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7e",
                     "Xs+SDv4SDp7Oj08A==?=)\n"
                 ),
-                NamedValue::new(
+                NamedValue::boxed(
                     "Nathaniel Borenstein".into(),
                     Some("םולש ןב ילטפנ".into()),
                     HeaderValue::String("nsb@thumper.bellcore.com".into()),
@@ -622,17 +624,17 @@ mod tests {
                     "ft.com>, Keith Moore <moore@cs.utk.edu>\n"
                 ),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Greg Vaudreuil".into(),
                         None,
                         HeaderValue::String("gvaudre@NRI.Reston.VA.US".into()),
                     ),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Ned Freed".into(),
                         None,
                         HeaderValue::String("ned@innosoft.com".into()),
                     ),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Keith Moore".into(),
                         None,
                         HeaderValue::String("moore@cs.utk.edu".into()),
@@ -641,7 +643,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= <test@test.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "a".into(),
                     None,
                     HeaderValue::String("test@test.com".into()),
@@ -649,7 +651,7 @@ mod tests {
             ),
             (
                 concat!("\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "a b".into(),
                     None,
                     HeaderValue::String("test@test.com".into()),
@@ -657,7 +659,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "ab".into(),
                     None,
                     HeaderValue::String("test@test.com".into()),
@@ -665,7 +667,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "ab".into(),
                     None,
                     HeaderValue::String("test@test.com".into()),
@@ -673,7 +675,7 @@ mod tests {
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "a b".into(),
                     None,
                     HeaderValue::String("test@test.com".into()),
@@ -692,7 +694,7 @@ mod tests {
                     "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@addres",
                     "s.com>\n\nbody@content.com"
                 ),
-                NamedValue::new(
+                NamedValue::boxed(
                     "=?ISO-8859-1?Q a \" b".into(),
                     None,
                     HeaderValue::String("last@address.com".into()),
@@ -700,7 +702,7 @@ mod tests {
             ),
             (
                 concat!("=? <name@domain.com>\n"),
-                NamedValue::new(
+                NamedValue::boxed(
                     "=?".into(),
                     None,
                     HeaderValue::String("name@domain.com".into()),
@@ -712,17 +714,17 @@ mod tests {
                     "TF-8?Q?John_Sm=C3=AEth?=\n   <john@example.com>;\n"
                 ),
                 HeaderValue::Array(vec![
-                    HeaderValue::Array(vec![NamedValue::new(
+                    HeaderValue::Array(vec![NamedValue::boxed(
                         "  James Smythe".into(),
                         None,
                         HeaderValue::String("james@example.com".into()),
                     )]),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Friends".into(),
                         None,
                         HeaderValue::Array(vec![
                             HeaderValue::String("jane@example.com".into()),
-                            NamedValue::new(
+                            NamedValue::boxed(
                                 "John Smîth".into(),
                                 None,
                                 HeaderValue::String("john@example.com".into()),
@@ -737,7 +739,7 @@ mod tests {
                     "test.com; addr5@test.com, addr6@test.com\n"
                 ),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "List 1".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -745,7 +747,7 @@ mod tests {
                             HeaderValue::String("addr2@test.com".into()),
                         ]),
                     ),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "List 2".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -765,7 +767,7 @@ mod tests {
                     "dr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "List 1".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -773,7 +775,7 @@ mod tests {
                             HeaderValue::String("addr2@test.com".into()),
                         ]),
                     ),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "List 2".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -794,7 +796,7 @@ mod tests {
                     ", addr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
                 HeaderValue::Array(vec![
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Thís ís válíd ÚTF8".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -802,7 +804,7 @@ mod tests {
                             HeaderValue::String("addr2@test.com".into()),
                         ]),
                     ),
-                    NamedValue::new(
+                    NamedValue::boxed(
                         "Thís ís válíd ÚTF8".into(),
                         None,
                         HeaderValue::Array(vec![
@@ -815,6 +817,111 @@ mod tests {
                         HeaderValue::String("addr6@test.com".into()),
                     ]),
                 ]),
+            ),
+            (
+                "<http://www.host.com/list/archive/> (Web Archive)\n",
+                NamedValue::boxed(
+                    "Web Archive".into(),
+                    None,
+                    HeaderValue::String("http://www.host.com/list/archive/".into()),
+                ),
+            ),
+            (
+                "<mailto:archive@host.com?subject=index%20list>\n",
+                HeaderValue::String("mailto:archive@host.com?subject=index%20list".into()),
+            ),
+            (
+                "<mailto:moderator@host.com> (Postings are Moderated)\n",
+                NamedValue::boxed(
+                    "Postings are Moderated".into(),
+                    None,
+                    HeaderValue::String("mailto:moderator@host.com".into()),
+                ),
+            ),
+            (
+                concat!(
+                    "(Use this command to join the list)\n   <mailto:list-manager@host.com?b",
+                    "ody=subscribe%20list>\n"
+                ),
+                NamedValue::boxed(
+                    "Use this command to join the list".into(),
+                    None,
+                    HeaderValue::String(
+                        "mailto:list-manager@host.com?body=subscribe%20list".into(),
+                    ),
+                ),
+            ),
+            (
+                concat!(
+                    "<http://www.host.com/list.cgi?cmd=sub&lst=list>,\n   <mailto:list-manag",
+                    "er@host.com?body=subscribe%20list>\n"
+                ),
+                HeaderValue::Array(vec![
+                    HeaderValue::String("http://www.host.com/list.cgi?cmd=sub&lst=list".into()),
+                    HeaderValue::String(
+                        "mailto:list-manager@host.com?body=subscribe%20list".into(),
+                    ),
+                ]),
+            ),
+            (
+                "NO (posting not allowed on this list)\n",
+                NamedValue::boxed(
+                    "NO".into(),
+                    Some("posting not allowed on this list".into()),
+                    HeaderValue::Empty,
+                ),
+            ),
+            (
+                concat!(
+                    "<ftp://ftp.host.com/list.txt> (FTP),\n   <mailto:list@host.com?subject=",
+                    "help>\n"
+                ),
+                HeaderValue::Array(vec![
+                    NamedValue::boxed(
+                        "FTP".into(),
+                        None,
+                        HeaderValue::String("ftp://ftp.host.com/list.txt".into()),
+                    ),
+                    HeaderValue::String("mailto:list@host.com?subject=help".into()),
+                ]),
+            ),
+            (
+                "<http://www.host.com/list/>, <mailto:list-info@host.com>\n",
+                HeaderValue::Array(vec![
+                    HeaderValue::String("http://www.host.com/list/".into()),
+                    HeaderValue::String("mailto:list-info@host.com".into()),
+                ]),
+            ),
+            (
+                concat!(
+                    "(Use this command to get off the list)\n     <mailto:list-manager@host.",
+                    "com?body=unsubscribe%20list>\n"
+                ),
+                NamedValue::boxed(
+                    "Use this command to get off the list".into(),
+                    None,
+                    HeaderValue::String(
+                        "mailto:list-manager@host.com?body=unsubscribe%20list".into(),
+                    ),
+                ),
+            ),
+            (
+                concat!(
+                    "<http://www.host.com/list.cgi?cmd=unsub&lst=list>,\n   <mailto:list-req",
+                    "uest@host.com?subject=unsubscribe>\n"
+                ),
+                HeaderValue::Array(vec![
+                    HeaderValue::String("http://www.host.com/list.cgi?cmd=unsub&lst=list".into()),
+                    HeaderValue::String("mailto:list-request@host.com?subject=unsubscribe".into()),
+                ]),
+            ),
+            (
+                concat!("<mailto:listmom@host.com> (Contact Person for Help)\n"),
+                NamedValue::boxed(
+                    "Contact Person for Help".into(),
+                    None,
+                    HeaderValue::String("mailto:listmom@host.com".into()),
+                ),
             ),
         ];
 
@@ -837,7 +944,7 @@ mod tests {
                 .replace("[\"", "\"")
                 .replace("\"]", "\""),
                 format!("{:?}", result)
-                    .replace("NamedValue(NamedValue {", "NamedValue::new(")
+                    .replace("NamedValue(NamedValue {", "NamedValue::boxed(")
                     .replace("Array([", "HeaderValue::Array(vec![")
                     .replace("String(", "HeaderValue::String(")
                     .replace("})", ")")

@@ -51,7 +51,7 @@ pub fn decode_hex(src: &[u8], dest: &mut dyn Writer) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::{Writer, buffer_writer::BufferWriter, hex::decode_hex};
+    use crate::decoders::{buffer_writer::BufferWriter, hex::decode_hex, Writer};
 
     #[test]
     fn decode_hex_line() {

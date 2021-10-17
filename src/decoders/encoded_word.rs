@@ -63,7 +63,9 @@ pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{encoded_word::parse_encoded_word, message_stream::MessageStream};
+    use crate::{
+        decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream,
+    };
 
     #[test]
     fn decode_rfc2047() {
@@ -78,7 +80,11 @@ mod tests {
                 "this is some text",
                 true,
             ),
-            ("?US-ASCII?Q?Keith_Moore?=".to_string(), "Keith Moore", false),
+            (
+                "?US-ASCII?Q?Keith_Moore?=".to_string(),
+                "Keith Moore",
+                false,
+            ),
             (
                 "?iso_8859-1:1987?Q?Keld_J=F8rn_Simonsen?=".to_string(),
                 "Keld Jørn Simonsen",
@@ -146,7 +152,7 @@ mod tests {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);
                 }
-                None => panic!("Failed to parse '{}'", input.0),
+                None => panic!("Failed to decode '{}'", input.0),
             }
         }
     }

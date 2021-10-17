@@ -1,7 +1,8 @@
 use std::borrow::Cow;
 
-use crate::parsers::{
-    encoded_word::parse_encoded_word, header::HeaderValue, message_stream::MessageStream,
+use crate::{
+    decoders::encoded_word::parse_encoded_word,
+    parsers::{header::HeaderValue, message_stream::MessageStream},
 };
 struct UnstructuredParser<'x> {
     token_start: usize,

@@ -163,7 +163,12 @@ mod tests {
                 let result = writer.get_bytes().unwrap_or_else(|| [].into());
                 let result_str = std::str::from_utf8(result.as_ref()).unwrap();
                 //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
-                assert_eq!(result_str, input.1, "Failed for '{}'", input.0.escape_debug());
+                assert_eq!(
+                    result_str,
+                    input.1,
+                    "Failed for '{}'",
+                    input.0.escape_debug()
+                );
             }
         }
     }

@@ -6,10 +6,10 @@ use crate::{
             map::{get_charset_decoder, get_default_decoder},
             utf8::Utf8Decoder,
         },
+        encoded_word::parse_encoded_word,
         hex::decode_hex,
     },
     parsers::{
-        encoded_word::parse_encoded_word,
         header::{HeaderValue, NamedValue},
         message_stream::MessageStream,
     },
@@ -264,7 +264,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     _ => {
                         return if let Some(content_type) = parser.c_type {
                             if parser.c_subtype.is_some() || !parser.attributes.is_empty() {
-                                NamedValue::new(
+                                NamedValue::boxed(
                                     content_type,
                                     parser.c_subtype.take(),
                                     if !parser.attributes.is_empty() {
@@ -704,7 +704,7 @@ mod tests {
 
                 if let Some(content_type) = c_type {
                     if c_subtype.is_some() || !attributes.is_empty() {
-                        NamedValue::new(
+                        NamedValue::boxed(
                             content_type,
                             c_subtype.take(),
                             if !attributes.is_empty() {

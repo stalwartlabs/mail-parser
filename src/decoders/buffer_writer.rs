@@ -1,19 +1,18 @@
 use super::Writer;
 
 pub struct BufferWriter {
-    buf: Vec<u8>
+    buf: Vec<u8>,
 }
 
 impl BufferWriter {
     pub fn with_capacity(capacity: usize) -> BufferWriter {
         BufferWriter {
-            buf: Vec::with_capacity(capacity)
+            buf: Vec::with_capacity(capacity),
         }
     }
 }
 
 impl Writer for BufferWriter {
-
     fn write_byte(&mut self, byte: &u8) -> bool {
         self.buf.push(*byte);
         true
@@ -31,5 +30,4 @@ impl Writer for BufferWriter {
             None
         }
     }
-
 }

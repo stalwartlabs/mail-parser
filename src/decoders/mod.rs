@@ -1,8 +1,9 @@
 pub mod base64;
+pub mod buffer_writer;
 pub mod charsets;
+pub mod encoded_word;
 pub mod hex;
 pub mod quoted_printable;
-pub mod buffer_writer;
 
 pub trait Writer {
     fn write_byte(&mut self, byte: &u8) -> bool;

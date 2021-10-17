@@ -194,7 +194,12 @@ mod tests {
                     "-".repeat(50)
                 );*/
 
-                assert_eq!(input.1, result_str, "Failed for '{}'", input.0.escape_debug());
+                assert_eq!(
+                    input.1,
+                    result_str,
+                    "Failed for '{}'",
+                    input.0.escape_debug()
+                );
             }
         }
     }
