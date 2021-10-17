@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 
-use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
+use crate::parsers::{message_stream::MessageStream};
 
-pub fn parse_id<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+pub fn parse_id<'x>(stream: &'x MessageStream) -> Option<Vec<Cow<'x, str>>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -17,11 +17,11 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     continue;
                 }
                 _ => {
-                    return match ids.len() {
-                        1 => ids.pop().unwrap(),
-                        0 => HeaderValue::Empty,
-                        _ => HeaderValue::Array(ids),
-                    };
+                    return if !ids.is_empty() {
+                        Some(ids)
+                    } else {
+                        None
+                    }
                 }
             },
             b'<' => {
@@ -31,11 +31,11 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
             b'>' => {
                 is_id_part = false;
                 if token_start > 0 {
-                    ids.push(HeaderValue::String(
+                    ids.push(
                         stream
                             .get_string(token_start - 1, token_end, is_token_safe)
                             .unwrap(),
-                    ));
+                    );
                     is_token_safe = true;
                     token_start = 0;
                 } else {
@@ -57,14 +57,14 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
             token_end = stream.get_pos();
         }
     }
-    HeaderValue::Empty
+    None
 }
 
 mod tests {
     use std::borrow::Cow;
 
     use crate::parsers::{
-        fields::id::parse_id, header::HeaderValue, message_stream::MessageStream,
+        fields::id::parse_id, message_stream::MessageStream,
     };
 
     #[test]
@@ -102,19 +102,9 @@ mod tests {
 
         for input in inputs {
             assert_eq!(
-                if input.1.len() == 1 {
-                    HeaderValue::String((*input.1.first().unwrap()).into())
-                } else {
-                    HeaderValue::Array(
-                        input
-                            .1
-                            .iter()
-                            .map(|x| HeaderValue::String(Cow::Borrowed(x)))
-                            .collect::<Vec<HeaderValue>>(),
-                    )
-                },
-                parse_id(&MessageStream::new(input.0.as_bytes())),
-                "Failed to parse '{}'",
+                input.1,
+                parse_id(&MessageStream::new(input.0.as_bytes())).unwrap(),
+                "Failed to parse '{:?}'",
                 input.0
             );
         }

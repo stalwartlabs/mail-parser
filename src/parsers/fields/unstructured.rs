@@ -1,9 +1,6 @@
 use std::borrow::Cow;
 
-use crate::{
-    decoders::encoded_word::parse_encoded_word,
-    parsers::{header::HeaderValue, message_stream::MessageStream},
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -37,7 +34,7 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream,
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -61,9 +58,9 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     }
                     _ => {
                         return match parser.tokens.len() {
-                            1 => HeaderValue::String(parser.tokens.pop().unwrap()),
-                            0 => HeaderValue::Empty,
-                            _ => HeaderValue::String(parser.tokens.concat().into()),
+                            1 => parser.tokens.pop().unwrap().into(),
+                            0 => None,
+                            _ => Some(parser.tokens.concat().into()),
                         };
                     }
                 }
@@ -101,7 +98,7 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
         parser.token_end = stream.get_pos();
     }
 
-    HeaderValue::Empty
+    None
 }
 
 mod tests {
@@ -109,8 +106,7 @@ mod tests {
     #[test]
     fn parse_unstructured_text() {
         use crate::parsers::{
-            fields::unstructured::parse_unstructured, header::HeaderValue,
-            message_stream::MessageStream,
+            fields::unstructured::parse_unstructured, message_stream::MessageStream,
         };
         use std::borrow::Cow;
 
@@ -185,7 +181,7 @@ mod tests {
 
         for input in inputs {
             match parse_unstructured(&MessageStream::new(input.0.as_bytes())) {
-                HeaderValue::String(cow) => {
+                Some(cow) => {
                     assert_eq!(cow, input.1);
                     if let Cow::Borrowed(_) = cow {
                         assert!(

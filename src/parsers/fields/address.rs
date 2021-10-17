@@ -1,12 +1,34 @@
 use std::borrow::Cow;
 
-use crate::{
-    decoders::encoded_word::parse_encoded_word,
-    parsers::{
-        header::{HeaderValue, NamedValue},
-        message_stream::MessageStream,
-    },
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
+
+#[derive(Debug, PartialEq)]
+pub struct Addr<'x> {
+    name: Option<Cow<'x, str>>,
+    address: Option<Cow<'x, str>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Group<'x> {
+    name: Option<Cow<'x, str>>,
+    addresses: Vec<Addr<'x>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Address<'x> {
+    Address(Addr<'x>),
+    AddressList(Vec<Addr<'x>>),
+    Group(Group<'x>),
+    GroupList(Vec<Group<'x>>),
+    Collection(Vec<Address<'x>>),
+    Empty,
+}
+
+impl<'x> Default for Address<'x> {
+    fn default() -> Self {
+        Address::Empty
+    }
+}
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -32,10 +54,10 @@ pub struct AddressParser<'x> {
     state: AddressState,
     state_stack: Vec<AddressState>,
 
-    addresses: Vec<HeaderValue<'x>>,
+    addresses: Vec<Addr<'x>>,
     group_name: Option<Cow<'x, str>>,
     group_comment: Option<Cow<'x, str>>,
-    result: Vec<HeaderValue<'x>>,
+    result: Vec<Group<'x>>,
 }
 
 pub fn add_token<'x>(
@@ -105,43 +127,47 @@ pub fn add_address(parser: &mut AddressParser) {
     parser
         .addresses
         .push(if has_mail && has_name && has_comment {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.name_tokens),
-                concat_tokens(&mut parser.comment_tokens).into(),
-                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
-            )
+            Addr {
+                name: Some(
+                    format!(
+                        "{} ({})",
+                        concat_tokens(&mut parser.name_tokens),
+                        concat_tokens(&mut parser.comment_tokens)
+                    )
+                    .into(),
+                ),
+                address: concat_tokens(&mut parser.mail_tokens).into(),
+            }
         } else if has_name && has_mail {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.name_tokens),
-                None,
-                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
-            )
+            Addr {
+                name: concat_tokens(&mut parser.name_tokens).into(),
+                address: concat_tokens(&mut parser.mail_tokens).into(),
+            }
         } else if has_mail && has_comment {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.comment_tokens),
-                None,
-                HeaderValue::String(concat_tokens(&mut parser.mail_tokens)),
-            )
+            Addr {
+                name: concat_tokens(&mut parser.comment_tokens).into(),
+                address: concat_tokens(&mut parser.mail_tokens).into(),
+            }
         } else if has_mail {
-            HeaderValue::String(concat_tokens(&mut parser.mail_tokens))
+            Addr {
+                name: None,
+                address: concat_tokens(&mut parser.mail_tokens).into(),
+            }
         } else if has_name && has_comment {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.name_tokens),
-                concat_tokens(&mut parser.comment_tokens).into(),
-                HeaderValue::Empty,
-            )
+            Addr {
+                name: concat_tokens(&mut parser.comment_tokens).into(),
+                address: concat_tokens(&mut parser.name_tokens).into(),
+            }
         } else if has_name {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.name_tokens),
-                None,
-                HeaderValue::Empty,
-            )
+            Addr {
+                name: concat_tokens(&mut parser.name_tokens).into(),
+                address: None,
+            }
         } else if has_comment {
-            NamedValue::boxed(
-                concat_tokens(&mut parser.comment_tokens),
-                None,
-                HeaderValue::Empty,
-            )
+            Addr {
+                name: concat_tokens(&mut parser.comment_tokens).into(),
+                address: None,
+            }
         } else {
             return;
         });
@@ -172,24 +198,44 @@ pub fn add_group_details(parser: &mut AddressParser) {
 
 pub fn add_group(parser: &mut AddressParser) {
     let has_name = parser.group_name.is_some();
+    let has_comment = parser.group_comment.is_some();
     let has_addresses = !parser.addresses.is_empty();
 
-    parser.result.push(if has_name && has_addresses {
-        NamedValue::boxed(
-            parser.group_name.take().unwrap(),
-            parser.group_comment.take(),
-            HeaderValue::Array(std::mem::take(&mut parser.addresses)),
-        )
-    } else if has_addresses {
-        HeaderValue::Array(std::mem::take(&mut parser.addresses))
-    } else if has_name {
-        NamedValue::boxed(parser.group_name.take().unwrap(), None, HeaderValue::Empty)
-    } else {
-        return;
-    });
+    parser
+        .result
+        .push(if has_name && has_addresses && has_comment {
+            Group {
+                name: Some(
+                    format!(
+                        "{} ({})",
+                        parser.group_name.take().unwrap(),
+                        parser.group_comment.take().unwrap()
+                    )
+                    .into(),
+                ),
+                addresses: std::mem::take(&mut parser.addresses),
+            }
+        } else if has_addresses && has_name {
+            Group {
+                name: parser.group_name.take(),
+                addresses: std::mem::take(&mut parser.addresses),
+            }
+        } else if has_addresses {
+            Group {
+                name: parser.group_comment.take(),
+                addresses: std::mem::take(&mut parser.addresses),
+            }
+        } else if has_name {
+            Group {
+                name: parser.group_name.take(),
+                addresses: Vec::new(),
+            }
+        } else {
+            return;
+        });
 }
 
-pub fn parse_address<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+pub fn parse_address<'x>(stream: &'x MessageStream) -> Address<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -358,18 +404,18 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
     if parser.group_name.is_some() || !parser.result.is_empty() {
         add_group(&mut parser);
         if parser.result.len() > 1 {
-            HeaderValue::Array(parser.result)
+            Address::GroupList(parser.result)
         } else {
-            parser.result.pop().unwrap()
+            Address::Group(parser.result.pop().unwrap())
         }
     } else if !parser.addresses.is_empty() {
         if parser.addresses.len() > 1 {
-            HeaderValue::Array(parser.addresses)
+            Address::AddressList(parser.addresses)
         } else {
-            parser.addresses.pop().unwrap()
+            Address::Address(parser.addresses.pop().unwrap())
         }
     } else {
-        HeaderValue::Empty
+        Address::Empty
     }
 }
 
@@ -383,104 +429,104 @@ mod tests {
         let inputs = [
             (
                 concat!("John Doe <jdoe@machine.example>\n"),
-                NamedValue::boxed(
-                    "John Doe".into(),
-                    None,
-                    HeaderValue::String("jdoe@machine.example".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("John Doe".into()),
+                    address: Some("jdoe@machine.example".into()),
+                }),
             ),
             (
                 concat!(" Mary Smith <mary@example.net>\n"),
-                NamedValue::boxed(
-                    "Mary Smith".into(),
-                    None,
-                    HeaderValue::String("mary@example.net".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Mary Smith".into()),
+                    address: Some("mary@example.net".into()),
+                }),
             ),
             (
                 concat!("\"Joe Q. Public\" <john.q.public@example.com>\n"),
-                NamedValue::boxed(
-                    "Joe Q. Public".into(),
-                    None,
-                    HeaderValue::String("john.q.public@example.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Joe Q. Public".into()),
+                    address: Some("john.q.public@example.com".into()),
+                }),
             ),
             (
                 concat!("Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n"),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "Mary Smith".into(),
-                        None,
-                        HeaderValue::String("mary@x.test".into()),
-                    ),
-                    HeaderValue::String("jdoe@example.org".into()),
-                    NamedValue::boxed(
-                        "Who?".into(),
-                        None,
-                        HeaderValue::String("one@y.test".into()),
-                    ),
+                Address::AddressList(vec![
+                    Addr {
+                        name: Some("Mary Smith".into()),
+                        address: Some("mary@x.test".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("jdoe@example.org".into()),
+                    },
+                    Addr {
+                        name: Some("Who?".into()),
+                        address: Some("one@y.test".into()),
+                    },
                 ]),
             ),
             (
                 concat!("<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n"),
-                HeaderValue::Array(vec![
-                    HeaderValue::String("boss@nil.test".into()),
-                    NamedValue::boxed(
-                        "Giant; \"Big\" Box".into(),
-                        None,
-                        HeaderValue::String("sysservices@example.net".into()),
-                    ),
+                Address::AddressList(vec![
+                    Addr {
+                        name: None,
+                        address: Some("boss@nil.test".into()),
+                    },
+                    Addr {
+                        name: Some("Giant; \"Big\" Box".into()),
+                        address: Some("sysservices@example.net".into()),
+                    },
                 ]),
             ),
             (
                 concat!("A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n"),
-                NamedValue::boxed(
-                    "A Group".into(),
-                    None,
-                    HeaderValue::Array(vec![
-                        NamedValue::boxed(
-                            "Ed Jones".into(),
-                            None,
-                            HeaderValue::String("c@a.test".into()),
-                        ),
-                        HeaderValue::String("joe@where.test".into()),
-                        NamedValue::boxed(
-                            "John".into(),
-                            None,
-                            HeaderValue::String("jdoe@one.test".into()),
-                        ),
-                    ]),
-                ),
+                Address::Group(Group {
+                    name: Some("A Group".into()),
+                    addresses: vec![
+                        Addr {
+                            name: Some("Ed Jones".into()),
+                            address: Some("c@a.test".into()),
+                        },
+                        Addr {
+                            name: None,
+                            address: Some("joe@where.test".into()),
+                        },
+                        Addr {
+                            name: Some("John".into()),
+                            address: Some("jdoe@one.test".into()),
+                        },
+                    ],
+                }),
             ),
             (
                 concat!("Undisclosed recipients:;\n"),
-                NamedValue::boxed("Undisclosed recipients".into(), None, HeaderValue::Empty),
+                Address::Group(Group {
+                    name: Some("Undisclosed recipients".into()),
+                    addresses: vec![],
+                }),
             ),
             (
                 concat!("\"Mary Smith: Personal Account\" <smith@home.example >\n"),
-                NamedValue::boxed(
-                    "Mary Smith: Personal Account".into(),
-                    None,
-                    HeaderValue::String("smith@home.example".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Mary Smith: Personal Account".into()),
+                    address: Some("smith@home.example".into()),
+                }),
             ),
             (
                 concat!("Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n"),
-                NamedValue::boxed(
-                    "Pete".into(),
-                    Some("A nice ) chap his account his host".into()),
-                    HeaderValue::String("pete@silly.test".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Pete (A nice ) chap his account his host)".into()),
+                    address: Some("pete@silly.test".into()),
+                }),
             ),
             (
                 concat!(
                     "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n"
                 ),
-                NamedValue::boxed(
-                    "Pete".into(),
-                    Some("A nice ) chap his account his host".into()),
-                    HeaderValue::String("pete@silly.test".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Pete (A nice ) chap his account his host)".into()),
+                    address: Some("pete@silly.test".into()),
+                }),
             ),
             (
                 concat!(
@@ -488,123 +534,123 @@ mod tests {
                     "mple>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear",
                     " friend); (the end of the group)\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "A Group".into(),
-                        Some("Some people".into()),
-                        HeaderValue::Array(vec![
-                            NamedValue::boxed(
-                                "Chris Jones".into(),
-                                Some("Chris's host.".into()),
-                                HeaderValue::String("c@public.example".into()),
-                            ),
-                            HeaderValue::String("joe@example.org".into()),
-                            NamedValue::boxed(
-                                "John".into(),
-                                Some("my dear friend".into()),
-                                HeaderValue::String("jdoe@one.test".into()),
-                            ),
-                        ]),
-                    ),
-                    HeaderValue::Array(vec![NamedValue::boxed(
-                        "the end of the group".into(),
-                        None,
-                        HeaderValue::Empty,
-                    )]),
+                Address::GroupList(vec![
+                    Group {
+                        name: Some("A Group (Some people)".into()),
+                        addresses: vec![
+                            Addr {
+                                name: Some("Chris Jones (Chris's host.)".into()),
+                                address: Some("c@public.example".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("joe@example.org".into()),
+                            },
+                            Addr {
+                                name: Some("John (my dear friend)".into()),
+                                address: Some("jdoe@one.test".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: None,
+                        addresses: vec![Addr {
+                            name: Some("the end of the group".into()),
+                            address: None,
+                        }],
+                    },
                 ]),
             ),
             (
                 concat!("(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n"),
-                NamedValue::boxed(
-                    "Hidden recipients".into(),
-                    Some("Empty list start".into()),
-                    HeaderValue::Array(vec![NamedValue::boxed(
-                        "nobody(that I know)".into(),
-                        None,
-                        HeaderValue::Empty,
-                    )]),
-                ),
+                Address::Group(Group {
+                    name: Some("Hidden recipients (Empty list start)".into()),
+                    addresses: vec![Addr {
+                        name: Some("nobody(that I know)".into()),
+                        address: None,
+                    }],
+                }),
             ),
             (
                 concat!("Joe Q. Public <john.q.public@example.com>\n"),
-                NamedValue::boxed(
-                    "Joe Q. Public".into(),
-                    None,
-                    HeaderValue::String("john.q.public@example.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Joe Q. Public".into()),
+                    address: Some("john.q.public@example.com".into()),
+                }),
             ),
             (
                 concat!("Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n"),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "Mary Smith".into(),
-                        None,
-                        HeaderValue::String("@node.test:mary@example.net".into()),
-                    ),
-                    HeaderValue::String("jdoe@test  . example".into()),
+                Address::AddressList(vec![
+                    Addr {
+                        name: Some("Mary Smith".into()),
+                        address: Some("@node.test:mary@example.net".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("jdoe@test  . example".into()),
+                    },
                 ]),
             ),
             (
                 concat!("John Doe <jdoe@machine(comment).  example>\n"),
-                NamedValue::boxed(
-                    "John Doe".into(),
-                    Some("comment".into()),
-                    HeaderValue::String("jdoe@machine.  example".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("John Doe (comment)".into()),
+                    address: Some("jdoe@machine.  example".into()),
+                }),
             ),
             (
                 concat!("Mary Smith\n    \n\t<mary@example.net>\n"),
-                NamedValue::boxed(
-                    "Mary Smith".into(),
-                    None,
-                    HeaderValue::String("mary@example.net".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Mary Smith".into()),
+                    address: Some("mary@example.net".into()),
+                }),
             ),
             (
                 concat!("=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n"),
-                NamedValue::boxed(
-                    "Keith Moore".into(),
-                    None,
-                    HeaderValue::String("moore@cs.utk.edu".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Keith Moore".into()),
+                    address: Some("moore@cs.utk.edu".into()),
+                }),
             ),
             (
                 concat!("John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n"),
-                NamedValue::boxed(
-                    "John Doe".into(),
-                    None,
-                    HeaderValue::String("moore@cs.utk.edu".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("John Doe".into()),
+                    address: Some("moore@cs.utk.edu".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n"),
-                NamedValue::boxed(
-                    "Keld Jørn Simonsen".into(),
-                    None,
-                    HeaderValue::String("keld@dkuug.dk".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Keld Jørn Simonsen".into()),
+                    address: Some("keld@dkuug.dk".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n"),
-                NamedValue::boxed(
-                    "André Pirard".into(),
-                    None,
-                    HeaderValue::String("PIRARD@vm1.ulg.ac.be".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("André Pirard".into()),
+                    address: Some("PIRARD@vm1.ulg.ac.be".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n"),
-                NamedValue::boxed(
-                    "Olle Järnefors".into(),
-                    None,
-                    HeaderValue::String("ojarnef@admin.kth.se".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Olle Järnefors".into()),
+                    address: Some("ojarnef@admin.kth.se".into()),
+                }),
             ),
             (
                 concat!("ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n"),
-                HeaderValue::Array(vec![
-                    HeaderValue::String("ietf-822@dimacs.rutgers.edu".into()),
-                    HeaderValue::String("ojarnef@admin.kth.se".into()),
+                Address::AddressList(vec![
+                    Addr {
+                        name: None,
+                        address: Some("ietf-822@dimacs.rutgers.edu".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("ojarnef@admin.kth.se".into()),
+                    },
                 ]),
             ),
             (
@@ -612,125 +658,123 @@ mod tests {
                     "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7e",
                     "Xs+SDv4SDp7Oj08A==?=)\n"
                 ),
-                NamedValue::boxed(
-                    "Nathaniel Borenstein".into(),
-                    Some("םולש ןב ילטפנ".into()),
-                    HeaderValue::String("nsb@thumper.bellcore.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Nathaniel Borenstein (םולש ןב ילטפנ)".into()),
+                    address: Some("nsb@thumper.bellcore.com".into()),
+                }),
             ),
             (
                 concat!(
                     "Greg Vaudreuil <gvaudre@NRI.Reston.VA.US>, Ned Freed\n      <ned@innoso",
                     "ft.com>, Keith Moore <moore@cs.utk.edu>\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "Greg Vaudreuil".into(),
-                        None,
-                        HeaderValue::String("gvaudre@NRI.Reston.VA.US".into()),
-                    ),
-                    NamedValue::boxed(
-                        "Ned Freed".into(),
-                        None,
-                        HeaderValue::String("ned@innosoft.com".into()),
-                    ),
-                    NamedValue::boxed(
-                        "Keith Moore".into(),
-                        None,
-                        HeaderValue::String("moore@cs.utk.edu".into()),
-                    ),
+                Address::AddressList(vec![
+                    Addr {
+                        name: Some("Greg Vaudreuil".into()),
+                        address: Some("gvaudre@NRI.Reston.VA.US".into()),
+                    },
+                    Addr {
+                        name: Some("Ned Freed".into()),
+                        address: Some("ned@innosoft.com".into()),
+                    },
+                    Addr {
+                        name: Some("Keith Moore".into()),
+                        address: Some("moore@cs.utk.edu".into()),
+                    },
                 ]),
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= <test@test.com>\n"),
-                NamedValue::boxed(
-                    "a".into(),
-                    None,
-                    HeaderValue::String("test@test.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("a".into()),
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!("\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n"),
-                NamedValue::boxed(
-                    "a b".into(),
-                    None,
-                    HeaderValue::String("test@test.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("a b".into()),
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                NamedValue::boxed(
-                    "ab".into(),
-                    None,
-                    HeaderValue::String("test@test.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("ab".into()),
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                NamedValue::boxed(
-                    "ab".into(),
-                    None,
-                    HeaderValue::String("test@test.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("ab".into()),
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!("=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n"),
-                NamedValue::boxed(
-                    "a b".into(),
-                    None,
-                    HeaderValue::String("test@test.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("a b".into()),
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!(" <test@test.com>\n"),
-                HeaderValue::String("test@test.com".into()),
+                Address::Address(Addr {
+                    name: None,
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!("test@test.com\ninvalid@address.com\n"),
-                HeaderValue::String("test@test.com".into()),
+                Address::Address(Addr {
+                    name: None,
+                    address: Some("test@test.com".into()),
+                }),
             ),
             (
                 concat!(
                     "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@addres",
                     "s.com>\n\nbody@content.com"
                 ),
-                NamedValue::boxed(
-                    "=?ISO-8859-1?Q a \" b".into(),
-                    None,
-                    HeaderValue::String("last@address.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("=?ISO-8859-1?Q a \" b".into()),
+                    address: Some("last@address.com".into()),
+                }),
             ),
             (
                 concat!("=? <name@domain.com>\n"),
-                NamedValue::boxed(
-                    "=?".into(),
-                    None,
-                    HeaderValue::String("name@domain.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("=?".into()),
+                    address: Some("name@domain.com".into()),
+                }),
             ),
             (
                 concat!(
                     "\"  James Smythe\" <james@example.com>, Friends:\n  jane@example.com, =?U",
                     "TF-8?Q?John_Sm=C3=AEth?=\n   <john@example.com>;\n"
                 ),
-                HeaderValue::Array(vec![
-                    HeaderValue::Array(vec![NamedValue::boxed(
-                        "  James Smythe".into(),
-                        None,
-                        HeaderValue::String("james@example.com".into()),
-                    )]),
-                    NamedValue::boxed(
-                        "Friends".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("jane@example.com".into()),
-                            NamedValue::boxed(
-                                "John Smîth".into(),
-                                None,
-                                HeaderValue::String("john@example.com".into()),
-                            ),
-                        ]),
-                    ),
+                Address::GroupList(vec![
+                    Group {
+                        name: None,
+                        addresses: vec![Addr {
+                            name: Some("  James Smythe".into()),
+                            address: Some("james@example.com".into()),
+                        }],
+                    },
+                    Group {
+                        name: Some("Friends".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("jane@example.com".into()),
+                            },
+                            Addr {
+                                name: Some("John Smîth".into()),
+                                address: Some("john@example.com".into()),
+                            },
+                        ],
+                    },
                 ]),
             ),
             (
@@ -738,27 +782,46 @@ mod tests {
                     "List 1: addr1@test.com, addr2@test.com; List 2: addr3@test.com, addr4@",
                     "test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "List 1".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr1@test.com".into()),
-                            HeaderValue::String("addr2@test.com".into()),
-                        ]),
-                    ),
-                    NamedValue::boxed(
-                        "List 2".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr3@test.com".into()),
-                            HeaderValue::String("addr4@test.com".into()),
-                        ]),
-                    ),
-                    HeaderValue::Array(vec![
-                        HeaderValue::String("addr5@test.com".into()),
-                        HeaderValue::String("addr6@test.com".into()),
-                    ]),
+                Address::GroupList(vec![
+                    Group {
+                        name: Some("List 1".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr1@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr2@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: Some("List 2".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr3@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr4@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: None,
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr5@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr6@test.com".into()),
+                            },
+                        ],
+                    },
                 ]),
             ),
             (
@@ -766,27 +829,46 @@ mod tests {
                     "\"List 1\": addr1@test.com, addr2@test.com; \"List 2\": addr3@test.com, ad",
                     "dr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "List 1".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr1@test.com".into()),
-                            HeaderValue::String("addr2@test.com".into()),
-                        ]),
-                    ),
-                    NamedValue::boxed(
-                        "List 2".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr3@test.com".into()),
-                            HeaderValue::String("addr4@test.com".into()),
-                        ]),
-                    ),
-                    HeaderValue::Array(vec![
-                        HeaderValue::String("addr5@test.com".into()),
-                        HeaderValue::String("addr6@test.com".into()),
-                    ]),
+                Address::GroupList(vec![
+                    Group {
+                        name: Some("List 1".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr1@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr2@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: Some("List 2".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr3@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr4@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: None,
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr5@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr6@test.com".into()),
+                            },
+                        ],
+                    },
                 ]),
             ),
             (
@@ -795,101 +877,129 @@ mod tests {
                     "test.com; =?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=: addr3@test.com",
                     ", addr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "Thís ís válíd ÚTF8".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr1@test.com".into()),
-                            HeaderValue::String("addr2@test.com".into()),
-                        ]),
-                    ),
-                    NamedValue::boxed(
-                        "Thís ís válíd ÚTF8".into(),
-                        None,
-                        HeaderValue::Array(vec![
-                            HeaderValue::String("addr3@test.com".into()),
-                            HeaderValue::String("addr4@test.com".into()),
-                        ]),
-                    ),
-                    HeaderValue::Array(vec![
-                        HeaderValue::String("addr5@test.com".into()),
-                        HeaderValue::String("addr6@test.com".into()),
-                    ]),
+                Address::GroupList(vec![
+                    Group {
+                        name: Some("Thís ís válíd ÚTF8".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr1@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr2@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: Some("Thís ís válíd ÚTF8".into()),
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr3@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr4@test.com".into()),
+                            },
+                        ],
+                    },
+                    Group {
+                        name: None,
+                        addresses: vec![
+                            Addr {
+                                name: None,
+                                address: Some("addr5@test.com".into()),
+                            },
+                            Addr {
+                                name: None,
+                                address: Some("addr6@test.com".into()),
+                            },
+                        ],
+                    },
                 ]),
             ),
             (
-                "<http://www.host.com/list/archive/> (Web Archive)\n",
-                NamedValue::boxed(
-                    "Web Archive".into(),
-                    None,
-                    HeaderValue::String("http://www.host.com/list/archive/".into()),
-                ),
+                concat!("<http://www.host.com/list/archive/> (Web Archive)\n"),
+                Address::Address(Addr {
+                    name: Some("Web Archive".into()),
+                    address: Some("http://www.host.com/list/archive/".into()),
+                }),
             ),
             (
-                "<mailto:archive@host.com?subject=index%20list>\n",
-                HeaderValue::String("mailto:archive@host.com?subject=index%20list".into()),
+                concat!("<mailto:archive@host.com?subject=index%20list>\n"),
+                Address::Address(Addr {
+                    name: None,
+                    address: Some("mailto:archive@host.com?subject=index%20list".into()),
+                }),
             ),
             (
-                "<mailto:moderator@host.com> (Postings are Moderated)\n",
-                NamedValue::boxed(
-                    "Postings are Moderated".into(),
-                    None,
-                    HeaderValue::String("mailto:moderator@host.com".into()),
-                ),
+                concat!("<mailto:moderator@host.com> (Postings are Moderated)\n"),
+                Address::Address(Addr {
+                    name: Some("Postings are Moderated".into()),
+                    address: Some("mailto:moderator@host.com".into()),
+                }),
             ),
             (
                 concat!(
                     "(Use this command to join the list)\n   <mailto:list-manager@host.com?b",
                     "ody=subscribe%20list>\n"
                 ),
-                NamedValue::boxed(
-                    "Use this command to join the list".into(),
-                    None,
-                    HeaderValue::String(
-                        "mailto:list-manager@host.com?body=subscribe%20list".into(),
-                    ),
-                ),
+                Address::Address(Addr {
+                    name: Some("Use this command to join the list".into()),
+                    address: Some("mailto:list-manager@host.com?body=subscribe%20list".into()),
+                }),
             ),
             (
                 concat!(
                     "<http://www.host.com/list.cgi?cmd=sub&lst=list>,\n   <mailto:list-manag",
                     "er@host.com?body=subscribe%20list>\n"
                 ),
-                HeaderValue::Array(vec![
-                    HeaderValue::String("http://www.host.com/list.cgi?cmd=sub&lst=list".into()),
-                    HeaderValue::String(
-                        "mailto:list-manager@host.com?body=subscribe%20list".into(),
-                    ),
+                Address::AddressList(vec![
+                    Addr {
+                        name: None,
+                        address: Some("http://www.host.com/list.cgi?cmd=sub&lst=list".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("mailto:list-manager@host.com?body=subscribe%20list".into()),
+                    },
                 ]),
             ),
             (
-                "NO (posting not allowed on this list)\n",
-                NamedValue::boxed(
-                    "NO".into(),
-                    Some("posting not allowed on this list".into()),
-                    HeaderValue::Empty,
-                ),
+                concat!("NO (posting not allowed on this list)\n"),
+                Address::Address(Addr {
+                    name: Some("posting not allowed on this list".into()),
+                    address: Some("NO".into()),
+                }),
             ),
             (
                 concat!(
                     "<ftp://ftp.host.com/list.txt> (FTP),\n   <mailto:list@host.com?subject=",
                     "help>\n"
                 ),
-                HeaderValue::Array(vec![
-                    NamedValue::boxed(
-                        "FTP".into(),
-                        None,
-                        HeaderValue::String("ftp://ftp.host.com/list.txt".into()),
-                    ),
-                    HeaderValue::String("mailto:list@host.com?subject=help".into()),
+                Address::AddressList(vec![
+                    Addr {
+                        name: Some("FTP".into()),
+                        address: Some("ftp://ftp.host.com/list.txt".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("mailto:list@host.com?subject=help".into()),
+                    },
                 ]),
             ),
             (
-                "<http://www.host.com/list/>, <mailto:list-info@host.com>\n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("http://www.host.com/list/".into()),
-                    HeaderValue::String("mailto:list-info@host.com".into()),
+                concat!("<http://www.host.com/list/>, <mailto:list-info@host.com>\n"),
+                Address::AddressList(vec![
+                    Addr {
+                        name: None,
+                        address: Some("http://www.host.com/list/".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("mailto:list-info@host.com".into()),
+                    },
                 ]),
             ),
             (
@@ -897,31 +1007,33 @@ mod tests {
                     "(Use this command to get off the list)\n     <mailto:list-manager@host.",
                     "com?body=unsubscribe%20list>\n"
                 ),
-                NamedValue::boxed(
-                    "Use this command to get off the list".into(),
-                    None,
-                    HeaderValue::String(
-                        "mailto:list-manager@host.com?body=unsubscribe%20list".into(),
-                    ),
-                ),
+                Address::Address(Addr {
+                    name: Some("Use this command to get off the list".into()),
+                    address: Some("mailto:list-manager@host.com?body=unsubscribe%20list".into()),
+                }),
             ),
             (
                 concat!(
                     "<http://www.host.com/list.cgi?cmd=unsub&lst=list>,\n   <mailto:list-req",
                     "uest@host.com?subject=unsubscribe>\n"
                 ),
-                HeaderValue::Array(vec![
-                    HeaderValue::String("http://www.host.com/list.cgi?cmd=unsub&lst=list".into()),
-                    HeaderValue::String("mailto:list-request@host.com?subject=unsubscribe".into()),
+                Address::AddressList(vec![
+                    Addr {
+                        name: None,
+                        address: Some("http://www.host.com/list.cgi?cmd=unsub&lst=list".into()),
+                    },
+                    Addr {
+                        name: None,
+                        address: Some("mailto:list-request@host.com?subject=unsubscribe".into()),
+                    },
                 ]),
             ),
             (
                 concat!("<mailto:listmom@host.com> (Contact Person for Help)\n"),
-                NamedValue::boxed(
-                    "Contact Person for Help".into(),
-                    None,
-                    HeaderValue::String("mailto:listmom@host.com".into()),
-                ),
+                Address::Address(Addr {
+                    name: Some("Contact Person for Help".into()),
+                    address: Some("mailto:listmom@host.com".into()),
+                }),
             ),
         ];
 
@@ -944,26 +1056,22 @@ mod tests {
                 .replace("[\"", "\"")
                 .replace("\"]", "\""),
                 format!("{:?}", result)
-                    .replace("NamedValue(NamedValue {", "NamedValue::boxed(")
-                    .replace("Array([", "HeaderValue::Array(vec![")
-                    .replace("String(", "HeaderValue::String(")
-                    .replace("})", ")")
-                    .replace(", subname:", ".into(),")
-                    .replace("name: ", "")
-                    .replace("\", value:", "\".into(),")
-                    .replace(", value:", ", ")
+                    .replace("GroupList([", "Address::GroupList(vec![")
+                    .replace("Address(Addr", "Address::Address(Addr")
+                    .replace("AddressList([", "Address::AddressList(vec![")
+                    .replace("Group(Group", "Address::Group(Group")
+                    .replace("addresses: [", "addresses: vec![")
                     .replace("\")", "\".into())")
-                    .replace(" Empty", " HeaderValue::Empty")
             );*/
 
             /*println!(
-                "{} ->\n{}\n{}\n",
+                "{} ->\n{:?}\n{}\n",
                 input.0.escape_debug(),
-                str,
+                result,
                 "-".repeat(50)
             );*/
 
-            assert_eq!(result, input.1, "Failed for '{}'", input.0.escape_debug());
+            assert_eq!(result, input.1, "Failed for '{:?}'", input.0);
         }
     }
 }

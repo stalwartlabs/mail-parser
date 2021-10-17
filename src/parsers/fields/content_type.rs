@@ -2,18 +2,19 @@ use std::{borrow::Cow, collections::HashMap};
 
 use crate::{
     decoders::{
-        charsets::{
-            map::{get_charset_decoder, get_default_decoder},
-            utf8::Utf8Decoder,
-        },
+        charsets::map::{get_charset_decoder, get_default_decoder},
         encoded_word::parse_encoded_word,
         hex::decode_hex,
     },
-    parsers::{
-        header::{HeaderValue, NamedValue},
-        message_stream::MessageStream,
-    },
+    parsers::message_stream::MessageStream,
 };
+
+#[derive(Debug, PartialEq)]
+pub struct ContentType<'x> {
+    c_type: Cow<'x, str>,
+    c_subtype: Option<Cow<'x, str>>,
+    attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
+}
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 enum ContentState {
@@ -193,7 +194,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) 
     parser.is_token_safe = true;
 }
 
-pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'x>> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -263,21 +264,17 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     }
                     _ => {
                         return if let Some(content_type) = parser.c_type {
-                            if parser.c_subtype.is_some() || !parser.attributes.is_empty() {
-                                NamedValue::boxed(
-                                    content_type,
-                                    parser.c_subtype.take(),
-                                    if !parser.attributes.is_empty() {
-                                        HeaderValue::Map(parser.attributes)
-                                    } else {
-                                        HeaderValue::Empty
-                                    },
-                                )
-                            } else {
-                                HeaderValue::String(content_type)
-                            }
+                            Some(ContentType {
+                                c_type: content_type,
+                                c_subtype: parser.c_subtype.take(),
+                                attributes: if !parser.attributes.is_empty() {
+                                    Some(parser.attributes)
+                                } else {
+                                    None
+                                },
+                            })
                         } else {
-                            HeaderValue::Empty
+                            None
                         }
                     }
                 }
@@ -422,16 +419,13 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
         }
     }
 
-    HeaderValue::Empty
+    None
 }
 
 mod tests {
     use std::{borrow::Cow, collections::HashMap};
 
-    use crate::parsers::{
-        header::{HeaderValue, NamedValue},
-        message_stream::MessageStream,
-    };
+    use crate::parsers::{fields::content_type::ContentType, message_stream::MessageStream};
 
     use super::parse_content_type;
 
@@ -702,28 +696,20 @@ mod tests {
                     }
                 }
 
-                if let Some(content_type) = c_type {
-                    if c_subtype.is_some() || !attributes.is_empty() {
-                        NamedValue::boxed(
-                            content_type,
-                            c_subtype.take(),
-                            if !attributes.is_empty() {
-                                HeaderValue::Map(attributes)
-                            } else {
-                                HeaderValue::Empty
-                            },
-                        )
+                c_type.map(|content_type| ContentType {
+                    c_type: content_type,
+                    c_subtype: c_subtype.take(),
+                    attributes: if !attributes.is_empty() {
+                        Some(attributes)
                     } else {
-                        HeaderValue::String(content_type)
-                    }
-                } else {
-                    HeaderValue::Empty
-                }
+                        None
+                    },
+                })
             } else {
-                HeaderValue::Empty
+                None
             };
 
-            assert_eq!(result, expected, "failed for '{}'", input.0.escape_debug());
+            assert_eq!(result, expected, "Failed for '{:?}'", input.0);
         }
     }
 }

@@ -2,83 +2,46 @@ use std::{borrow::Cow, collections::HashMap};
 
 use crate::parsers::message_stream::MessageStream;
 
-use super::fields::{date::DateTime, parse_unsupported};
-
-#[derive(PartialEq, Debug)]
-pub struct NamedValue<'x> {
-    name: Cow<'x, str>,
-    subname: Option<Cow<'x, str>>,
-    value: HeaderValue<'x>,
-}
-
-impl<'x> NamedValue<'x> {
-    pub fn boxed(
-        name: Cow<'x, str>,
-        subname: Option<Cow<'x, str>>,
-        value: HeaderValue<'x>,
-    ) -> HeaderValue<'x> {
-        HeaderValue::NamedValue(Box::new(NamedValue {
-            name,
-            subname,
-            value,
-        }))
-    }
-}
-
-#[derive(PartialEq, Debug)]
-pub enum HeaderValue<'x> {
-    Empty,
-    DateTime(Box<DateTime>),
-    String(Cow<'x, str>),
-    Array(Vec<HeaderValue<'x>>),
-    Map(HashMap<Cow<'x, str>, Cow<'x, str>>),
-    NamedValue(Box<NamedValue<'x>>),
-}
-
-impl<'x> Default for HeaderValue<'x> {
-    fn default() -> Self {
-        HeaderValue::Empty
-    }
-}
+use super::fields::{address::Address, content_type::ContentType, date::DateTime, parse_unsupported};
 
 #[derive(PartialEq, Debug, Default)]
 pub struct Header<'x> {
-    pub bcc: HeaderValue<'x>,
-    pub cc: HeaderValue<'x>,
-    pub comments: HeaderValue<'x>,
-    pub content_description: HeaderValue<'x>,
-    pub content_disposition: HeaderValue<'x>,
-    pub content_id: HeaderValue<'x>,
-    pub content_transfer_encoding: HeaderValue<'x>,
-    pub content_type: HeaderValue<'x>,
-    pub date: HeaderValue<'x>,
-    pub from: HeaderValue<'x>,
-    pub in_reply_to: HeaderValue<'x>,
-    pub keywords: HeaderValue<'x>,
-    pub list_archive: HeaderValue<'x>,
-    pub list_help: HeaderValue<'x>,
-    pub list_id: HeaderValue<'x>,
-    pub list_owner: HeaderValue<'x>,
-    pub list_post: HeaderValue<'x>,
-    pub list_subscribe: HeaderValue<'x>,
-    pub list_unsubscribe: HeaderValue<'x>,
-    pub message_id: HeaderValue<'x>,
-    pub mime_version: HeaderValue<'x>,
-    pub received: HeaderValue<'x>,
-    pub references: HeaderValue<'x>,
-    pub reply_to: HeaderValue<'x>,
-    pub resent_bcc: HeaderValue<'x>,
-    pub resent_cc: HeaderValue<'x>,
-    pub resent_date: HeaderValue<'x>,
-    pub resent_from: HeaderValue<'x>,
-    pub resent_message_id: HeaderValue<'x>,
-    pub resent_sender: HeaderValue<'x>,
-    pub resent_to: HeaderValue<'x>,
-    pub return_path: HeaderValue<'x>,
-    pub sender: HeaderValue<'x>,
-    pub subject: HeaderValue<'x>,
-    pub to: HeaderValue<'x>,
-    pub others: HashMap<&'x str, HeaderValue<'x>>,
+    pub bcc: Address<'x>,
+    pub cc: Address<'x>,
+    pub comments: Option<Vec<Cow<'x, str>>>,
+    pub content_description: Option<Cow<'x, str>>,
+    pub content_disposition: Option<ContentType<'x>>,
+    pub content_id: Option<Cow<'x, str>>,
+    pub content_transfer_encoding: Option<Cow<'x, str>>,
+    pub content_type: Option<ContentType<'x>>,
+    pub date: Option<DateTime>,
+    pub from: Address<'x>,
+    pub in_reply_to: Option<Vec<Cow<'x, str>>>,
+    pub keywords: Option<Vec<Cow<'x, str>>>,
+    pub list_archive: Address<'x>,
+    pub list_help: Address<'x>,
+    pub list_id: Address<'x>,
+    pub list_owner: Address<'x>,
+    pub list_post: Address<'x>,
+    pub list_subscribe: Address<'x>,
+    pub list_unsubscribe: Address<'x>,
+    pub message_id: Option<Cow<'x, str>>,
+    pub mime_version: Option<Cow<'x, str>>,
+    pub received: Option<Vec<Cow<'x, str>>>,
+    pub references: Option<Vec<Cow<'x, str>>>,
+    pub reply_to: Address<'x>,
+    pub resent_bcc: Address<'x>,
+    pub resent_cc: Address<'x>,
+    pub resent_date: Option<Vec<DateTime>>,
+    pub resent_from: Address<'x>,
+    pub resent_message_id: Option<Vec<Cow<'x, str>>>,
+    pub resent_sender: Address<'x>,
+    pub resent_to: Address<'x>,
+    pub return_path: Option<Vec<Cow<'x, str>>>,
+    pub sender: Address<'x>,
+    pub subject: Option<Cow<'x, str>>,
+    pub to: Address<'x>,
+    pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
 }
 
 impl<'x> Header<'x> {

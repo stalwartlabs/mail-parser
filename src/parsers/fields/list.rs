@@ -1,9 +1,6 @@
 use std::borrow::Cow;
 
-use crate::{
-    decoders::encoded_word::parse_encoded_word,
-    parsers::{header::HeaderValue, message_stream::MessageStream},
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 
 struct ListParser<'x> {
     token_start: usize,
@@ -11,7 +8,7 @@ struct ListParser<'x> {
     is_token_safe: bool,
     is_token_start: bool,
     tokens: Vec<Cow<'x, str>>,
-    list: Vec<HeaderValue<'x>>,
+    list: Vec<Cow<'x, str>>,
 }
 
 fn add_token<'x>(parser: &mut ListParser<'x>, stream: &'x MessageStream, add_space: bool) {
@@ -41,19 +38,17 @@ fn add_token<'x>(parser: &mut ListParser<'x>, stream: &'x MessageStream, add_spa
 
 fn add_tokens_to_list<'x>(parser: &mut ListParser<'x>) {
     if !parser.tokens.is_empty() {
-        parser
-            .list
-            .push(HeaderValue::String(if parser.tokens.len() == 1 {
-                parser.tokens.pop().unwrap()
-            } else {
-                let value = parser.tokens.concat();
-                parser.tokens.clear();
-                value.into()
-            }));
+        parser.list.push(if parser.tokens.len() == 1 {
+            parser.tokens.pop().unwrap()
+        } else {
+            let value = parser.tokens.concat();
+            parser.tokens.clear();
+            value.into()
+        });
     }
 }
 
-pub fn parse_comma_separared<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+pub fn parse_comma_separared<'x>(stream: &'x MessageStream) -> Option<Vec<Cow<'x, str>>> {
     let mut parser = ListParser {
         token_start: 0,
         token_end: 0,
@@ -78,10 +73,10 @@ pub fn parse_comma_separared<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                     }
                     _ => {
                         add_tokens_to_list(&mut parser);
-                        return match parser.list.len() {
-                            1 => parser.list.pop().unwrap(),
-                            0 => HeaderValue::Empty,
-                            _ => HeaderValue::Array(parser.list),
+                        return if !parser.list.is_empty() {
+                            parser.list.into()
+                        } else {
+                            None
                         };
                     }
                 }
@@ -124,41 +119,29 @@ pub fn parse_comma_separared<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
         parser.token_end = stream.get_pos();
     }
 
-    HeaderValue::Empty
+    None
 }
 
 mod tests {
-    use crate::parsers::{
-        fields::list::parse_comma_separared, header::HeaderValue, message_stream::MessageStream,
-    };
+    use crate::parsers::{fields::list::parse_comma_separared, message_stream::MessageStream};
 
     #[test]
     fn parse_comma_separated_text() {
         let inputs = [
-            (" one item  \n", HeaderValue::String("one item".into())),
-            (
-                "simple, list\n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("simple".into()),
-                    HeaderValue::String("list".into()),
-                ]),
-            ),
+            (" one item  \n", vec!["one item"]),
+            ("simple, list\n", vec!["simple".into(), "list".into()]),
             (
                 "multi \r\n list, \r\n with, cr lf  \r\n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("multi list".into()),
-                    HeaderValue::String("with".into()),
-                    HeaderValue::String("cr lf".into()),
-                ]),
+                vec!["multi list".into(), "with".into(), "cr lf".into()],
             ),
             (
                 "=?iso-8859-1?q?this is some text?=, in, a, list, \n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("this is some text".into()),
-                    HeaderValue::String("in".into()),
-                    HeaderValue::String("a".into()),
-                    HeaderValue::String("list".into()),
-                ]),
+                vec![
+                    "this is some text".into(),
+                    "in".into(),
+                    "a".into(),
+                    "list".into(),
+                ],
             ),
             (
                 concat!(
@@ -166,36 +149,33 @@ mod tests {
                     "=?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=\n",
                     " , but, in a list, which, is, more, fun!\n"
                 ),
-                HeaderValue::Array(vec![
-                    HeaderValue::String("If you can read this you understand the example.".into()),
-                    HeaderValue::String("but".into()),
-                    HeaderValue::String("in a list".into()),
-                    HeaderValue::String("which".into()),
-                    HeaderValue::String("is".into()),
-                    HeaderValue::String("more".into()),
-                    HeaderValue::String("fun!".into()),
-                ]),
+                vec![
+                    "If you can read this you understand the example.".into(),
+                    "but".into(),
+                    "in a list".into(),
+                    "which".into(),
+                    "is".into(),
+                    "more".into(),
+                    "fun!".into(),
+                ],
             ),
             (
                 "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n , listed\n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("ab".into()),
-                    HeaderValue::String("listed".into()),
-                ]),
+                vec!["ab".into(), "listed".into()],
             ),
             (
                 "ハロー・ワールド, and also, ascii terms\n",
-                HeaderValue::Array(vec![
-                    HeaderValue::String("ハロー・ワールド".into()),
-                    HeaderValue::String("and also".into()),
-                    HeaderValue::String("ascii terms".into()),
-                ]),
+                vec![
+                    "ハロー・ワールド".into(),
+                    "and also".into(),
+                    "ascii terms".into(),
+                ],
             ),
         ];
 
         for input in inputs {
             assert_eq!(
-                parse_comma_separared(&MessageStream::new(input.0.as_bytes())),
+                parse_comma_separared(&MessageStream::new(input.0.as_bytes())).unwrap(),
                 input.1
             );
         }

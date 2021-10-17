@@ -1,6 +1,8 @@
-use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
+use std::borrow::Cow;
 
-pub fn parse_raw<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
+use crate::parsers::message_stream::MessageStream;
+
+pub fn parse_raw<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -14,13 +16,12 @@ pub fn parse_raw<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
                 }
                 _ => {
                     return if token_start > 0 {
-                        HeaderValue::String(
-                            stream
-                                .get_string(token_start - 1, token_end, is_token_safe)
-                                .unwrap(),
-                        )
+                        stream
+                            .get_string(token_start - 1, token_end, is_token_safe)
+                            .unwrap()
+                            .into()
                     } else {
-                        HeaderValue::Empty
+                        None
                     };
                 }
             },
@@ -40,11 +41,11 @@ pub fn parse_raw<'x>(stream: &'x MessageStream) -> HeaderValue<'x> {
         token_end = stream.get_pos();
     }
 
-    HeaderValue::Empty
+    None
 }
 
 mod tests {
-    use crate::parsers::{fields::raw::parse_raw, header::HeaderValue, message_stream::MessageStream};
+    use crate::parsers::{fields::raw::parse_raw, message_stream::MessageStream};
 
     #[test]
     fn parse_raw_text() {
@@ -67,8 +68,8 @@ mod tests {
 
         for input in inputs {
             assert_eq!(
-                parse_raw(&MessageStream::new(input.0.as_bytes())),
-                HeaderValue::String(input.1.into()),
+                parse_raw(&MessageStream::new(input.0.as_bytes())).unwrap(),
+                input.1,
                 "Failed for '{:?}'",
                 input.0
             );

@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::parsers::{header::HeaderValue, message_stream::MessageStream};
+use crate::parsers::message_stream::MessageStream;
 
 #[derive(Debug, PartialEq)]
 pub struct DateTime {
@@ -38,7 +38,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> HeaderValue<'x> {
+pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -151,7 +151,7 @@ pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> Head
     }
 
     if pos >= 6 {
-        HeaderValue::DateTime(Box::new(DateTime {
+        Some(DateTime {
             year: if (1..=99).contains(&parts[2]) {
                 parts[2] + 1900
             } else {
@@ -169,9 +169,9 @@ pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> Head
             tz_hour: parts[6] / 100,
             tz_minute: parts[6] % 100,
             tz_before_gmt: !is_plus,
-        }))
+        })
     } else {
-        HeaderValue::Empty
+        None
     }
 }
 
@@ -194,9 +194,7 @@ pub static MONTH_MAP: &[u8] = &[
 ];
 
 mod tests {
-    use crate::parsers::{
-        fields::date::parse_date, header::HeaderValue, message_stream::MessageStream,
-    };
+    use crate::parsers::{fields::date::parse_date, message_stream::MessageStream};
 
     #[test]
     fn parse_dates() {
@@ -262,11 +260,11 @@ mod tests {
 
         for input in inputs {
             match parse_date(&MessageStream::new(input.0.as_bytes()), false) {
-                HeaderValue::DateTime(date) => {
+                Some(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());
                 }
-                HeaderValue::Empty => {
+                None => {
                     //println!("{} -> None", input.0.escape_debug());
                     assert!(input.1.is_empty());
                 }
