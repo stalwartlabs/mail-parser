@@ -44,6 +44,25 @@ pub fn parse_raw<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
     None
 }
 
+pub fn parse_and_ignore<'x>(stream: &'x MessageStream) {
+    let mut token_start: usize = 0;
+    let mut token_end: usize = 0;
+    let mut is_token_safe = true;
+
+    while let Some(ch) = stream.next() {
+        match ch {
+            b'\n' => match stream.peek() {
+                Some(b' ' | b'\t') => {
+                    stream.advance(1);
+                    continue;
+                }
+                _ => return
+            },
+            _ => ()
+        }
+    }
+}
+
 mod tests {
     use crate::parsers::{fields::raw::parse_raw, message_stream::MessageStream};
 

@@ -31,8 +31,12 @@ impl Writer for MultiByteDecoder {
     }
 
     fn get_bytes(&mut self) -> Option<Box<[u8]>> {
-        todo!()
+        None
     }
+
+    fn is_empty(&self) -> bool {
+        self.result.is_empty()
+    }    
 }
 
 impl MultiByteDecoder {

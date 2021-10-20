@@ -82,7 +82,12 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
             }
         }
 
-        boundary.is_empty()
+        if boundary.is_empty() {
+            self.set_pos(pos);
+            true
+        } else {
+            false
+        }
     }
 }
 

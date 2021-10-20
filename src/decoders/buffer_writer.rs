@@ -30,4 +30,8 @@ impl Writer for BufferWriter {
             None
         }
     }
+
+    fn is_empty(&self) -> bool {
+        self.buf.is_empty()
+    }
 }

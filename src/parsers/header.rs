@@ -2,18 +2,16 @@ use std::{borrow::Cow, collections::HashMap};
 
 use crate::parsers::message_stream::MessageStream;
 
-use super::fields::{address::Address, content_type::ContentType, date::DateTime, parse_unsupported};
+use super::fields::{
+    address::Address, content_type::ContentType, date::DateTime, parse_unsupported, MessageField,
+};
 
 #[derive(PartialEq, Debug, Default)]
-pub struct Header<'x> {
+pub struct MessageHeader<'x> {
+    pub mime: MimeHeader<'x>,
     pub bcc: Address<'x>,
     pub cc: Address<'x>,
     pub comments: Option<Vec<Cow<'x, str>>>,
-    pub content_description: Option<Cow<'x, str>>,
-    pub content_disposition: Option<ContentType<'x>>,
-    pub content_id: Option<Cow<'x, str>>,
-    pub content_transfer_encoding: Option<Cow<'x, str>>,
-    pub content_type: Option<ContentType<'x>>,
     pub date: Option<DateTime>,
     pub from: Address<'x>,
     pub in_reply_to: Option<Vec<Cow<'x, str>>>,
@@ -44,26 +42,53 @@ pub struct Header<'x> {
     pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
 }
 
-impl<'x> Header<'x> {
-    pub fn new() -> Header<'x> {
-        Header {
+impl<'x> MessageHeader<'x> {
+    pub fn new() -> MessageHeader<'x> {
+        MessageHeader {
             ..Default::default()
         }
     }
 }
 
+#[derive(PartialEq, Debug, Default)]
+pub struct MimeHeader<'x> {
+    pub content_description: Option<Cow<'x, str>>,
+    pub content_disposition: Option<ContentType<'x>>,
+    pub content_id: Option<Cow<'x, str>>,
+    pub content_transfer_encoding: Option<Cow<'x, str>>,
+    pub content_type: Option<ContentType<'x>>,
+}
+
+impl<'x> MimeHeader<'x> {
+    pub fn new() -> MimeHeader<'x> {
+        MimeHeader {
+            ..Default::default()
+        }
+    }
+
+    pub fn clear(&mut self) {
+        self.content_description = None;
+        self.content_disposition = None;
+        self.content_id = None;
+        self.content_transfer_encoding = None;
+        self.content_type = None;
+    }
+}
+
 enum HeaderParserResult<'x> {
-    Supported(fn(&mut Header<'x>, &'x MessageStream<'x>)),
+    Supported(fn(&mut dyn MessageField<'x>, &'x MessageStream<'x>)),
     Unsupported(&'x [u8]),
+    Lf,
     Eof,
 }
 
-pub fn parse_headers<'x>(header: &mut Header<'x>, stream: &'x MessageStream<'x>) {
+pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &'x MessageStream<'x>) -> bool {
     loop {
         match parse_header_name(stream) {
             HeaderParserResult::Supported(fnc) => fnc(header, stream),
             HeaderParserResult::Unsupported(name) => parse_unsupported(header, stream, name),
-            HeaderParserResult::Eof => return,
+            HeaderParserResult::Lf => return true,
+            HeaderParserResult::Eof => return false,
         }
     }
 }
@@ -103,9 +128,8 @@ fn parse_header_name<'x>(stream: &'x MessageStream) -> HeaderParserResult<'x> {
                 }
             }
             b'\n' => {
-                if token_start == 0 {
-                    break;
-                }
+                stream.rewind(1);
+                return HeaderParserResult::Lf;
             }
             _ => {
                 if !(*ch).is_ascii_whitespace() {
@@ -180,9 +204,9 @@ mod tests {
                         }
                     }
                 }
-                HeaderParserResult::Eof => panic!("EOF for '{}'", input.0.escape_debug()),
+                _ => panic!("Eof/Lf for '{:?}'", input.0),
             }
-            panic!("Failed to parse '{}'", input.0.escape_debug())
+            panic!("Failed to parse '{:?}'", input.0)
         }
     }
 }
@@ -201,7 +225,7 @@ static HDR_HASH: &[u8] = &[
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62,
 ];
 
-static HDR_FNCS: &[for<'x, 'y> fn(&'y mut Header<'x>, &'x MessageStream<'x>)] = &[
+static HDR_FNCS: &[for<'x, 'y> fn(&'y mut dyn MessageField<'x>, &'x MessageStream<'x>)] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,
     super::fields::parse_sender,

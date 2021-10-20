@@ -65,6 +65,10 @@ impl Writer for Utf8Decoder {
     fn get_bytes(&mut self) -> Option<Box<[u8]>> {
         None
     }
+
+    fn is_empty(&self) -> bool {
+        self.result.is_empty()
+    }    
 }
 
 impl Utf8Decoder {

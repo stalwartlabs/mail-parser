@@ -79,6 +79,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                 b'_' if is_word => {
                     dest.write_byte(&b' ');
                 }
+                b'\r' => (),
                 _ => match state {
                     QuotedPrintableState::None => {
                         dest.write_byte(ch);
@@ -105,7 +106,12 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
             }
         }
 
-        boundary.is_empty()
+        if boundary.is_empty() {
+            self.set_pos(pos);
+            true
+        } else {
+            false
+        }
     }
 }
 
@@ -156,6 +162,20 @@ mod tests {
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry=\n--\n--boundary",
                 "— Antoine de Saint-Exupéry--",
                 "\n--boundary",
+                false,
+            ),
+            (
+                concat!(
+                    "Die Hasen klagten einst uber ihre Lage; \"wir ",
+                    "leben\", sprach ein=\r\n Redner, \"in steter Furcht vor Menschen",
+                    " und Tieren, eine Beute der Hunde,=\r\n der\n"
+                ),
+                concat!(
+                    "Die Hasen klagten einst uber ihre Lage; \"wir leben\", ",
+                    "sprach ein Redner, \"in steter Furcht vor Menschen und ",
+                    "Tieren, eine Beute der Hunde, der\n"
+                ),
+                "",
                 false,
             ),
             ("this=20is=20some=20text?=", "this is some text", "?=", true),

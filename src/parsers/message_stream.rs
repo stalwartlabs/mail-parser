@@ -29,6 +29,11 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
+    pub fn is_eof(&self) -> bool {
+        unsafe { *self.pos.get() >= self.data.len() }
+    }
+
+    #[inline(always)]
     pub fn set_pos(&self, pos: usize) {
         unsafe {
             *self.pos.get() = pos;
@@ -72,6 +77,63 @@ impl<'x> MessageStream<'x> {
             .get(start_pos..start_pos + bytes.len())
             .unwrap_or(&[])
             == bytes
+    }
+
+    pub fn seek_bytes(&self, bytes: &[u8]) -> bool {
+        let mut pos = self.get_pos();
+        let mut match_count = 0;
+
+        if !bytes.is_empty() {
+            for ch in self.data[pos..].iter() {
+                pos += 1;
+
+                if ch == unsafe { bytes.get_unchecked(match_count) } {
+                    match_count += 1;
+                    if match_count == bytes.len() {
+                        self.set_pos(pos);
+                        return true;
+                    } else {
+                        continue;
+                    }
+                } else if match_count > 0 {
+                    if ch == unsafe { bytes.get_unchecked(0) } {
+                        match_count = 1;
+                        continue;
+                    } else {
+                        match_count = 0;
+                    }
+                }
+            }
+        }
+
+        false
+    }
+
+    pub fn skip_spaces(&self) -> bool {
+        let mut pos = self.get_pos();
+        for ch in self.data[pos..].iter() {
+            if !ch.is_ascii_whitespace() {
+                break;
+            } else {
+                pos += 1;
+            }
+        }
+        self.set_pos(pos);
+        pos < self.data.len()
+    }
+
+    pub fn skip_crlf(&self) {
+        let mut pos = self.get_pos();
+        for ch in self.data[pos..].iter() {
+            match ch {
+                b'\r' => pos += 1,
+                b'\n' => {
+                    self.set_pos(pos + 1);
+                    break;
+                }
+                _ => break,
+            }
+        }
     }
 
     pub fn skip_byte(&self, ch: &u8) -> bool {
