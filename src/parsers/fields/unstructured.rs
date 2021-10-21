@@ -1,6 +1,9 @@
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
+use crate::{
+    decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
+    parsers::message_stream::MessageStream,
+};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -34,7 +37,10 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream,
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
+pub fn parse_unstructured<'x>(
+    stream: &'x MessageStream,
+    buffer: &'x BufferWriter,
+) -> Option<Cow<'x, str>> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -72,7 +78,7 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
                 continue;
             }
             b'=' if parser.is_token_start => {
-                if let Some(token) = parse_encoded_word(stream) {
+                if let Some(token) = parse_encoded_word(stream, buffer) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
                     continue;
@@ -102,6 +108,7 @@ pub fn parse_unstructured<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>>
 }
 
 mod tests {
+    use crate::decoders::buffer_writer::BufferWriter;
 
     #[test]
     fn parse_unstructured_text() {
@@ -180,27 +187,15 @@ mod tests {
         ];
 
         for input in inputs {
-            match parse_unstructured(&MessageStream::new(input.0.as_bytes())) {
-                Some(cow) => {
-                    assert_eq!(cow, input.1);
-                    if let Cow::Borrowed(_) = cow {
-                        assert!(
-                            input.2,
-                            "Expected Owned but received Borrowed string '{}'.",
-                            cow
-                        );
-                        //println!("'{}' -> Borrowed", cow);
-                    } else {
-                        assert!(
-                            !input.2,
-                            "Expected Borrowed but received Owned string '{}'.",
-                            cow
-                        );
-                        //println!("'{}' -> Owned", cow);
-                    }
-                }
-                _ => panic!("Failed to parse '{}'", input.0),
-            }
+            assert_eq!(
+                parse_unstructured(
+                    &MessageStream::new(input.0.as_bytes()),
+                    &BufferWriter::with_capacity(input.0.len() * 2),
+                ).unwrap(),
+                input.1,
+                "Failed to parse '{:?}'",
+                input.0
+            );
         }
     }
 }

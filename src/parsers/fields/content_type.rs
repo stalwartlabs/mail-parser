@@ -1,7 +1,9 @@
 use std::{borrow::Cow, collections::HashMap};
+use serde::{Serialize, Deserialize};
 
 use crate::{
     decoders::{
+        buffer_writer::BufferWriter,
         charsets::map::{get_charset_decoder, get_default_decoder},
         encoded_word::parse_encoded_word,
         hex::decode_hex,
@@ -9,10 +11,14 @@ use crate::{
     parsers::message_stream::MessageStream,
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct ContentType<'x> {
     c_type: Cow<'x, str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     c_subtype: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
 }
 
@@ -145,7 +151,11 @@ fn add_partial_value<'x>(
     }
 }
 
-fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
+fn add_value<'x>(
+    parser: &mut ContentTypeParser<'x>,
+    stream: &'x MessageStream,
+    buffer: &'x BufferWriter,
+) {
     if parser.attr_name.is_none() {
         return;
     }
@@ -189,13 +199,17 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) 
         };
 
         if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
-            let mut decoder = get_charset_decoder(charset.as_bytes(), 80)
-                .unwrap_or_else(|| get_default_decoder(80));
-
-            if decode_hex(value.as_bytes(), decoder.as_mut()) {
-                if let Some(result) = decoder.get_string() {
+            if decode_hex(
+                value.as_bytes(),
+                (get_charset_decoder(charset.as_bytes(), buffer)
+                    .unwrap_or_else(|| get_default_decoder(buffer)))
+                .as_ref(),
+            ) {
+                if let Some(result) = buffer.get_string() {
                     value = result.into();
                 }
+            } else {
+                buffer.reset_tail();
             }
         }
 
@@ -218,7 +232,10 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) 
     parser.is_token_safe = true;
 }
 
-pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'x>> {
+pub fn parse_content_type<'x>(
+    stream: &'x MessageStream,
+    buffer: &'x BufferWriter,
+) -> Option<ContentType<'x>> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -271,7 +288,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                         add_attribute(&mut parser, stream)
                     }
                     ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
-                        add_value(&mut parser, stream)
+                        add_value(&mut parser, stream, buffer)
                     }
                     _ => (),
                 }
@@ -316,7 +333,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 }
                 ContentState::AttributeValue => {
                     if !parser.is_escaped {
-                        add_value(&mut parser, stream);
+                        add_value(&mut parser, stream, buffer);
                         parser.state = ContentState::AttributeName;
                     } else {
                         parser.is_escaped = false;
@@ -345,7 +362,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 ContentState::AttributeValue | ContentState::AttributeQuotedValue
                     if parser.is_token_start =>
                 {
-                    if let Some(token) = parse_encoded_word(stream) {
+                    if let Some(token) = parse_encoded_word(stream, buffer) {
                         add_partial_value(&mut parser, stream, false);
                         parser.values.push(token.into());
                         continue;
@@ -363,7 +380,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                 }
                 ContentState::AttributeQuotedValue => {
                     if !parser.is_escaped {
-                        add_value(&mut parser, stream);
+                        add_value(&mut parser, stream, buffer);
                         parser.state = ContentState::AttributeName;
                         continue;
                     } else {
@@ -399,7 +416,7 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
                         ContentState::Type
                         | ContentState::AttributeName
                         | ContentState::SubType => add_attribute(&mut parser, stream),
-                        ContentState::AttributeValue => add_value(&mut parser, stream),
+                        ContentState::AttributeValue => add_value(&mut parser, stream, buffer),
                         _ => (),
                     }
 
@@ -449,7 +466,10 @@ pub fn parse_content_type<'x>(stream: &'x MessageStream) -> Option<ContentType<'
 mod tests {
     use std::{borrow::Cow, collections::HashMap};
 
-    use crate::parsers::{fields::content_type::ContentType, message_stream::MessageStream};
+    use crate::{
+        decoders::buffer_writer::BufferWriter,
+        parsers::{fields::content_type::ContentType, message_stream::MessageStream},
+    };
 
     use super::parse_content_type;
 
@@ -697,7 +717,8 @@ mod tests {
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
-            let result = parse_content_type(&stream);
+            let buffer = BufferWriter::with_capacity(input.0.len() * 2);
+            let result = parse_content_type(&stream, &buffer);
             let expected = if !input.1.is_empty() {
                 let mut c_type: Option<Cow<str>> = None;
                 let mut c_subtype: Option<Cow<str>> = None;

@@ -1,20 +1,29 @@
 use std::borrow::Cow;
+use serde::{Serialize, Deserialize};
 
-use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
+use crate::{decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word}, parsers::message_stream::MessageStream};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Addr<'x> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     name: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     address: Option<Cow<'x, str>>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Group<'x> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     name: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default)]
     addresses: Vec<Addr<'x>>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub enum Address<'x> {
     Address(Addr<'x>),
     AddressList(Vec<Addr<'x>>),
@@ -27,6 +36,12 @@ pub enum Address<'x> {
 impl<'x> Default for Address<'x> {
     fn default() -> Self {
         Address::Empty
+    }
+}
+
+impl<'x> Address<'x> {
+    pub fn is_empty(&self) -> bool {
+        *self == Address::Empty
     }
 }
 
@@ -235,7 +250,7 @@ pub fn add_group(parser: &mut AddressParser) {
         });
 }
 
-pub fn parse_address<'x>(stream: &'x MessageStream) -> Address<'x> {
+pub fn parse_address<'x>(stream: &'x MessageStream, buffer: &'x BufferWriter) -> Address<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -317,7 +332,7 @@ pub fn parse_address<'x>(stream: &'x MessageStream) -> Address<'x> {
                 parser.is_token_email = true;
             }
             b'=' if parser.is_token_start && !parser.is_escaped => {
-                if let Some(token) = parse_encoded_word(stream) {
+                if let Some(token) = parse_encoded_word(stream, buffer) {
                     let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
                     add_token(&mut parser, stream, add_space);
                     (if parser.state != AddressState::Comment {
@@ -1039,7 +1054,8 @@ mod tests {
 
         for input in inputs {
             let stream = &MessageStream::new(input.0.as_bytes());
-            let result = parse_address(stream);
+            let buffer = &BufferWriter::with_capacity(input.0.len() * 2);
+            let result = parse_address(stream, buffer);
 
             /*println!(
                 "(concat!({}), {}),",

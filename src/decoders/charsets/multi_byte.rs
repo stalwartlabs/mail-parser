@@ -1,119 +1,114 @@
+use std::cell::UnsafeCell;
+
 use encoding_rs::*;
 
-use crate::decoders::Writer;
+use crate::decoders::{buffer_writer::BufferWriter, Writer};
 
-pub struct MultiByteDecoder {
-    decoder: Decoder,
-    result: String,
+pub struct MultiByteDecoder<'x> {
+    decoder: UnsafeCell<Decoder>,
+    buf: &'x BufferWriter,
 }
 
-impl Writer for MultiByteDecoder {
-    fn write_byte(&mut self, byte: &u8) -> bool {
+impl<'x> Writer for MultiByteDecoder<'x> {
+    fn write_byte(&self, byte: &u8) -> bool {
         self.write_bytes(&[*byte])
     }
 
-    fn write_bytes(&mut self, bytes: &[u8]) -> bool {
-        match self
-            .decoder
-            .decode_to_string(bytes, &mut self.result, false)
-        {
-            (encoding_rs::CoderResult::OutputFull, _, _) => false,
-            (_, _, _) => true,
+    fn write_bytes(&self, bytes: &[u8]) -> bool {
+        if let Some(buf) = self.buf.get_buf_mut() {
+            let (result, read, written, _) =
+                unsafe { (*self.decoder.get()).decode_to_utf8(bytes, buf, false) };
+
+            debug_assert_eq!(read, bytes.len());
+
+            if written > 0 {
+                self.buf.advance_tail(written);
+            }
+
+            return match result {
+                CoderResult::InputEmpty => true,
+                CoderResult::OutputFull => false,
+            };
         }
+        false
     }
-
-    fn get_string(&mut self) -> Option<String> {
-        if !self.result.is_empty() {
-            Some(std::mem::take(&mut self.result))
-        } else {
-            None
-        }
-    }
-
-    fn get_bytes(&mut self) -> Option<Box<[u8]>> {
-        None
-    }
-
-    fn is_empty(&self) -> bool {
-        self.result.is_empty()
-    }    
 }
 
-impl MultiByteDecoder {
-    pub fn get_shift_jis(capacity: usize) -> Box<dyn Writer> {
+impl MultiByteDecoder<'_> {
+    pub fn get_shift_jis<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: SHIFT_JIS.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: SHIFT_JIS.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_big5(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_big5<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: BIG5.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: BIG5.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_euc_jp(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_euc_jp<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: EUC_JP.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: EUC_JP.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_euc_kr(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_euc_kr<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: EUC_KR.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: EUC_KR.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_gb18030(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_gb18030<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: GB18030.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: GB18030.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_gbk(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_gbk<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: GBK.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: GBK.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_iso2022_jp(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_iso2022_jp<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: ISO_2022_JP.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: ISO_2022_JP.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_utf16_be(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_utf16_be<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: UTF_16BE.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: UTF_16BE.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_utf16_le(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_utf16_le<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: UTF_16LE.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: UTF_16LE.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_windows874(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_windows874<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: WINDOWS_874.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: WINDOWS_874.new_decoder().into(),
+            buf,
         })
     }
 
-    pub fn get_ibm866(capacity: usize) -> Box<dyn Writer> {
+    pub fn get_ibm866<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
         Box::new(MultiByteDecoder {
-            decoder: IBM866.new_decoder(),
-            result: String::with_capacity(capacity),
+            decoder: IBM866.new_decoder().into(),
+            buf,
         })
     }
 }

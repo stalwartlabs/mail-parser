@@ -1,8 +1,8 @@
-use crate::decoders::Writer;
+use crate::decoders::{Writer, buffer_writer::BufferWriter};
 
 use super::{multi_byte::MultiByteDecoder, single_byte::SingleByteDecoder, utf8::Utf8Decoder};
 
-pub fn get_charset_decoder(charset: &[u8], capacity: usize) -> Option<Box<dyn Writer>> {
+pub fn get_charset_decoder<'x>(charset: &[u8], buf: &'x BufferWriter) -> Option<Box<dyn Writer + 'x>> {
     if (2..=45).contains(&charset.len()) {
         let mut l_charset = [0u8; 45];
         let mut hash: u32 = charset.len() as u32;
@@ -29,7 +29,7 @@ pub fn get_charset_decoder(charset: &[u8], capacity: usize) -> Option<Box<dyn Wr
             let &ch_map = unsafe { CH_MAP.get_unchecked(hash) };
 
             if l_charset[..charset.len()].eq(ch_map) {
-                return Some(unsafe { FNC_MAP.get_unchecked(hash)(capacity) });
+                return Some(unsafe { FNC_MAP.get_unchecked(hash)(buf) });
             }
         }
     }
@@ -37,12 +37,14 @@ pub fn get_charset_decoder(charset: &[u8], capacity: usize) -> Option<Box<dyn Wr
     None
 }
 
-pub fn get_default_decoder(capacity: usize) -> Box<dyn Writer> {
-    SingleByteDecoder::get_iso_8859_1(capacity)
+pub fn get_default_decoder<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    Box::new(Utf8Decoder::new(buf))
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::decoders::buffer_writer::BufferWriter;
+
     use super::get_charset_decoder;
 
     #[test]
@@ -56,9 +58,11 @@ mod tests {
             "extended_unix_code_packed_format_for_japanese",
         ];
 
+        let buffer = BufferWriter::with_capacity(10);
+
         for input in inputs {
             assert!(
-                get_charset_decoder(input.as_bytes(), 100).is_some(),
+                get_charset_decoder(input.as_bytes(), &buffer).is_some(),
                 "Failed for '{}'",
                 input
             );
@@ -845,7 +849,7 @@ static CH_MAP: &[&[u8]] = &[
     b"csgb18030",
 ];
 
-static FNC_MAP: &[fn(usize) -> Box<dyn Writer>] = &[
+static FNC_MAP: &[for<'x> fn(&'x BufferWriter) -> Box<dyn Writer + 'x>] = &[
     SingleByteDecoder::get_iso_8859_14,
     get_default_decoder,
     get_default_decoder,

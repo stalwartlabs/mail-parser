@@ -1,43 +1,51 @@
 use std::borrow::{Borrow, Cow};
+use serde::{Serialize, Deserialize};
 
 use crate::decoders::{
-    base64::Base64Decoder,
-    binary::BinaryDecoder,
-    buffer_writer::BufferWriter,
-    charsets::map::{get_charset_decoder, get_default_decoder},
-    quoted_printable::QuotedPrintableDecoder,
-    Writer,
+    base64::Base64Decoder, buffer_writer::BufferWriter, bytes::BytesDecoder,
+    charsets::map::get_charset_decoder, quoted_printable::QuotedPrintableDecoder, Writer,
 };
 
 use super::{
     fields::{content_type::ContentType, MessageField},
-    header::{self, parse_headers, MessageHeader, MimeHeader},
+    header::{parse_headers, MessageHeader, MimeHeader},
     message_stream::MessageStream,
 };
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Message<'x> {
+    #[serde(borrow)]
     header: MessageHeader<'x>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default)]
     html_body: Vec<TextPart<'x>>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default)]
     text_body: Vec<TextPart<'x>>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default)]
     attachments: Vec<MessageAttachment<'x>>,
 }
-
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct TextPart<'x> {
-    header: MimeHeader<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    header: Option<MimeHeader<'x>>,
     contents: Cow<'x, str>,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct BinaryPart<'x> {
-    header: MimeHeader<'x>,
-    contents: Box<[u8]>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    header: Option<MimeHeader<'x>>,
+    contents: &'x [u8],
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum MessageAttachment<'x> {
     Text(Box<TextPart<'x>>),
+    #[serde(borrow)]
     File(Box<BinaryPart<'x>>),
     Message(Box<Message<'x>>),
 }
@@ -70,11 +78,12 @@ enum MimeType {
 fn get_mime_type(
     content_type: Option<&ContentType>,
     parent_content_type: &MimeType,
-) -> (bool, bool, MimeType) {
+) -> (bool, bool, bool, MimeType) {
     if let Some(content_type) = content_type {
         match content_type.get_type() {
             "multipart" => (
                 true,
+                false,
                 false,
                 match content_type.get_subtype() {
                     Some("mixed") => MimeType::MultipartMixed,
@@ -85,20 +94,20 @@ fn get_mime_type(
                 },
             ),
             "text" => match content_type.get_subtype() {
-                Some("plain") => (false, true, MimeType::TextPlain),
-                Some("html") => (false, true, MimeType::TextHtml),
-                _ => (false, false, MimeType::TextOther),
+                Some("plain") => (false, true, true, MimeType::TextPlain),
+                Some("html") => (false, true, true, MimeType::TextHtml),
+                _ => (false, false, true, MimeType::TextOther),
             },
-            "image" | "audio" | "video" => (false, true, MimeType::Inline),
+            "image" | "audio" | "video" => (false, true, false, MimeType::Inline),
             "message" if content_type.get_subtype() == Some("rfc822") => {
-                (false, false, MimeType::Message)
+                (false, false, false, MimeType::Message)
             }
-            _ => (false, false, MimeType::Other),
+            _ => (false, false, false, MimeType::Other),
         }
     } else if let MimeType::MultipartDigest = parent_content_type {
-        (false, false, MimeType::Message)
+        (false, false, false, MimeType::Message)
     } else {
-        (false, true, MimeType::TextPlain)
+        (false, true, true, MimeType::TextPlain)
     }
 }
 
@@ -128,7 +137,7 @@ impl MessageParserState {
     }
 }
 
-pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
+pub fn parse_message<'x>(stream: &'x MessageStream<'x>, buffer: &'x BufferWriter) -> Message<'x> {
     let mut message = Message::new();
     let mut state = MessageParserState::new();
     let mut state_stack = Vec::new();
@@ -144,41 +153,41 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
         };
 
         // Parse headers
-        if !parse_headers(header, stream) {
+        if !parse_headers(header, stream, buffer) {
             // EOF found while parsing headers, abort.
-            println!("EOF during parse headers");
+            debug_assert!(false, "EOF found while parsing header. Aborting.");
             break;
         }
 
         state.parts += 1;
 
-        let (is_multipart, is_inline, mime_type) =
+        let (is_multipart, is_inline, is_text, mime_type) =
             get_mime_type(header.get_content_type(), &state.mime_type);
 
-        println!(
+        /*println!(
             "--- New part {:?} parent {:?} at '{:?}'",
             mime_type,
             state.mime_type,
             stream
                 .get_string(stream.get_pos(), stream.get_pos() + 50, true)
                 .unwrap_or_else(|| "NOTHING".into())
-        );
+        );*/
 
         if is_multipart {
             if let Some(mime_boundary) = header
                 .get_content_type()
                 .map_or_else(|| None, |f| f.get_attribute("boundary"))
             {
-                println!("Found boundary '{}'", mime_boundary,);
+                //println!("Found boundary '{}'", mime_boundary,);
                 let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
                 if stream.seek_bytes(mime_boundary.as_ref()) {
-                    println!(
+                    /*println!(
                         "Seek to '{:?}'",
                         stream
                             .get_string(stream.get_pos(), stream.get_pos() + 50, true)
                             .unwrap_or_else(|| "NOTHING".into())
-                    );
+                    );*/
                     let new_state = MessageParserState {
                         in_alternative: state.in_alternative
                             || mime_type == MimeType::MultipartAlernative,
@@ -196,7 +205,7 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                     stream.skip_crlf();
                     continue;
                 } else {
-                    println!("Seek bytes failed!");
+                    debug_assert!(false, "MIME boundary seek failed. Aborting.");
                     break;
                 }
             }
@@ -222,65 +231,95 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
 
         stream.skip_crlf();
 
-        let (mut writer, is_text): (Box<dyn Writer>, bool) =
-            if let MimeType::TextHtml | MimeType::TextPlain | MimeType::TextOther = mime_type {
-                (
-                    if let Some(charset) = header
-                        .get_content_type()
-                        .map_or_else(|| None, |c| c.get_attribute("charset"))
-                    {
-                        get_charset_decoder(charset.as_bytes(), 200)
-                            .unwrap_or_else(|| get_default_decoder(200))
-                    } else {
-                        get_default_decoder(200)
-                    },
-                    true,
-                )
-            } else {
-                (Box::new(BufferWriter::with_capacity(200)), false)
-            };
+        let decoder: Option<Box<dyn Writer>> = if let Some(charset) = header
+            .get_content_type()
+            .map_or_else(|| None, |c| c.get_attribute("charset"))
+        {
+            get_charset_decoder(charset.as_bytes(), buffer)
+        } else {
+            None
+        };
 
-        if !(match header.get_content_transfer_encoding() {
-            Some(encoding) if encoding.eq_ignore_ascii_case("base64") => stream.decode_base64(
-                state
-                    .mime_boundary
-                    .as_ref()
-                    .map_or_else(|| &[][..], |b| &b[..]),
-                false,
-                writer.as_mut(),
-            ),
-            Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => stream
-                .decode_quoted_printable(
+        let (success, mut is_utf8_safe, mut bytes) = match header.get_content_transfer_encoding() {
+            Some(encoding) if encoding.eq_ignore_ascii_case("base64") => (
+                stream.decode_base64(
                     state
                         .mime_boundary
                         .as_ref()
                         .map_or_else(|| &[][..], |b| &b[..]),
                     false,
-                    writer.as_mut(),
+                    decoder
+                        .as_ref()
+                        .map_or_else(|| buffer as &dyn Writer, |f| f.as_ref()),
                 ),
-            _ => stream.decode_binary(
-                state
-                    .mime_boundary
-                    .as_ref()
-                    .map_or_else(|| &[][..], |b| &b[..]),
-                writer.as_mut(),
+                decoder.is_some(),
+                buffer.get_bytes(),
             ),
-        }) && (state.mime_boundary.is_none()
-            || !stream.seek_bytes(state.mime_boundary.as_ref().unwrap()))
-        {
-            println!("Failed to parse encoded part. Aborting.");
-            break;
+            Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => (
+                stream.decode_quoted_printable(
+                    state
+                        .mime_boundary
+                        .as_ref()
+                        .map_or_else(|| &[][..], |b| &b[..]),
+                    false,
+                    decoder
+                        .as_ref()
+                        .map_or_else(|| buffer as &dyn Writer, |f| f.as_ref()),
+                ),
+                decoder.is_some(),
+                buffer.get_bytes(),
+            ),
+            _ => {
+                if let Some(decoder) = decoder {
+                    (
+                        stream.decode_bytes(
+                            state
+                                .mime_boundary
+                                .as_ref()
+                                .map_or_else(|| &[][..], |b| &b[..]),
+                            decoder.as_ref(),
+                        ),
+                        true,
+                        buffer.get_bytes(),
+                    )
+                } else {
+                    stream.get_raw_bytes(
+                        state
+                            .mime_boundary
+                            .as_ref()
+                            .map_or_else(|| &[][..], |b| &b[..]),
+                    )
+                }
+            }
+        };
+
+        if !success {
+            if !stream.is_eof() {
+                let (success, r_is_utf8_safe, r_bytes) = stream.get_raw_bytes(
+                    state
+                        .mime_boundary
+                        .as_ref()
+                        .map_or_else(|| &[][..], |b| &b[..]),
+                );
+                if !success {
+                    debug_assert!(false, "Failed to parse encoded part. Aborting.");
+                    break;
+                }
+                is_utf8_safe = r_is_utf8_safe;
+                bytes = r_bytes;
+            } else {
+                debug_assert!(false, "Failed to parse encoded part. Aborting.");
+                break;
+            }
         }
 
-        // TODO return Cow<[u8]> when straight from mail
-
-        if writer.is_empty() {
-            writer.write_byte(&b'?');
-            if let Some(ref m) = state.mime_boundary {
+        if bytes.is_none() {
+            bytes = Some("?".as_bytes());
+            /*if let Some(ref m) = state.mime_boundary {
                 println!("Empty part!! '{}'", std::str::from_utf8(m).unwrap());
             } else {
                 println!("Empty part!!");
-            }
+            }*/
         }
 
         if is_inline
@@ -296,8 +335,16 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                             .map_or_else(|| true, |c| !c.has_attribute("name")))))
         {
             let text_part = TextPart {
-                header: std::mem::take(&mut mime_part_header),
-                contents: writer.get_string().unwrap().into(),
+                header: if !mime_part_header.is_empty() {
+                    Some(std::mem::take(&mut mime_part_header))
+                } else {
+                    None
+                },
+                contents: if is_utf8_safe {
+                    unsafe { std::str::from_utf8_unchecked(bytes.unwrap()).into() }
+                } else {
+                    String::from_utf8_lossy(bytes.unwrap())
+                },
             };
 
             let is_this_alternative = if let MimeType::MultipartAlernative = state.mime_type {
@@ -331,13 +378,25 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
         } else {
             message.attachments.push(if is_text {
                 MessageAttachment::Text(Box::new(TextPart {
-                    header: std::mem::take(&mut mime_part_header),
-                    contents: writer.get_string().unwrap().into(),
+                    header: if !mime_part_header.is_empty() {
+                        Some(std::mem::take(&mut mime_part_header))
+                    } else {
+                        None
+                    },
+                    contents: if is_utf8_safe {
+                        unsafe { std::str::from_utf8_unchecked(bytes.unwrap()).into() }
+                    } else {
+                        String::from_utf8_lossy(bytes.unwrap())
+                    },
                 }))
             } else {
                 MessageAttachment::File(Box::new(BinaryPart {
-                    header: std::mem::take(&mut mime_part_header),
-                    contents: writer.get_bytes().unwrap(),
+                    header: if !mime_part_header.is_empty() {
+                        Some(std::mem::take(&mut mime_part_header))
+                    } else {
+                        None
+                    },
+                    contents: bytes.unwrap(),
                 }))
             });
         }
@@ -348,7 +407,6 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
             'inner: loop {
                 if let MimeType::Message = state.mime_type {
                     // Finished processing nested message, restore parent message from stack
-                    println!("Finished processing message!");
                     if let (Some(mut prev_message), Some(mut prev_state)) =
                         (message_stack.pop(), state_stack.pop())
                     {
@@ -359,21 +417,21 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                         prev_state.mime_boundary = state.mime_boundary;
                         state = prev_state;
                     } else {
-                        println!("Failed to restore parent message!");
+                        debug_assert!(false, "Failed to restore parent message. Aborting.");
                         break 'outer;
                     }
                 }
 
                 if stream.skip_bytes("--".as_bytes()) {
                     // End of MIME part reached
-                    println!(
+                    /*println!(
                         "Mime part end '{:?}--' next '{:?}'",
                         std::str::from_utf8(state.mime_boundary.as_ref().unwrap().as_ref())
                             .unwrap(),
                         stream
                             .get_string(stream.get_pos(), stream.get_pos() + 10, true)
                             .unwrap_or_else(|| "NOTHING".into())
-                    );
+                    );*/
 
                     if MimeType::MultipartAlernative == state.mime_type
                         && state.need_html_body
@@ -385,7 +443,7 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                         {
                             for part in message.html_body[state.html_parts..].iter() {
                                 message.text_body.push(TextPart {
-                                    header: MimeHeader::new(),
+                                    header: None,
                                     contents: part.contents.clone(), //Todo make plain text
                                 });
                             }
@@ -397,7 +455,7 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                         {
                             for part in message.text_body[state.text_parts..].iter() {
                                 message.html_body.push(TextPart {
-                                    header: MimeHeader::new(),
+                                    header: None,
                                     contents: part.contents.replace("\n", "<br/>").into(),
                                 });
                             }
@@ -412,30 +470,30 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
                             // Ancestor has a MIME boundary, seek it.
                             if stream.seek_bytes(mime_boundary) {
                                 // Boundary not found, probably a corrupted message, abort.
-                                println!(
+                                /*println!(
                                     "Found ancestor MIME boundary '{:?}'",
                                     std::str::from_utf8(mime_boundary).unwrap()
-                                );
+                                );*/
                                 continue 'inner;
-                            } else {
+                            } /*else {
                                 println!(
                                     "Boundary '{:?} not found.",
                                     std::str::from_utf8(mime_boundary).unwrap()
                                 );
-                            }
-                        } else {
+                            }*/
+                        } /*else {
                             // Ancestor does not have a MIME boundary, end parsing.
                             println!("Ancestor has no MIME boundary, parent found?");
-                        }
-                    } else {
+                        } */
+                    } /*else {
                         // No more ancestors found, finish parsing.
                         println!("Finish parsing, no ancestors found.");
-                    }
+                    } */
                     break 'outer;
                 } else {
                     stream.skip_crlf();
                     // Headers of next part expected next, break inner look.
-                    println!("Expecting headers of next part.");
+                    //println!("Expecting headers of next part.");
                     break 'inner;
                 }
             }
@@ -449,57 +507,49 @@ pub fn parse_message<'x>(stream: &'x MessageStream<'x>) -> Message<'x> {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
+    use std::{fs, path::PathBuf};
 
-    use crate::parsers::message_stream::MessageStream;
+    use crate::{decoders::buffer_writer::BufferWriter, parsers::message_stream::MessageStream};
 
     use super::parse_message;
 
     #[test]
     fn body_parse() {
-        let inputs = [(
-            concat!(
-                "Subject: This is a test email\n",
-                "Content-Type: multipart/alternative; boundary=foobar\n",
-                "Date: Sun, 02 Oct 2016 07:06:22 -0700 (PDT)\n",
-                "Message-Id: <1038776827.1181.6.camel@hurina>\n",
-                "List-Id: Dovecot Mailing List <dovecot.procontrol.fi>\n",
-                "List-Unsubscribe: <http://procontrol.fi/cgi-bin/mailman/listinfo/dovecot>,\n",
-                "    <mailto:dovecot-request@procontrol.fi?subject=unsubscribe>\n",
-                "List-Archive: <http://procontrol.fi/pipermail/dovecot>\n",
-                "List-Post: <mailto:dovecot@procontrol.fi>\n",
-                "List-Help: <mailto:dovecot-request@procontrol.fi?subject=help>\n",
-                "List-Subscribe: <http://procontrol.fi/cgi-bin/mailman/listinfo/dovecot>,\n",
-                "    <mailto:dovecot-request@procontrol.fi?subject=subscribe>\n",
-                "\n",
-                "--foobar\n",
-                "Content-Type: text/plain; charset=utf-8\n",
-                "Content-Transfer-Encoding: quoted-printable\n",
-                "\n",
-                "This is the plaintext version, in utf-8. Proof by Euro: =E2=82=AC\n",
-                "--foobar\n",
-                "Content-Type: text/html\n",
-                "Content-Transfer-Encoding: base64\n",
-                "\n",
-                "PGh0bWw+PGJvZHk+VGhpcyBpcyB0aGUgPGI+SFRNTDwvYj4gdmVyc2lvbiwgaW4g \n",
-                "dXMtYXNjaWkuIFByb29mIGJ5IEV1cm86ICZldXJvOzwvYm9keT48L2h0bWw+Cg== \n",
-                "--foobar--\n",
-                "After the final boundary stuff gets ignored.\n"
-            ),
-            "",
-        )];
+        let mut samples_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        samples_dir.push("test/dovecot");
+        let mut got_sign = false;
+        let mut count = 0;
+        
+        for path in fs::read_dir(samples_dir.to_str().unwrap()).unwrap() {
+            let mut path = path.unwrap().path();
+            if path.as_path().to_str().unwrap().contains(".yaml") {
+                continue;
+            }
+            //if !path.as_path().to_str().unwrap().contains("m576") {
+            //    continue;
+            //}            
+            println!("Parsing {}", path.to_str().unwrap());
+            let input = fs::read(path.as_path()).unwrap();
+            if String::from_utf8_lossy(&input).contains("application/pgp-signature") {
+                if !got_sign {
+                    got_sign = true;
+                } else {
+                    continue;
+                }
+            }
 
-        let mut d = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        //d.push("test/mbox/multipart-complex.eml");
-        //d.push("test/mbox/multipart-complex.eml");
-        d.push("test/samples/messages/m2014.txt");
+            let stream = MessageStream::new(&input);
+            let buffer = BufferWriter::with_capacity((input.len() as f64 * 1.25) as usize);
+            let message = parse_message(&stream, &buffer);
+            
+            if message.text_body.len() + message.html_body.len() + message.attachments.len() > 1 {
+                fs::write(format!("/vagrant/Code/stalwart/test/final/list_{:03}.eml", count), &input).unwrap();
+                //assert!(path.set_extension("yaml"));
+                fs::write(format!("/vagrant/Code/stalwart/test/final/list_{:03}.yaml", count), serde_yaml::to_string(&message).unwrap()).unwrap();
+                //fs::write(path, serde_yaml::to_string(&message).unwrap()).unwrap();
+                count += 1;
+            }
 
-        let input = std::fs::read(d).unwrap();
-
-        let stream = MessageStream::new(&input);
-        let message = parse_message(&stream);
-        println!("Text: {:?}\n\n{}", message.text_body, "-".repeat(50));
-        println!("Html: {:?}\n\n{}", message.html_body, "-".repeat(50));
-        println!("Attach: {:?}\n\n{}", message.attachments, "-".repeat(50));
+        }
     }
 }

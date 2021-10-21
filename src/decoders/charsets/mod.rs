@@ -6,6 +6,8 @@ pub mod utf8;
 
 #[cfg(test)]
 mod tests {
+    use crate::decoders::buffer_writer::BufferWriter;
+
     use super::map::get_charset_decoder;
 
     #[test]
@@ -50,7 +52,8 @@ mod tests {
             ];
 
         for input in inputs {
-            let mut decoder = get_charset_decoder(input.0.as_bytes(), 100)
+            let buffer = BufferWriter::with_capacity(input.1.len() * 3);
+            let decoder = get_charset_decoder(input.0.as_bytes(), &buffer)
                 .expect(&("Failed to find decoder for ".to_owned() + input.0));
 
             assert!(
@@ -59,7 +62,7 @@ mod tests {
                 input.2
             );
 
-            assert_eq!(decoder.get_string().unwrap_or_else(String::new), input.2);
+            assert_eq!(buffer.get_string().unwrap_or(""), input.2);
         }
     }
 }

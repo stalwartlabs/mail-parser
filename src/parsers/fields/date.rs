@@ -1,8 +1,9 @@
 use std::fmt;
 
 use crate::parsers::message_stream::MessageStream;
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct DateTime {
     year: u32,
     month: u32,

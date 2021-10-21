@@ -9,11 +9,11 @@ union Base64Chunk {
 }
 
 pub trait Base64Decoder<'y> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Writer) -> bool;
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &dyn Writer) -> bool;
 }
 
 impl<'x> Base64Decoder<'x> for MessageStream<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Writer) -> bool {
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &dyn Writer) -> bool {
         let mut chunk = Base64Chunk { val: 0 };
         let mut byte_count: u8 = 0;
         let mut match_count: usize = 0;
@@ -94,7 +94,7 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{buffer_writer::BufferWriter, Writer},
+        decoders::{buffer_writer::BufferWriter},
         parsers::message_stream::MessageStream,
     };
 
@@ -165,7 +165,7 @@ mod tests {
             );
 
             if !input.1.is_empty() {
-                let result = writer.get_bytes().unwrap_or_else(|| [].into());
+                let result = writer.get_bytes().unwrap_or(&[]);
                 let result_str = std::str::from_utf8(result.as_ref()).unwrap();
                 //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
                 assert_eq!(

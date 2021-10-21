@@ -1,44 +1,106 @@
 use std::{borrow::Cow, collections::HashMap};
+use serde::{Serialize, Deserialize};
 
-use crate::parsers::message_stream::MessageStream;
+use crate::{decoders::buffer_writer::BufferWriter, parsers::message_stream::MessageStream};
 
 use super::fields::{
     address::Address, content_type::ContentType, date::DateTime, parse_unsupported, MessageField,
 };
 
-#[derive(PartialEq, Debug, Default)]
+#[derive(PartialEq, Debug, Default, Serialize, Deserialize)]
 pub struct MessageHeader<'x> {
     pub mime: MimeHeader<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub bcc: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub cc: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub comments: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub date: Option<DateTime>,
     pub from: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub in_reply_to: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub keywords: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_archive: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_help: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_id: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_owner: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_post: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_subscribe: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub list_unsubscribe: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub message_id: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub mime_version: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub received: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub references: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub reply_to: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub resent_bcc: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub resent_cc: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub resent_date: Option<Vec<DateTime>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub resent_from: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub resent_message_id: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub resent_sender: Address<'x>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub resent_to: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub return_path: Option<Vec<Cow<'x, str>>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub sender: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub subject: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub to: Address<'x>,
+    #[serde(borrow)]
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    #[serde(default)]
     pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
 }
 
@@ -50,12 +112,22 @@ impl<'x> MessageHeader<'x> {
     }
 }
 
-#[derive(PartialEq, Debug, Default)]
+#[derive(PartialEq, Debug, Default, Serialize, Deserialize)]
 pub struct MimeHeader<'x> {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub content_description: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub content_disposition: Option<ContentType<'x>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub content_id: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub content_transfer_encoding: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
     pub content_type: Option<ContentType<'x>>,
 }
 
@@ -73,20 +145,34 @@ impl<'x> MimeHeader<'x> {
         self.content_transfer_encoding = None;
         self.content_type = None;
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.content_description.is_none()
+            && self.content_disposition.is_none()
+            && self.content_id.is_none()
+            && self.content_transfer_encoding.is_none()
+            && self.content_type.is_none()
+    }
 }
 
 enum HeaderParserResult<'x> {
-    Supported(fn(&mut dyn MessageField<'x>, &'x MessageStream<'x>)),
+    Supported(fn(&mut dyn MessageField<'x>, &'x MessageStream<'x>, &'x BufferWriter)),
     Unsupported(&'x [u8]),
     Lf,
     Eof,
 }
 
-pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &'x MessageStream<'x>) -> bool {
+pub fn parse_headers<'x>(
+    header: &mut dyn MessageField<'x>,
+    stream: &'x MessageStream<'x>,
+    buffer: &'x BufferWriter,
+) -> bool {
     loop {
         match parse_header_name(stream) {
-            HeaderParserResult::Supported(fnc) => fnc(header, stream),
-            HeaderParserResult::Unsupported(name) => parse_unsupported(header, stream, name),
+            HeaderParserResult::Supported(fnc) => fnc(header, stream, buffer),
+            HeaderParserResult::Unsupported(name) => {
+                parse_unsupported(header, stream, buffer, name)
+            }
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
         }
@@ -225,7 +311,11 @@ static HDR_HASH: &[u8] = &[
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62,
 ];
 
-static HDR_FNCS: &[for<'x, 'y> fn(&'y mut dyn MessageField<'x>, &'x MessageStream<'x>)] = &[
+static HDR_FNCS: &[for<'x, 'y> fn(
+    &'y mut dyn MessageField<'x>,
+    &'x MessageStream<'x>,
+    &'x BufferWriter,
+)] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,
     super::fields::parse_sender,

@@ -14,7 +14,7 @@ pub trait QuotedPrintableDecoder<'y> {
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &mut dyn Writer,
+        dest: &dyn Writer,
     ) -> bool;
 }
 
@@ -23,7 +23,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &mut dyn Writer,
+        dest: &dyn Writer,
     ) -> bool {
         let mut pos = self.get_pos();
         let mut state = QuotedPrintableState::None;

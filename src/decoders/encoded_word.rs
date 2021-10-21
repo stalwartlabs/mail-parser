@@ -7,7 +7,12 @@ use crate::{
     parsers::message_stream::MessageStream,
 };
 
-pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
+use super::buffer_writer::BufferWriter;
+
+pub fn parse_encoded_word<'x>(
+    stream: &'x MessageStream,
+    buffer: &'x BufferWriter,
+) -> Option<&'x str> {
     if !stream.skip_byte(&b'?') {
         return None;
     }
@@ -41,9 +46,11 @@ pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
         return None;
     }
 
-    let mut decoder =
-        get_charset_decoder(stream.get_bytes(charset_start, charset_end).unwrap(), 80)
-            .unwrap_or_else(|| get_default_decoder(80));
+    let mut decoder = get_charset_decoder(
+        stream.get_bytes(charset_start, charset_end).unwrap(),
+        buffer,
+    )
+    .unwrap_or_else(|| get_default_decoder(buffer));
 
     if !(match stream.next() {
         Some(b'q') | Some(b'Q') if stream.skip_byte(&b'?') => {
@@ -58,13 +65,14 @@ pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
         return None;
     }
 
-    decoder.get_string()
+    buffer.get_string()
 }
 
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream,
+        decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
+        parsers::message_stream::MessageStream,
     };
 
     #[test]
@@ -147,7 +155,10 @@ mod tests {
         ];
 
         for input in inputs {
-            match parse_encoded_word(&MessageStream::new(input.0.as_bytes())) {
+            match parse_encoded_word(
+                &MessageStream::new(input.0.as_bytes()),
+                &BufferWriter::with_capacity(input.0.len() * 2),
+            ) {
                 Some(string) => {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);

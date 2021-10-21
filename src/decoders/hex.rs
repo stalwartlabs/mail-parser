@@ -7,7 +7,7 @@ enum HexState {
     Hex1,
 }
 
-pub fn decode_hex(src: &[u8], dest: &mut dyn Writer) -> bool {
+pub fn decode_hex(src: &[u8], dest: &dyn Writer) -> bool {
     let mut state = HexState::None;
     let mut hex1 = 0;
 
@@ -51,7 +51,7 @@ pub fn decode_hex(src: &[u8], dest: &mut dyn Writer) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::{buffer_writer::BufferWriter, hex::decode_hex, Writer};
+    use crate::decoders::{buffer_writer::BufferWriter, hex::decode_hex};
 
     #[test]
     fn decode_hex_line() {
