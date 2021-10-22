@@ -1,8 +1,8 @@
-use crate::decoders::{Writer, buffer_writer::BufferWriter};
+use crate::decoders::{buffer_writer::BufferWriter, decoder::Decoder};
 
 use super::{multi_byte::MultiByteDecoder, single_byte::SingleByteDecoder, utf8::Utf8Decoder};
 
-pub fn get_charset_decoder<'x>(charset: &[u8], buf: &'x BufferWriter) -> Option<Box<dyn Writer + 'x>> {
+pub fn get_charset_decoder<'x>(charset: &[u8], buf: &'x mut [u8]) -> Option<Box<dyn Decoder + 'x>> {
     if (2..=45).contains(&charset.len()) {
         let mut l_charset = [0u8; 45];
         let mut hash: u32 = charset.len() as u32;
@@ -37,7 +37,7 @@ pub fn get_charset_decoder<'x>(charset: &[u8], buf: &'x BufferWriter) -> Option<
     None
 }
 
-pub fn get_default_decoder<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+pub fn get_default_decoder<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
     Box::new(Utf8Decoder::new(buf))
 }
 
@@ -58,11 +58,11 @@ mod tests {
             "extended_unix_code_packed_format_for_japanese",
         ];
 
-        let buffer = BufferWriter::with_capacity(10);
+        let mut buffer = BufferWriter::alloc_buffer(10);
 
         for input in inputs {
             assert!(
-                get_charset_decoder(input.as_bytes(), &buffer).is_some(),
+                get_charset_decoder(input.as_bytes(), &mut buffer[..]).is_some(),
                 "Failed for '{}'",
                 input
             );
@@ -849,7 +849,7 @@ static CH_MAP: &[&[u8]] = &[
     b"csgb18030",
 ];
 
-static FNC_MAP: &[for<'x> fn(&'x BufferWriter) -> Box<dyn Writer + 'x>] = &[
+static FNC_MAP: &[for<'x> fn(&'x mut [u8]) -> Box<dyn Decoder + 'x>] = &[
     SingleByteDecoder::get_iso_8859_14,
     get_default_decoder,
     get_default_decoder,

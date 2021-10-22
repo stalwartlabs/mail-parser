@@ -1,5 +1,5 @@
+use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, collections::HashMap};
-use serde::{Serialize, Deserialize};
 
 use crate::{decoders::buffer_writer::BufferWriter, parsers::message_stream::MessageStream};
 
@@ -156,7 +156,7 @@ impl<'x> MimeHeader<'x> {
 }
 
 enum HeaderParserResult<'x> {
-    Supported(fn(&mut dyn MessageField<'x>, &'x MessageStream<'x>, &'x BufferWriter)),
+    Supported(fn(&mut dyn MessageField<'x>, &MessageStream<'x>, &BufferWriter<'x>)),
     Unsupported(&'x [u8]),
     Lf,
     Eof,
@@ -164,8 +164,8 @@ enum HeaderParserResult<'x> {
 
 pub fn parse_headers<'x>(
     header: &mut dyn MessageField<'x>,
-    stream: &'x MessageStream<'x>,
-    buffer: &'x BufferWriter,
+    stream: &MessageStream<'x>,
+    buffer: &BufferWriter<'x>,
 ) -> bool {
     loop {
         match parse_header_name(stream) {
@@ -175,11 +175,12 @@ pub fn parse_headers<'x>(
             }
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
+            _ => return false,
         }
     }
 }
 
-fn parse_header_name<'x>(stream: &'x MessageStream) -> HeaderParserResult<'x> {
+fn parse_header_name<'x, 'y: 'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut token_len: usize = 0;
@@ -312,9 +313,9 @@ static HDR_HASH: &[u8] = &[
 ];
 
 static HDR_FNCS: &[for<'x, 'y> fn(
-    &'y mut dyn MessageField<'x>,
-    &'x MessageStream<'x>,
-    &'x BufferWriter,
+    &mut dyn MessageField<'x>,
+    &MessageStream<'x>,
+    &BufferWriter<'x>,
 )] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,

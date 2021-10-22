@@ -1,6 +1,6 @@
 use crate::parsers::message_stream::MessageStream;
 
-use super::Writer;
+use super::decoder::Decoder;
 
 #[derive(PartialEq, Debug)]
 enum QuotedPrintableState {
@@ -14,7 +14,7 @@ pub trait QuotedPrintableDecoder<'y> {
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &dyn Writer,
+        dest: &mut dyn Decoder,
     ) -> bool;
 }
 
@@ -23,7 +23,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &dyn Writer,
+        dest: &mut dyn Decoder,
     ) -> bool {
         let mut pos = self.get_pos();
         let mut state = QuotedPrintableState::None;
@@ -118,7 +118,11 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{buffer_writer::BufferWriter, quoted_printable::QuotedPrintableDecoder, Writer},
+        decoders::{
+            buffer_writer::BufferWriter,
+            decoder::{Decoder, RawDecoder},
+            quoted_printable::QuotedPrintableDecoder,
+        },
         parsers::message_stream::MessageStream,
     };
 
@@ -194,18 +198,21 @@ mod tests {
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
-            let mut writer = BufferWriter::with_capacity(input.0.len());
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let len = {
+                let mut decoder = RawDecoder::new(&mut buffer);
 
-            assert_eq!(
-                stream.decode_quoted_printable(input.2.as_bytes(), input.3, &mut writer),
-                !input.1.is_empty(),
-                "Failed for '{}'",
-                input.0.escape_debug()
-            );
+                assert_eq!(
+                    stream.decode_quoted_printable(input.2.as_bytes(), input.3, &mut decoder),
+                    !input.1.is_empty(),
+                    "Failed for '{}'",
+                    input.0.escape_debug()
+                );
+                decoder.len()
+            };
 
             if !input.1.is_empty() {
-                let result = &writer.get_bytes().unwrap();
-                let result_str = std::str::from_utf8(result).unwrap();
+                let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
 
                 /*println!(
                     "Decoded '{}'\n -> to ->\n'{}'\n{}",

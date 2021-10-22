@@ -1,6 +1,6 @@
-use std::{cell::UnsafeCell, char::REPLACEMENT_CHARACTER};
+use std::char::REPLACEMENT_CHARACTER;
 
-use crate::decoders::{Writer, buffer_writer::BufferWriter};
+use crate::decoders::decoder::Decoder;
 
 enum Utf8State {
     Start,
@@ -10,73 +10,98 @@ enum Utf8State {
 }
 
 pub struct Utf8Decoder<'x> {
-    state: UnsafeCell<Utf8State>,
-    char: UnsafeCell<u32>,
-    buf: &'x BufferWriter,
+    state: Utf8State,
+    char: u32,
+    pos: usize,
+    buf: &'x mut [u8],
 }
 
-impl<'x> Writer for Utf8Decoder<'x> {
-    fn write_byte(&self, byte: &u8) -> bool {
-        unsafe {
-            let state = &mut *self.state.get();
-            let char = &mut *self.char.get();
-
-            match *state {
-                Utf8State::Start => {
-                    if *byte < 0x80 {
-                        self.buf.write_byte(byte);
-                    } else if (*byte & 0xe0) == 0xc0 {
-                        *char = (*byte as u32 & 0x1f) << 6;
-                        *state = Utf8State::Shift0;
-                    } else if (*byte & 0xf0) == 0xe0 {
-                        *char = (*byte as u32 & 0x0f) << 12;
-                        *state = Utf8State::Shift6;
-                    } else if (*byte & 0xf8) == 0xf0 && (*byte <= 0xf4) {
-                        *char = (*byte as u32 & 0x07) << 18;
-                        *state = Utf8State::Shift12;
+impl<'x> Decoder for Utf8Decoder<'x> {
+    fn write_byte(&mut self, byte: &u8) -> bool {
+        match self.state {
+            Utf8State::Start => {
+                if *byte < 0x80 {
+                    if let Some(b) = self.buf.get_mut(self.pos) {
+                        *b = *byte;
+                        self.pos += 1;
                     } else {
-                        self.buf.write_bytes("�".as_bytes());
+                        return false;
+                    }
+                } else if (*byte & 0xe0) == 0xc0 {
+                    self.char = (*byte as u32 & 0x1f) << 6;
+                    self.state = Utf8State::Shift0;
+                } else if (*byte & 0xf0) == 0xe0 {
+                    self.char = (*byte as u32 & 0x0f) << 12;
+                    self.state = Utf8State::Shift6;
+                } else if (*byte & 0xf8) == 0xf0 && (*byte <= 0xf4) {
+                    self.char = (*byte as u32 & 0x07) << 18;
+                    self.state = Utf8State::Shift12;
+                } else {
+                    let bytes = "�".as_bytes();
+                    if let Some(b) = self.buf.get_mut(self.pos..self.pos + bytes.len()) {
+                        b.copy_from_slice(bytes);
+                        self.pos += bytes.len();
+                    } else {
+                        return false;
                     }
                 }
-                Utf8State::Shift12 => {
-                    *char |= (*byte as u32 & 0x3f) << 12;
-                    *state = Utf8State::Shift6;
+            }
+            Utf8State::Shift12 => {
+                self.char |= (*byte as u32 & 0x3f) << 12;
+                self.state = Utf8State::Shift6;
+            }
+            Utf8State::Shift6 => {
+                self.char |= (*byte as u32 & 0x3f) << 6;
+                self.state = Utf8State::Shift0;
+            }
+            Utf8State::Shift0 => {
+                self.char |= *byte as u32 & 0x3f;
+                self.state = Utf8State::Start;
+
+                let str = char::from_u32(self.char)
+                    .unwrap_or(REPLACEMENT_CHARACTER)
+                    .to_string();
+                let bytes = str.as_bytes();
+                if let Some(b) = self.buf.get_mut(self.pos..self.pos + bytes.len()) {
+                    b.copy_from_slice(bytes);
+                    self.pos += bytes.len();
+                } else {
+                    return false;
                 }
-                Utf8State::Shift6 => {
-                    *char |= (*byte as u32 & 0x3f) << 6;
-                    *state = Utf8State::Shift0;
-                }
-                Utf8State::Shift0 => {
-                    *char |= *byte as u32 & 0x3f;
-                    *state = Utf8State::Start;
-                    self.buf
-                        .write_bytes(char::from_u32(*char).unwrap_or(REPLACEMENT_CHARACTER).to_string().as_bytes());
-                    *char = 0;
-                }
+                self.char = 0;
             }
         }
 
         true
     }
+
+    fn len(&self) -> usize {
+        self.pos
+    }
+
+    fn is_utf8_safe(&self) -> bool {
+        true
+    }
 }
 
 impl Utf8Decoder<'_> {
-    pub fn new<'x>(buf: &'x BufferWriter) -> Utf8Decoder<'x> {
+    pub fn new<'x>(buf: &'x mut [u8]) -> Utf8Decoder<'x> {
         Utf8Decoder {
             buf,
-            state: Utf8State::Start.into(),
-            char: 0.into(),
+            state: Utf8State::Start,
+            char: 0,
+            pos: 0,
         }
     }
 
-    pub fn get_utf8<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_utf8<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(Utf8Decoder::new(buf))
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::{Writer, buffer_writer::BufferWriter};
+    use crate::decoders::{buffer_writer::BufferWriter, decoder::Decoder};
 
     use super::Utf8Decoder;
 
@@ -92,11 +117,14 @@ mod tests {
         ];
 
         for input in inputs {
-            let buffer = BufferWriter::with_capacity(input.0.len() * 2);
-            let parser = Utf8Decoder::new(&buffer);
-            parser.write_bytes(&input.0);
+            let mut buffer = BufferWriter::alloc_buffer(input.1.len() * 3);
+            let len = {
+                let mut decoder = Utf8Decoder::new(buffer.as_mut());
+                decoder.write_bytes(&input.0);
+                decoder.len()
+            };
 
-            assert_eq!(buffer.get_string().unwrap(), input.1);
+            assert_eq!(std::str::from_utf8(&buffer[..len]).unwrap(), input.1);
         }
     }
 }

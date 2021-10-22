@@ -14,11 +14,11 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
-    pub fn get_bytes(&self, from: usize, to: usize) -> Option<&[u8]> {
+    pub fn get_bytes(&self, from: usize, to: usize) -> Option<&'x [u8]> {
         self.data.get(from..to)
     }
 
-    pub fn get_string(&self, from: usize, to: usize, utf8_valid: bool) -> Option<Cow<str>> {
+    pub fn get_string(&self, from: usize, to: usize, utf8_valid: bool) -> Option<Cow<'x, str>> {
         let bytes = self.data.get(from..to)?;
 
         Some(if utf8_valid {
@@ -46,7 +46,7 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
-    pub fn next(&self) -> Option<&u8> {
+    pub fn next(&self) -> Option<&'x u8> {
         unsafe {
             let pos = &mut *self.pos.get();
 
@@ -61,7 +61,7 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
-    pub fn peek(&self) -> Option<&u8> {
+    pub fn peek(&self) -> Option<&'x u8> {
         unsafe { self.data.get(*self.pos.get()) }
     }
 

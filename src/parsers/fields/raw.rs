@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use crate::parsers::message_stream::MessageStream;
 
-pub fn parse_raw<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
+pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -44,7 +44,7 @@ pub fn parse_raw<'x>(stream: &'x MessageStream) -> Option<Cow<'x, str>> {
     None
 }
 
-pub fn parse_and_ignore<'x>(stream: &'x MessageStream) {
+pub fn parse_and_ignore<'x>(stream: &MessageStream<'x>) {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -56,9 +56,9 @@ pub fn parse_and_ignore<'x>(stream: &'x MessageStream) {
                     stream.advance(1);
                     continue;
                 }
-                _ => return
+                _ => return,
             },
-            _ => ()
+            _ => (),
         }
     }
 }

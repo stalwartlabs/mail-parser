@@ -52,17 +52,19 @@ mod tests {
             ];
 
         for input in inputs {
-            let buffer = BufferWriter::with_capacity(input.1.len() * 3);
-            let decoder = get_charset_decoder(input.0.as_bytes(), &buffer)
-                .expect(&("Failed to find decoder for ".to_owned() + input.0));
+            let mut buffer = BufferWriter::alloc_buffer(input.1.len() * 3);
+            let len = {
+                let mut decoder = get_charset_decoder(input.0.as_bytes(), &mut buffer)
+                    .expect(&("Failed to find decoder for ".to_owned() + input.0));
 
-            assert!(
-                decoder.write_bytes(&input.1),
-                "Failed to decode '{}'",
-                input.2
-            );
-
-            assert_eq!(buffer.get_string().unwrap_or(""), input.2);
+                assert!(
+                    decoder.write_bytes(&input.1),
+                    "Failed to decode '{}'",
+                    input.2
+                );
+                decoder.len()
+            };
+            assert_eq!(std::str::from_utf8(&buffer[..len]).unwrap(), input.2);
         }
     }
 }

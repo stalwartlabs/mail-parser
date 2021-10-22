@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 
-use crate::parsers::{message_stream::MessageStream};
+use crate::parsers::message_stream::MessageStream;
 
-pub fn parse_id<'x>(stream: &'x MessageStream) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_token_safe = true;
@@ -16,13 +16,7 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> Option<Vec<Cow<'x, str>>> {
                     stream.advance(1);
                     continue;
                 }
-                _ => {
-                    return if !ids.is_empty() {
-                        Some(ids)
-                    } else {
-                        None
-                    }
-                }
+                _ => return if !ids.is_empty() { Some(ids) } else { None },
             },
             b'<' => {
                 is_id_part = true;
@@ -63,9 +57,7 @@ pub fn parse_id<'x>(stream: &'x MessageStream) -> Option<Vec<Cow<'x, str>>> {
 mod tests {
     use std::borrow::Cow;
 
-    use crate::parsers::{
-        fields::id::parse_id, message_stream::MessageStream,
-    };
+    use crate::parsers::{fields::id::parse_id, message_stream::MessageStream};
 
     #[test]
     fn parse_message_ids() {

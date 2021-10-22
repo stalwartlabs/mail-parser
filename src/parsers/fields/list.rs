@@ -14,7 +14,7 @@ struct ListParser<'x> {
     list: Vec<Cow<'x, str>>,
 }
 
-fn add_token<'x>(parser: &mut ListParser<'x>, stream: &'x MessageStream, add_space: bool) {
+fn add_token<'x>(parser: &mut ListParser<'x>, stream: &MessageStream<'x>, add_space: bool) {
     if parser.token_start > 0 {
         if !parser.tokens.is_empty() {
             parser.tokens.push(" ".into());
@@ -52,8 +52,8 @@ fn add_tokens_to_list<'x>(parser: &mut ListParser<'x>) {
 }
 
 pub fn parse_comma_separared<'x>(
-    stream: &'x MessageStream,
-    buffer: &'x BufferWriter,
+    stream: &MessageStream<'x>,
+    buffer: &BufferWriter<'x>,
 ) -> Option<Vec<Cow<'x, str>>> {
     let mut parser = ListParser {
         token_start: 0,
@@ -186,7 +186,7 @@ mod tests {
             assert_eq!(
                 parse_comma_separared(
                     &MessageStream::new(input.0.as_bytes()),
-                    &BufferWriter::with_capacity(input.0.len() * 2)
+                    &BufferWriter::new(&mut BufferWriter::alloc_buffer(input.0.len() * 2))
                 )
                 .unwrap(),
                 input.1

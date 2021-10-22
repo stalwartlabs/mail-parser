@@ -1,7 +1,7 @@
 use std::fmt;
 
 use crate::parsers::message_stream::MessageStream;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct DateTime {

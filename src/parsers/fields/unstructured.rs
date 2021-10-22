@@ -12,7 +12,7 @@ struct UnstructuredParser<'x> {
     tokens: Vec<Cow<'x, str>>,
 }
 
-fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream, add_space: bool) {
+fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>, add_space: bool) {
     if parser.token_start > 0 {
         if !parser.tokens.is_empty() {
             parser.tokens.push(" ".into());
@@ -38,8 +38,8 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &'x MessageStream,
 }
 
 pub fn parse_unstructured<'x>(
-    stream: &'x MessageStream,
-    buffer: &'x BufferWriter,
+    stream: &MessageStream<'x>,
+    buffer: &BufferWriter<'x>,
 ) -> Option<Cow<'x, str>> {
     let mut parser = UnstructuredParser {
         token_start: 0,
@@ -190,8 +190,9 @@ mod tests {
             assert_eq!(
                 parse_unstructured(
                     &MessageStream::new(input.0.as_bytes()),
-                    &BufferWriter::with_capacity(input.0.len() * 2),
-                ).unwrap(),
+                    &BufferWriter::new(&mut BufferWriter::alloc_buffer(input.0.len() * 2)),
+                )
+                .unwrap(),
                 input.1,
                 "Failed to parse '{:?}'",
                 input.0

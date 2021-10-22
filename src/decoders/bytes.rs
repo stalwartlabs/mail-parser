@@ -1,14 +1,14 @@
 use crate::parsers::message_stream::MessageStream;
 
-use super::Writer;
+use super::decoder::Decoder;
 
-pub trait BytesDecoder<'y> {
-    fn decode_bytes(&self, boundary: &[u8], dest: &dyn Writer) -> bool;
-    fn get_raw_bytes(&self, boundary: &[u8]) -> (bool, bool, Option<&[u8]>);
+pub trait BytesDecoder<'x> {
+    fn decode_bytes(&self, boundary: &[u8], _is_word: bool, dest: &mut dyn Decoder) -> bool;
+    fn get_raw_bytes(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>);
 }
 
 impl<'x> BytesDecoder<'x> for MessageStream<'x> {
-    fn decode_bytes(&self, boundary: &[u8], dest: &dyn Writer) -> bool {
+    fn decode_bytes(&self, boundary: &[u8], _is_word: bool, dest: &mut dyn Decoder) -> bool {
         let mut pos = self.get_pos();
         let mut match_count = 0;
 
@@ -49,7 +49,7 @@ impl<'x> BytesDecoder<'x> for MessageStream<'x> {
         }
     }
 
-    fn get_raw_bytes(&self, boundary: &[u8]) -> (bool, bool, Option<&[u8]>) {
+    fn get_raw_bytes(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
         let start_pos = self.get_pos();
 
         return if !boundary.is_empty() {
@@ -104,7 +104,11 @@ impl<'x> BytesDecoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{buffer_writer::BufferWriter, bytes::BytesDecoder, Writer},
+        decoders::{
+            buffer_writer::BufferWriter,
+            bytes::BytesDecoder,
+            decoder::{Decoder, RawDecoder},
+        },
         parsers::message_stream::MessageStream,
     };
 
@@ -128,17 +132,20 @@ mod tests {
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
-            let mut writer = BufferWriter::with_capacity(input.0.len());
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let len = {
+                let mut decoder = RawDecoder::new(&mut buffer);
 
-            assert!(
-                stream.decode_bytes(input.2.as_bytes(), &mut writer),
-                "Failed for '{:?}'",
-                input.0
-            );
+                assert!(
+                    stream.decode_bytes(input.2.as_bytes(), false, &mut decoder),
+                    "Failed for '{:?}'",
+                    input.0
+                );
+                decoder.len()
+            };
 
             if !input.1.is_empty() {
-                let result = &writer.get_bytes().unwrap();
-                let result_str = std::str::from_utf8(result).unwrap();
+                let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
 
                 /*println!(
                     "Decoded '{}'\n -> to ->\n'{}'\n{}",

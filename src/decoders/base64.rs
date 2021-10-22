@@ -1,7 +1,6 @@
 use crate::parsers::message_stream::MessageStream;
 
-use super::Writer;
-
+use super::decoder::Decoder;
 #[repr(C)]
 union Base64Chunk {
     val: u32,
@@ -9,11 +8,11 @@ union Base64Chunk {
 }
 
 pub trait Base64Decoder<'y> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &dyn Writer) -> bool;
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Decoder) -> bool;
 }
 
 impl<'x> Base64Decoder<'x> for MessageStream<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &dyn Writer) -> bool {
+    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Decoder) -> bool {
         let mut chunk = Base64Chunk { val: 0 };
         let mut byte_count: u8 = 0;
         let mut match_count: usize = 0;
@@ -94,7 +93,10 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{buffer_writer::BufferWriter},
+        decoders::{
+            buffer_writer::BufferWriter,
+            decoder::{Decoder, RawDecoder},
+        },
         parsers::message_stream::MessageStream,
     };
 
@@ -155,18 +157,21 @@ mod tests {
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
-            let mut writer = BufferWriter::with_capacity(input.0.len());
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let len = {
+                let mut decoder = RawDecoder::new(&mut buffer);
 
-            assert_eq!(
-                stream.decode_base64(input.2.as_bytes(), input.3, &mut writer),
-                !input.1.is_empty(),
-                "Failed for '{}'",
-                input.0.escape_debug()
-            );
+                assert_eq!(
+                    stream.decode_base64(input.2.as_bytes(), input.3, &mut decoder),
+                    !input.1.is_empty(),
+                    "Failed for '{}'",
+                    input.0.escape_debug()
+                );
+                decoder.len()
+            };
 
             if !input.1.is_empty() {
-                let result = writer.get_bytes().unwrap_or(&[]);
-                let result_str = std::str::from_utf8(result.as_ref()).unwrap();
+                let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
                 //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
                 assert_eq!(
                     result_str,

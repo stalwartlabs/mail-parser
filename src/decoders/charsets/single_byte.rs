@@ -1,135 +1,148 @@
-use crate::decoders::{buffer_writer::BufferWriter, Writer};
+use crate::decoders::decoder::Decoder;
 
 pub struct SingleByteDecoder<'x> {
     table: &'static [char],
-    buf: &'x BufferWriter,
+    buf: &'x mut [u8],
+    pos: usize,
 }
 
-impl<'x> Writer for SingleByteDecoder<'x> {
-    fn write_byte(&self, byte: &u8) -> bool {
+impl<'x> Decoder for SingleByteDecoder<'x> {
+    fn write_byte(&mut self, byte: &u8) -> bool {
         //TODO fix
-        self.buf.write_bytes(
-            (unsafe { *self.table.get_unchecked(*byte as usize) })
-                .to_string()
-                .as_bytes(),
-        )
+        let str = (unsafe { *self.table.get_unchecked(*byte as usize) }).to_string();
+        let bytes = str.as_bytes();
+        if let Some(b) = self.buf.get_mut(self.pos..self.pos + bytes.len()) {
+            b.copy_from_slice(bytes);
+            self.pos += bytes.len();
+            true
+        } else {
+            return false;
+        }
+    }
+
+    fn len(&self) -> usize {
+        self.pos
+    }
+
+    fn is_utf8_safe(&self) -> bool {
+        true
     }
 }
 
 impl SingleByteDecoder<'_> {
-    pub fn new<'x>(table: &'static [char], buf: &'x BufferWriter) -> SingleByteDecoder<'x> {
-        SingleByteDecoder { buf, table }
+    pub fn new<'x>(table: &'static [char], buf: &'x mut [u8]) -> SingleByteDecoder<'x> {
+        SingleByteDecoder { buf, table, pos: 0 }
     }
 
-    pub fn get_iso_8859_1<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_1<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_1, buf))
     }
 
-    pub fn get_iso_8859_2<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_2<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_2, buf))
     }
 
-    pub fn get_iso_8859_3<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_3<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_3, buf))
     }
 
-    pub fn get_iso_8859_4<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_4<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_4, buf))
     }
 
-    pub fn get_iso_8859_5<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_5<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_5, buf))
     }
 
-    pub fn get_iso_8859_6<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_6<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_6, buf))
     }
 
-    pub fn get_iso_8859_7<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_7<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_7, buf))
     }
 
-    pub fn get_iso_8859_8<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_8<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_8, buf))
     }
 
-    pub fn get_iso_8859_9<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_9<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_9, buf))
     }
 
-    pub fn get_iso_8859_10<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_10<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_10, buf))
     }
 
-    pub fn get_iso_8859_13<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_13<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_13, buf))
     }
 
-    pub fn get_iso_8859_14<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_14<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_14, buf))
     }
 
-    pub fn get_iso_8859_15<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_15<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_15, buf))
     }
 
-    pub fn get_iso_8859_16<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_iso_8859_16<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::ISO_8859_16, buf))
     }
 
-    pub fn get_cp1250<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1250<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1250, buf))
     }
 
-    pub fn get_cp1251<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1251<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1251, buf))
     }
 
-    pub fn get_cp1252<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1252<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1252, buf))
     }
 
-    pub fn get_cp1253<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1253<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1253, buf))
     }
 
-    pub fn get_cp1254<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1254<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1254, buf))
     }
 
-    pub fn get_cp1255<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1255<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1255, buf))
     }
 
-    pub fn get_cp1256<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1256<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1256, buf))
     }
 
-    pub fn get_cp1257<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1257<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1257, buf))
     }
 
-    pub fn get_cp1258<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_cp1258<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::CP1258, buf))
     }
 
-    pub fn get_koi8_r<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_koi8_r<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_R, buf))
     }
 
-    pub fn get_koi8_u<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_koi8_u<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::KOI8_U, buf))
     }
 
-    pub fn get_macintosh<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_macintosh<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::MACINTOSH, buf))
     }
 
-    pub fn get_ibm_850<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_ibm_850<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::IBM850, buf))
     }
 
-    pub fn get_tis_620<'x>(buf: &'x BufferWriter) -> Box<dyn Writer + 'x> {
+    pub fn get_tis_620<'x>(buf: &'x mut [u8]) -> Box<dyn Decoder + 'x> {
         Box::new(SingleByteDecoder::new(SingleByteDecoder::TIS_620, buf))
     }
 

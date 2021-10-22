@@ -1,5 +1,5 @@
+use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, collections::HashMap};
-use serde::{Serialize, Deserialize};
 
 use crate::{
     decoders::{
@@ -76,7 +76,7 @@ struct ContentTypeParser<'x> {
     is_token_start: bool,
 }
 
-fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
+fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
     if parser.token_start > 0 {
         let mut attr = stream.get_string(
             parser.token_start - 1,
@@ -102,7 +102,7 @@ fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStre
     }
 }
 
-fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x MessageStream) {
+fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
     if parser.token_start > 0 {
         let attr_part = stream
             .get_string(
@@ -124,7 +124,7 @@ fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &'x M
 
 fn add_partial_value<'x>(
     parser: &mut ContentTypeParser<'x>,
-    stream: &'x MessageStream,
+    stream: &MessageStream<'x>,
     to_cur_pos: bool,
 ) {
     if parser.token_start > 0 {
@@ -153,8 +153,8 @@ fn add_partial_value<'x>(
 
 fn add_value<'x>(
     parser: &mut ContentTypeParser<'x>,
-    stream: &'x MessageStream,
-    buffer: &'x BufferWriter,
+    stream: &MessageStream<'x>,
+    buffer: &BufferWriter<'x>,
 ) {
     if parser.attr_name.is_none() {
         return;
@@ -199,17 +199,16 @@ fn add_value<'x>(
         };
 
         if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
-            if decode_hex(
-                value.as_bytes(),
-                (get_charset_decoder(charset.as_bytes(), buffer)
-                    .unwrap_or_else(|| get_default_decoder(buffer)))
-                .as_ref(),
-            ) {
-                if let Some(result) = buffer.get_string() {
-                    value = result.into();
-                }
-            } else {
-                buffer.reset_tail();
+            let mut decoder = get_charset_decoder(
+                charset.as_bytes(),
+                buffer.get_buf_mut().unwrap_or_else(|| &mut []),
+            )
+            .unwrap_or_else(|| {
+                get_default_decoder(buffer.get_buf_mut().unwrap_or_else(|| &mut []))
+            });
+            if decode_hex(value.as_bytes(), decoder.as_mut()) && decoder.len() > 0 {
+                buffer.advance_tail(decoder.len());
+                value = buffer.get_string().unwrap().into();
             }
         }
 
@@ -233,8 +232,8 @@ fn add_value<'x>(
 }
 
 pub fn parse_content_type<'x>(
-    stream: &'x MessageStream,
-    buffer: &'x BufferWriter,
+    stream: &MessageStream<'x>,
+    buffer: &BufferWriter<'x>,
 ) -> Option<ContentType<'x>> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
@@ -717,8 +716,9 @@ mod tests {
 
         for input in inputs {
             let stream = MessageStream::new(input.0.as_bytes());
-            let buffer = BufferWriter::with_capacity(input.0.len() * 2);
-            let result = parse_content_type(&stream, &buffer);
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let writer = BufferWriter::new(&mut buffer);
+            let result = parse_content_type(&stream, &writer);
             let expected = if !input.1.is_empty() {
                 let mut c_type: Option<Cow<str>> = None;
                 let mut c_subtype: Option<Cow<str>> = None;

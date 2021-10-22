@@ -1,19 +1,14 @@
+use crate::parsers::message_stream::MessageStream;
+
+use self::decoder::Decoder;
+
 pub mod base64;
 pub mod buffer_writer;
+pub mod bytes;
 pub mod charsets;
+pub mod decoder;
 pub mod encoded_word;
 pub mod hex;
 pub mod quoted_printable;
-pub mod bytes;
 
-pub trait Writer {
-    fn write_byte(&self, byte: &u8) -> bool;
-    fn write_bytes(&self, bytes: &[u8]) -> bool {
-        for byte in bytes {
-            if !self.write_byte(byte) {
-                return false;
-            }
-        }
-        true
-    }
-}
+pub type DecodeFnc<'x> = fn(&MessageStream<'x>, &[u8], bool, &mut dyn Decoder) -> bool;

@@ -1,7 +1,10 @@
+use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
-use serde::{Serialize, Deserialize};
 
-use crate::{decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word}, parsers::message_stream::MessageStream};
+use crate::{
+    decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
+    parsers::message_stream::MessageStream,
+};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Addr<'x> {
@@ -77,7 +80,7 @@ pub struct AddressParser<'x> {
 
 pub fn add_token<'x>(
     parser: &mut AddressParser<'x>,
-    stream: &'x MessageStream,
+    stream: &MessageStream<'x>,
     add_trail_space: bool,
 ) {
     if parser.token_start > 0 {
@@ -250,7 +253,7 @@ pub fn add_group(parser: &mut AddressParser) {
         });
 }
 
-pub fn parse_address<'x>(stream: &'x MessageStream, buffer: &'x BufferWriter) -> Address<'x> {
+pub fn parse_address<'x>(stream: &MessageStream<'x>, buffer: &BufferWriter<'x>) -> Address<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -1054,8 +1057,9 @@ mod tests {
 
         for input in inputs {
             let stream = &MessageStream::new(input.0.as_bytes());
-            let buffer = &BufferWriter::with_capacity(input.0.len() * 2);
-            let result = parse_address(stream, buffer);
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let writer = BufferWriter::new(&mut buffer);
+            let result = parse_address(stream, &writer);
 
             /*println!(
                 "(concat!({}), {}),",

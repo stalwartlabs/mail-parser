@@ -1,4 +1,4 @@
-use super::{quoted_printable::HEX_MAP, Writer};
+use super::{decoder::Decoder, quoted_printable::HEX_MAP};
 
 #[derive(PartialEq, Debug)]
 enum HexState {
@@ -7,7 +7,7 @@ enum HexState {
     Hex1,
 }
 
-pub fn decode_hex(src: &[u8], dest: &dyn Writer) -> bool {
+pub fn decode_hex(src: &[u8], dest: &mut dyn Decoder) -> bool {
     let mut state = HexState::None;
     let mut hex1 = 0;
 
@@ -51,7 +51,11 @@ pub fn decode_hex(src: &[u8], dest: &dyn Writer) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::{buffer_writer::BufferWriter, hex::decode_hex};
+    use crate::decoders::{
+        buffer_writer::BufferWriter,
+        decoder::{Decoder, RawDecoder},
+        hex::decode_hex,
+    };
 
     #[test]
     fn decode_hex_line() {
@@ -61,16 +65,19 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut writer = BufferWriter::with_capacity(input.0.len());
+            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
+            let len = {
+                let mut decoder = RawDecoder::new(&mut buffer);
 
-            assert!(
-                decode_hex(input.0.as_bytes(), &mut writer),
-                "Failed for '{}'",
-                input.0.escape_debug()
-            );
+                assert!(
+                    decode_hex(input.0.as_bytes(), &mut decoder),
+                    "Failed for '{}'",
+                    input.0.escape_debug()
+                );
+                decoder.len()
+            };
 
-            let result = &writer.get_bytes().unwrap();
-            let result_str = std::str::from_utf8(result).unwrap();
+            let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
 
             /*println!(
                 "Decoded '{}'\n -> to ->\n'{}'\n{}",
