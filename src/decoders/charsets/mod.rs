@@ -1,13 +1,14 @@
+use std::borrow::Cow;
+
 pub mod map;
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
 pub mod single_byte;
-pub mod utf8;
+
+pub type DecoderFnc<'x> = fn(&'x [u8]) -> Cow<'x, str>;
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::buffer_writer::BufferWriter;
-
     use super::map::get_charset_decoder;
 
     #[test]
@@ -52,19 +53,10 @@ mod tests {
             ];
 
         for input in inputs {
-            let mut buffer = BufferWriter::alloc_buffer(input.1.len() * 3);
-            let len = {
-                let mut decoder = get_charset_decoder(input.0.as_bytes(), &mut buffer)
-                    .expect(&("Failed to find decoder for ".to_owned() + input.0));
+            let decoder = get_charset_decoder(input.0.as_bytes())
+                .expect(&("Failed to find decoder for ".to_owned() + input.0));
 
-                assert!(
-                    decoder.write_bytes(&input.1),
-                    "Failed to decode '{}'",
-                    input.2
-                );
-                decoder.len()
-            };
-            assert_eq!(std::str::from_utf8(&buffer[..len]).unwrap(), input.2);
+            assert_eq!(decoder(&input.1), input.2);
         }
     }
 }

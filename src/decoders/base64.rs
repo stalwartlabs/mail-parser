@@ -1,91 +1,115 @@
 use crate::parsers::message_stream::MessageStream;
 
-use super::decoder::Decoder;
 #[repr(C)]
 union Base64Chunk {
     val: u32,
     bytes: [u8; std::mem::size_of::<u32>()],
 }
 
-pub trait Base64Decoder<'y> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Decoder) -> bool;
+pub trait Base64Decoder<'x> {
+    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>);
 }
 
 impl<'x> Base64Decoder<'x> for MessageStream<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool, dest: &mut dyn Decoder) -> bool {
-        let mut chunk = Base64Chunk { val: 0 };
-        let mut byte_count: u8 = 0;
-        let mut match_count: usize = 0;
-        let mut pos = self.get_pos();
+    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>) {
+        unsafe {
+            let mut success = boundary.is_empty();
 
-        for ch in self.data[pos..].iter() {
-            pos += 1;
+            let mut chunk = Base64Chunk { val: 0 };
+            let mut byte_count: u8 = 0;
+            let mut match_count: usize = 0;
 
-            if match_count < boundary.len() {
-                if ch == unsafe { boundary.get_unchecked(match_count) } {
-                    match_count += 1;
-                    if match_count == boundary.len() {
-                        self.set_pos(pos);
-                        return true;
-                    } else {
-                        continue;
-                    }
-                } else if match_count > 0 {
-                    if ch == unsafe { boundary.get_unchecked(0) } {
-                        match_count = 1;
-                        continue;
-                    } else {
-                        match_count = 0;
+            let data = &mut *self.data.get();
+            let data_len = (*data).len();
+
+            let stream_pos = &mut *self.pos.get();
+            let start_pos = *stream_pos;
+            let mut read_pos = *stream_pos;
+            let mut write_pos = *stream_pos;
+
+            while read_pos < data_len {
+                let ch = (*data).get_unchecked(read_pos);
+                read_pos += 1;
+
+                if match_count < boundary.len() {
+                    if ch == boundary.get_unchecked(match_count) {
+                        match_count += 1;
+                        if match_count == boundary.len() {
+                            success = true;
+                            break;
+                        } else {
+                            continue;
+                        }
+                    } else if match_count > 0 {
+                        if ch == boundary.get_unchecked(0) {
+                            match_count = 1;
+                            continue;
+                        } else {
+                            match_count = 0;
+                        }
                     }
                 }
-            }
 
-            let val = unsafe {
-                BASE64_MAP
+                let val = BASE64_MAP
                     .get_unchecked(byte_count as usize)
-                    .get_unchecked(*ch as usize)
-            };
+                    .get_unchecked(*ch as usize);
 
-            if *val >= 0x01ffffff {
-                if *ch == b'=' {
-                    match byte_count {
-                        1 | 2 => {
-                            byte_count = 0;
-                            dest.write_byte(unsafe { chunk.bytes.get_unchecked(0) });
+                if *val >= 0x01ffffff {
+                    if *ch == b'=' {
+                        match byte_count {
+                            1 | 2 => {
+                                *((*data).get_unchecked_mut(write_pos)) =
+                                    *chunk.bytes.get_unchecked(0);
+                                write_pos += 1;
+                                byte_count = 0;
+                            }
+                            3 => {
+                                (*data)
+                                    .get_unchecked_mut(write_pos..write_pos + 2)
+                                    .copy_from_slice(chunk.bytes.get_unchecked(0..2));
+                                write_pos += 2;
+                                byte_count = 0;
+                            }
+                            0 => (),
+                            _ => {
+                                success = false;
+                                break;
+                            }
                         }
-                        3 => {
-                            byte_count = 0;
-                            dest.write_bytes(unsafe { chunk.bytes.get_unchecked(0..2) });
-                        }
-                        0 => (),
-                        _ => {
-                            return false;
-                        }
+                    } else if !(*ch).is_ascii_whitespace() || is_word {
+                        success = false;
+                        break;
                     }
-                } else if !(*ch).is_ascii_whitespace() || is_word {
-                    return false;
+                    continue;
                 }
-                continue;
+
+                byte_count = (byte_count + 1) & 3;
+
+                if byte_count == 1 {
+                    chunk.val = *val;
+                } else {
+                    chunk.val |= *val;
+
+                    if byte_count == 0 {
+                        (*data)
+                            .get_unchecked_mut(write_pos..write_pos + 3)
+                            .copy_from_slice(chunk.bytes.get_unchecked(0..3));
+                        write_pos += 3;
+                    }
+                }
             }
 
-            byte_count = (byte_count + 1) & 3;
+            *stream_pos = read_pos;
 
-            if byte_count == 1 {
-                chunk.val = *val;
-            } else {
-                chunk.val = unsafe { chunk.val } | *val;
-
-                if byte_count == 0 {
-                    dest.write_bytes(unsafe { chunk.bytes.get_unchecked(0..3) });
-                }
-            }
-        }
-
-        if boundary.is_empty() {
-            self.set_pos(pos);
-            true
-        } else {
-            false
+            (
+                success,
+                false,
+                if write_pos > start_pos {
+                    Some((*data).get_unchecked(start_pos..write_pos))
+                } else {
+                    None
+                },
+            )
         }
     }
 }
@@ -93,10 +117,6 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{
-            buffer_writer::BufferWriter,
-            decoder::{Decoder, RawDecoder},
-        },
         parsers::message_stream::MessageStream,
     };
 
@@ -156,22 +176,14 @@ mod tests {
         ];
 
         for input in inputs {
-            let stream = MessageStream::new(input.0.as_bytes());
-            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
-            let len = {
-                let mut decoder = RawDecoder::new(&mut buffer);
+            let mut str = input.0.to_string();
+            let stream = MessageStream::new(unsafe { str.as_bytes_mut() });
 
-                assert_eq!(
-                    stream.decode_base64(input.2.as_bytes(), input.3, &mut decoder),
-                    !input.1.is_empty(),
-                    "Failed for '{}'",
-                    input.0.escape_debug()
-                );
-                decoder.len()
-            };
+            let (success, _, result) = stream.decode_base64(input.2.as_bytes(), input.3);
+            assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
 
             if !input.1.is_empty() {
-                let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
+                let result_str = std::str::from_utf8(result.unwrap()).unwrap();
                 //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
                 assert_eq!(
                     result_str,

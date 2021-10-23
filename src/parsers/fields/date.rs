@@ -260,7 +260,8 @@ mod tests {
         ];
 
         for input in inputs {
-            match parse_date(&MessageStream::new(input.0.as_bytes()), false) {
+            let mut str = input.0.to_string();
+            match parse_date(&MessageStream::new(unsafe { str.as_bytes_mut() }), false) {
                 Some(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());

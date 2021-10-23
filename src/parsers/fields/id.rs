@@ -93,9 +93,10 @@ mod tests {
         ];
 
         for input in inputs {
+            let mut str = input.0.to_string();
             assert_eq!(
                 input.1,
-                parse_id(&MessageStream::new(input.0.as_bytes())).unwrap(),
+                parse_id(&MessageStream::new(unsafe { str.as_bytes_mut() })).unwrap(),
                 "Failed to parse '{:?}'",
                 input.0
             );

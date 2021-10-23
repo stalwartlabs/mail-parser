@@ -1,4 +1,4 @@
-use super::{decoder::Decoder, quoted_printable::HEX_MAP};
+use super::quoted_printable::HEX_MAP;
 
 #[derive(PartialEq, Debug)]
 enum HexState {
@@ -7,9 +7,11 @@ enum HexState {
     Hex1,
 }
 
-pub fn decode_hex(src: &[u8], dest: &mut dyn Decoder) -> bool {
+pub fn decode_hex(src: &[u8]) -> (bool, Vec<u8>) {
     let mut state = HexState::None;
     let mut hex1 = 0;
+    let mut result = Vec::with_capacity(src.len());
+    let mut success = true;
 
     for ch in src {
         match ch {
@@ -17,19 +19,21 @@ pub fn decode_hex(src: &[u8], dest: &mut dyn Decoder) -> bool {
                 if let HexState::None = state {
                     state = HexState::Percent
                 } else {
-                    return false;
+                    success = false;
+                    break;
                 }
             }
             _ => match state {
                 HexState::None => {
-                    dest.write_byte(ch);
+                    result.push(*ch);
                 }
                 HexState::Percent => {
                     hex1 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
                     if hex1 != -1 {
                         state = HexState::Hex1;
                     } else {
-                        return false;
+                        success = false;
+                        break;
                     }
                 }
                 HexState::Hex1 => {
@@ -37,25 +41,22 @@ pub fn decode_hex(src: &[u8], dest: &mut dyn Decoder) -> bool {
 
                     state = HexState::None;
                     if hex2 != -1 {
-                        dest.write_byte(&(((hex1 as u8) << 4) | hex2 as u8));
+                        result.push(((hex1 as u8) << 4) | hex2 as u8);
                     } else {
-                        return false;
+                        success = false;
+                        break;
                     }
                 }
             },
         }
     }
 
-    true
+    (success, result)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::decoders::{
-        buffer_writer::BufferWriter,
-        decoder::{Decoder, RawDecoder},
-        hex::decode_hex,
-    };
+    use crate::decoders::hex::decode_hex;
 
     #[test]
     fn decode_hex_line() {
@@ -65,19 +66,11 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
-            let len = {
-                let mut decoder = RawDecoder::new(&mut buffer);
+            let (success, result) = decode_hex(input.0.as_bytes());
 
-                assert!(
-                    decode_hex(input.0.as_bytes(), &mut decoder),
-                    "Failed for '{}'",
-                    input.0.escape_debug()
-                );
-                decoder.len()
-            };
+            assert!(success, "Failed for '{:?}'", input.0);
 
-            let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
+            let result_str = std::str::from_utf8(&result).unwrap();
 
             /*println!(
                 "Decoded '{}'\n -> to ->\n'{}'\n{}",

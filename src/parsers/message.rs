@@ -3,12 +3,8 @@ use std::borrow::Cow;
 
 use crate::decoders::{
     base64::Base64Decoder,
-    buffer_writer::BufferWriter,
-    bytes::BytesDecoder,
-    charsets::map::get_charset_decoder,
-    decoder::{Decoder, RawDecoder},
+    charsets::map::{decoder_default, get_charset_decoder},
     quoted_printable::QuotedPrintableDecoder,
-    DecodeFnc,
 };
 
 use super::{
@@ -80,6 +76,26 @@ enum MimeType {
 }
 
 #[inline(always)]
+fn bytes_to_string<'x>(
+    bytes: &'x [u8],
+    content_type: Option<&ContentType>,
+    is_utf8_safe: bool,
+) -> Cow<'x, str> {
+    if !is_utf8_safe {
+        if let Some(content_type) = content_type {
+            if let Some(charset) = content_type.get_attribute("charset") {
+                if let Some(decoder_fnc) = get_charset_decoder(charset.as_bytes()) {
+                    return decoder_fnc(bytes);
+                }
+            }
+        }
+        decoder_default(bytes)
+    } else {
+        (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
+    }
+}
+
+#[inline(always)]
 fn get_mime_type(
     content_type: Option<&ContentType>,
     parent_content_type: &MimeType,
@@ -143,9 +159,8 @@ impl MessageParserState {
 }
 
 impl<'x> Message<'x> {
-    pub fn parse(bytes: &'x [u8], buffer: &'x mut [u8]) -> Message<'x> {
+    pub fn parse(bytes: &'x mut [u8]) -> Message<'x> {
         let stream = MessageStream::new(bytes);
-        let buffer = BufferWriter::new(buffer);
 
         let mut message = Message::new();
         let mut message_stack = Vec::new();
@@ -164,7 +179,7 @@ impl<'x> Message<'x> {
             };
 
             // Parse headers
-            if !parse_headers(header, &stream, &buffer) {
+            if !parse_headers(header, &stream) {
                 // EOF found while parsing headers, abort.
                 debug_assert!(false, "EOF found while parsing header. Aborting.");
                 break;
@@ -242,76 +257,35 @@ impl<'x> Message<'x> {
 
             stream.skip_crlf();
 
-            let (success, mut is_utf8_safe, mut bytes) = {
-                let decoder: Option<Box<dyn Decoder>> = if let Some(charset) = header
-                    .get_content_type()
-                    .map_or_else(|| None, |c| c.get_attribute("charset"))
-                {
-                    get_charset_decoder(
-                        charset.as_bytes(),
-                        buffer.get_buf_mut().unwrap_or_else(|| &mut []),
-                    )
-                } else {
-                    None
-                };
-
-                let decode_fnc: Option<DecodeFnc<'x>> = match header.get_content_transfer_encoding()
-                {
-                    Some(encoding) if encoding.eq_ignore_ascii_case("base64") => {
-                        Some(MessageStream::decode_base64)
-                    }
-                    Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => {
-                        Some(MessageStream::decode_quoted_printable)
-                    }
-                    _ if decoder.is_some() => Some(MessageStream::decode_bytes),
-                    _ => None,
-                };
-
-                match decode_fnc {
-                    Some(decode_fnc) => {
-                        let (mut decoder, is_utf8_safe): (Box<dyn Decoder>, bool) =
-                            if let Some(decoder) = decoder {
-                                (decoder, true)
-                            } else {
-                                (
-                                    Box::new(RawDecoder::new(
-                                        buffer.get_buf_mut().unwrap_or_else(|| &mut []),
-                                    )),
-                                    false,
-                                )
-                            };
-
-                        (
-                            decode_fnc(
-                                &stream,
-                                state
-                                    .mime_boundary
-                                    .as_ref()
-                                    .map_or_else(|| &[][..], |b| &b[..]),
-                                false,
-                                decoder.as_mut(),
-                            ),
-                            is_utf8_safe,
-                            if decoder.len() > 0 {
-                                buffer.advance_tail(decoder.len());
-                                buffer.get_bytes()
-                            } else {
-                                None
-                            },
-                        )
-                    }
-                    None => stream.get_raw_bytes(
+            let (success, mut is_utf8_safe, mut bytes) = match header
+                .get_content_transfer_encoding()
+            {
+                Some(encoding) if encoding.eq_ignore_ascii_case("base64") => stream.decode_base64(
+                    state
+                        .mime_boundary
+                        .as_ref()
+                        .map_or_else(|| &[][..], |b| &b[..]),
+                    false,
+                ),
+                Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => stream
+                    .decode_quoted_printable(
                         state
                             .mime_boundary
                             .as_ref()
                             .map_or_else(|| &[][..], |b| &b[..]),
+                        false,
                     ),
-                }
+                _ => stream.get_bytes_bounded(
+                    state
+                        .mime_boundary
+                        .as_ref()
+                        .map_or_else(|| &[][..], |b| &b[..]),
+                ),
             };
 
             if !success {
                 if !stream.is_eof() {
-                    let (success, r_is_utf8_safe, r_bytes) = stream.get_raw_bytes(
+                    let (success, r_is_utf8_safe, r_bytes) = stream.get_bytes_bounded(
                         state
                             .mime_boundary
                             .as_ref()
@@ -329,41 +303,21 @@ impl<'x> Message<'x> {
                 }
             }
 
-            if bytes.is_none() {
-                bytes = Some("?".as_bytes());
-                /*if let Some(ref m) = state.mime_boundary {
-                    println!("Empty part!! '{}'", std::str::from_utf8(m).unwrap());
-                } else {
-                    println!("Empty part!!");
-                }*/
-            }
+            if is_text {
+                let is_inline = is_inline
+                    && header
+                        .get_content_disposition()
+                        .map_or_else(|| true, |d| !d.is_attachment())
+                    && (state.parts == 1
+                        || (state.mime_type != MimeType::MultipartRelated
+                            && (mime_type == MimeType::Inline
+                                || header
+                                    .get_content_type()
+                                    .map_or_else(|| true, |c| !c.has_attribute("name")))));
 
-            if is_inline
-                && is_text
-                && header
-                    .get_content_disposition()
-                    .map_or_else(|| true, |d| !d.is_attachment())
-                && (state.parts == 1
-                    || (state.mime_type != MimeType::MultipartRelated
-                        && (mime_type == MimeType::Inline
-                            || header
-                                .get_content_type()
-                                .map_or_else(|| true, |c| !c.has_attribute("name")))))
-            {
-                let text_part = TextPart {
-                    header: if !mime_part_header.is_empty() {
-                        Some(std::mem::take(&mut mime_part_header))
-                    } else {
-                        None
-                    },
-                    contents: if is_utf8_safe {
-                        unsafe { std::str::from_utf8_unchecked(bytes.unwrap()).into() }
-                    } else {
-                        String::from_utf8_lossy(bytes.unwrap())
-                    },
-                };
-
-                let is_this_alternative = if let MimeType::MultipartAlernative = state.mime_type {
+                let is_this_alternative = if !is_inline {
+                    false
+                } else if let MimeType::MultipartAlernative = state.mime_type {
                     true
                 } else if state.in_alternative && (state.need_text_body || state.need_html_body) {
                     match mime_type {
@@ -380,11 +334,29 @@ impl<'x> Message<'x> {
                     false
                 };
 
+                let contents = bytes_to_string(
+                    bytes.map_or_else(|| "?".as_bytes(), |v| v),
+                    header.get_content_type(),
+                    is_utf8_safe,
+                );
+                let text_part = TextPart {
+                    header: if !mime_part_header.is_empty() {
+                        Some(std::mem::take(&mut mime_part_header))
+                    } else {
+                        None
+                    },
+                    contents,
+                };
+
                 match mime_type {
-                    MimeType::TextHtml if is_this_alternative || state.need_html_body => {
+                    MimeType::TextHtml
+                        if is_inline && (is_this_alternative || state.need_html_body) =>
+                    {
                         message.html_body.push(text_part)
                     }
-                    MimeType::TextPlain if is_this_alternative || state.need_text_body => {
+                    MimeType::TextPlain
+                        if is_inline && (is_this_alternative || state.need_text_body) =>
+                    {
                         message.text_body.push(text_part)
                     }
                     _ => message
@@ -392,30 +364,17 @@ impl<'x> Message<'x> {
                         .push(MessageAttachment::Text(Box::new(text_part))),
                 }
             } else {
-                message.attachments.push(if is_text {
-                    MessageAttachment::Text(Box::new(TextPart {
+                message
+                    .attachments
+                    .push(MessageAttachment::File(Box::new(BinaryPart {
                         header: if !mime_part_header.is_empty() {
                             Some(std::mem::take(&mut mime_part_header))
                         } else {
                             None
                         },
-                        contents: if is_utf8_safe {
-                            unsafe { std::str::from_utf8_unchecked(bytes.unwrap()).into() }
-                        } else {
-                            String::from_utf8_lossy(bytes.unwrap())
-                        },
-                    }))
-                } else {
-                    MessageAttachment::File(Box::new(BinaryPart {
-                        header: if !mime_part_header.is_empty() {
-                            Some(std::mem::take(&mut mime_part_header))
-                        } else {
-                            None
-                        },
-                        contents: bytes.unwrap(),
-                    }))
-                });
-            }
+                        contents: bytes.map_or_else(|| "?".as_bytes(), |v| v),
+                    })));
+            };
 
             if state.mime_boundary.is_some() {
                 // Currently processing a MIME part
@@ -525,9 +484,9 @@ impl<'x> Message<'x> {
 mod tests {
     use std::{fs, path::PathBuf};
 
-    use crate::{decoders::buffer_writer::BufferWriter, parsers::message::Message};
+    use crate::parsers::message::Message;
 
-    #[test]
+    /*#[test]
     fn body_parse() {
         let mut samples_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         samples_dir.push("test/dovecot");
@@ -543,7 +502,7 @@ mod tests {
             //    continue;
             //}
             println!("Parsing {}", path.to_str().unwrap());
-            let input = fs::read(path.as_path()).unwrap();
+            let mut input = fs::read(path.as_path()).unwrap();
             if String::from_utf8_lossy(&input).contains("application/pgp-signature") {
                 if !got_sign {
                     got_sign = true;
@@ -552,13 +511,14 @@ mod tests {
                 }
             }
 
-            let mut buffer = BufferWriter::alloc_buffer((input.len() as f64 * 1.25) as usize);
-            let message = Message::parse(&input, &mut buffer);
+            let input2 = input.clone();
+
+            let message = Message::parse(&mut input);
 
             if message.text_body.len() + message.html_body.len() + message.attachments.len() > 1 {
                 fs::write(
                     format!("/vagrant/Code/stalwart/test/final/list_{:03}.eml", count),
-                    &input,
+                    &input2,
                 )
                 .unwrap();
                 //assert!(path.set_extension("yaml"));
@@ -570,6 +530,28 @@ mod tests {
                 //fs::write(path, serde_yaml::to_string(&message).unwrap()).unwrap();
                 count += 1;
             }
+        }
+    }*/
+
+    #[test]
+    fn body_parse() {
+        let mut samples_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        samples_dir.push("test/messages");
+
+        for path in fs::read_dir(samples_dir.to_str().unwrap()).unwrap() {
+            let mut path = path.unwrap().path();
+            if path.as_path().to_str().unwrap().contains(".yaml") {
+                continue;
+            }
+            //if !path.as_path().to_str().unwrap().contains("m576") {
+            //    continue;
+            //}
+            println!("Parsing {}", path.to_str().unwrap());
+            let mut input = fs::read(path.as_path()).unwrap();
+            let message = Message::parse(&mut input);
+
+            assert!(path.set_extension("yaml"));
+            fs::write(path, serde_yaml::to_string(&message).unwrap()).unwrap();
         }
     }
 }

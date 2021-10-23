@@ -3,8 +3,7 @@ use std::{borrow::Cow, collections::HashMap};
 
 use crate::{
     decoders::{
-        buffer_writer::BufferWriter,
-        charsets::map::{get_charset_decoder, get_default_decoder},
+        charsets::map::{decoder_default, get_charset_decoder},
         encoded_word::parse_encoded_word,
         hex::decode_hex,
     },
@@ -151,11 +150,7 @@ fn add_partial_value<'x>(
     }
 }
 
-fn add_value<'x>(
-    parser: &mut ContentTypeParser<'x>,
-    stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
-) {
+fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
     if parser.attr_name.is_none() {
         return;
     }
@@ -199,16 +194,12 @@ fn add_value<'x>(
         };
 
         if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
-            let mut decoder = get_charset_decoder(
-                charset.as_bytes(),
-                buffer.get_buf_mut().unwrap_or_else(|| &mut []),
-            )
-            .unwrap_or_else(|| {
-                get_default_decoder(buffer.get_buf_mut().unwrap_or_else(|| &mut []))
-            });
-            if decode_hex(value.as_bytes(), decoder.as_mut()) && decoder.len() > 0 {
-                buffer.advance_tail(decoder.len());
-                value = buffer.get_string().unwrap().into();
+            if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
+                value = get_charset_decoder(charset.as_bytes()).unwrap_or(decoder_default)(
+                    &decoded_bytes,
+                )
+                .into_owned()
+                .into();
             }
         }
 
@@ -231,10 +222,7 @@ fn add_value<'x>(
     parser.is_token_safe = true;
 }
 
-pub fn parse_content_type<'x>(
-    stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
-) -> Option<ContentType<'x>> {
+pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<'x>> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -287,7 +275,7 @@ pub fn parse_content_type<'x>(
                         add_attribute(&mut parser, stream)
                     }
                     ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
-                        add_value(&mut parser, stream, buffer)
+                        add_value(&mut parser, stream)
                     }
                     _ => (),
                 }
@@ -332,7 +320,7 @@ pub fn parse_content_type<'x>(
                 }
                 ContentState::AttributeValue => {
                     if !parser.is_escaped {
-                        add_value(&mut parser, stream, buffer);
+                        add_value(&mut parser, stream);
                         parser.state = ContentState::AttributeName;
                     } else {
                         parser.is_escaped = false;
@@ -361,9 +349,9 @@ pub fn parse_content_type<'x>(
                 ContentState::AttributeValue | ContentState::AttributeQuotedValue
                     if parser.is_token_start =>
                 {
-                    if let Some(token) = parse_encoded_word(stream, buffer) {
+                    if let Some(token) = parse_encoded_word(stream) {
                         add_partial_value(&mut parser, stream, false);
-                        parser.values.push(token.into());
+                        parser.values.push(token);
                         continue;
                     }
                 }
@@ -379,7 +367,7 @@ pub fn parse_content_type<'x>(
                 }
                 ContentState::AttributeQuotedValue => {
                     if !parser.is_escaped {
-                        add_value(&mut parser, stream, buffer);
+                        add_value(&mut parser, stream);
                         parser.state = ContentState::AttributeName;
                         continue;
                     } else {
@@ -415,7 +403,7 @@ pub fn parse_content_type<'x>(
                         ContentState::Type
                         | ContentState::AttributeName
                         | ContentState::SubType => add_attribute(&mut parser, stream),
-                        ContentState::AttributeValue => add_value(&mut parser, stream, buffer),
+                        ContentState::AttributeValue => add_value(&mut parser, stream),
                         _ => (),
                     }
 
@@ -463,17 +451,14 @@ pub fn parse_content_type<'x>(
 }
 
 mod tests {
-    use std::{borrow::Cow, collections::HashMap};
-
-    use crate::{
-        decoders::buffer_writer::BufferWriter,
-        parsers::{fields::content_type::ContentType, message_stream::MessageStream},
-    };
-
-    use super::parse_content_type;
-
     #[test]
     fn parse_content_fields() {
+        use std::{borrow::Cow, collections::HashMap};
+
+        use crate::parsers::{fields::content_type::ContentType, message_stream::MessageStream};
+    
+        use super::parse_content_type;
+    
         let inputs = [
             ("audio/basic\n", "audio||basic"),
             ("application/postscript \n", "application||postscript"),
@@ -715,10 +700,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let stream = MessageStream::new(input.0.as_bytes());
-            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
-            let writer = BufferWriter::new(&mut buffer);
-            let result = parse_content_type(&stream, &writer);
+            let mut str = input.0.to_string();
+
+            let result = parse_content_type(&MessageStream::new(unsafe { str.as_bytes_mut() }));
             let expected = if !input.1.is_empty() {
                 let mut c_type: Option<Cow<str>> = None;
                 let mut c_subtype: Option<Cow<str>> = None;

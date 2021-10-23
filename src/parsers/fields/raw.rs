@@ -86,8 +86,9 @@ mod tests {
         ];
 
         for input in inputs {
+            let mut str = input.0.to_string();
             assert_eq!(
-                parse_raw(&MessageStream::new(input.0.as_bytes())).unwrap(),
+                parse_raw(&MessageStream::new(unsafe { str.as_bytes_mut() })).unwrap(),
                 input.1,
                 "Failed for '{:?}'",
                 input.0

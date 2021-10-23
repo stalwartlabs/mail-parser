@@ -1,36 +1,39 @@
 use std::{borrow::Cow, cell::UnsafeCell};
 
 pub struct MessageStream<'x> {
-    pub data: &'x [u8],
-    pos: UnsafeCell<usize>,
+    pub data: UnsafeCell<&'x mut [u8]>,
+    pub pos: UnsafeCell<usize>,
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn new(data: &'x [u8]) -> MessageStream<'x> {
+    pub fn new(data: &'x mut [u8]) -> MessageStream<'x> {
         MessageStream {
-            data,
+            data: data.into(),
             pos: 0.into(),
         }
     }
 
     #[inline(always)]
     pub fn get_bytes(&self, from: usize, to: usize) -> Option<&'x [u8]> {
-        self.data.get(from..to)
+        unsafe { (*self.data.get()).get(from..to) }
     }
 
     pub fn get_string(&self, from: usize, to: usize, utf8_valid: bool) -> Option<Cow<'x, str>> {
-        let bytes = self.data.get(from..to)?;
-
-        Some(if utf8_valid {
-            (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
-        } else {
-            String::from_utf8_lossy(bytes)
-        })
+        unsafe {
+            if utf8_valid {
+                Cow::from(std::str::from_utf8_unchecked(
+                    (*self.data.get()).get(from..to)?,
+                ))
+                .into()
+            } else {
+                String::from_utf8_lossy((*self.data.get()).get(from..to)?).into()
+            }
+        }
     }
 
     #[inline(always)]
     pub fn is_eof(&self) -> bool {
-        unsafe { *self.pos.get() >= self.data.len() }
+        unsafe { *self.pos.get() >= (*self.data.get()).len() }
     }
 
     #[inline(always)]
@@ -49,9 +52,10 @@ impl<'x> MessageStream<'x> {
     pub fn next(&self) -> Option<&'x u8> {
         unsafe {
             let pos = &mut *self.pos.get();
+            let data = &mut *self.data.get();
 
-            if *pos < self.data.len() {
-                let result = self.data.get_unchecked(*pos);
+            if *pos < data.len() {
+                let result = data.get_unchecked(*pos);
                 *pos += 1;
                 Some(result)
             } else {
@@ -62,7 +66,7 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn peek(&self) -> Option<&'x u8> {
-        unsafe { self.data.get(*self.pos.get()) }
+        unsafe { (*self.data.get()).get(*self.pos.get()) }
     }
 
     #[inline(always)]
@@ -73,34 +77,40 @@ impl<'x> MessageStream<'x> {
     }
 
     pub fn match_bytes(&self, start_pos: usize, bytes: &[u8]) -> bool {
-        self.data
-            .get(start_pos..start_pos + bytes.len())
-            .unwrap_or(&[])
-            == bytes
+        unsafe {
+            (*self.data.get())
+                .get(start_pos..start_pos + bytes.len())
+                .unwrap_or(&[])
+                == bytes
+        }
     }
 
     pub fn seek_bytes(&self, bytes: &[u8]) -> bool {
-        let mut pos = self.get_pos();
-        let mut match_count = 0;
-
         if !bytes.is_empty() {
-            for ch in self.data[pos..].iter() {
-                pos += 1;
+            unsafe {
+                let cur_pos = &mut *self.pos.get();
+                let data = &mut *self.data.get();
+                let mut pos = *cur_pos;
+                let mut match_count = 0;
 
-                if ch == unsafe { bytes.get_unchecked(match_count) } {
-                    match_count += 1;
-                    if match_count == bytes.len() {
-                        self.set_pos(pos);
-                        return true;
-                    } else {
-                        continue;
-                    }
-                } else if match_count > 0 {
-                    if ch == unsafe { bytes.get_unchecked(0) } {
-                        match_count = 1;
-                        continue;
-                    } else {
-                        match_count = 0;
+                for ch in (*data)[*cur_pos..].iter() {
+                    pos += 1;
+
+                    if ch == bytes.get_unchecked(match_count) {
+                        match_count += 1;
+                        if match_count == bytes.len() {
+                            *cur_pos = pos;
+                            return true;
+                        } else {
+                            continue;
+                        }
+                    } else if match_count > 0 {
+                        if ch == bytes.get_unchecked(0) {
+                            match_count = 1;
+                            continue;
+                        } else {
+                            match_count = 0;
+                        }
                     }
                 }
             }
@@ -109,29 +119,77 @@ impl<'x> MessageStream<'x> {
         false
     }
 
-    pub fn skip_spaces(&self) -> bool {
-        let mut pos = self.get_pos();
-        for ch in self.data[pos..].iter() {
-            if !ch.is_ascii_whitespace() {
-                break;
+    pub fn get_bytes_bounded(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
+        unsafe {
+            let data = &mut *self.data.get();
+
+            let stream_pos = &mut *self.pos.get();
+            let start_pos = *stream_pos;
+
+            return if !boundary.is_empty() {
+                let mut pos = *stream_pos;
+                let mut match_count = 0;
+                let mut is_utf8_safe = true;
+
+                for ch in (*data)[pos..].iter() {
+                    pos += 1;
+
+                    if is_utf8_safe && *ch > 0x7f {
+                        is_utf8_safe = false;
+                    }
+
+                    if ch == boundary.get_unchecked(match_count) {
+                        match_count += 1;
+                        if match_count == boundary.len() {
+                            let match_pos = pos - match_count;
+                            *stream_pos = pos;
+                            return (
+                                true,
+                                is_utf8_safe,
+                                if start_pos < match_pos {
+                                    (*data).get(start_pos..match_pos)
+                                } else {
+                                    None
+                                },
+                            );
+                        } else {
+                            continue;
+                        }
+                    } else if match_count > 0 {
+                        if ch == boundary.get_unchecked(0) {
+                            match_count = 1;
+                            continue;
+                        } else {
+                            match_count = 0;
+                        }
+                    }
+                }
+
+                (false, false, None)
+            } else if *stream_pos < (*data).len() {
+                *stream_pos = (*data).len();
+                (true, false, (*data).get(start_pos..))
             } else {
-                pos += 1;
-            }
+                (false, false, None)
+            };
         }
-        self.set_pos(pos);
-        pos < self.data.len()
     }
 
     pub fn skip_crlf(&self) {
-        let mut pos = self.get_pos();
-        for ch in self.data[pos..].iter() {
-            match ch {
-                b'\r' => pos += 1,
-                b'\n' => {
-                    self.set_pos(pos + 1);
-                    break;
+        unsafe {
+            let cur_pos = &mut *self.pos.get();
+            let data = &mut *self.data.get();
+            let mut pos = *cur_pos;
+
+            for ch in (*data)[*cur_pos..].iter() {
+                match ch {
+                    b'\r' => pos += 1,
+                    b'\n' => {
+                        *cur_pos = pos + 1;
+                        break;
+                    }
+                    _ => break,
                 }
-                _ => break,
             }
         }
     }
@@ -139,8 +197,9 @@ impl<'x> MessageStream<'x> {
     pub fn skip_byte(&self, ch: &u8) -> bool {
         unsafe {
             let pos = &mut *self.pos.get();
+            let data = &mut *self.data.get();
 
-            if *pos < self.data.len() && self.data.get_unchecked(*pos) == ch {
+            if *pos < (*data).len() && (*data).get_unchecked(*pos) == ch {
                 *pos += 1;
                 true
             } else {
@@ -152,9 +211,10 @@ impl<'x> MessageStream<'x> {
     pub fn skip_bytes(&self, chs: &[u8]) -> bool {
         unsafe {
             let pos = &mut *self.pos.get();
+            let data = &mut *self.data.get();
             let to = *pos + chs.len();
 
-            match self.data.get(*pos..to) {
+            match (*data).get(*pos..to) {
                 Some(bytes) if bytes == chs => {
                     *pos = to;
                     true

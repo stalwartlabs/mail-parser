@@ -1,9 +1,6 @@
 use std::borrow::Cow;
 
-use crate::{
-    decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
-    parsers::message_stream::MessageStream,
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -37,10 +34,7 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
     }
 }
 
-pub fn parse_unstructured<'x>(
-    stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
-) -> Option<Cow<'x, str>> {
+pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -78,7 +72,7 @@ pub fn parse_unstructured<'x>(
                 continue;
             }
             b'=' if parser.is_token_start => {
-                if let Some(token) = parse_encoded_word(stream, buffer) {
+                if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
                     continue;
@@ -108,7 +102,6 @@ pub fn parse_unstructured<'x>(
 }
 
 mod tests {
-    use crate::decoders::buffer_writer::BufferWriter;
 
     #[test]
     fn parse_unstructured_text() {
@@ -187,12 +180,9 @@ mod tests {
         ];
 
         for input in inputs {
+            let mut str = input.0.to_string();
             assert_eq!(
-                parse_unstructured(
-                    &MessageStream::new(input.0.as_bytes()),
-                    &BufferWriter::new(&mut BufferWriter::alloc_buffer(input.0.len() * 2)),
-                )
-                .unwrap(),
+                parse_unstructured(&MessageStream::new(unsafe { str.as_bytes_mut() }),).unwrap(),
                 input.1,
                 "Failed to parse '{:?}'",
                 input.0

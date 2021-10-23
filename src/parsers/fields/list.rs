@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
+    decoders::{encoded_word::parse_encoded_word},
     parsers::message_stream::MessageStream,
 };
 
@@ -53,7 +53,6 @@ fn add_tokens_to_list<'x>(parser: &mut ListParser<'x>) {
 
 pub fn parse_comma_separared<'x>(
     stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
 ) -> Option<Vec<Cow<'x, str>>> {
     let mut parser = ListParser {
         token_start: 0,
@@ -94,7 +93,7 @@ pub fn parse_comma_separared<'x>(
                 continue;
             }
             b'=' if parser.is_token_start => {
-                if let Some(token) = parse_encoded_word(stream, buffer) {
+                if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
                     continue;
@@ -130,7 +129,6 @@ pub fn parse_comma_separared<'x>(
 
 mod tests {
     use crate::{
-        decoders::buffer_writer::BufferWriter,
         parsers::{fields::list::parse_comma_separared, message_stream::MessageStream},
     };
 
@@ -183,10 +181,10 @@ mod tests {
         ];
 
         for input in inputs {
+            let mut str = input.0.to_string();
             assert_eq!(
                 parse_comma_separared(
-                    &MessageStream::new(input.0.as_bytes()),
-                    &BufferWriter::new(&mut BufferWriter::alloc_buffer(input.0.len() * 2))
+                    &MessageStream::new(unsafe { str.as_bytes_mut() }),
                 )
                 .unwrap(),
                 input.1

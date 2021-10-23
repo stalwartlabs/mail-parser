@@ -1,7 +1,5 @@
 use crate::parsers::message_stream::MessageStream;
 
-use super::decoder::Decoder;
-
 #[derive(PartialEq, Debug)]
 enum QuotedPrintableState {
     None,
@@ -9,13 +7,12 @@ enum QuotedPrintableState {
     Hex1,
 }
 
-pub trait QuotedPrintableDecoder<'y> {
+pub trait QuotedPrintableDecoder<'x> {
     fn decode_quoted_printable(
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &mut dyn Decoder,
-    ) -> bool;
+    ) -> (bool, bool, Option<&'x [u8]>);
 }
 
 impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
@@ -23,94 +20,130 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
         &self,
         boundary: &[u8],
         is_word: bool,
-        dest: &mut dyn Decoder,
-    ) -> bool {
-        let mut pos = self.get_pos();
-        let mut state = QuotedPrintableState::None;
-        let mut match_count = 0;
-        let mut hex1 = 0;
+    ) -> (bool, bool, Option<&'x [u8]>) {
+        unsafe {
+            let mut success = boundary.is_empty();
+            let mut is_utf8_safe = true;
 
-        for ch in self.data[pos..].iter() {
-            pos += 1;
+            let data = &mut *self.data.get();
+            let data_len = (*data).len();
 
-            if match_count < boundary.len() {
-                if ch == unsafe { boundary.get_unchecked(match_count) } {
-                    match_count += 1;
-                    if match_count == boundary.len() {
-                        self.set_pos(pos);
-                        return true;
-                    } else {
-                        continue;
-                    }
-                } else if match_count > 0 {
-                    for ch in boundary[..match_count].iter() {
-                        if *ch != b'\n' || QuotedPrintableState::Eq != state {
-                            dest.write_byte(ch);
+            let stream_pos = &mut *self.pos.get();
+            let start_pos = *stream_pos;
+            let mut read_pos = *stream_pos;
+            let mut write_pos = *stream_pos;
+
+            let mut state = QuotedPrintableState::None;
+            let mut match_count = 0;
+            let mut hex1 = 0;
+
+            while read_pos < data_len {
+                let ch = *(*data).get_unchecked(read_pos);
+                read_pos += 1;
+
+                if match_count < boundary.len() {
+                    if ch == *boundary.get_unchecked(match_count) {
+                        match_count += 1;
+                        if match_count == boundary.len() {
+                            success = true;
+                            break;
+                        } else {
+                            continue;
+                        }
+                    } else if match_count > 0 {
+                        for ch in boundary[..match_count].iter() {
+                            if *ch != b'\n' || QuotedPrintableState::Eq != state {
+                                *((*data).get_unchecked_mut(write_pos)) = *ch;
+                                write_pos += 1;
+                                if is_utf8_safe && *ch > 0x7f {
+                                    is_utf8_safe = false;
+                                }
+                            }
+                        }
+                        state = QuotedPrintableState::None;
+
+                        if ch == *boundary.get_unchecked(0) {
+                            match_count = 1;
+                            continue;
+                        } else {
+                            match_count = 0;
                         }
                     }
-                    state = QuotedPrintableState::None;
+                }
 
-                    if ch == unsafe { boundary.get_unchecked(0) } {
-                        match_count = 1;
-                        continue;
-                    } else {
-                        match_count = 0;
+                match ch {
+                    b'=' => {
+                        if let QuotedPrintableState::None = state {
+                            state = QuotedPrintableState::Eq
+                        } else {
+                            success = false;
+                            break;
+                        }
                     }
+                    b'\n' => {
+                        if is_word {
+                            success = false;
+                            break;
+                        } else if QuotedPrintableState::Eq == state {
+                            state = QuotedPrintableState::None;
+                        } else {
+                            *((*data).get_unchecked_mut(write_pos)) = b'\n';
+                            write_pos += 1;
+                        }
+                    }
+                    b'_' if is_word => {
+                        *((*data).get_unchecked_mut(write_pos)) = b' ';
+                        write_pos += 1;
+                    }
+                    b'\r' => (),
+                    _ => match state {
+                        QuotedPrintableState::None => {
+                            *((*data).get_unchecked_mut(write_pos)) = ch;
+                            write_pos += 1;
+                            if is_utf8_safe && ch > 0x7f {
+                                is_utf8_safe = false;
+                            }
+                        }
+                        QuotedPrintableState::Eq => {
+                            hex1 = *HEX_MAP.get_unchecked(ch as usize);
+                            if hex1 != -1 {
+                                state = QuotedPrintableState::Hex1;
+                            } else {
+                                success = false;
+                                break;
+                            }
+                        }
+                        QuotedPrintableState::Hex1 => {
+                            let hex2 = *HEX_MAP.get_unchecked(ch as usize);
+
+                            state = QuotedPrintableState::None;
+                            if hex2 != -1 {
+                                let ch = ((hex1 as u8) << 4) | hex2 as u8;
+                                *((*data).get_unchecked_mut(write_pos)) = ch;
+                                write_pos += 1;
+                                if is_utf8_safe && ch > 0x7f {
+                                    is_utf8_safe = false;
+                                }
+                            } else {
+                                success = false;
+                                break;
+                            }
+                        }
+                    },
                 }
             }
 
-            match ch {
-                b'=' => {
-                    if let QuotedPrintableState::None = state {
-                        state = QuotedPrintableState::Eq
-                    } else {
-                        return false;
-                    }
-                }
-                b'\n' => {
-                    if is_word {
-                        return false;
-                    } else if QuotedPrintableState::Eq == state {
-                        state = QuotedPrintableState::None;
-                    } else {
-                        dest.write_byte(&b'\n');
-                    }
-                }
-                b'_' if is_word => {
-                    dest.write_byte(&b' ');
-                }
-                b'\r' => (),
-                _ => match state {
-                    QuotedPrintableState::None => {
-                        dest.write_byte(ch);
-                    }
-                    QuotedPrintableState::Eq => {
-                        hex1 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
-                        if hex1 != -1 {
-                            state = QuotedPrintableState::Hex1;
-                        } else {
-                            return false;
-                        }
-                    }
-                    QuotedPrintableState::Hex1 => {
-                        let hex2 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
+            *stream_pos = read_pos;
 
-                        state = QuotedPrintableState::None;
-                        if hex2 != -1 {
-                            dest.write_byte(&(((hex1 as u8) << 4) | hex2 as u8));
-                        } else {
-                            return false;
-                        }
-                    }
+            (
+                success,
+                is_utf8_safe,
+                if write_pos > start_pos {
+                    Some((*data).get_unchecked(start_pos..write_pos))
+                } else {
+                    None
                 },
-            }
-        }
-
-        if boundary.is_empty() {
-            self.set_pos(pos);
-            true
-        } else {
-            false
+            )
         }
     }
 }
@@ -119,8 +152,6 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
 mod tests {
     use crate::{
         decoders::{
-            buffer_writer::BufferWriter,
-            decoder::{Decoder, RawDecoder},
             quoted_printable::QuotedPrintableDecoder,
         },
         parsers::message_stream::MessageStream,
@@ -197,22 +228,15 @@ mod tests {
         ];
 
         for input in inputs {
-            let stream = MessageStream::new(input.0.as_bytes());
-            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
-            let len = {
-                let mut decoder = RawDecoder::new(&mut buffer);
+            let mut str = input.0.to_string();
+            let stream = MessageStream::new(unsafe { str.as_bytes_mut() });
 
-                assert_eq!(
-                    stream.decode_quoted_printable(input.2.as_bytes(), input.3, &mut decoder),
-                    !input.1.is_empty(),
-                    "Failed for '{}'",
-                    input.0.escape_debug()
-                );
-                decoder.len()
-            };
+            let (success, _, result) = stream.decode_quoted_printable(input.2.as_bytes(), input.3);
+
+            assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
 
             if !input.1.is_empty() {
-                let result_str = std::str::from_utf8(&buffer[..len]).unwrap();
+                let result_str = std::str::from_utf8(result.unwrap()).unwrap();
 
                 /*println!(
                     "Decoded '{}'\n -> to ->\n'{}'\n{}",

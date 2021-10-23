@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
+    decoders::{encoded_word::parse_encoded_word},
     parsers::message_stream::MessageStream,
 };
 
@@ -253,7 +253,7 @@ pub fn add_group(parser: &mut AddressParser) {
         });
 }
 
-pub fn parse_address<'x>(stream: &MessageStream<'x>, buffer: &BufferWriter<'x>) -> Address<'x> {
+pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -335,7 +335,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>, buffer: &BufferWriter<'x>) 
                 parser.is_token_email = true;
             }
             b'=' if parser.is_token_start && !parser.is_escaped => {
-                if let Some(token) = parse_encoded_word(stream, buffer) {
+                if let Some(token) = parse_encoded_word(stream) {
                     let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
                     add_token(&mut parser, stream, add_space);
                     (if parser.state != AddressState::Comment {
@@ -343,7 +343,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>, buffer: &BufferWriter<'x>) 
                     } else {
                         &mut parser.comment_tokens
                     })
-                    .push(token.into());
+                    .push(token);
                     continue;
                 }
             }
@@ -438,12 +438,12 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>, buffer: &BufferWriter<'x>) 
 }
 
 mod tests {
-    use crate::parsers::{fields::address::parse_address, message_stream::MessageStream};
-
-    use super::*;
-
     #[test]
     fn parse_addresses() {
+        use crate::parsers::{fields::address::parse_address, message_stream::MessageStream};
+
+        use super::*;
+    
         let inputs = [
             (
                 concat!("John Doe <jdoe@machine.example>\n"),
@@ -1056,10 +1056,8 @@ mod tests {
         ];
 
         for input in inputs {
-            let stream = &MessageStream::new(input.0.as_bytes());
-            let mut buffer = BufferWriter::alloc_buffer(input.0.len() * 3);
-            let writer = BufferWriter::new(&mut buffer);
-            let result = parse_address(stream, &writer);
+            let mut str = input.0.to_string();
+            let result = parse_address(&MessageStream::new(unsafe { str.as_bytes_mut() }));
 
             /*println!(
                 "(concat!({}), {}),",

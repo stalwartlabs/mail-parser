@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, collections::HashMap};
 
-use crate::{decoders::buffer_writer::BufferWriter, parsers::message_stream::MessageStream};
+use crate::parsers::message_stream::MessageStream;
 
 use super::fields::{
     address::Address, content_type::ContentType, date::DateTime, parse_unsupported, MessageField,
@@ -156,23 +156,17 @@ impl<'x> MimeHeader<'x> {
 }
 
 enum HeaderParserResult<'x> {
-    Supported(fn(&mut dyn MessageField<'x>, &MessageStream<'x>, &BufferWriter<'x>)),
+    Supported(fn(&mut dyn MessageField<'x>, &MessageStream<'x>)),
     Unsupported(&'x [u8]),
     Lf,
     Eof,
 }
 
-pub fn parse_headers<'x>(
-    header: &mut dyn MessageField<'x>,
-    stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
-) -> bool {
+pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStream<'x>) -> bool {
     loop {
         match parse_header_name(stream) {
-            HeaderParserResult::Supported(fnc) => fnc(header, stream, buffer),
-            HeaderParserResult::Unsupported(name) => {
-                parse_unsupported(header, stream, buffer, name)
-            }
+            HeaderParserResult::Supported(fnc) => fnc(header, stream),
+            HeaderParserResult::Unsupported(name) => parse_unsupported(header, stream, name),
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
             _ => return false,
@@ -180,7 +174,7 @@ pub fn parse_headers<'x>(
     }
 }
 
-fn parse_header_name<'x, 'y: 'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
+fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut token_len: usize = 0;
@@ -276,7 +270,8 @@ mod tests {
         ];
 
         for input in inputs {
-            match parse_header_name(&MessageStream::new(input.0.as_bytes())) {
+            let mut str = input.0.to_string();
+            match parse_header_name(&MessageStream::new(unsafe { str.as_bytes_mut() })) {
                 HeaderParserResult::Supported(f) => {
                     if let HeaderParserResult::Supported(val) = input.1 {
                         if f as usize == val as usize {
@@ -312,11 +307,7 @@ static HDR_HASH: &[u8] = &[
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62,
 ];
 
-static HDR_FNCS: &[for<'x, 'y> fn(
-    &mut dyn MessageField<'x>,
-    &MessageStream<'x>,
-    &BufferWriter<'x>,
-)] = &[
+static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &MessageStream<'x>)] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,
     super::fields::parse_sender,

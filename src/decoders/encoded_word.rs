@@ -1,18 +1,16 @@
+use std::borrow::Cow;
+
 use crate::{
     decoders::{
-        base64::Base64Decoder,
-        charsets::map::{get_charset_decoder, get_default_decoder},
+        base64::Base64Decoder, charsets::map::get_charset_decoder,
         quoted_printable::QuotedPrintableDecoder,
     },
     parsers::message_stream::MessageStream,
 };
 
-use super::buffer_writer::BufferWriter;
+use super::charsets::map::decoder_default;
 
-pub fn parse_encoded_word<'x>(
-    stream: &MessageStream<'x>,
-    buffer: &BufferWriter<'x>,
-) -> Option<&'x str> {
+pub fn parse_encoded_word<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
     if !stream.skip_byte(&b'?') {
         return None;
     }
@@ -46,38 +44,34 @@ pub fn parse_encoded_word<'x>(
         return None;
     }
 
-    let mut decoder = get_charset_decoder(
-        stream.get_bytes(charset_start, charset_end).unwrap(),
-        buffer.get_buf_mut()?,
-    )
-    .unwrap_or_else(|| get_default_decoder(buffer.get_buf_mut().unwrap_or_else(|| &mut [])));
-
-    if !(match stream.next() {
+    let (success, is_utf8_safe, bytes) = match stream.next() {
         Some(b'q') | Some(b'Q') if stream.skip_byte(&b'?') => {
-            stream.decode_quoted_printable(b"?=", true, decoder.as_mut())
+            stream.decode_quoted_printable(b"?=", true)
         }
-        Some(b'b') | Some(b'B') if stream.skip_byte(&b'?') => {
-            stream.decode_base64(b"?=", true, decoder.as_mut())
-        }
-        _ => false,
-    }) {
+        Some(b'b') | Some(b'B') if stream.skip_byte(&b'?') => stream.decode_base64(b"?=", true),
+        _ => (false, false, None),
+    };
+
+    if !success {
         stream.set_pos(backup_pos);
         return None;
     }
 
-    if decoder.len() > 0 {
-        buffer.advance_tail(decoder.len());
-        buffer.get_string()
+    if let Some(decoder) =
+        get_charset_decoder(stream.get_bytes(charset_start, charset_end).unwrap())
+    {
+        decoder(bytes?).into()
+    } else if is_utf8_safe {
+        unsafe { Cow::from(std::str::from_utf8_unchecked(bytes?)).into() }
     } else {
-        None
+        decoder_default(bytes?).into()
     }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{buffer_writer::BufferWriter, encoded_word::parse_encoded_word},
-        parsers::message_stream::MessageStream,
+        decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream,
     };
 
     #[test]
@@ -160,10 +154,9 @@ mod tests {
         ];
 
         for input in inputs {
-            match parse_encoded_word(
-                &MessageStream::new(input.0.as_bytes()),
-                &BufferWriter::new(&mut BufferWriter::alloc_buffer(input.0.len() * 2)),
-            ) {
+            let mut str = input.0.to_string();
+
+            match parse_encoded_word(&MessageStream::new(unsafe { str.as_bytes_mut() })) {
                 Some(string) => {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);
