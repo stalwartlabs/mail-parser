@@ -1,9 +1,6 @@
 use std::borrow::Cow;
 
-use crate::{
-    decoders::{encoded_word::parse_encoded_word},
-    parsers::message_stream::MessageStream,
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 
 struct ListParser<'x> {
     token_start: usize,
@@ -51,9 +48,7 @@ fn add_tokens_to_list<'x>(parser: &mut ListParser<'x>) {
     }
 }
 
-pub fn parse_comma_separared<'x>(
-    stream: &MessageStream<'x>,
-) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     let mut parser = ListParser {
         token_start: 0,
         token_end: 0,
@@ -128,9 +123,7 @@ pub fn parse_comma_separared<'x>(
 }
 
 mod tests {
-    use crate::{
-        parsers::{fields::list::parse_comma_separared, message_stream::MessageStream},
-    };
+    use crate::parsers::{fields::list::parse_comma_separared, message_stream::MessageStream};
 
     #[test]
     fn parse_comma_separated_text() {
@@ -183,10 +176,7 @@ mod tests {
         for input in inputs {
             let mut str = input.0.to_string();
             assert_eq!(
-                parse_comma_separared(
-                    &MessageStream::new(unsafe { str.as_bytes_mut() }),
-                )
-                .unwrap(),
+                parse_comma_separared(&MessageStream::new(unsafe { str.as_bytes_mut() }),).unwrap(),
                 input.1
             );
         }

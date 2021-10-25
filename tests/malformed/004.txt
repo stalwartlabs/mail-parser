@@ -1,0 +1,29 @@
+Content-Type: multipart/mixed; boundary="a"
+
+--ab
+Content-Type: multipart/mixed; boundary="a"
+
+--ac
+Content-Type: text/plain
+
+body
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "a"
+      }
+    }
+  },
+  "attachments": [
+    {
+      "Text": {
+        "contents": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
+      }
+    }
+  ]
+}

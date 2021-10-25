@@ -1,0 +1,84 @@
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 1.0
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 2.0
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: abc
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version:
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "mime_version": "1.0",
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "1"
+      }
+    }
+  },
+  "text_body": [
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "hello, world"
+    },
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "hello, world"
+    },
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "hello, world"
+    },
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "hello, world"
+    }
+  ]
+}

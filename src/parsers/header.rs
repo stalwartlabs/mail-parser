@@ -9,7 +9,6 @@ use super::fields::{
 
 #[derive(PartialEq, Debug, Default, Serialize, Deserialize)]
 pub struct MessageHeader<'x> {
-    pub mime: MimeHeader<'x>,
     #[serde(skip_serializing_if = "Address::is_empty")]
     #[serde(default)]
     pub bcc: Address<'x>,
@@ -22,6 +21,8 @@ pub struct MessageHeader<'x> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
     pub date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Address::is_empty")]
+    #[serde(default)]
     pub from: Address<'x>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
@@ -98,6 +99,21 @@ pub struct MessageHeader<'x> {
     #[serde(skip_serializing_if = "Address::is_empty")]
     #[serde(default)]
     pub to: Address<'x>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub content_description: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub content_disposition: Option<ContentType<'x>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub content_id: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub content_transfer_encoding: Option<Cow<'x, str>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(default)]
+    pub content_type: Option<ContentType<'x>>,
     #[serde(borrow)]
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     #[serde(default)]

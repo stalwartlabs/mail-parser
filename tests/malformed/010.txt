@@ -1,0 +1,22 @@
+Content-Type: message/rfc822
+
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+1
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "content_type": {
+      "c_type": "text",
+      "c_subtype": "plain"
+    }
+  },
+  "text_body": [
+    {
+      "contents": "1\n"
+    }
+  ]
+}

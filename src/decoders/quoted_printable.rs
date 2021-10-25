@@ -45,12 +45,16 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                     if ch == *boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
-                            success = true;
-                            break;
+                            if is_word || self.is_boundary_end(read_pos) {
+                                success = true;
+                                break;
+                            }
                         } else {
                             continue;
                         }
-                    } else if match_count > 0 {
+                    }
+
+                    if match_count > 0 {
                         for ch in boundary[..match_count].iter() {
                             if *ch != b'\n' || QuotedPrintableState::Eq != state {
                                 *((*data).get_unchecked_mut(write_pos)) = *ch;
@@ -151,10 +155,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::{
-            quoted_printable::QuotedPrintableDecoder,
-        },
-        parsers::message_stream::MessageStream,
+        decoders::quoted_printable::QuotedPrintableDecoder, parsers::message_stream::MessageStream,
     };
 
     #[test]

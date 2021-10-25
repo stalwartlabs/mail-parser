@@ -1,0 +1,31 @@
+Content-Type: multipart/mixed; boundary="1"
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "1"
+      }
+    }
+  },
+  "text_body": [
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "hello, world"
+    }
+  ]
+}

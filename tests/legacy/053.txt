@@ -1,0 +1,94 @@
+From: "Doug Sauder" <doug@example.com>
+To: =?utf-8?Q?Heinz_M=C3=BCller?= <mueller@example.com>
+Subject: =?utf-8?Q?Die_Hasen_und_die_Fr=C3=B6sche_=28Microsoft_Outlook_00=29?=
+Date: Wed, 17 May 2000 19:27:04 -0400
+Message-ID: <NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+
+Die Hasen und die Fr=C3=B6sche
+
+Die Hasen klagten einst =C3=BCber ihre mi=C3=9Fliche Lage; "wir leben", =
+sprach ein Redner, "in steter Furcht vor Menschen und Tieren, eine Beute =
+der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist =
+=C3=A4rger als der Tod selbst. Auf, la=C3=9Ft uns ein f=C3=BCr allemal =
+sterben."=20
+
+In einem nahen Teich wollten sie sich nun ers=C3=A4ufen; sie eilten ihm =
+zu; allein das au=C3=9Ferordentliche Get=C3=B6se und ihre wunderbare =
+Gestalt erschreckte eine Menge Fr=C3=B6sche, die am Ufer sa=C3=9Fen, so =
+sehr, da=C3=9F sie aufs schnellste untertauchten.=20
+
+"Halt", rief nun eben dieser Sprecher, "wir wollen das Ers=C3=A4ufen =
+noch ein wenig aufschieben, denn auch uns f=C3=BCrchten, wie ihr seht, =
+einige Tiere, welche also wohl noch ungl=C3=BCcklicher sein m=C3=BCssen =
+als wir."=20
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 2000,
+      "month": 5,
+      "day": 17,
+      "hour": 19,
+      "minute": 27,
+      "second": 4,
+      "tz_before_gmt": true,
+      "tz_hour": 4,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "message_id": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com",
+    "mime_version": "1.0",
+    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "content_transfer_encoding": "quoted-printable",
+    "content_type": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": {
+        "charset": "utf-8"
+      }
+    },
+    "others": {
+      "X-Priority": [
+        "3 (Normal)"
+      ],
+      "X-Mailer": [
+        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+      ],
+      "X-MimeOLE": [
+        "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      ],
+      "X-MSMail-Priority": [
+        "Normal"
+      ],
+      "Importance": [
+        "Normal"
+      ]
+    }
+  },
+  "text_body": [
+    {
+      "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n"
+    }
+  ]
+}

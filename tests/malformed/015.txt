@@ -1,0 +1,106 @@
+Return-Path: <test@example.org>
+Subject: Hello world
+From: Test User <test@example.org>
+To: Another User <test2@example.org>
+Message-Id: <1.2.3.4@example>
+Mime-Version: 1.0
+Date: Sun, 23 May 2007 04:58:08 +0300
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="=-GNQXLhuj24Pl1aCkk4/d"
+
+--=-GNQXLhuj24Pl1aCkk4/d
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+There was a day=20
+a happy=20day
+
+--=-GNQXLhuj24Pl1aCkk4/d
+Content-Type: application/pgp-signature; name=signature.asc
+
+invalid
+
+--=-GNQXLhuj24Pl1aCkk4/d--
+
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 2007,
+      "month": 5,
+      "day": 23,
+      "hour": 4,
+      "minute": 58,
+      "second": 8,
+      "tz_before_gmt": false,
+      "tz_hour": 3,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
+      }
+    },
+    "message_id": "1.2.3.4@example",
+    "mime_version": "1.0",
+    "return_path": [
+      "test@example.org"
+    ],
+    "subject": "Hello world",
+    "to": {
+      "Address": {
+        "name": "Another User",
+        "address": "test2@example.org"
+      }
+    },
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "signed",
+      "attributes": {
+        "micalg": "pgp-sha1",
+        "protocol": "application/pgp-signature",
+        "boundary": "=-GNQXLhuj24Pl1aCkk4/d"
+      }
+    }
+  },
+  "text_body": [
+    {
+      "header": {
+        "content_transfer_encoding": "quoted-printable",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "There was a day \na happy day\n"
+    }
+  ],
+  "attachments": [
+    {
+      "File": {
+        "header": {
+          "content_type": {
+            "c_type": "application",
+            "c_subtype": "pgp-signature",
+            "attributes": {
+              "name": "signature.asc"
+            }
+          }
+        },
+        "contents": [
+          105,
+          110,
+          118,
+          97,
+          108,
+          105,
+          100,
+          10
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+Content-Type: multipart/mixed; boundary=":foo"
+
+--:foo
+--:foo
+Content-Type: text/plain
+--:foo
+Content-Type: text/plain
+--:foo
+Content-Type: text/html
+--:foo--
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": ":foo"
+      }
+    }
+  }
+}

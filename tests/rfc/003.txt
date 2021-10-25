@@ -1,0 +1,157 @@
+From: Nathaniel Borenstein <nsb@bellcore.com>
+To: Ned Freed <ned@innosoft.com>
+Date: Mon, 22 Mar 1993 09:41:09 -0800 (PST)
+Subject: Formatted text mail
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=boundary42
+
+--boundary42
+Content-Type: text/plain; charset=us-ascii
+
+... plain text version of message goes here ...
+
+--boundary42
+Content-Type: text/enriched
+
+... RFC 1896 text/enriched version of same message
+    goes here ...
+
+--boundary42
+Content-Type: application/x-whatever
+
+... fanciest version of same message goes here ...
+
+--boundary42--
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 1993,
+      "month": 3,
+      "day": 22,
+      "hour": 9,
+      "minute": 41,
+      "second": 9,
+      "tz_before_gmt": true,
+      "tz_hour": 8,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
+    "mime_version": "1.0",
+    "subject": "Formatted text mail",
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "alternative",
+      "attributes": {
+        "boundary": "boundary42"
+      }
+    }
+  },
+  "html_body": [
+    {
+      "contents": "... plain text version of message goes here ...<br/>"
+    }
+  ],
+  "text_body": [
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "us-ascii"
+          }
+        }
+      },
+      "contents": "... plain text version of message goes here ...\n"
+    }
+  ],
+  "attachments": [
+    {
+      "Text": {
+        "header": {
+          "content_type": {
+            "c_type": "text",
+            "c_subtype": "enriched"
+          }
+        },
+        "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
+      }
+    },
+    {
+      "File": {
+        "header": {
+          "content_type": {
+            "c_type": "application",
+            "c_subtype": "x-whatever"
+          }
+        },
+        "contents": [
+          46,
+          46,
+          46,
+          32,
+          102,
+          97,
+          110,
+          99,
+          105,
+          101,
+          115,
+          116,
+          32,
+          118,
+          101,
+          114,
+          115,
+          105,
+          111,
+          110,
+          32,
+          111,
+          102,
+          32,
+          115,
+          97,
+          109,
+          101,
+          32,
+          109,
+          101,
+          115,
+          115,
+          97,
+          103,
+          101,
+          32,
+          103,
+          111,
+          101,
+          115,
+          32,
+          104,
+          101,
+          114,
+          101,
+          32,
+          46,
+          46,
+          46,
+          10
+        ]
+      }
+    }
+  ]
+}

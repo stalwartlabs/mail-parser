@@ -1,0 +1,92 @@
+Message-Id: <4.2.0.58.20000519003052.00a89c40@pop.example.com>
+X-Sender: dwsauder@pop.example.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.0.58 
+X-Priority: 2 (High)
+Date: Fri, 19 May 2000 00:31:00 -0400
+To: Heinz =?iso-8859-1?Q?M=FCller?= <mueller@example.com>
+From: Doug Sauder <dwsauder@example.com>
+Subject: =?iso-8859-1?Q?Die_Hasen_und_die_Fr=F6sche?=
+Mime-Version: 1.0
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<font face=3D"Arial, Helvetica" size=3D5 color=3D"#0000FF"><b>Die Hasen und =
+die
+Fr=F6sche<br>
+<br>
+</font></b><font face=3D"Arial, Helvetica">Die Hasen klagten einst =FCber
+ihre mi=DFliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in
+steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,
+ja fast aller Raubtiere! Unsere stete Angst ist =E4rger als der Tod selbst.
+Auf, la=DFt uns ein f=FCr allemal sterben.&quot; <br>
+<br>
+In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;
+allein das au=DFerordentliche Get=F6se und ihre wunderbare Gestalt
+erschreckte eine Menge Fr=F6sche, die am Ufer sa=DFen, so sehr, da=DF sie au=
+fs
+schnellste untertauchten. <br>
+<br>
+&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das
+Ers=E4ufen noch ein wenig aufschieben, denn auch uns f=FCrchten, wie ihr
+seht, einige Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als
+wir.&quot; <br>
+<br>
+</font></html>
+
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 2000,
+      "month": 5,
+      "day": 19,
+      "hour": 0,
+      "minute": 31,
+      "second": 0,
+      "tz_before_gmt": true,
+      "tz_hour": 4,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": "4.2.0.58.20000519003052.00a89c40@pop.example.com",
+    "mime_version": "1.0",
+    "subject": "Die Hasen und die Frösche",
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "content_transfer_encoding": "quoted-printable",
+    "content_type": {
+      "c_type": "text",
+      "c_subtype": "html",
+      "attributes": {
+        "charset": "iso-8859-1"
+      }
+    },
+    "others": {
+      "X-Mailer": [
+        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      ],
+      "X-Priority": [
+        "2 (High)"
+      ],
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
+      ]
+    }
+  },
+  "html_body": [
+    {
+      "contents": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font></html>\n\n"
+    }
+  ]
+}

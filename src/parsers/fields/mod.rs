@@ -96,10 +96,6 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
         append_address_line(&mut self.resent_cc, parse_address(stream));
     }
 
-    fn set_content_id(&mut self, stream: &MessageStream<'x>) {
-        self.mime.set_content_id(stream);
-    }
-
     fn set_resent_message_id(&mut self, stream: &MessageStream<'x>) {
         append_line_many(&mut self.resent_message_id, parse_id(stream));
     }
@@ -152,10 +148,6 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
         self.from = parse_address(stream);
     }
 
-    fn set_content_transfer_encoding(&mut self, stream: &MessageStream<'x>) {
-        self.mime.set_content_transfer_encoding(stream);
-    }
-
     fn set_return_path(&mut self, stream: &MessageStream<'x>) {
         append_line_many(&mut self.return_path, parse_id(stream));
     }
@@ -176,10 +168,6 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
         self.message_id = parse_id(stream).map(|mut v| v.pop().unwrap());
     }
 
-    fn set_content_type(&mut self, stream: &MessageStream<'x>) {
-        self.mime.set_content_type(stream);
-    }
-
     fn set_list_post(&mut self, stream: &MessageStream<'x>) {
         self.list_post = parse_address(stream);
     }
@@ -188,16 +176,8 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
         self.reply_to = parse_address(stream);
     }
 
-    fn set_content_description(&mut self, stream: &MessageStream<'x>) {
-        self.mime.set_content_description(stream);
-    }
-
     fn set_resent_from(&mut self, stream: &MessageStream<'x>) {
         append_address_line(&mut self.resent_from, parse_address(stream));
-    }
-
-    fn set_content_disposition(&mut self, stream: &MessageStream<'x>) {
-        self.mime.set_content_disposition(stream);
     }
 
     fn set_list_unsubscribe(&mut self, stream: &MessageStream<'x>) {
@@ -220,24 +200,44 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
         }
     }
 
+    fn set_content_id(&mut self, stream: &MessageStream<'x>) {
+        self.content_id = parse_id(stream).map(|mut v| v.pop().unwrap());
+    }
+
+    fn set_content_transfer_encoding(&mut self, stream: &MessageStream<'x>) {
+        self.content_transfer_encoding = parse_unstructured(stream);
+    }
+
+    fn set_content_type(&mut self, stream: &MessageStream<'x>) {
+        self.content_type = self::content_type::parse_content_type(stream);
+    }
+
+    fn set_content_description(&mut self, stream: &MessageStream<'x>) {
+        self.content_description = parse_unstructured(stream);
+    }
+
+    fn set_content_disposition(&mut self, stream: &MessageStream<'x>) {
+        self.content_disposition = self::content_type::parse_content_type(stream);
+    }
+
     fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.mime.content_description.as_ref()
+        self.content_description.as_ref()
     }
 
     fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.mime.content_disposition.as_ref()
+        self.content_disposition.as_ref()
     }
 
     fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.mime.content_id.as_ref()
+        self.content_id.as_ref()
     }
 
     fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.mime.content_transfer_encoding.as_ref()
+        self.content_transfer_encoding.as_ref()
     }
 
     fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.mime.content_type.as_ref()
+        self.content_type.as_ref()
     }
 }
 
@@ -268,10 +268,6 @@ impl<'x> MessageField<'x> for MimeHeader<'x> {
 
     fn set_resent_cc(&mut self, stream: &MessageStream<'x>) {
         parse_and_ignore(stream);
-    }
-
-    fn set_content_id(&mut self, stream: &MessageStream<'x>) {
-        self.content_id = parse_id(stream).map(|mut v| v.pop().unwrap());
     }
 
     fn set_resent_message_id(&mut self, stream: &MessageStream<'x>) {
@@ -326,10 +322,6 @@ impl<'x> MessageField<'x> for MimeHeader<'x> {
         parse_and_ignore(stream);
     }
 
-    fn set_content_transfer_encoding(&mut self, stream: &MessageStream<'x>) {
-        self.content_transfer_encoding = parse_unstructured(stream);
-    }
-
     fn set_return_path(&mut self, stream: &MessageStream<'x>) {
         parse_and_ignore(stream);
     }
@@ -350,20 +342,12 @@ impl<'x> MessageField<'x> for MimeHeader<'x> {
         parse_and_ignore(stream);
     }
 
-    fn set_content_type(&mut self, stream: &MessageStream<'x>) {
-        self.content_type = self::content_type::parse_content_type(stream);
-    }
-
     fn set_list_post(&mut self, stream: &MessageStream<'x>) {
         parse_and_ignore(stream);
     }
 
     fn set_in_reply_to(&mut self, stream: &MessageStream<'x>) {
         parse_and_ignore(stream);
-    }
-
-    fn set_content_description(&mut self, stream: &MessageStream<'x>) {
-        self.content_description = parse_unstructured(stream);
     }
 
     fn set_resent_from(&mut self, stream: &MessageStream<'x>) {
@@ -380,6 +364,22 @@ impl<'x> MessageField<'x> for MimeHeader<'x> {
 
     fn set_unsupported(&mut self, stream: &MessageStream<'x>, _name: &'x [u8]) {
         parse_and_ignore(stream);
+    }
+
+    fn set_content_id(&mut self, stream: &MessageStream<'x>) {
+        self.content_id = parse_id(stream).map(|mut v| v.pop().unwrap());
+    }
+
+    fn set_content_transfer_encoding(&mut self, stream: &MessageStream<'x>) {
+        self.content_transfer_encoding = parse_unstructured(stream);
+    }
+
+    fn set_content_type(&mut self, stream: &MessageStream<'x>) {
+        self.content_type = self::content_type::parse_content_type(stream);
+    }
+
+    fn set_content_description(&mut self, stream: &MessageStream<'x>) {
+        self.content_description = parse_unstructured(stream);
     }
 
     fn set_content_disposition(&mut self, stream: &MessageStream<'x>) {

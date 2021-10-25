@@ -116,9 +116,7 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        parsers::message_stream::MessageStream,
-    };
+    use crate::parsers::message_stream::MessageStream;
 
     use super::Base64Decoder;
 

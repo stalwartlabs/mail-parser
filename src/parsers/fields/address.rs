@@ -1,10 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
-use crate::{
-    decoders::{encoded_word::parse_encoded_word},
-    parsers::message_stream::MessageStream,
-};
+use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Addr<'x> {
@@ -443,108 +440,101 @@ mod tests {
         use crate::parsers::{fields::address::parse_address, message_stream::MessageStream};
 
         use super::*;
-    
+
         let inputs = [
             (
-                concat!("John Doe <jdoe@machine.example>\n"),
-                Address::Address(Addr {
-                    name: Some("John Doe".into()),
-                    address: Some("jdoe@machine.example".into()),
-                }),
-            ),
-            (
-                concat!(" Mary Smith <mary@example.net>\n"),
-                Address::Address(Addr {
-                    name: Some("Mary Smith".into()),
-                    address: Some("mary@example.net".into()),
-                }),
-            ),
-            (
-                concat!("\"Joe Q. Public\" <john.q.public@example.com>\n"),
-                Address::Address(Addr {
-                    name: Some("Joe Q. Public".into()),
-                    address: Some("john.q.public@example.com".into()),
-                }),
-            ),
-            (
-                concat!("Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n"),
-                Address::AddressList(vec![
-                    Addr {
-                        name: Some("Mary Smith".into()),
-                        address: Some("mary@x.test".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("jdoe@example.org".into()),
-                    },
-                    Addr {
-                        name: Some("Who?".into()),
-                        address: Some("one@y.test".into()),
-                    },
-                ]),
-            ),
-            (
-                concat!("<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n"),
-                Address::AddressList(vec![
-                    Addr {
-                        name: None,
-                        address: Some("boss@nil.test".into()),
-                    },
-                    Addr {
-                        name: Some("Giant; \"Big\" Box".into()),
-                        address: Some("sysservices@example.net".into()),
-                    },
-                ]),
-            ),
-            (
-                concat!("A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n"),
-                Address::Group(Group {
-                    name: Some("A Group".into()),
-                    addresses: vec![
-                        Addr {
-                            name: Some("Ed Jones".into()),
-                            address: Some("c@a.test".into()),
-                        },
-                        Addr {
-                            name: None,
-                            address: Some("joe@where.test".into()),
-                        },
-                        Addr {
-                            name: Some("John".into()),
-                            address: Some("jdoe@one.test".into()),
-                        },
-                    ],
-                }),
-            ),
-            (
-                concat!("Undisclosed recipients:;\n"),
-                Address::Group(Group {
-                    name: Some("Undisclosed recipients".into()),
-                    addresses: vec![],
-                }),
-            ),
-            (
-                concat!("\"Mary Smith: Personal Account\" <smith@home.example >\n"),
-                Address::Address(Addr {
-                    name: Some("Mary Smith: Personal Account".into()),
-                    address: Some("smith@home.example".into()),
-                }),
-            ),
-            (
-                concat!("Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n"),
-                Address::Address(Addr {
-                    name: Some("Pete (A nice ) chap his account his host)".into()),
-                    address: Some("pete@silly.test".into()),
-                }),
-            ),
-            (
+                "John Doe <jdoe@machine.example>\n",
                 concat!(
-                    "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n"
+                    "---\n",
+                    "Address:\n",
+                    "  name: John Doe\n",
+                    "  address: jdoe@machine.example\n"
                 ),
-                Address::Address(Addr {
-                    name: Some("Pete (A nice ) chap his account his host)".into()),
-                    address: Some("pete@silly.test".into()),
-                }),
+            ),
+            (
+                " Mary Smith <mary@example.net>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Mary Smith\n",
+                    "  address: mary@example.net\n"
+                ),
+            ),
+            (
+                "\"Joe Q. Public\" <john.q.public@example.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Joe Q. Public\n",
+                    "  address: john.q.public@example.com\n"
+                ),
+            ),
+            (
+                "Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n",
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - name: Mary Smith\n",
+                    "    address: mary@x.test\n",
+                    "  - address: jdoe@example.org\n",
+                    "  - name: Who?\n",
+                    "    address: one@y.test\n"
+                ),
+            ),
+            (
+                "<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n",
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - address: boss@nil.test\n",
+                    "  - name: \"Giant; \\\"Big\\\" Box\"\n",
+                    "    address: sysservices@example.net\n"
+                ),
+            ),
+            (
+                "A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n",
+                concat!(
+                    "---\n",
+                    "Group:\n",
+                    "  name: A Group\n",
+                    "  addresses:\n",
+                    "    - name: Ed Jones\n",
+                    "      address: c@a.test\n",
+                    "    - address: joe@where.test\n",
+                    "    - name: John\n",
+                    "      address: jdoe@one.test\n"
+                ),
+            ),
+            (
+                "Undisclosed recipients:;\n",
+                concat!("---\n", "Group:\n", "  name: Undisclosed recipients\n"),
+            ),
+            (
+                "\"Mary Smith: Personal Account\" <smith@home.example >\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: \"Mary Smith: Personal Account\"\n",
+                    "  address: smith@home.example\n"
+                ),
+            ),
+            (
+                "Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Pete (A nice ) chap his account his host)\n",
+                    "  address: pete@silly.test\n"
+                ),
+            ),
+            (
+                "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Pete (A nice ) chap his account his host)\n",
+                    "  address: pete@silly.test\n"
+                ),
             ),
             (
                 concat!(
@@ -552,342 +542,282 @@ mod tests {
                     "mple>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear",
                     " friend); (the end of the group)\n"
                 ),
-                Address::GroupList(vec![
-                    Group {
-                        name: Some("A Group (Some people)".into()),
-                        addresses: vec![
-                            Addr {
-                                name: Some("Chris Jones (Chris's host.)".into()),
-                                address: Some("c@public.example".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("joe@example.org".into()),
-                            },
-                            Addr {
-                                name: Some("John (my dear friend)".into()),
-                                address: Some("jdoe@one.test".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: None,
-                        addresses: vec![Addr {
-                            name: Some("the end of the group".into()),
-                            address: None,
-                        }],
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "GroupList:\n",
+                    "  - name: A Group (Some people)\n",
+                    "    addresses:\n",
+                    "      - name: \"Chris Jones (Chris's host.)\"\n",
+                    "        address: c@public.example\n",
+                    "      - address: joe@example.org\n",
+                    "      - name: John (my dear friend)\n",
+                    "        address: jdoe@one.test\n",
+                    "  - addresses:\n",
+                    "      - name: the end of the group\n"
+                ),
             ),
             (
-                concat!("(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n"),
-                Address::Group(Group {
-                    name: Some("Hidden recipients (Empty list start)".into()),
-                    addresses: vec![Addr {
-                        name: Some("nobody(that I know)".into()),
-                        address: None,
-                    }],
-                }),
+                "(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n",
+                concat!(
+                    "---\n",
+                    "Group:\n",
+                    "  name: Hidden recipients (Empty list start)\n",
+                    "  addresses:\n",
+                    "    - name: nobody(that I know)\n"
+                ),
             ),
             (
-                concat!("Joe Q. Public <john.q.public@example.com>\n"),
-                Address::Address(Addr {
-                    name: Some("Joe Q. Public".into()),
-                    address: Some("john.q.public@example.com".into()),
-                }),
+                "Joe Q. Public <john.q.public@example.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Joe Q. Public\n",
+                    "  address: john.q.public@example.com\n"
+                ),
             ),
             (
-                concat!("Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n"),
-                Address::AddressList(vec![
-                    Addr {
-                        name: Some("Mary Smith".into()),
-                        address: Some("@node.test:mary@example.net".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("jdoe@test  . example".into()),
-                    },
-                ]),
+                "Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n",
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - name: Mary Smith\n",
+                    "    address: \"@node.test:mary@example.net\"\n",
+                    "  - address: jdoe@test  . example\n"
+                ),
             ),
             (
-                concat!("John Doe <jdoe@machine(comment).  example>\n"),
-                Address::Address(Addr {
-                    name: Some("John Doe (comment)".into()),
-                    address: Some("jdoe@machine.  example".into()),
-                }),
+                "John Doe <jdoe@machine(comment).  example>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: John Doe (comment)\n",
+                    "  address: jdoe@machine.  example\n"
+                ),
             ),
             (
-                concat!("Mary Smith\n    \n\t<mary@example.net>\n"),
-                Address::Address(Addr {
-                    name: Some("Mary Smith".into()),
-                    address: Some("mary@example.net".into()),
-                }),
+                "Mary Smith\n    \n\t<mary@example.net>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Mary Smith\n",
+                    "  address: mary@example.net\n"
+                ),
             ),
             (
-                concat!("=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n"),
-                Address::Address(Addr {
-                    name: Some("Keith Moore".into()),
-                    address: Some("moore@cs.utk.edu".into()),
-                }),
+                "=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Keith Moore\n",
+                    "  address: moore@cs.utk.edu\n"
+                ),
             ),
             (
-                concat!("John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n"),
-                Address::Address(Addr {
-                    name: Some("John Doe".into()),
-                    address: Some("moore@cs.utk.edu".into()),
-                }),
+                "John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: John Doe\n",
+                    "  address: moore@cs.utk.edu\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n"),
-                Address::Address(Addr {
-                    name: Some("Keld Jørn Simonsen".into()),
-                    address: Some("keld@dkuug.dk".into()),
-                }),
+                "=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Keld Jørn Simonsen\n",
+                    "  address: keld@dkuug.dk\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n"),
-                Address::Address(Addr {
-                    name: Some("André Pirard".into()),
-                    address: Some("PIRARD@vm1.ulg.ac.be".into()),
-                }),
+                "=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: André Pirard\n",
+                    "  address: PIRARD@vm1.ulg.ac.be\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n"),
-                Address::Address(Addr {
-                    name: Some("Olle Järnefors".into()),
-                    address: Some("ojarnef@admin.kth.se".into()),
-                }),
+                "=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Olle Järnefors\n",
+                    "  address: ojarnef@admin.kth.se\n"
+                ),
             ),
             (
-                concat!("ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n"),
-                Address::AddressList(vec![
-                    Addr {
-                        name: None,
-                        address: Some("ietf-822@dimacs.rutgers.edu".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("ojarnef@admin.kth.se".into()),
-                    },
-                ]),
+                "ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n",
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - address: ietf-822@dimacs.rutgers.edu\n",
+                    "  - address: ojarnef@admin.kth.se\n"
+                ),
             ),
             (
                 concat!(
                     "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7e",
                     "Xs+SDv4SDp7Oj08A==?=)\n"
                 ),
-                Address::Address(Addr {
-                    name: Some("Nathaniel Borenstein (םולש ןב ילטפנ)".into()),
-                    address: Some("nsb@thumper.bellcore.com".into()),
-                }),
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Nathaniel Borenstein (םולש ןב ילטפנ)\n",
+                    "  address: nsb@thumper.bellcore.com\n"
+                ),
             ),
             (
                 concat!(
                     "Greg Vaudreuil <gvaudre@NRI.Reston.VA.US>, Ned Freed\n      <ned@innoso",
                     "ft.com>, Keith Moore <moore@cs.utk.edu>\n"
                 ),
-                Address::AddressList(vec![
-                    Addr {
-                        name: Some("Greg Vaudreuil".into()),
-                        address: Some("gvaudre@NRI.Reston.VA.US".into()),
-                    },
-                    Addr {
-                        name: Some("Ned Freed".into()),
-                        address: Some("ned@innosoft.com".into()),
-                    },
-                    Addr {
-                        name: Some("Keith Moore".into()),
-                        address: Some("moore@cs.utk.edu".into()),
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - name: Greg Vaudreuil\n",
+                    "    address: gvaudre@NRI.Reston.VA.US\n",
+                    "  - name: Ned Freed\n",
+                    "    address: ned@innosoft.com\n",
+                    "  - name: Keith Moore\n",
+                    "    address: moore@cs.utk.edu\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?a?= <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: Some("a".into()),
-                    address: Some("test@test.com".into()),
-                }),
+                "=?ISO-8859-1?Q?a?= <test@test.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: a\n",
+                    "  address: test@test.com\n"
+                ),
             ),
             (
-                concat!("\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: Some("a b".into()),
-                    address: Some("test@test.com".into()),
-                }),
+                "\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: a b\n",
+                    "  address: test@test.com\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: Some("ab".into()),
-                    address: Some("test@test.com".into()),
-                }),
+                "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: ab\n",
+                    "  address: test@test.com\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: Some("ab".into()),
-                    address: Some("test@test.com".into()),
-                }),
+                "=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: ab\n",
+                    "  address: test@test.com\n"
+                ),
             ),
             (
-                concat!("=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: Some("a b".into()),
-                    address: Some("test@test.com".into()),
-                }),
+                "=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: a b\n",
+                    "  address: test@test.com\n"
+                ),
             ),
             (
-                concat!(" <test@test.com>\n"),
-                Address::Address(Addr {
-                    name: None,
-                    address: Some("test@test.com".into()),
-                }),
+                " <test@test.com>\n",
+                concat!("---\n", "Address:\n", "  address: test@test.com\n"),
             ),
             (
-                concat!("test@test.com\ninvalid@address.com\n"),
-                Address::Address(Addr {
-                    name: None,
-                    address: Some("test@test.com".into()),
-                }),
+                "test@test.com\ninvalid@address.com\n",
+                concat!("---\n", "Address:\n", "  address: test@test.com\n"),
             ),
             (
                 concat!(
                     "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@addres",
                     "s.com>\n\nbody@content.com"
                 ),
-                Address::Address(Addr {
-                    name: Some("=?ISO-8859-1?Q a \" b".into()),
-                    address: Some("last@address.com".into()),
-                }),
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: \"=?ISO-8859-1?Q a \\\" b\"\n",
+                    "  address: last@address.com\n"
+                ),
             ),
             (
-                concat!("=? <name@domain.com>\n"),
-                Address::Address(Addr {
-                    name: Some("=?".into()),
-                    address: Some("name@domain.com".into()),
-                }),
+                "=? <name@domain.com>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: \"=?\"\n",
+                    "  address: name@domain.com\n"
+                ),
             ),
             (
                 concat!(
                     "\"  James Smythe\" <james@example.com>, Friends:\n  jane@example.com, =?U",
                     "TF-8?Q?John_Sm=C3=AEth?=\n   <john@example.com>;\n"
                 ),
-                Address::GroupList(vec![
-                    Group {
-                        name: None,
-                        addresses: vec![Addr {
-                            name: Some("  James Smythe".into()),
-                            address: Some("james@example.com".into()),
-                        }],
-                    },
-                    Group {
-                        name: Some("Friends".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("jane@example.com".into()),
-                            },
-                            Addr {
-                                name: Some("John Smîth".into()),
-                                address: Some("john@example.com".into()),
-                            },
-                        ],
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "GroupList:\n",
+                    "  - addresses:\n",
+                    "      - name: \"  James Smythe\"\n",
+                    "        address: james@example.com\n",
+                    "  - name: Friends\n",
+                    "    addresses:\n",
+                    "      - address: jane@example.com\n",
+                    "      - name: John Smîth\n",
+                    "        address: john@example.com\n"
+                ),
             ),
             (
                 concat!(
                     "List 1: addr1@test.com, addr2@test.com; List 2: addr3@test.com, addr4@",
                     "test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                Address::GroupList(vec![
-                    Group {
-                        name: Some("List 1".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr1@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr2@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: Some("List 2".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr3@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr4@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: None,
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr5@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr6@test.com".into()),
-                            },
-                        ],
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "GroupList:\n",
+                    "  - name: List 1\n",
+                    "    addresses:\n",
+                    "      - address: addr1@test.com\n",
+                    "      - address: addr2@test.com\n",
+                    "  - name: List 2\n",
+                    "    addresses:\n",
+                    "      - address: addr3@test.com\n",
+                    "      - address: addr4@test.com\n",
+                    "  - addresses:\n",
+                    "      - address: addr5@test.com\n",
+                    "      - address: addr6@test.com\n"
+                ),
             ),
             (
                 concat!(
                     "\"List 1\": addr1@test.com, addr2@test.com; \"List 2\": addr3@test.com, ad",
                     "dr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                Address::GroupList(vec![
-                    Group {
-                        name: Some("List 1".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr1@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr2@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: Some("List 2".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr3@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr4@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: None,
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr5@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr6@test.com".into()),
-                            },
-                        ],
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "GroupList:\n",
+                    "  - name: List 1\n",
+                    "    addresses:\n",
+                    "      - address: addr1@test.com\n",
+                    "      - address: addr2@test.com\n",
+                    "  - name: List 2\n",
+                    "    addresses:\n",
+                    "      - address: addr3@test.com\n",
+                    "      - address: addr4@test.com\n",
+                    "  - addresses:\n",
+                    "      - address: addr5@test.com\n",
+                    "      - address: addr6@test.com\n"
+                ),
             ),
             (
                 concat!(
@@ -895,201 +825,170 @@ mod tests {
                     "test.com; =?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=: addr3@test.com",
                     ", addr4@test.com; addr5@test.com, addr6@test.com\n"
                 ),
-                Address::GroupList(vec![
-                    Group {
-                        name: Some("Thís ís válíd ÚTF8".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr1@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr2@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: Some("Thís ís válíd ÚTF8".into()),
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr3@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr4@test.com".into()),
-                            },
-                        ],
-                    },
-                    Group {
-                        name: None,
-                        addresses: vec![
-                            Addr {
-                                name: None,
-                                address: Some("addr5@test.com".into()),
-                            },
-                            Addr {
-                                name: None,
-                                address: Some("addr6@test.com".into()),
-                            },
-                        ],
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "GroupList:\n",
+                    "  - name: Thís ís válíd ÚTF8\n",
+                    "    addresses:\n",
+                    "      - address: addr1@test.com\n",
+                    "      - address: addr2@test.com\n",
+                    "  - name: Thís ís válíd ÚTF8\n",
+                    "    addresses:\n",
+                    "      - address: addr3@test.com\n",
+                    "      - address: addr4@test.com\n",
+                    "  - addresses:\n",
+                    "      - address: addr5@test.com\n",
+                    "      - address: addr6@test.com\n"
+                ),
             ),
             (
-                concat!("<http://www.host.com/list/archive/> (Web Archive)\n"),
-                Address::Address(Addr {
-                    name: Some("Web Archive".into()),
-                    address: Some("http://www.host.com/list/archive/".into()),
-                }),
+                "<http://www.host.com/list/archive/> (Web Archive)\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Web Archive\n",
+                    "  address: \"http://www.host.com/list/archive/\"\n"
+                ),
             ),
             (
-                concat!("<mailto:archive@host.com?subject=index%20list>\n"),
-                Address::Address(Addr {
-                    name: None,
-                    address: Some("mailto:archive@host.com?subject=index%20list".into()),
-                }),
+                "<mailto:archive@host.com?subject=index%20list>\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  address: \"mailto:archive@host.com?subject=index%20list\"\n"
+                ),
             ),
             (
-                concat!("<mailto:moderator@host.com> (Postings are Moderated)\n"),
-                Address::Address(Addr {
-                    name: Some("Postings are Moderated".into()),
-                    address: Some("mailto:moderator@host.com".into()),
-                }),
+                "<mailto:moderator@host.com> (Postings are Moderated)\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Postings are Moderated\n",
+                    "  address: \"mailto:moderator@host.com\"\n"
+                ),
             ),
             (
                 concat!(
                     "(Use this command to join the list)\n   <mailto:list-manager@host.com?b",
                     "ody=subscribe%20list>\n"
                 ),
-                Address::Address(Addr {
-                    name: Some("Use this command to join the list".into()),
-                    address: Some("mailto:list-manager@host.com?body=subscribe%20list".into()),
-                }),
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Use this command to join the list\n",
+                    "  address: \"mailto:list-manager@host.com?body=subscribe%20list\"\n"
+                ),
             ),
             (
                 concat!(
                     "<http://www.host.com/list.cgi?cmd=sub&lst=list>,\n   <mailto:list-manag",
                     "er@host.com?body=subscribe%20list>\n"
                 ),
-                Address::AddressList(vec![
-                    Addr {
-                        name: None,
-                        address: Some("http://www.host.com/list.cgi?cmd=sub&lst=list".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("mailto:list-manager@host.com?body=subscribe%20list".into()),
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - address: \"http://www.host.com/list.cgi?cmd=sub&lst=list\"\n",
+                    "  - address: \"mailto:list-manager@host.com?body=subscribe%20list\"\n"
+                ),
             ),
             (
-                concat!("NO (posting not allowed on this list)\n"),
-                Address::Address(Addr {
-                    name: Some("posting not allowed on this list".into()),
-                    address: Some("NO".into()),
-                }),
+                "NO (posting not allowed on this list)\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: posting not allowed on this list\n",
+                    "  address: \"NO\"\n"
+                ),
             ),
             (
                 concat!(
                     "<ftp://ftp.host.com/list.txt> (FTP),\n   <mailto:list@host.com?subject=",
                     "help>\n"
                 ),
-                Address::AddressList(vec![
-                    Addr {
-                        name: Some("FTP".into()),
-                        address: Some("ftp://ftp.host.com/list.txt".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("mailto:list@host.com?subject=help".into()),
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - name: FTP\n",
+                    "    address: \"ftp://ftp.host.com/list.txt\"\n",
+                    "  - address: \"mailto:list@host.com?subject=help\"\n"
+                ),
             ),
             (
-                concat!("<http://www.host.com/list/>, <mailto:list-info@host.com>\n"),
-                Address::AddressList(vec![
-                    Addr {
-                        name: None,
-                        address: Some("http://www.host.com/list/".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("mailto:list-info@host.com".into()),
-                    },
-                ]),
+                "<http://www.host.com/list/>, <mailto:list-info@host.com>\n",
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - address: \"http://www.host.com/list/\"\n",
+                    "  - address: \"mailto:list-info@host.com\"\n"
+                ),
             ),
             (
                 concat!(
                     "(Use this command to get off the list)\n     <mailto:list-manager@host.",
                     "com?body=unsubscribe%20list>\n"
                 ),
-                Address::Address(Addr {
-                    name: Some("Use this command to get off the list".into()),
-                    address: Some("mailto:list-manager@host.com?body=unsubscribe%20list".into()),
-                }),
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Use this command to get off the list\n",
+                    "  address: \"mailto:list-manager@host.com?body=unsubscribe%20list\"\n"
+                ),
             ),
             (
                 concat!(
                     "<http://www.host.com/list.cgi?cmd=unsub&lst=list>,\n   <mailto:list-req",
                     "uest@host.com?subject=unsubscribe>\n"
                 ),
-                Address::AddressList(vec![
-                    Addr {
-                        name: None,
-                        address: Some("http://www.host.com/list.cgi?cmd=unsub&lst=list".into()),
-                    },
-                    Addr {
-                        name: None,
-                        address: Some("mailto:list-request@host.com?subject=unsubscribe".into()),
-                    },
-                ]),
+                concat!(
+                    "---\n",
+                    "AddressList:\n",
+                    "  - address: \"http://www.host.com/list.cgi?cmd=unsub&lst=list\"\n",
+                    "  - address: \"mailto:list-request@host.com?subject=unsubscribe\"\n"
+                ),
             ),
             (
-                concat!("<mailto:listmom@host.com> (Contact Person for Help)\n"),
-                Address::Address(Addr {
-                    name: Some("Contact Person for Help".into()),
-                    address: Some("mailto:listmom@host.com".into()),
-                }),
+                "<mailto:listmom@host.com> (Contact Person for Help)\n",
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: Contact Person for Help\n",
+                    "  address: \"mailto:listmom@host.com\"\n"
+                ),
             ),
         ];
 
         for input in inputs {
             let mut str = input.0.to_string();
             let result = parse_address(&MessageStream::new(unsafe { str.as_bytes_mut() }));
+            let expected: Address = serde_yaml::from_str(input.1).unwrap_or(Address::Empty);
 
-            /*println!(
-                "(concat!({}), {}),",
-                format!(
-                    "{:?}",
+            /*if input.0.len() >= 70 {
+                println!(
+                    "(concat!({:?}), concat!({:?})),",
                     input
                         .0
                         .chars()
                         .collect::<Vec<char>>()
                         .chunks(70)
                         .map(|c| c.iter().collect::<String>())
-                        .collect::<Vec<String>>()
-                )
-                .replace("[\"", "\"")
-                .replace("\"]", "\""),
-                format!("{:?}", result)
-                    .replace("GroupList([", "Address::GroupList(vec![")
-                    .replace("Address(Addr", "Address::Address(Addr")
-                    .replace("AddressList([", "Address::AddressList(vec![")
-                    .replace("Group(Group", "Address::Group(Group")
-                    .replace("addresses: [", "addresses: vec![")
-                    .replace("\")", "\".into())")
-            );*/
+                        .collect::<Vec<String>>(),
+                    serde_yaml::to_string(&result)
+                        .unwrap_or("".to_string())
+                        .split_inclusive("\n")
+                        .collect::<Vec<&str>>()
+                );
+            } else {
+                println!(
+                    "({:?}, concat!({:?})),",
+                    input.0,
+                    serde_yaml::to_string(&result)
+                        .unwrap_or("".to_string())
+                        .split_inclusive("\n")
+                        .collect::<Vec<&str>>()
+                );
+            }*/
 
-            /*println!(
-                "{} ->\n{:?}\n{}\n",
-                input.0.escape_debug(),
-                result,
-                "-".repeat(50)
-            );*/
-
-            assert_eq!(result, input.1, "Failed for '{:?}'", input.0);
+            assert_eq!(result, expected, "Failed for '{:?}'", input.0);
         }
     }
 }

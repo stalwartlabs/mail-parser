@@ -1,0 +1,70 @@
+Content-Type: multipart/mixed; boundary="1"
+
+--1
+Content-Type: multipart/mixed; boundary="2"
+
+--2
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+1
+--2
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+22
+--1
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+333
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "1"
+      }
+    }
+  },
+  "attachments": [
+    {
+      "Message": {
+        "header": {
+          "content_type": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
+        },
+        "text_body": [
+          {
+            "contents": "1"
+          }
+        ]
+      }
+    },
+    {
+      "Message": {
+        "header": {
+          "content_type": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
+        },
+        "attachments": [
+          {
+            "Text": {
+              "contents": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

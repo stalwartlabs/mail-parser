@@ -1,0 +1,134 @@
+From: Moderator-Address
+To: Recipient-List
+Date: Mon, 22 Mar 1994 13:34:51 +0000
+Subject: Internet Digest, volume 42
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+            boundary="---- main boundary ----"
+
+------ main boundary ----
+
+...Introductory text or table of contents...
+
+------ main boundary ----
+Content-Type: multipart/digest;
+            boundary="---- next message ----"
+
+------ next message ----
+
+From: someone-else
+Date: Fri, 26 Mar 1993 11:13:32 +0200
+Subject: my opinion
+
+...body goes here ...
+
+------ next message ----
+
+From: someone-else-again
+Date: Fri, 26 Mar 1993 10:07:13 -0500
+Subject: my different opinion
+
+... another body goes here ...
+
+------ next message ------
+
+------ main boundary ------
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 1994,
+      "month": 3,
+      "day": 22,
+      "hour": 13,
+      "minute": 34,
+      "second": 51,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address"
+      }
+    },
+    "mime_version": "1.0",
+    "subject": "Internet Digest, volume 42",
+    "to": {
+      "Address": {
+        "name": "Recipient-List"
+      }
+    },
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "---- main boundary ----"
+      }
+    }
+  },
+  "text_body": [
+    {
+      "contents": "...Introductory text or table of contents...\n"
+    }
+  ],
+  "attachments": [
+    {
+      "Message": {
+        "header": {
+          "date": {
+            "year": 1993,
+            "month": 3,
+            "day": 26,
+            "hour": 11,
+            "minute": 13,
+            "second": 32,
+            "tz_before_gmt": false,
+            "tz_hour": 2,
+            "tz_minute": 0
+          },
+          "from": {
+            "Address": {
+              "name": "someone-else"
+            }
+          },
+          "subject": "my opinion"
+        },
+        "text_body": [
+          {
+            "contents": "...body goes here ...\n"
+          }
+        ]
+      }
+    },
+    {
+      "Message": {
+        "header": {
+          "date": {
+            "year": 1993,
+            "month": 3,
+            "day": 26,
+            "hour": 10,
+            "minute": 7,
+            "second": 13,
+            "tz_before_gmt": true,
+            "tz_hour": 5,
+            "tz_minute": 0
+          },
+          "from": {
+            "Address": {
+              "name": "someone-else-again"
+            }
+          },
+          "subject": "my different opinion"
+        },
+        "text_body": [
+          {
+            "contents": "... another body goes here ...\n"
+          }
+        ]
+      }
+    }
+  ]
+}

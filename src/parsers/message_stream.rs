@@ -85,8 +85,8 @@ impl<'x> MessageStream<'x> {
         }
     }
 
-    pub fn seek_bytes(&self, bytes: &[u8]) -> bool {
-        if !bytes.is_empty() {
+    pub fn seek_next_part(&self, boundary: &[u8]) -> bool {
+        if !boundary.is_empty() {
             unsafe {
                 let cur_pos = &mut *self.pos.get();
                 let data = &mut *self.data.get();
@@ -96,16 +96,16 @@ impl<'x> MessageStream<'x> {
                 for ch in (*data)[*cur_pos..].iter() {
                     pos += 1;
 
-                    if ch == bytes.get_unchecked(match_count) {
+                    if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
-                        if match_count == bytes.len() {
+                        if match_count == boundary.len() {
                             *cur_pos = pos;
                             return true;
                         } else {
                             continue;
                         }
                     } else if match_count > 0 {
-                        if ch == bytes.get_unchecked(0) {
+                        if ch == boundary.get_unchecked(0) {
                             match_count = 1;
                             continue;
                         } else {
@@ -119,7 +119,7 @@ impl<'x> MessageStream<'x> {
         false
     }
 
-    pub fn get_bytes_bounded(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
+    pub fn get_bytes_to_boundary(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
         unsafe {
             let data = &mut *self.data.get();
 
@@ -141,20 +141,24 @@ impl<'x> MessageStream<'x> {
                     if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
-                            let match_pos = pos - match_count;
-                            *stream_pos = pos;
-                            return (
-                                true,
-                                is_utf8_safe,
-                                if start_pos < match_pos {
-                                    (*data).get(start_pos..match_pos)
-                                } else {
-                                    None
-                                },
-                            );
-                        } else {
-                            continue;
+                            if self.is_boundary_end(pos) {
+                                let match_pos = pos - match_count;
+                                *stream_pos = pos;
+                                println!("Got '{:?}'", std::str::from_utf8((*data).get(start_pos..match_pos).unwrap()).unwrap());
+                                return (
+                                    true,
+                                    is_utf8_safe,
+                                    if start_pos < match_pos {
+                                        (*data).get(start_pos..match_pos)
+                                    } else {
+                                        None
+                                    },
+                                );
+                            } else {
+                                match_count = 0;
+                            }
                         }
+                        continue;
                     } else if match_count > 0 {
                         if ch == boundary.get_unchecked(0) {
                             match_count = 1;
@@ -175,6 +179,7 @@ impl<'x> MessageStream<'x> {
         }
     }
 
+    #[inline(always)]
     pub fn skip_crlf(&self) {
         unsafe {
             let cur_pos = &mut *self.pos.get();
@@ -183,7 +188,7 @@ impl<'x> MessageStream<'x> {
 
             for ch in (*data)[*cur_pos..].iter() {
                 match ch {
-                    b'\r' => pos += 1,
+                    b'\r' | b' ' | b'\t' => pos += 1,
                     b'\n' => {
                         *cur_pos = pos + 1;
                         break;
@@ -194,12 +199,13 @@ impl<'x> MessageStream<'x> {
         }
     }
 
+    #[inline(always)]
     pub fn skip_byte(&self, ch: &u8) -> bool {
         unsafe {
             let pos = &mut *self.pos.get();
             let data = &mut *self.data.get();
 
-            if *pos < (*data).len() && (*data).get_unchecked(*pos) == ch {
+            if (*data).get(*pos) == Some(ch) {
                 *pos += 1;
                 true
             } else {
@@ -208,17 +214,41 @@ impl<'x> MessageStream<'x> {
         }
     }
 
-    pub fn skip_bytes(&self, chs: &[u8]) -> bool {
+    #[inline(always)]
+    pub fn is_boundary_end(&self, pos: usize) -> bool {
+        unsafe {
+            let data = &mut *self.data.get();
+            match (*data).get(pos) {
+                Some(b'\n') => true,
+                Some(b'-') if (*data).get(pos + 1) == Some(&b'-') => true,
+                Some(b'\r') if (*data).get(pos + 1) == Some(&b'\n') => true,
+                Some(b' ') | Some(b'\t') => true,
+                None => true,
+                _ => false,
+            }
+        }
+    }
+
+    pub fn skip_multipart_end(&self) -> bool {
         unsafe {
             let pos = &mut *self.pos.get();
-            let data = &mut *self.data.get();
-            let to = *pos + chs.len();
 
-            match (*data).get(*pos..to) {
-                Some(bytes) if bytes == chs => {
-                    *pos = to;
-                    true
-                }
+            match (*self.data.get()).get(*pos..*pos + 2) {
+                Some(b"--") => match (*self.data.get()).get(*pos + 2) {
+                    Some(b'\n') => {
+                        *pos += 3;
+                        true
+                    }
+                    Some(b'\r') if (*self.data.get()).get(*pos + 3) == Some(&b'\n') => {
+                        *pos += 4;
+                        true
+                    }
+                    None | Some(b' ') | Some(b'\t') => {
+                        *pos += 2;
+                        true
+                    }
+                    _ => false,
+                },
                 _ => false,
             }
         }

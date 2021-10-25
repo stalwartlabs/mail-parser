@@ -13,7 +13,7 @@ use super::{
     message_stream::MessageStream,
 };
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Message<'x> {
     #[serde(borrow)]
     header: MessageHeader<'x>,
@@ -27,7 +27,7 @@ pub struct Message<'x> {
     #[serde(default)]
     attachments: Vec<MessageAttachment<'x>>,
 }
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct TextPart<'x> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
@@ -35,15 +35,17 @@ pub struct TextPart<'x> {
     contents: Cow<'x, str>,
 }
 
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct BinaryPart<'x> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
     header: Option<MimeHeader<'x>>,
-    contents: &'x [u8],
+    #[serde(with = "serde_bytes")]
+    #[serde(borrow)]
+    contents: Cow<'x, [u8]>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub enum MessageAttachment<'x> {
     Text(Box<TextPart<'x>>),
     #[serde(borrow)]
@@ -180,40 +182,32 @@ impl<'x> Message<'x> {
 
             // Parse headers
             if !parse_headers(header, &stream) {
-                // EOF found while parsing headers, abort.
-                debug_assert!(false, "EOF found while parsing header. Aborting.");
                 break;
             }
 
             state.parts += 1;
 
-            let (is_multipart, is_inline, is_text, mime_type) =
+            let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
                 get_mime_type(header.get_content_type(), &state.mime_type);
 
-            /*println!(
+            println!(
                 "--- New part {:?} parent {:?} at '{:?}'",
                 mime_type,
                 state.mime_type,
                 stream
-                    .get_string(stream.get_pos(), stream.get_pos() + 50, true)
+                    .get_string(stream.get_pos(), stream.get_pos() + 20, true)
                     .unwrap_or_else(|| "NOTHING".into())
-            );*/
+            );
 
             if is_multipart {
                 if let Some(mime_boundary) = header
                     .get_content_type()
                     .map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    //println!("Found boundary '{}'", mime_boundary,);
+                    println!("Found boundary '{}'", mime_boundary,);
                     let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
-                    if stream.seek_bytes(mime_boundary.as_ref()) {
-                        /*println!(
-                            "Seek to '{:?}'",
-                            stream
-                                .get_string(stream.get_pos(), stream.get_pos() + 50, true)
-                                .unwrap_or_else(|| "NOTHING".into())
-                        );*/
+                    if stream.seek_next_part(mime_boundary.as_ref()) {
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
                                 || mime_type == MimeType::MultipartAlernative,
@@ -231,8 +225,8 @@ impl<'x> Message<'x> {
                         stream.skip_crlf();
                         continue;
                     } else {
-                        debug_assert!(false, "MIME boundary seek failed. Aborting.");
-                        break;
+                        mime_type = MimeType::TextOther;
+                        is_text = true;
                     }
                 }
             } else if mime_type == MimeType::Message {
@@ -275,7 +269,7 @@ impl<'x> Message<'x> {
                             .map_or_else(|| &[][..], |b| &b[..]),
                         false,
                     ),
-                _ => stream.get_bytes_bounded(
+                _ => stream.get_bytes_to_boundary(
                     state
                         .mime_boundary
                         .as_ref()
@@ -283,22 +277,39 @@ impl<'x> Message<'x> {
                 ),
             };
 
+            // Attempt to recover contents of an invalid message
             if !success {
+                //println!("Failed to parse part, reattempting.");
                 if !stream.is_eof() {
-                    let (success, r_is_utf8_safe, r_bytes) = stream.get_bytes_bounded(
+                    // Get raw MIME part
+                    let (success, r_is_utf8_safe, r_bytes) = stream.get_bytes_to_boundary(
                         state
                             .mime_boundary
                             .as_ref()
                             .map_or_else(|| &[][..], |b| &b[..]),
                     );
                     if !success {
-                        debug_assert!(false, "Failed to parse encoded part. Aborting.");
-                        break;
+                        // If there is MIME boundary, ignore it and get raw message
+                        if !stream.is_eof() && state.mime_boundary.is_some() {
+                            let (_, r_is_utf8_safe, r_bytes) =
+                                stream.get_bytes_to_boundary(&[][..]);
+                            if r_bytes.is_some() {
+                                is_utf8_safe = r_is_utf8_safe;
+                                bytes = r_bytes;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    } else {
+                        is_utf8_safe = r_is_utf8_safe;
+                        bytes = r_bytes;
                     }
-                    is_utf8_safe = r_is_utf8_safe;
-                    bytes = r_bytes;
-                } else {
-                    debug_assert!(false, "Failed to parse encoded part. Aborting.");
+                    mime_type = MimeType::TextOther;
+                    is_inline = false;
+                    is_text = true;
+                } else if bytes.is_none() {
                     break;
                 }
             }
@@ -335,7 +346,7 @@ impl<'x> Message<'x> {
                 };
 
                 let contents = bytes_to_string(
-                    bytes.map_or_else(|| "?".as_bytes(), |v| v),
+                    bytes.map_or_else(|| "\n".as_bytes(), |v| v),
                     header.get_content_type(),
                     is_utf8_safe,
                 );
@@ -372,7 +383,7 @@ impl<'x> Message<'x> {
                         } else {
                             None
                         },
-                        contents: bytes.map_or_else(|| "?".as_bytes(), |v| v),
+                        contents: bytes.map_or_else(|| "?".as_bytes(), |v| v).into(),
                     })));
             };
 
@@ -397,16 +408,8 @@ impl<'x> Message<'x> {
                         }
                     }
 
-                    if stream.skip_bytes("--".as_bytes()) {
+                    if stream.skip_multipart_end() {
                         // End of MIME part reached
-                        /*println!(
-                            "Mime part end '{:?}--' next '{:?}'",
-                            std::str::from_utf8(state.mime_boundary.as_ref().unwrap().as_ref())
-                                .unwrap(),
-                            stream
-                                .get_string(stream.get_pos(), stream.get_pos() + 10, true)
-                                .unwrap_or_else(|| "NOTHING".into())
-                        );*/
 
                         if MimeType::MultipartAlernative == state.mime_type
                             && state.need_html_body
@@ -419,7 +422,7 @@ impl<'x> Message<'x> {
                                 for part in message.html_body[state.html_parts..].iter() {
                                     message.text_body.push(TextPart {
                                         header: None,
-                                        contents: part.contents.clone(), //Todo make plain text
+                                        contents: part.contents.clone(), //TODO make plain text
                                     });
                                 }
                             }
@@ -443,32 +446,32 @@ impl<'x> Message<'x> {
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
-                                if stream.seek_bytes(mime_boundary) {
-                                    // Boundary not found, probably a corrupted message, abort.
-                                    /*println!(
+                                if stream.seek_next_part(mime_boundary) {
+
+                                    println!(
                                         "Found ancestor MIME boundary '{:?}'",
                                         std::str::from_utf8(mime_boundary).unwrap()
-                                    );*/
+                                    );
+    
                                     continue 'inner;
-                                } /*else {
-                                      println!(
-                                          "Boundary '{:?} not found.",
-                                          std::str::from_utf8(mime_boundary).unwrap()
-                                      );
-                                  }*/
-                            } /*else {
-                                  // Ancestor does not have a MIME boundary, end parsing.
-                                  println!("Ancestor has no MIME boundary, parent found?");
-                              } */
-                        } /*else {
-                              // No more ancestors found, finish parsing.
-                              println!("Finish parsing, no ancestors found.");
-                          } */
+                                } else {
+                                    println!(
+                                        "Boundary '{:?} not found.",
+                                        std::str::from_utf8(mime_boundary).unwrap()
+                                    );
+                                }
+                            } else {
+                                // Ancestor does not have a MIME boundary, end parsing.
+                                println!("Ancestor has no MIME boundary, parent found?");
+                            }
+                        } else {
+                            // No more ancestors found, finish parsing.
+                            println!("Finish parsing, no ancestors found.");
+                        }
                         break 'outer;
                     } else {
                         stream.skip_crlf();
                         // Headers of next part expected next, break inner look.
-                        //println!("Expecting headers of next part.");
                         break 'inner;
                     }
                 }
@@ -486,72 +489,83 @@ mod tests {
 
     use crate::parsers::message::Message;
 
-    /*#[test]
-    fn body_parse() {
-        let mut samples_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        samples_dir.push("test/dovecot");
-        let mut got_sign = false;
-        let mut count = 0;
-
-        for path in fs::read_dir(samples_dir.to_str().unwrap()).unwrap() {
-            let mut path = path.unwrap().path();
-            if path.as_path().to_str().unwrap().contains(".yaml") {
-                continue;
-            }
-            //if !path.as_path().to_str().unwrap().contains("m576") {
-            //    continue;
-            //}
-            println!("Parsing {}", path.to_str().unwrap());
-            let mut input = fs::read(path.as_path()).unwrap();
-            if String::from_utf8_lossy(&input).contains("application/pgp-signature") {
-                if !got_sign {
-                    got_sign = true;
-                } else {
-                    continue;
-                }
-            }
-
-            let input2 = input.clone();
-
-            let message = Message::parse(&mut input);
-
-            if message.text_body.len() + message.html_body.len() + message.attachments.len() > 1 {
-                fs::write(
-                    format!("/vagrant/Code/stalwart/test/final/list_{:03}.eml", count),
-                    &input2,
-                )
-                .unwrap();
-                //assert!(path.set_extension("yaml"));
-                fs::write(
-                    format!("/vagrant/Code/stalwart/test/final/list_{:03}.yaml", count),
-                    serde_yaml::to_string(&message).unwrap(),
-                )
-                .unwrap();
-                //fs::write(path, serde_yaml::to_string(&message).unwrap()).unwrap();
-                count += 1;
-            }
-        }
-    }*/
-
     #[test]
     fn body_parse() {
-        let mut samples_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        samples_dir.push("test/messages");
+        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
-        for path in fs::read_dir(samples_dir.to_str().unwrap()).unwrap() {
-            let mut path = path.unwrap().path();
-            if path.as_path().to_str().unwrap().contains(".yaml") {
-                continue;
+        for test_suite in ["rfc", "legacy", "malformed"] {
+            let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+            test_dir.push("tests");
+            test_dir.push(test_suite);
+
+            for file_name in fs::read_dir(test_dir).unwrap() {
+                let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
+                let mut pos = 0;
+                for sep_pos in 0..input.len() {
+                    if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
+                        pos = sep_pos;
+                        break;
+                    }
+                }
+                assert!(pos > 0, "Failed to find separator.");
+                let input = input.split_at_mut(pos);
+                assert_eq!(
+                    Message::parse(input.0),
+                    serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap(),
+                    "Test failed for {}",
+                    file_name.unwrap().path().display()
+                );
             }
-            //if !path.as_path().to_str().unwrap().contains("m576") {
-            //    continue;
-            //}
-            println!("Parsing {}", path.to_str().unwrap());
-            let mut input = fs::read(path.as_path()).unwrap();
-            let message = Message::parse(&mut input);
+        }
+    }
 
-            assert!(path.set_extension("yaml"));
-            fs::write(path, serde_yaml::to_string(&message).unwrap()).unwrap();
+    #[test]
+    fn generate_test_samples() {
+        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
+
+        for test_suite in ["rfc" /*"legacy","malformed"*/] {
+            let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+            test_dir.push("tests");
+            test_dir.push(test_suite);
+
+            for file_name in fs::read_dir(test_dir).unwrap() {
+                if !file_name
+                    .as_ref()
+                    .unwrap()
+                    .path()
+                    .to_str()
+                    .unwrap()
+                    .contains("007")
+                {
+                    continue;
+                }
+
+                let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
+                let mut pos = 0;
+                for sep_pos in 0..input.len() {
+                    if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
+                        pos = sep_pos;
+                        break;
+                    }
+                }
+                assert!(pos > 0, "Failed to find separator.");
+                let input = input.split_at_mut(pos);
+
+                println!(
+                    "{}",
+                    serde_yaml::to_string(&Message::parse(input.0)).unwrap()
+                );
+
+                /*let mut output = Vec::new();
+                output.extend_from_slice(input.0);
+                output.extend_from_slice(SEPARATOR);
+                output.extend_from_slice(
+                    serde_json::to_string_pretty(&Message::parse(input.0))
+                        .unwrap_or_else(|_| "".to_string())
+                        .as_bytes(),
+                );
+                fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();*/
+            }
         }
     }
 }
