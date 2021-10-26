@@ -61,7 +61,7 @@ Content-Type: application/x-whatever
   },
   "html_body": [
     {
-      "contents": "... plain text version of message goes here ...<br/>"
+      "contents": "<html>... plain text version of message goes here ...<br/></html>"
     }
   ],
   "text_body": [

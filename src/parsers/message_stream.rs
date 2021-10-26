@@ -144,7 +144,11 @@ impl<'x> MessageStream<'x> {
                             if self.is_boundary_end(pos) {
                                 let match_pos = pos - match_count;
                                 *stream_pos = pos;
-                                println!("Got '{:?}'", std::str::from_utf8((*data).get(start_pos..match_pos).unwrap()).unwrap());
+                                println!(
+                                    "Got '{:?}'",
+                                    std::str::from_utf8((*data).get(start_pos..match_pos).unwrap())
+                                        .unwrap()
+                                );
                                 return (
                                     true,
                                     is_utf8_safe,
@@ -216,8 +220,20 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn is_boundary_end(&self, pos: usize) -> bool {
-        unsafe {
+        if let Some([b'\n', ..])
+        | Some([b'-', b'-', ..])
+        | Some([b'\r', b'\n', ..])
+        | Some([b' ' | b'\t', ..])
+        | None = unsafe { (*self.data.get()).get(pos..) }
+        {
+            true
+        } else {
+            false
+        }
+
+        /*unsafe {
             let data = &mut *self.data.get();
+
             match (*data).get(pos) {
                 Some(b'\n') => true,
                 Some(b'-') if (*data).get(pos + 1) == Some(&b'-') => true,
@@ -226,7 +242,7 @@ impl<'x> MessageStream<'x> {
                 None => true,
                 _ => false,
             }
-        }
+        }*/
     }
 
     pub fn skip_multipart_end(&self) -> bool {
@@ -234,16 +250,16 @@ impl<'x> MessageStream<'x> {
             let pos = &mut *self.pos.get();
 
             match (*self.data.get()).get(*pos..*pos + 2) {
-                Some(b"--") => match (*self.data.get()).get(*pos + 2) {
-                    Some(b'\n') => {
+                Some(b"--") => match (*self.data.get()).get(*pos + 2..) {
+                    Some([b'\n', ..]) => {
                         *pos += 3;
                         true
                     }
-                    Some(b'\r') if (*self.data.get()).get(*pos + 3) == Some(&b'\n') => {
+                    Some([b'\r', b'\n', ..]) => {
                         *pos += 4;
                         true
                     }
-                    None | Some(b' ') | Some(b'\t') => {
+                    None | Some([b' ' | b'\t', ..]) => {
                         *pos += 2;
                         true
                     }

@@ -17,6 +17,6 @@
 
 #### TODO
 --------------
-- HTML / Test body conversion
 - UTF-7 support
-  
+- Respect attribute orders in continuations
+
