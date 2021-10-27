@@ -93,6 +93,11 @@ vAAAAABJRU5ErkJggg==
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>\r</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -109,7 +114,7 @@ vAAAAABJRU5ErkJggg==
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_description": "red ball",
           "content_disposition": {

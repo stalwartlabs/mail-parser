@@ -72,4 +72,160 @@ K
 --1--
 
 ---- EXPECTED STRUCTURE ----
-
+{
+  "header": {
+    "subject": "RFC 8621 Section 4.1.4 test",
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "1"
+      }
+    }
+  },
+  "html_body": [
+    {
+      "contents": "<html><body>A</body></html>"
+    },
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "html"
+        }
+      },
+      "contents": "<html>E</html>"
+    },
+    {
+      "contents": "<html><body>K</body></html>"
+    }
+  ],
+  "text_body": [
+    {
+      "header": {
+        "content_disposition": {
+          "c_type": "inline"
+        },
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "A"
+    },
+    {
+      "header": {
+        "content_disposition": {
+          "c_type": "inline"
+        },
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "B"
+    },
+    0,
+    {
+      "header": {
+        "content_disposition": {
+          "c_type": "inline"
+        },
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "D"
+    },
+    {
+      "header": {
+        "content_disposition": {
+          "c_type": "inline"
+        },
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "K"
+    }
+  ],
+  "attachments": [
+    {
+      "InlineBinary": {
+        "header": {
+          "content_disposition": {
+            "c_type": "inline"
+          },
+          "content_type": {
+            "c_type": "image",
+            "c_subtype": "jpeg"
+          }
+        },
+        "contents": [
+          67
+        ]
+      }
+    },
+    {
+      "Binary": {
+        "header": {
+          "content_type": {
+            "c_type": "image",
+            "c_subtype": "jpeg"
+          }
+        },
+        "contents": [
+          70
+        ]
+      }
+    },
+    {
+      "Binary": {
+        "header": {
+          "content_disposition": {
+            "c_type": "attachment"
+          },
+          "content_type": {
+            "c_type": "image",
+            "c_subtype": "jpeg"
+          }
+        },
+        "contents": [
+          71
+        ]
+      }
+    },
+    {
+      "Binary": {
+        "header": {
+          "content_type": {
+            "c_type": "application",
+            "c_subtype": "x-excel"
+          }
+        },
+        "contents": [
+          72
+        ]
+      }
+    },
+    {
+      "Message": {
+        "header": {
+          "subject": "J"
+        },
+        "html_body": [
+          {
+            "contents": "<html><body>J</body></html>"
+          }
+        ],
+        "text_body": [
+          {
+            "contents": "J"
+          }
+        ]
+      }
+    }
+  ]
+}

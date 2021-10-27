@@ -119,26 +119,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     "others": {
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
       "X-Priority": [
         "3 (Normal)"
-      ],
-      "Importance": [
-        "Normal"
       ],
       "X-MSMail-Priority": [
         "Normal"
       ],
+      "Importance": [
+        "Normal"
+      ],
       "X-MimeOLE": [
         "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      ],
+      "X-Mailer": [
+        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       ]
     }
   },
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",
@@ -1485,7 +1485,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",

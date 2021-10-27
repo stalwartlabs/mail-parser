@@ -68,6 +68,11 @@ Subject: my different opinion
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>...Introductory text or table of contents...<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "...Introductory text or table of contents...\n"
@@ -95,6 +100,11 @@ Subject: my different opinion
           },
           "subject": "my opinion"
         },
+        "html_body": [
+          {
+            "contents": "<html><body>...body goes here ...<br/></body></html>"
+          }
+        ],
         "text_body": [
           {
             "contents": "...body goes here ...\n"
@@ -123,6 +133,11 @@ Subject: my different opinion
           },
           "subject": "my different opinion"
         },
+        "html_body": [
+          {
+            "contents": "<html><body>... another body goes here ...<br/></body></html>"
+          }
+        ],
         "text_body": [
           {
             "contents": "... another body goes here ...\n"

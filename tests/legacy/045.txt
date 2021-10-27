@@ -84,6 +84,11 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>\r</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -115,8 +120,8 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
             "c_type": "text",
             "c_subtype": "plain",
             "attributes": {
-              "charset": "iso-8859-1",
-              "name": "iso-8859-1''HasenundFr%F6sche.txt"
+              "name": "iso-8859-1''HasenundFr%F6sche.txt",
+              "charset": "iso-8859-1"
             }
           }
         },

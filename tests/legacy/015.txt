@@ -234,14 +234,14 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
       "X-Mailer": [
         "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
       ],
       "X-Priority": [
         "2 (High)"
+      ],
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
       ]
     }
   },
@@ -277,7 +277,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -1625,7 +1625,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -3101,7 +3101,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",
@@ -4448,7 +4448,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",

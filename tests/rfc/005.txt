@@ -59,6 +59,14 @@ This is the epilogue.  It is also to be ignored.
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>This is implicitly typed plain US-ASCII text.<br/>It does NOT end with a linebreak.</body></html>"
+    },
+    {
+      "contents": "<html><body>This is explicitly typed plain US-ASCII text.<br/>It DOES end with a linebreak.<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."

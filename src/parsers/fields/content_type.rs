@@ -43,6 +43,11 @@ impl<'x> ContentType<'x> {
     pub fn is_attachment(&'x self) -> bool {
         self.c_type.eq_ignore_ascii_case("attachment")
     }
+
+    pub fn is_inline(&'x self) -> bool {
+        self.c_type.eq_ignore_ascii_case("inline")
+    }
+
 }
 
 #[derive(Clone, Copy, PartialEq, Debug)]

@@ -69,25 +69,30 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
       "c_type": "text",
       "c_subtype": "plain",
       "attributes": {
-        "charset": "iso-8859-1",
-        "format": "flowed"
+        "format": "flowed",
+        "charset": "iso-8859-1"
       }
     },
     "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
       "X-Priority": [
         "1 (Highest)"
       ],
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
+      ],
       "Disposition-Notification-To": [
         "<dwsauder@example.com>"
+      ],
+      "X-Mailer": [
+        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein <br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, <br/>der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der <br/>Tod selbst. Auf, laßt uns ein für allemal sterben.\"<br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; <br/>allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte <br/>eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste <br/>untertauchten.<br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein <br/>wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, <br/>welche also wohl noch unglücklicher sein müssen als wir.\"<br/><br/><br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein \nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, \nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der \nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; \nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte \neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste \nuntertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein \nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, \nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"

@@ -4,6 +4,7 @@ pub mod map;
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
 pub mod single_byte;
+pub mod utf7;
 
 pub type DecoderFnc<'x> = fn(&'x [u8]) -> Cow<'x, str>;
 
@@ -33,7 +34,7 @@ mod tests {
             ("ibm850", b"\x9b\x9c\x9d\x9e".to_vec(),"ø£Ø×"),
             ("koi8-r", b"\xf0\xd2\xc9\xd7\xc5\xd4, \xcd\xc9\xd2".to_vec(),"Привет, мир"),
             ("koi8-u", b"\xf0\xd2\xc9\xd7\xa6\xd4 \xf3\xd7\xa6\xd4".to_vec(),"Привіт Світ"),
-
+            ("utf-7", b"+ZYeB9FH6ckh5Pg-, 1980.".to_vec(),"文致出版社, 1980."),
             #[cfg(feature = "multibytedecode")]
             ("shift_jis", b"\x83n\x83\x8D\x81[\x81E\x83\x8F\x81[\x83\x8B\x83h".to_vec(),"ハロー・ワールド"),
             #[cfg(feature = "multibytedecode")]

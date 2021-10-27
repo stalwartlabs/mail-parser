@@ -107,6 +107,14 @@ Content-Transfer-Encoding: Quoted-printable
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>... Some text appears here ...<br/><br/>[Note that the blank between the boundary and the start<br/>of the text in this part means no header fields were<br/>given and this is text in the US-ASCII character set.<br/>It could have been done with explicit typing as in the<br/>next part.]<br/></body></html>"
+    },
+    {
+      "contents": "<html><body>This could have been part of the previous part, but<br/>illustrates explicit versus implicit typing of body<br/>parts.<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
@@ -183,6 +191,11 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "html_body": [
+          {
+            "contents": "<html><body>... Additional text in ISO-8859-1 goes here ...<br/></body></html>"
+          }
+        ],
         "text_body": [
           {
             "contents": "... Additional text in ISO-8859-1 goes here ...\n"

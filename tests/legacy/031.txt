@@ -132,6 +132,11 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>This is a test message from PINE MUA.\r<br/>\r<br/>\r</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -148,7 +153,7 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_description": "A PNG graphic file",
           "content_disposition": {
@@ -1625,7 +1630,7 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_description": "A PNG graphic file",
           "content_disposition": {

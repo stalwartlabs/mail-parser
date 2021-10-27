@@ -144,11 +144,7 @@ impl<'x> MessageStream<'x> {
                             if self.is_boundary_end(pos) {
                                 let match_pos = pos - match_count;
                                 *stream_pos = pos;
-                                println!(
-                                    "Got '{:?}'",
-                                    std::str::from_utf8((*data).get(start_pos..match_pos).unwrap())
-                                        .unwrap()
-                                );
+
                                 return (
                                     true,
                                     is_utf8_safe,

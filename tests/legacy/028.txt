@@ -192,7 +192,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     "others": {
-      "Importance": [
+      "X-MSMail-Priority": [
         "Normal"
       ],
       "X-Mailer": [
@@ -204,7 +204,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "X-MimeOLE": [
         "Produced By Microsoft MimeOLE V5.00.2314.1300"
       ],
-      "X-MSMail-Priority": [
+      "Importance": [
         "Normal"
       ]
     }
@@ -241,7 +241,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_id": "823504223@17052000-0f8d",
           "content_transfer_encoding": "base64",
@@ -1583,7 +1583,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_id": "823504223@17052000-0f94",
           "content_transfer_encoding": "base64",

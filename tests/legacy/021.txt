@@ -224,20 +224,20 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     "others": {
+      "X-Priority": [
+        "3 (Normal)"
+      ],
       "X-MSMail-Priority": [
         "Normal"
+      ],
+      "X-MimeOLE": [
+        "Produced By Microsoft MimeOLE V5.00.2314.1300"
       ],
       "X-Mailer": [
         "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       ],
       "Importance": [
         "Normal"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
       ]
     }
   },
@@ -273,7 +273,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_id": "938014623@17052000-0f9b",
           "content_transfer_encoding": "base64",
@@ -1615,7 +1615,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",
@@ -2935,7 +2935,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",

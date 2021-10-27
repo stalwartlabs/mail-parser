@@ -95,6 +95,12 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body> \r</body></html>"
+    },
+    0
+  ],
   "text_body": [
     {
       "header": {
@@ -108,11 +114,12 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         }
       },
       "contents": " \r"
-    }
+    },
+    0
   ],
   "attachments": [
     {
-      "File": {
+      "InlineBinary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",

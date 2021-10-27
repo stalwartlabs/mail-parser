@@ -1,9 +1,9 @@
 use crate::parsers::message_stream::MessageStream;
 
 #[repr(C)]
-union Base64Chunk {
-    val: u32,
-    bytes: [u8; std::mem::size_of::<u32>()],
+pub union Base64Chunk {
+    pub val: u32,
+    pub bytes: [u8; std::mem::size_of::<u32>()],
 }
 
 pub trait Base64Decoder<'x> {
@@ -206,7 +206,7 @@ mod tests {
  *
  */
 
-static BASE64_MAP: &[&[u32]] = &[
+pub static BASE64_MAP: &[&[u32]] = &[
     &[
         0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
         0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,

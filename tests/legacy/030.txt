@@ -147,14 +147,21 @@ Slow but steady wins the race.
       }
     },
     "others": {
-      "X-Accept-Language": [
-        "en"
-      ],
       "X-Mailer": [
         "Mozilla 4.7 [en] (WinNT; I)"
+      ],
+      "X-Accept-Language": [
+        "en"
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>\r<br/>The Hare and the Tortoise \r<br/> \r<br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise,\r<br/>who replied, laughing:  \"Though you be swift as the wind, I will beat\r<br/>you in a race.\"  The Hare, believing her assertion to be simply\r<br/>impossible, assented to the proposal; and they agreed that the Fox\r<br/>should choose the course and fix the goal.  On the day appointed for the\r<br/>race the two started together.  The Tortoise never for a moment stopped,\r<br/>but went on with a slow but steady pace straight to the end of the\r<br/>course.  The Hare, lying down by the wayside, fell fast asleep.  At last\r<br/>waking up, and moving as fast as he could, he saw the Tortoise had\r<br/>reached the goal, and was comfortably dozing after her fatigue.  \r<br/> \r<br/>Slow but steady wins the race.\r</body></html>"
+    },
+    0,
+    1
+  ],
   "text_body": [
     {
       "header": {
@@ -168,11 +175,13 @@ Slow but steady wins the race.
         }
       },
       "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
-    }
+    },
+    0,
+    1
   ],
   "attachments": [
     {
-      "File": {
+      "InlineBinary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -1519,7 +1528,7 @@ Slow but steady wins the race.
       }
     },
     {
-      "File": {
+      "InlineBinary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -2852,8 +2861,8 @@ Slow but steady wins the race.
             "c_type": "text",
             "c_subtype": "plain",
             "attributes": {
-              "name": "hareandtoroise.txt",
-              "charset": "us-ascii"
+              "charset": "us-ascii",
+              "name": "hareandtoroise.txt"
             }
           }
         },

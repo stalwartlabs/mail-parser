@@ -128,6 +128,11 @@ Birds of a feather flock together.
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -159,8 +164,8 @@ Birds of a feather flock together.
             "c_subtype": "plain",
             "attributes": {
               "name": "HasenundFr�sche.txt",
-              "x-mac-creator": "74747874",
-              "x-mac-type": "54455854"
+              "x-mac-type": "54455854",
+              "x-mac-creator": "74747874"
             }
           }
         },

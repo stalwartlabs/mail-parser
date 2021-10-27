@@ -71,9 +71,14 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Fr岣he\r<br/>\r<br/>Die Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r<br/>der Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r<br/>Tod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r<br/>\r<br/>In einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r<br/>allein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r<br/>erschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r<br/>schnellste untertauchten. \r<br/>\r<br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r<br/>wenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r<br/>welche also wohl noch ungl뢫licher sein m벳en als wir.\"\r<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
-      "contents": "Die Hasen und die Fr+XKM-he\r\n\r\nDie Hasen klagten einst +uGU-r ihre mi+B6w-iche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist +PGc-er als der\r\nTod selbst. Auf, la+B7Q- uns ein f+vCA-allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers+PSY-en; sie eilten ihm zu;\r\nallein das au+B6U-rordentliche Get+XKU- und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr+XKM-he, die am Ufer sa+B6U-n, so sehr, da+B2A-sie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers+PSY-en noch ein\r\nwenig aufschieben, denn auch uns f+vGM-hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl+uKs-licher sein m+vLM-en als wir.\"\r\n"
+      "contents": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n"
     }
   ]
 }

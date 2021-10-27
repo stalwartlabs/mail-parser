@@ -175,14 +175,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     "others": {
+      "X-Priority": [
+        "2 (High)"
+      ],
       "X-Mailer": [
         "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
       ],
       "X-Sender": [
         "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Priority": [
-        "2 (High)"
       ]
     }
   },
@@ -218,7 +218,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -1566,7 +1566,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",

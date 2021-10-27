@@ -61,7 +61,7 @@ Content-Type: application/x-whatever
   },
   "html_body": [
     {
-      "contents": "<html>... plain text version of message goes here ...<br/></html>"
+      "contents": "<html><body>... plain text version of message goes here ...<br/></body></html>"
     }
   ],
   "text_body": [
@@ -91,7 +91,7 @@ Content-Type: application/x-whatever
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_type": {
             "c_type": "application",

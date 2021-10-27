@@ -68,23 +68,28 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
       }
     },
     "others": {
-      "Importance": [
+      "X-MimeOLE": [
+        "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      ],
+      "X-Mailer": [
+        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+      ],
+      "X-MSMail-Priority": [
         "Normal"
       ],
       "X-Priority": [
         "3 (Normal)"
       ],
-      "X-MSMail-Priority": [
+      "Importance": [
         "Normal"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Frösche\r<br/>\r<br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r<br/>Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r<br/>selbst. Auf, laßt uns ein für allemal sterben.\"\r<br/>\r<br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r<br/>allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r<br/>eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r<br/>untertauchten.\r<br/>\r<br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r<br/>wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r<br/>welche also wohl noch unglücklicher sein müssen als wir.\"\r<br/>\r<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n"

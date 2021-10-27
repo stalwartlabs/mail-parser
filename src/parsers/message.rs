@@ -17,19 +17,16 @@ use super::{
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Message<'x> {
     #[serde(borrow)]
-    header: MessageHeader<'x>,
+    header: Box<MessageHeader<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    html_body: Vec<TextPart<'x>>,
+    html_body: Vec<BodyPart<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    text_body: Vec<TextPart<'x>>,
+    text_body: Vec<BodyPart<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    attachments: Vec<MessagePart<'x>>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    #[serde(default)]
-    inline: Vec<BinaryPart<'x>>,
+    attachments: Vec<AttachmentPart<'x>>,
 }
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct TextPart<'x> {
@@ -50,17 +47,26 @@ pub struct BinaryPart<'x> {
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub enum MessagePart<'x> {
-    Text(Box<TextPart<'x>>),
+#[serde(untagged)]
+pub enum BodyPart<'x> {
+    Text(TextPart<'x>),
+    InlineBinary(u32),
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+pub enum AttachmentPart<'x> {
+    Text(TextPart<'x>),
     #[serde(borrow)]
-    File(Box<BinaryPart<'x>>),
-    Message(Box<Message<'x>>),
+    Binary(BinaryPart<'x>),
+    #[serde(borrow)]
+    InlineBinary(BinaryPart<'x>),
+    Message(Message<'x>),
 }
 
 impl<'x> Message<'x> {
     fn new() -> Message<'x> {
         Message {
-            header: MessageHeader::new(),
+            header: Box::new(MessageHeader::new()),
             ..Default::default()
         }
     }
@@ -87,14 +93,15 @@ fn bytes_to_string<'x>(
     content_type: Option<&ContentType>,
     is_utf8_safe: bool,
 ) -> Cow<'x, str> {
-    if !is_utf8_safe {
-        if let Some(content_type) = content_type {
-            if let Some(charset) = content_type.get_attribute("charset") {
-                if let Some(decoder_fnc) = get_charset_decoder(charset.as_bytes()) {
-                    return decoder_fnc(bytes);
-                }
+    if let Some(content_type) = content_type {
+        if let Some(charset) = content_type.get_attribute("charset") {
+            if let Some(decoder_fnc) = get_charset_decoder(charset.as_bytes()) {
+                return decoder_fnc(bytes);
             }
         }
+    }
+
+    if !is_utf8_safe {
         decoder_default(bytes)
     } else {
         (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
@@ -179,7 +186,7 @@ impl<'x> Message<'x> {
         'outer: loop {
             // Obtain reference to either the message or the MIME part's header
             let header: &mut dyn MessageField = if let MimeType::Message = state.mime_type {
-                &mut message.header
+                message.header.as_mut()
             } else {
                 &mut mime_part_header
             };
@@ -194,21 +201,21 @@ impl<'x> Message<'x> {
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
                 get_mime_type(header.get_content_type(), &state.mime_type);
 
-            println!(
+            /*println!(
                 "--- New part {:?} parent {:?} at '{:?}'",
                 mime_type,
                 state.mime_type,
                 stream
                     .get_string(stream.get_pos(), stream.get_pos() + 20, true)
                     .unwrap_or_else(|| "NOTHING".into())
-            );
+            );*/
 
             if is_multipart {
                 if let Some(mime_boundary) = header
                     .get_content_type()
                     .map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    println!("Found boundary '{}'", mime_boundary,);
+                    //println!("Found boundary '{}'", mime_boundary,);
                     let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
                     if stream.seek_next_part(mime_boundary.as_ref()) {
@@ -329,35 +336,31 @@ impl<'x> Message<'x> {
                                 .get_content_type()
                                 .map_or_else(|| true, |c| !c.has_attribute("name")))));
 
-            if is_text {
-                let (add_as_html, add_as_text, is_html) =
-                    if let MimeType::MultipartAlernative = state.mime_type {
-                        match mime_type {
-                            MimeType::TextHtml => (true, false, true),
-                            MimeType::TextPlain => (false, true, false),
-                            _ => (false, false, false),
+            let (add_to_html, add_to_text) = if let MimeType::MultipartAlernative = state.mime_type
+            {
+                match mime_type {
+                    MimeType::TextHtml => (true, false),
+                    MimeType::TextPlain => (false, true),
+                    _ => (false, false),
+                }
+            } else if is_inline {
+                if state.in_alternative && (state.need_text_body || state.need_html_body) {
+                    match mime_type {
+                        MimeType::TextHtml => {
+                            state.need_text_body = false;
                         }
-                    } else if is_inline {
-                        if state.in_alternative && (state.need_text_body || state.need_html_body) {
-                            match mime_type {
-                                MimeType::TextHtml => {
-                                    state.need_text_body = false;
-                                }
-                                MimeType::TextPlain => {
-                                    state.need_html_body = false;
-                                }
-                                _ => (),
-                            }
+                        MimeType::TextPlain => {
+                            state.need_html_body = false;
                         }
-                        (
-                            state.need_html_body,
-                            state.need_text_body,
-                            mime_type == MimeType::TextHtml,
-                        )
-                    } else {
-                        (false, false, false)
-                    };
+                        _ => (),
+                    }
+                }
+                (state.need_html_body, state.need_text_body)
+            } else {
+                (false, false)
+            };
 
+            if is_text {
                 let text_part = TextPart {
                     contents: bytes_to_string(
                         bytes.map_or_else(|| "\n".as_bytes(), |v| v),
@@ -371,26 +374,28 @@ impl<'x> Message<'x> {
                     },
                 };
 
-                if add_as_html && !is_html {
-                    message.html_body.push(TextPart {
+                //println!("'{:?}' {} {} {}", text_part.contents, add_to_html, add_to_text, is_inline);
+
+                let is_html = mime_type == MimeType::TextHtml;
+
+                if add_to_html && !is_html {
+                    message.html_body.push(BodyPart::Text(TextPart {
                         header: None,
                         contents: text_to_html(&text_part.contents).into(),
-                    });
-                } else if add_as_text && is_html {
-                    message.text_body.push(TextPart {
+                    }));
+                } else if add_to_text && is_html {
+                    message.text_body.push(BodyPart::Text(TextPart {
                         header: None,
                         contents: html_to_text(&text_part.contents).into(),
-                    });
+                    }));
                 }
 
-                if add_as_html && is_html {
-                    message.html_body.push(text_part);
-                } else if add_as_text && !is_html {
-                    message.text_body.push(text_part);
+                if add_to_html && is_html {
+                    message.html_body.push(BodyPart::Text(text_part));
+                } else if add_to_text && !is_html {
+                    message.text_body.push(BodyPart::Text(text_part));
                 } else {
-                    message
-                        .attachments
-                        .push(MessagePart::Text(Box::new(text_part)));
+                    message.attachments.push(AttachmentPart::Text(text_part));
                 }
             } else {
                 let binary_part = BinaryPart {
@@ -402,13 +407,22 @@ impl<'x> Message<'x> {
                     contents: bytes.map_or_else(|| "?".as_bytes(), |v| v).into(),
                 };
 
-                if !is_inline {
+                if add_to_html {
                     message
-                        .attachments
-                        .push(MessagePart::File(Box::new(binary_part)));
-                } else {
-                    message.inline.push(binary_part);
+                        .html_body
+                        .push(BodyPart::InlineBinary(message.attachments.len() as u32));
                 }
+                if add_to_text {
+                    message
+                        .text_body
+                        .push(BodyPart::InlineBinary(message.attachments.len() as u32));
+                }
+
+                message.attachments.push(if !is_inline {
+                    AttachmentPart::Binary(binary_part)
+                } else {
+                    AttachmentPart::InlineBinary(binary_part)
+                });
             };
 
             if state.mime_boundary.is_some() {
@@ -422,7 +436,7 @@ impl<'x> Message<'x> {
                         {
                             prev_message
                                 .attachments
-                                .push(MessagePart::Message(Box::new(message)));
+                                .push(AttachmentPart::Message(message));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
                             state = prev_state;
@@ -444,9 +458,14 @@ impl<'x> Message<'x> {
                                 && state.html_parts != message.html_body.len()
                             {
                                 for part in message.html_body[state.html_parts..].iter() {
-                                    message.text_body.push(TextPart {
-                                        header: None,
-                                        contents: html_to_text(&part.contents).into(),
+                                    message.text_body.push(match part {
+                                        BodyPart::Text(part) => BodyPart::Text(TextPart {
+                                            header: None,
+                                            contents: html_to_text(&part.contents).into(),
+                                        }),
+                                        BodyPart::InlineBinary(index) => {
+                                            BodyPart::InlineBinary(*index)
+                                        }
                                     });
                                 }
                             }
@@ -456,9 +475,14 @@ impl<'x> Message<'x> {
                                 && state.text_parts != message.text_body.len()
                             {
                                 for part in message.text_body[state.text_parts..].iter() {
-                                    message.html_body.push(TextPart {
-                                        header: None,
-                                        contents: text_to_html(&part.contents).into(),
+                                    message.html_body.push(match part {
+                                        BodyPart::Text(part) => BodyPart::Text(TextPart {
+                                            header: None,
+                                            contents: text_to_html(&part.contents).into(),
+                                        }),
+                                        BodyPart::InlineBinary(index) => {
+                                            BodyPart::InlineBinary(*index)
+                                        }
                                     });
                                 }
                             }
@@ -471,25 +495,25 @@ impl<'x> Message<'x> {
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
                                 if stream.seek_next_part(mime_boundary) {
-                                    println!(
+                                    /*println!(
                                         "Found ancestor MIME boundary '{:?}'",
                                         std::str::from_utf8(mime_boundary).unwrap()
-                                    );
+                                    );*/
 
                                     continue 'inner;
                                 } else {
-                                    println!(
+                                    /*println!(
                                         "Boundary '{:?} not found.",
                                         std::str::from_utf8(mime_boundary).unwrap()
-                                    );
+                                    );*/
                                 }
                             } else {
                                 // Ancestor does not have a MIME boundary, end parsing.
-                                println!("Ancestor has no MIME boundary, parent found?");
+                                //println!("Ancestor has no MIME boundary, parent found?");
                             }
                         } else {
                             // No more ancestors found, finish parsing.
-                            println!("Finish parsing, no ancestors found.");
+                            //println!("Finish parsing, no ancestors found.");
                         }
                         break 'outer;
                     } else {
@@ -534,7 +558,9 @@ mod tests {
                 let input = input.split_at_mut(pos);
 
                 let message = Message::parse(input.0);
-                if(message != serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap()) {
+                if (message
+                    != serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap())
+                {
                     println!("{}", serde_json::to_string_pretty(&message).unwrap());
                     return;
                 }
@@ -552,22 +578,22 @@ mod tests {
     fn generate_test_samples() {
         const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
-        for test_suite in ["rfc" /*"legacy","malformed"*/] {
+        for test_suite in ["legacy" /*"legacy","malformed"*/] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
 
             for file_name in fs::read_dir(test_dir).unwrap() {
-                if !file_name
+                /*if !file_name
                     .as_ref()
                     .unwrap()
                     .path()
                     .to_str()
                     .unwrap()
-                    .contains("007")
+                    .contains("001")
                 {
                     continue;
-                }
+                }*/
 
                 let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
                 let mut pos = 0;
@@ -580,12 +606,12 @@ mod tests {
                 assert!(pos > 0, "Failed to find separator.");
                 let input = input.split_at_mut(pos);
 
-                println!(
+                /*println!(
                     "{}",
-                    serde_yaml::to_string(&Message::parse(input.0)).unwrap()
-                );
+                    serde_json::to_string_pretty(&Message::parse(input.0)).unwrap()
+                );*/
 
-                /*let mut output = Vec::new();
+                let mut output = Vec::new();
                 output.extend_from_slice(input.0);
                 output.extend_from_slice(SEPARATOR);
                 output.extend_from_slice(
@@ -593,7 +619,7 @@ mod tests {
                         .unwrap_or_else(|_| "".to_string())
                         .as_bytes(),
                 );
-                fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();*/
+                fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
             }
         }
     }

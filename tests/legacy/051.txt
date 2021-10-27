@@ -208,6 +208,11 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/>2aa5e03a.png2aa5e044.png</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -225,7 +230,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -1573,7 +1578,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "inline",
@@ -3049,7 +3054,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",
@@ -4396,7 +4401,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_disposition": {
             "c_type": "attachment",

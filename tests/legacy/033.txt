@@ -70,17 +70,22 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
       }
     },
     "others": {
-      "X-Priority": [
-        "5 (Lowest)"
-      ],
       "X-Mailer": [
         "Mozilla 4.7 [en] (WinNT; I)"
+      ],
+      "X-Priority": [
+        "5 (Lowest)"
       ],
       "X-Accept-Language": [
         "en"
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Fr�sche<br/><br/>Die Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,<br/>der Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der<br/>Tod selbst. Auf, la�t uns ein f�r allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;<br/>allein das au�erordentliche Get�se und ihre wunderbare Gestalt<br/>erschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs<br/>schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein<br/>wenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,<br/>welche also wohl noch ungl�cklicher sein m�ssen als wir.\"<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "Die Hasen und die Fr�sche\n\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\nschnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\n"

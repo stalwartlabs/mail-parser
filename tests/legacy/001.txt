@@ -55,7 +55,7 @@ m+APw-ssen als wir.+ACI-=20
     },
     "message_id": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com",
     "mime_version": "1.0",
-    "subject": "Die Hasen und die Fr+APY-sche (Microsoft Outlook 00)",
+    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
     "to": {
       "AddressList": [
         {
@@ -63,7 +63,7 @@ m+APw-ssen als wir.+ACI-=20
           "address": "jblow@example.com"
         },
         {
-          "name": "J+APw-rgen Schm+APw-rgen",
+          "name": "Jürgen Schmürgen",
           "address": "schmuergen@example.com"
         }
       ]
@@ -77,26 +77,31 @@ m+APw-ssen als wir.+ACI-=20
       }
     },
     "others": {
-      "X-Priority": [
-        "3 (Normal)"
-      ],
       "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "Importance": [
         "Normal"
       ],
       "X-Mailer": [
         "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       ],
+      "X-Priority": [
+        "3 (Normal)"
+      ],
       "X-MimeOLE": [
         "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      ],
+      "Importance": [
+        "Normal"
       ]
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/></body></html>"
+    }
+  ],
   "text_body": [
     {
-      "contents": "Die Hasen und die Fr+APY-sche\n\nDie Hasen klagten einst +APw-ber ihre mi+AN8-liche Lage+ADs- +ACI-wir leben+ACI-, sprach ein Redner, +ACI-in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere+ACE- Unsere stete Angst ist +AOQ-rger als der Tod selbst. Auf, la+AN8-t uns ein f+APw-r allemal sterben.+ACI- \n\nIn einem nahen Teich wollten sie sich nun ers+AOQ-ufen+ADs- sie eilten ihm zu+ADs- allein das au+AN8-erordentliche Get+APY-se und ihre wunderbare Gestalt erschreckte eine Menge Fr+APY-sche, die am Ufer sa+AN8-en, so sehr, da+AN8- sie aufs schnellste untertauchten. \n\n+ACI-Halt+ACI-, rief nun eben dieser Sprecher, +ACI-wir wollen das Ers+AOQ-ufen noch ein wenig aufschieben, denn auch uns f+APw-rchten, wie ihr seht, einige Tiere, welche also wohl noch ungl+APw-cklicher sein m+APw-ssen als wir.+ACI- \n\n"
+      "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
     }
   ]
 }
