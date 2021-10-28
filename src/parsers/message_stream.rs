@@ -70,6 +70,11 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
+    pub fn peek_pos(&self, pos: usize) -> Option<&'x u8> {
+        unsafe { (*self.data.get()).get(pos) }
+    }
+
+    #[inline(always)]
     pub fn advance(&self, pos: usize) {
         unsafe {
             *self.pos.get() += pos;

@@ -1,5 +1,9 @@
 use serde::{Deserialize, Serialize};
-use std::{borrow::Cow, collections::HashMap};
+use std::{
+    borrow::Cow,
+    collections::{hash_map::Entry, HashMap},
+    ops::Add,
+};
 
 use crate::{
     decoders::{
@@ -47,7 +51,6 @@ impl<'x> ContentType<'x> {
     pub fn is_inline(&'x self) -> bool {
         self.c_type.eq_ignore_ascii_case("inline")
     }
-
 }
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -60,19 +63,27 @@ enum ContentState {
     Comment,
 }
 
+type Continuation<'x> = (Cow<'x, str>, u32, Cow<'x, str>);
+
 struct ContentTypeParser<'x> {
     state: ContentState,
     state_stack: Vec<ContentState>,
 
     c_type: Option<Cow<'x, str>>,
     c_subtype: Option<Cow<'x, str>>,
+
     attr_name: Option<Cow<'x, str>>,
+    attr_charset: Option<Cow<'x, str>>,
+    attr_position: u32,
+
     values: Vec<Cow<'x, str>>,
     attributes: HashMap<Cow<'x, str>, Cow<'x, str>>,
+    continuations: Option<Vec<Continuation<'x>>>,
 
     token_start: usize,
     token_end: usize,
 
+    is_continuation: bool,
     is_encoded_attribute: bool,
     is_escaped: bool,
     is_lower_case: bool,
@@ -80,7 +91,14 @@ struct ContentTypeParser<'x> {
     is_token_start: bool,
 }
 
-fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
+#[inline(always)]
+fn reset_parser(parser: &mut ContentTypeParser) {
+    parser.token_start = 0;
+    parser.is_token_safe = true;
+    parser.is_token_start = true;
+}
+
+fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) -> bool {
     if parser.token_start > 0 {
         let mut attr = stream.get_string(
             parser.token_start - 1,
@@ -94,15 +112,16 @@ fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<
         }
 
         match parser.state {
+            ContentState::AttributeName => parser.attr_name = attr,
             ContentState::Type => parser.c_type = attr,
             ContentState::SubType => parser.c_subtype = attr,
-            ContentState::AttributeName => parser.attr_name = attr,
             _ => unreachable!(),
         }
 
-        parser.token_start = 0;
-        parser.is_token_safe = true;
-        parser.is_token_start = true;
+        reset_parser(parser);
+        true
+    } else {
+        false
     }
 }
 
@@ -115,14 +134,24 @@ fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &Mess
                 parser.is_token_safe,
             )
             .unwrap();
-        let mut attr_name = parser.attr_name.as_ref().unwrap().clone() + "-charset";
 
-        if parser.attributes.contains_key(&attr_name) {
-            attr_name = parser.attr_name.as_ref().unwrap().clone() + "-language";
+        if parser.attr_charset.is_none() {
+            parser.attr_charset = attr_part.into();
+        } else if let Entry::Vacant(e) = parser.attributes.entry(
+            parser
+                .attr_name
+                .as_ref()
+                .unwrap_or(&"unknown".into())
+                .clone()
+                + "-language",
+        ) {
+            e.insert(attr_part);
+        } else {
+            parser.values.push("'".into());
+            parser.values.push(attr_part);
         }
-        parser.attributes.insert(attr_name, attr_part);
-        parser.token_start = 0;
-        parser.is_token_safe = true;
+
+        reset_parser(parser);
     }
 }
 
@@ -150,8 +179,8 @@ fn add_partial_value<'x>(
         if !in_quote {
             parser.values.push(" ".into());
         }
-        parser.token_start = 0;
-        parser.is_token_safe = true;
+
+        reset_parser(parser);
     }
 }
 
@@ -174,7 +203,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
         None
     };
 
-    if !parser.is_encoded_attribute {
+    if !parser.is_continuation {
         parser.attributes.insert(
             parser.attr_name.take().unwrap(),
             if !has_values {
@@ -198,33 +227,75 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
             parser.values.concat().into()
         };
 
-        if let Some(charset) = parser.attributes.get(&(attr_name.clone() + "-charset")) {
+        if parser.is_encoded_attribute {
             if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
-                value = get_charset_decoder(charset.as_bytes()).unwrap_or(decoder_default)(
-                    &decoded_bytes,
+                value = get_charset_decoder(
+                    parser
+                        .attr_charset
+                        .as_ref()
+                        .unwrap_or(&"utf-8".into())
+                        .as_bytes(),
                 )
+                .unwrap_or(decoder_default)(&decoded_bytes)
                 .into_owned()
                 .into();
             }
+            parser.is_encoded_attribute = false;
         }
 
-        let value = if let Some(old_value) = parser.attributes.get(&attr_name) {
-            old_value.to_owned() + value
-        } else {
-            value
-        };
+        if parser.attr_position > 0 {
+            let continuation = (attr_name, parser.attr_position, value);
+            if let Some(continuations) = parser.continuations.as_mut() {
+                continuations.push(continuation);
+            } else {
+                parser.continuations = Some(vec![continuation]);
+            }
 
-        parser.attributes.insert(attr_name, value);
-        parser.is_encoded_attribute = false;
+            parser.attr_position = 0;
+        } else {
+            parser.attributes.insert(attr_name, value);
+        }
+        parser.is_continuation = false;
+        parser.attr_charset = None;
     }
 
     if has_values {
         parser.values.clear();
     }
 
-    parser.token_start = 0;
-    parser.is_token_start = true;
-    parser.is_token_safe = true;
+    reset_parser(parser);
+}
+
+fn add_attr_position(parser: &mut ContentTypeParser, stream: &MessageStream) -> bool {
+    if parser.token_start > 0 {
+        parser.attr_position = stream
+            .get_string(
+                parser.token_start - 1,
+                parser.token_end,
+                parser.is_token_safe,
+            )
+            .unwrap()
+            .parse()
+            .unwrap_or(0);
+
+        reset_parser(parser);
+        true
+    } else {
+        false
+    }
+}
+
+fn merge_continuations(parser: &mut ContentTypeParser) {
+    let continuations = parser.continuations.as_mut().unwrap();
+    continuations.sort();
+    for (key, _, value) in continuations.drain(..) {
+        let value = if let Some(old_value) = parser.attributes.get(&key) {
+            old_value.to_owned() + value
+        } else {
+            value
+        };
+        parser.attributes.insert(key, value);
+    }
 }
 
 pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<'x>> {
@@ -234,10 +305,16 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
 
         c_type: None,
         c_subtype: None,
+
         attr_name: None,
+        attr_charset: None,
+        attr_position: 0,
+
         attributes: HashMap::new(),
         values: Vec::new(),
+        continuations: None,
 
+        is_continuation: false,
         is_encoded_attribute: false,
         is_lower_case: true,
         is_token_safe: true,
@@ -277,10 +354,10 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
             b'\n' => {
                 match parser.state {
                     ContentState::Type | ContentState::AttributeName | ContentState::SubType => {
-                        add_attribute(&mut parser, stream)
+                        add_attribute(&mut parser, stream);
                     }
                     ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
-                        add_value(&mut parser, stream)
+                        add_value(&mut parser, stream);
                     }
                     _ => (),
                 }
@@ -296,6 +373,9 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                         continue;
                     }
                     _ => {
+                        if parser.continuations.is_some() {
+                            merge_continuations(&mut parser);
+                        }
                         return if let Some(content_type) = parser.c_type {
                             Some(ContentType {
                                 c_type: content_type,
@@ -308,7 +388,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                             })
                         } else {
                             None
-                        }
+                        };
                     }
                 }
             }
@@ -335,18 +415,29 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                 _ => (),
             },
             b'*' if parser.state == ContentState::AttributeName => {
-                if !parser.is_encoded_attribute {
-                    add_attribute(&mut parser, stream);
+                if !parser.is_continuation {
+                    parser.is_continuation = add_attribute(&mut parser, stream);
+                } else if !parser.is_encoded_attribute {
+                    add_attr_position(&mut parser, stream);
                     parser.is_encoded_attribute = true;
+                } else {
+                    // Malformed data, reset parser.
+                    reset_parser(&mut parser);
                 }
                 continue;
             }
             b'=' => match parser.state {
                 ContentState::AttributeName => {
-                    if !parser.is_encoded_attribute {
-                        add_attribute(&mut parser, stream);
+                    if !parser.is_continuation {
+                        if !add_attribute(&mut parser, stream) {
+                            continue;
+                        }
+                    } else if !parser.is_encoded_attribute {
+                        /* If is_continuation=true && is_encoded_attribute=false,
+                        the last character was a '*' which means encoding */
+                        parser.is_encoded_attribute = !add_attr_position(&mut parser, stream);
                     } else {
-                        parser.token_start = 0;
+                        reset_parser(&mut parser);
                     }
                     parser.state = ContentState::AttributeValue;
                     continue;
@@ -397,7 +488,8 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
             b'\''
                 if parser.is_encoded_attribute
                     && !parser.is_escaped
-                    && parser.state == ContentState::AttributeValue =>
+                    && (parser.state == ContentState::AttributeValue
+                        || parser.state == ContentState::AttributeQuotedValue) =>
             {
                 add_attribute_parameter(&mut parser, stream);
                 continue;
@@ -407,8 +499,12 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                     match parser.state {
                         ContentState::Type
                         | ContentState::AttributeName
-                        | ContentState::SubType => add_attribute(&mut parser, stream),
-                        ContentState::AttributeValue => add_value(&mut parser, stream),
+                        | ContentState::SubType => {
+                            add_attribute(&mut parser, stream);
+                        }
+                        ContentState::AttributeValue => {
+                            add_value(&mut parser, stream);
+                        }
                         _ => (),
                     }
 
@@ -422,8 +518,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
             b')' if parser.state == ContentState::Comment => {
                 if !parser.is_escaped {
                     parser.state = parser.state_stack.pop().unwrap();
-                    parser.token_start = 0;
-                    parser.is_token_safe = true;
+                    reset_parser(&mut parser);
                 } else {
                     parser.is_escaped = false;
                 }
@@ -769,7 +864,6 @@ mod tests {
                     "c_subtype: x-stuff\n",
                     "attributes:\n",
                     "  title: This is ***fun***\n",
-                    "  title-charset: us-ascii\n",
                     "  title-language: en-us\n"
                 ),
             ),
@@ -784,14 +878,15 @@ mod tests {
                     "c_subtype: x-stuff\n",
                     "attributes:\n",
                     "  title-language: en\n",
-                    "  title-charset: us-ascii\n",
                     "  title: \"This is even more ***fun*** isn't it!\"\n"
                 ),
             ),
             (
                 concat!(
-                    "application/pdf\n   filename*0*=iso-8859-1'es'%D1and%FA\n   filename*1*=",
-                    "%20r%E1pido\n   filename*2=\" (versi%F3n \\'99 \\\"oficial\\\").pdf\"\n"
+                    "application/pdf\n   filename*0*=iso-8859-1'es'%D1and%FA\n   ",
+                    "filename*1*=iso-8859-1'",
+                    "%20r%E1pido\n   filename*2*=\"iso-8859-1' ",
+                    "(versi%F3n \\'99 \\\"oficial\\\").pdf\"\n"
                 ),
                 concat!(
                     "---\n",
@@ -800,7 +895,6 @@ mod tests {
                     "attributes:\n",
                     "  filename: \"Ñandú rápido (versión '99 \\\"oficial\\\").pdf\"\n",
                     "  filename-language: es\n",
-                    "  filename-charset: iso-8859-1\n"
                 ),
             ),
             (
@@ -970,21 +1064,51 @@ mod tests {
             ("name=value\n", concat!("---\n", "c_type: name=value\n")),
             (
                 concat!(
-                    "test/encoded; key4*=us-ascii''foo; key*2=ba%; key2*0=a; key3*0*=us-asc",
-                    "ii'en'xyz; key*0=\"f\u{0}oo\"; key2*1*=b%25; key3*1=plop%; key*1=baz\n"
-                ), //TODO insert in right order
+                    "test/encoded; key4*=us-ascii''foo; key*9999=ba%; key2*0=a; key3*0*=us-asc",
+                    "ii'en'xyz; key*0=\"f\u{0}oo\"; key2*1*=b%25; key3*1=plop%; key*1=baz; ",
+                    "*=test; =test2;\n"
+                ),
                 concat!(
                     "---\n",
                     "c_type: test\n",
                     "c_subtype: encoded\n",
                     "attributes:\n",
-                    "  key3-language: en\n",
-                    "  key3-charset: us-ascii\n",
-                    "  key3: xyzplop\n",
-                    "  key: \"ba%f\\u0000oobaz\"\n",
+                    "  key: \"f\\u0000oobazba%\"\n",
+                    "  key2: ab%\n",
+                    "  key3: xyzplop%\n",
                     "  key4: foo\n",
-                    "  key2: ab%25\n",
-                    "  key4-charset: us-ascii\n"
+                    "  key3-language: en\n",
+                ),
+            ),
+            (
+                "text/plain; name*=\"iso-8859-1''HasenundFr%F6sche.txt\"\n",
+                concat!(
+                    "---\n",
+                    "c_type: text\n",
+                    "c_subtype: plain\n",
+                    "attributes:\n",
+                    "  name: HasenundFrösche.txt\n"
+                ),
+            ),
+            (
+                concat!(
+                    "malicious/attempt; 1*2*=a; 3**=b; 4***=c; *5**6*=d;",
+                    "*****7*8*=e; 9*10*11*12*13*14=f; 15*x***fff*===g;",
+                    "1 * 999999999999999999 *= h; 18 *=*=*=*=*==i;\n"
+                ),
+                concat!(
+                    "---\n",
+                    "c_type: malicious\n",
+                    "c_subtype: attempt\n",
+                    "attributes:\n",
+                    "  \"1\": ha\n",
+                    "  \"3\": b\n",
+                    "  \"4\": c\n",
+                    "  \"5\": d\n",
+                    "  \"7\": e\n",
+                    "  \"9\": f\n",
+                    "  \"15\": \"==g\"\n",
+                    "  \"18\": \"*=*=*=*==i\"\n",
                 ),
             ),
             (";charset=us-ascii\n", concat!("---\n", "~\n")),
@@ -1290,7 +1414,13 @@ mod tests {
                 );
             }*/
 
-            assert_eq!(result, expected, "Failed for '{:?}'", input.0);
+            assert_eq!(
+                result,
+                expected,
+                "Failed for '{:?}', result was:\n{}",
+                input.0,
+                serde_yaml::to_string(result.as_ref().unwrap()).unwrap()
+            );
         }
     }
 }

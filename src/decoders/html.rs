@@ -19,29 +19,33 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         } else if (2..=31).contains(&entity.len()) {
             let mut hash = entity.len() as u32;
 
-            for (pos, ch) in entity.iter().enumerate() {
-                match pos {
-                    0 | 5 | 6 | 9 | 11 => {
-                        hash += unsafe { *ENTITY_HASH.get_unchecked(*ch as usize) };
+            // Safe because ENTITY_HASH's size is 260 (u8::MAX + 4)
+            debug_assert!(ENTITY_HASH.len() == u8::MAX as usize + 4);
+            unsafe {
+                for (pos, ch) in entity.iter().enumerate() {
+                    match pos {
+                        0 | 5 | 6 | 9 | 11 => {
+                            hash += *ENTITY_HASH.get_unchecked(*ch as usize);
+                        }
+                        1 => {
+                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 4);
+                        }
+                        2 | 4 => {
+                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 1);
+                        }
+                        3 => {
+                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 3);
+                        }
+                        _ => (),
                     }
-                    1 => {
-                        hash += unsafe { *ENTITY_HASH.get_unchecked(*ch as usize + 4) };
+                    if pos == entity.len() - 1 {
+                        hash += *ENTITY_HASH.get_unchecked(*ch as usize);
                     }
-                    2 | 4 => {
-                        hash += unsafe { *ENTITY_HASH.get_unchecked(*ch as usize + 1) };
-                    }
-                    3 => {
-                        hash += unsafe { *ENTITY_HASH.get_unchecked(*ch as usize + 3) };
-                    }
-                    _ => (),
                 }
-                if pos == entity.len() - 1 {
-                    hash += unsafe { *ENTITY_HASH.get_unchecked(*ch as usize) };
-                }
-            }
 
-            if (64..=18079).contains(&hash) {
-                entity_code = unsafe { *ENTITY_MAP.get_unchecked((hash - 64) as usize) };
+                if (64..=18079).contains(&hash) {
+                    entity_code = *ENTITY_MAP.get_unchecked((hash - 64) as usize);
+                }
             }
         }
 
@@ -51,6 +55,8 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         }
     }
 
+    // Safe because the input string is tokenized by ASCII chars, therefore the resulting
+    // u8 array is UTF-8 safe. 
     result.push_str(unsafe { std::str::from_utf8_unchecked(token) });
 }
 
@@ -227,7 +233,10 @@ mod tests {
     #[test]
     fn convert_text_to_html() {
         let inputs = [
-            ("hello\nworld\n", "<html><body>hello<br/>world<br/></body></html>"),
+            (
+                "hello\nworld\n",
+                "<html><body>hello<br/>world<br/></body></html>",
+            ),
             ("using <>\n", "<html><body>using &lt;><br/></body></html>"),
         ];
 
@@ -305,7 +314,7 @@ mod tests {
     }
 }
 
-static ENTITY_HASH: &[u32] = &[
+static ENTITY_HASH: &[u32; 260] = &[
     18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080,
     18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080,
     18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080,
