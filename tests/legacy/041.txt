@@ -95,7 +95,7 @@ vAAAAABJRU5ErkJggg==
   },
   "html_body": [
     {
-      "contents": "<html><body>\r</body></html>"
+      "contents": "<html><body></body></html>"
     }
   ],
   "text_body": [

@@ -17,6 +17,11 @@ hello, world
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>hello, world</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {

@@ -60,12 +60,17 @@ invalid
       "c_type": "multipart",
       "c_subtype": "signed",
       "attributes": {
-        "micalg": "pgp-sha1",
+        "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
         "protocol": "application/pgp-signature",
-        "boundary": "=-GNQXLhuj24Pl1aCkk4/d"
+        "micalg": "pgp-sha1"
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>There was a day <br/>a happy day<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {
@@ -80,7 +85,7 @@ invalid
   ],
   "attachments": [
     {
-      "File": {
+      "Binary": {
         "header": {
           "content_type": {
             "c_type": "application",

@@ -86,7 +86,7 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
   },
   "html_body": [
     {
-      "contents": "<html><body>\r</body></html>"
+      "contents": "<html><body></body></html>"
     }
   ],
   "text_body": [
@@ -111,7 +111,7 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
           "content_disposition": {
             "c_type": "attachment",
             "attributes": {
-              "filename": "iso-8859-1''HasenundFr%F6sche.txt"
+              "filename": "HasenundFrösche.txt"
             }
           },
           "content_id": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com",
@@ -120,8 +120,8 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
             "c_type": "text",
             "c_subtype": "plain",
             "attributes": {
-              "name": "iso-8859-1''HasenundFr%F6sche.txt",
-              "charset": "iso-8859-1"
+              "charset": "iso-8859-1",
+              "name": "HasenundFrösche.txt"
             }
           }
         },

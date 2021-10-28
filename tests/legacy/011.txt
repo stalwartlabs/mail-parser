@@ -66,11 +66,11 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
       }
     },
     "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
       "X-Mailer": [
         "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      ],
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
       ]
     }
   },

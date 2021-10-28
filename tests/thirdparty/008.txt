@@ -1,0 +1,181 @@
+From user@domain  Fri Feb 22 17:06:23 2008
+From: user@domain.org
+Date: Sat, 24 Mar 2007 23:00:00 +0200
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="foo bar"
+
+Root MIME prologue
+
+--foo bar
+Content-Type: text/x-myown; charset=us-ascii
+
+hello
+
+--foo bar
+Content-Type: message/rfc822
+
+From: sub@domain.org
+Date: Sun, 12 Aug 2012 12:34:56 +0300
+Subject: submsg
+Content-Type: multipart/alternative; boundary="sub1"
+
+Sub MIME prologue
+--sub1
+Content-Type: text/html
+
+<p>Hello world</p>
+
+--sub1
+Content-Type: multipart/alternative; boundary="sub2"
+
+--sub2
+Content-Type: multipart/alternative; boundary="sub3"
+
+--sub3
+
+sub3 text
+--sub3
+
+sub3 text2
+--sub3--
+
+sub2 text
+--sub2
+
+sub2 text2
+--sub2--
+--sub1--
+Sub MIME epilogue
+
+--foo bar
+Content-Type: text/plain
+
+Another part
+--foo bar--
+Root MIME epilogue
+
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "date": {
+      "year": 2007,
+      "month": 3,
+      "day": 24,
+      "hour": 23,
+      "minute": 0,
+      "second": 0,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    },
+    "from": {
+      "Address": {
+        "address": "user@domain.org"
+      }
+    },
+    "mime_version": "1.0",
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "foo bar"
+      }
+    },
+    "others": {
+      "From user@domain  Fri Feb 22 17": [
+        "06:23 2008"
+      ]
+    }
+  },
+  "html_body": [
+    {
+      "contents": "<html><body>Another part</body></html>"
+    }
+  ],
+  "text_body": [
+    {
+      "header": {
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "Another part"
+    }
+  ],
+  "attachments": [
+    {
+      "Text": {
+        "header": {
+          "content_type": {
+            "c_type": "text",
+            "c_subtype": "x-myown",
+            "attributes": {
+              "charset": "us-ascii"
+            }
+          }
+        },
+        "contents": "hello\n"
+      }
+    },
+    {
+      "Message": {
+        "header": {
+          "date": {
+            "year": 2012,
+            "month": 8,
+            "day": 12,
+            "hour": 12,
+            "minute": 34,
+            "second": 56,
+            "tz_before_gmt": false,
+            "tz_hour": 3,
+            "tz_minute": 0
+          },
+          "from": {
+            "Address": {
+              "address": "sub@domain.org"
+            }
+          },
+          "subject": "submsg",
+          "content_type": {
+            "c_type": "multipart",
+            "c_subtype": "alternative",
+            "attributes": {
+              "boundary": "sub1"
+            }
+          }
+        },
+        "html_body": [
+          {
+            "header": {
+              "content_type": {
+                "c_type": "text",
+                "c_subtype": "html"
+              }
+            },
+            "contents": "<p>Hello world</p>\n"
+          },
+          {
+            "contents": "<html><body>sub3 text</body></html>"
+          },
+          {
+            "contents": "<html><body>sub3 text2</body></html>"
+          }
+        ],
+        "text_body": [
+          {
+            "contents": "sub3 text"
+          },
+          {
+            "contents": "sub3 text2"
+          },
+          {
+            "contents": "sub2 text2"
+          }
+        ]
+      }
+    }
+  ]
+}

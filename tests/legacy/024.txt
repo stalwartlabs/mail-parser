@@ -149,11 +149,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "X-Priority": [
         "2 (High)"
       ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
       "X-Mailer": [
         "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      ],
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
       ]
     }
   },

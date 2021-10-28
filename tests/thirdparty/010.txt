@@ -1,0 +1,44 @@
+Subject: =?UTF-8?B?44GT44KT44Gr44Gh44Gv?=
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=1; comment=""
+  comment="人権の無視及"
+
+--1
+Content-Type: text/plain
+Content-Transfer-Encoding: binary
+Content-Language: ja
+
+人権の無視及
+--1--
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "mime_version": "1.0",
+    "subject": "こんにちは",
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "comment": "人権の無視及",
+        "boundary": "1"
+      }
+    }
+  },
+  "html_body": [
+    {
+      "contents": "<html><body>人権の無視及</body></html>"
+    }
+  ],
+  "text_body": [
+    {
+      "header": {
+        "content_transfer_encoding": "binary",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain"
+        }
+      },
+      "contents": "人権の無視及"
+    }
+  ]
+}

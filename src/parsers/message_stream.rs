@@ -70,11 +70,6 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
-    pub fn peek_pos(&self, pos: usize) -> Option<&'x u8> {
-        unsafe { (*self.data.get()).get(pos) }
-    }
-
-    #[inline(always)]
     pub fn advance(&self, pos: usize) {
         unsafe {
             *self.pos.get() += pos;
@@ -221,29 +216,12 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn is_boundary_end(&self, pos: usize) -> bool {
-        if let Some([b'\n', ..])
+        matches!(unsafe { (*self.data.get()).get(pos..) }, Some([b'\n', ..])
         | Some([b'-', b'-', ..])
         | Some([b'\r', b'\n', ..])
         | Some([b' ' | b'\t', ..])
-        | None = unsafe { (*self.data.get()).get(pos..) }
-        {
-            true
-        } else {
-            false
-        }
-
-        /*unsafe {
-            let data = &mut *self.data.get();
-
-            match (*data).get(pos) {
-                Some(b'\n') => true,
-                Some(b'-') if (*data).get(pos + 1) == Some(&b'-') => true,
-                Some(b'\r') if (*data).get(pos + 1) == Some(&b'\n') => true,
-                Some(b' ') | Some(b'\t') => true,
-                None => true,
-                _ => false,
-            }
-        }*/
+        | Some([])
+        | None)
     }
 
     pub fn skip_multipart_end(&self) -> bool {
@@ -251,21 +229,15 @@ impl<'x> MessageStream<'x> {
             let pos = &mut *self.pos.get();
 
             match (*self.data.get()).get(*pos..*pos + 2) {
-                Some(b"--") => match (*self.data.get()).get(*pos + 2..) {
-                    Some([b'\n', ..]) => {
-                        *pos += 3;
-                        true
-                    }
-                    Some([b'\r', b'\n', ..]) => {
-                        *pos += 4;
-                        true
-                    }
-                    None | Some([b' ' | b'\t', ..]) => {
-                        *pos += 2;
-                        true
-                    }
-                    _ => false,
-                },
+                Some(b"--") => {
+                    if let Some(byte) = (*self.data.get()).get(*pos + 2) {
+                        if !(*byte).is_ascii_whitespace() {
+                            return false;
+                        }
+                    } 
+                    *pos += 2;
+                    true
+                }
                 _ => false,
             }
         }

@@ -19,8 +19,11 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         } else if (2..=31).contains(&entity.len()) {
             let mut hash = entity.len() as u32;
 
-            // Safe because ENTITY_HASH's size is 260 (u8::MAX + 4)
-            debug_assert!(ENTITY_HASH.len() == u8::MAX as usize + 4);
+            /* Safe because ENTITY_HASH's size is 260 (u8::MAX + 5)
+                        and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
+            debug_assert_eq!(ENTITY_HASH.len(), u8::MAX as usize + 5);
+            debug_assert_eq!(ENTITY_MAP.len(), 18079 - 64 + 1);
+
             unsafe {
                 for (pos, ch) in entity.iter().enumerate() {
                     match pos {
@@ -217,6 +220,7 @@ pub fn text_to_html(input: &str) -> String {
         match ch {
             b'\n' => result.extend_from_slice(b"<br/>"),
             b'<' => result.extend_from_slice(b"&lt;"),
+            b'\r' => (),
             _ => result.push(*ch),
         }
     }
@@ -287,9 +291,6 @@ mod tests {
         for input in inputs {
             assert_eq!(html_to_text(input.0), input.1, "Failed for '{:?}'", input.0);
         }
-
-        //let input = fs::read("002.html").unwrap();
-        //println!("{}", html_to_text(std::str::from_utf8(&input).unwrap()));
     }
 
     #[test]
@@ -336,7 +337,7 @@ static ENTITY_HASH: &[u32; 260] = &[
     18080, 18080, 18080,
 ];
 
-static ENTITY_MAP: &[u32] = &[
+static ENTITY_MAP: &[u32; 18016] = &[
     0x02192, 0, 0, 0, 0, 0x02190, 0, 0, 0, 0, 0, 0, 0, 0, 0x02AAB, 0, 0, 0, 0, 0, 0, 0, 0, 0x0226A,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02A99, 0, 0x02191, 0, 0, 0, 0x02225, 0x00029, 0x021FE, 0, 0, 0,
     0x00028, 0x021FD, 0x021A3, 0, 0x022A5, 0x02225, 0, 0x021A2, 0, 0, 0x022D5, 0, 0, 0, 0x02A95,

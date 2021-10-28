@@ -69,22 +69,22 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
       "c_type": "text",
       "c_subtype": "plain",
       "attributes": {
-        "format": "flowed",
-        "charset": "iso-8859-1"
+        "charset": "iso-8859-1",
+        "format": "flowed"
       }
     },
     "others": {
+      "X-Mailer": [
+        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      ],
       "X-Priority": [
         "1 (Highest)"
-      ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
       ],
       "Disposition-Notification-To": [
         "<dwsauder@example.com>"
       ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      "X-Sender": [
+        "dwsauder@pop.example.com (Unverified)"
       ]
     }
   },

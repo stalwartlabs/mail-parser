@@ -69,11 +69,11 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
       }
     },
     "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
       "X-Accept-Language": [
         "en"
+      ],
+      "X-Mailer": [
+        "Mozilla 4.7 [en] (WinNT; I)"
       ]
     }
   },

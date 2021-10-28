@@ -10,13 +10,42 @@ Content-Type: text/plain
 {
   "header": {
     "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain"
+      "c_type": "message",
+      "c_subtype": "rfc822"
     }
   },
-  "text_body": [
+  "attachments": [
     {
-      "contents": "1\n"
+      "Message": {
+        "header": {
+          "content_type": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
+          }
+        },
+        "attachments": [
+          {
+            "Message": {
+              "header": {
+                "content_type": {
+                  "c_type": "text",
+                  "c_subtype": "plain"
+                }
+              },
+              "html_body": [
+                {
+                  "contents": "<html><body>1<br/></body></html>"
+                }
+              ],
+              "text_body": [
+                {
+                  "contents": "1\n"
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
   ]
 }

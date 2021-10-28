@@ -27,6 +27,11 @@ Content-Type: text/plain
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>1</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {

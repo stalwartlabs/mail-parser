@@ -58,11 +58,11 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
       }
     },
     "others": {
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
       "X-Sender": [
         "dwsauder@pop.example.com (Unverified)"
+      ],
+      "X-Mailer": [
+        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
       ],
       "X-Priority": [
         "1 (Highest)"
@@ -71,7 +71,7 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
   },
   "html_body": [
     {
-      "contents": "<html><body>Die Hasen und die Frösche\r<br/>\r<br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r<br/>\r<br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r<br/>\r<br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r<br/>\r<br/>\r<br/></body></html>"
+      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/><br/></body></html>"
     }
   ],
   "text_body": [

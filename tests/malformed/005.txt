@@ -23,6 +23,11 @@ body2
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>body</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {

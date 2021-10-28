@@ -97,7 +97,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   },
   "html_body": [
     {
-      "contents": "<html><body> \r</body></html>"
+      "contents": "<html><body> </body></html>"
     },
     0
   ],

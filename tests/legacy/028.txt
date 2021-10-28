@@ -192,17 +192,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     },
     "others": {
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
       "X-Mailer": [
         "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       ],
-      "X-Priority": [
-        "3 (Normal)"
+      "X-MSMail-Priority": [
+        "Normal"
       ],
       "X-MimeOLE": [
         "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      ],
+      "X-Priority": [
+        "3 (Normal)"
       ],
       "Importance": [
         "Normal"

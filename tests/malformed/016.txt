@@ -34,6 +34,11 @@ Content-Type: text/plain
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>1<br/>--1234567890123456789012345678901234567890123456789012345678901234567890123456789012<br/>Content-Type: text/plain<br/><br/>22<br/>--123456789012345678901234567890123456789012345678901234567890123456789012345678901<br/>Content-Type: text/plain<br/><br/>333</body></html>"
+    }
+  ],
   "text_body": [
     {
       "header": {

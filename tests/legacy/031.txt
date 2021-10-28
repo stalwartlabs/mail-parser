@@ -134,7 +134,7 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
   },
   "html_body": [
     {
-      "contents": "<html><body>This is a test message from PINE MUA.\r<br/>\r<br/>\r</body></html>"
+      "contents": "<html><body>This is a test message from PINE MUA.<br/><br/></body></html>"
     }
   ],
   "text_body": [

@@ -73,11 +73,11 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
       "X-Mailer": [
         "Mozilla 4.7 [en] (WinNT; I)"
       ],
-      "X-Priority": [
-        "5 (Lowest)"
-      ],
       "X-Accept-Language": [
         "en"
+      ],
+      "X-Priority": [
+        "5 (Lowest)"
       ]
     }
   },

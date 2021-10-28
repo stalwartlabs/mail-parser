@@ -94,17 +94,17 @@ Birds of a feather flock together.
       }
     },
     "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
       "X-Accept-Language": [
         "en"
+      ],
+      "X-Mailer": [
+        "Mozilla 4.7 [en] (WinNT; I)"
       ]
     }
   },
   "html_body": [
     {
-      "contents": "<html><body>\r<br/>The Hare and the Tortoise \r<br/> \r<br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise,\r<br/>who replied, laughing:  \"Though you be swift as the wind, I will beat\r<br/>you in a race.\"  The Hare, believing her assertion to be simply\r<br/>impossible, assented to the proposal; and they agreed that the Fox\r<br/>should choose the course and fix the goal.  On the day appointed for the\r<br/>race the two started together.  The Tortoise never for a moment stopped,\r<br/>but went on with a slow but steady pace straight to the end of the\r<br/>course.  The Hare, lying down by the wayside, fell fast asleep.  At last\r<br/>waking up, and moving as fast as he could, he saw the Tortoise had\r<br/>reached the goal, and was comfortably dozing after her fatigue.  \r<br/> \r<br/>Slow but steady wins the race.\r</body></html>"
+      "contents": "<html><body><br/>The Hare and the Tortoise <br/> <br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise,<br/>who replied, laughing:  \"Though you be swift as the wind, I will beat<br/>you in a race.\"  The Hare, believing her assertion to be simply<br/>impossible, assented to the proposal; and they agreed that the Fox<br/>should choose the course and fix the goal.  On the day appointed for the<br/>race the two started together.  The Tortoise never for a moment stopped,<br/>but went on with a slow but steady pace straight to the end of the<br/>course.  The Hare, lying down by the wayside, fell fast asleep.  At last<br/>waking up, and moving as fast as he could, he saw the Tortoise had<br/>reached the goal, and was comfortably dozing after her fatigue.  <br/> <br/>Slow but steady wins the race.</body></html>"
     }
   ],
   "text_body": [
@@ -137,8 +137,8 @@ Birds of a feather flock together.
             "c_type": "text",
             "c_subtype": "plain",
             "attributes": {
-              "name": "farmerandstork.txt",
-              "charset": "us-ascii"
+              "charset": "us-ascii",
+              "name": "farmerandstork.txt"
             }
           }
         },

@@ -201,21 +201,11 @@ impl<'x> Message<'x> {
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
                 get_mime_type(header.get_content_type(), &state.mime_type);
 
-            /*println!(
-                "--- New part {:?} parent {:?} at '{:?}'",
-                mime_type,
-                state.mime_type,
-                stream
-                    .get_string(stream.get_pos(), stream.get_pos() + 20, true)
-                    .unwrap_or_else(|| "NOTHING".into())
-            );*/
-
             if is_multipart {
                 if let Some(mime_boundary) = header
                     .get_content_type()
                     .map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    //println!("Found boundary '{}'", mime_boundary,);
                     let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
                     if stream.seek_next_part(mime_boundary.as_ref()) {
@@ -290,7 +280,6 @@ impl<'x> Message<'x> {
 
             // Attempt to recover contents of an invalid message
             if !success {
-                //println!("Failed to parse part, reattempting.");
                 if !stream.is_eof() {
                     // Get raw MIME part
                     let (success, r_is_utf8_safe, r_bytes) = stream.get_bytes_to_boundary(
@@ -373,8 +362,6 @@ impl<'x> Message<'x> {
                         None
                     },
                 };
-
-                //println!("'{:?}' {} {} {}", text_part.contents, add_to_html, add_to_text, is_inline);
 
                 let is_html = mime_type == MimeType::TextHtml;
 
@@ -495,25 +482,9 @@ impl<'x> Message<'x> {
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
                                 if stream.seek_next_part(mime_boundary) {
-                                    /*println!(
-                                        "Found ancestor MIME boundary '{:?}'",
-                                        std::str::from_utf8(mime_boundary).unwrap()
-                                    );*/
-
                                     continue 'inner;
-                                } else {
-                                    /*println!(
-                                        "Boundary '{:?} not found.",
-                                        std::str::from_utf8(mime_boundary).unwrap()
-                                    );*/
                                 }
-                            } else {
-                                // Ancestor does not have a MIME boundary, end parsing.
-                                //println!("Ancestor has no MIME boundary, parent found?");
                             }
-                        } else {
-                            // No more ancestors found, finish parsing.
-                            //println!("Finish parsing, no ancestors found.");
                         }
                         break 'outer;
                     } else {
@@ -527,58 +498,68 @@ impl<'x> Message<'x> {
             }
         }
 
+        while let Some(mut prev_message) = message_stack.pop() {
+            prev_message
+                .attachments
+                .push(AttachmentPart::Message(message));
+            message = prev_message;
+        }
+
         message
     }
 }
 #[cfg(test)]
 mod tests {
-    use std::{fs, path::PathBuf};
+    use std::{fmt::format, fs, path::PathBuf};
 
     use crate::parsers::message::Message;
 
     #[test]
-    fn body_parse() {
+    fn parse_full_messages() {
         const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
-        for test_suite in ["rfc", "legacy", "malformed"] {
+        for test_suite in ["rfc", "legacy", "thirdparty", "malformed"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
 
             for file_name in fs::read_dir(test_dir).unwrap() {
-                let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
+                let file_name = file_name.as_ref().unwrap().path();
+                let mut input = fs::read(&file_name).unwrap();
                 let mut pos = 0;
+                
                 for sep_pos in 0..input.len() {
                     if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
                         pos = sep_pos;
                         break;
                     }
                 }
-                assert!(pos > 0, "Failed to find separator.");
-                let input = input.split_at_mut(pos);
 
+                assert!(
+                    pos > 0,
+                    "Failed to find separator in test file '{}'.",
+                    file_name.display()
+                );
+
+                let input = input.split_at_mut(pos);
                 let message = Message::parse(input.0);
-                if (message
-                    != serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap())
-                {
-                    println!("{}", serde_json::to_string_pretty(&message).unwrap());
-                    return;
-                }
+
                 assert_eq!(
-                    Message::parse(input.0),
+                    message,
                     serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap(),
-                    "Test failed for {}",
-                    file_name.unwrap().path().display()
+                    "Test failed for '{}', result was:\n{}",
+                    file_name.display(),
+                    serde_json::to_string_pretty(&message).unwrap()
                 );
             }
         }
     }
 
-    #[test]
+    /*#[test]
     fn generate_test_samples() {
         const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
-        for test_suite in ["legacy" /*"legacy","malformed"*/] {
+        for test_suite in ["malformed" /*"legacy","malformed"*/] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
@@ -622,5 +603,5 @@ mod tests {
                 fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
             }
         }
-    }
+    }*/
 }

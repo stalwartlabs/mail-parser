@@ -1,0 +1,132 @@
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 1.0
+
+--1
+Content-Transfer-Encoding:      7bit
+Content-Type: text/plain; charset=us-ascii
+
+Move black king to queen's bishop
+
+--1
+Content-Transfer-Encoding:				binary
+Content-Type: text/plain; charset=UTF-8
+
+Move ♚ to ♛'s ♝
+
+--1
+Content-Transfer-Encoding: 8bit			
+Content-Type: text/plain; charset=UTF-8
+
+Move ♚ to ♛'s ♝
+
+--1
+Content-Transfer-Encoding: quoted-printable              
+Content-Type: text/plain; charset=UTF-8
+
+Move =E2=99=9A to =E2=99=9B's =E2=99=9D
+
+--1
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+
+TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
+
+--1--
+
+---- EXPECTED STRUCTURE ----
+{
+  "header": {
+    "mime_version": "1.0",
+    "content_type": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": {
+        "boundary": "1"
+      }
+    }
+  },
+  "html_body": [
+    {
+      "contents": "<html><body>Move black king to queen's bishop<br/></body></html>"
+    },
+    {
+      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+    },
+    {
+      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+    },
+    {
+      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+    },
+    {
+      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+    }
+  ],
+  "text_body": [
+    {
+      "header": {
+        "content_transfer_encoding": "7bit",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "us-ascii"
+          }
+        }
+      },
+      "contents": "Move black king to queen's bishop\n"
+    },
+    {
+      "header": {
+        "content_transfer_encoding": "binary",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "UTF-8"
+          }
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    },
+    {
+      "header": {
+        "content_transfer_encoding": "8bit",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "UTF-8"
+          }
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    },
+    {
+      "header": {
+        "content_transfer_encoding": "quoted-printable",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "UTF-8"
+          }
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    },
+    {
+      "header": {
+        "content_transfer_encoding": "base64",
+        "content_type": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "UTF-8"
+          }
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    }
+  ]
+}

@@ -170,19 +170,19 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "c_type": "multipart",
       "c_subtype": "related",
       "attributes": {
-        "type": "multipart/alternative",
-        "boundary": "=====================_715157131==_.REL"
+        "boundary": "=====================_715157131==_.REL",
+        "type": "multipart/alternative"
       }
     },
     "others": {
       "X-Priority": [
         "2 (High)"
       ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
       "X-Sender": [
         "dwsauder@pop.example.com (Unverified)"
+      ],
+      "X-Mailer": [
+        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
       ]
     }
   },

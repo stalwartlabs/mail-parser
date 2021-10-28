@@ -163,9 +163,9 @@ Birds of a feather flock together.
             "c_type": "text",
             "c_subtype": "plain",
             "attributes": {
+              "x-mac-creator": "74747874",
               "name": "HasenundFr�sche.txt",
-              "x-mac-type": "54455854",
-              "x-mac-creator": "74747874"
+              "x-mac-type": "54455854"
             }
           }
         },

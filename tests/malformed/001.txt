@@ -20,6 +20,11 @@ Content-Type: text/plain
       }
     }
   },
+  "html_body": [
+    {
+      "contents": "<html><body>Content-Type: text/plain<br/></body></html>"
+    }
+  ],
   "text_body": [
     {
       "contents": "Content-Type: text/plain\n"

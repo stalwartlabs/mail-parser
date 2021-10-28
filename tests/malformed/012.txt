@@ -42,6 +42,11 @@ Content-Type: text/plain
             "c_subtype": "plain"
           }
         },
+        "html_body": [
+          {
+            "contents": "<html><body>1</body></html>"
+          }
+        ],
         "text_body": [
           {
             "contents": "1"
