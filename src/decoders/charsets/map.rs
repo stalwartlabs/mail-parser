@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use super::{multi_byte::*, single_byte::*, utf7::decoder_utf7, DecoderFnc};
+use super::{DecoderFnc, multi_byte::*, single_byte::*, utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7, decoder_utf8}};
 
 pub fn get_charset_decoder<'x>(charset: &[u8]) -> Option<DecoderFnc<'x>> {
     if (2..=45).contains(&charset.len()) {
@@ -46,10 +46,6 @@ pub fn get_charset_decoder<'x>(charset: &[u8]) -> Option<DecoderFnc<'x>> {
     }
 
     None
-}
-
-pub fn decoder_utf8(bytes: &[u8]) -> Cow<str> {
-    String::from_utf8_lossy(bytes)
 }
 
 pub fn decoder_default(bytes: &[u8]) -> Cow<str> {
@@ -917,7 +913,7 @@ static FNC_MAP: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>] = &[
     decoder_default,
     decoder_default,
     decoder_default,
-    decoder_utf16_le,
+    decoder_utf16,
     decoder_default,
     decoder_default,
     decoder_default,
@@ -1188,7 +1184,7 @@ static FNC_MAP: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>] = &[
     decoder_default,
     decoder_default,
     decoder_default,
-    decoder_utf16_le,
+    decoder_utf16,
     decoder_default,
     decoder_default,
     decoder_iso_8859_7,

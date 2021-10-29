@@ -15,7 +15,7 @@ pub mod map;
 #[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
 pub mod single_byte;
-pub mod utf7;
+pub mod utf;
 
 pub type DecoderFnc<'x> = fn(&'x [u8]) -> Cow<'x, str>;
 
@@ -46,6 +46,11 @@ mod tests {
             ("koi8-r", b"\xf0\xd2\xc9\xd7\xc5\xd4, \xcd\xc9\xd2".to_vec(),"Привет, мир"),
             ("koi8-u", b"\xf0\xd2\xc9\xd7\xa6\xd4 \xf3\xd7\xa6\xd4".to_vec(),"Привіт Світ"),
             ("utf-7", b"+ZYeB9FH6ckh5Pg-, 1980.".to_vec(),"文致出版社, 1980."),
+            ("utf-16le", b"\xcf0\xed0\xfc0\xfb0\xef0\xfc0\xeb0\xc90".to_vec(),"ハロー・ワールド"),
+            ("utf-16be", b"0\xcf0\xed0\xfc0\xfb0\xef0\xfc0\xeb0\xc9".to_vec(),"ハロー・ワールド"),
+            ("utf-16", b"\xff\xfe\xe1\x00\xe9\x00\xed\x00\xf3\x00\xfa\x00".to_vec(),"áéíóú"), // Little endian
+            ("utf-16", b"\xfe\xff\x00\xe1\x00\xe9\x00\xed\x00\xf3\x00\xfa".to_vec(),"áéíóú"), // Big endian
+
             #[cfg(feature = "multibytedecode")]
             ("shift_jis", b"\x83n\x83\x8D\x81[\x81E\x83\x8F\x81[\x83\x8B\x83h".to_vec(),"ハロー・ワールド"),
             #[cfg(feature = "multibytedecode")]
@@ -60,8 +65,6 @@ mod tests {
             ("gbk", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
             #[cfg(feature = "multibytedecode")]
             ("gb18030", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
-            #[cfg(feature = "multibytedecode")]
-            ("utf-16", b"\xff\xfe\xe1\x00\xe9\x00\xed\x00\xf3\x00\xfa\x00".to_vec(),"áéíóú"),
             ];
 
         for input in inputs {

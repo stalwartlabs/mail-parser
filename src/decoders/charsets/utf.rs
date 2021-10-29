@@ -53,7 +53,7 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
 
     for byte in bytes {
         if in_b64 {
-            // Safe because BASEMAP size is [4][u8::MAX] 
+            // Safe because BASEMAP size is [4][u8::MAX]
             let val = unsafe {
                 BASE64_MAP
                     .get_unchecked(byte_count as usize)
@@ -115,9 +115,48 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
     result.into()
 }
 
+fn decoder_utf16_(bytes: &[u8], fnc: fn([u8; 2]) -> u16) -> Cow<str> {
+    if bytes.len() >= 2 {
+        decode_utf16(bytes.chunks_exact(2).map(|c| fnc([c[0], c[1]])))
+            .map(|r| r.unwrap_or(REPLACEMENT_CHARACTER))
+            .collect::<String>()
+            .into()
+    } else {
+        "".into()
+    }
+}
+
+pub fn decoder_utf16_le(bytes: &[u8]) -> Cow<str> {
+    decoder_utf16_(bytes, u16::from_le_bytes)
+}
+
+pub fn decoder_utf16_be(bytes: &[u8]) -> Cow<str> {
+    decoder_utf16_(bytes, u16::from_be_bytes)
+}
+
+#[allow(clippy::type_complexity)]
+pub fn decoder_utf16(bytes: &[u8]) -> Cow<str> {
+    let (bytes, fnc): (&[u8], fn([u8; 2]) -> u16) = if bytes.len() >= 4 {
+        // Read BOM
+        match bytes[0..2] {
+            [0xfe, 0xff] => (&bytes[2..], u16::from_be_bytes),
+            [0xff, 0xfe] => (&bytes[2..], u16::from_le_bytes),
+            _ => (bytes, u16::from_le_bytes),
+        }
+    } else {
+        (bytes, u16::from_le_bytes)
+    };
+
+    decoder_utf16_(bytes, fnc)
+}
+
+pub fn decoder_utf8(bytes: &[u8]) -> Cow<str> {
+    String::from_utf8_lossy(bytes)
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::decoders::charsets::utf7::decoder_utf7;
+    use crate::decoders::charsets::utf::decoder_utf7;
 
     #[test]
     fn decode_utf7() {

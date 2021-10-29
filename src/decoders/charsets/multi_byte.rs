@@ -52,14 +52,6 @@ pub fn decoder_iso2022_jp(bytes: &[u8]) -> Cow<str> {
     multi_byte_decoder(ISO_2022_JP.new_decoder(), bytes)
 }
 
-pub fn decoder_utf16_be(bytes: &[u8]) -> Cow<str> {
-    multi_byte_decoder(UTF_16BE.new_decoder(), bytes)
-}
-
-pub fn decoder_utf16_le(bytes: &[u8]) -> Cow<str> {
-    multi_byte_decoder(UTF_16LE.new_decoder(), bytes)
-}
-
 pub fn decoder_windows874(bytes: &[u8]) -> Cow<str> {
     multi_byte_decoder(WINDOWS_874.new_decoder(), bytes)
 }
