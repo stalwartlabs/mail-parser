@@ -26,6 +26,14 @@ pub trait QuotedPrintableDecoder<'x> {
     ) -> (bool, bool, Option<&'x [u8]>);
 }
 
+// Miri does not play well with UnsafeCells, see https://github.com/rust-lang/miri/issues/1665
+//
+// When testing under Miri,
+//     (*data)[i] = val;
+// is used instead of
+//     *(*data).get_unchecked_mut(i) = val;
+//
+
 impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
     fn decode_quoted_printable(
         &self,
@@ -36,7 +44,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
             let mut success = boundary.is_empty();
             let mut is_utf8_safe = true;
 
-            let data = &mut *self.data.get();
+            let mut data = &mut *self.data.get();
             let data_len = (*data).len();
 
             let stream_pos = &mut *self.pos.get();
@@ -56,7 +64,10 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                     if ch == *boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
-                            if is_word || self.is_boundary_end(read_pos) {
+                            let done = is_word || self.is_boundary_end(read_pos);
+                            data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
+
+                            if done {
                                 success = true;
                                 break;
                             }
@@ -68,7 +79,14 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                     if match_count > 0 {
                         for ch in boundary[..match_count].iter() {
                             if *ch != b'\n' || QuotedPrintableState::Eq != state {
-                                *((*data).get_unchecked_mut(write_pos)) = *ch;
+                                #[cfg(miri)]
+                                {
+                                    (*data)[write_pos] = *ch;
+                                }
+                                #[cfg(not(miri))]
+                                {
+                                    *((*data).get_unchecked_mut(write_pos)) = *ch;
+                                }
                                 write_pos += 1;
                                 if is_utf8_safe && *ch > 0x7f {
                                     is_utf8_safe = false;
@@ -102,18 +120,40 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                         } else if QuotedPrintableState::Eq == state {
                             state = QuotedPrintableState::None;
                         } else {
-                            *((*data).get_unchecked_mut(write_pos)) = b'\n';
+                            #[cfg(miri)]
+                            {
+                                (*data)[write_pos] = b'\n';
+                            }
+                            #[cfg(not(miri))]
+                            {
+                                *((*data).get_unchecked_mut(write_pos)) = b'\n';
+                            }
+
                             write_pos += 1;
                         }
                     }
                     b'_' if is_word => {
-                        *((*data).get_unchecked_mut(write_pos)) = b' ';
+                        #[cfg(miri)]
+                        {
+                            (*data)[write_pos] = b' ';
+                        }
+                        #[cfg(not(miri))]
+                        {
+                            *((*data).get_unchecked_mut(write_pos)) = b' ';
+                        }
                         write_pos += 1;
                     }
                     b'\r' => (),
                     _ => match state {
                         QuotedPrintableState::None => {
-                            *((*data).get_unchecked_mut(write_pos)) = ch;
+                            #[cfg(miri)]
+                            {
+                                (*data)[write_pos] = ch;
+                            }
+                            #[cfg(not(miri))]
+                            {
+                                *((*data).get_unchecked_mut(write_pos)) = ch;
+                            }
                             write_pos += 1;
                             if is_utf8_safe && ch > 0x7f {
                                 is_utf8_safe = false;
@@ -134,7 +174,16 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                             state = QuotedPrintableState::None;
                             if hex2 != -1 {
                                 let ch = ((hex1 as u8) << 4) | hex2 as u8;
-                                *((*data).get_unchecked_mut(write_pos)) = ch;
+
+                                #[cfg(miri)]
+                                {
+                                    (*data)[write_pos] = ch;
+                                }
+                                #[cfg(not(miri))]
+                                {
+                                    *((*data).get_unchecked_mut(write_pos)) = ch;
+                                }
+
                                 write_pos += 1;
                                 if is_utf8_safe && ch > 0x7f {
                                     is_utf8_safe = false;

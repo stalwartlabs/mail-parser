@@ -136,15 +136,11 @@ pub fn decoder_utf16_be(bytes: &[u8]) -> Cow<str> {
 
 #[allow(clippy::type_complexity)]
 pub fn decoder_utf16(bytes: &[u8]) -> Cow<str> {
-    let (bytes, fnc): (&[u8], fn([u8; 2]) -> u16) = if bytes.len() >= 4 {
-        // Read BOM
-        match bytes[0..2] {
-            [0xfe, 0xff] => (&bytes[2..], u16::from_be_bytes),
-            [0xff, 0xfe] => (&bytes[2..], u16::from_le_bytes),
-            _ => (bytes, u16::from_le_bytes),
-        }
-    } else {
-        (bytes, u16::from_le_bytes)
+    // Read BOM
+    let (bytes, fnc): (&[u8], fn([u8; 2]) -> u16) = match bytes.get(0..2) {
+        Some([0xfe, 0xff]) => (bytes.get(2..).unwrap_or(&[]), u16::from_be_bytes),
+        Some([0xff, 0xfe]) => (bytes.get(2..).unwrap_or(&[]), u16::from_le_bytes),
+        _ => (bytes, u16::from_le_bytes),
     };
 
     decoder_utf16_(bytes, fnc)

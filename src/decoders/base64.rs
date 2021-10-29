@@ -21,6 +21,14 @@ pub trait Base64Decoder<'x> {
     fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>);
 }
 
+// Miri does not play well with UnsafeCells, see https://github.com/rust-lang/miri/issues/1665
+//
+// When testing under Miri,
+//     (*data)[i] = val;
+// is used instead of
+//     *(*data).get_unchecked_mut(i) = val;
+//
+
 impl<'x> Base64Decoder<'x> for MessageStream<'x> {
     fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>) {
         unsafe {
@@ -69,15 +77,32 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
                     if *ch == b'=' {
                         match byte_count {
                             1 | 2 => {
-                                *((*data).get_unchecked_mut(write_pos)) =
-                                    *chunk.bytes.get_unchecked(0);
+                                #[cfg(miri)]
+                                {
+                                    (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
+                                }
+                                #[cfg(not(miri))]
+                                {
+                                    *((*data).get_unchecked_mut(write_pos)) =
+                                        *chunk.bytes.get_unchecked(0);
+                                }
+
                                 write_pos += 1;
                                 byte_count = 0;
                             }
                             3 => {
-                                (*data)
-                                    .get_unchecked_mut(write_pos..write_pos + 2)
-                                    .copy_from_slice(chunk.bytes.get_unchecked(0..2));
+                                #[cfg(miri)]
+                                {
+                                    (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
+                                    (*data)[write_pos + 1] = *chunk.bytes.get_unchecked(1);
+                                }
+                                #[cfg(not(miri))]
+                                {
+                                    (*data)
+                                        .get_unchecked_mut(write_pos..write_pos + 2)
+                                        .copy_from_slice(chunk.bytes.get_unchecked(0..2));
+                                }
+
                                 write_pos += 2;
                                 byte_count = 0;
                             }
@@ -102,9 +127,19 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
                     chunk.val |= *val;
 
                     if byte_count == 0 {
-                        (*data)
-                            .get_unchecked_mut(write_pos..write_pos + 3)
-                            .copy_from_slice(chunk.bytes.get_unchecked(0..3));
+                        #[cfg(miri)]
+                        {
+                            (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
+                            (*data)[write_pos + 1] = *chunk.bytes.get_unchecked(1);
+                            (*data)[write_pos + 2] = *chunk.bytes.get_unchecked(2);
+                        }
+                        #[cfg(not(miri))]
+                        {
+                            (*data)
+                                .get_unchecked_mut(write_pos..write_pos + 3)
+                                .copy_from_slice(chunk.bytes.get_unchecked(0..3));
+                        }
+
                         write_pos += 3;
                     }
                 }

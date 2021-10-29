@@ -123,7 +123,7 @@ impl<'x> MessageStream<'x> {
 
     pub fn get_bytes_to_boundary(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
         unsafe {
-            let data = &mut *self.data.get();
+            let mut data = &mut *self.data.get();
 
             let stream_pos = &mut *self.pos.get();
             let start_pos = *stream_pos;
@@ -143,7 +143,10 @@ impl<'x> MessageStream<'x> {
                     if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
-                            if self.is_boundary_end(pos) {
+                            let is_boundary_end = self.is_boundary_end(pos);
+                            data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
+                            
+                            if is_boundary_end {
                                 let match_pos = pos - match_count;
                                 *stream_pos = pos;
 
