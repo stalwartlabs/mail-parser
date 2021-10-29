@@ -9,11 +9,9 @@
  * except according to those terms.
  */
 
-use serde::{Deserialize, Serialize};
 use std::{
     borrow::Cow,
     collections::{hash_map::Entry, HashMap},
-    ops::Add,
 };
 
 use crate::{
@@ -23,18 +21,8 @@ use crate::{
         hex::decode_hex,
     },
     parsers::message_stream::MessageStream,
+    ContentType,
 };
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct ContentType<'x> {
-    c_type: Cow<'x, str>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    c_subtype: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
-}
 
 impl<'x> ContentType<'x> {
     pub fn get_type(&'x self) -> &'x str {

@@ -9,79 +9,20 @@
  * except according to those terms.
  */
 
-use serde::{Deserialize, Serialize};
-use std::borrow::{Borrow, Cow};
+use std::borrow::{Cow};
 
-use crate::decoders::{
+use crate::{AttachmentPart, BinaryPart, BodyPart, ContentType, Message, MessageHeader, MimeHeader, TextPart, decoders::{
     base64::Base64Decoder,
     charsets::map::{decoder_default, get_charset_decoder},
     html::{html_to_text, text_to_html},
     quoted_printable::QuotedPrintableDecoder,
-};
+}};
 
 use super::{
-    fields::{content_type::ContentType, MessageField},
-    header::{parse_headers, MessageHeader, MimeHeader},
+    fields::{MessageField},
+    header::{parse_headers},
     message_stream::MessageStream,
 };
-
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-pub struct Message<'x> {
-    #[serde(borrow)]
-    header: Box<MessageHeader<'x>>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    #[serde(default)]
-    html_body: Vec<BodyPart<'x>>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    #[serde(default)]
-    text_body: Vec<BodyPart<'x>>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    #[serde(default)]
-    attachments: Vec<AttachmentPart<'x>>,
-}
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-pub struct TextPart<'x> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    header: Option<MimeHeader<'x>>,
-    contents: Cow<'x, str>,
-}
-
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-pub struct BinaryPart<'x> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    header: Option<MimeHeader<'x>>,
-    #[serde(with = "serde_bytes")]
-    #[serde(borrow)]
-    contents: Cow<'x, [u8]>,
-}
-
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-#[serde(untagged)]
-pub enum BodyPart<'x> {
-    Text(TextPart<'x>),
-    InlineBinary(u32),
-}
-
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub enum AttachmentPart<'x> {
-    Text(TextPart<'x>),
-    #[serde(borrow)]
-    Binary(BinaryPart<'x>),
-    #[serde(borrow)]
-    InlineBinary(BinaryPart<'x>),
-    Message(Message<'x>),
-}
-
-impl<'x> Message<'x> {
-    fn new() -> Message<'x> {
-        Message {
-            header: Box::new(MessageHeader::new()),
-            ..Default::default()
-        }
-    }
-}
 
 #[derive(Debug, PartialEq)]
 enum MimeType {
@@ -89,7 +30,6 @@ enum MimeType {
     MultipartAlernative,
     MultipartRelated,
     MultipartDigest,
-    MultipartOther,
     TextPlain,
     TextHtml,
     TextOther,
@@ -183,6 +123,13 @@ impl MessageParserState {
 }
 
 impl<'x> Message<'x> {
+    fn new() -> Message<'x> {
+        Message {
+            header: Box::new(MessageHeader::new()),
+            ..Default::default()
+        }
+    }
+
     pub fn parse(bytes: &'x mut [u8]) -> Message<'x> {
         let stream = MessageStream::new(bytes);
 
@@ -468,7 +415,7 @@ impl<'x> Message<'x> {
                                 }
                             }
 
-                            // Found HTML part only
+                            // Found text part only
                             if state.html_parts == message.html_body.len()
                                 && state.text_parts != message.text_body.len()
                             {
@@ -521,9 +468,7 @@ impl<'x> Message<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use std::{ffi::OsStr, fmt::format, fs, path::PathBuf};
-
-    use serde_json::to_string;
+    use std::{fs, path::PathBuf};
 
     use crate::parsers::message::Message;
 

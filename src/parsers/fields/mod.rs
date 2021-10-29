@@ -11,18 +11,11 @@
 
 use std::borrow::Cow;
 
-use self::{
-    address::{parse_address, Address},
-    content_type::ContentType,
-    date::DateTime,
-    id::parse_id,
-    list::parse_comma_separared,
-    raw::{parse_and_ignore, parse_raw},
-    unstructured::parse_unstructured,
-};
+use crate::{Address, ContentType, DateTime, MessageHeader, MimeHeader};
+
+use self::{address::parse_address, id::parse_id, list::parse_comma_separared, raw::{parse_and_ignore, parse_raw}, unstructured::parse_unstructured};
 
 use super::{
-    header::{MessageHeader, MimeHeader},
     message_stream::MessageStream,
 };
 
@@ -581,7 +574,7 @@ fn append_address_line<'x>(value: &mut Address<'x>, new_value: Address<'x>) {
     }
 }
 
-fn append_date_line<'x>(value: &mut Option<Vec<DateTime>>, new_value: Option<DateTime>) {
+fn append_date_line(value: &mut Option<Vec<DateTime>>, new_value: Option<DateTime>) {
     if let Some(new_value) = new_value {
         if let Some(value) = value {
             value.push(new_value);
@@ -614,7 +607,7 @@ fn append_line_many<'x>(
     }
 }
 
-pub fn parse_no_op<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStream<'x>) {}
+pub fn parse_no_op<'x>(_header: &mut dyn MessageField<'x>, _stream: &MessageStream<'x>) {}
 
 pub fn parse_unsupported<'x>(
     header: &mut dyn MessageField<'x>,

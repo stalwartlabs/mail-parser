@@ -47,7 +47,7 @@ fn add_token<'x>(parser: &mut ListParser<'x>, stream: &MessageStream<'x>, add_sp
     }
 }
 
-fn add_tokens_to_list<'x>(parser: &mut ListParser<'x>) {
+fn add_tokens_to_list(parser: &mut ListParser) {
     if !parser.tokens.is_empty() {
         parser.list.push(if parser.tokens.len() == 1 {
             parser.tokens.pop().unwrap()
@@ -101,7 +101,7 @@ pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'
             b'=' if parser.is_token_start => {
                 if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
-                    parser.tokens.push(token.into());
+                    parser.tokens.push(token);
                     continue;
                 }
             }
@@ -133,6 +133,7 @@ pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'
     None
 }
 
+#[cfg(test)]
 mod tests {
     use crate::parsers::{fields::list::parse_comma_separared, message_stream::MessageStream};
 
@@ -140,18 +141,18 @@ mod tests {
     fn parse_comma_separated_text() {
         let inputs = [
             (" one item  \n", vec!["one item"]),
-            ("simple, list\n", vec!["simple".into(), "list".into()]),
+            ("simple, list\n", vec!["simple", "list"]),
             (
                 "multi \r\n list, \r\n with, cr lf  \r\n",
-                vec!["multi list".into(), "with".into(), "cr lf".into()],
+                vec!["multi list", "with", "cr lf"],
             ),
             (
                 "=?iso-8859-1?q?this is some text?=, in, a, list, \n",
                 vec![
-                    "this is some text".into(),
-                    "in".into(),
-                    "a".into(),
-                    "list".into(),
+                    "this is some text",
+                    "in",
+                    "a",
+                    "list",
                 ],
             ),
             (
@@ -161,25 +162,25 @@ mod tests {
                     " , but, in a list, which, is, more, fun!\n"
                 ),
                 vec![
-                    "If you can read this you understand the example.".into(),
-                    "but".into(),
-                    "in a list".into(),
-                    "which".into(),
-                    "is".into(),
-                    "more".into(),
-                    "fun!".into(),
+                    "If you can read this you understand the example.",
+                    "but",
+                    "in a list",
+                    "which",
+                    "is",
+                    "more",
+                    "fun!",
                 ],
             ),
             (
                 "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n , listed\n",
-                vec!["ab".into(), "listed".into()],
+                vec!["ab", "listed"],
             ),
             (
                 "ハロー・ワールド, and also, ascii terms\n",
                 vec![
-                    "ハロー・ワールド".into(),
-                    "and also".into(),
-                    "ascii terms".into(),
+                    "ハロー・ワールド",
+                    "and also",
+                    "ascii terms",
                 ],
             ),
         ];

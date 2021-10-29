@@ -87,15 +87,6 @@ impl<'x> MessageStream<'x> {
         }
     }
 
-    pub fn match_bytes(&self, start_pos: usize, bytes: &[u8]) -> bool {
-        unsafe {
-            (*self.data.get())
-                .get(start_pos..start_pos + bytes.len())
-                .unwrap_or(&[])
-                == bytes
-        }
-    }
-
     pub fn seek_next_part(&self, boundary: &[u8]) -> bool {
         if !boundary.is_empty() {
             unsafe {

@@ -9,40 +9,9 @@
  * except according to those terms.
  */
 
-use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Addr<'x> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    name: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    address: Option<Cow<'x, str>>,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Group<'x> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    name: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    #[serde(default)]
-    addresses: Vec<Addr<'x>>,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub enum Address<'x> {
-    Address(Addr<'x>),
-    AddressList(Vec<Addr<'x>>),
-    Group(Group<'x>),
-    GroupList(Vec<Group<'x>>),
-    Collection(Vec<Address<'x>>),
-    Empty,
-}
+use crate::{Addr, Address, Group, decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
 
 impl<'x> Default for Address<'x> {
     fn default() -> Self {

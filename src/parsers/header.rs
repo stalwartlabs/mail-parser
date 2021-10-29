@@ -9,127 +9,11 @@
  * except according to those terms.
  */
 
-use serde::{Deserialize, Serialize};
-use std::{borrow::Cow, collections::HashMap};
-
-use crate::parsers::message_stream::MessageStream;
+use crate::{MessageHeader, MimeHeader, parsers::message_stream::MessageStream};
 
 use super::fields::{
-    address::Address, content_type::ContentType, date::DateTime, parse_unsupported, MessageField,
+    parse_unsupported, MessageField,
 };
-
-#[derive(PartialEq, Debug, Default, Serialize, Deserialize)]
-pub struct MessageHeader<'x> {
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub bcc: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub cc: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub comments: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub date: Option<DateTime>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub from: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub in_reply_to: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub keywords: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_archive: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_help: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_id: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_owner: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_post: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_subscribe: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub list_unsubscribe: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub message_id: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub mime_version: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub received: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub references: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub reply_to: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub resent_bcc: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub resent_cc: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub resent_date: Option<Vec<DateTime>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub resent_from: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub resent_message_id: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub resent_sender: Address<'x>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub resent_to: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub return_path: Option<Vec<Cow<'x, str>>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub sender: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub subject: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Address::is_empty")]
-    #[serde(default)]
-    pub to: Address<'x>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_description: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_disposition: Option<ContentType<'x>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_id: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_type: Option<ContentType<'x>>,
-    #[serde(borrow)]
-    #[serde(skip_serializing_if = "HashMap::is_empty")]
-    #[serde(default)]
-    pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
-}
 
 impl<'x> MessageHeader<'x> {
     pub fn new() -> MessageHeader<'x> {
@@ -137,25 +21,6 @@ impl<'x> MessageHeader<'x> {
             ..Default::default()
         }
     }
-}
-
-#[derive(PartialEq, Debug, Default, Serialize, Deserialize)]
-pub struct MimeHeader<'x> {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_description: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_disposition: Option<ContentType<'x>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_id: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub content_type: Option<ContentType<'x>>,
 }
 
 impl<'x> MimeHeader<'x> {
@@ -196,7 +61,6 @@ pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStre
             HeaderParserResult::Unsupported(name) => parse_unsupported(header, stream, name),
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
-            _ => return false,
         }
     }
 }

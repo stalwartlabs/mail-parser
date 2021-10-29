@@ -861,6 +861,7 @@ static CH_MAP: &[&[u8]] = &[
     b"csgb18030",
 ];
 
+#[allow(clippy::type_complexity)]
 static FNC_MAP: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>] = &[
     decoder_iso_8859_14,
     decoder_default,

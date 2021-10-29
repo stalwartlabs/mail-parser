@@ -11,21 +11,7 @@
 
 use std::fmt;
 
-use crate::parsers::message_stream::MessageStream;
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct DateTime {
-    year: u32,
-    month: u32,
-    day: u32,
-    hour: u32,
-    minute: u32,
-    second: u32,
-    tz_before_gmt: bool,
-    tz_hour: u32,
-    tz_minute: u32,
-}
+use crate::{DateTime, parsers::message_stream::MessageStream};
 
 impl DateTime {
     pub fn to_iso8601(&self) -> String {
@@ -50,7 +36,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date<'x>(stream: &'x MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
+pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -205,6 +191,7 @@ pub static MONTH_MAP: &[u8] = &[
     5, 0, 0, 0, 10, 3, 0, 0, 0, 7, 1, 0, 0, 0, 12, 6, 0, 0, 0, 8, 4, 0, 0, 0, 2, 9, 0, 0, 0, 0, 11,
 ];
 
+#[cfg(test)]
 mod tests {
     use crate::parsers::{fields::date::parse_date, message_stream::MessageStream};
 
@@ -281,7 +268,6 @@ mod tests {
                     //println!("{} -> None", input.0.escape_debug());
                     assert!(input.1.is_empty());
                 }
-                _ => unreachable!(),
             }
         }
     }

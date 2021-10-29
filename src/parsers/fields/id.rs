@@ -65,9 +65,8 @@ pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     None
 }
 
+#[cfg(test)]
 mod tests {
-    use std::borrow::Cow;
-
     use crate::parsers::{fields::id::parse_id, message_stream::MessageStream};
 
     #[test]

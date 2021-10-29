@@ -85,7 +85,7 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
             b'=' if parser.is_token_start => {
                 if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
-                    parser.tokens.push(token.into());
+                    parser.tokens.push(token);
                     continue;
                 }
             }
@@ -112,6 +112,7 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
     None
 }
 
+#[cfg(test)]
 mod tests {
 
     #[test]
@@ -119,7 +120,6 @@ mod tests {
         use crate::parsers::{
             fields::unstructured::parse_unstructured, message_stream::MessageStream,
         };
-        use std::borrow::Cow;
 
         let inputs = [
             ("Saying Hello\n", "Saying Hello", true),

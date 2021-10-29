@@ -115,6 +115,7 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
     result.into()
 }
 
+#[cfg(test)]
 mod tests {
     use crate::decoders::charsets::utf7::decoder_utf7;
 

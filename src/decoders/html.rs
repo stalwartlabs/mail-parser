@@ -240,8 +240,8 @@ pub fn text_to_html(input: &str) -> String {
     unsafe { String::from_utf8_unchecked(result) }
 }
 
+#[cfg(test)]
 mod tests {
-    use std::fs;
 
     use crate::decoders::html::{add_html_token, html_to_text, text_to_html};
 
