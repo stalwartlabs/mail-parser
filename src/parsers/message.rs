@@ -1,3 +1,14 @@
+/*
+ * Copyright Stalwart Labs, Minter Ltd. See the COPYING
+ * file at the top-level directory of this distribution.
+ *
+ * Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+ * https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+ * <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */
+
 use serde::{Deserialize, Serialize};
 use std::borrow::{Borrow, Cow};
 
@@ -510,7 +521,9 @@ impl<'x> Message<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use std::{fmt::format, fs, path::PathBuf};
+    use std::{ffi::OsStr, fmt::format, fs, path::PathBuf};
+
+    use serde_json::to_string;
 
     use crate::parsers::message::Message;
 
@@ -523,35 +536,47 @@ mod tests {
             test_dir.push("tests");
             test_dir.push(test_suite);
 
-            for file_name in fs::read_dir(test_dir).unwrap() {
+            let mut tests_run = 0;
+
+            for file_name in fs::read_dir(&test_dir).unwrap() {
                 let file_name = file_name.as_ref().unwrap().path();
-                let mut input = fs::read(&file_name).unwrap();
-                let mut pos = 0;
-                
-                for sep_pos in 0..input.len() {
-                    if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
-                        pos = sep_pos;
-                        break;
+                if file_name.extension().map_or(false, |e| e == "txt") {
+                    let mut input = fs::read(&file_name).unwrap();
+                    let mut pos = 0;
+
+                    for sep_pos in 0..input.len() {
+                        if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
+                            pos = sep_pos;
+                            break;
+                        }
                     }
+
+                    assert!(
+                        pos > 0,
+                        "Failed to find separator in test file '{}'.",
+                        file_name.display()
+                    );
+
+                    tests_run += 1;
+
+                    let input = input.split_at_mut(pos);
+                    let message = Message::parse(input.0);
+
+                    assert_eq!(
+                        message,
+                        serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap(),
+                        "Test failed for '{}', result was:\n{}",
+                        file_name.display(),
+                        serde_json::to_string_pretty(&message).unwrap()
+                    );
                 }
-
-                assert!(
-                    pos > 0,
-                    "Failed to find separator in test file '{}'.",
-                    file_name.display()
-                );
-
-                let input = input.split_at_mut(pos);
-                let message = Message::parse(input.0);
-
-                assert_eq!(
-                    message,
-                    serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap(),
-                    "Test failed for '{}', result was:\n{}",
-                    file_name.display(),
-                    serde_json::to_string_pretty(&message).unwrap()
-                );
             }
+
+            assert!(
+                tests_run > 0,
+                "Did not find any tests to run in folder {}.",
+                test_dir.display()
+            );
         }
     }
 

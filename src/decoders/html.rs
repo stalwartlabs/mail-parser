@@ -1,3 +1,14 @@
+/*
+ * Copyright Stalwart Labs, Minter Ltd. See the COPYING
+ * file at the top-level directory of this distribution.
+ *
+ * Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+ * https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+ * <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */
+
 use std::char::REPLACEMENT_CHARACTER;
 
 pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
