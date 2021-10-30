@@ -9,11 +9,9 @@
  * except according to those terms.
  */
 
-use crate::{MessageHeader, MimeHeader, parsers::message_stream::MessageStream};
+use crate::{parsers::message_stream::MessageStream, MessageHeader, MimeHeader};
 
-use super::fields::{
-    parse_unsupported, MessageField,
-};
+use super::fields::{parse_unsupported, MessageField};
 
 impl<'x> MessageHeader<'x> {
     pub fn new() -> MessageHeader<'x> {

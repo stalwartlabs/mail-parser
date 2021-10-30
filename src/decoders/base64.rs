@@ -49,8 +49,8 @@ impl<'x> Base64Decoder<'x> for MessageStream<'x> {
             while read_pos < data_len {
                 let ch = (*data).get_unchecked(read_pos);
                 read_pos += 1;
-
-                if match_count < boundary.len() {
+                
+                if !success {
                     if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {

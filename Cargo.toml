@@ -24,3 +24,6 @@ serde_json = ">=1.0.59"
 default = ["multibytedecode", "serialize"]
 multibytedecode = ["encoding_rs"]
 serialize = ["serde", "serde_bytes"]
+
+[profile.bench]
+debug = true

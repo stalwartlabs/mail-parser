@@ -9,20 +9,20 @@
  * except according to those terms.
  */
 
-use std::borrow::{Cow};
+use std::borrow::Cow;
 
-use crate::{AttachmentPart, BinaryPart, BodyPart, ContentType, Message, MessageHeader, MimeHeader, TextPart, decoders::{
-    base64::Base64Decoder,
-    charsets::map::{decoder_default, get_charset_decoder},
-    html::{html_to_text, text_to_html},
-    quoted_printable::QuotedPrintableDecoder,
-}};
-
-use super::{
-    fields::{MessageField},
-    header::{parse_headers},
-    message_stream::MessageStream,
+use crate::{
+    decoders::{
+        base64::Base64Decoder,
+        charsets::map::{decoder_default, get_charset_decoder},
+        html::{html_to_text, text_to_html},
+        quoted_printable::QuotedPrintableDecoder,
+    },
+    AttachmentPart, BinaryPart, BodyPart, ContentType, Message, MessageHeader, MimeHeader,
+    TextPart,
 };
+
+use super::{fields::MessageField, header::parse_headers, message_stream::MessageStream};
 
 #[derive(Debug, PartialEq)]
 enum MimeType {

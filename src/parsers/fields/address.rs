@@ -11,7 +11,10 @@
 
 use std::borrow::Cow;
 
-use crate::{Addr, Address, Group, decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
+use crate::{
+    decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream, Addr,
+    Address, Group,
+};
 
 impl<'x> Default for Address<'x> {
     fn default() -> Self {

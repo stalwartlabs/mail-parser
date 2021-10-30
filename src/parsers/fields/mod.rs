@@ -11,13 +11,17 @@
 
 use std::borrow::Cow;
 
-use crate::{Address, ContentType, DateTime, MessageHeader, MimeHeader};
+use crate::{Address, DateTime, MessageHeader, MimeFieldGet, MimeHeader};
 
-use self::{address::parse_address, id::parse_id, list::parse_comma_separared, raw::{parse_and_ignore, parse_raw}, unstructured::parse_unstructured};
-
-use super::{
-    message_stream::MessageStream,
+use self::{
+    address::parse_address,
+    id::parse_id,
+    list::parse_comma_separared,
+    raw::{parse_and_ignore, parse_raw},
+    unstructured::parse_unstructured,
 };
+
+use super::message_stream::MessageStream;
 
 pub mod address;
 pub mod content_type;
@@ -27,7 +31,10 @@ pub mod list;
 pub mod raw;
 pub mod unstructured;
 
-pub trait MessageField<'x> {
+pub trait MessageField<'x>: FieldSet<'x> + MimeFieldGet<'x> {}
+impl<'x, T: FieldSet<'x> + MimeFieldGet<'x>> MessageField<'x> for T {}
+
+pub trait FieldSet<'x> {
     fn set_date(&mut self, stream: &MessageStream<'x>);
     fn set_sender(&mut self, stream: &MessageStream<'x>);
     fn set_received(&mut self, stream: &MessageStream<'x>);
@@ -64,14 +71,9 @@ pub trait MessageField<'x> {
     fn set_list_unsubscribe(&mut self, stream: &MessageStream<'x>);
     fn set_mime_version(&mut self, stream: &MessageStream<'x>);
     fn set_unsupported(&mut self, stream: &MessageStream<'x>, name: &'x [u8]);
-    fn get_content_description(&self) -> Option<&Cow<'x, str>>;
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>>;
-    fn get_content_id(&self) -> Option<&Cow<'x, str>>;
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>>;
-    fn get_content_type(&self) -> Option<&ContentType<'x>>;
 }
 
-impl<'x> MessageField<'x> for MessageHeader<'x> {
+impl<'x> FieldSet<'x> for MessageHeader<'x> {
     fn set_date(&mut self, stream: &MessageStream<'x>) {
         self.date = self::date::parse_date(stream, false);
     }
@@ -223,29 +225,9 @@ impl<'x> MessageField<'x> for MessageHeader<'x> {
     fn set_content_disposition(&mut self, stream: &MessageStream<'x>) {
         self.content_disposition = self::content_type::parse_content_type(stream);
     }
-
-    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.content_description.as_ref()
-    }
-
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.content_disposition.as_ref()
-    }
-
-    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.content_id.as_ref()
-    }
-
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.content_transfer_encoding.as_ref()
-    }
-
-    fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.content_type.as_ref()
-    }
 }
 
-impl<'x> MessageField<'x> for MimeHeader<'x> {
+impl<'x> FieldSet<'x> for MimeHeader<'x> {
     fn set_date(&mut self, stream: &MessageStream<'x>) {
         parse_and_ignore(stream);
     }
@@ -388,26 +370,6 @@ impl<'x> MessageField<'x> for MimeHeader<'x> {
 
     fn set_content_disposition(&mut self, stream: &MessageStream<'x>) {
         self.content_disposition = self::content_type::parse_content_type(stream);
-    }
-
-    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.content_description.as_ref()
-    }
-
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.content_disposition.as_ref()
-    }
-
-    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.content_id.as_ref()
-    }
-
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.content_transfer_encoding.as_ref()
-    }
-
-    fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.content_type.as_ref()
     }
 }
 

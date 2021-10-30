@@ -1,8 +1,11 @@
-use mail_parser::Message;
+use mail_parser::{Message, MimeFieldGet};
 
 #[test]
 fn test_mail_parser() {
-    let mut input = "pepe".to_string();
-    let result = Message::parse(unsafe{input.as_bytes_mut()});
+    let mut input = "test".to_string();
+    let message = Message::parse(unsafe{input.as_bytes_mut()});
+
+    message.get_content_id();
+    message.get_subject();
 
 }

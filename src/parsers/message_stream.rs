@@ -145,7 +145,7 @@ impl<'x> MessageStream<'x> {
                         if match_count == boundary.len() {
                             let is_boundary_end = self.is_boundary_end(pos);
                             data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
-                            
+
                             if is_boundary_end {
                                 let match_pos = pos - match_count;
                                 *stream_pos = pos;
@@ -221,12 +221,10 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn is_boundary_end(&self, pos: usize) -> bool {
-        matches!(unsafe { (*self.data.get()).get(pos..) }, Some([b'\n', ..])
-        | Some([b'-', b'-', ..])
-        | Some([b'\r', b'\n', ..])
-        | Some([b' ' | b'\t', ..])
-        | Some([])
-        | None)
+        matches!(
+            unsafe { (*self.data.get()).get(pos..) },
+            Some([b'\n' | b'\r' | b' ' | b'\t', ..]) | Some([b'-', b'-', ..]) | Some([]) | None
+        )
     }
 
     pub fn skip_multipart_end(&self) -> bool {
@@ -239,7 +237,7 @@ impl<'x> MessageStream<'x> {
                         if !(*byte).is_ascii_whitespace() {
                             return false;
                         }
-                    } 
+                    }
                     *pos += 2;
                     true
                 }

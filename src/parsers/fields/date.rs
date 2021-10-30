@@ -11,7 +11,7 @@
 
 use std::fmt;
 
-use crate::{DateTime, parsers::message_stream::MessageStream};
+use crate::{parsers::message_stream::MessageStream, DateTime};
 
 impl DateTime {
     pub fn to_iso8601(&self) -> String {

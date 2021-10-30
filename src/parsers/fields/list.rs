@@ -148,12 +148,7 @@ mod tests {
             ),
             (
                 "=?iso-8859-1?q?this is some text?=, in, a, list, \n",
-                vec![
-                    "this is some text",
-                    "in",
-                    "a",
-                    "list",
-                ],
+                vec!["this is some text", "in", "a", "list"],
             ),
             (
                 concat!(
@@ -177,11 +172,7 @@ mod tests {
             ),
             (
                 "ハロー・ワールド, and also, ascii terms\n",
-                vec![
-                    "ハロー・ワールド",
-                    "and also",
-                    "ascii terms",
-                ],
+                vec!["ハロー・ワールド", "and also", "ascii terms"],
             ),
         ];
 

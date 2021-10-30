@@ -1,2 +1,4 @@
 /target
 /test
+perf.*
+*.svg

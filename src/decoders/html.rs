@@ -31,7 +31,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
             let mut hash = entity.len() as u32;
 
             /* Safe because ENTITY_HASH's size is 260 (u8::MAX + 5)
-                        and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
+            and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
             debug_assert_eq!(ENTITY_HASH.len(), u8::MAX as usize + 5);
             debug_assert_eq!(ENTITY_MAP.len(), 18079 - 64 + 1);
 
@@ -70,7 +70,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
     }
 
     // Safe because the input string is tokenized by ASCII chars, therefore the resulting
-    // u8 array is UTF-8 safe. 
+    // u8 array is UTF-8 safe.
     result.push_str(unsafe { std::str::from_utf8_unchecked(token) });
 }
 

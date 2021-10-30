@@ -11,7 +11,12 @@
 
 use std::borrow::Cow;
 
-use super::{DecoderFnc, multi_byte::*, single_byte::*, utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7, decoder_utf8}};
+use super::{
+    multi_byte::*,
+    single_byte::*,
+    utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7, decoder_utf8},
+    DecoderFnc,
+};
 
 pub fn get_charset_decoder<'x>(charset: &[u8]) -> Option<DecoderFnc<'x>> {
     if (2..=45).contains(&charset.len()) {

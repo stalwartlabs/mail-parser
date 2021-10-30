@@ -250,3 +250,203 @@ pub struct DateTime {
     tz_hour: u32,
     tz_minute: u32,
 }
+
+pub trait MimeFieldGet<'x> {
+    fn get_content_description(&self) -> Option<&Cow<'x, str>>;
+    fn get_content_disposition(&self) -> Option<&ContentType<'x>>;
+    fn get_content_id(&self) -> Option<&Cow<'x, str>>;
+    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>>;
+    fn get_content_type(&self) -> Option<&ContentType<'x>>;
+}
+
+impl<'x> Message<'x> {
+    pub fn get_bcc(&self) -> &Address<'x> {
+        &self.header.bcc
+    }
+
+    pub fn get_cc(&self) -> &Address<'x> {
+        &self.header.cc
+    }
+
+    pub fn get_comments(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.comments.as_ref()
+    }
+
+    pub fn get_date(&self) -> Option<&DateTime> {
+        self.header.date.as_ref()
+    }
+
+    pub fn get_from(&self) -> &Address<'x> {
+        &self.header.from
+    }
+
+    pub fn get_in_reply_to(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.in_reply_to.as_ref()
+    }
+
+    pub fn get_keywords(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.keywords.as_ref()
+    }
+
+    pub fn get_list_archive(&self) -> &Address<'x> {
+        &self.header.list_archive
+    }
+
+    pub fn get_list_help(&self) -> &Address<'x> {
+        &self.header.list_help
+    }
+
+    pub fn get_list_id(&self) -> &Address<'x> {
+        &self.header.list_id
+    }
+
+    pub fn get_list_owner(&self) -> &Address<'x> {
+        &self.header.list_owner
+    }
+
+    pub fn get_list_post(&self) -> &Address<'x> {
+        &self.header.list_post
+    }
+
+    pub fn get_list_subscribe(&self) -> &Address<'x> {
+        &self.header.list_subscribe
+    }
+
+    pub fn get_list_unsubscribe(&self) -> &Address<'x> {
+        &self.header.list_unsubscribe
+    }
+
+    pub fn get_message_id(&self) -> Option<&Cow<'x, str>> {
+        self.header.message_id.as_ref()
+    }
+
+    pub fn get_mime_version(&self) -> Option<&Cow<'x, str>> {
+        self.header.mime_version.as_ref()
+    }
+
+    pub fn get_received(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.received.as_ref()
+    }
+
+    pub fn get_references(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.references.as_ref()
+    }
+
+    pub fn get_reply_to(&self) -> &Address<'x> {
+        &self.header.reply_to
+    }
+
+    pub fn get_resent_bcc(&self) -> &Address<'x> {
+        &self.header.bcc
+    }
+
+    pub fn get_resent_cc(&self) -> &Address<'x> {
+        &self.header.resent_to
+    }
+
+    pub fn get_resent_date(&self) -> Option<&Vec<DateTime>> {
+        self.header.resent_date.as_ref()
+    }
+
+    pub fn get_resent_from(&self) -> &Address<'x> {
+        &self.header.resent_from
+    }
+
+    pub fn get_resent_message_id(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.resent_message_id.as_ref()
+    }
+
+    pub fn get_resent_sender(&self) -> &Address<'x> {
+        &self.header.resent_sender
+    }
+
+    pub fn get_resent_to(&self) -> &Address<'x> {
+        &self.header.resent_to
+    }
+
+    pub fn get_return_path(&self) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.return_path.as_ref()
+    }
+
+    pub fn get_sender(&self) -> &Address<'x> {
+        &self.header.sender
+    }
+
+    pub fn get_subject(&self) -> Option<&Cow<'x, str>> {
+        self.header.subject.as_ref()
+    }
+
+    pub fn get_to(&self) -> &Address<'x> {
+        &self.header.to
+    }
+
+    pub fn get_header(&self, name: &str) -> Option<&Vec<Cow<'x, str>>> {
+        self.header.others.get(name)
+    }
+}
+
+impl<'x> MimeFieldGet<'x> for Message<'x> {
+    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
+        self.header.content_description.as_ref()
+    }
+
+    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
+        self.header.content_disposition.as_ref()
+    }
+
+    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
+        self.header.content_id.as_ref()
+    }
+
+    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
+        self.header.content_transfer_encoding.as_ref()
+    }
+
+    fn get_content_type(&self) -> Option<&ContentType<'x>> {
+        self.header.content_type.as_ref()
+    }
+}
+
+impl<'x> MimeFieldGet<'x> for MimeHeader<'x> {
+    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
+        self.content_description.as_ref()
+    }
+
+    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
+        self.content_disposition.as_ref()
+    }
+
+    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
+        self.content_id.as_ref()
+    }
+
+    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
+        self.content_transfer_encoding.as_ref()
+    }
+
+    fn get_content_type(&self) -> Option<&ContentType<'x>> {
+        self.content_type.as_ref()
+    }
+}
+
+impl<'x> MimeFieldGet<'x> for MessageHeader<'x> {
+    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
+        self.content_description.as_ref()
+    }
+
+    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
+        self.content_disposition.as_ref()
+    }
+
+    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
+        self.content_id.as_ref()
+    }
+
+    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
+        self.content_transfer_encoding.as_ref()
+    }
+
+    fn get_content_type(&self) -> Option<&ContentType<'x>> {
+        self.content_type.as_ref()
+    }
+}
