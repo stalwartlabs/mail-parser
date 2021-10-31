@@ -18,7 +18,7 @@ use crate::{
         html::{html_to_text, text_to_html},
         quoted_printable::QuotedPrintableDecoder,
     },
-    AttachmentPart, BinaryPart, BodyPart, ContentType, Message, MessageHeader, MimeHeader,
+    MessagePart, BinaryPart, InlinePart, ContentType, Message, MessageHeader, MimeHeader,
     TextPart,
 };
 
@@ -324,23 +324,23 @@ impl<'x> Message<'x> {
                 let is_html = mime_type == MimeType::TextHtml;
 
                 if add_to_html && !is_html {
-                    message.html_body.push(BodyPart::Text(TextPart {
+                    message.html_body.push(InlinePart::Text(TextPart {
                         header: None,
                         contents: text_to_html(&text_part.contents).into(),
                     }));
                 } else if add_to_text && is_html {
-                    message.text_body.push(BodyPart::Text(TextPart {
+                    message.text_body.push(InlinePart::Text(TextPart {
                         header: None,
                         contents: html_to_text(&text_part.contents).into(),
                     }));
                 }
 
                 if add_to_html && is_html {
-                    message.html_body.push(BodyPart::Text(text_part));
+                    message.html_body.push(InlinePart::Text(text_part));
                 } else if add_to_text && !is_html {
-                    message.text_body.push(BodyPart::Text(text_part));
+                    message.text_body.push(InlinePart::Text(text_part));
                 } else {
-                    message.attachments.push(AttachmentPart::Text(text_part));
+                    message.attachments.push(MessagePart::Text(text_part));
                 }
             } else {
                 let binary_part = BinaryPart {
@@ -355,18 +355,18 @@ impl<'x> Message<'x> {
                 if add_to_html {
                     message
                         .html_body
-                        .push(BodyPart::InlineBinary(message.attachments.len() as u32));
+                        .push(InlinePart::InlineBinary(message.attachments.len() as u32));
                 }
                 if add_to_text {
                     message
                         .text_body
-                        .push(BodyPart::InlineBinary(message.attachments.len() as u32));
+                        .push(InlinePart::InlineBinary(message.attachments.len() as u32));
                 }
 
                 message.attachments.push(if !is_inline {
-                    AttachmentPart::Binary(binary_part)
+                    MessagePart::Binary(binary_part)
                 } else {
-                    AttachmentPart::InlineBinary(binary_part)
+                    MessagePart::InlineBinary(binary_part)
                 });
             };
 
@@ -381,7 +381,7 @@ impl<'x> Message<'x> {
                         {
                             prev_message
                                 .attachments
-                                .push(AttachmentPart::Message(message));
+                                .push(MessagePart::Message(message));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
                             state = prev_state;
@@ -404,12 +404,12 @@ impl<'x> Message<'x> {
                             {
                                 for part in message.html_body[state.html_parts..].iter() {
                                     message.text_body.push(match part {
-                                        BodyPart::Text(part) => BodyPart::Text(TextPart {
+                                        InlinePart::Text(part) => InlinePart::Text(TextPart {
                                             header: None,
                                             contents: html_to_text(&part.contents).into(),
                                         }),
-                                        BodyPart::InlineBinary(index) => {
-                                            BodyPart::InlineBinary(*index)
+                                        InlinePart::InlineBinary(index) => {
+                                            InlinePart::InlineBinary(*index)
                                         }
                                     });
                                 }
@@ -421,12 +421,12 @@ impl<'x> Message<'x> {
                             {
                                 for part in message.text_body[state.text_parts..].iter() {
                                     message.html_body.push(match part {
-                                        BodyPart::Text(part) => BodyPart::Text(TextPart {
+                                        InlinePart::Text(part) => InlinePart::Text(TextPart {
                                             header: None,
                                             contents: text_to_html(&part.contents).into(),
                                         }),
-                                        BodyPart::InlineBinary(index) => {
-                                            BodyPart::InlineBinary(*index)
+                                        InlinePart::InlineBinary(index) => {
+                                            InlinePart::InlineBinary(*index)
                                         }
                                     });
                                 }
@@ -459,7 +459,7 @@ impl<'x> Message<'x> {
         while let Some(mut prev_message) = message_stack.pop() {
             prev_message
                 .attachments
-                .push(AttachmentPart::Message(message));
+                .push(MessagePart::Message(message));
             message = prev_message;
         }
 

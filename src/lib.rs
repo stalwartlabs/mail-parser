@@ -12,7 +12,7 @@
 mod decoders;
 mod parsers;
 
-use std::{borrow::Cow, collections::HashMap};
+use std::{borrow::Cow, collections::HashMap, fmt, slice::Iter};
 
 use serde::{Deserialize, Serialize};
 
@@ -22,13 +22,13 @@ pub struct Message<'x> {
     header: Box<MessageHeader<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    html_body: Vec<BodyPart<'x>>,
+    html_body: Vec<InlinePart<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    text_body: Vec<BodyPart<'x>>,
+    text_body: Vec<InlinePart<'x>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    attachments: Vec<AttachmentPart<'x>>,
+    attachments: Vec<MessagePart<'x>>,
 }
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct TextPart<'x> {
@@ -50,13 +50,13 @@ pub struct BinaryPart<'x> {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 #[serde(untagged)]
-pub enum BodyPart<'x> {
+pub enum InlinePart<'x> {
     Text(TextPart<'x>),
     InlineBinary(u32),
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
-pub enum AttachmentPart<'x> {
+pub enum MessagePart<'x> {
     Text(TextPart<'x>),
     #[serde(borrow)]
     Binary(BinaryPart<'x>),
@@ -201,20 +201,20 @@ pub struct MimeHeader<'x> {
 pub struct Addr<'x> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
-    name: Option<Cow<'x, str>>,
+    pub name: Option<Cow<'x, str>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
-    address: Option<Cow<'x, str>>,
+    pub address: Option<Cow<'x, str>>,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Group<'x> {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
-    name: Option<Cow<'x, str>>,
+    pub name: Option<Cow<'x, str>>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(default)]
-    addresses: Vec<Addr<'x>>,
+    pub addresses: Vec<Addr<'x>>,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -383,6 +383,54 @@ impl<'x> Message<'x> {
     pub fn get_header(&self, name: &str) -> Option<&Vec<Cow<'x, str>>> {
         self.header.others.get(name)
     }
+
+    fn get_body_part(&self, list: &'x [InlinePart<'x>], pos: usize) -> Option<&'x dyn BodyPart> {
+        match list.get(pos) {
+            Some(InlinePart::Text(v)) => Some(v),
+            Some(InlinePart::InlineBinary(v)) => match self.attachments.get(*v as usize)? {
+                MessagePart::Text(v) => Some(v),
+                MessagePart::Binary(v) | MessagePart::InlineBinary(v) => Some(v),
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+
+    pub fn get_html_body(&self, pos: usize) -> Option<&dyn BodyPart> {
+        self.get_body_part(&self.html_body, pos)
+    }
+
+    pub fn get_text_body(&self, pos: usize) -> Option<&dyn BodyPart> {
+        self.get_body_part(&self.text_body, pos)
+    }
+
+    pub fn get_attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
+        self.attachments.get(pos)
+    }
+
+    pub fn get_text_body_count(&self) -> usize {
+        self.text_body.len()
+    }
+
+    pub fn get_html_body_count(&self) -> usize {
+        self.html_body.len()
+    }
+
+    pub fn get_attachment_count(&self) -> usize {
+        self.attachments.len()
+    }
+
+    pub fn get_text_bodies(&'x self) -> BodyPartIterator<'x> {
+        BodyPartIterator::new(self, &self.text_body)
+    }
+
+    pub fn get_html_bodies(&'x self) -> BodyPartIterator<'x> {
+        BodyPartIterator::new(self, &self.html_body)
+    }
+
+    pub fn get_attachments(&self) -> Iter<MessagePart<'_>> {
+        self.attachments.iter()
+    }
 }
 
 impl<'x> MimeFieldGet<'x> for Message<'x> {
@@ -448,5 +496,131 @@ impl<'x> MimeFieldGet<'x> for MessageHeader<'x> {
 
     fn get_content_type(&self) -> Option<&ContentType<'x>> {
         self.content_type.as_ref()
+    }
+}
+
+pub trait BodyPart<'x>: fmt::Display {
+    fn get_header(&self) -> Option<&MimeHeader<'x>>;
+    fn get_contents(&'x self) -> &'x [u8];
+    fn get_text_contents(&'x self) -> &'x str;
+    fn len(&self) -> usize;
+    fn is_text(&self) -> bool;
+    fn is_binary(&self) -> bool;
+}
+
+impl<'x> BodyPart<'x> for TextPart<'x> {
+    fn get_header(&self) -> Option<&MimeHeader<'x>> {
+        self.header.as_ref()
+    }
+
+    fn get_contents(&'x self) -> &'x [u8] {
+        self.contents.as_bytes()
+    }
+
+    fn is_text(&self) -> bool {
+        true
+    }
+
+    fn is_binary(&self) -> bool {
+        false
+    }
+
+    fn get_text_contents(&'x self) -> &'x str {
+        self.contents.as_ref()
+    }
+
+    fn len(&self) -> usize {
+        self.contents.len()
+    }
+}
+
+impl<'x> fmt::Display for TextPart<'x> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.write_str(self.contents.as_ref())
+    }
+}
+
+impl<'x> BodyPart<'x> for BinaryPart<'x> {
+    fn get_header(&self) -> Option<&MimeHeader<'x>> {
+        self.header.as_ref()
+    }
+
+    fn get_contents(&'x self) -> &'x [u8] {
+        self.contents.as_ref()
+    }
+
+    fn get_text_contents(&'x self) -> &'x str {
+        std::str::from_utf8(self.contents.as_ref()).unwrap_or("")
+    }
+
+    fn is_text(&self) -> bool {
+        false
+    }
+
+    fn is_binary(&self) -> bool {
+        true
+    }
+
+    fn len(&self) -> usize {
+        self.contents.len()
+    }
+}
+
+impl<'x> fmt::Display for BinaryPart<'x> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.write_str("[binary contents]")
+    }
+}
+
+pub struct BodyPartIterator<'x> {
+    message: &'x Message<'x>,
+    list: &'x [InlinePart<'x>],
+    pos: isize,
+}
+
+impl<'x> BodyPartIterator<'x> {
+    fn new(message: &'x Message<'x>, list: &'x [InlinePart<'x>]) -> BodyPartIterator<'x> {
+        BodyPartIterator {
+            message,
+            list,
+            pos: -1,
+        }
+    }
+}
+
+impl<'x> Iterator for BodyPartIterator<'x> {
+    type Item = &'x dyn BodyPart<'x>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.pos += 1;
+        self.message.get_body_part(self.list, self.pos as usize)
+    }
+}
+
+impl<'x> ContentType<'x> {
+    pub fn get_type(&'x self) -> &'x str {
+        &self.c_type
+    }
+
+    pub fn get_subtype(&'x self) -> Option<&'x str> {
+        self.c_subtype.as_ref()?.as_ref().into()
+    }
+
+    pub fn get_attribute(&'x self, name: &str) -> Option<&'x str> {
+        self.attributes.as_ref()?.get(name)?.as_ref().into()
+    }
+
+    pub fn has_attribute(&'x self, name: &str) -> bool {
+        self.attributes
+            .as_ref()
+            .map_or_else(|| false, |attr| attr.contains_key(name))
+    }
+
+    pub fn is_attachment(&'x self) -> bool {
+        self.c_type.eq_ignore_ascii_case("attachment")
+    }
+
+    pub fn is_inline(&'x self) -> bool {
+        self.c_type.eq_ignore_ascii_case("inline")
     }
 }

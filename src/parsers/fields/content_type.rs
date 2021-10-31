@@ -24,34 +24,6 @@ use crate::{
     ContentType,
 };
 
-impl<'x> ContentType<'x> {
-    pub fn get_type(&'x self) -> &'x str {
-        &self.c_type
-    }
-
-    pub fn get_subtype(&'x self) -> Option<&'x str> {
-        self.c_subtype.as_ref()?.as_ref().into()
-    }
-
-    pub fn get_attribute(&'x self, name: &str) -> Option<&'x str> {
-        self.attributes.as_ref()?.get(name)?.as_ref().into()
-    }
-
-    pub fn has_attribute(&'x self, name: &str) -> bool {
-        self.attributes
-            .as_ref()
-            .map_or_else(|| false, |attr| attr.contains_key(name))
-    }
-
-    pub fn is_attachment(&'x self) -> bool {
-        self.c_type.eq_ignore_ascii_case("attachment")
-    }
-
-    pub fn is_inline(&'x self) -> bool {
-        self.c_type.eq_ignore_ascii_case("inline")
-    }
-}
-
 #[derive(Clone, Copy, PartialEq, Debug)]
 enum ContentState {
     Type,
