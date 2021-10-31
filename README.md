@@ -1,9 +1,32 @@
-# mail_parser
+# mail-parser
 
+_mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
+Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
 
-## Highlighs
-blah
-## Usage
+It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
+All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for Asian multi-byte encodings 
+such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
+
+In general, this library abides by the Postel's law or [Robustness Principle](https://en.wikipedia.org/wiki/Robustness_principle) which 
+states that an implementation must be conservative in its sending behavior and liberal in its receiving behavior. This means that
+_mail-parser_ will make a best effort to parse non-conformat e-mail messages as long as these do not deviate too much from the standard.
+
+Unlike other e-mail parsing libraries that return nested representations of the different MIME parts in a message, this library 
+conforms to [RFC 8621, Section 4.1.4](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4) and provides a more human-friendly
+representation of the message contents consisting of just text body parts, html body parts and attachments. Additionally, conversion to/from
+HTML and plain text inline body parts is done automatically when the _alternative_ version is missing.
+
+Performance and memory safety were two important factors while designing _mail-parser_:
+
+- **Zero-copy parsing** is done in most cases (unless when decoding non-UTF8 text or when RFC2047/RFC2231 encoded parts are present). 
+  Practically all strings and u8 slices returned by this library are `Cow<str>` or `Cow<[u8]>` references to the input raw message.
+- Memory allocations are always avoided unless they are really necessary. In fact, all Base64 and Quoted-Printable parts are decoded in 
+  place re-using the input buffer. 
+- [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character 
+  set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
+- Fully battle-tested with millions of real-world e-mail messages created from 1995 until today.
+
+## Usage Example
 
 ```rust
     let mut input = concat!(
@@ -34,7 +57,7 @@ blah
         "=DD5=D8=1E=DD5=D80=DD5=D8\"=DD!=00\n",
         "--giddyup\n",
         "Content-Type: image/gif; name*1=\"about \"; name*0=\"Book \";\n",
-        "              name*2*=utf-8''%e2%98%95tables.gif\n",
+        "              name*2*=utf-8''%e2%98%95 tables.gif\n",
         "Content-Transfer-Encoding: Base64\n",
         "Content-Disposition: attachment\n\n",
         "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\n",
@@ -110,7 +133,7 @@ blah
         )
     );
 
-    // Supports multipart/digest and nested messages
+    // Supports nested messages as well as multipart/digest
     let nested_message = match message.get_attachment(0).unwrap() {
         MessagePart::Message(v) => v,
         _ => unreachable!(),
@@ -121,7 +144,7 @@ blah
         "Exporting my book about coffee tables"
     );
 
-    // Handles UTF-* as well as many other legacy encodings
+    // Handles UTF-* as well as many legacy encodings
     assert_eq!(
         nested_message.get_text_body(0).unwrap().to_string(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
@@ -147,12 +170,32 @@ blah
             .unwrap()
             .get_attribute("name")
             .unwrap(),
-        "Book about ☕tables.gif"
+        "Book about ☕ tables.gif"
     );
 
     // Integrates with Serde
     println!("{}", serde_json::to_string_pretty(&message).unwrap());
     println!("{}", serde_yaml::to_string(&message).unwrap());
+```
+
+## Testing & Benchmarking
+
+To run the testsuite:
+
+```bash
+ $ cargo test
+```
+
+or, to run the testsuite using MIRI:
+
+```bash
+ $ cargo +nightly miri test
+```
+
+and to run the benchmarks:
+
+```bash
+ $ cargo +nightly bench
 ```
 
 ## Conformed RFCs
@@ -219,3 +262,19 @@ Supported character sets via the optional dependency [encoding_rs](https://crate
 - WINDOWS-874
 - IBM-866
 
+## License
+
+Licensed under either of
+
+ * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.
+
+## Copyright
+
+Copyright (C) 2020-2022, Stalwart Labs, Minter Ltd.
+
+See [COPYING] for the license.
+
+[COPYING]: https://github.com/stalwartlabs/mail-parser/blob/main/COPYING

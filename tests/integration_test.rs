@@ -41,7 +41,7 @@ fn test_api() {
         "=DD5=D8=1E=DD5=D80=DD5=D8\"=DD!=00\n",
         "--giddyup\n",
         "Content-Type: image/gif; name*1=\"about \"; name*0=\"Book \";\n",
-        "              name*2*=utf-8''%e2%98%95tables.gif\n",
+        "              name*2*=utf-8''%e2%98%95 tables.gif\n",
         "Content-Transfer-Encoding: Base64\n",
         "Content-Disposition: attachment\n\n",
         "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\n",
@@ -138,7 +138,7 @@ fn test_api() {
             .unwrap()
             .get_attribute("name")
             .unwrap(),
-        "Book about ☕tables.gif"
+        "Book about ☕ tables.gif"
     );
 
     //println!("{}", serde_json::to_string_pretty(&message).unwrap());
