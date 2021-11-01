@@ -79,28 +79,31 @@ fn bench_stalwart(b: &mut Bencher) {
     });
 }
 
-/*
-
 // These libraries do not support all RFCs and might be faster
-// on the benchmarks as they skip certain encoded parts or fail 
-// while trying to parse the messages.
-// Also no body conversion between HTML/text is done by these.
+// on the benchmarks as they do not parse all header fields,
+// do not decode encoded parts or fail while trying to parse the messages.
+// Also no text body conversion between HTML/plain-text is done by these.
+// 
+// To benchmark against these libraries, add to Cargo.toml dev-dependencies:
+//
 // email = "0.0.21"
 // email-format = "0.8"
-// email-parser = "0.5.0"
+// email-parser = { version = "0.5.0", features=["headers", "mime"] }
 // mailparse = "0.13"
 
-#[bench]
-fn bench_mailparse(b: &mut Bencher) {
-    bench_all_samples(b, "mailparse", |bytes, _str| {
-        mailparse::parse_mail(bytes).unwrap();
-    });
-}
+/*
 
 #[bench]
 fn bench_email_parser(b: &mut Bencher) {
     bench_all_samples(b, "email_parser", |bytes, _str| {
         email_parser::prelude::parse_message(bytes).unwrap();
+    });
+}
+
+#[bench]
+fn bench_mailparse(b: &mut Bencher) {
+    bench_all_samples(b, "mailparse", |bytes, _str| {
+        mailparse::parse_mail(bytes).unwrap();
     });
 }
 
@@ -118,7 +121,5 @@ fn bench_email_format(b: &mut Bencher) {
         email_format::Email::parse(bytes).unwrap();
     });
 }
-
-
 
 */
