@@ -1,9 +1,9 @@
 # mail-parser
 
-![crates.io](https://img.shields.io/crates/v/mail-parser)
-![docs.rs](https://img.shields.io/docsrs/mail-parser)
-![crates.io](https://img.shields.io/crates/l/mail-parser)
-![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)
+[![crates.io](https://img.shields.io/crates/v/mail-parser)](https://crates.io/crates/mail-parser)
+[![docs.rs](https://img.shields.io/docsrs/mail-parser)](https://docs.rs/mail-parser)
+[![crates.io](https://img.shields.io/crates/l/mail-parser)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)](https://twitter.com/stalwartlabs)
 
 _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
 Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
