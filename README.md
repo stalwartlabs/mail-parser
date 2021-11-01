@@ -1,6 +1,7 @@
 # mail-parser
 
 [![crates.io](https://img.shields.io/crates/v/mail-parser)](https://crates.io/crates/mail-parser)
+[![build](https://github.com/stalwartlabs/mail-parser/actions/workflows/rust.yml/badge.svg)](https://github.com/stalwartlabs/mail-parser/actions/workflows/rust.yml)
 [![docs.rs](https://img.shields.io/docsrs/mail-parser)](https://docs.rs/mail-parser)
 [![crates.io](https://img.shields.io/crates/l/mail-parser)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)](https://twitter.com/stalwartlabs)
