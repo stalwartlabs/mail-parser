@@ -1,6 +1,6 @@
 [package]
 name = "mail-parser"
-description = "Fast, Zero-copy e-mail parsing library for Rust"
+description = "Fast and robust e-mail parsing library for Rust"
 version = "0.1.0"
 edition = "2018"
 authors = [ "Stalwart Labs <hello@stalw.art>"]

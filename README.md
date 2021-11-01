@@ -1,5 +1,10 @@
 # mail-parser
 
+![crates.io](https://img.shields.io/crates/v/mail-parser)
+![docs.rs](https://img.shields.io/docsrs/mail-parser)
+![crates.io](https://img.shields.io/crates/l/mail-parser)
+![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)
+
 _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
 Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
 
