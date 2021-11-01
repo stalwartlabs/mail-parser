@@ -130,6 +130,15 @@ impl<'x> Message<'x> {
         }
     }
 
+    /// Parses a byte slice containing the RFC5322 raw message and returns a 
+    /// `Message` struct.
+    /// 
+    /// This function never panics, a best-effort is made to parse the message and
+    /// if no headers are found and empty `Message` struct is returned.
+    /// 
+    /// Note: The `parse()` function requires a mutable `[u8]` as input in order 
+    /// to perform BASE64/Quoted-Printable decoding in-place.
+    /// 
     pub fn parse(bytes: &'x mut [u8]) -> Message<'x> {
         let stream = MessageStream::new(bytes);
 

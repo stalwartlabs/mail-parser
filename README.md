@@ -4,8 +4,8 @@ _mail-parser_ is an **e-mail parsing library** written in Rust that fully confor
 Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
 
 It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
-All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for Asian multi-byte encodings 
-such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
+All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for legacy multi-byte encodings of Chinese
+and Japanse languages such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
 
 In general, this library abides by the Postel's law or [Robustness Principle](https://en.wikipedia.org/wiki/Robustness_principle) which 
 states that an implementation must be conservative in its sending behavior and liberal in its receiving behavior. This means that
@@ -24,7 +24,7 @@ Performance and memory safety were two important factors while designing _mail-p
   place re-using the input buffer. 
 - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character 
   set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
-- Fully battle-tested with millions of real-world e-mail messages created from 1995 until today.
+- Fully battle-tested with millions of real-world e-mail messages dating from 1995 until today.
 
 ## Usage Example
 
@@ -183,19 +183,19 @@ Performance and memory safety were two important factors while designing _mail-p
 To run the testsuite:
 
 ```bash
- $ cargo test
+ $ cargo test --all-features
 ```
 
 or, to run the testsuite using MIRI:
 
 ```bash
- $ cargo +nightly miri test
+ $ cargo +nightly miri test --all-features
 ```
 
 and to run the benchmarks:
 
 ```bash
- $ cargo +nightly bench
+ $ cargo +nightly bench --all-features
 ```
 
 ## Conformed RFCs

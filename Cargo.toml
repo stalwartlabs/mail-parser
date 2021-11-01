@@ -21,9 +21,9 @@ serde_yaml = ">=0.8.21"
 serde_json = ">=1.0.59"
 
 [features]
-default = ["multibytedecode", "serialize"]
-multibytedecode = ["encoding_rs"]
-serialize = ["serde", "serde_bytes"]
+default = ["serde_support", "full_encoding"]
+full_encoding = ["encoding_rs"]
+serde_support = ["serde", "serde_bytes"]
 
 [profile.bench]
 debug = true

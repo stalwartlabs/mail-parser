@@ -150,13 +150,13 @@ mod tests {
                 "مرحبا بالعالم",
                 true,
             ),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             (
                 "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=".to_string(),
                 "ハロー・ワールド",
                 true,
             ),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             (
                 "?iso-2022-jp?q?=1B$B%O%m!<!&%o!<%k%I=1B(B?=".to_string(),
                 "ハロー・ワールド",

@@ -14,6 +14,7 @@ use std::fmt;
 use crate::{parsers::message_stream::MessageStream, DateTime};
 
 impl DateTime {
+    /// Returns an ISO-8601 representation of the parsed RFC5322 datetime field
     pub fn to_iso8601(&self) -> String {
         format!(
             "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}{}{:02}:{:02}",

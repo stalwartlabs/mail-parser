@@ -12,7 +12,6 @@
 use std::borrow::Cow;
 
 pub mod map;
-#[cfg(feature = "multibytedecode")]
 pub mod multi_byte;
 pub mod single_byte;
 pub mod utf;
@@ -51,19 +50,19 @@ mod tests {
             ("utf-16", b"\xff\xfe\xe1\x00\xe9\x00\xed\x00\xf3\x00\xfa\x00".to_vec(),"áéíóú"), // Little endian
             ("utf-16", b"\xfe\xff\x00\xe1\x00\xe9\x00\xed\x00\xf3\x00\xfa".to_vec(),"áéíóú"), // Big endian
 
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("shift_jis", b"\x83n\x83\x8D\x81[\x81E\x83\x8F\x81[\x83\x8B\x83h".to_vec(),"ハロー・ワールド"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("big5", b"\xa7A\xa6n\xa1A\xa5@\xac\xc9".to_vec(),"你好，世界"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("euc-jp", b"\xa5\xcf\xa5\xed\xa1\xbc\xa1\xa6\xa5\xef\xa1\xbc\xa5\xeb\xa5\xc9".to_vec(),"ハロー・ワールド"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("euc-kr", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("iso-2022-jp", b"\x1b$B%O%m!<!&%o!<%k%I\x1b(B".to_vec(),"ハロー・ワールド"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("gbk", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
-            #[cfg(feature = "multibytedecode")]
+            #[cfg(feature = "full_encoding")]
             ("gb18030", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
             ];
 
