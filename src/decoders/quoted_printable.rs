@@ -56,15 +56,25 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
             let mut match_count = 0;
             let mut hex1 = 0;
 
+            debug_assert!(boundary.is_empty() || boundary.len() >= 2);
+
             while read_pos < data_len {
                 let ch = *(*data).get_unchecked(read_pos);
                 read_pos += 1;
 
+                // if success is false, a boundary was provided
                 if !success {
+                    let mut is_boundary_end = true;
+
                     if ch == *boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
-                            let done = is_word || self.is_boundary_end(read_pos);
+                            let done = if is_word {
+                                true
+                            } else {
+                                is_boundary_end = self.is_boundary_end(read_pos);
+                                is_boundary_end
+                            };
                             data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
 
                             if done {
@@ -95,11 +105,22 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                         }
                         state = QuotedPrintableState::None;
 
-                        if ch == *boundary.get_unchecked(0) {
-                            match_count = 1;
-                            continue;
+                        // is_boundary_end is always true except in the rare event
+                        // that a boundary was found without a proper MIME ending (-- or \r\n)
+                        if is_boundary_end {
+                            if ch == *boundary.get_unchecked(0) {
+                                // Char matched beginning of boundary, get next char.
+                                match_count = 1;
+                                continue;
+                            } else {
+                                // Reset match count and decode character
+                                match_count = 0;
+                            }
                         } else {
+                            // There was a full boundary match but without a proper MIME
+                            // ending, reset match count and continue.
                             match_count = 0;
+                            continue;
                         }
                     }
                 }
@@ -313,6 +334,18 @@ mod tests {
                     input.0.escape_debug()
                 );
             }
+        }
+
+        // MIRI overflow tests
+        for mut input in [b"\x0a\x0a\x00\x0b".to_vec(), b":B\x0a%".to_vec()] {
+            let stream = MessageStream::new(&mut input[..]);
+            stream.decode_quoted_printable(b"\n\n", true);
+            let stream = MessageStream::new(&mut input[..]);
+            stream.decode_quoted_printable(b"\n\n", false);
+            let stream = MessageStream::new(&mut input[..]);
+            stream.decode_quoted_printable(&[], true);
+            let stream = MessageStream::new(&mut input[..]);
+            stream.decode_quoted_printable(&[], false);
         }
     }
 }

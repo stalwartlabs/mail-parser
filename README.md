@@ -30,6 +30,8 @@ Performance and memory safety were two important factors while designing _mail-p
   place re-using the input buffer. 
 - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character 
   set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
+- Although `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been 
+  [fuzzed](#testing-fuzzing--benchmarking) and also heavily [tested with MIRI](#testing-fuzzing--benchmarking).
 - Fully battle-tested with millions of real-world e-mail messages dating from 1995 until today.
 
 ## Usage Example
@@ -184,7 +186,7 @@ Performance and memory safety were two important factors while designing _mail-p
     println!("{}", serde_yaml::to_string(&message).unwrap());
 ```
 
-## Testing & Benchmarking
+## Testing, Fuzzing & Benchmarking
 
 To run the testsuite:
 
@@ -192,13 +194,19 @@ To run the testsuite:
  $ cargo test --all-features
 ```
 
-or, to run the testsuite using MIRI:
+or, to run the testsuite with MIRI:
 
 ```bash
  $ cargo +nightly miri test --all-features
 ```
 
-and to run the benchmarks:
+To fuzz the library with `cargo-fuzz`:
+
+```bash
+ $ cargo +nightly fuzz run mail_parser
+```
+
+and, to run the benchmarks:
 
 ```bash
  $ cargo +nightly bench --all-features

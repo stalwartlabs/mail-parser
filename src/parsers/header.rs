@@ -45,7 +45,7 @@ impl<'x> MimeHeader<'x> {
     }
 }
 
-enum HeaderParserResult<'x> {
+pub enum HeaderParserResult<'x> {
     Supported(fn(&mut dyn MessageField<'x>, &MessageStream<'x>)),
     Unsupported(&'x [u8]),
     Lf,
@@ -63,7 +63,7 @@ pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStre
     }
 }
 
-fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
+pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut token_len: usize = 0;
