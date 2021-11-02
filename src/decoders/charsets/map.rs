@@ -29,22 +29,27 @@ pub fn get_charset_decoder<'x>(charset: &[u8]) -> Option<DecoderFnc<'x>> {
             } else {
                 *ch
             };
+            // SAFE: `pos` is always lower than 45
             unsafe {
                 *l_charset.get_unchecked_mut(pos) = ch;
             }
             if let 0 | 3 | 6 | 7 | 8 | 9 = pos {
+                // SAFE: CH_HASH's size is u8::MAX
                 hash += unsafe { *CH_HASH.get_unchecked(ch as usize) };
             }
             if pos == charset.len() - 1 {
+                // SAFE: CH_HASH's size is u8::MAX
                 hash += unsafe { *CH_HASH.get_unchecked(ch as usize) };
             }
         }
 
         if (7..=764).contains(&hash) {
             let hash = (hash - 7) as usize;
+            // SAFE: CH_MAP's size is 758
             let &ch_map = unsafe { CH_MAP.get_unchecked(hash) };
 
             if l_charset[..charset.len()].eq(ch_map) {
+                // SAFE: FNC_MAP's size is 758
                 return Some(unsafe { *FNC_MAP.get_unchecked(hash) });
             }
         }
@@ -101,7 +106,7 @@ static CH_HASH: &[u32] = &[
     765,
 ];
 
-static CH_MAP: &[&[u8]] = &[
+static CH_MAP: &[&[u8]; 758] = &[
     b"l8",
     b"",
     b"",
@@ -863,7 +868,7 @@ static CH_MAP: &[&[u8]] = &[
 ];
 
 #[allow(clippy::type_complexity)]
-static FNC_MAP: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>] = &[
+static FNC_MAP: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>; 758] = &[
     decoder_iso_8859_14,
     decoder_default,
     decoder_default,

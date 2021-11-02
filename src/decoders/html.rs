@@ -30,11 +30,11 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         } else if (2..=31).contains(&entity.len()) {
             let mut hash = entity.len() as u32;
 
-            /* Safe because ENTITY_HASH's size is 260 (u8::MAX + 5)
-            and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
             debug_assert_eq!(ENTITY_HASH.len(), u8::MAX as usize + 5);
             debug_assert_eq!(ENTITY_MAP.len(), 18079 - 64 + 1);
 
+            /* SAFE: ENTITY_HASH's size is 260 (u8::MAX + 5)
+                     and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
             unsafe {
                 for (pos, ch) in entity.iter().enumerate() {
                     match pos {
@@ -69,7 +69,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         }
     }
 
-    // Safe because the input string is tokenized by ASCII chars, therefore the resulting
+    // SAFE: the input string is tokenized by ASCII chars, therefore the resulting
     // u8 array is UTF-8 safe.
     result.push_str(unsafe { std::str::from_utf8_unchecked(token) });
 }
@@ -237,6 +237,7 @@ pub fn text_to_html(input: &str) -> String {
     }
     result.extend_from_slice(b"</body></html>");
 
+    // SAFE: `result` contains a sequence of a valid `input` string tokens and UTF-8 safe slices
     unsafe { String::from_utf8_unchecked(result) }
 }
 

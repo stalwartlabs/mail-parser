@@ -115,6 +115,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             b'a'..=b'z' | b'A'..=b'Z' => {
                 if pos == 1 {
                     if (1..=2).contains(&month_pos) {
+                        // SAFE: MONTH_HASH's size is u8::MAX
                         month_hash += unsafe {
                             *MONTH_HASH
                                 .get_unchecked((if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize)
@@ -157,6 +158,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
                 parts[2]
             },
             month: if month_pos == 3 && month_hash <= 30 {
+                // SAFE: MONTH_MAP's size is 31
                 (unsafe { *MONTH_MAP.get_unchecked(month_hash) }) as u32
             } else {
                 parts[1]
@@ -188,7 +190,7 @@ static MONTH_HASH: &[u8] = &[
     31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31,
 ];
 
-pub static MONTH_MAP: &[u8] = &[
+pub static MONTH_MAP: &[u8; 31] = &[
     5, 0, 0, 0, 10, 3, 0, 0, 0, 7, 1, 0, 0, 0, 12, 6, 0, 0, 0, 8, 4, 0, 0, 0, 2, 9, 0, 0, 0, 0, 11,
 ];
 

@@ -44,9 +44,11 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
             let mut success = boundary.is_empty();
             let mut is_utf8_safe = true;
 
+            // SAFE: exclusive access to `self.data` 
             let mut data = &mut *self.data.get();
             let data_len = (*data).len();
 
+            // SAFE: exclusive access to `self.pos` 
             let stream_pos = &mut *self.pos.get();
             let start_pos = *stream_pos;
             let mut read_pos = *stream_pos;
@@ -59,6 +61,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
             debug_assert!(boundary.is_empty() || boundary.len() >= 2);
 
             while read_pos < data_len {
+                // SAFE: slice bounds checked in while loop
                 let ch = *(*data).get_unchecked(read_pos);
                 read_pos += 1;
 
@@ -66,12 +69,15 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                 if !success {
                     let mut is_boundary_end = true;
 
+                    // SAFE: bounds are checked after the first match occurs
                     if ch == *boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
                             let done = if is_word {
                                 true
                             } else {
+                                // SAFE: exclusive access to `self.data` is re-obtained after 
+                                // is_boundary_end finishes.
                                 is_boundary_end = self.is_boundary_end(read_pos);
                                 is_boundary_end
                             };
@@ -95,6 +101,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                                 }
                                 #[cfg(not(miri))]
                                 {
+                                    // SAFE: `write_pos` increments in parallel to `read_pos` 
+                                    // which is bound checked in the while loop
                                     *((*data).get_unchecked_mut(write_pos)) = *ch;
                                 }
                                 write_pos += 1;
@@ -108,6 +116,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                         // is_boundary_end is always true except in the rare event
                         // that a boundary was found without a proper MIME ending (-- or \r\n)
                         if is_boundary_end {
+
+                            // SAFE: `boundary` is never empty at this point
                             if ch == *boundary.get_unchecked(0) {
                                 // Char matched beginning of boundary, get next char.
                                 match_count = 1;
@@ -147,6 +157,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                             }
                             #[cfg(not(miri))]
                             {
+                                // SAFE: `write_pos` increments in parallel to `read_pos` 
+                                // which is bound checked in the while loop
                                 *((*data).get_unchecked_mut(write_pos)) = b'\n';
                             }
 
@@ -160,6 +172,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                         }
                         #[cfg(not(miri))]
                         {
+                            // SAFE: `write_pos` increments in parallel to `read_pos` 
+                            // which is bound checked in the while loop
                             *((*data).get_unchecked_mut(write_pos)) = b' ';
                         }
                         write_pos += 1;
@@ -173,6 +187,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                             }
                             #[cfg(not(miri))]
                             {
+                                // SAFE: `write_pos` increments in parallel to `read_pos` 
+                                // which is bound checked in the while loop
                                 *((*data).get_unchecked_mut(write_pos)) = ch;
                             }
                             write_pos += 1;
@@ -181,6 +197,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                             }
                         }
                         QuotedPrintableState::Eq => {
+                            // SAFE: HEX_MAP's size is u8::MAX
                             hex1 = *HEX_MAP.get_unchecked(ch as usize);
                             if hex1 != -1 {
                                 state = QuotedPrintableState::Hex1;
@@ -190,6 +207,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                             }
                         }
                         QuotedPrintableState::Hex1 => {
+                            // SAFE: HEX_MAP's size is u8::MAX
                             let hex2 = *HEX_MAP.get_unchecked(ch as usize);
 
                             state = QuotedPrintableState::None;
@@ -202,6 +220,8 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                                 }
                                 #[cfg(not(miri))]
                                 {
+                                    // SAFE: `write_pos` increments in parallel to `read_pos` 
+                                    // which is bound checked in the while loop
                                     *((*data).get_unchecked_mut(write_pos)) = ch;
                                 }
 
@@ -224,6 +244,7 @@ impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
                 success,
                 is_utf8_safe,
                 if write_pos > start_pos {
+                    // SAFE: bounds are checked
                     Some((*data).get_unchecked(start_pos..write_pos))
                 } else {
                     None

@@ -54,6 +54,7 @@ fn bytes_to_string<'x>(
     if !is_utf8_safe {
         decoder_default(bytes)
     } else {
+        // SAFE: `bytes` slice is ASCII and UTF-8 safe
         (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
     }
 }

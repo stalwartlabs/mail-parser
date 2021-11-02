@@ -15,6 +15,7 @@ fn single_byte_decoder<'x>(table: &[char], bytes: &'x [u8]) -> Cow<'x, str> {
     let mut result = String::with_capacity(bytes.len() * 2);
 
     for byte in bytes {
+        // SAFE: table's size is always u8::MAX
         result.push(unsafe { *table.get_unchecked(*byte as usize) });
     }
 

@@ -25,8 +25,8 @@ struct Utf7DecoderState {
 fn add_utf16_bytes(state: &mut Utf7DecoderState, n_bytes: usize) {
     debug_assert!(n_bytes < std::mem::size_of::<u32>());
 
-    // Safe because n_bytes is always lower than size_of::<u32>
     unsafe {
+        // SAFE: union access of `n_bytes`, which is always lower than size_of::<u32>
         for byte in state.b64_bytes.bytes.get_unchecked(0..n_bytes) {
             if let Some(pending_byte) = state.pending_byte {
                 state
@@ -53,7 +53,7 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
 
     for byte in bytes {
         if in_b64 {
-            // Safe because BASEMAP size is [4][u8::MAX]
+            // SAFE: BASEMAP's size is [4][u8::MAX]
             let val = unsafe {
                 BASE64_MAP
                     .get_unchecked(byte_count as usize)
@@ -66,7 +66,7 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
                 if byte_count == 1 {
                     state.b64_bytes.val = *val;
                 } else {
-                    // Safe union read/write
+                    // SAFE: union read/write
                     unsafe {
                         state.b64_bytes.val |= *val;
                     }

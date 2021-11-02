@@ -73,6 +73,7 @@ pub fn parse_encoded_word<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
     {
         decoder(bytes?).into()
     } else if is_utf8_safe {
+        // SAFE: slice checked previously
         unsafe { Cow::from(std::str::from_utf8_unchecked(bytes?)).into() }
     } else {
         decoder_default(bytes?).into()

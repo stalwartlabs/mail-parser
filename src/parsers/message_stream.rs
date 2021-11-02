@@ -12,6 +12,8 @@
 use std::{borrow::Cow, cell::UnsafeCell};
 
 pub struct MessageStream<'x> {
+    // SAFE: MessageStream is always executed on a single thread and this struct
+    // is never shared outside the library.
     pub data: UnsafeCell<&'x mut [u8]>,
     pub pos: UnsafeCell<usize>,
 }
@@ -26,12 +28,15 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn get_bytes(&self, from: usize, to: usize) -> Option<&'x [u8]> {
+        // SAFE: exclusive access to `data`
         unsafe { (*self.data.get()).get(from..to) }
     }
 
     pub fn get_string(&self, from: usize, to: usize, utf8_valid: bool) -> Option<Cow<'x, str>> {
+        // SAFE: exclusive access to `data`
         unsafe {
             if utf8_valid {
+                // SAFE: slice region is US-ASCII and UTF-8 safe
                 Cow::from(std::str::from_utf8_unchecked(
                     (*self.data.get()).get(from..to)?,
                 ))
@@ -44,11 +49,13 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn is_eof(&self) -> bool {
+        // SAFE: exclusive access to `data` and `pos`
         unsafe { *self.pos.get() >= (*self.data.get()).len() }
     }
 
     #[inline(always)]
     pub fn set_pos(&self, pos: usize) {
+        // SAFE: exclusive access to `pos`
         unsafe {
             *self.pos.get() = pos;
         }
@@ -56,16 +63,19 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn get_pos(&self) -> usize {
+        // SAFE: exclusive access to `pos`
         unsafe { *self.pos.get() }
     }
 
     #[inline(always)]
     pub fn next(&self) -> Option<&'x u8> {
         unsafe {
+            // SAFE: exclusive access to `data` and `pos`
             let pos = &mut *self.pos.get();
             let data = &mut *self.data.get();
 
             if *pos < data.len() {
+                // SAFE: bounds are checked
                 let result = data.get_unchecked(*pos);
                 *pos += 1;
                 Some(result)
@@ -77,11 +87,13 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn peek(&self) -> Option<&'x u8> {
+        // SAFE: exclusive access to `data` and `pos`
         unsafe { (*self.data.get()).get(*self.pos.get()) }
     }
 
     #[inline(always)]
     pub fn advance(&self, pos: usize) {
+        // SAFE: exclusive access to `pos`
         unsafe {
             *self.pos.get() += pos;
         }
@@ -90,14 +102,17 @@ impl<'x> MessageStream<'x> {
     pub fn seek_next_part(&self, boundary: &[u8]) -> bool {
         if !boundary.is_empty() {
             unsafe {
+                // SAFE: exclusive access to `data` and `pos`
                 let cur_pos = &mut *self.pos.get();
                 let data = &mut *self.data.get();
+
                 let mut pos = *cur_pos;
                 let mut match_count = 0;
 
                 for ch in (*data)[*cur_pos..].iter() {
                     pos += 1;
 
+                    // SAFE: bounds are checked after the first match occurs
                     if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
@@ -107,6 +122,7 @@ impl<'x> MessageStream<'x> {
                             continue;
                         }
                     } else if match_count > 0 {
+                        // SAFE: `boundary` can't be empty
                         if ch == boundary.get_unchecked(0) {
                             match_count = 1;
                             continue;
@@ -123,9 +139,10 @@ impl<'x> MessageStream<'x> {
 
     pub fn get_bytes_to_boundary(&self, boundary: &[u8]) -> (bool, bool, Option<&'x [u8]>) {
         unsafe {
+            // SAFE: exclusive access to `data` and `pos`
             let mut data = &mut *self.data.get();
-
             let stream_pos = &mut *self.pos.get();
+
             let start_pos = *stream_pos;
 
             return if !boundary.is_empty() {
@@ -140,9 +157,12 @@ impl<'x> MessageStream<'x> {
                         is_utf8_safe = false;
                     }
 
+                    // SAFE: bounds are checked after the first match occurs
                     if ch == boundary.get_unchecked(match_count) {
                         match_count += 1;
                         if match_count == boundary.len() {
+                            // SAFE: exclusive access to `self.data` is re-obtained after 
+                            // is_boundary_end finishes.
                             let is_boundary_end = self.is_boundary_end(pos);
                             data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
 
@@ -165,6 +185,7 @@ impl<'x> MessageStream<'x> {
                         }
                         continue;
                     } else if match_count > 0 {
+                        // SAFE: `boundary` is never empty
                         if ch == boundary.get_unchecked(0) {
                             match_count = 1;
                             continue;
@@ -187,8 +208,10 @@ impl<'x> MessageStream<'x> {
     #[inline(always)]
     pub fn skip_crlf(&self) {
         unsafe {
+            // SAFE: exclusive access to `data` and `pos`
             let cur_pos = &mut *self.pos.get();
             let data = &mut *self.data.get();
+
             let mut pos = *cur_pos;
 
             for ch in (*data)[*cur_pos..].iter() {
@@ -207,6 +230,7 @@ impl<'x> MessageStream<'x> {
     #[inline(always)]
     pub fn skip_byte(&self, ch: &u8) -> bool {
         unsafe {
+            // SAFE: exclusive access to `data` and `pos`
             let pos = &mut *self.pos.get();
             let data = &mut *self.data.get();
 
@@ -221,6 +245,7 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn is_boundary_end(&self, pos: usize) -> bool {
+        // SAFE: exclusive access to `data` and `pos`
         matches!(
             unsafe { (*self.data.get()).get(pos..) },
             Some([b'\n' | b'\r' | b' ' | b'\t', ..]) | Some([b'-', b'-', ..]) | Some([]) | None
@@ -229,6 +254,7 @@ impl<'x> MessageStream<'x> {
 
     pub fn skip_multipart_end(&self) -> bool {
         unsafe {
+            // SAFE: exclusive access to `pos`
             let pos = &mut *self.pos.get();
 
             match (*self.data.get()).get(*pos..*pos + 2) {
@@ -247,6 +273,7 @@ impl<'x> MessageStream<'x> {
     }
 
     pub fn rewind(&self, r: usize) {
+        // SAFE: exclusive access to `pos`
         unsafe {
             *self.pos.get() -= r;
         }

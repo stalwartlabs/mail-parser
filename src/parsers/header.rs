@@ -77,6 +77,7 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                     let field = stream.get_bytes(token_start - 1, token_end).unwrap();
 
                     if (2..=25).contains(&token_len) {
+                        // SAFE: HDR_HASH's size is u8::MAX
                         token_hash += token_len
                             + unsafe {
                                 *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
@@ -85,9 +86,11 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                         if (4..=61).contains(&token_hash) {
                             let token_hash = token_hash - 4;
 
-                            if field.eq_ignore_ascii_case(unsafe {
+                            // SAFE: HDR_NAME's size is 58
+                               if field.eq_ignore_ascii_case(unsafe {
                                 HDR_NAMES.get_unchecked(token_hash)
                             }) {
+                                // SAFE: HDR_FNCS's size is 58
                                 return HeaderParserResult::Supported(unsafe {
                                     *HDR_FNCS.get_unchecked(token_hash)
                                 });
@@ -112,6 +115,7 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                     }
 
                     if let 0 | 9 = token_len {
+                        // SAFE: HDR_HASH's size is u8::MAX
                         token_hash +=
                             unsafe { *HDR_HASH.get_unchecked((*ch).to_ascii_lowercase() as usize) }
                                 as usize;
@@ -196,7 +200,7 @@ static HDR_HASH: &[u8] = &[
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62,
 ];
 
-static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &MessageStream<'x>)] = &[
+static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &MessageStream<'x>); 58] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,
     super::fields::parse_sender,
@@ -257,7 +261,7 @@ static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &MessageStream<'x>)
     super::fields::parse_resent_from,
 ];
 
-static HDR_NAMES: &[&[u8]] = &[
+static HDR_NAMES: &[&[u8]; 58] = &[
     b"date",
     b"",
     b"sender",
