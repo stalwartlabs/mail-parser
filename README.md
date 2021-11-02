@@ -11,11 +11,11 @@ Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other
 
 It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
 All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for legacy multi-byte encodings of Chinese
-and Japanse languages such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
+and Japanese languages such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
 
 In general, this library abides by the Postel's law or [Robustness Principle](https://en.wikipedia.org/wiki/Robustness_principle) which 
 states that an implementation must be conservative in its sending behavior and liberal in its receiving behavior. This means that
-_mail-parser_ will make a best effort to parse non-conformat e-mail messages as long as these do not deviate too much from the standard.
+_mail-parser_ will make a best effort to parse non-conformant e-mail messages as long as these do not deviate too much from the standard.
 
 Unlike other e-mail parsing libraries that return nested representations of the different MIME parts in a message, this library 
 conforms to [RFC 8621, Section 4.1.4](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4) and provides a more human-friendly

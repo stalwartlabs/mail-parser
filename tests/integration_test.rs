@@ -143,5 +143,4 @@ fn test_api() {
 
     //println!("{}", serde_json::to_string_pretty(&message).unwrap());
     //println!("{}", serde_yaml::to_string(&message).unwrap());
-
 }

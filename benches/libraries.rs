@@ -69,7 +69,6 @@ fn bench_all_samples(b: &mut Bencher, name: &str, fnc: fn(&mut [u8], &str)) {
             fnc(&mut input_bytes[..], &input_str);
         }
     });
-
 }
 
 #[bench]
@@ -83,7 +82,7 @@ fn bench_stalwart(b: &mut Bencher) {
 // on the benchmarks as they do not parse all header fields,
 // do not decode encoded parts or fail while trying to parse the messages.
 // Also no text body conversion between HTML/plain-text is done by these.
-// 
+//
 // To benchmark against these libraries, add to Cargo.toml dev-dependencies:
 //
 // email = "0.0.21"

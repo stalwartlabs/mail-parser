@@ -10,39 +10,39 @@
  */
 
 //! # mail-parser
-//! 
+//!
 //! _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
 //! Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
-//! 
+//!
 //! It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
 //! All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for legacy multi-byte encodings of Chinese
-//! and Japanse languages such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
-//! 
-//! In general, this library abides by the Postel's law or [Robustness Principle](https://en.wikipedia.org/wiki/Robustness_principle) which 
+//! and Japanese languages such as BIG5 or ISO-2022-JP is provided by the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs).
+//!
+//! In general, this library abides by the Postel's law or [Robustness Principle](https://en.wikipedia.org/wiki/Robustness_principle) which
 //! states that an implementation must be conservative in its sending behavior and liberal in its receiving behavior. This means that
-//! _mail-parser_ will make a best effort to parse non-conformat e-mail messages as long as these do not deviate too much from the standard.
-//! 
-//! Unlike other e-mail parsing libraries that return nested representations of the different MIME parts in a message, this library 
+//! _mail-parser_ will make a best effort to parse non-conformant e-mail messages as long as these do not deviate too much from the standard.
+//!
+//! Unlike other e-mail parsing libraries that return nested representations of the different MIME parts in a message, this library
 //! conforms to [RFC 8621, Section 4.1.4](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4) and provides a more human-friendly
 //! representation of the message contents consisting of just text body parts, html body parts and attachments. Additionally, conversion to/from
 //! HTML and plain text inline body parts is done automatically when the _alternative_ version is missing.
-//! 
+//!
 //! Performance and memory safety were two important factors while designing _mail-parser_:
-//! 
-//! - **Zero-copy parsing** is done in most cases (unless when decoding non-UTF8 text or when RFC2047/RFC2231 encoded parts are present). 
+//!
+//! - **Zero-copy parsing** is done in most cases (unless when decoding non-UTF8 text or when RFC2047/RFC2231 encoded parts are present).
 //!   Practically all strings and u8 slices returned by this library are `Cow<str>` or `Cow<[u8]>` references to the input raw message.
-//! - Memory allocations are always avoided unless they are really necessary. In fact, all Base64 and Quoted-Printable parts are decoded in 
-//!   place re-using the input buffer. 
-//! - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character 
+//! - Memory allocations are always avoided unless they are really necessary. In fact, all Base64 and Quoted-Printable parts are decoded in
+//!   place re-using the input buffer.
+//! - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character
 //!   set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
-//! - Although some `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been 
+//! - Although some `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been
 //!   [fuzzed](#testing-fuzzing--benchmarking) and also heavily [tested with MIRI](#testing-fuzzing--benchmarking).
 //! - Fully battle-tested with millions of real-world e-mail messages dating from 1995 until today.
-//! 
+//!
 //! Jump to the [example](#usage-example).
-//! 
+//!
 //! ## Conformed RFCs
-//! 
+//!
 //! - [RFC 822 - Standard for ARPA Internet Text Messages](https://datatracker.ietf.org/doc/html/rfc822)
 //! - [RFC 5322 - Internet Message Format](https://datatracker.ietf.org/doc/html/rfc5322)
 //! - [RFC 2045 - Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies](https://datatracker.ietf.org/doc/html/rfc2045)
@@ -57,59 +57,59 @@
 //! - [RFC 2369 - The Use of URLs as Meta-Syntax for Core Mail List Commands and their Transport through Message Header Fields](https://datatracker.ietf.org/doc/html/rfc2369)
 //! - [RFC 2919 - List-Id: A Structured Field and Namespace for the Identification of Mailing Lists](https://datatracker.ietf.org/doc/html/rfc2919)
 //! - [RFC 8621 - The JSON Meta Application Protocol (JMAP) for Mail (Section 4.1.4)](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4)
-//! 
+//!
 //! ## Supported Character Sets
-//! 
+//!
 //! - UTF-8
 //! - UTF-16, UTF-16BE, UTF-16LE
 //! - UTF-7
 //! - US-ASCII
-//! - ISO-8859-1 
-//! - ISO-8859-2 
-//! - ISO-8859-3 
-//! - ISO-8859-4 
-//! - ISO-8859-5 
-//! - ISO-8859-6 
-//! - ISO-8859-7 
-//! - ISO-8859-8 
-//! - ISO-8859-9 
-//! - ISO-8859-10 
-//! - ISO-8859-13 
-//! - ISO-8859-14 
-//! - ISO-8859-15 
+//! - ISO-8859-1
+//! - ISO-8859-2
+//! - ISO-8859-3
+//! - ISO-8859-4
+//! - ISO-8859-5
+//! - ISO-8859-6
+//! - ISO-8859-7
+//! - ISO-8859-8
+//! - ISO-8859-9
+//! - ISO-8859-10
+//! - ISO-8859-13
+//! - ISO-8859-14
+//! - ISO-8859-15
 //! - ISO-8859-16
-//! - CP1250 
-//! - CP1251 
-//! - CP1252 
-//! - CP1253 
-//! - CP1254 
-//! - CP1255 
-//! - CP1256 
-//! - CP1257 
+//! - CP1250
+//! - CP1251
+//! - CP1252
+//! - CP1253
+//! - CP1254
+//! - CP1255
+//! - CP1256
+//! - CP1257
 //! - CP1258
 //! - KOI8-R
 //! - KOI8_U
 //! - MACINTOSH
 //! - IBM850
 //! - TIS-620
-//! 
+//!
 //! Supported character sets via the optional dependency [encoding_rs](https://crates.io/crates/encoding_rs):
 //!   
 //! - SHIFT_JIS
 //! - BIG5
-//! - EUC-JP 
-//! - EUC-KR 
+//! - EUC-JP
+//! - EUC-KR
 //! - GB18030
 //! - GBK
-//! - ISO-2022-JP 
+//! - ISO-2022-JP
 //! - WINDOWS-874
 //! - IBM-866
-//! 
+//!
 //! ## Usage Example
-//! 
+//!
 //! ```
 //!    use mail_parser::*;
-//! 
+//!
 //!    let mut input = concat!(
 //!        "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
 //!        "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
@@ -195,7 +195,7 @@
 //!        "Why not both importing AND exporting? ☺"
 //!    );
 //!
-//!    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4 
+//!    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
 //!    assert_eq!(
 //!        message.get_html_body(0).unwrap().to_string(),
 //!        concat!(
@@ -259,7 +259,6 @@
 //!    println!("{}", serde_yaml::to_string(&message).unwrap());
 //!```
 
-
 pub mod decoders;
 pub mod parsers;
 
@@ -274,13 +273,22 @@ use serde::{Deserialize, Serialize};
 pub struct Message<'x> {
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     header: Box<MessageHeader<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Vec::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     html_body: Vec<InlinePart<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Vec::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     text_body: Vec<InlinePart<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Vec::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     attachments: Vec<MessagePart<'x>>,
 }
@@ -289,7 +297,10 @@ pub struct Message<'x> {
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct TextPart<'x> {
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     header: Option<MimeHeader<'x>>,
     contents: Cow<'x, str>,
@@ -299,7 +310,10 @@ pub struct TextPart<'x> {
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct BinaryPart<'x> {
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     header: Option<MimeHeader<'x>>,
     #[cfg_attr(feature = "serde_support", serde(with = "serde_bytes"))]
@@ -317,12 +331,12 @@ pub enum InlinePart<'x> {
 }
 
 /// A text, binary or nested e-mail MIME message part.
-/// 
+///
 /// - Text: Any text/* part
 /// - Binary: Any other part type that is not text, usually attachments.
 /// - InlineBinary: Same as the Binary variant but an inline part according to RFC 8621, Section 4.1.4
 /// - Message: A nested RFC5322 message.
-/// 
+///
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum MessagePart<'x> {
@@ -345,113 +359,221 @@ pub enum MessagePart<'x> {
 #[derive(PartialEq, Debug, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct MessageHeader<'x> {
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub bcc: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub cc: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub comments: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub date: Option<DateTime>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub from: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub in_reply_to: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub keywords: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_archive: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_help: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_id: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_owner: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_post: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_subscribe: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub list_unsubscribe: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub message_id: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub mime_version: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub received: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub references: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub reply_to: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_bcc: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_cc: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_date: Option<Vec<DateTime>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_from: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_message_id: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_sender: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub resent_to: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub return_path: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub sender: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub subject: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Address::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Address::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub to: Address<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_description: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_disposition: Option<ContentType<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_id: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_type: Option<ContentType<'x>>,
     #[cfg_attr(feature = "serde_support", serde(borrow))]
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "HashMap::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "HashMap::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
 }
@@ -460,19 +582,34 @@ pub struct MessageHeader<'x> {
 #[derive(PartialEq, Debug, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct MimeHeader<'x> {
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_description: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_disposition: Option<ContentType<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_id: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub content_type: Option<ContentType<'x>>,
 }
@@ -482,12 +619,18 @@ pub struct MimeHeader<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Addr<'x> {
     /// The address name including comments
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub name: Option<Cow<'x, str>>,
 
     /// An e-mail address (RFC5322/RFC2369) or URL (RFC2369)
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub address: Option<Cow<'x, str>>,
 }
@@ -497,12 +640,18 @@ pub struct Addr<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Group<'x> {
     /// Group name
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub name: Option<Cow<'x, str>>,
 
     /// Addressess member of the group
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Vec::is_empty"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub addresses: Vec<Addr<'x>>,
 }
@@ -535,10 +684,16 @@ pub enum Address<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct ContentType<'x> {
     c_type: Cow<'x, str>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     c_subtype: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
 }
