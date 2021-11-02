@@ -35,7 +35,7 @@
 //!   place re-using the input buffer. 
 //! - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character 
 //!   set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
-//! - Although `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been 
+//! - Although some `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been 
 //!   [fuzzed](#testing-fuzzing--benchmarking) and also heavily [tested with MIRI](#testing-fuzzing--benchmarking).
 //! - Fully battle-tested with millions of real-world e-mail messages dating from 1995 until today.
 //! 
