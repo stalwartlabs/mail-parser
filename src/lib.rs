@@ -255,6 +255,7 @@
 //!    println!("{}", serde_json::to_string_pretty(&message).unwrap());
 //!    println!("{}", serde_yaml::to_string(&message).unwrap());
 //!```
+#[forbid(unsafe_code)]
 
 pub mod decoders;
 pub mod parsers;
