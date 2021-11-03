@@ -76,17 +76,13 @@ pub fn parse_header_name<'x>(stream: &mut MessageStream<'x>) -> HeaderParserResu
     let mut token_hash: usize = 0;
     let mut last_ch: u8 = 0;
 
-    let mut read_pos = stream.pos;
-
-    for ch in stream.data[read_pos..].iter() {
-        read_pos += 1;
+    for ch in stream.data[stream.pos..].iter() {
+        stream.pos += 1;
 
         match ch {
             b':' => {
                 if token_start != 0 {
                     let field = &stream.data[token_start - 1..token_end];
-
-                    stream.pos = read_pos;
 
                     if (2..=25).contains(&token_len) {
                         token_hash +=
@@ -104,16 +100,16 @@ pub fn parse_header_name<'x>(stream: &mut MessageStream<'x>) -> HeaderParserResu
                 }
             }
             b'\n' => {
-                stream.pos = read_pos - 1;
+                stream.pos -= 1;
                 return HeaderParserResult::Lf;
             }
             _ => {
                 if !(*ch).is_ascii_whitespace() {
                     if token_start == 0 {
-                        token_start = read_pos;
+                        token_start = stream.pos;
                         token_end = token_start;
                     } else {
-                        token_end = read_pos;
+                        token_end = stream.pos;
                         last_ch = *ch;
                     }
 
@@ -125,8 +121,6 @@ pub fn parse_header_name<'x>(stream: &mut MessageStream<'x>) -> HeaderParserResu
             }
         }
     }
-
-    stream.pos = read_pos;
 
     HeaderParserResult::Eof
 }

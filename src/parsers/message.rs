@@ -152,10 +152,7 @@ impl<'x> Message<'x> {
     /// To make sure parsing was successfull use `is_empty()`.
     ///
     pub fn parse(bytes: &'x [u8]) -> Message<'x> {
-        let mut stream = MessageStream {
-            data: bytes,
-            pos: 0,
-        };
+        let mut stream = MessageStream::new(bytes);
 
         let mut message = Message::new();
         let mut message_stack = Vec::new();

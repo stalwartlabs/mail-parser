@@ -17,20 +17,18 @@ pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
 
-    let mut read_pos = stream.pos;
-    let mut iter = stream.data[read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
-        read_pos += 1;
+        stream.pos += 1;
         match ch {
-            b'\n' => match stream.data.get(read_pos) {
+            b'\n' => match stream.data.get(stream.pos) {
                 Some(b' ' | b'\t') => {
                     iter.next();
-                    read_pos += 1;
+                    stream.pos += 1;
                     continue;
                 }
                 _ => {
-                    stream.pos = read_pos;
                     return if token_start > 0 {
                         String::from_utf8_lossy(&stream.data[token_start - 1..token_end]).into()
                     } else {
@@ -43,36 +41,32 @@ pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
         }
 
         if token_start == 0 {
-            token_start = read_pos;
+            token_start = stream.pos;
         }
 
-        token_end = read_pos;
+        token_end = stream.pos;
     }
-
-    stream.pos = read_pos;
 
     None
 }
 
 pub fn parse_and_ignore(stream: &mut MessageStream) {
-    let mut read_pos = stream.pos;
-    let mut iter = stream.data[read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
-        read_pos += 1;
+        stream.pos += 1;
 
         if ch == &b'\n' {
-            match stream.data.get(read_pos) {
+            match stream.data.get(stream.pos) {
                 Some(b' ' | b'\t') => {
                     iter.next();
-                    read_pos += 1;
+                    stream.pos += 1;
                     continue;
                 }
                 _ => break,
             }
         }
     }
-    stream.pos = read_pos;
 }
 
 #[cfg(test)]

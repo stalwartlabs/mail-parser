@@ -96,16 +96,14 @@ pub fn is_boundary_end(stream: &MessageStream, pos: usize) -> bool {
 }
 
 pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
-    let pos = stream.pos;
-
-    match stream.data.get(pos..pos + 2) {
+    match stream.data.get(stream.pos..stream.pos + 2) {
         Some(b"--") => {
-            if let Some(byte) = stream.data.get(pos + 2) {
+            if let Some(byte) = stream.data.get(stream.pos + 2) {
                 if !(*byte).is_ascii_whitespace() {
                     return false;
                 }
             }
-            stream.pos = pos + 2;
+            stream.pos += 2;
             true
         }
         _ => false,
@@ -114,13 +112,11 @@ pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
 
 #[inline(always)]
 pub fn skip_crlf(stream: &mut MessageStream) {
-    let mut pos = stream.pos;
-
-    for ch in stream.data[pos..].iter() {
+    for ch in stream.data[stream.pos..].iter() {
         match ch {
-            b'\r' | b' ' | b'\t' => pos += 1,
+            b'\r' | b' ' | b'\t' => stream.pos += 1,
             b'\n' => {
-                stream.pos = pos + 1;
+                stream.pos += 1;
                 break;
             }
             _ => break,

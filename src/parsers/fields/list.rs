@@ -60,27 +60,26 @@ pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<C
         list: Vec::new(),
     };
 
-    let mut read_pos = stream.pos;
-    let mut iter = stream.data[read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
-        read_pos += 1;
+        stream.pos += 1;
         match ch {
             b'\n' => {
                 add_token(&mut parser, stream, false);
 
-                match stream.data.get(read_pos) {
+                match stream.data.get(stream.pos) {
                     Some(b' ' | b'\t') => {
                         if !parser.is_token_start {
                             parser.is_token_start = true;
                         }
                         iter.next();
-                        read_pos += 1;
+                        stream.pos += 1;
                         continue;
                     }
                     _ => {
                         add_tokens_to_list(&mut parser);
-                        stream.pos = read_pos;
+
                         return if !parser.list.is_empty() {
                             parser.list.into()
                         } else {
@@ -96,11 +95,11 @@ pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<C
                 continue;
             }
             b'=' if parser.is_token_start => {
-                if let (bytes_read, Some(token)) = decode_rfc2047(stream, read_pos) {
+                if let (bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
-                    read_pos += bytes_read;
-                    iter = stream.data[read_pos..].iter();
+                    stream.pos += bytes_read;
+                    iter = stream.data[stream.pos..].iter();
                     continue;
                 }
             }
@@ -118,13 +117,11 @@ pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<C
         }
 
         if parser.token_start == 0 {
-            parser.token_start = read_pos;
+            parser.token_start = stream.pos;
         }
 
-        parser.token_end = read_pos;
+        parser.token_end = stream.pos;
     }
-
-    stream.pos = read_pos;
 
     None
 }

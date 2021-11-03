@@ -57,18 +57,17 @@ pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
     let mut ignore = true;
     let mut comment_count = 0;
 
-    let mut read_pos = stream.pos;
-    let mut iter = stream.data[read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
         let mut next_part = false;
-        read_pos += 1;
+        stream.pos += 1;
 
         match ch {
-            b'\n' => match stream.data.get(read_pos) {
+            b'\n' => match stream.data.get(stream.pos) {
                 Some(b' ' | b'\t') => {
                     iter.next();
-                    read_pos += 1;
+                    stream.pos += 1;
 
                     if !is_new_token && !ignore && comment_count == 0 {
                         next_part = true;
@@ -84,8 +83,8 @@ pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
                 } else if *ch == b'(' {
                     comment_count += 1;
                 } else if *ch == b'\\' {
-                    if let Some(b')') = stream.data.get(read_pos) {
-                        read_pos += 1;
+                    if let Some(b')') = stream.data.get(stream.pos) {
+                        stream.pos += 1;
                     }
                 }
                 continue;
@@ -150,8 +149,6 @@ pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
             is_new_token = true;
         }
     }
-
-    stream.pos = read_pos;
 
     if pos >= 6 {
         Some(DateTime {

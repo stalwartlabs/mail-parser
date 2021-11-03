@@ -47,7 +47,6 @@ struct ContentTypeParser<'x> {
     attributes: HashMap<Cow<'x, str>, Cow<'x, str>>,
     continuations: Option<Vec<Continuation<'x>>>,
 
-    read_pos: usize,
     token_start: usize,
     token_end: usize,
 
@@ -124,7 +123,7 @@ fn add_partial_value<'x>(
 
         parser.values.push(String::from_utf8_lossy(
             &stream.data[parser.token_start - 1..if in_quote && to_cur_pos {
-                parser.read_pos - 1
+                stream.pos - 1
             } else {
                 parser.token_end
             }],
@@ -267,15 +266,14 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
         is_token_start: true,
         is_escaped: false,
 
-        read_pos: stream.pos,
         token_start: 0,
         token_end: 0,
     };
 
-    let mut iter = stream.data[parser.read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
-        parser.read_pos += 1;
+        stream.pos += 1;
         match ch {
             b' ' | b'\t' => {
                 if !parser.is_token_start {
@@ -283,10 +281,10 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                 }
                 if let ContentState::AttributeQuotedValue = parser.state {
                     if parser.token_start == 0 {
-                        parser.token_start = parser.read_pos;
+                        parser.token_start = stream.pos;
                         parser.token_end = parser.token_start;
                     } else {
-                        parser.token_end = parser.read_pos;
+                        parser.token_end = stream.pos;
                     }
                 }
                 continue;
@@ -312,10 +310,10 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                     _ => (),
                 }
 
-                match stream.data.get(parser.read_pos) {
+                match stream.data.get(stream.pos) {
                     Some(b' ' | b'\t') => {
                         parser.state = ContentState::AttributeName;
-                        parser.read_pos += 1;
+                        stream.pos += 1;
                         iter.next();
 
                         if !parser.is_token_start {
@@ -327,7 +325,7 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                         if parser.continuations.is_some() {
                             merge_continuations(&mut parser);
                         }
-                        stream.pos = parser.read_pos;
+
                         return if let Some(content_type) = parser.c_type {
                             Some(ContentType {
                                 c_type: content_type,
@@ -397,11 +395,11 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                 ContentState::AttributeValue | ContentState::AttributeQuotedValue
                     if parser.is_token_start =>
                 {
-                    if let (d_bytes_read, Some(token)) = decode_rfc2047(stream, parser.read_pos) {
+                    if let (d_bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
                         add_partial_value(&mut parser, stream, false);
                         parser.values.push(token.into());
-                        parser.read_pos += d_bytes_read;
-                        iter = stream.data[parser.read_pos..].iter();
+                        stream.pos += d_bytes_read;
+                        iter = stream.data[stream.pos..].iter();
                         continue;
                     }
                 }
@@ -491,14 +489,12 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
         }
 
         if parser.token_start == 0 {
-            parser.token_start = parser.read_pos;
+            parser.token_start = stream.pos;
             parser.token_end = parser.token_start;
         } else {
-            parser.token_end = parser.read_pos;
+            parser.token_end = stream.pos;
         }
     }
-
-    stream.pos = parser.read_pos;
 
     None
 }

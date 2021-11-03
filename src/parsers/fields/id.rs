@@ -19,20 +19,18 @@ pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>>
     let mut is_id_part = false;
     let mut ids = Vec::new();
 
-    let mut read_pos = stream.pos;
-    let mut iter = stream.data[read_pos..].iter();
+    let mut iter = stream.data[stream.pos..].iter();
 
     while let Some(ch) = iter.next() {
-        read_pos += 1;
+        stream.pos += 1;
         match ch {
-            b'\n' => match stream.data.get(read_pos) {
+            b'\n' => match stream.data.get(stream.pos) {
                 Some(b' ' | b'\t') => {
                     iter.next();
-                    read_pos += 1;
+                    stream.pos += 1;
                     continue;
                 }
                 _ => {
-                    stream.pos = read_pos;
                     return if !ids.is_empty() { Some(ids) } else { None };
                 }
             },
@@ -56,13 +54,11 @@ pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>>
         }
         if is_id_part {
             if token_start == 0 {
-                token_start = read_pos;
+                token_start = stream.pos;
             }
-            token_end = read_pos;
+            token_end = stream.pos;
         }
     }
-
-    stream.pos = read_pos;
 
     None
 }
