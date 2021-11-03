@@ -1,6 +1,6 @@
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::message::MessageStream;
 
 /*
  * Copyright Stalwart Labs, Minter Ltd. See the COPYING

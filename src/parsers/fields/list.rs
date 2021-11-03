@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream};
+use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
 
 struct ListParser<'x> {
     token_start: usize,
@@ -26,11 +26,9 @@ fn add_token<'x>(parser: &mut ListParser<'x>, stream: &MessageStream<'x>, add_sp
         if !parser.tokens.is_empty() {
             parser.tokens.push(" ".into());
         }
-        parser.tokens.push(
-            stream
-                .get_string(parser.token_start - 1, parser.token_end)
-                .unwrap(),
-        );
+        parser.tokens.push(String::from_utf8_lossy(
+            &stream.data[parser.token_start - 1..parser.token_end],
+        ));
 
         if add_space {
             parser.tokens.push(" ".into());
@@ -53,7 +51,7 @@ fn add_tokens_to_list(parser: &mut ListParser) {
     }
 }
 
-pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     let mut parser = ListParser {
         token_start: 0,
         token_end: 0,
@@ -62,7 +60,7 @@ pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'
         list: Vec::new(),
     };
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -82,7 +80,7 @@ pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'
                     }
                     _ => {
                         add_tokens_to_list(&mut parser);
-                        stream.set_pos(read_pos);
+                        stream.pos = read_pos;
                         return if !parser.list.is_empty() {
                             parser.list.into()
                         } else {
@@ -126,14 +124,15 @@ pub fn parse_comma_separared<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'
         parser.token_end = read_pos;
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     None
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::list::parse_comma_separared, message_stream::MessageStream};
+    use crate::parsers::fields::list::parse_comma_separared;
+    use crate::parsers::message::MessageStream;
 
     #[test]
     fn parse_comma_separated_text() {
@@ -177,7 +176,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_comma_separared(&MessageStream::new(str.as_bytes()),).unwrap(),
+                parse_comma_separared(&mut MessageStream::new(str.as_bytes()),).unwrap(),
                 input.1
             );
         }

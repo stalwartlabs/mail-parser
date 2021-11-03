@@ -11,13 +11,13 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::message::MessageStream;
 
-pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
+pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -30,12 +30,9 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
                     continue;
                 }
                 _ => {
-                    stream.set_pos(read_pos);
+                    stream.pos = read_pos;
                     return if token_start > 0 {
-                        stream
-                            .get_string(token_start - 1, token_end)
-                            .unwrap()
-                            .into()
+                        String::from_utf8_lossy(&stream.data[token_start - 1..token_end]).into()
                     } else {
                         None
                     };
@@ -52,13 +49,13 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
         token_end = read_pos;
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     None
 }
 
-pub fn parse_and_ignore(stream: &MessageStream) {
-    let mut read_pos = stream.get_pos();
+pub fn parse_and_ignore(stream: &mut MessageStream) {
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -75,12 +72,13 @@ pub fn parse_and_ignore(stream: &MessageStream) {
             }
         }
     }
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::raw::parse_raw, message_stream::MessageStream};
+    use crate::parsers::fields::raw::parse_raw;
+    use crate::parsers::message::MessageStream;
 
     #[test]
     fn parse_raw_text() {
@@ -104,7 +102,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_raw(&MessageStream::new(str.as_bytes())).unwrap(),
+                parse_raw(&mut MessageStream::new(str.as_bytes())).unwrap(),
                 input.1,
                 "Failed for '{:?}'",
                 input.0

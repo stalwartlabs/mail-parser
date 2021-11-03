@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::message::MessageStream;
 
 #[derive(PartialEq, Debug)]
 enum QuotedPrintableState {
@@ -160,7 +160,7 @@ pub fn decode_quoted_printable<'x>(
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::quoted_printable::decode_quoted_printable, parsers::message_stream::MessageStream,
+        decoders::quoted_printable::decode_quoted_printable, parsers::message::MessageStream,
     };
 
     #[test]

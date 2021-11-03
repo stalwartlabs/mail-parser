@@ -29,9 +29,9 @@
 //!
 //! Performance and memory safety were two important factors while designing _mail-parser_:
 //!
-//! - **Zero-copy parsing**: Practically all strings returned by this library are `Cow<str>` references to the input raw message.
+//! - **Zero-copy**: Practically all strings returned by this library are `Cow<str>` references to the input raw message.
 //! - **High performance Base64 decoding** based on Chromium's decoder ([the fastest non-SIMD decoder](https://github.com/lemire/fastbase64)).
-//! - **Fast** parsing of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
+//! - **Fast parsing** of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
 //! - Written in **100% safe** Rust with no external dependencies.
 //! - Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and
 //!   meticulously [tested with MIRI](#testing-fuzzing--benchmarking).

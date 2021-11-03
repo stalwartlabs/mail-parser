@@ -1,10 +1,10 @@
 use std::borrow::Cow;
 
-use super::message_stream::MessageStream;
+use super::message::MessageStream;
 
-pub fn seek_next_part(stream: &MessageStream, boundary: &[u8]) -> bool {
+pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
     if !boundary.is_empty() {
-        let mut pos = stream.pos.get();
+        let mut pos = stream.pos;
 
         let mut match_count = 0;
 
@@ -14,7 +14,7 @@ pub fn seek_next_part(stream: &MessageStream, boundary: &[u8]) -> bool {
             if ch == &boundary[match_count] {
                 match_count += 1;
                 if match_count == boundary.len() {
-                    stream.set_pos(pos);
+                    stream.pos = pos;
                     return true;
                 } else {
                     continue;
@@ -95,8 +95,8 @@ pub fn is_boundary_end(stream: &MessageStream, pos: usize) -> bool {
     )
 }
 
-pub fn skip_multipart_end(stream: &MessageStream) -> bool {
-    let pos = stream.pos.get();
+pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
+    let pos = stream.pos;
 
     match stream.data.get(pos..pos + 2) {
         Some(b"--") => {
@@ -105,9 +105,25 @@ pub fn skip_multipart_end(stream: &MessageStream) -> bool {
                     return false;
                 }
             }
-            stream.set_pos(pos + 2);
+            stream.pos = pos + 2;
             true
         }
         _ => false,
+    }
+}
+
+#[inline(always)]
+pub fn skip_crlf(stream: &mut MessageStream) {
+    let mut pos = stream.pos;
+
+    for ch in stream.data[pos..].iter() {
+        match ch {
+            b'\r' | b' ' | b'\t' => pos += 1,
+            b'\n' => {
+                stream.pos = pos + 1;
+                break;
+            }
+            _ => break,
+        }
     }
 }

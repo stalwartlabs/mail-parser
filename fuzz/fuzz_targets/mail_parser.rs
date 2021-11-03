@@ -26,7 +26,7 @@ use mail_parser::{
         },
         mime::*,
         header::parse_header_name,
-        message_stream::MessageStream,
+        message::MessageStream,
     },
     Message,
 };
@@ -34,80 +34,80 @@ use mail_parser::{
 fuzz_target!(|data: &[u8]| {
     // Fuzz every parsing function
     for n_fuzz in 1..=24 {
-        let stream = MessageStream::new(&data);
+        let mut stream = MessageStream::new(&data);
 
         match n_fuzz {
             1 => {
-                parse_date(&stream);
+                parse_date(&mut stream);
             }
             2 => {
-                parse_address(&stream);
+                parse_address(&mut stream);
             }
             3 => {
-                parse_id(&stream);
+                parse_id(&mut stream);
             }
             4 => {
-                parse_comma_separared(&stream);
+                parse_comma_separared(&mut stream);
             }
             5 => {
-                parse_and_ignore(&stream);
+                parse_and_ignore(&mut stream);
             }
             6 => {
-                parse_raw(&stream);
+                parse_raw(&mut stream);
             }
             7 => {
-                parse_unstructured(&stream);
+                parse_unstructured(&mut stream);
             }
             8 => {
-                parse_content_type(&stream);
+                parse_content_type(&mut stream);
             }
             9 => {
-                parse_header_name(&stream);
+                parse_header_name(&mut stream);
             }
             10 => {
-                decode_rfc2047(&stream, 0);
+                decode_rfc2047(&mut stream, 0);
             }
             11 => {
-                seek_next_part(&stream, b"\n");
+                seek_next_part(&mut stream, b"\n");
             }
             12 => {
-                get_bytes_to_boundary(&stream, 0, b"\n", false);
+                get_bytes_to_boundary(&mut stream, 0, b"\n", false);
             }
             13 => {
-                get_bytes_to_boundary(&stream, 0, &[], false);
+                get_bytes_to_boundary(&mut stream, 0, &[], false);
             }
             14 => {
-                stream.skip_crlf();
+                skip_crlf(&mut stream);
             }
             15 => {
-                is_boundary_end(&stream, 0);
+                is_boundary_end(&mut stream, 0);
             }
             16 => {
-                skip_multipart_end(&stream);
+                skip_multipart_end(&mut stream);
             }
             17 => {
-                decode_base64(&stream, 0, b"\n", true);
+                decode_base64(&mut stream, 0, b"\n", true);
             }
             18 => {
-                decode_base64(&stream, 0, b"\n", false);
+                decode_base64(&mut stream, 0, b"\n", false);
             }
             19 => {
-                decode_base64(&stream, 0, &[], true);
+                decode_base64(&mut stream, 0, &[], true);
             }
             20 => {
-                decode_base64(&stream, 0, &[], false);
+                decode_base64(&mut stream, 0, &[], false);
             }
             21 => {
-                decode_quoted_printable(&stream, 0, b"\n\n", true); // QP Boundaries have to be at least 2 bytes long
+                decode_quoted_printable(&mut stream, 0, b"\n\n", true); // QP Boundaries have to be at least 2 bytes long
             }
             22 => {
-                decode_quoted_printable(&stream, 0, b"\n\n", false); // QP Boundaries have to be at least 2 bytes long
+                decode_quoted_printable(&mut stream, 0, b"\n\n", false); // QP Boundaries have to be at least 2 bytes long
             }
             23 => {
-                decode_quoted_printable(&stream, 0, &[], true);
+                decode_quoted_printable(&mut stream, 0, &[], true);
             }
             24 => {
-                decode_quoted_printable(&stream, 0, &[], false);
+                decode_quoted_printable(&mut stream, 0, &[], false);
             }
             0 | 25..=u32::MAX => unreachable!(),
         }

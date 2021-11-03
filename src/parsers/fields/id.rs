@@ -11,15 +11,15 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::message::MessageStream;
 
-pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_id_part = false;
     let mut ids = Vec::new();
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -32,7 +32,7 @@ pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
                     continue;
                 }
                 _ => {
-                    stream.set_pos(read_pos);
+                    stream.pos = read_pos;
                     return if !ids.is_empty() { Some(ids) } else { None };
                 }
             },
@@ -43,7 +43,9 @@ pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
             b'>' => {
                 is_id_part = false;
                 if token_start > 0 {
-                    ids.push(stream.get_string(token_start - 1, token_end).unwrap());
+                    ids.push(String::from_utf8_lossy(
+                        &stream.data[token_start - 1..token_end],
+                    ));
                     token_start = 0;
                 } else {
                     continue;
@@ -60,14 +62,15 @@ pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
         }
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     None
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::id::parse_id, message_stream::MessageStream};
+    use crate::parsers::fields::id::parse_id;
+    use crate::parsers::message::MessageStream;
 
     #[test]
     fn parse_message_ids() {
@@ -106,7 +109,7 @@ mod tests {
             let str = input.0.to_string();
             assert_eq!(
                 input.1,
-                parse_id(&MessageStream::new(str.as_bytes())).unwrap(),
+                parse_id(&mut MessageStream::new(str.as_bytes())).unwrap(),
                 "Failed to parse '{:?}'",
                 input.0
             );

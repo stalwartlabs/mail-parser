@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message_stream::MessageStream;
+use crate::parsers::message::MessageStream;
 
 pub fn decode_base64<'x>(
     stream: &MessageStream<'x>,
@@ -104,7 +104,7 @@ pub fn decode_base64<'x>(
 
 #[cfg(test)]
 mod tests {
-    use crate::{decoders::base64::decode_base64, parsers::message_stream::MessageStream};
+    use crate::{decoders::base64::decode_base64, parsers::message::MessageStream};
 
     #[test]
     fn decode_base64_strings() {

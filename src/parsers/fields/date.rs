@@ -11,7 +11,7 @@
 
 use std::fmt;
 
-use crate::{parsers::message_stream::MessageStream, DateTime};
+use crate::{parsers::message::MessageStream, DateTime};
 
 impl DateTime {
     /// Returns an ISO-8601 representation of the parsed RFC5322 datetime field
@@ -37,7 +37,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date(stream: &MessageStream) -> Option<DateTime> {
+pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -57,7 +57,7 @@ pub fn parse_date(stream: &MessageStream) -> Option<DateTime> {
     let mut ignore = true;
     let mut comment_count = 0;
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -151,7 +151,7 @@ pub fn parse_date(stream: &MessageStream) -> Option<DateTime> {
         }
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     if pos >= 6 {
         Some(DateTime {
@@ -198,7 +198,7 @@ pub static MONTH_MAP: &[u8; 31] = &[
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::date::parse_date, message_stream::MessageStream};
+    use crate::parsers::{fields::date::parse_date, message::MessageStream};
 
     #[test]
     fn parse_dates() {
@@ -264,7 +264,7 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            match parse_date(&MessageStream::new(str.as_bytes())) {
+            match parse_date(&mut MessageStream::new(str.as_bytes())) {
                 Some(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());

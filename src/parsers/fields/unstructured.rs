@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream};
+use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -24,11 +24,9 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
         if !parser.tokens.is_empty() {
             parser.tokens.push(" ".into());
         }
-        parser.tokens.push(
-            stream
-                .get_string(parser.token_start - 1, parser.token_end)
-                .unwrap(),
-        );
+        parser.tokens.push(String::from_utf8_lossy(
+            &stream.data[parser.token_start - 1..parser.token_end],
+        ));
 
         if add_space {
             parser.tokens.push(" ".into());
@@ -39,7 +37,7 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
+pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -47,7 +45,7 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
         tokens: Vec::new(),
     };
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
     let mut iter = stream.data[read_pos..].iter();
 
     while let Some(ch) = iter.next() {
@@ -66,7 +64,7 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
                         continue;
                     }
                     _ => {
-                        stream.set_pos(read_pos);
+                        stream.pos = read_pos;
                         return match parser.tokens.len() {
                             1 => parser.tokens.pop().unwrap().into(),
                             0 => None,
@@ -105,7 +103,7 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
         parser.token_end = read_pos;
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     None
 }
@@ -115,9 +113,8 @@ mod tests {
 
     #[test]
     fn parse_unstructured_text() {
-        use crate::parsers::{
-            fields::unstructured::parse_unstructured, message_stream::MessageStream,
-        };
+        use crate::parsers::fields::unstructured::parse_unstructured;
+        use crate::parsers::message::MessageStream;
 
         let inputs = [
             ("Saying Hello\n", "Saying Hello", true),
@@ -191,7 +188,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_unstructured(&MessageStream::new(str.as_bytes()),).unwrap(),
+                parse_unstructured(&mut MessageStream::new(str.as_bytes()),).unwrap(),
                 input.1,
                 "Failed to parse '{:?}'",
                 input.0

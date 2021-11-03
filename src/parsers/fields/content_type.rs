@@ -16,7 +16,7 @@ use std::{
 
 use crate::{
     decoders::{charsets::map::get_charset_decoder, encoded_word::decode_rfc2047, hex::decode_hex},
-    parsers::message_stream::MessageStream,
+    parsers::message::MessageStream,
     ContentType,
 };
 
@@ -66,7 +66,9 @@ fn reset_parser(parser: &mut ContentTypeParser) {
 
 fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) -> bool {
     if parser.token_start > 0 {
-        let mut attr = stream.get_string(parser.token_start - 1, parser.token_end);
+        let mut attr = Some(String::from_utf8_lossy(
+            &stream.data[parser.token_start - 1..parser.token_end],
+        ));
 
         if !parser.is_lower_case {
             attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
@@ -89,9 +91,8 @@ fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<
 
 fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
     if parser.token_start > 0 {
-        let attr_part = stream
-            .get_string(parser.token_start - 1, parser.token_end)
-            .unwrap();
+        let attr_part =
+            String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end]);
 
         if parser.attr_charset.is_none() {
             parser.attr_charset = attr_part.into();
@@ -121,18 +122,13 @@ fn add_partial_value<'x>(
     if parser.token_start > 0 {
         let in_quote = parser.state == ContentState::AttributeQuotedValue;
 
-        parser.values.push(
-            stream
-                .get_string(
-                    parser.token_start - 1,
-                    if in_quote && to_cur_pos {
-                        parser.read_pos - 1
-                    } else {
-                        parser.token_end
-                    },
-                )
-                .unwrap(),
-        );
+        parser.values.push(String::from_utf8_lossy(
+            &stream.data[parser.token_start - 1..if in_quote && to_cur_pos {
+                parser.read_pos - 1
+            } else {
+                parser.token_end
+            }],
+        ));
         if !in_quote {
             parser.values.push(" ".into());
         }
@@ -148,7 +144,9 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
     let has_values = !parser.values.is_empty();
     let value = if parser.token_start > 0 {
-        stream.get_string(parser.token_start - 1, parser.token_end)
+        Some(String::from_utf8_lossy(
+            &stream.data[parser.token_start - 1..parser.token_end],
+        ))
     } else {
         if !has_values {
             return;
@@ -222,11 +220,10 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
 fn add_attr_position(parser: &mut ContentTypeParser, stream: &MessageStream) -> bool {
     if parser.token_start > 0 {
-        parser.attr_position = stream
-            .get_string(parser.token_start - 1, parser.token_end)
-            .unwrap()
-            .parse()
-            .unwrap_or(0);
+        parser.attr_position =
+            String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end])
+                .parse()
+                .unwrap_or(0);
 
         reset_parser(parser);
         true
@@ -248,7 +245,7 @@ fn merge_continuations(parser: &mut ContentTypeParser) {
     }
 }
 
-pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<'x>> {
+pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentType<'x>> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -270,7 +267,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
         is_token_start: true,
         is_escaped: false,
 
-        read_pos: stream.get_pos(),
+        read_pos: stream.pos,
         token_start: 0,
         token_end: 0,
     };
@@ -330,7 +327,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                         if parser.continuations.is_some() {
                             merge_continuations(&mut parser);
                         }
-                        stream.set_pos(parser.read_pos);
+                        stream.pos = parser.read_pos;
                         return if let Some(content_type) = parser.c_type {
                             Some(ContentType {
                                 c_type: content_type,
@@ -501,15 +498,18 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
         }
     }
 
-    stream.set_pos(parser.read_pos);
+    stream.pos = parser.read_pos;
 
     None
 }
 
+#[cfg(test)]
 mod tests {
+    use crate::parsers::message::MessageStream;
+
     #[test]
     fn parse_content_fields() {
-        use crate::parsers::{fields::content_type::ContentType, message_stream::MessageStream};
+        use crate::parsers::fields::content_type::ContentType;
 
         use super::parse_content_type;
 
@@ -1338,7 +1338,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
 
-            let result = parse_content_type(&MessageStream::new(str.as_bytes()));
+            let result = parse_content_type(&mut MessageStream::new(str.as_bytes()));
             let expected: Option<ContentType> = serde_yaml::from_str(input.1).unwrap_or(None);
 
             /*

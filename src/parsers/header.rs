@@ -9,9 +9,12 @@
  * except according to those terms.
  */
 
-use crate::{parsers::message_stream::MessageStream, MessageHeader, MimeHeader};
+use crate::{MessageHeader, MimeHeader};
 
-use super::fields::{parse_unsupported, MessageField};
+use super::{
+    fields::{parse_unsupported, MessageField},
+    message::MessageStream,
+};
 
 impl<'x> MessageHeader<'x> {
     pub fn new() -> MessageHeader<'x> {
@@ -46,13 +49,16 @@ impl<'x> MimeHeader<'x> {
 }
 
 pub enum HeaderParserResult<'x> {
-    Supported(fn(&mut dyn MessageField<'x>, &MessageStream<'x>)),
+    Supported(fn(&mut dyn MessageField<'x>, &mut MessageStream<'x>)),
     Unsupported(&'x [u8]),
     Lf,
     Eof,
 }
 
-pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStream<'x>) -> bool {
+pub fn parse_headers<'x>(
+    header: &mut dyn MessageField<'x>,
+    stream: &mut MessageStream<'x>,
+) -> bool {
     loop {
         match parse_header_name(stream) {
             HeaderParserResult::Supported(fnc) => fnc(header, stream),
@@ -63,14 +69,14 @@ pub fn parse_headers<'x>(header: &mut dyn MessageField<'x>, stream: &MessageStre
     }
 }
 
-pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'x> {
+pub fn parse_header_name<'x>(stream: &mut MessageStream<'x>) -> HeaderParserResult<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut token_len: usize = 0;
     let mut token_hash: usize = 0;
     let mut last_ch: u8 = 0;
 
-    let mut read_pos = stream.get_pos();
+    let mut read_pos = stream.pos;
 
     for ch in stream.data[read_pos..].iter() {
         read_pos += 1;
@@ -78,9 +84,9 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
         match ch {
             b':' => {
                 if token_start != 0 {
-                    let field = stream.get_bytes(token_start - 1, token_end).unwrap();
+                    let field = &stream.data[token_start - 1..token_end];
 
-                    stream.set_pos(read_pos);
+                    stream.pos = read_pos;
 
                     if (2..=25).contains(&token_len) {
                         token_hash +=
@@ -98,7 +104,7 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                 }
             }
             b'\n' => {
-                stream.set_pos(read_pos - 1);
+                stream.pos = read_pos - 1;
                 return HeaderParserResult::Lf;
             }
             _ => {
@@ -120,7 +126,7 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
         }
     }
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     HeaderParserResult::Eof
 }
@@ -130,7 +136,7 @@ mod tests {
     use crate::parsers::{
         fields::{parse_from, parse_mime_version, parse_received, parse_subject},
         header::parse_header_name,
-        message_stream::MessageStream,
+        message::MessageStream,
     };
 
     use super::HeaderParserResult;
@@ -161,7 +167,7 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            match parse_header_name(&MessageStream::new(str.as_bytes())) {
+            match parse_header_name(&mut MessageStream::new(str.as_bytes())) {
                 HeaderParserResult::Supported(f) => {
                     if let HeaderParserResult::Supported(val) = input.1 {
                         if f as usize == val as usize {
@@ -197,7 +203,7 @@ static HDR_HASH: &[u8] = &[
     62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62,
 ];
 
-static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &MessageStream<'x>); 58] = &[
+static HDR_FNCS: &[for<'x, 'y> fn(&mut dyn MessageField<'x>, &mut MessageStream<'x>); 58] = &[
     super::fields::parse_date,
     super::fields::parse_no_op,
     super::fields::parse_sender,

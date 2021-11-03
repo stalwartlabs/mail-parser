@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use crate::{decoders::charsets::map::get_charset_decoder, parsers::message_stream::MessageStream};
+use crate::{decoders::charsets::map::get_charset_decoder, parsers::message::MessageStream};
 
 use super::{base64::decode_base64, quoted_printable::decode_quoted_printable, DecodeFnc};
 
@@ -104,7 +104,7 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
 
 #[cfg(test)]
 mod tests {
-    use crate::{decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream};
+    use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
 
     #[test]
     fn decode_rfc2047_string() {

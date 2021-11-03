@@ -12,8 +12,7 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream, Addr, Address,
-    Group,
+    decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, Addr, Address, Group,
 };
 
 impl<'x> Default for Address<'x> {
@@ -63,9 +62,7 @@ pub fn add_token<'x>(
     add_trail_space: bool,
 ) {
     if parser.token_start > 0 {
-        let token = stream
-            .get_string(parser.token_start - 1, parser.token_end)
-            .unwrap();
+        let token = String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end]);
         let mut add_space = false;
         let list = match parser.state {
             AddressState::Address => &mut parser.mail_tokens,
@@ -227,7 +224,7 @@ pub fn add_group(parser: &mut AddressParser) {
         });
 }
 
-pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
+pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> Address<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -249,7 +246,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
         result: Vec::new(),
     };
 
-    let start_pos = stream.get_pos();
+    let start_pos = stream.pos;
     let mut iter = stream.data[start_pos..].iter();
     let mut read_pos = start_pos;
 
@@ -396,7 +393,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
 
     add_address(&mut parser);
 
-    stream.set_pos(read_pos);
+    stream.pos = read_pos;
 
     if parser.group_name.is_some() || !parser.result.is_empty() {
         add_group(&mut parser);
@@ -419,7 +416,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
 mod tests {
     #[test]
     fn parse_addresses() {
-        use crate::parsers::{fields::address::parse_address, message_stream::MessageStream};
+        use crate::parsers::fields::address::parse_address;
 
         use super::*;
 
@@ -942,7 +939,7 @@ mod tests {
         for input in inputs {
             println!("Testiong {}", input.0);
             let str = input.0.to_string();
-            let result = parse_address(&MessageStream::new(str.as_bytes()));
+            let result = parse_address(&mut MessageStream::new(str.as_bytes()));
             let expected: Address = serde_yaml::from_str(input.1).unwrap_or(Address::Empty);
 
             /*if input.0.len() >= 70 {

@@ -25,8 +25,7 @@ use crate::{
 use super::{
     fields::MessageField,
     header::parse_headers,
-    message_stream::MessageStream,
-    mime::{get_bytes_to_boundary, seek_next_part, skip_multipart_end},
+    mime::{get_bytes_to_boundary, seek_next_part, skip_crlf, skip_multipart_end},
 };
 
 #[derive(Debug, PartialEq)]
@@ -121,6 +120,17 @@ impl MessageParserState {
     }
 }
 
+pub struct MessageStream<'x> {
+    pub data: &'x [u8],
+    pub pos: usize,
+}
+
+impl<'x> MessageStream<'x> {
+    pub fn new(data: &'x [u8]) -> MessageStream<'x> {
+        MessageStream { data, pos: 0 }
+    }
+}
+
 impl<'x> Message<'x> {
     fn new() -> Message<'x> {
         Message {
@@ -142,7 +152,10 @@ impl<'x> Message<'x> {
     /// To make sure parsing was successfull use `is_empty()`.
     ///
     pub fn parse(bytes: &'x [u8]) -> Message<'x> {
-        let stream = MessageStream::new(bytes);
+        let mut stream = MessageStream {
+            data: bytes,
+            pos: 0,
+        };
 
         let mut message = Message::new();
         let mut message_stack = Vec::new();
@@ -161,7 +174,7 @@ impl<'x> Message<'x> {
             };
 
             // Parse headers
-            if !parse_headers(header, &stream) {
+            if !parse_headers(header, &mut stream) {
                 break;
             }
 
@@ -177,7 +190,7 @@ impl<'x> Message<'x> {
                 {
                     let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
-                    if seek_next_part(&stream, mime_boundary.as_ref()) {
+                    if seek_next_part(&mut stream, mime_boundary.as_ref()) {
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
                                 || mime_type == MimeType::MultipartAlernative,
@@ -192,7 +205,7 @@ impl<'x> Message<'x> {
                         mime_part_header.clear();
                         state_stack.push(state);
                         state = new_state;
-                        stream.skip_crlf();
+                        skip_crlf(&mut stream);
                         continue;
                     } else {
                         mime_type = MimeType::TextOther;
@@ -215,13 +228,11 @@ impl<'x> Message<'x> {
                 state_stack.push(state);
                 message = Message::new();
                 state = new_state;
-                stream.skip_crlf();
+                skip_crlf(&mut stream);
                 continue;
             }
 
-            stream.skip_crlf();
-
-            let start_pos = stream.get_pos();
+            skip_crlf(&mut stream);
 
             let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
                 .get_content_transfer_encoding()
@@ -235,7 +246,7 @@ impl<'x> Message<'x> {
 
             let (bytes_read, mut bytes) = decode_fnc(
                 &stream,
-                start_pos,
+                stream.pos,
                 state
                     .mime_boundary
                     .as_ref()
@@ -245,7 +256,7 @@ impl<'x> Message<'x> {
 
             // Attempt to recover contents of an invalid message
             if bytes_read == 0 {
-                if stream.is_eof() || (is_binary && state.mime_boundary.is_none()) {
+                if stream.pos >= stream.data.len() || (is_binary && state.mime_boundary.is_none()) {
                     break;
                 }
 
@@ -253,7 +264,7 @@ impl<'x> Message<'x> {
                 let (bytes_read, r_bytes) = if !is_binary {
                     get_bytes_to_boundary(
                         &stream,
-                        start_pos,
+                        stream.pos,
                         state
                             .mime_boundary
                             .as_ref()
@@ -268,10 +279,10 @@ impl<'x> Message<'x> {
                     // If there is MIME boundary, ignore it and get raw message
                     if state.mime_boundary.is_some() {
                         let (bytes_read, r_bytes) =
-                            get_bytes_to_boundary(&stream, start_pos, &[][..], false);
+                            get_bytes_to_boundary(&stream, stream.pos, &[][..], false);
                         if bytes_read > 0 {
                             bytes = r_bytes;
-                            stream.set_pos(start_pos + bytes_read);
+                            stream.pos += bytes_read;
                         } else {
                             break;
                         }
@@ -280,13 +291,13 @@ impl<'x> Message<'x> {
                     }
                 } else {
                     bytes = r_bytes;
-                    stream.set_pos(start_pos + bytes_read);
+                    stream.pos += bytes_read;
                 }
                 mime_type = MimeType::TextOther;
                 is_inline = false;
                 is_text = true;
             } else {
-                stream.set_pos(start_pos + bytes_read);
+                stream.pos += bytes_read;
             }
 
             let is_inline = is_inline
@@ -405,7 +416,7 @@ impl<'x> Message<'x> {
                         }
                     }
 
-                    if skip_multipart_end(&stream) {
+                    if skip_multipart_end(&mut stream) {
                         // End of MIME part reached
 
                         if MimeType::MultipartAlernative == state.mime_type
@@ -453,19 +464,19 @@ impl<'x> Message<'x> {
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
-                                if seek_next_part(&stream, mime_boundary) {
+                                if seek_next_part(&mut stream, mime_boundary) {
                                     continue 'inner;
                                 }
                             }
                         }
                         break 'outer;
                     } else {
-                        stream.skip_crlf();
+                        skip_crlf(&mut stream);
                         // Headers of next part expected next, break inner look.
                         break 'inner;
                     }
                 }
-            } else if stream.is_eof() {
+            } else if stream.pos >= stream.data.len() {
                 break 'outer;
             }
         }
