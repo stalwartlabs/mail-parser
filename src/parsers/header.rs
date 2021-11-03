@@ -70,11 +70,17 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
     let mut token_hash: usize = 0;
     let mut last_ch: u8 = 0;
 
-    while let Some(ch) = stream.next() {
+    let mut read_pos = stream.get_pos();
+
+    for ch in stream.data[read_pos..].iter() {
+        read_pos += 1;
+
         match ch {
             b':' => {
                 if token_start != 0 {
                     let field = stream.get_bytes(token_start - 1, token_end).unwrap();
+
+                    stream.set_pos(read_pos);
 
                     if (2..=25).contains(&token_len) {
                         token_hash +=
@@ -92,16 +98,16 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                 }
             }
             b'\n' => {
-                stream.rewind(1);
+                stream.set_pos(read_pos - 1);
                 return HeaderParserResult::Lf;
             }
             _ => {
                 if !(*ch).is_ascii_whitespace() {
                     if token_start == 0 {
-                        token_start = stream.get_pos();
+                        token_start = read_pos;
                         token_end = token_start;
                     } else {
-                        token_end = stream.get_pos();
+                        token_end = read_pos;
                         last_ch = *ch;
                     }
 
@@ -113,6 +119,9 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
             }
         }
     }
+
+    stream.set_pos(read_pos);
+
     HeaderParserResult::Eof
 }
 

@@ -142,7 +142,7 @@ Content-Transfer-Encoding: Quoted-printable
             "c_subtype": "basic"
           }
         },
-        "contents": ".. base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
+        "contents": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
       }
     },
     {
@@ -154,7 +154,7 @@ Content-Transfer-Encoding: Quoted-printable
             "c_subtype": "jpeg"
           }
         },
-        "contents": ".. base64-encoded image data goes here ...\n"
+        "contents": "... base64-encoded image data goes here ...\n"
       }
     },
     {

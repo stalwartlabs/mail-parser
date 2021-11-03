@@ -13,107 +13,101 @@ use std::borrow::Cow;
 
 use crate::parsers::message_stream::MessageStream;
 
-pub trait Base64Decoder<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, Option<Cow<'x, [u8]>>);
-}
+pub fn decode_base64<'x>(
+    stream: &MessageStream<'x>,
+    start_pos: usize,
+    boundary: &[u8],
+    is_word: bool,
+) -> (usize, Option<Cow<'x, [u8]>>) {
+    let mut success = boundary.is_empty();
 
-impl<'x> Base64Decoder<'x> for MessageStream<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, Option<Cow<'x, [u8]>>) {
-        let mut success = boundary.is_empty();
+    let mut chunk: u32 = 0;
+    let mut byte_count: u8 = 0;
+    let mut match_count: usize = 0;
 
-        let mut chunk: u32 = 0;
-        let mut byte_count: u8 = 0;
-        let mut match_count: usize = 0;
+    let mut bytes_read = 0;
 
-        let start_pos = self.pos.get();
-        let mut read_pos = start_pos;
+    let mut buf = Vec::with_capacity(stream.data.len() - start_pos);
 
-        let mut buf = Vec::with_capacity(self.data.len() - read_pos);
+    for ch in stream.data[start_pos..].iter() {
+        bytes_read += 1;
 
-        for ch in self.data[read_pos..].iter() {
-            read_pos += 1;
-
-            if !success {
-                if *ch == boundary[match_count] {
-                    match_count += 1;
-                    if match_count == boundary.len() {
-                        success = true;
-                        break;
-                    } else {
-                        continue;
-                    }
-                } else if match_count > 0 {
-                    if *ch == boundary[0] {
-                        match_count = 1;
-                        continue;
-                    } else {
-                        match_count = 0;
-                    }
-                }
-            }
-
-            let val = BASE64_MAP[byte_count as usize][*ch as usize];
-
-            if val >= 0x01ffffff {
-                if *ch == b'=' {
-                    match byte_count {
-                        1 | 2 => {
-                            buf.push(chunk.to_le_bytes()[0]);
-
-                            byte_count = 0;
-                        }
-                        3 => {
-                            buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
-                            byte_count = 0;
-                        }
-                        0 => (),
-                        _ => {
-                            success = false;
-                            break;
-                        }
-                    }
-                } else if !ch.is_ascii_whitespace() || is_word {
-                    success = false;
+        if !success {
+            if *ch == boundary[match_count] {
+                match_count += 1;
+                if match_count == boundary.len() {
+                    success = true;
                     break;
+                } else {
+                    continue;
                 }
-                continue;
-            }
-
-            byte_count = (byte_count + 1) & 3;
-
-            if byte_count == 1 {
-                chunk = val;
-            } else {
-                chunk |= val;
-
-                if byte_count == 0 {
-                    buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+            } else if match_count > 0 {
+                if *ch == boundary[0] {
+                    match_count = 1;
+                    continue;
+                } else {
+                    match_count = 0;
                 }
             }
         }
 
-        self.pos.set(read_pos);
+        let val = BASE64_MAP[byte_count as usize][*ch as usize];
 
-        (
-            success,
-            if !buf.is_empty() {
-                buf.shrink_to_fit();
-                Some(buf.into())
-            } else {
-                None
-            },
-        )
+        if val >= 0x01ffffff {
+            if *ch == b'=' {
+                match byte_count {
+                    1 | 2 => {
+                        buf.push(chunk.to_le_bytes()[0]);
+
+                        byte_count = 0;
+                    }
+                    3 => {
+                        buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                        byte_count = 0;
+                    }
+                    0 => (),
+                    _ => {
+                        success = false;
+                        break;
+                    }
+                }
+            } else if !ch.is_ascii_whitespace() || is_word {
+                success = false;
+                break;
+            }
+            continue;
+        }
+
+        byte_count = (byte_count + 1) & 3;
+
+        if byte_count == 1 {
+            chunk = val;
+        } else {
+            chunk |= val;
+
+            if byte_count == 0 {
+                buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+            }
+        }
     }
+
+    (
+        if success { bytes_read } else { 0 },
+        if !buf.is_empty() {
+            buf.shrink_to_fit();
+            Some(buf.into())
+        } else {
+            None
+        },
+    )
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::message_stream::MessageStream;
-
-    use super::Base64Decoder;
+    use crate::{decoders::base64::decode_base64, parsers::message_stream::MessageStream};
 
     #[test]
-    fn decode_base64() {
+    fn decode_base64_strings() {
         let inputs = [
             ("VGVzdA==", "Test", "", true),
             ("WWU=", "Ye", "", true),
@@ -169,8 +163,13 @@ mod tests {
             let str = input.0.to_string();
             let stream = MessageStream::new(str.as_bytes());
 
-            let (success, result) = stream.decode_base64(input.2.as_bytes(), input.3);
-            assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
+            let (bytes_read, result) = decode_base64(&stream, 0, input.2.as_bytes(), input.3);
+            assert_eq!(
+                bytes_read > 0,
+                !input.1.is_empty(),
+                "Failed for '{:?}'",
+                input.0
+            );
 
             if !input.1.is_empty() {
                 let result_str = std::str::from_utf8(result.as_ref().unwrap().as_ref()).unwrap();

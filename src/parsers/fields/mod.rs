@@ -75,7 +75,7 @@ pub trait FieldSet<'x> {
 
 impl<'x> FieldSet<'x> for MessageHeader<'x> {
     fn set_date(&mut self, stream: &MessageStream<'x>) {
-        self.date = self::date::parse_date(stream, false);
+        self.date = self::date::parse_date(stream);
     }
 
     fn set_sender(&mut self, stream: &MessageStream<'x>) {
@@ -139,7 +139,7 @@ impl<'x> FieldSet<'x> for MessageHeader<'x> {
     }
 
     fn set_resent_date(&mut self, stream: &MessageStream<'x>) {
-        append_date_line(&mut self.resent_date, self::date::parse_date(stream, false));
+        append_date_line(&mut self.resent_date, self::date::parse_date(stream));
     }
 
     fn set_to(&mut self, stream: &MessageStream<'x>) {

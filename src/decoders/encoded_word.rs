@@ -9,80 +9,101 @@
  * except according to those terms.
  */
 
-use crate::{
-    decoders::{
-        base64::Base64Decoder, charsets::map::get_charset_decoder,
-        quoted_printable::QuotedPrintableDecoder,
-    },
-    parsers::message_stream::MessageStream,
-};
+use crate::{decoders::charsets::map::get_charset_decoder, parsers::message_stream::MessageStream};
 
-pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
-    if !stream.skip_byte(&b'?') {
-        return None;
-    }
-    let charset_start = stream.get_pos();
-    let mut charset_end = charset_start;
-    let backup_pos = charset_start - 1;
+use super::{base64::decode_base64, quoted_printable::decode_quoted_printable, DecodeFnc};
 
-    while let Some(ch) = stream.next() {
-        match ch {
-            b'?' => {
-                if charset_end == charset_start {
-                    charset_end = stream.get_pos() - 1;
+enum Rfc2047State {
+    Init,
+    Charset,
+    Encoding,
+    Data,
+}
+
+pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Option<String>) {
+    let mut read_pos: usize = start_pos;
+    let mut state = Rfc2047State::Init;
+
+    let mut charset_start = 0;
+    let mut charset_end = 0;
+    let mut decode_fnc: Option<DecodeFnc> = None;
+
+    for ch in stream.data[start_pos..].iter() {
+        read_pos += 1;
+
+        match state {
+            Rfc2047State::Init => {
+                if ch != &b'?' {
+                    return (0, None);
                 }
-                break;
+                state = Rfc2047State::Charset;
+                charset_start = read_pos;
+                charset_end = read_pos;
             }
-            b'*' => {
-                if charset_end == charset_start {
-                    charset_end = stream.get_pos() - 1;
+            Rfc2047State::Charset => match ch {
+                b'?' => {
+                    if charset_end == charset_start {
+                        charset_end = read_pos - 1;
+                    }
+                    if (charset_end - charset_start) < 2 {
+                        return (0, None);
+                    }
+                    state = Rfc2047State::Encoding;
+                }
+                b'*' => {
+                    if charset_end == charset_start {
+                        charset_end = read_pos - 1;
+                    }
+                }
+                b'\n' => {
+                    return (0, None);
+                }
+                _ => (),
+            },
+            Rfc2047State::Encoding => {
+                match ch {
+                    b'q' | b'Q' => decode_fnc = Some(decode_quoted_printable),
+                    b'b' | b'B' => decode_fnc = Some(decode_base64),
+                    _ => {
+                        return (0, None);
+                    }
+                }
+                state = Rfc2047State::Data;
+            }
+            Rfc2047State::Data => {
+                if ch != &b'?' {
+                    return (0, None);
+                } else {
+                    break;
                 }
             }
-            b'\n' => {
-                stream.set_pos(backup_pos);
-                return None;
-            }
-            _ => (),
         }
     }
 
-    if !(2..=45).contains(&(charset_end - charset_start)) {
-        stream.set_pos(backup_pos);
-        return None;
-    }
-
-    let (success, bytes) = match stream.next() {
-        Some(b'q') | Some(b'Q') if stream.skip_byte(&b'?') => {
-            stream.decode_quoted_printable(b"?=", true)
-        }
-        Some(b'b') | Some(b'B') if stream.skip_byte(&b'?') => stream.decode_base64(b"?=", true),
-        _ => (false, None),
-    };
-
-    if !success {
-        stream.set_pos(backup_pos);
-        return None;
-    }
-
-    if let Some(decoder) =
-        get_charset_decoder(stream.get_bytes(charset_start, charset_end).unwrap())
+    if let (bytes_read @ 1..=usize::MAX, Some(bytes)) =
+        decode_fnc.unwrap()(stream, read_pos, b"?=", true)
     {
-        decoder(bytes?.as_ref()).into()
+        (
+            (read_pos - start_pos) + bytes_read,
+            if let Some(decoder) = get_charset_decoder(&stream.data[charset_start..charset_end]) {
+                decoder(bytes.as_ref()).into()
+            } else {
+                String::from_utf8(bytes.into_owned())
+                    .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+                    .into()
+            },
+        )
     } else {
-        String::from_utf8(bytes?.into_owned())
-            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-            .into()
+        (0, None)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream,
-    };
+    use crate::{decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream};
 
     #[test]
-    fn decode_rfc2047() {
+    fn decode_rfc2047_string() {
         let inputs = [
             (
                 "?iso-8859-1?q?this=20is=20some=20text?=".to_string(),
@@ -163,12 +184,12 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
 
-            match parse_encoded_word(&MessageStream::new(str.as_bytes())) {
-                Some(string) => {
+            match decode_rfc2047(&MessageStream::new(str.as_bytes()), 0) {
+                (_, Some(string)) => {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);
                 }
-                None => panic!("Failed to decode '{}'", input.0),
+                _ => panic!("Failed to decode '{}'", input.0),
             }
         }
     }

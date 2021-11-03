@@ -17,14 +17,20 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
 
-    while let Some(ch) = stream.next() {
+    let mut read_pos = stream.get_pos();
+    let mut iter = stream.data[read_pos..].iter();
+
+    while let Some(ch) = iter.next() {
+        read_pos += 1;
         match ch {
-            b'\n' => match stream.peek() {
+            b'\n' => match stream.data.get(read_pos) {
                 Some(b' ' | b'\t') => {
-                    stream.advance(1);
+                    iter.next();
+                    read_pos += 1;
                     continue;
                 }
                 _ => {
+                    stream.set_pos(read_pos);
                     return if token_start > 0 {
                         stream
                             .get_string(token_start - 1, token_end)
@@ -40,27 +46,36 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
         }
 
         if token_start == 0 {
-            token_start = stream.get_pos();
+            token_start = read_pos;
         }
 
-        token_end = stream.get_pos();
+        token_end = read_pos;
     }
+
+    stream.set_pos(read_pos);
 
     None
 }
 
 pub fn parse_and_ignore(stream: &MessageStream) {
-    while let Some(ch) = stream.next() {
+    let mut read_pos = stream.get_pos();
+    let mut iter = stream.data[read_pos..].iter();
+
+    while let Some(ch) = iter.next() {
+        read_pos += 1;
+
         if ch == &b'\n' {
-            match stream.peek() {
+            match stream.data.get(read_pos) {
                 Some(b' ' | b'\t') => {
-                    stream.advance(1);
+                    iter.next();
+                    read_pos += 1;
                     continue;
                 }
-                _ => return,
+                _ => break,
             }
         }
     }
+    stream.set_pos(read_pos);
 }
 
 #[cfg(test)]

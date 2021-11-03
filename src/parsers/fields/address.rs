@@ -12,8 +12,8 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream, Addr,
-    Address, Group,
+    decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream, Addr, Address,
+    Group,
 };
 
 impl<'x> Default for Address<'x> {
@@ -249,13 +249,20 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
         result: Vec::new(),
     };
 
-    while let Some(ch) = stream.next() {
+    let start_pos = stream.get_pos();
+    let mut iter = stream.data[start_pos..].iter();
+    let mut read_pos = start_pos;
+
+    while let Some(ch) = iter.next() {
+        read_pos += 1;
+
         match ch {
             b'\n' => {
                 add_token(&mut parser, stream, false);
-                match stream.peek() {
+                match stream.data.get(read_pos) {
                     Some(b' ' | b'\t') => {
-                        stream.advance(1);
+                        iter.next();
+                        read_pos += 1;
                         if !parser.is_token_start {
                             parser.is_token_start = true;
                         }
@@ -267,7 +274,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
             b'\\' if parser.state != AddressState::Name => {
                 if parser.token_start > 0 {
                     if parser.state == AddressState::Quote {
-                        parser.token_end = stream.get_pos() - 1;
+                        parser.token_end = read_pos - 1;
                     }
                     add_token(&mut parser, stream, false);
                 }
@@ -308,7 +315,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
                 parser.is_token_email = true;
             }
             b'=' if parser.is_token_start && !parser.is_escaped => {
-                if let Some(token) = parse_encoded_word(stream) {
+                if let (d_bytes_read, Some(token)) = decode_rfc2047(stream, read_pos) {
                     let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
                     add_token(&mut parser, stream, add_space);
                     (if parser.state != AddressState::Comment {
@@ -317,6 +324,8 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
                         &mut parser.comment_tokens
                     })
                     .push(token.into());
+                    read_pos += d_bytes_read;
+                    iter = stream.data[read_pos..].iter();
                     continue;
                 }
             }
@@ -329,10 +338,10 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
                 }
                 if parser.state == AddressState::Quote {
                     if parser.token_start == 0 {
-                        parser.token_start = stream.get_pos();
+                        parser.token_start = read_pos;
                         parser.token_end = parser.token_start;
                     } else {
-                        parser.token_end = stream.get_pos();
+                        parser.token_end = read_pos;
                     }
                 }
                 continue;
@@ -378,14 +387,16 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
         }
 
         if parser.token_start == 0 {
-            parser.token_start = stream.get_pos();
+            parser.token_start = read_pos;
             parser.token_end = parser.token_start;
         } else {
-            parser.token_end = stream.get_pos();
+            parser.token_end = read_pos;
         }
     }
 
     add_address(&mut parser);
+
+    stream.set_pos(read_pos);
 
     if parser.group_name.is_some() || !parser.result.is_empty() {
         add_group(&mut parser);

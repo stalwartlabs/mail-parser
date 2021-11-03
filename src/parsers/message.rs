@@ -13,15 +13,21 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{
-        base64::Base64Decoder,
+        base64::decode_base64,
         charsets::map::get_charset_decoder,
         html::{html_to_text, text_to_html},
-        quoted_printable::QuotedPrintableDecoder,
+        quoted_printable::decode_quoted_printable,
+        DecodeFnc,
     },
     BinaryPart, ContentType, InlinePart, Message, MessageHeader, MessagePart, MimeHeader, TextPart,
 };
 
-use super::{fields::MessageField, header::parse_headers, message_stream::MessageStream};
+use super::{
+    fields::MessageField,
+    header::parse_headers,
+    message_stream::MessageStream,
+    mime::{get_bytes_to_boundary, seek_next_part, skip_multipart_end},
+};
 
 #[derive(Debug, PartialEq)]
 enum MimeType {
@@ -171,7 +177,7 @@ impl<'x> Message<'x> {
                 {
                     let mime_boundary = ("\n--".to_string() + mime_boundary).into_bytes();
 
-                    if stream.seek_next_part(mime_boundary.as_ref()) {
+                    if seek_next_part(&stream, mime_boundary.as_ref()) {
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
                                 || mime_type == MimeType::MultipartAlernative,
@@ -215,61 +221,72 @@ impl<'x> Message<'x> {
 
             stream.skip_crlf();
 
-            let (success, mut bytes) = match header.get_content_transfer_encoding() {
-                Some(encoding) if encoding.eq_ignore_ascii_case("base64") => stream.decode_base64(
-                    state
-                        .mime_boundary
-                        .as_ref()
-                        .map_or_else(|| &[][..], |b| &b[..]),
-                    false,
-                ),
-                Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => stream
-                    .decode_quoted_printable(
+            let start_pos = stream.get_pos();
+
+            let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
+                .get_content_transfer_encoding()
+            {
+                Some(encoding) if encoding.eq_ignore_ascii_case("base64") => (false, decode_base64),
+                Some(encoding) if encoding.eq_ignore_ascii_case("quoted-printable") => {
+                    (false, decode_quoted_printable)
+                }
+                _ => (true, get_bytes_to_boundary),
+            };
+
+            let (bytes_read, mut bytes) = decode_fnc(
+                &stream,
+                start_pos,
+                state
+                    .mime_boundary
+                    .as_ref()
+                    .map_or_else(|| &[][..], |b| &b[..]),
+                false,
+            );
+
+            // Attempt to recover contents of an invalid message
+            if bytes_read == 0 {
+                if stream.is_eof() || (is_binary && state.mime_boundary.is_none()) {
+                    break;
+                }
+
+                // Get raw MIME part
+                let (bytes_read, r_bytes) = if !is_binary {
+                    get_bytes_to_boundary(
+                        &stream,
+                        start_pos,
                         state
                             .mime_boundary
                             .as_ref()
                             .map_or_else(|| &[][..], |b| &b[..]),
                         false,
-                    ),
-                _ => stream.get_bytes_to_boundary(
-                    state
-                        .mime_boundary
-                        .as_ref()
-                        .map_or_else(|| &[][..], |b| &b[..]),
-                ),
-            };
+                    )
+                } else {
+                    (0, None)
+                };
 
-            // Attempt to recover contents of an invalid message
-            if !success {
-                if !stream.is_eof() {
-                    // Get raw MIME part
-                    let (success, r_bytes) = stream.get_bytes_to_boundary(
-                        state
-                            .mime_boundary
-                            .as_ref()
-                            .map_or_else(|| &[][..], |b| &b[..]),
-                    );
-                    if !success {
-                        // If there is MIME boundary, ignore it and get raw message
-                        if !stream.is_eof() && state.mime_boundary.is_some() {
-                            let (_, r_bytes) = stream.get_bytes_to_boundary(&[][..]);
-                            if r_bytes.is_some() {
-                                bytes = r_bytes;
-                            } else {
-                                break;
-                            }
+                if bytes_read == 0 {
+                    // If there is MIME boundary, ignore it and get raw message
+                    if state.mime_boundary.is_some() {
+                        let (bytes_read, r_bytes) =
+                            get_bytes_to_boundary(&stream, start_pos, &[][..], false);
+                        if bytes_read > 0 {
+                            bytes = r_bytes;
+                            stream.set_pos(start_pos + bytes_read);
                         } else {
                             break;
                         }
                     } else {
-                        bytes = r_bytes;
+                        break;
                     }
-                    mime_type = MimeType::TextOther;
-                    is_inline = false;
-                    is_text = true;
-                } else if bytes.is_none() {
-                    break;
+                } else {
+                    bytes = r_bytes;
+                    stream.set_pos(start_pos + bytes_read);
                 }
+                mime_type = MimeType::TextOther;
+                is_inline = false;
+                is_text = true;
+            } else {
+                stream.set_pos(start_pos + bytes_read);
             }
 
             let is_inline = is_inline
@@ -388,7 +405,7 @@ impl<'x> Message<'x> {
                         }
                     }
 
-                    if stream.skip_multipart_end() {
+                    if skip_multipart_end(&stream) {
                         // End of MIME part reached
 
                         if MimeType::MultipartAlernative == state.mime_type
@@ -436,7 +453,7 @@ impl<'x> Message<'x> {
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
-                                if stream.seek_next_part(mime_boundary) {
+                                if seek_next_part(&stream, mime_boundary) {
                                     continue 'inner;
                                 }
                             }

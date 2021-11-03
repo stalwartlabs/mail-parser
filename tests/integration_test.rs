@@ -13,7 +13,7 @@ use mail_parser::*;
 
 #[test]
 fn test_api() {
-    let mut input = concat!(
+    let input = concat!(
         "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
         "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
         "    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;\n",
@@ -48,10 +48,9 @@ fn test_api() {
         "--giddyup--\n",
         "--festivus--\n",
     )
-    .as_bytes()
-    .to_vec();
+    .as_bytes();
 
-    let message = Message::parse(&mut input[..]);
+    let message = Message::parse(input);
 
     assert_eq!(
         message.get_from(),

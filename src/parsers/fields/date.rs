@@ -37,7 +37,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<DateTime> {
+pub fn parse_date(stream: &MessageStream) -> Option<DateTime> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -57,13 +57,19 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
     let mut ignore = true;
     let mut comment_count = 0;
 
-    while let Some(ch) = stream.next() {
+    let mut read_pos = stream.get_pos();
+    let mut iter = stream.data[read_pos..].iter();
+
+    while let Some(ch) = iter.next() {
         let mut next_part = false;
+        read_pos += 1;
 
         match ch {
-            b'\n' => match stream.peek() {
+            b'\n' => match stream.data.get(read_pos) {
                 Some(b' ' | b'\t') => {
-                    stream.advance(1);
+                    iter.next();
+                    read_pos += 1;
+
                     if !is_new_token && !ignore && comment_count == 0 {
                         next_part = true;
                     } else {
@@ -78,7 +84,9 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
                 } else if *ch == b'(' {
                     comment_count += 1;
                 } else if *ch == b'\\' {
-                    stream.skip_byte(&b')');
+                    if let Some(b')') = stream.data.get(read_pos) {
+                        read_pos += 1;
+                    }
                 }
                 continue;
             }
@@ -131,12 +139,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
                 continue;
             }
             b',' | b'\r' => (),
-            _ => {
-                if abort_on_invalid {
-                    stream.rewind(1);
-                    break;
-                }
-            }
+            _ => (),
         }
 
         if next_part {
@@ -147,6 +150,8 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             is_new_token = true;
         }
     }
+
+    stream.set_pos(read_pos);
 
     if pos >= 6 {
         Some(DateTime {
@@ -259,7 +264,7 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            match parse_date(&MessageStream::new(str.as_bytes()), false) {
+            match parse_date(&MessageStream::new(str.as_bytes())) {
                 Some(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());

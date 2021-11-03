@@ -1,3 +1,7 @@
+use std::borrow::Cow;
+
+use crate::parsers::message_stream::MessageStream;
+
 /*
  * Copyright Stalwart Labs, Minter Ltd. See the COPYING
  * file at the top-level directory of this distribution.
@@ -15,3 +19,6 @@ pub mod encoded_word;
 pub mod hex;
 pub mod html;
 pub mod quoted_printable;
+
+pub type DecodeFnc<'x> =
+    fn(&MessageStream<'x>, usize, &[u8], bool) -> (usize, Option<Cow<'x, [u8]>>);

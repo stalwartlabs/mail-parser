@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream::MessageStream};
+use crate::{decoders::encoded_word::decode_rfc2047, parsers::message_stream::MessageStream};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -47,20 +47,26 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
         tokens: Vec::new(),
     };
 
-    while let Some(ch) = stream.next() {
+    let mut read_pos = stream.get_pos();
+    let mut iter = stream.data[read_pos..].iter();
+
+    while let Some(ch) = iter.next() {
+        read_pos += 1;
         match ch {
             b'\n' => {
                 add_token(&mut parser, stream, false);
 
-                match stream.peek() {
+                match stream.data.get(read_pos) {
                     Some(b' ' | b'\t') => {
                         if !parser.is_token_start {
                             parser.is_token_start = true;
                         }
-                        stream.advance(1);
+                        iter.next();
+                        read_pos += 1;
                         continue;
                     }
                     _ => {
+                        stream.set_pos(read_pos);
                         return match parser.tokens.len() {
                             1 => parser.tokens.pop().unwrap().into(),
                             0 => None,
@@ -76,9 +82,11 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
                 continue;
             }
             b'=' if parser.is_token_start => {
-                if let Some(token) = parse_encoded_word(stream) {
+                if let (bytes_read, Some(token)) = decode_rfc2047(stream, read_pos) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
+                    read_pos += bytes_read;
+                    iter = stream.data[read_pos..].iter();
                     continue;
                 }
             }
@@ -91,11 +99,13 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
         }
 
         if parser.token_start == 0 {
-            parser.token_start = stream.get_pos();
+            parser.token_start = read_pos;
         }
 
-        parser.token_end = stream.get_pos();
+        parser.token_end = read_pos;
     }
+
+    stream.set_pos(read_pos);
 
     None
 }

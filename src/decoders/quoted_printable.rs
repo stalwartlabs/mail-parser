@@ -20,162 +20,151 @@ enum QuotedPrintableState {
     Hex1,
 }
 
-pub trait QuotedPrintableDecoder<'x> {
-    fn decode_quoted_printable(
-        &self,
-        boundary: &[u8],
-        is_word: bool,
-    ) -> (bool, Option<Cow<'x, [u8]>>);
-}
+pub fn decode_quoted_printable<'x>(
+    stream: &MessageStream<'x>,
+    start_pos: usize,
+    boundary: &[u8],
+    is_word: bool,
+) -> (usize, Option<Cow<'x, [u8]>>) {
+    let mut success = boundary.is_empty();
 
-impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
-    fn decode_quoted_printable(
-        &self,
-        boundary: &[u8],
-        is_word: bool,
-    ) -> (bool, Option<Cow<'x, [u8]>>) {
-        let mut success = boundary.is_empty();
+    let mut bytes_read = 0;
 
-        let start_pos = self.pos.get();
-        let mut read_pos = start_pos;
+    let mut buf = Vec::with_capacity(stream.data.len() - start_pos);
 
-        let mut buf = Vec::with_capacity(self.data.len() - read_pos);
+    let mut state = QuotedPrintableState::None;
+    let mut match_count = 0;
+    let mut hex1 = 0;
 
-        let mut state = QuotedPrintableState::None;
-        let mut match_count = 0;
-        let mut hex1 = 0;
+    debug_assert!(boundary.is_empty() || boundary.len() >= 2);
 
-        debug_assert!(boundary.is_empty() || boundary.len() >= 2);
+    for ch in stream.data[start_pos..].iter() {
+        bytes_read += 1;
 
-        for ch in self.data[read_pos..].iter() {
-            read_pos += 1;
+        // if success is false, a boundary was provided
+        if !success {
+            let mut is_boundary_end = true;
 
-            // if success is false, a boundary was provided
-            if !success {
-                let mut is_boundary_end = true;
-
-                if *ch == boundary[match_count] {
-                    match_count += 1;
-                    if match_count == boundary.len() {
-                        let done = if is_word {
-                            true
-                        } else {
-                            is_boundary_end = self.is_boundary_end(read_pos);
-                            is_boundary_end
-                        };
-
-                        if done {
-                            success = true;
-                            break;
-                        }
+            if *ch == boundary[match_count] {
+                match_count += 1;
+                if match_count == boundary.len() {
+                    let done = if is_word {
+                        true
                     } else {
-                        continue;
-                    }
-                }
+                        is_boundary_end =
+                            crate::parsers::mime::is_boundary_end(stream, start_pos + bytes_read);
+                        is_boundary_end
+                    };
 
-                if match_count > 0 {
-                    for ch in boundary[..match_count].iter() {
-                        if *ch != b'\n' || QuotedPrintableState::Eq != state {
-                            buf.push(*ch);
-                        }
+                    if done {
+                        success = true;
+                        break;
                     }
-                    state = QuotedPrintableState::None;
-
-                    // is_boundary_end is always true except in the rare event
-                    // that a boundary was found without a proper MIME ending (-- or \r\n)
-                    if is_boundary_end {
-                        if *ch == boundary[0] {
-                            // Char matched beginning of boundary, get next char.
-                            match_count = 1;
-                            continue;
-                        } else {
-                            // Reset match count and decode character
-                            match_count = 0;
-                        }
-                    } else {
-                        // There was a full boundary match but without a proper MIME
-                        // ending, reset match count and continue.
-                        match_count = 0;
-                        continue;
-                    }
+                } else {
+                    continue;
                 }
             }
 
-            match ch {
-                b'=' => {
-                    if let QuotedPrintableState::None = state {
-                        state = QuotedPrintableState::Eq
-                    } else {
-                        success = false;
-                        break;
-                    }
-                }
-                b'\n' => {
-                    if is_word {
-                        success = false;
-                        break;
-                    } else if QuotedPrintableState::Eq == state {
-                        state = QuotedPrintableState::None;
-                    } else {
-                        buf.push(b'\n');
-                    }
-                }
-                b'_' if is_word => {
-                    buf.push(b' ');
-                }
-                b'\r' => (),
-                _ => match state {
-                    QuotedPrintableState::None => {
+            if match_count > 0 {
+                for ch in boundary[..match_count].iter() {
+                    if *ch != b'\n' || QuotedPrintableState::Eq != state {
                         buf.push(*ch);
                     }
-                    QuotedPrintableState::Eq => {
-                        hex1 = HEX_MAP[*ch as usize];
-                        if hex1 != -1 {
-                            state = QuotedPrintableState::Hex1;
-                        } else {
-                            success = false;
-                            break;
-                        }
-                    }
-                    QuotedPrintableState::Hex1 => {
-                        let hex2 = HEX_MAP[*ch as usize];
+                }
+                state = QuotedPrintableState::None;
 
-                        state = QuotedPrintableState::None;
-                        if hex2 != -1 {
-                            let ch = ((hex1 as u8) << 4) | hex2 as u8;
-
-                            buf.push(ch);
-                        } else {
-                            success = false;
-                            break;
-                        }
+                // is_boundary_end is always true except in the rare event
+                // that a boundary was found without a proper MIME ending (-- or \r\n)
+                if is_boundary_end {
+                    if *ch == boundary[0] {
+                        // Char matched beginning of boundary, get next char.
+                        match_count = 1;
+                        continue;
+                    } else {
+                        // Reset match count and decode character
+                        match_count = 0;
                     }
-                },
+                } else {
+                    // There was a full boundary match but without a proper MIME
+                    // ending, reset match count and continue.
+                    match_count = 0;
+                    continue;
+                }
             }
         }
 
-        self.pos.set(read_pos);
+        match ch {
+            b'=' => {
+                if let QuotedPrintableState::None = state {
+                    state = QuotedPrintableState::Eq
+                } else {
+                    success = false;
+                    break;
+                }
+            }
+            b'\n' => {
+                if is_word {
+                    success = false;
+                    break;
+                } else if QuotedPrintableState::Eq == state {
+                    state = QuotedPrintableState::None;
+                } else {
+                    buf.push(b'\n');
+                }
+            }
+            b'_' if is_word => {
+                buf.push(b' ');
+            }
+            b'\r' => (),
+            _ => match state {
+                QuotedPrintableState::None => {
+                    buf.push(*ch);
+                }
+                QuotedPrintableState::Eq => {
+                    hex1 = HEX_MAP[*ch as usize];
+                    if hex1 != -1 {
+                        state = QuotedPrintableState::Hex1;
+                    } else {
+                        success = false;
+                        break;
+                    }
+                }
+                QuotedPrintableState::Hex1 => {
+                    let hex2 = HEX_MAP[*ch as usize];
 
-        (
-            success,
-            if !buf.is_empty() {
-                buf.shrink_to_fit();
-                Some(buf.into())
-            } else {
-                None
+                    state = QuotedPrintableState::None;
+                    if hex2 != -1 {
+                        let ch = ((hex1 as u8) << 4) | hex2 as u8;
+
+                        buf.push(ch);
+                    } else {
+                        success = false;
+                        break;
+                    }
+                }
             },
-        )
+        }
     }
+
+    (
+        if success { bytes_read } else { 0 },
+        if !buf.is_empty() {
+            buf.shrink_to_fit();
+            Some(buf.into())
+        } else {
+            None
+        },
+    )
 }
 
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::quoted_printable::QuotedPrintableDecoder, parsers::message_stream::MessageStream,
+        decoders::quoted_printable::decode_quoted_printable, parsers::message_stream::MessageStream,
     };
 
     #[test]
-    fn decode_quoted_printable() {
+    fn decode_quoted_printable_string() {
         let inputs = [
             (
                 concat!(
@@ -248,9 +237,15 @@ mod tests {
             let str = input.0.to_string();
             let stream = MessageStream::new(str.as_bytes());
 
-            let (success, result) = stream.decode_quoted_printable(input.2.as_bytes(), input.3);
+            let (bytes_read, result) =
+                decode_quoted_printable(&stream, 0, input.2.as_bytes(), input.3);
 
-            assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
+            assert_eq!(
+                bytes_read > 0,
+                !input.1.is_empty(),
+                "Failed for '{:?}'",
+                input.0
+            );
 
             if !input.1.is_empty() {
                 let result_str = std::str::from_utf8(result.as_ref().unwrap()).unwrap();
@@ -274,13 +269,13 @@ mod tests {
         // MIRI overflow tests
         for input in [b"\x0a\x0a\x00\x0b".to_vec(), b":B\x0a%".to_vec()] {
             let stream = MessageStream::new(&input[..]);
-            stream.decode_quoted_printable(b"\n\n", true);
+            decode_quoted_printable(&stream, 0, b"\n\n", true);
             let stream = MessageStream::new(&input[..]);
-            stream.decode_quoted_printable(b"\n\n", false);
+            decode_quoted_printable(&stream, 0, b"\n\n", false);
             let stream = MessageStream::new(&input[..]);
-            stream.decode_quoted_printable(&[], true);
+            decode_quoted_printable(&stream, 0, &[], true);
             let stream = MessageStream::new(&input[..]);
-            stream.decode_quoted_printable(&[], false);
+            decode_quoted_printable(&stream, 0, &[], false);
         }
     }
 }
