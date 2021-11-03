@@ -40,7 +40,6 @@ pub struct AddressParser<'x> {
     token_start: usize,
     token_end: usize,
 
-    is_token_safe: bool,
     is_token_email: bool,
     is_token_start: bool,
     is_escaped: bool,
@@ -65,11 +64,7 @@ pub fn add_token<'x>(
 ) {
     if parser.token_start > 0 {
         let token = stream
-            .get_string(
-                parser.token_start - 1,
-                parser.token_end,
-                parser.is_token_safe,
-            )
+            .get_string(parser.token_start - 1, parser.token_end)
             .unwrap();
         let mut add_space = false;
         let list = match parser.state {
@@ -100,7 +95,6 @@ pub fn add_token<'x>(
         }
 
         parser.token_start = 0;
-        parser.is_token_safe = true;
         parser.is_token_email = false;
         parser.is_token_start = true;
         parser.is_escaped = false;
@@ -238,7 +232,6 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
         token_start: 0,
         token_end: 0,
 
-        is_token_safe: true,
         is_token_email: false,
         is_token_start: true,
         is_escaped: false,
@@ -323,7 +316,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
                     } else {
                         &mut parser.comment_tokens
                     })
-                    .push(token);
+                    .push(token.into());
                     continue;
                 }
             }
@@ -373,12 +366,7 @@ pub fn parse_address<'x>(stream: &MessageStream<'x>) -> Address<'x> {
                 add_group(&mut parser);
                 continue;
             }
-            0..=0x7f => (),
-            _ => {
-                if parser.is_token_safe {
-                    parser.is_token_safe = false;
-                }
-            }
+            _ => (),
         }
 
         if parser.is_escaped {
@@ -941,8 +929,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
-            let result = parse_address(&MessageStream::new(unsafe { str.as_bytes_mut() }));
+            println!("Testiong {}", input.0);
+            let str = input.0.to_string();
+            let result = parse_address(&MessageStream::new(str.as_bytes()));
             let expected: Address = serde_yaml::from_str(input.1).unwrap_or(Address::Empty);
 
             /*if input.0.len() >= 70 {

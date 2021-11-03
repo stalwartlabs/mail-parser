@@ -9,129 +9,126 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
-fn single_byte_decoder<'x>(table: &[char], bytes: &'x [u8]) -> Cow<'x, str> {
+fn single_byte_decoder(table: &[char], bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 2);
 
     for byte in bytes {
-        // SAFE: table's size is always u8::MAX
-        result.push(unsafe { *table.get_unchecked(*byte as usize) });
+        result.push(table[*byte as usize]);
     }
 
     result.shrink_to_fit();
-    result.into()
+    result
 }
 
-pub fn decoder_iso_8859_1(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_1(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_1, bytes)
 }
 
-pub fn decoder_iso_8859_2(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_2(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_2, bytes)
 }
 
-pub fn decoder_iso_8859_3(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_3(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_3, bytes)
 }
 
-pub fn decoder_iso_8859_4(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_4(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_4, bytes)
 }
 
-pub fn decoder_iso_8859_5(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_5(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_5, bytes)
 }
 
-pub fn decoder_iso_8859_6(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_6(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_6, bytes)
 }
 
-pub fn decoder_iso_8859_7(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_7(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_7, bytes)
 }
 
-pub fn decoder_iso_8859_8(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_8(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_8, bytes)
 }
 
-pub fn decoder_iso_8859_9(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_9(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_9, bytes)
 }
 
-pub fn decoder_iso_8859_10(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_10(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_10, bytes)
 }
 
-pub fn decoder_iso_8859_13(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_13(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_13, bytes)
 }
 
-pub fn decoder_iso_8859_14(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_14(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_14, bytes)
 }
 
-pub fn decoder_iso_8859_15(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_15(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_15, bytes)
 }
 
-pub fn decoder_iso_8859_16(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso_8859_16(bytes: &[u8]) -> String {
     single_byte_decoder(ISO_8859_16, bytes)
 }
 
-pub fn decoder_cp1250(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1250(bytes: &[u8]) -> String {
     single_byte_decoder(CP1250, bytes)
 }
 
-pub fn decoder_cp1251(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1251(bytes: &[u8]) -> String {
     single_byte_decoder(CP1251, bytes)
 }
 
-pub fn decoder_cp1252(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1252(bytes: &[u8]) -> String {
     single_byte_decoder(CP1252, bytes)
 }
 
-pub fn decoder_cp1253(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1253(bytes: &[u8]) -> String {
     single_byte_decoder(CP1253, bytes)
 }
 
-pub fn decoder_cp1254(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1254(bytes: &[u8]) -> String {
     single_byte_decoder(CP1254, bytes)
 }
 
-pub fn decoder_cp1255(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1255(bytes: &[u8]) -> String {
     single_byte_decoder(CP1255, bytes)
 }
 
-pub fn decoder_cp1256(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1256(bytes: &[u8]) -> String {
     single_byte_decoder(CP1256, bytes)
 }
 
-pub fn decoder_cp1257(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1257(bytes: &[u8]) -> String {
     single_byte_decoder(CP1257, bytes)
 }
 
-pub fn decoder_cp1258(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_cp1258(bytes: &[u8]) -> String {
     single_byte_decoder(CP1258, bytes)
 }
 
-pub fn decoder_koi8_r(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_koi8_r(bytes: &[u8]) -> String {
     single_byte_decoder(KOI8_R, bytes)
 }
 
-pub fn decoder_koi8_u(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_koi8_u(bytes: &[u8]) -> String {
     single_byte_decoder(KOI8_U, bytes)
 }
 
-pub fn decoder_macintosh(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_macintosh(bytes: &[u8]) -> String {
     single_byte_decoder(MACINTOSH, bytes)
 }
 
-pub fn decoder_ibm_850(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_ibm_850(bytes: &[u8]) -> String {
     single_byte_decoder(IBM850, bytes)
 }
 
-pub fn decoder_tis_620(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_tis_620(bytes: &[u8]) -> String {
     single_byte_decoder(TIS_620, bytes)
 }
 

@@ -1,6 +1,5 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
-use std::borrow::Cow;
 
 use mail_parser::{
     decoders::{
@@ -34,8 +33,7 @@ use mail_parser::{
 fuzz_target!(|data: &[u8]| {
     // Fuzz every parsing function
     for n_fuzz in 1..=24 {
-        let mut data = Vec::from(data);
-        let stream = MessageStream::new(&mut data);
+        let stream = MessageStream::new(&data);
 
         match n_fuzz {
             1 => {
@@ -116,16 +114,16 @@ fuzz_target!(|data: &[u8]| {
 
     // Fuzz HTML functions
     let mut html_str = String::with_capacity(data.len());
-    add_html_token(&mut html_str, data, false);
-    let html_str = String::from_utf8_lossy(data);
-    html_to_text(&html_str);
-    text_to_html(&html_str);
+    let str_data = String::from_utf8_lossy(data);
+    add_html_token(&mut html_str, str_data.as_ref().as_bytes(), false);
+    html_to_text(&str_data);
+    text_to_html(&str_data);
 
     // Fuzz decoding functions
     decode_hex(data);
     get_charset_decoder(data);
 
-    let decoders: &[for<'x> fn(&'x [u8]) -> Cow<'x, str>] = &[
+    let decoders: &[for<'x> fn(&'x [u8]) -> String] = &[
         decoder_utf7,
         decoder_utf16_le,
         decoder_utf16_be,
@@ -138,6 +136,5 @@ fuzz_target!(|data: &[u8]| {
     }
 
     // Fuzz the entire library
-    let mut data = Vec::from(data);
-    Message::parse(&mut data[..]);
+    Message::parse(&data[..]);
 });

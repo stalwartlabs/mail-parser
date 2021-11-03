@@ -16,9 +16,7 @@ use std::{
 
 use crate::{
     decoders::{
-        charsets::map::{decoder_default, get_charset_decoder},
-        encoded_word::parse_encoded_word,
-        hex::decode_hex,
+        charsets::map::get_charset_decoder, encoded_word::parse_encoded_word, hex::decode_hex,
     },
     parsers::message_stream::MessageStream,
     ContentType,
@@ -58,24 +56,18 @@ struct ContentTypeParser<'x> {
     is_encoded_attribute: bool,
     is_escaped: bool,
     is_lower_case: bool,
-    is_token_safe: bool,
     is_token_start: bool,
 }
 
 #[inline(always)]
 fn reset_parser(parser: &mut ContentTypeParser) {
     parser.token_start = 0;
-    parser.is_token_safe = true;
     parser.is_token_start = true;
 }
 
 fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) -> bool {
     if parser.token_start > 0 {
-        let mut attr = stream.get_string(
-            parser.token_start - 1,
-            parser.token_end,
-            parser.is_token_safe,
-        );
+        let mut attr = stream.get_string(parser.token_start - 1, parser.token_end);
 
         if !parser.is_lower_case {
             attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
@@ -99,11 +91,7 @@ fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<
 fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
     if parser.token_start > 0 {
         let attr_part = stream
-            .get_string(
-                parser.token_start - 1,
-                parser.token_end,
-                parser.is_token_safe,
-            )
+            .get_string(parser.token_start - 1, parser.token_end)
             .unwrap();
 
         if parser.attr_charset.is_none() {
@@ -143,7 +131,6 @@ fn add_partial_value<'x>(
                     } else {
                         parser.token_end
                     },
-                    parser.is_token_safe,
                 )
                 .unwrap(),
         );
@@ -162,11 +149,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
     let has_values = !parser.values.is_empty();
     let value = if parser.token_start > 0 {
-        stream.get_string(
-            parser.token_start - 1,
-            parser.token_end,
-            parser.is_token_safe,
-        )
+        stream.get_string(parser.token_start - 1, parser.token_end)
     } else {
         if !has_values {
             return;
@@ -200,16 +183,17 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
         if parser.is_encoded_attribute {
             if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
-                value = get_charset_decoder(
-                    parser
-                        .attr_charset
-                        .as_ref()
-                        .unwrap_or(&"utf-8".into())
-                        .as_bytes(),
-                )
-                .unwrap_or(decoder_default)(&decoded_bytes)
-                .into_owned()
-                .into();
+                value = if let Some(decoder) = parser
+                    .attr_charset
+                    .as_ref()
+                    .and_then(|c| get_charset_decoder(c.as_bytes()))
+                {
+                    decoder(&decoded_bytes).into()
+                } else {
+                    String::from_utf8(decoded_bytes)
+                        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+                        .into()
+                }
             }
             parser.is_encoded_attribute = false;
         }
@@ -240,11 +224,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 fn add_attr_position(parser: &mut ContentTypeParser, stream: &MessageStream) -> bool {
     if parser.token_start > 0 {
         parser.attr_position = stream
-            .get_string(
-                parser.token_start - 1,
-                parser.token_end,
-                parser.is_token_safe,
-            )
+            .get_string(parser.token_start - 1, parser.token_end)
             .unwrap()
             .parse()
             .unwrap_or(0);
@@ -288,7 +268,6 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
         is_continuation: false,
         is_encoded_attribute: false,
         is_lower_case: true,
-        is_token_safe: true,
         is_token_start: true,
         is_escaped: false,
 
@@ -418,7 +397,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                 {
                     if let Some(token) = parse_encoded_word(stream) {
                         add_partial_value(&mut parser, stream, false);
-                        parser.values.push(token);
+                        parser.values.push(token.into());
                         continue;
                     }
                 }
@@ -496,12 +475,7 @@ pub fn parse_content_type<'x>(stream: &MessageStream<'x>) -> Option<ContentType<
                 continue;
             }
             b'\r' => continue,
-            0..=0x7f => (),
-            _ => {
-                if parser.is_token_safe {
-                    parser.is_token_safe = false;
-                }
-            }
+            _ => (),
         }
 
         if parser.is_escaped {
@@ -1353,9 +1327,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
+            let str = input.0.to_string();
 
-            let result = parse_content_type(&MessageStream::new(unsafe { str.as_bytes_mut() }));
+            let result = parse_content_type(&MessageStream::new(str.as_bytes()));
             let expected: Option<ContentType> = serde_yaml::from_str(input.1).unwrap_or(None);
 
             /*

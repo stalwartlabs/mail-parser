@@ -15,7 +15,6 @@ use crate::{decoders::encoded_word::parse_encoded_word, parsers::message_stream:
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
-    is_token_safe: bool,
     is_token_start: bool,
     tokens: Vec<Cow<'x, str>>,
 }
@@ -27,11 +26,7 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
         }
         parser.tokens.push(
             stream
-                .get_string(
-                    parser.token_start - 1,
-                    parser.token_end,
-                    parser.is_token_safe,
-                )
+                .get_string(parser.token_start - 1, parser.token_end)
                 .unwrap(),
         );
 
@@ -40,7 +35,6 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
         }
 
         parser.token_start = 0;
-        parser.is_token_safe = true;
         parser.is_token_start = true;
     }
 }
@@ -49,7 +43,6 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
-        is_token_safe: true,
         is_token_start: true,
         tokens: Vec::new(),
     };
@@ -85,17 +78,12 @@ pub fn parse_unstructured<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
             b'=' if parser.is_token_start => {
                 if let Some(token) = parse_encoded_word(stream) {
                     add_token(&mut parser, stream, true);
-                    parser.tokens.push(token);
+                    parser.tokens.push(token.into());
                     continue;
                 }
             }
             b'\r' => continue,
-            0..=0x7f => (),
-            _ => {
-                if parser.is_token_safe {
-                    parser.is_token_safe = false;
-                }
-            }
+            _ => (),
         }
 
         if parser.is_token_start {
@@ -191,9 +179,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
+            let str = input.0.to_string();
             assert_eq!(
-                parse_unstructured(&MessageStream::new(unsafe { str.as_bytes_mut() }),).unwrap(),
+                parse_unstructured(&MessageStream::new(str.as_bytes()),).unwrap(),
                 input.1,
                 "Failed to parse '{:?}'",
                 input.0

@@ -9,8 +9,6 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
 use crate::{
     decoders::{
         base64::Base64Decoder, charsets::map::get_charset_decoder,
@@ -19,9 +17,7 @@ use crate::{
     parsers::message_stream::MessageStream,
 };
 
-use super::charsets::map::decoder_default;
-
-pub fn parse_encoded_word<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
+pub fn parse_encoded_word(stream: &MessageStream) -> Option<String> {
     if !stream.skip_byte(&b'?') {
         return None;
     }
@@ -55,12 +51,12 @@ pub fn parse_encoded_word<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
         return None;
     }
 
-    let (success, is_utf8_safe, bytes) = match stream.next() {
+    let (success, bytes) = match stream.next() {
         Some(b'q') | Some(b'Q') if stream.skip_byte(&b'?') => {
             stream.decode_quoted_printable(b"?=", true)
         }
         Some(b'b') | Some(b'B') if stream.skip_byte(&b'?') => stream.decode_base64(b"?=", true),
-        _ => (false, false, None),
+        _ => (false, None),
     };
 
     if !success {
@@ -71,12 +67,11 @@ pub fn parse_encoded_word<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>
     if let Some(decoder) =
         get_charset_decoder(stream.get_bytes(charset_start, charset_end).unwrap())
     {
-        decoder(bytes?).into()
-    } else if is_utf8_safe {
-        // SAFE: slice checked previously
-        unsafe { Cow::from(std::str::from_utf8_unchecked(bytes?)).into() }
+        decoder(bytes?.as_ref()).into()
     } else {
-        decoder_default(bytes?).into()
+        String::from_utf8(bytes?.into_owned())
+            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+            .into()
     }
 }
 
@@ -166,9 +161,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
+            let str = input.0.to_string();
 
-            match parse_encoded_word(&MessageStream::new(unsafe { str.as_bytes_mut() })) {
+            match parse_encoded_word(&MessageStream::new(str.as_bytes())) {
                 Some(string) => {
                     //println!("Decoded '{}'", string);
                     assert_eq!(string, input.1);

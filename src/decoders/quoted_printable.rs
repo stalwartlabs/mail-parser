@@ -9,6 +9,8 @@
  * except according to those terms.
  */
 
+use std::borrow::Cow;
+
 use crate::parsers::message_stream::MessageStream;
 
 #[derive(PartialEq, Debug)]
@@ -23,234 +25,146 @@ pub trait QuotedPrintableDecoder<'x> {
         &self,
         boundary: &[u8],
         is_word: bool,
-    ) -> (bool, bool, Option<&'x [u8]>);
+    ) -> (bool, Option<Cow<'x, [u8]>>);
 }
-
-// Miri does not play well with UnsafeCells, see https://github.com/rust-lang/miri/issues/1665
-//
-// When testing under Miri,
-//     (*data)[i] = val;
-// is used instead of
-//     *(*data).get_unchecked_mut(i) = val;
-//
 
 impl<'x> QuotedPrintableDecoder<'x> for MessageStream<'x> {
     fn decode_quoted_printable(
         &self,
         boundary: &[u8],
         is_word: bool,
-    ) -> (bool, bool, Option<&'x [u8]>) {
-        unsafe {
-            let mut success = boundary.is_empty();
-            let mut is_utf8_safe = true;
+    ) -> (bool, Option<Cow<'x, [u8]>>) {
+        let mut success = boundary.is_empty();
 
-            // SAFE: exclusive access to `self.data` 
-            let mut data = &mut *self.data.get();
-            let data_len = (*data).len();
+        let start_pos = self.pos.get();
+        let mut read_pos = start_pos;
 
-            // SAFE: exclusive access to `self.pos` 
-            let stream_pos = &mut *self.pos.get();
-            let start_pos = *stream_pos;
-            let mut read_pos = *stream_pos;
-            let mut write_pos = *stream_pos;
+        let mut buf = Vec::with_capacity(self.data.len() - read_pos);
 
-            let mut state = QuotedPrintableState::None;
-            let mut match_count = 0;
-            let mut hex1 = 0;
+        let mut state = QuotedPrintableState::None;
+        let mut match_count = 0;
+        let mut hex1 = 0;
 
-            debug_assert!(boundary.is_empty() || boundary.len() >= 2);
+        debug_assert!(boundary.is_empty() || boundary.len() >= 2);
 
-            while read_pos < data_len {
-                // SAFE: slice bounds checked in while loop
-                let ch = *(*data).get_unchecked(read_pos);
-                read_pos += 1;
+        for ch in self.data[read_pos..].iter() {
+            read_pos += 1;
 
-                // if success is false, a boundary was provided
-                if !success {
-                    let mut is_boundary_end = true;
+            // if success is false, a boundary was provided
+            if !success {
+                let mut is_boundary_end = true;
 
-                    // SAFE: bounds are checked after the first match occurs
-                    if ch == *boundary.get_unchecked(match_count) {
-                        match_count += 1;
-                        if match_count == boundary.len() {
-                            let done = if is_word {
-                                true
-                            } else {
-                                // SAFE: exclusive access to `self.data` is re-obtained after 
-                                // is_boundary_end finishes.
-                                is_boundary_end = self.is_boundary_end(read_pos);
-                                is_boundary_end
-                            };
-                            data = &mut *self.data.get(); // Avoid violating the Stacked Borrows rules
-
-                            if done {
-                                success = true;
-                                break;
-                            }
+                if *ch == boundary[match_count] {
+                    match_count += 1;
+                    if match_count == boundary.len() {
+                        let done = if is_word {
+                            true
                         } else {
-                            continue;
-                        }
-                    }
+                            is_boundary_end = self.is_boundary_end(read_pos);
+                            is_boundary_end
+                        };
 
-                    if match_count > 0 {
-                        for ch in boundary[..match_count].iter() {
-                            if *ch != b'\n' || QuotedPrintableState::Eq != state {
-                                #[cfg(miri)]
-                                {
-                                    (*data)[write_pos] = *ch;
-                                }
-                                #[cfg(not(miri))]
-                                {
-                                    // SAFE: `write_pos` increments in parallel to `read_pos` 
-                                    // which is bound checked in the while loop
-                                    *((*data).get_unchecked_mut(write_pos)) = *ch;
-                                }
-                                write_pos += 1;
-                                if is_utf8_safe && *ch > 0x7f {
-                                    is_utf8_safe = false;
-                                }
-                            }
+                        if done {
+                            success = true;
+                            break;
                         }
-                        state = QuotedPrintableState::None;
-
-                        // is_boundary_end is always true except in the rare event
-                        // that a boundary was found without a proper MIME ending (-- or \r\n)
-                        if is_boundary_end {
-
-                            // SAFE: `boundary` is never empty at this point
-                            if ch == *boundary.get_unchecked(0) {
-                                // Char matched beginning of boundary, get next char.
-                                match_count = 1;
-                                continue;
-                            } else {
-                                // Reset match count and decode character
-                                match_count = 0;
-                            }
-                        } else {
-                            // There was a full boundary match but without a proper MIME
-                            // ending, reset match count and continue.
-                            match_count = 0;
-                            continue;
-                        }
+                    } else {
+                        continue;
                     }
                 }
 
-                match ch {
-                    b'=' => {
-                        if let QuotedPrintableState::None = state {
-                            state = QuotedPrintableState::Eq
+                if match_count > 0 {
+                    for ch in boundary[..match_count].iter() {
+                        if *ch != b'\n' || QuotedPrintableState::Eq != state {
+                            buf.push(*ch);
+                        }
+                    }
+                    state = QuotedPrintableState::None;
+
+                    // is_boundary_end is always true except in the rare event
+                    // that a boundary was found without a proper MIME ending (-- or \r\n)
+                    if is_boundary_end {
+                        if *ch == boundary[0] {
+                            // Char matched beginning of boundary, get next char.
+                            match_count = 1;
+                            continue;
                         } else {
-                            success = false;
-                            break;
+                            // Reset match count and decode character
+                            match_count = 0;
                         }
+                    } else {
+                        // There was a full boundary match but without a proper MIME
+                        // ending, reset match count and continue.
+                        match_count = 0;
+                        continue;
                     }
-                    b'\n' => {
-                        if is_word {
-                            success = false;
-                            break;
-                        } else if QuotedPrintableState::Eq == state {
-                            state = QuotedPrintableState::None;
-                        } else {
-                            #[cfg(miri)]
-                            {
-                                (*data)[write_pos] = b'\n';
-                            }
-                            #[cfg(not(miri))]
-                            {
-                                // SAFE: `write_pos` increments in parallel to `read_pos` 
-                                // which is bound checked in the while loop
-                                *((*data).get_unchecked_mut(write_pos)) = b'\n';
-                            }
-
-                            write_pos += 1;
-                        }
-                    }
-                    b'_' if is_word => {
-                        #[cfg(miri)]
-                        {
-                            (*data)[write_pos] = b' ';
-                        }
-                        #[cfg(not(miri))]
-                        {
-                            // SAFE: `write_pos` increments in parallel to `read_pos` 
-                            // which is bound checked in the while loop
-                            *((*data).get_unchecked_mut(write_pos)) = b' ';
-                        }
-                        write_pos += 1;
-                    }
-                    b'\r' => (),
-                    _ => match state {
-                        QuotedPrintableState::None => {
-                            #[cfg(miri)]
-                            {
-                                (*data)[write_pos] = ch;
-                            }
-                            #[cfg(not(miri))]
-                            {
-                                // SAFE: `write_pos` increments in parallel to `read_pos` 
-                                // which is bound checked in the while loop
-                                *((*data).get_unchecked_mut(write_pos)) = ch;
-                            }
-                            write_pos += 1;
-                            if is_utf8_safe && ch > 0x7f {
-                                is_utf8_safe = false;
-                            }
-                        }
-                        QuotedPrintableState::Eq => {
-                            // SAFE: HEX_MAP's size is u8::MAX
-                            hex1 = *HEX_MAP.get_unchecked(ch as usize);
-                            if hex1 != -1 {
-                                state = QuotedPrintableState::Hex1;
-                            } else {
-                                success = false;
-                                break;
-                            }
-                        }
-                        QuotedPrintableState::Hex1 => {
-                            // SAFE: HEX_MAP's size is u8::MAX
-                            let hex2 = *HEX_MAP.get_unchecked(ch as usize);
-
-                            state = QuotedPrintableState::None;
-                            if hex2 != -1 {
-                                let ch = ((hex1 as u8) << 4) | hex2 as u8;
-
-                                #[cfg(miri)]
-                                {
-                                    (*data)[write_pos] = ch;
-                                }
-                                #[cfg(not(miri))]
-                                {
-                                    // SAFE: `write_pos` increments in parallel to `read_pos` 
-                                    // which is bound checked in the while loop
-                                    *((*data).get_unchecked_mut(write_pos)) = ch;
-                                }
-
-                                write_pos += 1;
-                                if is_utf8_safe && ch > 0x7f {
-                                    is_utf8_safe = false;
-                                }
-                            } else {
-                                success = false;
-                                break;
-                            }
-                        }
-                    },
                 }
             }
 
-            *stream_pos = read_pos;
+            match ch {
+                b'=' => {
+                    if let QuotedPrintableState::None = state {
+                        state = QuotedPrintableState::Eq
+                    } else {
+                        success = false;
+                        break;
+                    }
+                }
+                b'\n' => {
+                    if is_word {
+                        success = false;
+                        break;
+                    } else if QuotedPrintableState::Eq == state {
+                        state = QuotedPrintableState::None;
+                    } else {
+                        buf.push(b'\n');
+                    }
+                }
+                b'_' if is_word => {
+                    buf.push(b' ');
+                }
+                b'\r' => (),
+                _ => match state {
+                    QuotedPrintableState::None => {
+                        buf.push(*ch);
+                    }
+                    QuotedPrintableState::Eq => {
+                        hex1 = HEX_MAP[*ch as usize];
+                        if hex1 != -1 {
+                            state = QuotedPrintableState::Hex1;
+                        } else {
+                            success = false;
+                            break;
+                        }
+                    }
+                    QuotedPrintableState::Hex1 => {
+                        let hex2 = HEX_MAP[*ch as usize];
 
-            (
-                success,
-                is_utf8_safe,
-                if write_pos > start_pos {
-                    // SAFE: bounds are checked
-                    Some((*data).get_unchecked(start_pos..write_pos))
-                } else {
-                    None
+                        state = QuotedPrintableState::None;
+                        if hex2 != -1 {
+                            let ch = ((hex1 as u8) << 4) | hex2 as u8;
+
+                            buf.push(ch);
+                        } else {
+                            success = false;
+                            break;
+                        }
+                    }
                 },
-            )
+            }
         }
+
+        self.pos.set(read_pos);
+
+        (
+            success,
+            if !buf.is_empty() {
+                buf.shrink_to_fit();
+                Some(buf.into())
+            } else {
+                None
+            },
+        )
     }
 }
 
@@ -331,15 +245,15 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
-            let stream = MessageStream::new(unsafe { str.as_bytes_mut() });
+            let str = input.0.to_string();
+            let stream = MessageStream::new(str.as_bytes());
 
-            let (success, _, result) = stream.decode_quoted_printable(input.2.as_bytes(), input.3);
+            let (success, result) = stream.decode_quoted_printable(input.2.as_bytes(), input.3);
 
             assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
 
             if !input.1.is_empty() {
-                let result_str = std::str::from_utf8(result.unwrap()).unwrap();
+                let result_str = std::str::from_utf8(result.as_ref().unwrap()).unwrap();
 
                 /*println!(
                     "Decoded '{}'\n -> to ->\n'{}'\n{}",
@@ -358,14 +272,14 @@ mod tests {
         }
 
         // MIRI overflow tests
-        for mut input in [b"\x0a\x0a\x00\x0b".to_vec(), b":B\x0a%".to_vec()] {
-            let stream = MessageStream::new(&mut input[..]);
+        for input in [b"\x0a\x0a\x00\x0b".to_vec(), b":B\x0a%".to_vec()] {
+            let stream = MessageStream::new(&input[..]);
             stream.decode_quoted_printable(b"\n\n", true);
-            let stream = MessageStream::new(&mut input[..]);
+            let stream = MessageStream::new(&input[..]);
             stream.decode_quoted_printable(b"\n\n", false);
-            let stream = MessageStream::new(&mut input[..]);
+            let stream = MessageStream::new(&input[..]);
             stream.decode_quoted_printable(&[], true);
-            let stream = MessageStream::new(&mut input[..]);
+            let stream = MessageStream::new(&input[..]);
             stream.decode_quoted_printable(&[], false);
         }
     }

@@ -9,38 +9,32 @@
  * except according to those terms.
  */
 
-use std::{
-    borrow::Cow,
-    char::{decode_utf16, REPLACEMENT_CHARACTER},
-};
+use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
 
-use crate::decoders::base64::{Base64Chunk, BASE64_MAP};
+use crate::decoders::base64::BASE64_MAP;
 
 struct Utf7DecoderState {
     utf16_bytes: Vec<u16>,
     pending_byte: Option<u8>,
-    b64_bytes: Base64Chunk,
+    b64_bytes: u32,
 }
 
 fn add_utf16_bytes(state: &mut Utf7DecoderState, n_bytes: usize) {
     debug_assert!(n_bytes < std::mem::size_of::<u32>());
 
-    unsafe {
-        // SAFE: union access of `n_bytes`, which is always lower than size_of::<u32>
-        for byte in state.b64_bytes.bytes.get_unchecked(0..n_bytes) {
-            if let Some(pending_byte) = state.pending_byte {
-                state
-                    .utf16_bytes
-                    .push(u16::from_be_bytes([pending_byte, *byte]));
-                state.pending_byte = None;
-            } else {
-                state.pending_byte = Some(*byte);
-            }
+    for byte in state.b64_bytes.to_le_bytes()[0..n_bytes].iter() {
+        if let Some(pending_byte) = state.pending_byte {
+            state
+                .utf16_bytes
+                .push(u16::from_be_bytes([pending_byte, *byte]));
+            state.pending_byte = None;
+        } else {
+            state.pending_byte = Some(*byte);
         }
     }
 }
 
-pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_utf7(bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len());
     let mut byte_count: u8 = 0;
     let mut in_b64 = false;
@@ -48,28 +42,20 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
     let mut state = Utf7DecoderState {
         utf16_bytes: Vec::with_capacity(10),
         pending_byte: None,
-        b64_bytes: Base64Chunk { val: 0 },
+        b64_bytes: 0,
     };
 
     for byte in bytes {
         if in_b64 {
-            // SAFE: BASEMAP's size is [4][u8::MAX]
-            let val = unsafe {
-                BASE64_MAP
-                    .get_unchecked(byte_count as usize)
-                    .get_unchecked(*byte as usize)
-            };
+            let val = BASE64_MAP[byte_count as usize][*byte as usize];
 
-            if *val < 0x01ffffff {
+            if val < 0x01ffffff {
                 byte_count = (byte_count + 1) & 3;
 
                 if byte_count == 1 {
-                    state.b64_bytes.val = *val;
+                    state.b64_bytes = val;
                 } else {
-                    // SAFE: union read/write
-                    unsafe {
-                        state.b64_bytes.val |= *val;
-                    }
+                    state.b64_bytes |= val;
 
                     if byte_count == 0 {
                         add_utf16_bytes(&mut state, 3);
@@ -112,30 +98,29 @@ pub fn decoder_utf7(bytes: &[u8]) -> Cow<str> {
     }
 
     result.shrink_to_fit();
-    result.into()
+    result
 }
 
-fn decoder_utf16_(bytes: &[u8], fnc: fn([u8; 2]) -> u16) -> Cow<str> {
+fn decoder_utf16_(bytes: &[u8], fnc: fn([u8; 2]) -> u16) -> String {
     if bytes.len() >= 2 {
         decode_utf16(bytes.chunks_exact(2).map(|c| fnc([c[0], c[1]])))
             .map(|r| r.unwrap_or(REPLACEMENT_CHARACTER))
             .collect::<String>()
-            .into()
     } else {
-        "".into()
+        "".to_string()
     }
 }
 
-pub fn decoder_utf16_le(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_utf16_le(bytes: &[u8]) -> String {
     decoder_utf16_(bytes, u16::from_le_bytes)
 }
 
-pub fn decoder_utf16_be(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_utf16_be(bytes: &[u8]) -> String {
     decoder_utf16_(bytes, u16::from_be_bytes)
 }
 
 #[allow(clippy::type_complexity)]
-pub fn decoder_utf16(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_utf16(bytes: &[u8]) -> String {
     // Read BOM
     let (bytes, fnc): (&[u8], fn([u8; 2]) -> u16) = match bytes.get(0..2) {
         Some([0xfe, 0xff]) => (bytes.get(2..).unwrap_or(&[]), u16::from_be_bytes),
@@ -146,8 +131,9 @@ pub fn decoder_utf16(bytes: &[u8]) -> Cow<str> {
     decoder_utf16_(bytes, fnc)
 }
 
-pub fn decoder_utf8(bytes: &[u8]) -> Cow<str> {
-    String::from_utf8_lossy(bytes)
+// Not currently used at the moment
+pub fn decoder_utf8(bytes: &[u8]) -> String {
+    String::from_utf8_lossy(bytes).into_owned()
 }
 
 #[cfg(test)]

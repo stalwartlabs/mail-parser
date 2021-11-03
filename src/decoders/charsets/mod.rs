@@ -9,14 +9,12 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
 pub mod map;
 pub mod multi_byte;
 pub mod single_byte;
 pub mod utf;
 
-pub type DecoderFnc<'x> = fn(&'x [u8]) -> Cow<'x, str>;
+pub type DecoderFnc<'x> = fn(&'x [u8]) -> String;
 
 #[cfg(test)]
 mod tests {

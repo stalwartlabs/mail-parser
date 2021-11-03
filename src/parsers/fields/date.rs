@@ -115,11 +115,9 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
             b'a'..=b'z' | b'A'..=b'Z' => {
                 if pos == 1 {
                     if (1..=2).contains(&month_pos) {
-                        // SAFE: MONTH_HASH's size is u8::MAX
-                        month_hash += unsafe {
-                            *MONTH_HASH
-                                .get_unchecked((if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize)
-                        } as usize;
+                        month_hash += MONTH_HASH
+                            [(if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize]
+                            as usize;
                     }
                     month_pos += 1;
                 }
@@ -158,8 +156,7 @@ pub fn parse_date(stream: &MessageStream, abort_on_invalid: bool) -> Option<Date
                 parts[2]
             },
             month: if month_pos == 3 && month_hash <= 30 {
-                // SAFE: MONTH_MAP's size is 31
-                (unsafe { *MONTH_MAP.get_unchecked(month_hash) }) as u32
+                MONTH_MAP[month_hash] as u32
             } else {
                 parts[1]
             },
@@ -261,8 +258,8 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
-            match parse_date(&MessageStream::new(unsafe { str.as_bytes_mut() }), false) {
+            let str = input.0.to_string();
+            match parse_date(&MessageStream::new(str.as_bytes()), false) {
                 Some(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());

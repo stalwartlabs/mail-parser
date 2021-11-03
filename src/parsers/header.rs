@@ -77,23 +77,14 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                     let field = stream.get_bytes(token_start - 1, token_end).unwrap();
 
                     if (2..=25).contains(&token_len) {
-                        // SAFE: HDR_HASH's size is u8::MAX
-                        token_hash += token_len
-                            + unsafe {
-                                *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
-                            } as usize;
+                        token_hash +=
+                            token_len + HDR_HASH[last_ch.to_ascii_lowercase() as usize] as usize;
 
                         if (4..=61).contains(&token_hash) {
                             let token_hash = token_hash - 4;
 
-                            // SAFE: HDR_NAME's size is 58
-                               if field.eq_ignore_ascii_case(unsafe {
-                                HDR_NAMES.get_unchecked(token_hash)
-                            }) {
-                                // SAFE: HDR_FNCS's size is 58
-                                return HeaderParserResult::Supported(unsafe {
-                                    *HDR_FNCS.get_unchecked(token_hash)
-                                });
+                            if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
+                                return HeaderParserResult::Supported(HDR_FNCS[token_hash]);
                             }
                         }
                     }
@@ -115,10 +106,7 @@ pub fn parse_header_name<'x>(stream: &MessageStream<'x>) -> HeaderParserResult<'
                     }
 
                     if let 0 | 9 = token_len {
-                        // SAFE: HDR_HASH's size is u8::MAX
-                        token_hash +=
-                            unsafe { *HDR_HASH.get_unchecked((*ch).to_ascii_lowercase() as usize) }
-                                as usize;
+                        token_hash += HDR_HASH[(*ch).to_ascii_lowercase() as usize] as usize;
                     }
                     token_len += 1;
                 }
@@ -163,8 +151,8 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
-            match parse_header_name(&MessageStream::new(unsafe { str.as_bytes_mut() })) {
+            let str = input.0.to_string();
+            match parse_header_name(&MessageStream::new(str.as_bytes())) {
                 HeaderParserResult::Supported(f) => {
                     if let HeaderParserResult::Supported(val) = input.1 {
                         if f as usize == val as usize {

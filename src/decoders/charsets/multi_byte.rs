@@ -9,8 +9,6 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
 #[cfg(feature = "full_encoding")]
 use encoding_rs::*;
 
@@ -18,7 +16,7 @@ use encoding_rs::*;
 use super::map::decoder_default;
 
 #[cfg(feature = "full_encoding")]
-fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> Cow<str> {
+fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 3);
 
     if let (CoderResult::OutputFull, _, _) = decoder.decode_to_string(bytes, &mut result, true) {
@@ -26,10 +24,10 @@ fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> Cow<str> {
     }
 
     result.shrink_to_fit();
-    result.into()
+    result
 }
 
-pub fn decoder_shift_jis(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_shift_jis(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(SHIFT_JIS.new_decoder(), bytes)
@@ -41,7 +39,7 @@ pub fn decoder_shift_jis(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_big5(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_big5(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(BIG5.new_decoder(), bytes)
@@ -53,7 +51,7 @@ pub fn decoder_big5(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_euc_jp(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_euc_jp(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(EUC_JP.new_decoder(), bytes)
@@ -65,7 +63,7 @@ pub fn decoder_euc_jp(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_euc_kr(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_euc_kr(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(EUC_KR.new_decoder(), bytes)
@@ -77,7 +75,7 @@ pub fn decoder_euc_kr(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_gb18030(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_gb18030(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(GB18030.new_decoder(), bytes)
@@ -89,7 +87,7 @@ pub fn decoder_gb18030(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_gbk(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_gbk(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(GBK.new_decoder(), bytes)
@@ -101,7 +99,7 @@ pub fn decoder_gbk(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_iso2022_jp(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_iso2022_jp(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(ISO_2022_JP.new_decoder(), bytes)
@@ -113,7 +111,7 @@ pub fn decoder_iso2022_jp(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_windows874(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_windows874(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(WINDOWS_874.new_decoder(), bytes)
@@ -125,7 +123,7 @@ pub fn decoder_windows874(bytes: &[u8]) -> Cow<str> {
     }
 }
 
-pub fn decoder_ibm866(bytes: &[u8]) -> Cow<str> {
+pub fn decoder_ibm866(bytes: &[u8]) -> String {
     #[cfg(feature = "full_encoding")]
     {
         multi_byte_decoder(IBM866.new_decoder(), bytes)

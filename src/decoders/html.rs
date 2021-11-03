@@ -33,33 +33,29 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
             debug_assert_eq!(ENTITY_HASH.len(), u8::MAX as usize + 5);
             debug_assert_eq!(ENTITY_MAP.len(), 18079 - 64 + 1);
 
-            /* SAFE: ENTITY_HASH's size is 260 (u8::MAX + 5)
-                     and ENTITY_MAP's size is 18016 (18079 - 64 + 1) */
-            unsafe {
-                for (pos, ch) in entity.iter().enumerate() {
-                    match pos {
-                        0 | 5 | 6 | 9 | 11 => {
-                            hash += *ENTITY_HASH.get_unchecked(*ch as usize);
-                        }
-                        1 => {
-                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 4);
-                        }
-                        2 | 4 => {
-                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 1);
-                        }
-                        3 => {
-                            hash += *ENTITY_HASH.get_unchecked(*ch as usize + 3);
-                        }
-                        _ => (),
+            for (pos, ch) in entity.iter().enumerate() {
+                match pos {
+                    0 | 5 | 6 | 9 | 11 => {
+                        hash += ENTITY_HASH[*ch as usize];
                     }
-                    if pos == entity.len() - 1 {
-                        hash += *ENTITY_HASH.get_unchecked(*ch as usize);
+                    1 => {
+                        hash += ENTITY_HASH[*ch as usize + 4];
                     }
+                    2 | 4 => {
+                        hash += ENTITY_HASH[*ch as usize + 1];
+                    }
+                    3 => {
+                        hash += ENTITY_HASH[*ch as usize + 3];
+                    }
+                    _ => (),
                 }
+                if pos == entity.len() - 1 {
+                    hash += ENTITY_HASH[*ch as usize];
+                }
+            }
 
-                if (64..=18079).contains(&hash) {
-                    entity_code = *ENTITY_MAP.get_unchecked((hash - 64) as usize);
-                }
+            if (64..=18079).contains(&hash) {
+                entity_code = ENTITY_MAP[(hash - 64) as usize];
             }
         }
 
@@ -69,9 +65,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         }
     }
 
-    // SAFE: the input string is tokenized by ASCII chars, therefore the resulting
-    // u8 array is UTF-8 safe.
-    result.push_str(unsafe { std::str::from_utf8_unchecked(token) });
+    result.push_str(std::str::from_utf8(token).unwrap());
 }
 
 pub fn html_to_text(input: &str) -> String {
@@ -237,8 +231,7 @@ pub fn text_to_html(input: &str) -> String {
     }
     result.extend_from_slice(b"</body></html>");
 
-    // SAFE: `result` contains a sequence of a valid `input` string tokens and UTF-8 safe slices
-    unsafe { String::from_utf8_unchecked(result) }
+    String::from_utf8(result).unwrap()
 }
 
 #[cfg(test)]

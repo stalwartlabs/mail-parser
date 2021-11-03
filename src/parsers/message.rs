@@ -14,7 +14,7 @@ use std::borrow::Cow;
 use crate::{
     decoders::{
         base64::Base64Decoder,
-        charsets::map::{decoder_default, get_charset_decoder},
+        charsets::map::get_charset_decoder,
         html::{html_to_text, text_to_html},
         quoted_printable::QuotedPrintableDecoder,
     },
@@ -38,25 +38,18 @@ enum MimeType {
 }
 
 #[inline(always)]
-fn bytes_to_string<'x>(
-    bytes: &'x [u8],
-    content_type: Option<&ContentType>,
-    is_utf8_safe: bool,
-) -> Cow<'x, str> {
+fn bytes_to_string<'x>(bytes: Cow<'x, [u8]>, content_type: Option<&ContentType>) -> Cow<'x, str> {
     if let Some(content_type) = content_type {
         if let Some(charset) = content_type.get_attribute("charset") {
             if let Some(decoder_fnc) = get_charset_decoder(charset.as_bytes()) {
-                return decoder_fnc(bytes);
+                return decoder_fnc(bytes.as_ref()).into();
             }
         }
     }
 
-    if !is_utf8_safe {
-        decoder_default(bytes)
-    } else {
-        // SAFE: `bytes` slice is ASCII and UTF-8 safe
-        (unsafe { std::str::from_utf8_unchecked(bytes) }).into()
-    }
+    String::from_utf8(bytes.into_owned())
+        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+        .into()
 }
 
 #[inline(always)]
@@ -130,16 +123,19 @@ impl<'x> Message<'x> {
         }
     }
 
+    /// Returns `false` if at least one header field was successfully parsed.
+    pub fn is_empty(&self) -> bool {
+        self.header.is_empty()
+    }
+
     /// Parses a byte slice containing the RFC5322 raw message and returns a
     /// `Message` struct.
     ///
     /// This function never panics, a best-effort is made to parse the message and
     /// if no headers are found and empty `Message` struct is returned.
+    /// To make sure parsing was successfull use `is_empty()`.
     ///
-    /// Note: The `parse()` function requires a mutable `[u8]` as input in order
-    /// to perform BASE64/Quoted-Printable decoding in-place.
-    ///
-    pub fn parse(bytes: &'x mut [u8]) -> Message<'x> {
+    pub fn parse(bytes: &'x [u8]) -> Message<'x> {
         let stream = MessageStream::new(bytes);
 
         let mut message = Message::new();
@@ -219,9 +215,7 @@ impl<'x> Message<'x> {
 
             stream.skip_crlf();
 
-            let (success, mut is_utf8_safe, mut bytes) = match header
-                .get_content_transfer_encoding()
-            {
+            let (success, mut bytes) = match header.get_content_transfer_encoding() {
                 Some(encoding) if encoding.eq_ignore_ascii_case("base64") => stream.decode_base64(
                     state
                         .mime_boundary
@@ -249,7 +243,7 @@ impl<'x> Message<'x> {
             if !success {
                 if !stream.is_eof() {
                     // Get raw MIME part
-                    let (success, r_is_utf8_safe, r_bytes) = stream.get_bytes_to_boundary(
+                    let (success, r_bytes) = stream.get_bytes_to_boundary(
                         state
                             .mime_boundary
                             .as_ref()
@@ -258,10 +252,8 @@ impl<'x> Message<'x> {
                     if !success {
                         // If there is MIME boundary, ignore it and get raw message
                         if !stream.is_eof() && state.mime_boundary.is_some() {
-                            let (_, r_is_utf8_safe, r_bytes) =
-                                stream.get_bytes_to_boundary(&[][..]);
+                            let (_, r_bytes) = stream.get_bytes_to_boundary(&[][..]);
                             if r_bytes.is_some() {
-                                is_utf8_safe = r_is_utf8_safe;
                                 bytes = r_bytes;
                             } else {
                                 break;
@@ -270,7 +262,6 @@ impl<'x> Message<'x> {
                             break;
                         }
                     } else {
-                        is_utf8_safe = r_is_utf8_safe;
                         bytes = r_bytes;
                     }
                     mime_type = MimeType::TextOther;
@@ -319,9 +310,8 @@ impl<'x> Message<'x> {
             if is_text {
                 let text_part = TextPart {
                     contents: bytes_to_string(
-                        bytes.map_or_else(|| "\n".as_bytes(), |v| v),
+                        bytes.unwrap_or_else(|| vec![b'\n'].into()),
                         header.get_content_type(),
-                        is_utf8_safe,
                     ),
                     header: if !mime_part_header.is_empty() {
                         Some(std::mem::take(&mut mime_part_header))
@@ -358,7 +348,7 @@ impl<'x> Message<'x> {
                     } else {
                         None
                     },
-                    contents: bytes.map_or_else(|| "?".as_bytes(), |v| v).into(),
+                    contents: bytes.unwrap_or_else(|| Cow::from(vec![b'?'])),
                 };
 
                 if add_to_html {
@@ -511,6 +501,8 @@ mod tests {
 
                     let input = input.split_at_mut(pos);
                     let message = Message::parse(input.0);
+
+                    assert!(!message.is_empty());
 
                     assert_eq!(
                         message,

@@ -39,8 +39,7 @@ pub fn decode_hex(src: &[u8]) -> (bool, Vec<u8>) {
                     result.push(*ch);
                 }
                 HexState::Percent => {
-                    // SAFE: HEX_MAP's size is u8::MAX
-                    hex1 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
+                    hex1 = HEX_MAP[*ch as usize];
                     if hex1 != -1 {
                         state = HexState::Hex1;
                     } else {
@@ -49,8 +48,7 @@ pub fn decode_hex(src: &[u8]) -> (bool, Vec<u8>) {
                     }
                 }
                 HexState::Hex1 => {
-                    // SAFE: HEX_MAP's size is u8::MAX
-                    let hex2 = unsafe { *HEX_MAP.get_unchecked(*ch as usize) };
+                    let hex2 = HEX_MAP[*ch as usize];
 
                     state = HexState::None;
                     if hex2 != -1 {

@@ -16,7 +16,6 @@ use crate::parsers::message_stream::MessageStream;
 pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
-    let mut is_token_safe = true;
     let mut is_id_part = false;
     let mut ids = Vec::new();
 
@@ -36,24 +35,14 @@ pub fn parse_id<'x>(stream: &MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
             b'>' => {
                 is_id_part = false;
                 if token_start > 0 {
-                    ids.push(
-                        stream
-                            .get_string(token_start - 1, token_end, is_token_safe)
-                            .unwrap(),
-                    );
-                    is_token_safe = true;
+                    ids.push(stream.get_string(token_start - 1, token_end).unwrap());
                     token_start = 0;
                 } else {
                     continue;
                 }
             }
             b' ' | b'\t' | b'\r' => continue,
-            0..=0x7f => (),
-            _ => {
-                if is_token_safe {
-                    is_token_safe = false;
-                }
-            }
+            _ => (),
         }
         if is_id_part {
             if token_start == 0 {
@@ -103,10 +92,10 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
+            let str = input.0.to_string();
             assert_eq!(
                 input.1,
-                parse_id(&MessageStream::new(unsafe { str.as_bytes_mut() })).unwrap(),
+                parse_id(&MessageStream::new(str.as_bytes())).unwrap(),
                 "Failed to parse '{:?}'",
                 input.0
             );

@@ -16,7 +16,6 @@ use crate::parsers::message_stream::MessageStream;
 pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
-    let mut is_token_safe = true;
 
     while let Some(ch) = stream.next() {
         match ch {
@@ -28,7 +27,7 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
                 _ => {
                     return if token_start > 0 {
                         stream
-                            .get_string(token_start - 1, token_end, is_token_safe)
+                            .get_string(token_start - 1, token_end)
                             .unwrap()
                             .into()
                     } else {
@@ -37,12 +36,7 @@ pub fn parse_raw<'x>(stream: &MessageStream<'x>) -> Option<Cow<'x, str>> {
                 }
             },
             b' ' | b'\t' | b'\r' => continue,
-            0..=0x7f => (),
-            _ => {
-                if is_token_safe {
-                    is_token_safe = false;
-                }
-            }
+            _ => (),
         }
 
         if token_start == 0 {
@@ -93,9 +87,9 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
+            let str = input.0.to_string();
             assert_eq!(
-                parse_raw(&MessageStream::new(unsafe { str.as_bytes_mut() })).unwrap(),
+                parse_raw(&MessageStream::new(str.as_bytes())).unwrap(),
                 input.1,
                 "Failed for '{:?}'",
                 input.0

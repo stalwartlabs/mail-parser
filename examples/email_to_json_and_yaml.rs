@@ -1,7 +1,7 @@
 use mail_parser::{Addr, Address, BodyPart, Group, Message, MessagePart, MimeFieldGet};
 
 fn main() {
-    let mut input = concat!(
+    let input = concat!(
         "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
         "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
         "    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;\n",
@@ -36,10 +36,9 @@ fn main() {
         "--giddyup--\n",
         "--festivus--\n",
     )
-    .as_bytes()
-    .to_vec();
+    .as_bytes();
 
-    let message = Message::parse(&mut input[..]);
+    let message = Message::parse(input);
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(

@@ -29,15 +29,13 @@
 //!
 //! Performance and memory safety were two important factors while designing _mail-parser_:
 //!
-//! - **Zero-copy parsing** is done in most cases (unless when decoding non-UTF8 text or when RFC2047/RFC2231 encoded parts are present).
-//!   Practically all strings and u8 slices returned by this library are `Cow<str>` or `Cow<[u8]>` references to the input raw message.
-//! - Memory allocations are always avoided unless they are really necessary. In fact, all Base64 and Quoted-Printable parts are decoded in
-//!   place re-using the input buffer.
-//! - [Perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function) is used for fast look-up of message header fields, character
-//!   set names and aliases, HTML entities as well as month names while parsing _Date_ fields.
-//! - Although some `unsafe` code was used to obtain performance gains of about 10%, every function in the library has been
-//!   [fuzzed](#testing-fuzzing--benchmarking) and also heavily [tested with MIRI](#testing-fuzzing--benchmarking).
-//! - Fully battle-tested with millions of real-world e-mail messages dating from 1995 until today.
+//! - **Zero-copy parsing**: Practically all strings returned by this library are `Cow<str>` references to the input raw message.
+//! - **High performance Base64 decoding** based on Chromium's decoder ([the fastest non-SIMD decoder](https://github.com/lemire/fastbase64)).
+//! - **Fast** parsing of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
+//! - Written in **100% safe** Rust with no external dependencies.
+//! - Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and
+//!   meticulously [tested with MIRI](#testing-fuzzing--benchmarking).
+//! - Thoroughly **battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
 //!
 //! Jump to the [example](#usage-example).
 //!
@@ -110,7 +108,7 @@
 //! ```
 //!    use mail_parser::*;
 //!
-//!    let mut input = concat!(
+//!    let input = concat!(
 //!        "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
 //!        "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
 //!        "    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;\n",
@@ -145,10 +143,9 @@
 //!        "--giddyup--\n",
 //!        "--festivus--\n",
 //!    )
-//!    .as_bytes()
-//!    .to_vec();
+//!    .as_bytes();
 //!
-//!    let message = Message::parse(&mut input[..]);
+//!    let message = Message::parse(input);
 //!
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
@@ -938,6 +935,70 @@ impl<'x> Message<'x> {
     /// Returns an Interator over the attachments
     pub fn get_attachments(&self) -> Iter<MessagePart<'_>> {
         self.attachments.iter()
+    }
+}
+
+impl<'x> MessageHeader<'x> {
+    pub fn is_empty(&self) -> bool {
+        for addr in [
+            &self.from,
+            &self.to,
+            &self.cc,
+            &self.bcc,
+            &self.reply_to,
+            &self.sender,
+            &self.resent_to,
+            &self.resent_from,
+            &self.resent_bcc,
+            &self.resent_cc,
+            &self.resent_sender,
+            &self.list_archive,
+            &self.list_help,
+            &self.list_id,
+            &self.list_owner,
+            &self.list_post,
+            &self.list_subscribe,
+            &self.list_unsubscribe,
+        ] {
+            if !addr.is_empty() {
+                return false;
+            }
+        }
+
+        for str in [
+            &self.subject,
+            &self.message_id,
+            &self.mime_version,
+            &self.content_description,
+            &self.content_id,
+            &self.content_transfer_encoding,
+        ] {
+            if str.is_some() {
+                return false;
+            }
+        }
+
+        if self.date.is_some() || !self.others.is_empty() {
+            return false;
+        }
+
+        for vec in [
+            &self.comments,
+            &self.in_reply_to,
+            &self.keywords,
+            &self.received,
+            &self.references,
+            &self.resent_message_id,
+            &self.return_path,
+        ] {
+            if vec.is_some() {
+                return false;
+            }
+        }
+
+        self.content_disposition.is_none()
+            && self.resent_date.is_none()
+            && self.content_type.is_none()
     }
 }
 

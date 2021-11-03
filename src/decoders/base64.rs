@@ -9,154 +9,100 @@
  * except according to those terms.
  */
 
+use std::borrow::Cow;
+
 use crate::parsers::message_stream::MessageStream;
 
-#[repr(C)]
-pub union Base64Chunk {
-    pub val: u32,
-    pub bytes: [u8; std::mem::size_of::<u32>()],
-}
-
 pub trait Base64Decoder<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>);
+    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, Option<Cow<'x, [u8]>>);
 }
-
-// Miri does not play well with UnsafeCells, see https://github.com/rust-lang/miri/issues/1665
-//
-// When testing under Miri,
-//     (*data)[i] = val;
-// is used instead of
-//     *(*data).get_unchecked_mut(i) = val;
-//
 
 impl<'x> Base64Decoder<'x> for MessageStream<'x> {
-    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, bool, Option<&'x [u8]>) {
-        unsafe {
-            let mut success = boundary.is_empty();
+    fn decode_base64(&self, boundary: &[u8], is_word: bool) -> (bool, Option<Cow<'x, [u8]>>) {
+        let mut success = boundary.is_empty();
 
-            let mut chunk = Base64Chunk { val: 0 };
-            let mut byte_count: u8 = 0;
-            let mut match_count: usize = 0;
+        let mut chunk: u32 = 0;
+        let mut byte_count: u8 = 0;
+        let mut match_count: usize = 0;
 
-            let data = &mut *self.data.get();
-            let data_len = (*data).len();
+        let start_pos = self.pos.get();
+        let mut read_pos = start_pos;
 
-            let stream_pos = &mut *self.pos.get();
-            let start_pos = *stream_pos;
-            let mut read_pos = *stream_pos;
-            let mut write_pos = *stream_pos;
+        let mut buf = Vec::with_capacity(self.data.len() - read_pos);
 
-            while read_pos < data_len {
-                let ch = (*data).get_unchecked(read_pos);
-                read_pos += 1;
+        for ch in self.data[read_pos..].iter() {
+            read_pos += 1;
 
-                if !success {
-                    if ch == boundary.get_unchecked(match_count) {
-                        match_count += 1;
-                        if match_count == boundary.len() {
-                            success = true;
-                            break;
-                        } else {
-                            continue;
-                        }
-                    } else if match_count > 0 {
-                        if ch == boundary.get_unchecked(0) {
-                            match_count = 1;
-                            continue;
-                        } else {
-                            match_count = 0;
-                        }
-                    }
-                }
-
-                let val = BASE64_MAP
-                    .get_unchecked(byte_count as usize)
-                    .get_unchecked(*ch as usize);
-
-                if *val >= 0x01ffffff {
-                    if *ch == b'=' {
-                        match byte_count {
-                            1 | 2 => {
-                                #[cfg(miri)]
-                                {
-                                    (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
-                                }
-                                #[cfg(not(miri))]
-                                {
-                                    *((*data).get_unchecked_mut(write_pos)) =
-                                        *chunk.bytes.get_unchecked(0);
-                                }
-
-                                write_pos += 1;
-                                byte_count = 0;
-                            }
-                            3 => {
-                                #[cfg(miri)]
-                                {
-                                    (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
-                                    (*data)[write_pos + 1] = *chunk.bytes.get_unchecked(1);
-                                }
-                                #[cfg(not(miri))]
-                                {
-                                    (*data)
-                                        .get_unchecked_mut(write_pos..write_pos + 2)
-                                        .copy_from_slice(chunk.bytes.get_unchecked(0..2));
-                                }
-
-                                write_pos += 2;
-                                byte_count = 0;
-                            }
-                            0 => (),
-                            _ => {
-                                success = false;
-                                break;
-                            }
-                        }
-                    } else if !(*ch).is_ascii_whitespace() || is_word {
-                        success = false;
+            if !success {
+                if *ch == boundary[match_count] {
+                    match_count += 1;
+                    if match_count == boundary.len() {
+                        success = true;
                         break;
+                    } else {
+                        continue;
                     }
-                    continue;
-                }
-
-                byte_count = (byte_count + 1) & 3;
-
-                if byte_count == 1 {
-                    chunk.val = *val;
-                } else {
-                    chunk.val |= *val;
-
-                    if byte_count == 0 {
-                        #[cfg(miri)]
-                        {
-                            (*data)[write_pos] = *chunk.bytes.get_unchecked(0);
-                            (*data)[write_pos + 1] = *chunk.bytes.get_unchecked(1);
-                            (*data)[write_pos + 2] = *chunk.bytes.get_unchecked(2);
-                        }
-                        #[cfg(not(miri))]
-                        {
-                            (*data)
-                                .get_unchecked_mut(write_pos..write_pos + 3)
-                                .copy_from_slice(chunk.bytes.get_unchecked(0..3));
-                        }
-
-                        write_pos += 3;
+                } else if match_count > 0 {
+                    if *ch == boundary[0] {
+                        match_count = 1;
+                        continue;
+                    } else {
+                        match_count = 0;
                     }
                 }
             }
 
-            *stream_pos = read_pos;
+            let val = BASE64_MAP[byte_count as usize][*ch as usize];
 
-            (
-                success,
-                false,
-                if write_pos > start_pos {
-                    Some((*data).get_unchecked(start_pos..write_pos))
-                } else {
-                    None
-                },
-            )
+            if val >= 0x01ffffff {
+                if *ch == b'=' {
+                    match byte_count {
+                        1 | 2 => {
+                            buf.push(chunk.to_le_bytes()[0]);
+
+                            byte_count = 0;
+                        }
+                        3 => {
+                            buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                            byte_count = 0;
+                        }
+                        0 => (),
+                        _ => {
+                            success = false;
+                            break;
+                        }
+                    }
+                } else if !ch.is_ascii_whitespace() || is_word {
+                    success = false;
+                    break;
+                }
+                continue;
+            }
+
+            byte_count = (byte_count + 1) & 3;
+
+            if byte_count == 1 {
+                chunk = val;
+            } else {
+                chunk |= val;
+
+                if byte_count == 0 {
+                    buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+                }
+            }
         }
+
+        self.pos.set(read_pos);
+
+        (
+            success,
+            if !buf.is_empty() {
+                buf.shrink_to_fit();
+                Some(buf.into())
+            } else {
+                None
+            },
+        )
     }
 }
 
@@ -220,14 +166,14 @@ mod tests {
         ];
 
         for input in inputs {
-            let mut str = input.0.to_string();
-            let stream = MessageStream::new(unsafe { str.as_bytes_mut() });
+            let str = input.0.to_string();
+            let stream = MessageStream::new(str.as_bytes());
 
-            let (success, _, result) = stream.decode_base64(input.2.as_bytes(), input.3);
+            let (success, result) = stream.decode_base64(input.2.as_bytes(), input.3);
             assert_eq!(success, !input.1.is_empty(), "Failed for '{:?}'", input.0);
 
             if !input.1.is_empty() {
-                let result_str = std::str::from_utf8(result.unwrap()).unwrap();
+                let result_str = std::str::from_utf8(result.as_ref().unwrap().as_ref()).unwrap();
                 //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
                 assert_eq!(
                     result_str,

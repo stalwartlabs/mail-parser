@@ -17,7 +17,7 @@ use std::{fs, path::PathBuf};
 
 use test::Bencher;
 
-fn bench_all_samples(b: &mut Bencher, name: &str, fnc: fn(&mut [u8], &str)) {
+fn bench_all_samples(b: &mut Bencher, name: &str, fnc: fn(&[u8], &str)) {
     const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
     println!("Benchmarking {}...\n", name);
@@ -63,10 +63,7 @@ fn bench_all_samples(b: &mut Bencher, name: &str, fnc: fn(&mut [u8], &str)) {
 
     b.iter(|| {
         for test_msg in &test_data {
-            let input_str = String::from_utf8_lossy(&test_msg);
-            let mut input_bytes = test_msg.clone();
-
-            fnc(&mut input_bytes[..], &input_str);
+            fnc(test_msg, String::from_utf8_lossy(&test_msg).as_ref());
         }
     });
 }
