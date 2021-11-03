@@ -47,11 +47,13 @@ fn result_to_string<'x>(
     data: &'x [u8],
     content_type: Option<&ContentType>,
 ) -> Cow<'x, str> {
-    let charset_decoder = content_type.and_then(|ct| {
-        ct.get_attribute("charset").and_then(|c| get_charset_decoder(c.as_bytes()))
-    });
-
-    match (result, charset_decoder) {
+    match (
+        result,
+        content_type.and_then(|ct| {
+            ct.get_attribute("charset")
+                .and_then(|c| get_charset_decoder(c.as_bytes()))
+        }),
+    ) {
         (DecodeResult::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),
         (DecodeResult::Owned(vec), None) => String::from_utf8(vec)
             .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
@@ -59,9 +61,7 @@ fn result_to_string<'x>(
         (DecodeResult::Borrowed((from, to)), Some(charset_decoder)) => {
             charset_decoder(&data[from..to]).into()
         }
-        (DecodeResult::Borrowed((from, to)), None) => {
-            String::from_utf8_lossy(&data[from..to])
-        }
+        (DecodeResult::Borrowed((from, to)), None) => String::from_utf8_lossy(&data[from..to]),
         (DecodeResult::Empty, _) => "\n".to_string().into(),
     }
 }
