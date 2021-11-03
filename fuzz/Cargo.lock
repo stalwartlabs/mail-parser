@@ -42,7 +42,7 @@ dependencies = [
 
 [[package]]
 name = "mail-parser"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "encoding_rs",
  "serde",
