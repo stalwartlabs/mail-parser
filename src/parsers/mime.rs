@@ -1,4 +1,15 @@
-use std::borrow::Cow;
+/*
+ * Copyright Stalwart Labs, Minter Ltd. See the COPYING
+ * file at the top-level directory of this distribution.
+ *
+ * Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+ * https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+ * <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */
+
+use crate::decoders::DecodeResult;
 
 use super::message::MessageStream;
 
@@ -38,7 +49,7 @@ pub fn get_bytes_to_boundary<'x>(
     start_pos: usize,
     boundary: &[u8],
     _is_word: bool,
-) -> (usize, Option<Cow<'x, [u8]>>) {
+) -> (usize, DecodeResult) {
     let mut read_pos = start_pos;
 
     return if !boundary.is_empty() {
@@ -56,9 +67,9 @@ pub fn get_bytes_to_boundary<'x>(
                         return (
                             read_pos - start_pos,
                             if start_pos < match_pos {
-                                Cow::from(&stream.data[start_pos..match_pos]).into()
+                                DecodeResult::Borrowed((start_pos, match_pos))
                             } else {
-                                None
+                                DecodeResult::Empty
                             },
                         );
                     } else {
@@ -76,14 +87,14 @@ pub fn get_bytes_to_boundary<'x>(
             }
         }
 
-        (0, None)
+        (0, DecodeResult::Empty)
     } else if start_pos < stream.data.len() {
         (
             stream.data.len() - start_pos,
-            Cow::from(&stream.data[start_pos..]).into(),
+            DecodeResult::Borrowed((start_pos, stream.data.len())),
         )
     } else {
-        (0, None)
+        (0, DecodeResult::Empty)
     };
 }
 

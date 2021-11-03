@@ -11,7 +11,9 @@
 
 use crate::{decoders::charsets::map::get_charset_decoder, parsers::message::MessageStream};
 
-use super::{base64::decode_base64, quoted_printable::decode_quoted_printable, DecodeFnc};
+use super::{
+    base64::decode_base64, quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
+};
 
 enum Rfc2047State {
     Init,
@@ -80,26 +82,25 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
         }
     }
 
-    if decode_fnc.is_none() {
-        return (0, None);
+    if let Some(decode_fnc) = decode_fnc {
+        if let (bytes_read @ 1..=usize::MAX, DecodeResult::Owned(bytes)) =
+            decode_fnc(stream, read_pos, b"?=", true)
+        {
+            return (
+                (read_pos - start_pos) + bytes_read,
+                if let Some(decoder) = get_charset_decoder(&stream.data[charset_start..charset_end])
+                {
+                    decoder(&bytes).into()
+                } else {
+                    String::from_utf8(bytes)
+                        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+                        .into()
+                },
+            );
+        }
     }
 
-    if let (bytes_read @ 1..=usize::MAX, Some(bytes)) =
-        decode_fnc.unwrap()(stream, read_pos, b"?=", true)
-    {
-        (
-            (read_pos - start_pos) + bytes_read,
-            if let Some(decoder) = get_charset_decoder(&stream.data[charset_start..charset_end]) {
-                decoder(bytes.as_ref()).into()
-            } else {
-                String::from_utf8(bytes.into_owned())
-                    .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-                    .into()
-            },
-        )
-    } else {
-        (0, None)
-    }
+    (0, None)
 }
 
 #[cfg(test)]

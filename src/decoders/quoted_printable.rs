@@ -9,9 +9,9 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
 use crate::parsers::message::MessageStream;
+
+use super::DecodeResult;
 
 #[derive(PartialEq, Debug)]
 enum QuotedPrintableState {
@@ -25,7 +25,7 @@ pub fn decode_quoted_printable<'x>(
     start_pos: usize,
     boundary: &[u8],
     is_word: bool,
-) -> (usize, Option<Cow<'x, [u8]>>) {
+) -> (usize, DecodeResult) {
     let mut success = boundary.is_empty();
 
     let mut bytes_read = 0;
@@ -150,9 +150,9 @@ pub fn decode_quoted_printable<'x>(
         if success { bytes_read } else { 0 },
         if !buf.is_empty() {
             buf.shrink_to_fit();
-            Some(buf.into())
+            DecodeResult::Owned(buf)
         } else {
-            None
+            DecodeResult::Empty
         },
     )
 }
@@ -160,7 +160,8 @@ pub fn decode_quoted_printable<'x>(
 #[cfg(test)]
 mod tests {
     use crate::{
-        decoders::quoted_printable::decode_quoted_printable, parsers::message::MessageStream,
+        decoders::{quoted_printable::decode_quoted_printable, DecodeResult},
+        parsers::message::MessageStream,
     };
 
     #[test]
@@ -248,7 +249,11 @@ mod tests {
             );
 
             if !input.1.is_empty() {
-                let result_str = std::str::from_utf8(result.as_ref().unwrap()).unwrap();
+                let bytes = match result {
+                    DecodeResult::Owned(v) => v,
+                    _ => unreachable!(),
+                };
+                let result_str = std::str::from_utf8(&bytes).unwrap();
 
                 /*println!(
                     "Decoded '{}'\n -> to ->\n'{}'\n{}",

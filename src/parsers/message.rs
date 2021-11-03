@@ -17,7 +17,7 @@ use crate::{
         charsets::map::get_charset_decoder,
         html::{html_to_text, text_to_html},
         quoted_printable::decode_quoted_printable,
-        DecodeFnc,
+        DecodeFnc, DecodeResult,
     },
     BinaryPart, ContentType, InlinePart, Message, MessageHeader, MessagePart, MimeHeader, TextPart,
 };
@@ -42,19 +42,36 @@ enum MimeType {
     Other,
 }
 
-#[inline(always)]
-fn bytes_to_string<'x>(bytes: Cow<'x, [u8]>, content_type: Option<&ContentType>) -> Cow<'x, str> {
-    if let Some(content_type) = content_type {
-        if let Some(charset) = content_type.get_attribute("charset") {
-            if let Some(decoder_fnc) = get_charset_decoder(charset.as_bytes()) {
-                return decoder_fnc(bytes.as_ref()).into();
-            }
-        }
-    }
+fn result_to_string<'x>(
+    result: DecodeResult,
+    data: &'x [u8],
+    content_type: Option<&ContentType>,
+) -> Cow<'x, str> {
+    let charset_decoder = content_type.and_then(|ct| {
+        ct.get_attribute("charset").and_then(|c| get_charset_decoder(c.as_bytes()))
+    });
 
-    String::from_utf8(bytes.into_owned())
-        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-        .into()
+    match (result, charset_decoder) {
+        (DecodeResult::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),
+        (DecodeResult::Owned(vec), None) => String::from_utf8(vec)
+            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+            .into(),
+        (DecodeResult::Borrowed((from, to)), Some(charset_decoder)) => {
+            charset_decoder(&data[from..to]).into()
+        }
+        (DecodeResult::Borrowed((from, to)), None) => {
+            String::from_utf8_lossy(&data[from..to])
+        }
+        (DecodeResult::Empty, _) => "\n".to_string().into(),
+    }
+}
+
+fn result_to_bytes(result: DecodeResult, data: &[u8]) -> Cow<[u8]> {
+    match result {
+        DecodeResult::Owned(vec) => Cow::Owned(vec),
+        DecodeResult::Borrowed((from, to)) => Cow::Borrowed(&data[from..to]),
+        DecodeResult::Empty => Cow::from(vec![b'?']),
+    }
 }
 
 #[inline(always)]
@@ -269,7 +286,7 @@ impl<'x> Message<'x> {
                         false,
                     )
                 } else {
-                    (0, None)
+                    (0, DecodeResult::Empty)
                 };
 
                 if bytes_read == 0 {
@@ -334,10 +351,7 @@ impl<'x> Message<'x> {
 
             if is_text {
                 let text_part = TextPart {
-                    contents: bytes_to_string(
-                        bytes.unwrap_or_else(|| vec![b'\n'].into()),
-                        header.get_content_type(),
-                    ),
+                    contents: result_to_string(bytes, stream.data, header.get_content_type()),
                     header: if !mime_part_header.is_empty() {
                         Some(std::mem::take(&mut mime_part_header))
                     } else {
@@ -373,7 +387,7 @@ impl<'x> Message<'x> {
                     } else {
                         None
                     },
-                    contents: bytes.unwrap_or_else(|| Cow::from(vec![b'?'])),
+                    contents: result_to_bytes(bytes, stream.data),
                 };
 
                 if add_to_html {
