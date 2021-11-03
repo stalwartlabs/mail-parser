@@ -3,16 +3,16 @@ use libfuzzer_sys::fuzz_target;
 
 use mail_parser::{
     decoders::{
-        base64::Base64Decoder,
+        base64::decode_base64,
         charsets::{
             map::get_charset_decoder,
             single_byte::decoder_iso_8859_1,
             utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
         },
-        encoded_word::parse_encoded_word,
+        encoded_word::decode_rfc2047,
         hex::decode_hex,
         html::{add_html_token, html_to_text, text_to_html},
-        quoted_printable::QuotedPrintableDecoder,
+        quoted_printable::decode_quoted_printable,
     },
     parsers::{
         fields::{
@@ -24,6 +24,7 @@ use mail_parser::{
             raw::{parse_and_ignore, parse_raw},
             unstructured::parse_unstructured,
         },
+        mime::*,
         header::parse_header_name,
         message_stream::MessageStream,
     },
@@ -37,7 +38,7 @@ fuzz_target!(|data: &[u8]| {
 
         match n_fuzz {
             1 => {
-                parse_date(&stream, false);
+                parse_date(&stream);
             }
             2 => {
                 parse_address(&stream);
@@ -64,49 +65,49 @@ fuzz_target!(|data: &[u8]| {
                 parse_header_name(&stream);
             }
             10 => {
-                parse_encoded_word(&stream);
+                decode_rfc2047(&stream, 0);
             }
             11 => {
-                stream.seek_next_part(b"\n");
+                seek_next_part(&stream, b"\n");
             }
             12 => {
-                stream.get_bytes_to_boundary(b"\n");
+                get_bytes_to_boundary(&stream, 0, b"\n", false);
             }
             13 => {
-                stream.get_bytes_to_boundary(&[]);
+                get_bytes_to_boundary(&stream, 0, &[], false);
             }
             14 => {
                 stream.skip_crlf();
             }
             15 => {
-                stream.is_boundary_end(0);
+                is_boundary_end(&stream, 0);
             }
             16 => {
-                stream.skip_multipart_end();
+                skip_multipart_end(&stream);
             }
             17 => {
-                stream.decode_base64(b"\n", true);
+                decode_base64(&stream, 0, b"\n", true);
             }
             18 => {
-                stream.decode_base64(b"\n", false);
+                decode_base64(&stream, 0, b"\n", false);
             }
             19 => {
-                stream.decode_base64(&[], true);
+                decode_base64(&stream, 0, &[], true);
             }
             20 => {
-                stream.decode_base64(&[], false);
+                decode_base64(&stream, 0, &[], false);
             }
             21 => {
-                stream.decode_quoted_printable(b"\n\n", true); // QP Boundaries have to be at least 2 bytes long
+                decode_quoted_printable(&stream, 0, b"\n\n", true); // QP Boundaries have to be at least 2 bytes long
             }
             22 => {
-                stream.decode_quoted_printable(b"\n\n", false); // QP Boundaries have to be at least 2 bytes long
+                decode_quoted_printable(&stream, 0, b"\n\n", false); // QP Boundaries have to be at least 2 bytes long
             }
             23 => {
-                stream.decode_quoted_printable(&[], true);
+                decode_quoted_printable(&stream, 0, &[], true);
             }
             24 => {
-                stream.decode_quoted_printable(&[], false);
+                decode_quoted_printable(&stream, 0, &[], false);
             }
             0 | 25..=u32::MAX => unreachable!(),
         }

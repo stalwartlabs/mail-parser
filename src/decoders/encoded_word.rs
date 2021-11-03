@@ -80,6 +80,10 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
         }
     }
 
+    if decode_fnc.is_none() {
+        return (0, None);
+    }
+
     if let (bytes_read @ 1..=usize::MAX, Some(bytes)) =
         decode_fnc.unwrap()(stream, read_pos, b"?=", true)
     {
