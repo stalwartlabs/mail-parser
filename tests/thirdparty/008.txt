@@ -57,35 +57,36 @@ Root MIME epilogue
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "foo bar"
+        }
+      }
+    },
     "date": {
-      "year": 2007,
-      "month": 3,
-      "day": 24,
-      "hour": 23,
-      "minute": 0,
-      "second": 0,
-      "tz_before_gmt": false,
-      "tz_hour": 2,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2007,
+        "month": 3,
+        "day": 24,
+        "hour": 23,
+        "minute": 0,
+        "second": 0,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
         "address": "user@domain.org"
       }
     },
-    "mime_version": "1.0",
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "foo bar"
-      }
-    },
-    "others": {
-      "From user@domain  Fri Feb 22 17": [
-        "06:23 2008"
-      ]
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -95,10 +96,12 @@ Root MIME epilogue
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "Another part"
@@ -107,12 +110,14 @@ Root MIME epilogue
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "x-myown",
-            "attributes": {
-              "charset": "us-ascii"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "x-myown",
+              "attributes": {
+                "charset": "us-ascii"
+              }
             }
           }
         },
@@ -121,38 +126,46 @@ Root MIME epilogue
     },
     {
       "Message": {
-        "header": {
-          "date": {
-            "year": 2012,
-            "month": 8,
-            "day": 12,
-            "hour": 12,
-            "minute": 34,
-            "second": 56,
-            "tz_before_gmt": false,
-            "tz_hour": 3,
-            "tz_minute": 0
-          },
+        "headers": {
           "from": {
             "Address": {
               "address": "sub@domain.org"
             }
           },
-          "subject": "submsg",
+          "subject": {
+            "Text": "submsg"
+          },
+          "date": {
+            "DateTime": {
+              "year": 2012,
+              "month": 8,
+              "day": 12,
+              "hour": 12,
+              "minute": 34,
+              "second": 56,
+              "tz_before_gmt": false,
+              "tz_hour": 3,
+              "tz_minute": 0
+            }
+          },
           "content_type": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "sub1"
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "sub1"
+              }
             }
           }
         },
         "html_body": [
           {
-            "header": {
+            "headers": {
               "content_type": {
-                "c_type": "text",
-                "c_subtype": "html"
+                "ContentType": {
+                  "c_type": "text",
+                  "c_subtype": "html"
+                }
               }
             },
             "contents": "<p>Hello world</p>\n"

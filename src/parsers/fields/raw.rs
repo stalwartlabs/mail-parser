@@ -9,11 +9,9 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
+use crate::{parsers::message::MessageStream, HeaderValue};
 
-use crate::parsers::message::MessageStream;
-
-pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
+pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
 
@@ -30,9 +28,11 @@ pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
                 }
                 _ => {
                     return if token_start > 0 {
-                        String::from_utf8_lossy(&stream.data[token_start - 1..token_end]).into()
+                        HeaderValue::Text(String::from_utf8_lossy(
+                            &stream.data[token_start - 1..token_end],
+                        ))
                     } else {
-                        None
+                        HeaderValue::Empty
                     };
                 }
             },
@@ -47,7 +47,7 @@ pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
         token_end = stream.pos;
     }
 
-    None
+    HeaderValue::Empty
 }
 
 pub fn parse_and_ignore(stream: &mut MessageStream) {
@@ -96,7 +96,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_raw(&mut MessageStream::new(str.as_bytes())).unwrap(),
+                parse_raw(&mut MessageStream::new(str.as_bytes())).unwrap_text(),
                 input.1,
                 "Failed for '{:?}'",
                 input.0

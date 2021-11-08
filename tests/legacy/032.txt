@@ -134,17 +134,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 8,
-      "second": 29,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "message_id": {
+      "Text": "39235EAD.E48E2160@example.com"
     },
     "from": {
       "Address": {
@@ -152,40 +144,54 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "39235EAD.E48E2160@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
+    "mime_version": {
+      "Text": "1.0"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
     },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "------------C78F594988075E36AE03C243"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------C78F594988075E36AE03C243"
+        }
       }
     },
-    "others": {
-      "X-Accept-Language": [
-        "en"
-      ],
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ]
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 8,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "html_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "html",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -196,13 +202,17 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
+            }
           }
         }
       },
@@ -214,19 +224,25 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "attachments": [
     {
       "InlineBinary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "greenball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           }
         },
@@ -1534,19 +1550,25 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "InlineBinary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },

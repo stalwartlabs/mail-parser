@@ -33,17 +33,9 @@ als wir."=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 27,
-      "second": 4,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
     },
     "from": {
       "Address": {
@@ -51,39 +43,42 @@ als wir."=20
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 27,
+        "second": 4,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "utf-8"
+        }
+      }
+    },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "utf-8"
-      }
-    },
-    "others": {
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ]
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [

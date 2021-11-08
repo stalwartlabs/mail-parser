@@ -10,22 +10,26 @@ body
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "a"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "a"
+        }
       }
     }
   },
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "contents": "body\n"

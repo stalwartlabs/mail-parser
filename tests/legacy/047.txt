@@ -61,17 +61,15 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 47,
-      "second": 8,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------CA611088711119FBDB3473B4"
+        }
+      }
     },
     "from": {
       "Address": {
@@ -79,29 +77,33 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "392367BC.3D075C95@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
     },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "------------CA611088711119FBDB3473B4"
-      }
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     },
-    "others": {
-      "X-Accept-Language": [
-        "en"
-      ],
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ]
+    "message_id": {
+      "Text": "392367BC.3D075C95@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 47,
+        "second": 8,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "html_body": [
@@ -111,13 +113,17 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -127,21 +133,27 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "HasenundFrösche.txt"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "HasenundFrösche.txt"
+              }
             }
           },
-          "content_transfer_encoding": "quoted-printable",
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "name": "HasenundFrösche.txt",
-              "charset": "iso-8859-1"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1",
+                "name": "HasenundFrösche.txt"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"

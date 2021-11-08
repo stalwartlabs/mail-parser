@@ -22,17 +22,21 @@ In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein da
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 1,
-      "minute": 10,
-      "second": 27,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "content_transfer_encoding": {
+      "Text": "8bit"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Mï¿½ller",
+        "address": "mueller@example.com"
+      }
     },
     "from": {
       "Address": {
@@ -40,33 +44,30 @@ In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein da
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frï¿½sche",
-    "to": {
-      "Address": {
-        "name": "Heinz Mï¿½ller",
-        "address": "mueller@example.com"
-      }
-    },
-    "content_transfer_encoding": "8bit",
     "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
       }
     },
-    "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
-      "X-Priority": [
-        "1 (Highest)"
-      ]
+    "subject": {
+      "Text": "Die Hasen und die Frï¿½sche"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 1,
+        "minute": 10,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "html_body": [

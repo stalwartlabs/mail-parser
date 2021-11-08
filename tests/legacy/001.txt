@@ -35,27 +35,13 @@ m+APw-ssen als wir.+ACI-=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 18,
-      "second": 39,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "mime_version": {
+      "Text": "1.0"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
     "to": {
       "AddressList": [
         {
@@ -68,30 +54,39 @@ m+APw-ssen als wir.+ACI-=20
         }
       ]
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "utf-7"
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
-    "others": {
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ]
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 18,
+        "second": 39,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "utf-7"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
     }
   },
   "html_body": [

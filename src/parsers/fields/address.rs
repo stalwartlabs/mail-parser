@@ -12,20 +12,9 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, Addr, Address, Group,
+    decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, Addr, Group,
+    HeaderValue,
 };
-
-impl<'x> Default for Address<'x> {
-    fn default() -> Self {
-        Address::Empty
-    }
-}
-
-impl<'x> Address<'x> {
-    pub fn is_empty(&self) -> bool {
-        *self == Address::Empty
-    }
-}
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -224,7 +213,7 @@ pub fn add_group(parser: &mut AddressParser) {
         });
 }
 
-pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> Address<'x> {
+pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut parser = AddressParser {
         token_start: 0,
         token_end: 0,
@@ -394,18 +383,18 @@ pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> Address<'x> {
     if parser.group_name.is_some() || !parser.result.is_empty() {
         add_group(&mut parser);
         if parser.result.len() > 1 {
-            Address::GroupList(parser.result)
+            HeaderValue::GroupList(parser.result)
         } else {
-            Address::Group(parser.result.pop().unwrap())
+            HeaderValue::Group(parser.result.pop().unwrap())
         }
     } else if !parser.addresses.is_empty() {
         if parser.addresses.len() > 1 {
-            Address::AddressList(parser.addresses)
+            HeaderValue::AddressList(parser.addresses)
         } else {
-            Address::Address(parser.addresses.pop().unwrap())
+            HeaderValue::Address(parser.addresses.pop().unwrap())
         }
     } else {
-        Address::Empty
+        HeaderValue::Empty
     }
 }
 
@@ -936,7 +925,7 @@ mod tests {
             println!("Testiong {}", input.0);
             let str = input.0.to_string();
             let result = parse_address(&mut MessageStream::new(str.as_bytes()));
-            let expected: Address = serde_yaml::from_str(input.1).unwrap_or(Address::Empty);
+            let expected: HeaderValue = serde_yaml::from_str(input.1).unwrap_or(HeaderValue::Empty);
 
             /*if input.0.len() >= 70 {
                 println!(

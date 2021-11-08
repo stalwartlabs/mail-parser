@@ -25,14 +25,18 @@ hello world
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "alternative",
-      "attributes": {
-        "boundary": "bound"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "bound"
+        }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -48,30 +52,40 @@ hello world
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "binary",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "binary"
         }
       },
       "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
     },
     {
-      "header": {
-        "content_transfer_encoding": "binary",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "binary"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "ZWg="
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "hello world\r\n\r"

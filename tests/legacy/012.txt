@@ -31,17 +31,37 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "Windows-1252"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 30,
-      "second": 20,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 30,
+        "second": 20,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -49,39 +69,14 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "Windows-1252"
-      }
-    },
-    "others": {
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ]
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
     }
   },
   "html_body": [

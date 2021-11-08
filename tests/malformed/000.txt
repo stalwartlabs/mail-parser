@@ -11,12 +11,14 @@ Content-Type: text/html
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": ":foo"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": ":foo"
+        }
       }
     }
   }

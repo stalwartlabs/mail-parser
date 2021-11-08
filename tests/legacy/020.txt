@@ -32,17 +32,40 @@ welche also wohl noch unglücklicher sein müssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKBCHAA.doug@example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 8,
-      "second": 29,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 8,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "8bit"
     },
     "from": {
       "Address": {
@@ -50,39 +73,11 @@ welche also wohl noch unglücklicher sein müssen als wir."
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGIEKBCHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)",
     "to": {
       "Address": {
         "name": "Jï¿½rgen Schmï¿½rgen",
         "address": "schmuergen@example.com"
       }
-    },
-    "content_transfer_encoding": "8bit",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
-      }
-    },
-    "others": {
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ]
     }
   },
   "html_body": [

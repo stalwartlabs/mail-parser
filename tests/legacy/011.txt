@@ -30,17 +30,19 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 0,
-      "minute": 17,
-      "second": 39,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 17,
+        "second": 39,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -48,30 +50,32 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519001217.00a85b60@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
-    "others": {
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ]
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [

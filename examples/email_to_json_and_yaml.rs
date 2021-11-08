@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use mail_parser::{Addr, Address, BodyPart, Group, Message, MessagePart, MimeFieldGet};
+use mail_parser::*;
 
 fn main() {
     let input = concat!(
@@ -49,19 +49,19 @@ fn main() {
     )
     .as_bytes();
 
-    let message = Message::parse(input);
+    let message = Message::parse(input).unwrap();
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(
         message.get_from(),
-        &Address::Address(Addr {
+        &HeaderValue::Address(Addr {
             name: Some("Art Vandelay (Vandelay Industries)".into()),
             address: Some("art@vandelay.com".into())
         })
     );
     assert_eq!(
         message.get_to(),
-        &Address::GroupList(vec![
+        &HeaderValue::GroupList(vec![
             Group {
                 name: Some("Colleagues".into()),
                 addresses: vec![Addr {
@@ -146,8 +146,6 @@ fn main() {
     // Full RFC2231 support for continuations and character sets
     assert_eq!(
         nested_attachment
-            .get_header()
-            .unwrap()
             .get_content_type()
             .unwrap()
             .get_attribute("name")

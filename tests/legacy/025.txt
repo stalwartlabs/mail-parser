@@ -172,17 +172,31 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 0,
-      "minute": 38,
-      "second": 13,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 38,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com"
     },
     "from": {
       "Address": {
@@ -190,43 +204,32 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519003809.00a85140@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "=====================_715462801==_"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_715462801==_"
+        }
       }
-    },
-    "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Priority": [
-        "2 (High)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ]
     }
   },
   "html_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "html",
-          "attributes": {
-            "charset": "iso-8859-1"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "iso-8859-1"
+            }
           }
         }
       },
@@ -241,21 +244,29 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "attachments": [
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "2aa51367.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa51367.png"
+              }
             }
           },
-          "content_id": "4.2.0.58.20000519003809.00a85140@pop.example.com.2",
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "2aa51367.png"
+          "content_id": {
+            "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.2"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa51367.png"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "contents": [
@@ -1589,20 +1600,28 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
+          "content_id": {
+            "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.3"
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "2aa51371.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa51371.png"
+              }
             }
           },
-          "content_id": "4.2.0.58.20000519003809.00a85140@pop.example.com.3",
-          "content_transfer_encoding": "base64",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "2aa51371.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa51371.png"
+              }
             }
           }
         },
@@ -3065,19 +3084,25 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },
@@ -4412,19 +4437,25 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "greenball.png"
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           }
         },

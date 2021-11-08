@@ -8,28 +8,34 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "message",
-      "c_subtype": "rfc822"
+      "ContentType": {
+        "c_type": "message",
+        "c_subtype": "rfc822"
+      }
     }
   },
   "attachments": [
     {
       "Message": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "message",
-            "c_subtype": "rfc822"
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
           }
         },
         "attachments": [
           {
             "Message": {
-              "header": {
+              "headers": {
                 "content_type": {
-                  "c_type": "text",
-                  "c_subtype": "plain"
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "plain"
+                  }
                 }
               },
               "html_body": [

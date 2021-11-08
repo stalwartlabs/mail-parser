@@ -33,14 +33,18 @@ hello, world
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -59,37 +63,45 @@ hello, world
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "hello, world"
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "hello, world"
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "hello, world"
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "hello, world"

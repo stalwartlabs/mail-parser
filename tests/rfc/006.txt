@@ -23,39 +23,49 @@ Content-Disposition: inline
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "from": {
       "Address": {
         "address": "sender@example.com"
       }
     },
-    "subject": "Multipart Email Example",
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "boundary-string"
+        }
+      }
+    },
     "to": {
       "Address": {
         "address": "recipient@example.com"
       }
     },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "alternative",
-      "attributes": {
-        "boundary": "boundary-string"
-      }
+    "subject": {
+      "Text": "Multipart Email Example"
     }
   },
   "html_body": [
     {
-      "header": {
-        "content_disposition": {
-          "c_type": "inline"
-        },
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "html",
-          "attributes": {
-            "charset": "utf-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "utf-8"
+            }
           }
+        },
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline"
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         }
       },
       "contents": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n"
@@ -63,16 +73,22 @@ Content-Disposition: inline
   ],
   "text_body": [
     {
-      "header": {
-        "content_disposition": {
-          "c_type": "inline"
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         },
-        "content_transfer_encoding": "quoted-printable",
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline"
+          }
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "utf-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
+            }
           }
         }
       },

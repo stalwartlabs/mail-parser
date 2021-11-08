@@ -18,12 +18,14 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
@@ -34,10 +36,12 @@ Content-Type: text/plain
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "1"
@@ -46,10 +50,12 @@ Content-Type: text/plain
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "contents": "22\n--1\nContent-Type: text/plain\n\n333\n"

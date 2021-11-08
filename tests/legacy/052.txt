@@ -28,48 +28,37 @@ welche also wohl noch unglücklicher sein müssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 28,
-      "second": 40,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+    "subject": {
+      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 28,
+        "second": 40,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com",
-    "subject": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)",
     "to": {
       "Address": {
         "name": "Heinz Mï¿½ller",
         "address": "mueller@example.com"
       }
     },
-    "others": {
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ]
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
     }
   },
   "html_body": [

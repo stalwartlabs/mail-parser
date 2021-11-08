@@ -44,17 +44,33 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "content_transfer_encoding": {
+      "Text": "base64"
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 35,
-      "second": 5,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 35,
+        "second": 5,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "content_disposition": {
+      "ContentType": {
+        "c_type": "attachment",
+        "attributes": {
+          "filename": "redball.png"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     },
     "from": {
       "Address": {
@@ -62,45 +78,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Microsoft Outlook 00",
+    "content_type": {
+      "ContentType": {
+        "c_type": "image",
+        "c_subtype": "png",
+        "attributes": {
+          "name": "redball.png"
+        }
+      }
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
     },
-    "content_disposition": {
-      "c_type": "attachment",
-      "attributes": {
-        "filename": "redball.png"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
-    "content_transfer_encoding": "base64",
-    "content_type": {
-      "c_type": "image",
-      "c_subtype": "png",
-      "attributes": {
-        "name": "redball.png"
-      }
-    },
-    "others": {
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ]
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
     }
   },
   "attachments": [

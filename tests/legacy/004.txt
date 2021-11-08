@@ -19,17 +19,27 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 1,
-      "minute": 13,
-      "second": 19,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "us-ascii"
+        }
+      }
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
     },
     "from": {
       "Address": {
@@ -37,32 +47,21 @@ Slow but steady wins the race.
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519011207.00a8cd70@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "The Hare and the Tortoise",
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 1,
+        "minute": 13,
+        "second": 19,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "us-ascii"
-      }
-    },
-    "others": {
-      "X-Priority": [
-        "5 (Lowest)"
-      ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ]
+    "message_id": {
+      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
     }
   },
   "html_body": [

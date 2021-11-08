@@ -156,47 +156,49 @@ end
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 44,
-      "second": 12,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------177483472E7788F4AD46AB1A"
+        }
       }
     },
-    "message_id": "3923670C.67D83A99@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
     },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "------------177483472E7788F4AD46AB1A"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 44,
+        "second": 12,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
-      "X-Accept-Language": [
-        "en"
-      ]
+    "message_id": {
+      "Text": "3923670C.67D83A99@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     }
   },
   "html_body": [
@@ -209,13 +211,17 @@ end
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -228,19 +234,25 @@ end
   "attachments": [
     {
       "InlineBinary": {
-        "header": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "redball.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "redball.png"
+              }
             }
           },
-          "content_transfer_encoding": "x-uuencode",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "redball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
+              }
             }
           }
         },
@@ -2318,19 +2330,25 @@ end
     },
     {
       "InlineBinary": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "greenball.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "x-uuencode",
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           }
         },
@@ -4190,19 +4208,25 @@ end
     },
     {
       "InlineBinary": {
-        "header": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "blueball.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "x-uuencode",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           }
         },

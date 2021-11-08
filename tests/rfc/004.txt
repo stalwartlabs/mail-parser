@@ -36,35 +36,43 @@ Subject: my different opinion
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 1994,
-      "month": 3,
-      "day": 22,
-      "hour": 13,
-      "minute": 34,
-      "second": 51,
-      "tz_before_gmt": false,
-      "tz_hour": 0,
-      "tz_minute": 0
+  "headers": {
+    "subject": {
+      "Text": "Internet Digest, volume 42"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "---- main boundary ----"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Recipient-List"
+      }
     },
     "from": {
       "Address": {
         "name": "Moderator-Address"
       }
     },
-    "mime_version": "1.0",
-    "subject": "Internet Digest, volume 42",
-    "to": {
-      "Address": {
-        "name": "Recipient-List"
-      }
-    },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "---- main boundary ----"
+    "date": {
+      "DateTime": {
+        "year": 1994,
+        "month": 3,
+        "day": 22,
+        "hour": 13,
+        "minute": 34,
+        "second": 51,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
       }
     }
   },
@@ -81,24 +89,28 @@ Subject: my different opinion
   "attachments": [
     {
       "Message": {
-        "header": {
-          "date": {
-            "year": 1993,
-            "month": 3,
-            "day": 26,
-            "hour": 11,
-            "minute": 13,
-            "second": 32,
-            "tz_before_gmt": false,
-            "tz_hour": 2,
-            "tz_minute": 0
-          },
+        "headers": {
           "from": {
             "Address": {
               "name": "someone-else"
             }
           },
-          "subject": "my opinion"
+          "date": {
+            "DateTime": {
+              "year": 1993,
+              "month": 3,
+              "day": 26,
+              "hour": 11,
+              "minute": 13,
+              "second": 32,
+              "tz_before_gmt": false,
+              "tz_hour": 2,
+              "tz_minute": 0
+            }
+          },
+          "subject": {
+            "Text": "my opinion"
+          }
         },
         "html_body": [
           {
@@ -114,24 +126,28 @@ Subject: my different opinion
     },
     {
       "Message": {
-        "header": {
-          "date": {
-            "year": 1993,
-            "month": 3,
-            "day": 26,
-            "hour": 10,
-            "minute": 7,
-            "second": 13,
-            "tz_before_gmt": true,
-            "tz_hour": 5,
-            "tz_minute": 0
-          },
+        "headers": {
           "from": {
             "Address": {
               "name": "someone-else-again"
             }
           },
-          "subject": "my different opinion"
+          "date": {
+            "DateTime": {
+              "year": 1993,
+              "month": 3,
+              "day": 26,
+              "hour": 10,
+              "minute": 7,
+              "second": 13,
+              "tz_before_gmt": true,
+              "tz_hour": 5,
+              "tz_minute": 0
+            }
+          },
+          "subject": {
+            "Text": "my different opinion"
+          }
         },
         "html_body": [
           {

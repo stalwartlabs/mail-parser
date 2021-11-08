@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
+use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, HeaderValue};
 
 struct ListParser<'x> {
     token_start: usize,
@@ -51,7 +51,7 @@ fn add_tokens_to_list(parser: &mut ListParser) {
     }
 }
 
-pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut parser = ListParser {
         token_start: 0,
         token_end: 0,
@@ -80,10 +80,10 @@ pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<C
                     _ => {
                         add_tokens_to_list(&mut parser);
 
-                        return if !parser.list.is_empty() {
-                            parser.list.into()
-                        } else {
-                            None
+                        return match parser.list.len() {
+                            1 => HeaderValue::Text(parser.list.pop().unwrap()),
+                            0 => HeaderValue::Empty,
+                            _ => HeaderValue::TextList(parser.list),
                         };
                     }
                 }
@@ -123,13 +123,14 @@ pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<C
         parser.token_end = stream.pos;
     }
 
-    None
+    HeaderValue::Empty
 }
 
 #[cfg(test)]
 mod tests {
     use crate::parsers::fields::list::parse_comma_separared;
     use crate::parsers::message::MessageStream;
+    use crate::HeaderValue;
 
     #[test]
     fn parse_comma_separated_text() {
@@ -172,10 +173,17 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            assert_eq!(
-                parse_comma_separared(&mut MessageStream::new(str.as_bytes()),).unwrap(),
-                input.1
-            );
+
+            match parse_comma_separared(&mut MessageStream::new(str.as_bytes())) {
+                HeaderValue::TextList(ids) => {
+                    assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
+                }
+                HeaderValue::Text(id) => {
+                    assert!(input.1.len() == 1, "Failed to parse '{:?}'", input.0);
+                    assert_eq!(id, input.1[0], "Failed to parse '{:?}'", input.0);
+                }
+                _ => panic!("Unexpected result"),
+            }
         }
     }
 }

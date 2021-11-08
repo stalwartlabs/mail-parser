@@ -109,47 +109,49 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 0,
-      "minute": 56,
-      "second": 13,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
-    },
+  "headers": {
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519005505.00a853a0@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "=====================_716541962==_"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716541962==_"
+        }
       }
     },
-    "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ]
+    "message_id": {
+      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 56,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "html_body": [
@@ -159,14 +161,18 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
+            }
           }
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         }
       },
       "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
@@ -175,19 +181,25 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "blueball.png"
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           }
         },
@@ -1522,18 +1534,22 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     },
     {
       "Text": {
-        "header": {
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "farmerandstork.txt"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
+              }
             }
           },
-          "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "us-ascii"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "farmerandstork.txt"
+              }
             }
           }
         },
@@ -1542,20 +1558,26 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     },
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "HasenundFr�sche.txt"
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "HasenundFr�sche.txt"
+              }
             }
           },
-          "content_transfer_encoding": "quoted-printable",
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "iso-8859-1"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"

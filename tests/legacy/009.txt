@@ -37,17 +37,25 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 1,
-      "minute": 6,
-      "second": 18,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 1,
+        "minute": 6,
+        "second": 18,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -55,37 +63,27 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519010441.00a8d140@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1",
+          "format": "flowed"
+        }
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1",
-        "format": "flowed"
-      }
-    },
-    "others": {
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ],
-      "X-Priority": [
-        "1 (Highest)"
-      ],
-      "Disposition-Notification-To": [
-        "<dwsauder@example.com>"
-      ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ]
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [

@@ -41,13 +41,17 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
+  "headers": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
@@ -73,77 +77,99 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "6bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "6bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
           }
         }
       },
       "contents": "Move black king to queen's bishop\n"
     },
     {
-      "header": {
-        "content_transfer_encoding": "7bits",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "7bits"
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    },
+    {
+      "headers": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "8 bit"
+        }
+      },
+      "contents": "Move ♚ to ♛'s ♝\n"
+    },
+    {
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "7-bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
           }
         }
       },
       "contents": "Move ♚ to ♛'s ♝\n"
     },
     {
-      "header": {
-        "content_transfer_encoding": "8 bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "8-bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
           }
         }
       },
       "contents": "Move ♚ to ♛'s ♝\n"
     },
     {
-      "header": {
-        "content_transfer_encoding": "7-bit",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
-          }
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
-    },
-    {
-      "header": {
-        "content_transfer_encoding": "8-bit",
-        "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
-          }
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
-    },
-    {
-      "header": {
-        "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
+            }
           }
         }
       },

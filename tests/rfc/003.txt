@@ -25,17 +25,27 @@ Content-Type: application/x-whatever
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 1993,
-      "month": 3,
-      "day": 22,
-      "hour": 9,
-      "minute": 41,
-      "second": 9,
-      "tz_before_gmt": true,
-      "tz_hour": 8,
-      "tz_minute": 0
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "boundary42"
+        }
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Formatted text mail"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
     },
     "from": {
       "Address": {
@@ -43,19 +53,17 @@ Content-Type: application/x-whatever
         "address": "nsb@bellcore.com"
       }
     },
-    "mime_version": "1.0",
-    "subject": "Formatted text mail",
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "alternative",
-      "attributes": {
-        "boundary": "boundary42"
+    "date": {
+      "DateTime": {
+        "year": 1993,
+        "month": 3,
+        "day": 22,
+        "hour": 9,
+        "minute": 41,
+        "second": 9,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
       }
     }
   },
@@ -66,12 +74,14 @@ Content-Type: application/x-whatever
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -81,10 +91,12 @@ Content-Type: application/x-whatever
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "enriched"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched"
+            }
           }
         },
         "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
@@ -92,10 +104,12 @@ Content-Type: application/x-whatever
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "application",
-            "c_subtype": "x-whatever"
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "x-whatever"
+            }
           }
         },
         "contents": [

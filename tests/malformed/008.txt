@@ -14,22 +14,26 @@ body2
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "ab"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "ab"
+        }
       }
     }
   },
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "contents": "body\n--ab\nContent-Type: text/html\n\nbody2\n"

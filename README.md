@@ -7,7 +7,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)](https://twitter.com/stalwartlabs)
 
 _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
-Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
+Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as many other [internet messaging RFCs](#conformed-rfcs).
 
 It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
 All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for legacy multi-byte encodings of Chinese
@@ -72,19 +72,19 @@ Performance and memory safety were two important factors while designing _mail-p
     )
     .as_bytes();
 
-    let message = Message::parse(input);
+    let message = Message::parse(input).unwrap();
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(
         message.get_from(),
-        &Address::Address(Addr {
+        &HeaderValue::Address(Addr {
             name: Some("Art Vandelay (Vandelay Industries)".into()),
             address: Some("art@vandelay.com".into())
         })
     );
     assert_eq!(
         message.get_to(),
-        &Address::GroupList(vec![
+        &HeaderValue::GroupList(vec![
             Group {
                 name: Some("Colleagues".into()),
                 addresses: vec![Addr {
@@ -169,8 +169,6 @@ Performance and memory safety were two important factors while designing _mail-p
     // Full RFC2231 support for continuations and character sets
     assert_eq!(
         nested_attachment
-            .get_header()
-            .unwrap()
             .get_content_type()
             .unwrap()
             .get_attribute("name")
@@ -219,11 +217,15 @@ and, to run the benchmarks:
 - [RFC 2048 - Multipurpose Internet Mail Extensions (MIME) Part Four: Registration Procedures](https://datatracker.ietf.org/doc/html/rfc2048)
 - [RFC 2049 - Multipurpose Internet Mail Extensions (MIME) Part Five: Conformance Criteria and Examples](https://datatracker.ietf.org/doc/html/rfc2049)
 - [RFC 2231 - MIME Parameter Value and Encoded Word Extensions: Character Sets, Languages, and Continuations](https://datatracker.ietf.org/doc/html/rfc2231)
+- [RFC 2557 - MIME Encapsulation of Aggregate Documents, such as HTML (MHTML)](https://datatracker.ietf.org/doc/html/rfc2557)
 - [RFC 2183 - Communicating Presentation Information in Internet Messages: The Content-Disposition Header Field](https://datatracker.ietf.org/doc/html/rfc2183)
+- [RFC 2392 - Content-ID and Message-ID Uniform Resource Locators](https://datatracker.ietf.org/doc/html/rfc2392)
+- [RFC 3282 - Content Language Headers](https://datatracker.ietf.org/doc/html/rfc3282)
 - [RFC 6532 - Internationalized Email Headers](https://datatracker.ietf.org/doc/html/rfc6532)
 - [RFC 2152 - UTF-7 - A Mail-Safe Transformation Format of Unicode](https://datatracker.ietf.org/doc/html/rfc2152)
 - [RFC 2369 - The Use of URLs as Meta-Syntax for Core Mail List Commands and their Transport through Message Header Fields](https://datatracker.ietf.org/doc/html/rfc2369)
 - [RFC 2919 - List-Id: A Structured Field and Namespace for the Identification of Mailing Lists](https://datatracker.ietf.org/doc/html/rfc2919)
+- [RFC 3339 - Date and Time on the Internet: Timestamps](https://datatracker.ietf.org/doc/html/rfc3339)
 - [RFC 8621 - The JSON Meta Application Protocol (JMAP) for Mail (Section 4.1.4)](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4)
 
 ## Supported Character Sets

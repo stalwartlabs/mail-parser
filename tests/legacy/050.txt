@@ -110,17 +110,41 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 0,
-      "minute": 39,
-      "second": 36,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 39,
+        "second": 36,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "related",
+        "attributes": {
+          "boundary": "=====================_715546120==_.REL",
+          "type": "text/html"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com"
     },
     "from": {
       "Address": {
@@ -128,44 +152,23 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519003934.00a866f0@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "related",
-      "attributes": {
-        "type": "text/html",
-        "boundary": "=====================_715546120==_.REL"
-      }
-    },
-    "others": {
-      "X-Priority": [
-        "2 (High)"
-      ],
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ]
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "html",
-          "attributes": {
-            "charset": "iso-8859-1"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "iso-8859-1"
+            }
           }
         }
       },
@@ -180,21 +183,29 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   "attachments": [
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "2aa658b6.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa658b6.png"
+              }
             }
           },
-          "content_id": "4.2.0.58.20000519003934.00a866f0@pop.example.com.2",
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "2aa658b6.png"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa658b6.png"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.2"
           }
         },
         "contents": [
@@ -1528,21 +1539,29 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "2aa658c0.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa658c0.png"
+              }
             }
           },
-          "content_id": "4.2.0.58.20000519003934.00a866f0@pop.example.com.3",
-          "content_transfer_encoding": "base64",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "2aa658c0.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa658c0.png"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.3"
           }
         },
         "contents": [

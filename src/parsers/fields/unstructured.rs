@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
+use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, HeaderValue};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -37,7 +37,7 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, str>> {
+pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
@@ -64,9 +64,9 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, 
                     }
                     _ => {
                         return match parser.tokens.len() {
-                            1 => parser.tokens.pop().unwrap().into(),
-                            0 => None,
-                            _ => Some(parser.tokens.concat().into()),
+                            1 => HeaderValue::Text(parser.tokens.pop().unwrap()),
+                            0 => HeaderValue::Empty,
+                            _ => HeaderValue::Text(parser.tokens.concat().into()),
                         };
                     }
                 }
@@ -101,7 +101,7 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> Option<Cow<'x, 
         parser.token_end = stream.pos;
     }
 
-    None
+    HeaderValue::Empty
 }
 
 #[cfg(test)]
@@ -184,7 +184,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_unstructured(&mut MessageStream::new(str.as_bytes()),).unwrap(),
+                parse_unstructured(&mut MessageStream::new(str.as_bytes()),).unwrap_text(),
                 input.1,
                 "Failed to parse '{:?}'",
                 input.0

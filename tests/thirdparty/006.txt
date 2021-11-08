@@ -30,25 +30,33 @@ Signed by undersigned
 --1--
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
-    "subject": "Hide and seek",
+  "headers": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Hide and seek"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
   "html_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "html",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -57,11 +65,15 @@ Signed by undersigned
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "binary",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "binary"
         }
       },
       "contents": "Search me, and Find me here"
@@ -70,12 +82,14 @@ Signed by undersigned
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "signature",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "us-ascii"
+            "ContentType": {
+              "c_type": "signature",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
+              }
             }
           }
         },

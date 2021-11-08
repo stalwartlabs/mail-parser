@@ -12,7 +12,7 @@
 //! # mail-parser
 //!
 //! _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
-//! Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as other [internet messaging RFCs](#conformed-rfcs).
+//! Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as many other [internet messaging RFCs](#conformed-rfcs).
 //!
 //! It also supports decoding messages in [41 different character sets](#supported-character-sets) including obsolete formats such as UTF-7.
 //! All Unicode (UTF-*) and single-byte character sets are handled internally by the library while support for legacy multi-byte encodings of Chinese
@@ -49,11 +49,15 @@
 //! - [RFC 2048 - Multipurpose Internet Mail Extensions (MIME) Part Four: Registration Procedures](https://datatracker.ietf.org/doc/html/rfc2048)
 //! - [RFC 2049 - Multipurpose Internet Mail Extensions (MIME) Part Five: Conformance Criteria and Examples](https://datatracker.ietf.org/doc/html/rfc2049)
 //! - [RFC 2231 - MIME Parameter Value and Encoded Word Extensions: Character Sets, Languages, and Continuations](https://datatracker.ietf.org/doc/html/rfc2231)
+//! - [RFC 2557 - MIME Encapsulation of Aggregate Documents, such as HTML (MHTML)](https://datatracker.ietf.org/doc/html/rfc2557)
 //! - [RFC 2183 - Communicating Presentation Information in Internet Messages: The Content-Disposition Header Field](https://datatracker.ietf.org/doc/html/rfc2183)
+//! - [RFC 2392 - Content-ID and Message-ID Uniform Resource Locators](https://datatracker.ietf.org/doc/html/rfc2392)
+//! - [RFC 3282 - Content Language Headers](https://datatracker.ietf.org/doc/html/rfc3282)
 //! - [RFC 6532 - Internationalized Email Headers](https://datatracker.ietf.org/doc/html/rfc6532)
 //! - [RFC 2152 - UTF-7 - A Mail-Safe Transformation Format of Unicode](https://datatracker.ietf.org/doc/html/rfc2152)
 //! - [RFC 2369 - The Use of URLs as Meta-Syntax for Core Mail List Commands and their Transport through Message Header Fields](https://datatracker.ietf.org/doc/html/rfc2369)
 //! - [RFC 2919 - List-Id: A Structured Field and Namespace for the Identification of Mailing Lists](https://datatracker.ietf.org/doc/html/rfc2919)
+//! - [RFC 3339 - Date and Time on the Internet: Timestamps](https://datatracker.ietf.org/doc/html/rfc3339)
 //! - [RFC 8621 - The JSON Meta Application Protocol (JMAP) for Mail (Section 4.1.4)](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4)
 //!
 //! ## Supported Character Sets
@@ -145,19 +149,19 @@
 //!    )
 //!    .as_bytes();
 //!
-//!    let message = Message::parse(input);
+//!    let message = Message::parse(input).unwrap();
 //!
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
 //!        message.get_from(),
-//!        &Address::Address(Addr {
+//!        &HeaderValue::Address(Addr {
 //!            name: Some("Art Vandelay (Vandelay Industries)".into()),
 //!            address: Some("art@vandelay.com".into())
 //!        })
 //!    );
 //!    assert_eq!(
 //!        message.get_to(),
-//!        &Address::GroupList(vec![
+//!        &HeaderValue::GroupList(vec![
 //!            Group {
 //!                name: Some("Colleagues".into()),
 //!                addresses: vec![Addr {
@@ -242,8 +246,6 @@
 //!    // Full RFC2231 support for continuations and character sets
 //!    assert_eq!(
 //!        nested_attachment
-//!            .get_header()
-//!            .unwrap()
 //!            .get_content_type()
 //!            .unwrap()
 //!            .get_attribute("name")
@@ -269,7 +271,13 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Message<'x> {
     #[cfg_attr(feature = "serde_support", serde(borrow))]
-    header: Box<MessageHeader<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "HashMap::is_empty")
+    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    headers: Headers<'x>,
+
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
@@ -299,7 +307,7 @@ pub struct TextPart<'x> {
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    header: Option<MimeHeader<'x>>,
+    headers: Option<Headers<'x>>,
     contents: Cow<'x, str>,
 }
 
@@ -312,7 +320,7 @@ pub struct BinaryPart<'x> {
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    header: Option<MimeHeader<'x>>,
+    headers: Option<Headers<'x>>,
     #[cfg_attr(feature = "serde_support", serde(with = "serde_bytes"))]
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     contents: Cow<'x, [u8]>,
@@ -350,265 +358,6 @@ pub enum MessagePart<'x> {
 
     /// A nested RFC5322 message.
     Message(Message<'x>),
-}
-
-/// An RFC5322 message header.
-#[derive(PartialEq, Debug, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct MessageHeader<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub bcc: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub cc: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub comments: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub date: Option<DateTime>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub from: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub in_reply_to: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub keywords: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_archive: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_help: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_id: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_owner: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_post: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_subscribe: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub list_unsubscribe: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub message_id: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub mime_version: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub received: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub references: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub reply_to: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_bcc: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_cc: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_date: Option<Vec<DateTime>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_from: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_message_id: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_sender: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub resent_to: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub return_path: Option<Vec<Cow<'x, str>>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub sender: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub subject: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Address::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub to: Address<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_description: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_disposition: Option<ContentType<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_id: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_type: Option<ContentType<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub others: HashMap<&'x str, Vec<Cow<'x, str>>>,
-}
-
-/// A MIME header.
-#[derive(PartialEq, Debug, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct MimeHeader<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_description: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_disposition: Option<ContentType<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_id: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_transfer_encoding: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub content_type: Option<ContentType<'x>>,
 }
 
 /// An RFC5322 or RFC2369 internet address.
@@ -653,10 +402,58 @@ pub struct Group<'x> {
     pub addresses: Vec<Addr<'x>>,
 }
 
-/// An RFC5322 or RFC2369 address field.
+pub type Headers<'x> = HashMap<HeaderName, HeaderValue<'x>>;
+
+/// A header field
+#[repr(u8)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
+pub enum HeaderName {
+    Subject = 0,
+    From = 1,
+    To = 2,
+    Cc = 3,
+    Date = 4,
+    Bcc = 5,
+    ReplyTo = 6,
+    Sender = 7,
+    Comments = 8,
+    InReplyTo = 9,
+    Keywords = 10,
+    Received = 11,
+    MessageId = 12,
+    References = 13,
+    ReturnPath = 14,
+    MimeVersion = 15,
+    ContentDescription = 16,
+    ContentId = 17,
+    ContentLanguage = 18,
+    ContentLocation = 19,
+    ContentTransferEncoding = 20,
+    ContentType = 21,
+    ContentDisposition = 22,
+    ResentTo = 23,
+    ResentFrom = 24,
+    ResentBcc = 25,
+    ResentCc = 26,
+    ResentSender = 27,
+    ResentDate = 28,
+    ResentMessageId = 29,
+    ListArchive = 30,
+    ListHelp = 31,
+    ListId = 32,
+    ListOwner = 33,
+    ListPost = 34,
+    ListSubscribe = 35,
+    ListUnsubscribe = 36,
+    Unsupported = 37,
+}
+
+/// A parsed header value.
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub enum Address<'x> {
+pub enum HeaderValue<'x> {
     /// A single address
     Address(Addr<'x>),
 
@@ -666,14 +463,87 @@ pub enum Address<'x> {
     /// A group of addresses
     Group(Group<'x>),
 
-    /// A list containing two or more groups
+    /// A list containing two or more address groups
     GroupList(Vec<Group<'x>>),
 
-    /// A collection of address fields, used for header fields
-    /// that might be present more than once in a message,
-    /// for example Resent-To
-    Collection(Vec<Address<'x>>),
+    /// A string
+    Text(Cow<'x, str>),
+
+    /// A list of strings
+    TextList(Vec<Cow<'x, str>>),
+
+    /// A datetime
+    DateTime(DateTime),
+
+    /// A Content-Type or Content-Disposition header
+    ContentType(ContentType<'x>),
+
+    /// A collection of multiple header fields, for example
+    /// Resent-To, References, etc.
+    Collection(Vec<HeaderValue<'x>>),
     Empty,
+}
+
+impl<'x> Default for HeaderValue<'x> {
+    fn default() -> Self {
+        HeaderValue::Empty
+    }
+}
+
+impl<'x> HeaderValue<'x> {
+    pub fn is_empty(&self) -> bool {
+        *self == HeaderValue::Empty
+    }
+
+    pub fn unwrap_text(&mut self) -> Cow<'x, str> {
+        match std::mem::take(self) {
+            HeaderValue::Text(s) => s,
+            _ => panic!("HeaderValue::unwrap_text called on non-Text value"),
+        }
+    }
+
+    pub fn unwrap_datetime(&mut self) -> DateTime {
+        match std::mem::take(self) {
+            HeaderValue::DateTime(d) => d,
+            _ => panic!("HeaderValue::unwrap_datetime called on non-DateTime value"),
+        }
+    }
+
+    pub fn unwrap_content_type(&mut self) -> ContentType<'x> {
+        match std::mem::take(self) {
+            HeaderValue::ContentType(c) => c,
+            _ => panic!("HeaderValue::unwrap_content_type called on non-ContentType value"),
+        }
+    }
+
+    pub fn as_text_ref(&self) -> Option<&str> {
+        match *self {
+            HeaderValue::Text(ref s) => Some(s),
+            HeaderValue::TextList(ref l) => l.get(0)?.as_ref().into(),
+            _ => None,
+        }
+    }
+
+    pub fn get_content_type(&self) -> &ContentType<'x> {
+        match *self {
+            HeaderValue::ContentType(ref ct) => ct,
+            _ => panic!("HeaderValue::get_content_type called on non-ContentType value"),
+        }
+    }
+
+    pub fn as_content_type_ref(&self) -> Option<&ContentType> {
+        match *self {
+            HeaderValue::ContentType(ref c) => Some(c),
+            _ => None,
+        }
+    }
+
+    pub fn as_datetime_ref(&self) -> Option<&DateTime> {
+        match *self {
+            HeaderValue::DateTime(ref d) => Some(d),
+            _ => None,
+        }
+    }
 }
 
 /// An RFC2047 Content-Type or RFC2183 Content-Disposition MIME header field.
@@ -710,174 +580,215 @@ pub struct DateTime {
     tz_minute: u32,
 }
 
-/// MIME header fields.
-pub trait MimeFieldGet<'x> {
-    /// Content-Description MIME header
-    fn get_content_description(&self) -> Option<&Cow<'x, str>>;
-    /// Content-Disposition MIME header
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>>;
-    /// Content-ID MIME header
-    fn get_content_id(&self) -> Option<&Cow<'x, str>>;
-    /// Content-Transfer-Encoding MIME header
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>>;
-    /// Content-Type MIME header
-    fn get_content_type(&self) -> Option<&ContentType<'x>>;
-}
-
 impl<'x> Message<'x> {
     /// Returns the BCC header field
-    pub fn get_bcc(&self) -> &Address<'x> {
-        &self.header.bcc
+    pub fn get_bcc(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Bcc)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the CC header field
-    pub fn get_cc(&self) -> &Address<'x> {
-        &self.header.cc
+    pub fn get_cc(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Cc)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Comments header fields
-    pub fn get_comments(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.comments.as_ref()
+    pub fn get_comments(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Comments)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Date header field
     pub fn get_date(&self) -> Option<&DateTime> {
-        self.header.date.as_ref()
+        self.headers
+            .get(&HeaderName::Date)
+            .and_then(|header| header.as_datetime_ref())
     }
 
     /// Returns the From header field
-    pub fn get_from(&self) -> &Address<'x> {
-        &self.header.from
+    pub fn get_from(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::From)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all In-Reply-To header fields
-    pub fn get_in_reply_to(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.in_reply_to.as_ref()
+    pub fn get_in_reply_to(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::InReplyTo)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Keywords header fields
-    pub fn get_keywords(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.keywords.as_ref()
+    pub fn get_keywords(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Keywords)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Archive header field
-    pub fn get_list_archive(&self) -> &Address<'x> {
-        &self.header.list_archive
+    pub fn get_list_archive(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListArchive)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Help header field
-    pub fn get_list_help(&self) -> &Address<'x> {
-        &self.header.list_help
+    pub fn get_list_help(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListHelp)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-ID header field
-    pub fn get_list_id(&self) -> &Address<'x> {
-        &self.header.list_id
+    pub fn get_list_id(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListId)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Owner header field
-    pub fn get_list_owner(&self) -> &Address<'x> {
-        &self.header.list_owner
+    pub fn get_list_owner(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListOwner)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
-    /// Returns the List-Port header field
-    pub fn get_list_post(&self) -> &Address<'x> {
-        &self.header.list_post
+    /// Returns the List-Post header field
+    pub fn get_list_post(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListPost)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Subscribe header field
-    pub fn get_list_subscribe(&self) -> &Address<'x> {
-        &self.header.list_subscribe
+    pub fn get_list_subscribe(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListSubscribe)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Unsubscribe header field
-    pub fn get_list_unsubscribe(&self) -> &Address<'x> {
-        &self.header.list_unsubscribe
+    pub fn get_list_unsubscribe(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ListUnsubscribe)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Message-ID header field
-    pub fn get_message_id(&self) -> Option<&Cow<'x, str>> {
-        self.header.message_id.as_ref()
+    pub fn get_message_id(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::MessageId)
+            .and_then(|header| header.as_text_ref())
     }
 
     /// Returns the MIME-Version header field
-    pub fn get_mime_version(&self) -> Option<&Cow<'x, str>> {
-        self.header.mime_version.as_ref()
+    pub fn get_mime_version(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::MimeVersion)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Received header fields
-    pub fn get_received(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.received.as_ref()
+    pub fn get_received(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Received)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all References header fields
-    pub fn get_references(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.references.as_ref()
+    pub fn get_references(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::References)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Reply-To header field
-    pub fn get_reply_to(&self) -> &Address<'x> {
-        &self.header.reply_to
+    pub fn get_reply_to(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ReplyTo)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-BCC header field
-    pub fn get_resent_bcc(&self) -> &Address<'x> {
-        &self.header.bcc
+    pub fn get_resent_bcc(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentBcc)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-CC header field
-    pub fn get_resent_cc(&self) -> &Address<'x> {
-        &self.header.resent_to
+    pub fn get_resent_cc(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentTo)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Resent-Date header fields
-    pub fn get_resent_date(&self) -> Option<&Vec<DateTime>> {
-        self.header.resent_date.as_ref()
+    pub fn get_resent_date(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentDate)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-From header field
-    pub fn get_resent_from(&self) -> &Address<'x> {
-        &self.header.resent_from
+    pub fn get_resent_from(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentFrom)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Resent-Message-ID header fields
-    pub fn get_resent_message_id(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.resent_message_id.as_ref()
+    pub fn get_resent_message_id(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentMessageId)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Sender header field
-    pub fn get_resent_sender(&self) -> &Address<'x> {
-        &self.header.resent_sender
+    pub fn get_resent_sender(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentSender)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-To header field
-    pub fn get_resent_to(&self) -> &Address<'x> {
-        &self.header.resent_to
+    pub fn get_resent_to(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ResentTo)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Return-Path header fields
-    pub fn get_return_path(&self) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.return_path.as_ref()
+    pub fn get_return_path(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ReturnPath)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Sender header field
-    pub fn get_sender(&self) -> &Address<'x> {
-        &self.header.sender
+    pub fn get_sender(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::Sender)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Subject header field
-    pub fn get_subject(&self) -> Option<&Cow<'x, str>> {
-        self.header.subject.as_ref()
+    pub fn get_subject(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::Subject)
+            .and_then(|header| header.as_text_ref())
     }
 
     /// Returns the To header field
-    pub fn get_to(&self) -> &Address<'x> {
-        &self.header.to
-    }
-
-    /// Returns any other message header not specified in RFCs 5322, 2045-2049, 2183, 2369 or 2919.
-    pub fn get_header(&self, name: &str) -> Option<&Vec<Cow<'x, str>>> {
-        self.header.others.get(name)
+    pub fn get_to(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::To)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
     fn get_body_part(&self, list: &'x [InlinePart<'x>], pos: usize) -> Option<&'x dyn BodyPart> {
@@ -938,141 +849,70 @@ impl<'x> Message<'x> {
     }
 }
 
-impl<'x> MessageHeader<'x> {
-    pub fn is_empty(&self) -> bool {
-        for addr in [
-            &self.from,
-            &self.to,
-            &self.cc,
-            &self.bcc,
-            &self.reply_to,
-            &self.sender,
-            &self.resent_to,
-            &self.resent_from,
-            &self.resent_bcc,
-            &self.resent_cc,
-            &self.resent_sender,
-            &self.list_archive,
-            &self.list_help,
-            &self.list_id,
-            &self.list_owner,
-            &self.list_post,
-            &self.list_subscribe,
-            &self.list_unsubscribe,
-        ] {
-            if !addr.is_empty() {
-                return false;
-            }
-        }
-
-        for str in [
-            &self.subject,
-            &self.message_id,
-            &self.mime_version,
-            &self.content_description,
-            &self.content_id,
-            &self.content_transfer_encoding,
-        ] {
-            if str.is_some() {
-                return false;
-            }
-        }
-
-        if self.date.is_some() || !self.others.is_empty() {
-            return false;
-        }
-
-        for vec in [
-            &self.comments,
-            &self.in_reply_to,
-            &self.keywords,
-            &self.received,
-            &self.references,
-            &self.resent_message_id,
-            &self.return_path,
-        ] {
-            if vec.is_some() {
-                return false;
-            }
-        }
-
-        self.content_disposition.is_none()
-            && self.resent_date.is_none()
-            && self.content_type.is_none()
-    }
+/// MIME Header field access trait
+pub trait MimeHeaders<'x> {
+    /// Returns the Content-Description field
+    fn get_content_description(&self) -> Option<&str>;
+    /// Returns the Content-Disposition field
+    fn get_content_disposition(&self) -> Option<&ContentType>;
+    /// Returns the Content-ID field
+    fn get_content_id(&self) -> Option<&str>;
+    /// Returns the Content-Encoding field
+    fn get_content_transfer_encoding(&self) -> Option<&str>;
+    /// Returns the Content-Type field
+    fn get_content_type(&self) -> Option<&ContentType>;
+    /// Returns the Content-Language field
+    fn get_content_language(&self) -> &HeaderValue<'x>;
+    /// Returns the Content-Location field
+    fn get_content_location(&self) -> Option<&str>;
 }
 
-impl<'x> MimeFieldGet<'x> for Message<'x> {
-    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.header.content_description.as_ref()
+impl<'x> MimeHeaders<'x> for Message<'x> {
+    fn get_content_description(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::ContentDescription)
+            .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.header.content_disposition.as_ref()
+    fn get_content_disposition(&self) -> Option<&ContentType> {
+        self.headers
+            .get(&HeaderName::ContentDisposition)
+            .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.header.content_id.as_ref()
+    fn get_content_id(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::ContentId)
+            .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.header.content_transfer_encoding.as_ref()
+    fn get_content_transfer_encoding(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::ContentTransferEncoding)
+            .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.header.content_type.as_ref()
-    }
-}
-
-impl<'x> MimeFieldGet<'x> for MimeHeader<'x> {
-    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.content_description.as_ref()
+    fn get_content_type(&self) -> Option<&ContentType> {
+        self.headers
+            .get(&HeaderName::ContentType)
+            .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.content_disposition.as_ref()
+    fn get_content_language(&self) -> &HeaderValue<'x> {
+        self.headers
+            .get(&HeaderName::ContentLanguage)
+            .unwrap_or(&HeaderValue::Empty)
     }
 
-    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.content_id.as_ref()
-    }
-
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.content_transfer_encoding.as_ref()
-    }
-
-    fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.content_type.as_ref()
-    }
-}
-
-impl<'x> MimeFieldGet<'x> for MessageHeader<'x> {
-    fn get_content_description(&self) -> Option<&Cow<'x, str>> {
-        self.content_description.as_ref()
-    }
-
-    fn get_content_disposition(&self) -> Option<&ContentType<'x>> {
-        self.content_disposition.as_ref()
-    }
-
-    fn get_content_id(&self) -> Option<&Cow<'x, str>> {
-        self.content_id.as_ref()
-    }
-
-    fn get_content_transfer_encoding(&self) -> Option<&Cow<'x, str>> {
-        self.content_transfer_encoding.as_ref()
-    }
-
-    fn get_content_type(&self) -> Option<&ContentType<'x>> {
-        self.content_type.as_ref()
+    fn get_content_location(&self) -> Option<&str> {
+        self.headers
+            .get(&HeaderName::ContentLocation)
+            .and_then(|header| header.as_text_ref())
     }
 }
 
 /// An inline Text or Binary body part.
 pub trait BodyPart<'x>: fmt::Display {
-    /// Returns the MIME Header of the part
-    fn get_header(&self) -> Option<&MimeHeader<'x>>;
-
     /// Returns the body part's contents as a `u8` slice
     fn get_contents(&'x self) -> &'x [u8];
 
@@ -1095,10 +935,6 @@ pub trait BodyPart<'x>: fmt::Display {
 }
 
 impl<'x> BodyPart<'x> for TextPart<'x> {
-    fn get_header(&self) -> Option<&MimeHeader<'x>> {
-        self.header.as_ref()
-    }
-
     fn get_contents(&'x self) -> &'x [u8] {
         self.contents.as_bytes()
     }
@@ -1127,10 +963,6 @@ impl<'x> fmt::Display for TextPart<'x> {
 }
 
 impl<'x> BodyPart<'x> for BinaryPart<'x> {
-    fn get_header(&self) -> Option<&MimeHeader<'x>> {
-        self.header.as_ref()
-    }
-
     fn get_contents(&'x self) -> &'x [u8] {
         self.contents.as_ref()
     }
@@ -1155,6 +987,108 @@ impl<'x> BodyPart<'x> for BinaryPart<'x> {
 impl<'x> fmt::Display for BinaryPart<'x> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         fmt.write_str("[binary contents]")
+    }
+}
+
+impl<'x> MimeHeaders<'x> for TextPart<'x> {
+    fn get_content_description(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentDescription)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_disposition(&self) -> Option<&ContentType> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentDisposition)
+                .and_then(|header| header.as_content_type_ref())
+        })
+    }
+
+    fn get_content_id(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentId)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_transfer_encoding(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentTransferEncoding)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_type(&self) -> Option<&ContentType> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentType)
+                .and_then(|header| header.as_content_type_ref())
+        })
+    }
+
+    fn get_content_language(&self) -> &HeaderValue<'x> {
+        self.headers.as_ref().map_or(&HeaderValue::Empty, |h| {
+            h.get(&HeaderName::ContentLanguage)
+                .unwrap_or(&HeaderValue::Empty)
+        })
+    }
+
+    fn get_content_location(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentLocation)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+}
+
+impl<'x> MimeHeaders<'x> for BinaryPart<'x> {
+    fn get_content_description(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentDescription)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_disposition(&self) -> Option<&ContentType> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentDisposition)
+                .and_then(|header| header.as_content_type_ref())
+        })
+    }
+
+    fn get_content_id(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentId)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_transfer_encoding(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentTransferEncoding)
+                .and_then(|header| header.as_text_ref())
+        })
+    }
+
+    fn get_content_type(&self) -> Option<&ContentType> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentType)
+                .and_then(|header| header.as_content_type_ref())
+        })
+    }
+
+    fn get_content_language(&self) -> &HeaderValue<'x> {
+        self.headers.as_ref().map_or(&HeaderValue::Empty, |h| {
+            h.get(&HeaderName::ContentLanguage)
+                .unwrap_or(&HeaderValue::Empty)
+        })
+    }
+
+    fn get_content_location(&self) -> Option<&str> {
+        self.headers.as_ref().and_then(|h| {
+            h.get(&HeaderName::ContentLocation)
+                .and_then(|header| header.as_text_ref())
+        })
     }
 }
 

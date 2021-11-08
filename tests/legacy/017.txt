@@ -103,17 +103,19 @@ end
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 0,
-      "minute": 50,
-      "second": 8,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 50,
+        "second": 8,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -121,29 +123,29 @@ end
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "4.2.0.58.20000519004755.00a86100@pop.example.com",
-    "mime_version": "1.0",
-    "subject": "The Hare and the Tortoise",
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716177458==_"
+        }
+      }
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    },
     "to": {
       "Address": {
         "name": "J�rgen Schm�rgen",
         "address": "jschmuergen@example.com"
       }
     },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "=====================_716177458==_"
-      }
-    },
-    "others": {
-      "X-Sender": [
-        "dwsauder@pop.example.com (Unverified)"
-      ],
-      "X-Mailer": [
-        "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      ]
+    "message_id": {
+      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
     }
   },
   "html_body": [
@@ -153,12 +155,14 @@ end
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -168,19 +172,25 @@ end
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "greenball.png"
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "x-uuencode",
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           }
         },
@@ -2045,19 +2055,25 @@ end
     },
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "x-uuencode",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },

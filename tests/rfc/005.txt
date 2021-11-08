@@ -25,37 +25,45 @@ This is the epilogue.  It is also to be ignored.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 1993,
-      "month": 3,
-      "day": 21,
-      "hour": 23,
-      "minute": 56,
-      "second": 48,
-      "tz_before_gmt": true,
-      "tz_hour": 8,
-      "tz_minute": 0
-    },
+  "headers": {
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@bellcore.com"
       }
     },
-    "mime_version": "1.0",
-    "subject": "Sample message",
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
       }
     },
+    "subject": {
+      "Text": "Sample message"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "simple boundary"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "simple boundary"
+        }
+      }
+    },
+    "date": {
+      "DateTime": {
+        "year": 1993,
+        "month": 3,
+        "day": 21,
+        "hour": 23,
+        "minute": 56,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
       }
     }
   },
@@ -72,12 +80,14 @@ This is the epilogue.  It is also to be ignored.
       "contents": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },

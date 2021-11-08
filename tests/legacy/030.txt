@@ -112,17 +112,15 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 28,
-      "second": 27,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------0BBC657DDC74A0B8454627FD"
+        }
+      }
     },
     "from": {
       "Address": {
@@ -130,29 +128,33 @@ Slow but steady wins the race.
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "3923635B.85C58444@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
+    "message_id": {
+      "Text": "3923635B.85C58444@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 28,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
-    },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "------------0BBC657DDC74A0B8454627FD"
-      }
-    },
-    "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
-      "X-Accept-Language": [
-        "en"
-      ]
     }
   },
   "html_body": [
@@ -164,13 +166,17 @@ Slow but steady wins the race.
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
         }
       },
@@ -182,19 +188,25 @@ Slow but steady wins the race.
   "attachments": [
     {
       "InlineBinary": {
-        "header": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "blueball.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           }
         },
@@ -1529,19 +1541,25 @@ Slow but steady wins the race.
     },
     {
       "InlineBinary": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "greenball.png"
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           }
         },
@@ -2849,20 +2867,26 @@ Slow but steady wins the race.
     },
     {
       "Text": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "hareandtoroise.txt"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "name": "hareandtoroise.txt",
+                "charset": "us-ascii"
+              }
             }
           },
-          "content_transfer_encoding": "7bit",
-          "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "name": "hareandtoroise.txt",
-              "charset": "us-ascii"
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "hareandtoroise.txt"
+              }
             }
           }
         },

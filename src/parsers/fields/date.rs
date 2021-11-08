@@ -11,7 +11,7 @@
 
 use std::fmt;
 
-use crate::{parsers::message::MessageStream, DateTime};
+use crate::{parsers::message::MessageStream, DateTime, HeaderValue};
 
 impl DateTime {
     /// Returns an ISO-8601 representation of the parsed RFC5322 datetime field
@@ -37,7 +37,7 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
+pub fn parse_date<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut pos = 0;
     let mut parts = [0u32; 7];
     let mut parts_sizes = [
@@ -151,7 +151,7 @@ pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
     }
 
     if pos >= 6 {
-        Some(DateTime {
+        HeaderValue::DateTime(DateTime {
             year: if (1..=99).contains(&parts[2]) {
                 parts[2] + 1900
             } else {
@@ -171,7 +171,7 @@ pub fn parse_date(stream: &mut MessageStream) -> Option<DateTime> {
             tz_before_gmt: !is_plus,
         })
     } else {
-        None
+        HeaderValue::Empty
     }
 }
 
@@ -195,7 +195,10 @@ pub static MONTH_MAP: &[u8; 31] = &[
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::date::parse_date, message::MessageStream};
+    use crate::{
+        parsers::{fields::date::parse_date, message::MessageStream},
+        HeaderValue,
+    };
 
     #[test]
     fn parse_dates() {
@@ -262,14 +265,15 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             match parse_date(&mut MessageStream::new(str.as_bytes())) {
-                Some(date) => {
+                HeaderValue::DateTime(date) => {
                     //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
                     assert_eq!(input.1, date.to_iso8601());
                 }
-                None => {
+                HeaderValue::Empty => {
                     //println!("{} -> None", input.0.escape_debug());
                     assert!(input.1.is_empty());
                 }
+                _ => panic!("Unexpected result"),
             }
         }
     }

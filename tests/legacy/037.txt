@@ -52,27 +52,13 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 42,
-      "second": 31,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "message_id": {
+      "Text": "392366A7.21929EA7@example.com"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     },
-    "message_id": "392366A7.21929EA7@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
     "to": {
       "Address": {
         "name": "Joe Blow",
@@ -80,19 +66,35 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "------------E7889DDF0F75D34163841C59"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------E7889DDF0F75D34163841C59"
+        }
       }
     },
-    "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
-      "X-Accept-Language": [
-        "en"
-      ]
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 42,
+        "second": 31,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     }
   },
   "html_body": [
@@ -103,14 +105,18 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
+        },
+        "content_transfer_encoding": {
+          "Text": "7bit"
         }
       },
       "contents": " \r"
@@ -120,19 +126,25 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "attachments": [
     {
       "InlineBinary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "inline",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },

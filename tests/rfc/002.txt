@@ -73,14 +73,10 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "from": {
-      "Address": {
-        "name": "Al Gore",
-        "address": "vice-president@whitehouse.gov"
-      }
+  "headers": {
+    "subject": {
+      "Text": "[Fwd: Map of Argentina with Description]"
     },
-    "subject": "[Fwd: Map of Argentina with Description]",
     "to": {
       "Address": {
         "name": "White House Transportation Coordinator",
@@ -88,10 +84,18 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
       }
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
+        }
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Al Gore",
+        "address": "vice-president@whitehouse.gov"
       }
     }
   },
@@ -102,14 +106,18 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "7bit",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
+            }
           }
+        },
+        "content_transfer_encoding": {
+          "Text": "7bit"
         }
       },
       "contents": "Fred,\n\nFire up Air Force One!  We're going South!\n\nThanks,\nAl"
@@ -118,17 +126,44 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
   "attachments": [
     {
       "Message": {
-        "header": {
+        "headers": {
+          "mime_version": {
+            "Text": "1.0"
+          },
+          "received": {
+            "Collection": [
+              {
+                "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+              },
+              {
+                "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+              }
+            ]
+          },
+          "message_id": {
+            "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
+          },
+          "to": {
+            "Address": {
+              "name": "A1 Gore (The Enforcer)",
+              "address": "vice-president@whitehouse.gov"
+            }
+          },
+          "subject": {
+            "Text": "Map of Argentina with Description"
+          },
           "date": {
-            "year": 1998,
-            "month": 8,
-            "day": 13,
-            "hour": 17,
-            "minute": 42,
-            "second": 41,
-            "tz_before_gmt": false,
-            "tz_hour": 10,
-            "tz_minute": 0
+            "DateTime": {
+              "year": 1998,
+              "month": 8,
+              "day": 13,
+              "hour": 17,
+              "minute": 42,
+              "second": 41,
+              "tz_before_gmt": false,
+              "tz_hour": 10,
+              "tz_minute": 0
+            }
           },
           "from": {
             "Address": {
@@ -136,28 +171,17 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
               "address": "president@whitehouse.gov"
             }
           },
-          "message_id": "199804130742.RAA20366@mai1host.whitehouse.gov",
-          "mime_version": "1.0",
-          "received": [
-            "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000",
-            "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
-          ],
-          "return_path": [
-            "president@whitehouse.gov"
-          ],
-          "subject": "Map of Argentina with Description",
-          "to": {
-            "Address": {
-              "name": "A1 Gore (The Enforcer)",
-              "address": "vice-president@whitehouse.gov"
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+              }
             }
           },
-          "content_type": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
-            }
+          "return_path": {
+            "Text": "president@whitehouse.gov"
           }
         },
         "html_body": [
@@ -168,14 +192,18 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         ],
         "text_body": [
           {
-            "header": {
-              "content_transfer_encoding": "7bit",
+            "headers": {
               "content_type": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
+                "ContentType": {
+                  "c_type": "text",
+                  "c_subtype": "plain",
+                  "attributes": {
+                    "charset": "us-ascii"
+                  }
                 }
+              },
+              "content_transfer_encoding": {
+                "Text": "7bit"
               }
             },
             "contents": "Hi A1,\n\nI finally figured out this MIME thing.  Pretty cool.  I'll send you\nsome sax music in .au files next week!\n\nAnyway, the attached image is really too small to get a good look at\nArgentina.  Try this for a much better map:\n\n     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm\n\nThen again, shouldn't the CIA have something like that?\n\nBill"
@@ -185,19 +213,25 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         "attachments": [
           {
             "InlineBinary": {
-              "header": {
-                "content_disposition": {
-                  "c_type": "inline",
-                  "attributes": {
-                    "fi1ename": "map_of_Argentina.gif"
+              "headers": {
+                "content_transfer_encoding": {
+                  "Text": "base64"
+                },
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "image",
+                    "c_subtype": "gif",
+                    "attributes": {
+                      "name": "map_of_Argentina.gif"
+                    }
                   }
                 },
-                "content_transfer_encoding": "base64",
-                "content_type": {
-                  "c_type": "image",
-                  "c_subtype": "gif",
-                  "attributes": {
-                    "name": "map_of_Argentina.gif"
+                "content_disposition": {
+                  "ContentType": {
+                    "c_type": "inline",
+                    "attributes": {
+                      "fi1ename": "map_of_Argentina.gif"
+                    }
                   }
                 }
               },

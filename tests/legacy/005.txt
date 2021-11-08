@@ -33,17 +33,37 @@ m+APw-ssen als wir.+ACI-=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 20,
-      "second": 24,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 20,
+        "second": 24,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com"
     },
     "from": {
       "Address": {
@@ -51,39 +71,14 @@ m+APw-ssen als wir.+ACI-=20
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche (Microsoft Outlook 00)",
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "content_transfer_encoding": "quoted-printable",
     "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "utf-7"
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "utf-7"
+        }
       }
-    },
-    "others": {
-      "Importance": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ]
     }
   },
   "html_body": [

@@ -24,22 +24,26 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
   "attachments": [
     {
       "Message": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "html_body": [
@@ -56,10 +60,12 @@ Content-Type: text/plain
     },
     {
       "Message": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "attachments": [

@@ -20,14 +20,18 @@ ZWg=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "alternative",
-      "attributes": {
-        "boundary": "bound"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "bound"
+        }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -40,21 +44,29 @@ ZWg=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "base64",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
     },
     {
-      "header": {
-        "content_transfer_encoding": "base64",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "eh"

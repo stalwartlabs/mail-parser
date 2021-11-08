@@ -20,12 +20,14 @@ Content-Type: text/plain; charset=utf-8
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "foo"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "foo"
+        }
       }
     }
   },
@@ -39,26 +41,34 @@ Content-Type: text/plain; charset=utf-8
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "utf-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
+            }
           }
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         }
       },
       "contents": "päivää\n"
     },
     {
-      "header": {
-        "content_transfer_encoding": "base64",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "utf-8"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
+            }
           }
         }
       },
@@ -68,14 +78,18 @@ Content-Type: text/plain; charset=utf-8
   "attachments": [
     {
       "Text": {
-        "header": {
-          "content_transfer_encoding": "base64",
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "utf-8"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "utf-8"
+              }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "contents": "?garbage"

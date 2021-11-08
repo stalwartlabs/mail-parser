@@ -50,18 +50,18 @@ fn test_api() {
     )
     .as_bytes();
 
-    let message = Message::parse(input);
+    let message = Message::parse(input).unwrap();
 
     assert_eq!(
         message.get_from(),
-        &Address::Address(Addr {
+        &HeaderValue::Address(Addr {
             name: Some("Art Vandelay (Vandelay Industries)".into()),
             address: Some("art@vandelay.com".into())
         })
     );
     assert_eq!(
         message.get_to(),
-        &Address::GroupList(vec![
+        &HeaderValue::GroupList(vec![
             Group {
                 name: Some("Colleagues".into()),
                 addresses: vec![Addr {
@@ -131,8 +131,6 @@ fn test_api() {
     assert_eq!(nested_attachment.len(), 42);
     assert_eq!(
         nested_attachment
-            .get_header()
-            .unwrap()
             .get_content_type()
             .unwrap()
             .get_attribute("name")

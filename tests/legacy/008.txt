@@ -136,17 +136,28 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 32,
-      "second": 47,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 32,
+        "second": 47,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     },
     "from": {
       "Address": {
@@ -154,38 +165,20 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Microsoft Outlook 00",
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
+        }
       }
     },
-    "others": {
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ]
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -195,14 +188,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
+            }
           }
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         }
       },
       "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n"
@@ -211,19 +208,25 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   "attachments": [
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "blueball.png"
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },
@@ -1558,19 +1561,25 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "greenball.png"
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "greenball.png"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
           }
         },
@@ -2878,19 +2887,25 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "header": {
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "redball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
+              }
             }
           },
-          "content_transfer_encoding": "base64",
-          "content_type": {
-            "c_type": "image",
-            "c_subtype": "png",
-            "attributes": {
-              "name": "redball.png"
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "redball.png"
+              }
             }
           }
         },

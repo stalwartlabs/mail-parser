@@ -27,40 +27,52 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 10,
-      "minute": 18,
-      "second": 3,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
-    },
+  "headers": {
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@penguin.example.com"
       }
     },
-    "message_id": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 10,
+        "minute": 18,
+        "second": 3,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "schmuergen@example.com"
       }
     },
-    "content_transfer_encoding": "QUOTED-PRINTABLE",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
-      }
+    "content_transfer_encoding": {
+      "Text": "QUOTED-PRINTABLE"
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
     }
   },
   "html_body": [

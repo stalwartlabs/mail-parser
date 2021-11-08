@@ -29,48 +29,52 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 41,
-      "second": 7,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
       }
     },
-    "message_id": "39236653.CAA8A090@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die Frösche",
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 41,
+        "second": 7,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "message_id": {
+      "Text": "39236653.CAA8A090@example.com"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "schmuergen@example.com"
       }
     },
-    "content_transfer_encoding": "quoted-printable",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
-    "others": {
-      "X-Accept-Language": [
-        "en"
-      ],
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ]
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     }
   },
   "html_body": [

@@ -97,17 +97,24 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 19,
-      "hour": 9,
-      "minute": 55,
-      "second": 48,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "subject": {
+      "Text": "Test message from PINE"
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-952513540-958744548=:8452"
+        }
+      }
     },
     "from": {
       "Address": {
@@ -115,20 +122,23 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "address": "doug@penguin.example.com"
       }
     },
-    "message_id": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from PINE",
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 9,
+        "minute": 55,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
-      }
-    },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "-1463757054-952513540-958744548=:8452"
       }
     }
   },
@@ -139,12 +149,14 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "US-ASCII"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "US-ASCII"
+            }
           }
         }
       },
@@ -154,22 +166,32 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
   "attachments": [
     {
       "Binary": {
-        "header": {
-          "content_description": "A PNG graphic file",
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "redball.png"
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "octet-stream",
+              "attributes": {
+                "name": "redball.png"
+              }
             }
           },
-          "content_id": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com",
-          "content_transfer_encoding": "BASE64",
-          "content_type": {
-            "c_type": "application",
-            "c_subtype": "octet-stream",
-            "attributes": {
-              "name": "redball.png"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "redball.png"
+              }
             }
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           }
         },
         "contents": [
@@ -1631,21 +1653,31 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "header": {
-          "content_description": "A PNG graphic file",
-          "content_disposition": {
-            "c_type": "attachment",
-            "attributes": {
-              "filename": "blueball.png"
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "octet-stream",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
           },
-          "content_id": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com",
-          "content_transfer_encoding": "BASE64",
-          "content_type": {
-            "c_type": "application",
-            "c_subtype": "octet-stream",
-            "attributes": {
-              "name": "blueball.png"
+          "content_description": {
+            "Text": "A PNG graphic file"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
           }
         },

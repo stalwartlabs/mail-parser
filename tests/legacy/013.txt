@@ -32,17 +32,30 @@ welche also wohl noch unglücklicher sein müssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 13,
-      "second": 51,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "content_transfer_encoding": {
+      "Text": "8bit"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "JÃ¼rgen SchmÃ¼rgen",
+        "address": "schmuergen@example.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
     },
     "from": {
       "Address": {
@@ -50,39 +63,21 @@ welche also wohl noch unglücklicher sein müssen als wir."
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com",
-    "mime_version": "1.0",
-    "subject": "Die Hasen und die FrÃ¶sche (Microsoft Outlook 00)",
-    "to": {
-      "Address": {
-        "name": "JÃ¼rgen SchmÃ¼rgen",
-        "address": "schmuergen@example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die FrÃ¶sche (Microsoft Outlook 00)"
     },
-    "content_transfer_encoding": "8bit",
-    "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "iso-8859-1"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 13,
+        "second": 51,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
-    },
-    "others": {
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "Importance": [
-        "Normal"
-      ],
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ]
     }
   },
   "html_body": [

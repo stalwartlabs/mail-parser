@@ -9,11 +9,9 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
+use crate::{parsers::message::MessageStream, HeaderValue};
 
-use crate::parsers::message::MessageStream;
-
-pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>> {
+pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut token_start: usize = 0;
     let mut token_end: usize = 0;
     let mut is_id_part = false;
@@ -31,7 +29,11 @@ pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>>
                     continue;
                 }
                 _ => {
-                    return if !ids.is_empty() { Some(ids) } else { None };
+                    return match ids.len() {
+                        1 => HeaderValue::Text(ids.pop().unwrap()),
+                        0 => HeaderValue::Empty,
+                        _ => HeaderValue::TextList(ids),
+                    };
                 }
             },
             b'<' => {
@@ -60,13 +62,14 @@ pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> Option<Vec<Cow<'x, str>>>
         }
     }
 
-    None
+    HeaderValue::Empty
 }
 
 #[cfg(test)]
 mod tests {
     use crate::parsers::fields::id::parse_id;
     use crate::parsers::message::MessageStream;
+    use crate::HeaderValue;
 
     #[test]
     fn parse_message_ids() {
@@ -103,12 +106,16 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            assert_eq!(
-                input.1,
-                parse_id(&mut MessageStream::new(str.as_bytes())).unwrap(),
-                "Failed to parse '{:?}'",
-                input.0
-            );
+            match parse_id(&mut MessageStream::new(str.as_bytes())) {
+                HeaderValue::TextList(ids) => {
+                    assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
+                }
+                HeaderValue::Text(id) => {
+                    assert!(input.1.len() == 1, "Failed to parse '{:?}'", input.0);
+                    assert_eq!(id, input.1[0], "Failed to parse '{:?}'", input.0);
+                }
+                _ => panic!("Unexpected result"),
+            }
         }
     }
 }

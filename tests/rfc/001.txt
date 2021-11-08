@@ -41,43 +41,55 @@ get RFC-MIME.DOC
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
+    "subject": {
+      "Text": "whatever"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "id1@host.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "42"
+        }
+      }
+    },
     "from": {
       "Address": {
         "name": "Whomever"
       }
     },
-    "message_id": "id1@host.com",
-    "mime_version": "1.0",
-    "subject": "whatever",
+    "content_id": {
+      "Text": "id001@guppylake.bellcore.com"
+    },
     "to": {
       "Address": {
         "name": "Someone"
-      }
-    },
-    "content_id": "id001@guppylake.bellcore.com",
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "alternative",
-      "attributes": {
-        "boundary": "42"
       }
     }
   },
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "message",
-            "c_subtype": "external-body",
-            "attributes": {
-              "name": "BodyFormats.ps",
-              "mode": "image",
-              "access-type": "ANON-FTP",
-              "directory": "pub",
-              "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
-              "site": "thumper.bellcore.com"
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": {
+                "name": "BodyFormats.ps",
+                "mode": "image",
+                "site": "thumper.bellcore.com",
+                "directory": "pub",
+                "access-type": "ANON-FTP",
+                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+              }
             }
           }
         },
@@ -166,15 +178,17 @@ get RFC-MIME.DOC
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "message",
-            "c_subtype": "external-body",
-            "attributes": {
-              "access-type": "local-file",
-              "name": "/u/nsb/writing/rfcs/RFC-MIME.ps",
-              "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
-              "site": "thumper.bellcore.com"
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": {
+                "name": "/u/nsb/writing/rfcs/RFC-MIME.ps",
+                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
+                "access-type": "local-file",
+                "site": "thumper.bellcore.com"
+              }
             }
           }
         },
@@ -263,14 +277,16 @@ get RFC-MIME.DOC
     },
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "message",
-            "c_subtype": "external-body",
-            "attributes": {
-              "access-type": "mail-server",
-              "server": "listserv@bogus.bitnet",
-              "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": {
+                "access-type": "mail-server",
+                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
+                "server": "listserv@bogus.bitnet"
+              }
             }
           }
         },

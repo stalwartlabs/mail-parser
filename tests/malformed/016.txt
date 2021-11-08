@@ -25,12 +25,14 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012"
+        }
       }
     }
   },
@@ -41,10 +43,12 @@ Content-Type: text/plain
   ],
   "text_body": [
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333"
@@ -53,10 +57,12 @@ Content-Type: text/plain
   "attachments": [
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
           }
         },
         "contents": "4444\n"

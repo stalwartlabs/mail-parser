@@ -132,17 +132,18 @@ end
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 19,
-      "minute": 58,
-      "second": 13,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+  "headers": {
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     },
     "from": {
       "Address": {
@@ -150,30 +151,18 @@ end
         "address": "doug@example.com"
       }
     },
-    "message_id": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com",
-    "subject": "Test message from Microsoft Outlook 00",
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 58,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
-    },
-    "others": {
-      "X-Priority": [
-        "3 (Normal)"
-      ],
-      "X-Mailer": [
-        "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      ],
-      "X-MSMail-Priority": [
-        "Normal"
-      ],
-      "X-MimeOLE": [
-        "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      ],
-      "Importance": [
-        "Normal"
-      ]
     }
   },
   "html_body": [

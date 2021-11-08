@@ -17,7 +17,7 @@ use std::{
 use crate::{
     decoders::{charsets::map::get_charset_decoder, encoded_word::decode_rfc2047, hex::decode_hex},
     parsers::message::MessageStream,
-    ContentType,
+    ContentType, HeaderValue,
 };
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -244,7 +244,7 @@ fn merge_continuations(parser: &mut ContentTypeParser) {
     }
 }
 
-pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentType<'x>> {
+pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     let mut parser = ContentTypeParser {
         state: ContentState::Type,
         state_stack: Vec::new(),
@@ -327,7 +327,7 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                         }
 
                         return if let Some(content_type) = parser.c_type {
-                            Some(ContentType {
+                            HeaderValue::ContentType(ContentType {
                                 c_type: content_type,
                                 c_subtype: parser.c_subtype.take(),
                                 attributes: if !parser.attributes.is_empty() {
@@ -337,7 +337,7 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
                                 },
                             })
                         } else {
-                            None
+                            HeaderValue::Empty
                         };
                     }
                 }
@@ -496,846 +496,1035 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> Option<ContentT
         }
     }
 
-    None
+    HeaderValue::Empty
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::message::MessageStream;
+    use crate::{parsers::message::MessageStream, HeaderValue};
 
     #[test]
     fn parse_content_fields() {
-        use crate::parsers::fields::content_type::ContentType;
-
         use super::parse_content_type;
 
-        let inputs = [
-            (
-                "audio/basic\n",
-                concat!("---\n", "c_type: audio\n", "c_subtype: basic\n"),
-            ),
-            (
-                "application/postscript \n",
-                concat!("---\n", "c_type: application\n", "c_subtype: postscript\n"),
-            ),
-            (
-                "image/ jpeg\n",
-                concat!("---\n", "c_type: image\n", "c_subtype: jpeg\n"),
-            ),
-            (
-                " message / rfc822\n",
-                concat!("---\n", "c_type: message\n", "c_subtype: rfc822\n"),
-            ),
-            ("inline\n", concat!("---\n", "c_type: inline\n")),
-            (
-                " text/plain; charset =us-ascii (Plain text)\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+        let inputs =
+            [
+                (
+                    "audio/basic\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: audio\n",
+                        "  c_subtype: basic\n"
+                    ),
                 ),
-            ),
-            (
-                "text/plain; charset= \"us-ascii\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/postscript \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: postscript\n"
+                    ),
                 ),
-            ),
-            (
-                "text/plain; charset =ISO-8859-1\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: ISO-8859-1\n"
+                (
+                    "image/ jpeg\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: jpeg\n"
+                    ),
                 ),
-            ),
-            (
-                "text/foo; charset= bar\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: foo\n",
-                    "attributes:\n",
-                    "  charset: bar\n"
+                (
+                    " message / rfc822\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: rfc822\n"
+                    ),
                 ),
-            ),
-            (
-                " text /plain; charset=\"iso-8859-1\"; format=flowed\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: iso-8859-1\n",
-                    "  format: flowed\n"
+                (
+                    "inline\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: inline\n"),
                 ),
-            ),
-            (
-                "application/pgp-signature; x-mac-type=70674453;\n    name=PGP.sig\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: pgp-signature\n",
-                    "attributes:\n",
-                    "  name: PGP.sig\n",
-                    "  x-mac-type: \"70674453\"\n"
+                (
+                    " text/plain; charset =us-ascii (Plain text)\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: mixed\n",
-                    "attributes:\n",
-                    "  boundary: gc0p4Jq0M2Yt08j34c0p\n"
+                (
+                    "text/plain; charset= \"us-ascii\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/mixed; boundary=gc0pJq0M:08jU534c0p\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: mixed\n",
-                    "attributes:\n",
-                    "  boundary: \"gc0pJq0M:08jU534c0p\"\n"
+                (
+                    "text/plain; charset =ISO-8859-1\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: ISO-8859-1\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/mixed; boundary=\"gc0pJq0M:08jU534c0p\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: mixed\n",
-                    "attributes:\n",
-                    "  boundary: \"gc0pJq0M:08jU534c0p\"\n"
+                (
+                    "text/foo; charset= bar\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: foo\n",
+                        "  attributes:\n",
+                        "    charset: bar\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/mixed; boundary=\"simple boundary\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: mixed\n",
-                    "attributes:\n",
-                    "  boundary: simple boundary\n"
+                (
+                    " text /plain; charset=\"iso-8859-1\"; format=flowed\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: iso-8859-1\n",
+                        "    format: flowed\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/alternative; boundary=boundary42\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: alternative\n",
-                    "attributes:\n",
-                    "  boundary: boundary42\n"
+                (
+                    "application/pgp-signature; x-mac-type=70674453;\n    name=PGP.sig\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: pgp-signature\n",
+                        "  attributes:\n",
+                        "    name: PGP.sig\n",
+                        "    x-mac-type: \"70674453\"\n"
+                    ),
                 ),
-            ),
-            (
-                " multipart/mixed;\n     boundary=\"---- main boundary ----\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: mixed\n",
-                    "attributes:\n",
-                    "  boundary: \"---- main boundary ----\"\n"
+                (
+                    "multipart/mixed; boundary=gc0p4Jq0M2Yt08j34c0p\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: gc0p4Jq0M2Yt08j34c0p\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/alternative; boundary=42\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: alternative\n",
-                    "attributes:\n",
-                    "  boundary: \"42\"\n"
+                (
+                    "multipart/mixed; boundary=gc0pJq0M:08jU534c0p\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: \"gc0pJq0M:08jU534c0p\"\n"
+                    ),
                 ),
-            ),
-            (
-                "message/partial; id=\"ABC@host.com\";\n",
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: partial\n",
-                    "attributes:\n",
-                    "  id: ABC@host.com\n"
+                (
+                    "multipart/mixed; boundary=\"gc0pJq0M:08jU534c0p\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: \"gc0pJq0M:08jU534c0p\"\n"
+                    ),
                 ),
-            ),
-            (
-                "multipart/parallel;boundary=unique-boundary-2\n",
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: parallel\n",
-                    "attributes:\n",
-                    "  boundary: unique-boundary-2\n"
+                (
+                    "multipart/mixed; boundary=\"simple boundary\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: simple boundary\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
+                (
+                    "multipart/alternative; boundary=boundary42\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: alternative\n",
+                        "  attributes:\n",
+                        "    boundary: boundary42\n"
+                    ),
+                ),
+                (
+                    " multipart/mixed;\n     boundary=\"---- main boundary ----\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: \"---- main boundary ----\"\n"
+                    ),
+                ),
+                (
+                    "multipart/alternative; boundary=42\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: alternative\n",
+                        "  attributes:\n",
+                        "    boundary: \"42\"\n"
+                    ),
+                ),
+                (
+                    "message/partial; id=\"ABC@host.com\";\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: partial\n",
+                        "  attributes:\n",
+                        "    id: ABC@host.com\n"
+                    ),
+                ),
+                (
+                    "multipart/parallel;boundary=unique-boundary-2\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: parallel\n",
+                        "  attributes:\n",
+                        "    boundary: unique-boundary-2\n"
+                    ),
+                ),
+                (
+                    concat!(
                     "message/external-body; name=\"BodyFormats.ps\";\n   site=\"thumper.bellcor",
                     "e.com\"; mode=\"image\";\n  access-type=ANON-FTP; directory=\"pub\";\n  expir",
                     "ation=\"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n",
-                    "  site: thumper.bellcore.com\n",
-                    "  directory: pub\n",
-                    "  name: BodyFormats.ps\n",
-                    "  mode: image\n",
-                    "  access-type: ANON-FTP\n"
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n",
+                        "    site: thumper.bellcore.com\n",
+                        "    directory: pub\n",
+                        "    name: BodyFormats.ps\n",
+                        "    mode: image\n",
+                        "    access-type: ANON-FTP\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
+                (
+                    concat!(
                     "message/external-body; access-type=local-file;\n   name=\"/u/nsb/writing",
                     "/rfcs/RFC-MIME.ps\";\n    site=\"thumper.bellcore.com\";\n  expiration=\"Fri",
                     ", 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n",
-                    "  access-type: local-file\n",
-                    "  name: /u/nsb/writing/rfcs/RFC-MIME.ps\n",
-                    "  site: thumper.bellcore.com\n"
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n",
+                        "    access-type: local-file\n",
+                        "    name: /u/nsb/writing/rfcs/RFC-MIME.ps\n",
+                        "    site: thumper.bellcore.com\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "message/external-body;\n    access-type=mail-server\n     server=\"listse",
-                    "rv@bogus.bitnet\";\n     expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (ED",
-                    "T)\"\n"
+                (
+                    concat!(
+                        "message/external-body;\n    access-type=mail-server\n     server=\"listse",
+                        "rv@bogus.bitnet\";\n     expiration=\"Fri, 14 Jun 1991 19:13:14 -0400 (ED",
+                        "T)\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    access-type: mail-server\n",
+                        "    server: listserv@bogus.bitnet\n",
+                        "    expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  access-type: mail-server\n",
-                    "  server: listserv@bogus.bitnet\n",
-                    "  expiration: \"Fri, 14 Jun 1991 19:13:14 -0400 (EDT)\"\n"
+                (
+                    concat!(
+                        "Message/Partial; number=2; total=3;\n     id=\"oc=jpbe0M2Yt4s@thumper.be",
+                        "llcore.com\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: partial\n",
+                        "  attributes:\n",
+                        "    total: \"3\"\n",
+                        "    number: \"2\"\n",
+                        "    id: oc=jpbe0M2Yt4s@thumper.bellcore.com\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "Message/Partial; number=2; total=3;\n     id=\"oc=jpbe0M2Yt4s@thumper.be",
-                    "llcore.com\"\n"
+                (
+                    concat!(
+                        "multipart/signed; micalg=pgp-sha1; protocol=\"application/pgp-signature",
+                        "\";\n   boundary=\"=-J1qXPoyGtE2XNN5N6Z6j\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: signed\n",
+                        "  attributes:\n",
+                        "    boundary: \"=-J1qXPoyGtE2XNN5N6Z6j\"\n",
+                        "    micalg: pgp-sha1\n",
+                        "    protocol: application/pgp-signature\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: partial\n",
-                    "attributes:\n",
-                    "  total: \"3\"\n",
-                    "  number: \"2\"\n",
-                    "  id: oc=jpbe0M2Yt4s@thumper.bellcore.com\n"
+                (
+                    concat!(
+                        "message/external-body;\n    access-type=local-file;\n     name=\"/u/nsb/M",
+                        "e.jpeg\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    name: /u/nsb/Me.jpeg\n",
+                        "    access-type: local-file\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "multipart/signed; micalg=pgp-sha1; protocol=\"application/pgp-signature",
-                    "\";\n   boundary=\"=-J1qXPoyGtE2XNN5N6Z6j\"\n"
-                ),
-                concat!(
-                    "---\n",
-                    "c_type: multipart\n",
-                    "c_subtype: signed\n",
-                    "attributes:\n",
-                    "  boundary: \"=-J1qXPoyGtE2XNN5N6Z6j\"\n",
-                    "  micalg: pgp-sha1\n",
-                    "  protocol: application/pgp-signature\n"
-                ),
-            ),
-            (
-                concat!(
-                    "message/external-body;\n    access-type=local-file;\n     name=\"/u/nsb/M",
-                    "e.jpeg\"\n"
-                ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  name: /u/nsb/Me.jpeg\n",
-                    "  access-type: local-file\n"
-                ),
-            ),
-            (
-                concat!(
+                (
+                    concat!(
                     "message/external-body; access-type=URL;\n    URL*0=\"ftp://\";\n    URL*1=",
                     "\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n"
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  url: \"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n",
-                    "  access-type: URL\n"
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    url: \"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n",
+                        "    access-type: URL\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "message/external-body; access-type=URL;\n     URL=\"ftp://cs.utk.edu/pub",
-                    "/moore/bulk-mailer/bulk-mailer.tar\"\n"
+                (
+                    concat!(
+                        "message/external-body; access-type=URL;\n     URL=\"ftp://cs.utk.edu/pub",
+                        "/moore/bulk-mailer/bulk-mailer.tar\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: external-body\n",
+                        "  attributes:\n",
+                        "    url: \"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n",
+                        "    access-type: URL\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: external-body\n",
-                    "attributes:\n",
-                    "  url: \"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"\n",
-                    "  access-type: URL\n"
+                (
+                    concat!(
+                        "application/x-stuff;\n     title*=us-ascii'en-us'This%20is%20%2A%2A%2Af",
+                        "un%2A%2A%2A\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: x-stuff\n",
+                        "  attributes:\n",
+                        "    title: This is ***fun***\n",
+                        "    title-language: en-us\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/x-stuff;\n     title*=us-ascii'en-us'This%20is%20%2A%2A%2Af",
-                    "un%2A%2A%2A\n"
+                (
+                    concat!(
+                        "application/x-stuff\n   title*0*=us-ascii'en'This%20is%20even%20more%20",
+                        "\n   title*1*=%2A%2A%2Afun%2A%2A%2A%20\n   title*2=\"isn't it!\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: x-stuff\n",
+                        "  attributes:\n",
+                        "    title-language: en\n",
+                        "    title: \"This is even more ***fun*** isn't it!\"\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: x-stuff\n",
-                    "attributes:\n",
-                    "  title: This is ***fun***\n",
-                    "  title-language: en-us\n"
+                (
+                    concat!(
+                        "application/pdf\n   filename*0*=iso-8859-1'es'%D1and%FA\n   ",
+                        "filename*1*=iso-8859-1'",
+                        "%20r%E1pido\n   filename*2*=\"iso-8859-1' ",
+                        "(versi%F3n \\'99 \\\"oficial\\\").pdf\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: pdf\n",
+                        "  attributes:\n",
+                        "    filename: \"Ñandú rápido (versión '99 \\\"oficial\\\").pdf\"\n",
+                        "    filename-language: es\n",
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/x-stuff\n   title*0*=us-ascii'en'This%20is%20even%20more%20",
-                    "\n   title*1*=%2A%2A%2Afun%2A%2A%2A%20\n   title*2=\"isn't it!\"\n"
+                (
+                    concat!(
+                        " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3",
+                        "=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: png\n",
+                        "  attributes:\n",
+                        "    name: ハロー・ワールド.png\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: x-stuff\n",
-                    "attributes:\n",
-                    "  title-language: en\n",
-                    "  title: \"This is even more ***fun*** isn't it!\"\n"
+                (
+                    " image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=.gif\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: gif\n",
+                        "  attributes:\n",
+                        "    name: مرحبا بالعالم.gif\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/pdf\n   filename*0*=iso-8859-1'es'%D1and%FA\n   ",
-                    "filename*1*=iso-8859-1'",
-                    "%20r%E1pido\n   filename*2*=\"iso-8859-1' ",
-                    "(versi%F3n \\'99 \\\"oficial\\\").pdf\"\n"
+                (
+                    concat!(
+                        "image/jpeg;\n   name=\"=?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859",
+                        "-1?q?=ED?=.jpeg\"\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: jpeg\n",
+                        "  attributes:\n",
+                        "    name: á é í.jpeg\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: pdf\n",
-                    "attributes:\n",
-                    "  filename: \"Ñandú rápido (versión '99 \\\"oficial\\\").pdf\"\n",
-                    "  filename-language: es\n",
+                (
+                    concat!(
+                        "image/jpeg;\n   name==?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-",
+                        "1?q?=ED?=.jpeg\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: jpeg\n",
+                        "  attributes:\n",
+                        "    name: áéí.jpeg\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3",
-                    "=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n"
+                (
+                    "image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: gif\n",
+                        "  attributes:\n",
+                        "    name: مرحبا بالعالم.gif\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: png\n",
-                    "attributes:\n",
-                    "  name: ハロー・ワールド.png\n"
+                (
+                    " image/gif;\n   name=\"=?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: image\n",
+                        "  c_subtype: gif\n",
+                        "  attributes:\n",
+                        "    name: مرحبا بالعالم.gif\n"
+                    ),
                 ),
-            ),
-            (
-                " image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5Q==?=.gif\n",
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: gif\n",
-                    "attributes:\n",
-                    "  name: مرحبا بالعالم.gif\n"
+                (
+                    " inline; filename=\"  best \\\"file\\\" ever with \\\\ escaped ' stuff.  \"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: inline\n",
+                        "  attributes:\n",
+                        "    filename: \"  best \\\"file\\\" ever with \\\\ escaped ' stuff.  \"\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "image/jpeg;\n   name=\"=?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859",
-                    "-1?q?=ED?=.jpeg\"\n"
+                (
+                    "test/\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: test\n"),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: jpeg\n",
-                    "attributes:\n",
-                    "  name: á é í.jpeg\n"
+                ("/invalid\n", concat!("---\n", "ContentType:\n", "~\n")),
+                ("/\n", concat!("---\n", "ContentType:\n", "~\n")),
+                (";\n", concat!("---\n", "ContentType:\n", "~\n")),
+                (
+                    "/ ; name=value\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                concat!(
-                    "image/jpeg;\n   name==?iso-8859-1?B?4Q==?= =?utf-8?B?w6k=?= =?iso-8859-",
-                    "1?q?=ED?=.jpeg\n"
+                (
+                    "text/plain;\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: jpeg\n",
-                    "attributes:\n",
-                    "  name: áéí.jpeg\n"
+                (
+                    "text/plain;;\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n"
+                    ),
                 ),
-            ),
-            (
-                "image/gif;\n   name==?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\n",
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: gif\n",
-                    "attributes:\n",
-                    "  name: مرحبا بالعالم.gif\n"
+                (
+                    "text/plain ;;;;; = ;; name=\"value\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    name: value\n"
+                    ),
                 ),
-            ),
-            (
-                " image/gif;\n   name=\"=?iso-8859-6?b?5dHNyMcgyMfk2cfk5S5naWY=?=\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: image\n",
-                    "c_subtype: gif\n",
-                    "attributes:\n",
-                    "  name: مرحبا بالعالم.gif\n"
+                (
+                    "=\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: \"=\"\n"),
                 ),
-            ),
-            (
-                " inline; filename=\"  best \\\"file\\\" ever with \\\\ escaped ' stuff.  \"\n",
-                concat!(
-                    "---\n",
-                    "c_type: inline\n",
-                    "attributes:\n",
-                    "  filename: \"  best \\\"file\\\" ever with \\\\ escaped ' stuff.  \"\n"
+                (
+                    "name=value\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: name=value\n"),
                 ),
-            ),
-            ("test/\n", concat!("---\n", "c_type: test\n")),
-            ("/invalid\n", concat!("---\n", "~\n")),
-            ("/\n", concat!("---\n", "~\n")),
-            (";\n", concat!("---\n", "~\n")),
-            ("/ ; name=value\n", concat!("---\n", "~\n")),
-            (
-                "text/plain;\n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain\n"),
-            ),
-            (
-                "text/plain;;\n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain\n"),
-            ),
-            (
-                "text/plain ;;;;; = ;; name=\"value\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  name: value\n"
+                (
+                    "text/plain; name=  \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n"
+                    ),
                 ),
-            ),
-            ("=\n", concat!("---\n", "c_type: \"=\"\n")),
-            ("name=value\n", concat!("---\n", "c_type: name=value\n")),
-            (
-                "text/plain; name=  \n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain\n"),
-            ),
-            (
-                "a/b; = \n",
-                concat!("---\n", "c_type: a\n", "c_subtype: b\n"),
-            ),
-            (
-                "a/b; = \n \n",
-                concat!("---\n", "c_type: a\n", "c_subtype: b\n"),
-            ),
-            (
-                "a/b; =value\n",
-                concat!("---\n", "c_type: a\n", "c_subtype: b\n"),
-            ),
-            (
-                "test/test; =\"value\"\n",
-                concat!("---\n", "c_type: test\n", "c_subtype: test\n"),
-            ),
-            (
-                "á/é; á=é\n",
-                concat!(
-                    "---\n",
-                    "c_type: á\n",
-                    "c_subtype: é\n",
-                    "attributes:\n",
-                    "  á: é\n"
+                (
+                    "a/b; = \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: a\n",
+                        "  c_subtype: b\n"
+                    ),
                 ),
-            ),
-            (
-                "inva/lid; name=\"   \n",
-                concat!(
-                    "---\n",
-                    "c_type: inva\n",
-                    "c_subtype: lid\n",
-                    "attributes:\n",
-                    "  name: \"   \"\n"
+                (
+                    "a/b; = \n \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: a\n",
+                        "  c_subtype: b\n"
+                    ),
                 ),
-            ),
-            (
-                "inva/lid; name=\"   \n    \n",
-                concat!(
-                    "---\n",
-                    "c_type: inva\n",
-                    "c_subtype: lid\n",
-                    "attributes:\n",
-                    "  name: \"   \"\n"
+                (
+                    "a/b; =value\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: a\n",
+                        "  c_subtype: b\n"
+                    ),
                 ),
-            ),
-            (
-                "inva/lid; name=\"   \n    \"; test=test\n",
-                concat!(
-                    "---\n",
-                    "c_type: inva\n",
-                    "c_subtype: lid\n",
-                    "attributes:\n",
-                    "  test: test\n",
-                    "  name: \"   \"\n"
+                (
+                    "test/test; =\"value\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: test\n",
+                        "  c_subtype: test\n"
+                    ),
                 ),
-            ),
-            ("name=value\n", concat!("---\n", "c_type: name=value\n")),
-            (
-                concat!(
-                    "test/encoded; key4*=us-ascii''foo; key*9999=ba%; key2*0=a; key3*0*=us-asc",
-                    "ii'en'xyz; key*0=\"f\u{0}oo\"; key2*1*=b%25; key3*1=plop%; key*1=baz; ",
-                    "*=test; =test2;\n"
+                (
+                    "á/é; á=é\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: á\n",
+                        "  c_subtype: é\n",
+                        "  attributes:\n",
+                        "    á: é\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: test\n",
-                    "c_subtype: encoded\n",
-                    "attributes:\n",
-                    "  key: \"f\\u0000oobazba%\"\n",
-                    "  key2: ab%\n",
-                    "  key3: xyzplop%\n",
-                    "  key4: foo\n",
-                    "  key3-language: en\n",
+                (
+                    "inva/lid; name=\"   \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: inva\n",
+                        "  c_subtype: lid\n",
+                        "  attributes:\n",
+                        "    name: \"   \"\n"
+                    ),
                 ),
-            ),
-            (
-                "text/plain; name*=\"iso-8859-1''HasenundFr%F6sche.txt\"\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  name: HasenundFrösche.txt\n"
+                (
+                    "inva/lid; name=\"   \n    \n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: inva\n",
+                        "  c_subtype: lid\n",
+                        "  attributes:\n",
+                        "    name: \"   \"\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "malicious/attempt; 1*2*=a; 3**=b; 4***=c; *5**6*=d;",
-                    "*****7*8*=e; 9*10*11*12*13*14=f; 15*x***fff*===g;",
-                    "1 * 999999999999999999 *= h; 18 *=*=*=*=*==i;\n"
+                (
+                    "inva/lid; name=\"   \n    \"; test=test\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: inva\n",
+                        "  c_subtype: lid\n",
+                        "  attributes:\n",
+                        "    test: test\n",
+                        "    name: \"   \"\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: malicious\n",
-                    "c_subtype: attempt\n",
-                    "attributes:\n",
-                    "  \"1\": ha\n",
-                    "  \"3\": b\n",
-                    "  \"4\": c\n",
-                    "  \"5\": d\n",
-                    "  \"7\": e\n",
-                    "  \"9\": f\n",
-                    "  \"15\": \"==g\"\n",
-                    "  \"18\": \"*=*=*=*==i\"\n",
+                (
+                    "name=value\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: name=value\n"),
                 ),
-            ),
-            (";charset=us-ascii\n", concat!("---\n", "~\n")),
-            (" ;charset=us-ascii\n", concat!("---\n", "~\n")),
-            ("/\n", concat!("---\n", "~\n")),
-            ("/;charset=us-ascii\n", concat!("---\n", "~\n")),
-            ("/ ;charset=us-ascii\n", concat!("---\n", "~\n")),
-            ("text/\n", concat!("---\n", "c_type: text\n")),
-            (
-                "text/;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    concat!(
+                        "test/encoded; key4*=us-ascii''foo; key*9999=ba%; key2*0=a; key3*0*=us-asc",
+                        "ii'en'xyz; key*0=\"f\u{0}oo\"; key2*1*=b%25; key3*1=plop%; key*1=baz; ",
+                        "*=test; =test2;\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: test\n",
+                        "  c_subtype: encoded\n",
+                        "  attributes:\n",
+                        "    key: \"f\\u0000oobazba%\"\n",
+                        "    key2: ab%\n",
+                        "    key3: xyzplop%\n",
+                        "    key4: foo\n",
+                        "    key3-language: en\n",
+                    ),
                 ),
-            ),
-            (
-                "text/ ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/plain; name*=\"iso-8859-1''HasenundFr%F6sche.txt\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    name: HasenundFrösche.txt\n"
+                    ),
                 ),
-            ),
-            ("/plain\n", concat!("---\n", "~\n")),
-            ("/plain;charset=us-ascii\n", concat!("---\n", "~\n")),
-            ("/plain ;charset=us-ascii\n", concat!("---\n", "~\n")),
-            (
-                "text/plain\n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain\n"),
-            ),
-            (
-                "text/plain;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    concat!(
+                        "malicious/attempt; 1*2*=a; 3**=b; 4***=c; *5**6*=d;",
+                        "*****7*8*=e; 9*10*11*12*13*14=f; 15*x***fff*===g;",
+                        "1 * 999999999999999999 *= h; 18 *=*=*=*=*==i;\n"
+                    ),
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: malicious\n",
+                        "  c_subtype: attempt\n",
+                        "  attributes:\n",
+                        "    \"1\": ha\n",
+                        "    \"3\": b\n",
+                        "    \"4\": c\n",
+                        "    \"5\": d\n",
+                        "    \"7\": e\n",
+                        "    \"9\": f\n",
+                        "    \"15\": \"==g\"\n",
+                        "    \"18\": \"*=*=*=*==i\"\n",
+                    ),
                 ),
-            ),
-            (
-                "text/plain ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    ";charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "text/plain/format\n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain/format\n"),
-            ),
-            (
-                "text/plain/format;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain/format\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    " ;charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "text/plain/format ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain/format\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                ("/\n", concat!("---\n", "ContentType:\n", "~\n")),
+                (
+                    "/;charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "application/ld+json\n",
-                concat!("---\n", "c_type: application\n", "c_subtype: ld+json\n"),
-            ),
-            (
-                "application/ld+json;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: ld+json\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "/ ;charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "application/ld+json ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: ld+json\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/\n",
+                    concat!("---\n", "ContentType:\n", "  c_type: text\n"),
                 ),
-            ),
-            (
-                "application/x-magic-cap-package-1.0\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: x-magic-cap-package-1.0\n"
+                (
+                    "text/;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "application/x-magic-cap-package-1.0;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: x-magic-cap-package-1.0\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/ ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "application/x-magic-cap-package-1.0 ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: x-magic-cap-package-1.0\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                ("/plain\n", concat!("---\n", "ContentType:\n", "~\n")),
+                (
+                    "/plain;charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "application/pro_eng\n",
-                concat!("---\n", "c_type: application\n", "c_subtype: pro_eng\n"),
-            ),
-            (
-                "application/pro_eng;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: pro_eng\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "/plain ;charset=us-ascii\n",
+                    concat!("---\n", "ContentType:\n", "~\n"),
                 ),
-            ),
-            (
-                "application/pro_eng ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: pro_eng\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/plain\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n"
+                    ),
                 ),
-            ),
-            (
-                "application/wordperfect6.1\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: wordperfect6.1\n"
+                (
+                    "text/plain;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "application/wordperfect6.1;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: wordperfect6.1\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/plain ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "application/wordperfect6.1 ;charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: wordperfect6.1\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "text/plain/format\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain/format\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
-                    "e\n"
+                (
+                    "text/plain/format;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain/format\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n"
+                (
+                    "text/plain/format ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain/format\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
-                    "e;charset=us-ascii\n"
+                (
+                    "application/ld+json\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: ld+json\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/ld+json;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: ld+json\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                concat!(
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
-                    "e ;charset=us-asii\n"
+                (
+                    "application/ld+json ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: ld+json\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-                concat!(
-                    "---\n",
-                    "c_type: application\n",
-                    "c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n",
-                    "attributes:\n",
-                    "  charset: us-asii\n"
+                (
+                    "application/x-magic-cap-package-1.0\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: x-magic-cap-package-1.0\n"
+                    ),
                 ),
-            ),
-            (
-                "(hello) text (plain) / (world) plain (eod)\n",
-                concat!("---\n", "c_type: text\n", "c_subtype: plain\n"),
-            ),
-            (
-                "(hello) text (plain) / (world) plain (eod);charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/x-magic-cap-package-1.0;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: x-magic-cap-package-1.0\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "(hello) text (plain) / (world) plain (eod); charset=us-ascii\n",
-                concat!(
-                    "---\n",
-                    "c_type: text\n",
-                    "c_subtype: plain\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/x-magic-cap-package-1.0 ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: x-magic-cap-package-1.0\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-            (
-                "message/rfc822\r\n\n",
-                concat!("---\n", "c_type: message\n", "c_subtype: rfc822\n"),
-            ),
-            (
-                " \t\r message/rfc822 \t\r\n\n",
-                concat!("---\n", "c_type: message\n", "c_subtype: rfc822\n"),
-            ),
-            (
-                " \t\r message/rfc822 \t ;charset=us-ascii\r\n\n",
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: rfc822\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/pro_eng\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: pro_eng\n"
+                    ),
                 ),
-            ),
-            (
-                " \t\r message/rfc822 \t ; charset=us-ascii\r\n",
-                concat!(
-                    "---\n",
-                    "c_type: message\n",
-                    "c_subtype: rfc822\n",
-                    "attributes:\n",
-                    "  charset: us-ascii\n"
+                (
+                    "application/pro_eng;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: pro_eng\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
                 ),
-            ),
-        ];
+                (
+                    "application/pro_eng ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: pro_eng\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    "application/wordperfect6.1\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: wordperfect6.1\n"
+                    ),
+                ),
+                (
+                    "application/wordperfect6.1;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: wordperfect6.1\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    "application/wordperfect6.1 ;charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: application\n",
+                        "  c_subtype: wordperfect6.1\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    concat!(
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
+                        "e\n"
+                    ),
+                    concat!(
+                    "---\n", "ContentType:\n",
+                    "  c_type: application\n",
+                    "  c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n"
+                ),
+                ),
+                (
+                    concat!(
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
+                        "e;charset=us-ascii\n"
+                    ),
+                    concat!(
+                    "---\n", "ContentType:\n",
+                    "  c_type: application\n",
+                    "  c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n",
+                    "  attributes:\n",
+                    "    charset: us-ascii\n"
+                ),
+                ),
+                (
+                    concat!(
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.templat",
+                        "e ;charset=us-asii\n"
+                    ),
+                    concat!(
+                    "---\n", "ContentType:\n",
+                    "  c_type: application\n",
+                    "  c_subtype: vnd.openxmlformats-officedocument.wordprocessingml.template\n",
+                    "  attributes:\n",
+                    "    charset: us-asii\n"
+                ),
+                ),
+                (
+                    "(hello) text (plain) / (world) plain (eod)\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n"
+                    ),
+                ),
+                (
+                    "(hello) text (plain) / (world) plain (eod);charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    "(hello) text (plain) / (world) plain (eod); charset=us-ascii\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: text\n",
+                        "  c_subtype: plain\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    "message/rfc822\r\n\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: rfc822\n"
+                    ),
+                ),
+                (
+                    " \t\r message/rfc822 \t\r\n\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: rfc822\n"
+                    ),
+                ),
+                (
+                    " \t\r message/rfc822 \t ;charset=us-ascii\r\n\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: rfc822\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+                (
+                    " \t\r message/rfc822 \t ; charset=us-ascii\r\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: message\n",
+                        "  c_subtype: rfc822\n",
+                        "  attributes:\n",
+                        "    charset: us-ascii\n"
+                    ),
+                ),
+            ];
 
         for input in inputs {
             let str = input.0.to_string();
 
             let result = parse_content_type(&mut MessageStream::new(str.as_bytes()));
-            let expected: Option<ContentType> = serde_yaml::from_str(input.1).unwrap_or(None);
+            let expected: HeaderValue = serde_yaml::from_str(input.1).unwrap_or(HeaderValue::Empty);
 
             /*
             if input.0.len() >= 70 {
@@ -1369,7 +1558,7 @@ mod tests {
                 expected,
                 "Failed for '{:?}', result was:\n{}",
                 input.0,
-                serde_yaml::to_string(result.as_ref().unwrap()).unwrap()
+                serde_yaml::to_string(&result).unwrap()
             );
         }
     }

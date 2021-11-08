@@ -34,7 +34,7 @@ Foobar
 --1--
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "from": {
       "Address": {
         "name": "Moderator-Address",
@@ -42,24 +42,28 @@ Foobar
       }
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "digest",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "digest",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
   "attachments": [
     {
       "Message": {
-        "header": {
+        "headers": {
+          "subject": {
+            "Text": "my opinion"
+          },
           "from": {
             "Address": {
               "name": "someone-else",
               "address": "someone@else"
             }
-          },
-          "subject": "my opinion"
+          }
         },
         "html_body": [
           {
@@ -75,14 +79,16 @@ Foobar
     },
     {
       "Message": {
-        "header": {
+        "headers": {
+          "subject": {
+            "Text": "i disagree"
+          },
           "from": {
             "Address": {
               "name": "another one",
               "address": "another@one"
             }
-          },
-          "subject": "i disagree"
+          }
         },
         "html_body": [
           {
@@ -98,19 +104,23 @@ Foobar
     },
     {
       "Message": {
-        "header": {
+        "headers": {
+          "subject": {
+            "Text": "funny hat"
+          },
           "from": {
             "Address": {
               "name": "attachment",
               "address": "attachment@user"
             }
           },
-          "subject": "funny hat",
           "content_type": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "2"
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
+              }
             }
           }
         },
@@ -121,11 +131,15 @@ Foobar
         ],
         "text_body": [
           {
-            "header": {
-              "content_transfer_encoding": "binary",
+            "headers": {
               "content_type": {
-                "c_type": "text",
-                "c_subtype": "plain"
+                "ContentType": {
+                  "c_type": "text",
+                  "c_subtype": "plain"
+                }
+              },
+              "content_transfer_encoding": {
+                "Text": "binary"
               }
             },
             "contents": "Lovely attachment for you"
@@ -134,14 +148,18 @@ Foobar
         "attachments": [
           {
             "Binary": {
-              "header": {
-                "content_transfer_encoding": "binary",
+              "headers": {
+                "content_transfer_encoding": {
+                  "Text": "binary"
+                },
                 "content_type": {
-                  "c_type": "application",
-                  "c_subtype": "octet-stream",
-                  "attributes": {
-                    "name": "test.txt",
-                    "disposition": "attachment"
+                  "ContentType": {
+                    "c_type": "application",
+                    "c_subtype": "octet-stream",
+                    "attributes": {
+                      "name": "test.txt",
+                      "disposition": "attachment"
+                    }
                   }
                 }
               },

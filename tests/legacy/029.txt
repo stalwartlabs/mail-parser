@@ -28,17 +28,31 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
+  "headers": {
     "date": {
-      "year": 2000,
-      "month": 5,
-      "day": 17,
-      "hour": 23,
-      "minute": 26,
-      "second": 16,
-      "tz_before_gmt": true,
-      "tz_hour": 4,
-      "tz_minute": 0
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 26,
+        "second": 16,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "7bit"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "392362D8.B650789F@example.com"
     },
     "from": {
       "Address": {
@@ -46,33 +60,20 @@ Slow but steady wins the race.
         "address": "dwsauder@example.com"
       }
     },
-    "message_id": "392362D8.B650789F@example.com",
-    "mime_version": "1.0",
-    "subject": "Test message from Netscape Communicator 4.7",
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
-    "content_transfer_encoding": "7bit",
     "content_type": {
-      "c_type": "text",
-      "c_subtype": "plain",
-      "attributes": {
-        "charset": "us-ascii"
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "us-ascii"
+        }
       }
     },
-    "others": {
-      "X-Mailer": [
-        "Mozilla 4.7 [en] (WinNT; I)"
-      ],
-      "X-Accept-Language": [
-        "en"
-      ],
-      "X-Priority": [
-        "1 (Highest)"
-      ]
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     }
   },
   "html_body": [

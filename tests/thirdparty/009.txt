@@ -21,14 +21,20 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "mime_version": "1.0",
-    "subject": "In parts",
+  "headers": {
+    "subject": {
+      "Text": "In parts"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
     }
   },
@@ -39,11 +45,15 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "binary",
+      "headers": {
+        "content_transfer_encoding": {
+          "Text": "binary"
+        },
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
         }
       },
       "contents": "Hi, this is the fancy thing I was talking about!"
@@ -52,14 +62,16 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "message",
-            "c_subtype": "partial",
-            "attributes": {
-              "total": "5",
-              "number": "1",
-              "id": "heks68ewe@example.org"
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "partial",
+              "attributes": {
+                "total": "5",
+                "number": "1",
+                "id": "heks68ewe@example.org"
+              }
             }
           }
         },

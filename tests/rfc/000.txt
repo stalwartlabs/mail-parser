@@ -73,17 +73,24 @@ Content-Transfer-Encoding: Quoted-printable
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 1994,
-      "month": 10,
-      "day": 7,
-      "hour": 16,
-      "minute": 15,
-      "second": 5,
-      "tz_before_gmt": true,
-      "tz_hour": 7,
-      "tz_minute": 0
+  "headers": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "unique-boundary-1"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "from": {
       "Address": {
@@ -91,19 +98,20 @@ Content-Transfer-Encoding: Quoted-printable
         "address": "nsb@nsb.fv.com"
       }
     },
-    "mime_version": "1.0",
-    "subject": "A multipart example",
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
+    "subject": {
+      "Text": "A multipart example"
     },
-    "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "mixed",
-      "attributes": {
-        "boundary": "unique-boundary-1"
+    "date": {
+      "DateTime": {
+        "year": 1994,
+        "month": 10,
+        "day": 7,
+        "hour": 16,
+        "minute": 15,
+        "second": 5,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
       }
     }
   },
@@ -120,12 +128,14 @@ Content-Transfer-Encoding: Quoted-printable
       "contents": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
     },
     {
-      "header": {
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "US-ASCII"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "US-ASCII"
+            }
           }
         }
       },
@@ -135,11 +145,15 @@ Content-Transfer-Encoding: Quoted-printable
   "attachments": [
     {
       "Text": {
-        "header": {
-          "content_transfer_encoding": "base64",
+        "headers": {
           "content_type": {
-            "c_type": "audio",
-            "c_subtype": "basic"
+            "ContentType": {
+              "c_type": "audio",
+              "c_subtype": "basic"
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "contents": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
@@ -147,11 +161,15 @@ Content-Transfer-Encoding: Quoted-printable
     },
     {
       "Text": {
-        "header": {
-          "content_transfer_encoding": "base64",
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
-            "c_type": "image",
-            "c_subtype": "jpeg"
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg"
+            }
           }
         },
         "contents": "... base64-encoded image data goes here ...\n"
@@ -159,10 +177,12 @@ Content-Transfer-Encoding: Quoted-printable
     },
     {
       "Text": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "text",
-            "c_subtype": "enriched"
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched"
+            }
           }
         },
         "contents": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n"
@@ -170,25 +190,31 @@ Content-Transfer-Encoding: Quoted-printable
     },
     {
       "Message": {
-        "header": {
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "ISO-8859-1"
+              }
+            }
+          },
           "from": {
             "Address": {
               "name": "mailbox in US-ASCII"
             }
           },
-          "subject": "(subject in US-ASCII)",
+          "subject": {
+            "Text": "(subject in US-ASCII)"
+          },
           "to": {
             "Address": {
               "name": "address in US-ASCII"
             }
           },
-          "content_transfer_encoding": "Quoted-printable",
-          "content_type": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "ISO-8859-1"
-            }
+          "content_transfer_encoding": {
+            "Text": "Quoted-printable"
           }
         },
         "html_body": [

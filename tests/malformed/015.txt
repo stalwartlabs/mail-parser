@@ -26,30 +26,7 @@ invalid
 
 ---- EXPECTED STRUCTURE ----
 {
-  "header": {
-    "date": {
-      "year": 2007,
-      "month": 5,
-      "day": 23,
-      "hour": 4,
-      "minute": 58,
-      "second": 8,
-      "tz_before_gmt": false,
-      "tz_hour": 3,
-      "tz_minute": 0
-    },
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
-      }
-    },
-    "message_id": "1.2.3.4@example",
-    "mime_version": "1.0",
-    "return_path": [
-      "test@example.org"
-    ],
-    "subject": "Hello world",
+  "headers": {
     "to": {
       "Address": {
         "name": "Another User",
@@ -57,13 +34,46 @@ invalid
       }
     },
     "content_type": {
-      "c_type": "multipart",
-      "c_subtype": "signed",
-      "attributes": {
-        "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
-        "protocol": "application/pgp-signature",
-        "micalg": "pgp-sha1"
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "signed",
+        "attributes": {
+          "micalg": "pgp-sha1",
+          "protocol": "application/pgp-signature",
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d"
+        }
       }
+    },
+    "return_path": {
+      "Text": "test@example.org"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
+      }
+    },
+    "message_id": {
+      "Text": "1.2.3.4@example"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2007,
+        "month": 5,
+        "day": 23,
+        "hour": 4,
+        "minute": 58,
+        "second": 8,
+        "tz_before_gmt": false,
+        "tz_hour": 3,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Hello world"
     }
   },
   "html_body": [
@@ -73,11 +83,15 @@ invalid
   ],
   "text_body": [
     {
-      "header": {
-        "content_transfer_encoding": "quoted-printable",
+      "headers": {
         "content_type": {
-          "c_type": "text",
-          "c_subtype": "plain"
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain"
+          }
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         }
       },
       "contents": "There was a day \na happy day\n"
@@ -86,12 +100,14 @@ invalid
   "attachments": [
     {
       "Binary": {
-        "header": {
+        "headers": {
           "content_type": {
-            "c_type": "application",
-            "c_subtype": "pgp-signature",
-            "attributes": {
-              "name": "signature.asc"
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "pgp-signature",
+              "attributes": {
+                "name": "signature.asc"
+              }
             }
           }
         },
