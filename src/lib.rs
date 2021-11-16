@@ -276,26 +276,26 @@ pub struct Message<'x> {
         serde(skip_serializing_if = "HashMap::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    headers: Headers<'x>,
+    pub headers: Headers<'x>,
 
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    html_body: Vec<InlinePart<'x>>,
+    pub html_body: Vec<InlinePart<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    text_body: Vec<InlinePart<'x>>,
+    pub text_body: Vec<InlinePart<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    attachments: Vec<MessagePart<'x>>,
+    pub attachments: Vec<MessagePart<'x>>,
 }
 
 /// A text message part.
@@ -307,8 +307,8 @@ pub struct TextPart<'x> {
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    headers: Option<Headers<'x>>,
-    contents: Cow<'x, str>,
+    pub headers: Option<Headers<'x>>,
+    pub contents: Cow<'x, str>,
 }
 
 /// A binary (`[u8]`) message part.
@@ -320,10 +320,10 @@ pub struct BinaryPart<'x> {
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    headers: Option<Headers<'x>>,
+    pub headers: Option<Headers<'x>>,
     #[cfg_attr(feature = "serde_support", serde(with = "serde_bytes"))]
     #[cfg_attr(feature = "serde_support", serde(borrow))]
-    contents: Cow<'x, [u8]>,
+    pub contents: Cow<'x, [u8]>,
 }
 
 #[doc(hidden)]
@@ -550,37 +550,42 @@ impl<'x> HeaderValue<'x> {
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct ContentType<'x> {
-    c_type: Cow<'x, str>,
+    pub c_type: Cow<'x, str>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    c_subtype: Option<Cow<'x, str>>,
+    pub c_subtype: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
+    pub attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
 }
 
 /// An RFC5322 datetime.
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct DateTime {
-    year: u32,
-    month: u32,
-    day: u32,
-    hour: u32,
-    minute: u32,
-    second: u32,
-    tz_before_gmt: bool,
-    tz_hour: u32,
-    tz_minute: u32,
+    pub year: u32,
+    pub month: u32,
+    pub day: u32,
+    pub hour: u32,
+    pub minute: u32,
+    pub second: u32,
+    pub tz_before_gmt: bool,
+    pub tz_hour: u32,
+    pub tz_minute: u32,
 }
 
 impl<'x> Message<'x> {
+    /// Returns an iterator over the headers of this message.
+    pub fn get_headers(&self) -> impl Iterator<Item = (&HeaderName, &HeaderValue<'x>)> {
+        self.headers.iter()
+    }
+
     /// Returns the BCC header field
     pub fn get_bcc(&self) -> &HeaderValue<'x> {
         self.headers
