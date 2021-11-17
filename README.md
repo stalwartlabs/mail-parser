@@ -119,7 +119,7 @@ Performance and memory safety were two important factors while designing _mail-p
         "Why not both importing AND exporting? ☺"
     );
 
-    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4 
+    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
     assert_eq!(
         message.get_html_body(0).unwrap().to_string(),
         concat!(
