@@ -174,20 +174,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 {
   "headers": {
     "values": {
-      "subject": {
-        "Text": "Test message from Netscape Communicator 4.7"
-      },
-      "to": {
-        "Address": {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
+      "mime_version": {
+        "Text": "1.0"
       },
       "date": {
         "DateTime": {
@@ -202,11 +190,14 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           "tz_minute": 0
         }
       },
-      "message_id": {
-        "Text": "39236103.FFE674FC@example.com"
+      "to": {
+        "Address": {
+          "name": "Jürgen Schmürgen",
+          "address": "schmuergen@example.com"
+        }
       },
-      "mime_version": {
-        "Text": "1.0"
+      "subject": {
+        "Text": "Test message from Netscape Communicator 4.7"
       },
       "content_type": {
         "ContentType": {
@@ -215,6 +206,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           "attributes": {
             "boundary": "------------B7133A01A6B323BF00DBC9A7"
           }
+        }
+      },
+      "message_id": {
+        "Text": "39236103.FFE674FC@example.com"
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "dwsauder@example.com"
         }
       }
     },
@@ -293,27 +293,27 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     ]
   },
   "html_body": [
-    2,
-    5,
-    6
+    1,
+    4,
+    5
   ],
   "text_body": [
     1,
-    5,
-    6
+    4,
+    5
   ],
   "attachments": [
+    {
+      "Attachment": 2
+    },
     {
       "Attachment": 3
     },
     {
-      "Attachment": 4
+      "Inline": 4
     },
     {
       "Inline": 5
-    },
-    {
-      "Inline": 6
     }
   ],
   "parts": [
@@ -339,11 +339,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "end": 585
           }
         ]
-      }
-    },
-    {
-      "Text": {
-        "contents": "Die Hasen und die Frösche Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\""
       }
     },
     {
@@ -380,24 +375,22 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           ]
         },
-        "contents": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n\r"
+        "contents": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n\r",
+        "is_html": true
       }
     },
     {
       "Binary": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
+            "content_id": {
+              "Text": "part1.39236103.1B697A54@example.com"
             },
             "content_type": {
               "ContentType": {
                 "c_type": "image",
                 "c_subtype": "png"
               }
-            },
-            "content_id": {
-              "Text": "part1.39236103.1B697A54@example.com"
             },
             "content_disposition": {
               "ContentType": {
@@ -406,6 +399,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                   "filename": "C:TEMPnsmailV0.png"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
           },
           "offsets": [
@@ -1772,9 +1768,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       "Binary": {
         "headers": {
           "values": {
-            "content_id": {
-              "Text": "part2.39236103.1B697A54@example.com"
-            },
             "content_disposition": {
               "ContentType": {
                 "c_type": "inline",
@@ -1782,6 +1775,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                   "filename": "C:TEMPnsmailNM.png"
                 }
               }
+            },
+            "content_id": {
+              "Text": "part2.39236103.1B697A54@example.com"
             },
             "content_type": {
               "ContentType": {
@@ -3285,9 +3281,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       "Binary": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
             "content_disposition": {
               "ContentType": {
                 "c_type": "inline",
@@ -3295,6 +3288,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                   "filename": "greenball.png"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             },
             "content_type": {
               "ContentType": {
@@ -4645,9 +4641,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 }
               }
             },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
             "content_disposition": {
               "ContentType": {
                 "c_type": "inline",
@@ -4655,6 +4648,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                   "filename": "blueball.png"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
           },
           "offsets": [
@@ -6018,22 +6014,22 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           0,
           [
             {
+              "Part": 1
+            },
+            {
               "Part": 2
             },
             {
               "Part": 3
-            },
-            {
-              "Part": 4
             }
           ]
         ]
       },
       {
-        "Part": 5
+        "Part": 4
       },
       {
-        "Part": 6
+        "Part": 5
       }
     ]
   },

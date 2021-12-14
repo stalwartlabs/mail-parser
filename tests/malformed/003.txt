@@ -83,7 +83,8 @@ body
             }
           ]
         },
-        "contents": "body\n"
+        "contents": "body\n",
+        "is_html": false
       }
     }
   ],

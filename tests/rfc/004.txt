@@ -38,8 +38,27 @@ Subject: my different opinion
 {
   "headers": {
     "values": {
-      "mime_version": {
-        "Text": "1.0"
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "---- main boundary ----"
+          }
+        }
+      },
+      "subject": {
+        "Text": "Internet Digest, volume 42"
+      },
+      "from": {
+        "Address": {
+          "name": "Moderator-Address"
+        }
+      },
+      "to": {
+        "Address": {
+          "name": "Recipient-List"
+        }
       },
       "date": {
         "DateTime": {
@@ -54,27 +73,8 @@ Subject: my different opinion
           "tz_minute": 0
         }
       },
-      "to": {
-        "Address": {
-          "name": "Recipient-List"
-        }
-      },
-      "subject": {
-        "Text": "Internet Digest, volume 42"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "---- main boundary ----"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Moderator-Address"
-        }
+      "mime_version": {
+        "Text": "1.0"
       }
     },
     "offsets": [
@@ -126,25 +126,21 @@ Subject: my different opinion
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "attachments": [
     {
-      "Attachment": 4
+      "Attachment": 3
     },
     {
-      "Attachment": 6
+      "Attachment": 5
     }
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>...Introductory text or table of contents...<br/></body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "...Introductory text or table of contents...\n"
+        "contents": "...Introductory text or table of contents...\n",
+        "is_html": false
       }
     },
     {
@@ -192,9 +188,6 @@ Subject: my different opinion
                 "name": "someone-else"
               }
             },
-            "subject": {
-              "Text": "my opinion"
-            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -207,6 +200,9 @@ Subject: my different opinion
                 "tz_hour": 2,
                 "tz_minute": 0
               }
+            },
+            "subject": {
+              "Text": "my opinion"
             }
           },
           "offsets": [
@@ -237,22 +233,18 @@ Subject: my different opinion
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>...body goes here ...<br/></body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "...body goes here ...\n"
+              "contents": "...body goes here ...\n",
+              "is_html": false
             }
           }
         ],
         "structure": {
-          "Part": 1
+          "Part": 0
         },
         "offset_header": 418,
         "offset_body": 496,
@@ -278,11 +270,6 @@ Subject: my different opinion
             "subject": {
               "Text": "my different opinion"
             },
-            "from": {
-              "Address": {
-                "name": "someone-else-again"
-              }
-            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -294,6 +281,11 @@ Subject: my different opinion
                 "tz_before_gmt": true,
                 "tz_hour": 5,
                 "tz_minute": 0
+              }
+            },
+            "from": {
+              "Address": {
+                "name": "someone-else-again"
               }
             }
           },
@@ -325,22 +317,18 @@ Subject: my different opinion
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>... another body goes here ...<br/></body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "... another body goes here ...\n"
+              "contents": "... another body goes here ...\n",
+              "is_html": false
             }
           }
         ],
         "structure": {
-          "Part": 1
+          "Part": 0
         },
         "offset_header": 545,
         "offset_body": 639,
@@ -351,17 +339,17 @@ Subject: my different opinion
   "structure": {
     "List": [
       {
-        "Part": 1
+        "Part": 0
       },
       {
         "MultiPart": [
-          2,
+          1,
           [
             {
-              "Part": 3
+              "Part": 2
             },
             {
-              "Part": 5
+              "Part": 4
             }
           ]
         ]

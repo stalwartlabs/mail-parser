@@ -38,17 +38,20 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
           }
         }
       },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "content_transfer_encoding": {
-        "Text": "7bit"
-      },
       "to": {
         "Address": {
           "name": "Heinz M+APw-ller",
           "address": "mueller@example.com"
         }
+      },
+      "subject": {
+        "Text": "Die Hasen und die Fr+APY-sche"
+      },
+      "message_id": {
+        "Text": "39236497.12FA2A89@example.com"
+      },
+      "mime_version": {
+        "Text": "1.0"
       },
       "date": {
         "DateTime": {
@@ -63,17 +66,14 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
           "tz_minute": 0
         }
       },
-      "message_id": {
-        "Text": "39236497.12FA2A89@example.com"
+      "content_transfer_encoding": {
+        "Text": "7bit"
       },
       "from": {
         "Address": {
           "name": "Doug Sauder",
           "address": "dwsauder@example.com"
         }
-      },
-      "subject": {
-        "Text": "Die Hasen und die Fr+APY-sche"
       }
     },
     "other_values": {
@@ -161,22 +161,18 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>Die Hasen und die Fr岣he<br/><br/>Die Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,<br/>der Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der<br/>Tod selbst. Auf, la޴ uns ein f밠allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;<br/>allein das auޥrordentliche Get岥 und ihre wunderbare Gestalt<br/>erschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs<br/>schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein<br/>wenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,<br/>welche also wohl noch ungl뢫licher sein m벳en als wir.\"<br/></body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n"
+        "contents": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n",
+        "is_html": false
       }
     }
   ],
   "structure": {
-    "Part": 1
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 369,

@@ -40,7 +40,8 @@ body
   "parts": [
     {
       "Text": {
-        "contents": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
+        "contents": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n",
+        "is_html": false
       }
     }
   ],

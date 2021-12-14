@@ -44,23 +44,18 @@ Content-Type: text/plain; charset=utf-8
   },
   "html_body": [
     0,
-    2
+    1
   ],
   "text_body": [
-    1,
-    3
+    0,
+    1
   ],
   "attachments": [
     {
-      "Attachment": 4
+      "Attachment": 2
     }
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body>päivää<br/></body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -95,18 +90,17 @@ Content-Type: text/plain; charset=utf-8
             }
           ]
         },
-        "contents": "päivää\n"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>yötä vaan.<br/>�\t�</body></html>"
+        "contents": "päivää\n",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
+            "content_transfer_encoding": {
+              "Text": "base64"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -115,9 +109,6 @@ Content-Type: text/plain; charset=utf-8
                   "charset": "utf-8"
                 }
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
             }
           },
           "offsets": [
@@ -137,7 +128,8 @@ Content-Type: text/plain; charset=utf-8
             }
           ]
         },
-        "contents": "yötä vaan.\n�\t�"
+        "contents": "yötä vaan.\n�\t�",
+        "is_html": false
       }
     },
     {
@@ -174,20 +166,21 @@ Content-Type: text/plain; charset=utf-8
             }
           ]
         },
-        "contents": "?garbage"
+        "contents": "?garbage",
+        "is_html": false
       }
     }
   ],
   "structure": {
     "List": [
       {
+        "Part": 0
+      },
+      {
         "Part": 1
       },
       {
-        "Part": 3
-      },
-      {
-        "Part": 4
+        "Part": 2
       }
     ]
   },

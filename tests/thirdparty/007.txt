@@ -97,14 +97,14 @@ Foobar
       "Message": {
         "headers": {
           "values": {
-            "subject": {
-              "Text": "my opinion"
-            },
             "from": {
               "Address": {
                 "name": "someone-else",
                 "address": "someone@else"
               }
+            },
+            "subject": {
+              "Text": "my opinion"
             }
           },
           "offsets": [
@@ -128,22 +128,18 @@ Foobar
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>This is my opinion</body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "This is my opinion"
+              "contents": "This is my opinion",
+              "is_html": false
             }
           }
         ],
         "structure": {
-          "Part": 1
+          "Part": 0
         },
         "offset_header": 87,
         "offset_body": 142,
@@ -166,14 +162,14 @@ Foobar
       "Message": {
         "headers": {
           "values": {
+            "subject": {
+              "Text": "i disagree"
+            },
             "from": {
               "Address": {
                 "name": "another one",
                 "address": "another@one"
               }
-            },
-            "subject": {
-              "Text": "i disagree"
             }
           },
           "offsets": [
@@ -197,22 +193,18 @@ Foobar
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>Not agreeing one bit!</body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "Not agreeing one bit!"
+              "contents": "Not agreeing one bit!",
+              "is_html": false
             }
           }
         ],
         "structure": {
-          "Part": 1
+          "Part": 0
         },
         "offset_header": 166,
         "offset_body": 219,
@@ -282,31 +274,26 @@ Foobar
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "attachments": [
           {
-            "Attachment": 2
+            "Attachment": 1
           }
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>Lovely attachment for you</body></html>"
-            }
-          },
-          {
-            "Text": {
               "headers": {
                 "values": {
-                  "content_transfer_encoding": {
-                    "Text": "binary"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain"
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "binary"
                   }
                 },
                 "offsets": [
@@ -326,13 +313,17 @@ Foobar
                   }
                 ]
               },
-              "contents": "Lovely attachment for you"
+              "contents": "Lovely attachment for you",
+              "is_html": false
             }
           },
           {
             "Binary": {
               "headers": {
                 "values": {
+                  "content_transfer_encoding": {
+                    "Text": "binary"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "application",
@@ -342,9 +333,6 @@ Foobar
                         "disposition": "attachment"
                       }
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "binary"
                   }
                 },
                 "offsets": [
@@ -378,10 +366,10 @@ Foobar
         "structure": {
           "List": [
             {
-              "Part": 1
+              "Part": 0
             },
             {
-              "Part": 2
+              "Part": 1
             }
           ]
         },

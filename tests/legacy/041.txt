@@ -60,11 +60,23 @@ vAAAAABJRU5ErkJggg==
 {
   "headers": {
     "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "-1463757054-170444605-958746196=:8452"
+          }
+        }
+      },
       "from": {
         "Address": {
           "name": "Doug Sauder",
           "address": "doug@penguin.example.com"
         }
+      },
+      "subject": {
+        "Text": "PNG graphic"
       },
       "message_id": {
         "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
@@ -81,18 +93,6 @@ vAAAAABJRU5ErkJggg==
           "tz_hour": 4,
           "tz_minute": 0
         }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "-1463757054-170444605-958746196=:8452"
-          }
-        }
-      },
-      "subject": {
-        "Text": "PNG graphic"
       },
       "to": {
         "Address": {
@@ -160,19 +160,14 @@ vAAAAABJRU5ErkJggg==
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "attachments": [
     {
-      "Attachment": 2
+      "Attachment": 1
     }
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body></body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -197,13 +192,22 @@ vAAAAABJRU5ErkJggg==
             }
           ]
         },
-        "contents": "\r"
+        "contents": "\r",
+        "is_html": false
       }
     },
     {
       "Binary": {
         "headers": {
           "values": {
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "attachment",
+                "attributes": {
+                  "filename": "redball.png"
+                }
+              }
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "application",
@@ -213,22 +217,14 @@ vAAAAABJRU5ErkJggg==
                 }
               }
             },
-            "content_transfer_encoding": {
-              "Text": "BASE64"
+            "content_id": {
+              "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
             },
             "content_description": {
               "Text": "red ball"
             },
-            "content_id": {
-              "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "redball.png"
-                }
-              }
+            "content_transfer_encoding": {
+              "Text": "BASE64"
             }
           },
           "offsets": [
@@ -1730,10 +1726,10 @@ vAAAAABJRU5ErkJggg==
   "structure": {
     "List": [
       {
-        "Part": 1
+        "Part": 0
       },
       {
-        "Part": 2
+        "Part": 1
       }
     ]
   },

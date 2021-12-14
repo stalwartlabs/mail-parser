@@ -27,11 +27,20 @@ Content-Type: application/x-whatever
 {
   "headers": {
     "values": {
+      "from": {
+        "Address": {
+          "name": "Nathaniel Borenstein",
+          "address": "nsb@bellcore.com"
+        }
+      },
       "to": {
         "Address": {
           "name": "Ned Freed",
           "address": "ned@innosoft.com"
         }
+      },
+      "subject": {
+        "Text": "Formatted text mail"
       },
       "date": {
         "DateTime": {
@@ -46,17 +55,8 @@ Content-Type: application/x-whatever
           "tz_minute": 0
         }
       },
-      "from": {
-        "Address": {
-          "name": "Nathaniel Borenstein",
-          "address": "nsb@bellcore.com"
-        }
-      },
       "mime_version": {
         "Text": "1.0"
-      },
-      "subject": {
-        "Text": "Formatted text mail"
       },
       "content_type": {
         "ContentType": {
@@ -114,7 +114,7 @@ Content-Type: application/x-whatever
     ]
   },
   "html_body": [
-    3
+    0
   ],
   "text_body": [
     0
@@ -152,7 +152,8 @@ Content-Type: application/x-whatever
             }
           ]
         },
-        "contents": "... plain text version of message goes here ...\n"
+        "contents": "... plain text version of message goes here ...\n",
+        "is_html": false
       }
     },
     {
@@ -176,7 +177,8 @@ Content-Type: application/x-whatever
             }
           ]
         },
-        "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
+        "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n",
+        "is_html": false
       }
     },
     {
@@ -253,11 +255,6 @@ Content-Type: application/x-whatever
           46,
           10
         ]
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>... plain text version of message goes here ...<br/></body></html>"
       }
     }
   ],

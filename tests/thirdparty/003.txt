@@ -37,9 +37,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
 {
   "headers": {
     "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
       "content_type": {
         "ContentType": {
           "c_type": "multipart",
@@ -48,6 +45,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             "boundary": "1"
           }
         }
+      },
+      "mime_version": {
+        "Text": "1.0"
       }
     },
     "offsets": [
@@ -69,31 +69,23 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
   },
   "html_body": [
     0,
+    1,
     2,
-    4,
-    6,
-    8
+    3,
+    4
   ],
   "text_body": [
+    0,
     1,
+    2,
     3,
-    5,
-    7,
-    9
+    4
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>Move black king to queen's bishop<br/></body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "7bit"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -102,6 +94,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                   "charset": "us-ascii"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "7bit"
             }
           },
           "offsets": [
@@ -121,12 +116,8 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           ]
         },
-        "contents": "Move black king to queen's bishop\n"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+        "contents": "Move black king to queen's bishop\n",
+        "is_html": false
       }
     },
     {
@@ -163,21 +154,14 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           ]
         },
-        "contents": "Move ♚ to ♛'s ♝\n"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+        "contents": "Move ♚ to ♛'s ♝\n",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "8bit"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -186,6 +170,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                   "charset": "UTF-8"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "8bit"
             }
           },
           "offsets": [
@@ -205,21 +192,14 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           ]
         },
-        "contents": "Move ♚ to ♛'s ♝\n"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+        "contents": "Move ♚ to ♛'s ♝\n",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -228,6 +208,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                   "charset": "UTF-8"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
             }
           },
           "offsets": [
@@ -247,18 +230,17 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           ]
         },
-        "contents": "Move ♚ to ♛'s ♝\n"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+        "contents": "Move ♚ to ♛'s ♝\n",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
+            "content_transfer_encoding": {
+              "Text": "base64"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -267,9 +249,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                   "charset": "UTF-8"
                 }
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
             }
           },
           "offsets": [
@@ -289,26 +268,27 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           ]
         },
-        "contents": "Move ♚ to ♛'s ♝\n"
+        "contents": "Move ♚ to ♛'s ♝\n",
+        "is_html": false
       }
     }
   ],
   "structure": {
     "List": [
       {
+        "Part": 0
+      },
+      {
         "Part": 1
+      },
+      {
+        "Part": 2
       },
       {
         "Part": 3
       },
       {
-        "Part": 5
-      },
-      {
-        "Part": 7
-      },
-      {
-        "Part": 9
+        "Part": 4
       }
     ]
   },

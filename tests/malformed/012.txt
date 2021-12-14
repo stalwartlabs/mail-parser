@@ -125,22 +125,18 @@ Content-Type: text/plain
           0
         ],
         "text_body": [
-          1
+          0
         ],
         "parts": [
           {
             "Text": {
-              "contents": "<html><body>1</body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "1"
+              "contents": "1",
+              "is_html": false
             }
           }
         ],
         "structure": {
-          "Part": 1
+          "Part": 0
         },
         "offset_header": 128,
         "offset_body": 154,
@@ -197,7 +193,8 @@ Content-Type: text/plain
         "parts": [
           {
             "Text": {
-              "contents": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+              "contents": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n",
+              "is_html": false
             }
           }
         ],

@@ -141,26 +141,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 {
   "headers": {
     "values": {
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "message_id": {
-        "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com"
-      },
       "mime_version": {
         "Text": "1.0"
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche"
-      },
-      "to": {
-        "Address": {
-          "name": "Heinz Müller",
-          "address": "mueller@example.com"
-        }
       },
       "date": {
         "DateTime": {
@@ -175,23 +157,41 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "tz_minute": 0
         }
       },
+      "subject": {
+        "Text": "Die Hasen und die Frösche"
+      },
+      "message_id": {
+        "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com"
+      },
       "content_type": {
         "ContentType": {
           "c_type": "multipart",
           "c_subtype": "related",
           "attributes": {
-            "type": "multipart/alternative",
-            "boundary": "=====================_715157131==_.REL"
+            "boundary": "=====================_715157131==_.REL",
+            "type": "multipart/alternative"
           }
+        }
+      },
+      "to": {
+        "Address": {
+          "name": "Heinz Müller",
+          "address": "mueller@example.com"
+        }
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "dwsauder@example.com"
         }
       }
     },
     "other_values": {
-      "X-Sender": {
-        "Text": "dwsauder@pop.example.com (Unverified)"
-      },
       "X-Mailer": {
         "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      },
+      "X-Sender": {
+        "Text": "dwsauder@pop.example.com (Unverified)"
       },
       "X-Priority": {
         "Text": "2 (High)"
@@ -313,9 +313,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -324,6 +321,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                   "charset": "iso-8859-1"
                 }
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
             }
           },
           "offsets": [
@@ -343,13 +343,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           ]
         },
-        "contents": "blueball.png\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\nredball.png"
+        "contents": "blueball.png\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\nredball.png",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -358,9 +362,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                   "charset": "iso-8859-1"
                 }
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
             }
           },
           "offsets": [
@@ -380,13 +381,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           ]
         },
-        "contents": "<html>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.0\" width=27 height=27 alt=\"blueball.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.1\" width=27 height=27 alt=\"redball.png\"></font></html>\n"
+        "contents": "<html>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.0\" width=27 height=27 alt=\"blueball.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.1\" width=27 height=27 alt=\"redball.png\"></font></html>\n",
+        "is_html": true
       }
     },
     {
       "Binary": {
         "headers": {
           "values": {
+            "content_id": {
+              "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "image",
@@ -398,9 +403,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             },
             "content_transfer_encoding": {
               "Text": "base64"
-            },
-            "content_id": {
-              "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
             },
             "content_disposition": {
               "ContentType": {
@@ -1775,8 +1777,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "Binary": {
         "headers": {
           "values": {
-            "content_id": {
-              "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.1"
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "png",
+                "attributes": {
+                  "name": "redball.png"
+                }
+              }
             },
             "content_disposition": {
               "ContentType": {
@@ -1786,14 +1794,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 }
               }
             },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "redball.png"
-                }
-              }
+            "content_id": {
+              "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.1"
             },
             "content_transfer_encoding": {
               "Text": "base64"

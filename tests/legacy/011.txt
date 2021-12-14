@@ -32,14 +32,11 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 {
   "headers": {
     "values": {
+      "subject": {
+        "Text": "Die Hasen und die Frösche"
+      },
       "content_transfer_encoding": {
         "Text": "quoted-printable"
-      },
-      "to": {
-        "Address": {
-          "name": "Jürgen Schmürgen",
-          "address": "jschmuergen@example.com"
-        }
       },
       "content_type": {
         "ContentType": {
@@ -50,11 +47,14 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
           }
         }
       },
-      "mime_version": {
-        "Text": "1.0"
+      "message_id": {
+        "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
       },
-      "subject": {
-        "Text": "Die Hasen und die Frösche"
+      "to": {
+        "Address": {
+          "name": "Jürgen Schmürgen",
+          "address": "jschmuergen@example.com"
+        }
       },
       "date": {
         "DateTime": {
@@ -69,14 +69,14 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
           "tz_minute": 0
         }
       },
+      "mime_version": {
+        "Text": "1.0"
+      },
       "from": {
         "Address": {
           "name": "Doug Sauder",
           "address": "dwsauder@example.com"
         }
-      },
-      "message_id": {
-        "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
       }
     },
     "other_values": {
@@ -164,22 +164,18 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/><br/></body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n"
+        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n",
+        "is_html": false
       }
     }
   ],
   "structure": {
-    "Part": 1
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 510,

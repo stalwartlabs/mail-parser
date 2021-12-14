@@ -27,6 +27,9 @@ hello world
 {
   "headers": {
     "values": {
+      "mime_version": {
+        "Text": "1.0"
+      },
       "content_type": {
         "ContentType": {
           "c_type": "multipart",
@@ -35,9 +38,6 @@ hello world
             "boundary": "bound"
           }
         }
-      },
-      "mime_version": {
-        "Text": "1.0"
       }
     },
     "offsets": [
@@ -58,9 +58,9 @@ hello world
     ]
   },
   "html_body": [
-    3,
-    4,
-    5
+    0,
+    1,
+    2
   ],
   "text_body": [
     0,
@@ -72,14 +72,14 @@ hello world
       "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "binary"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
                 "c_subtype": "plain"
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "binary"
             }
           },
           "offsets": [
@@ -99,7 +99,8 @@ hello world
             }
           ]
         },
-        "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
+        "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r",
+        "is_html": false
       }
     },
     {
@@ -133,7 +134,8 @@ hello world
             }
           ]
         },
-        "contents": "ZWg="
+        "contents": "ZWg=",
+        "is_html": false
       }
     },
     {
@@ -157,22 +159,8 @@ hello world
             }
           ]
         },
-        "contents": "hello world\r\n\r"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz<br/>aWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk<br/>Z2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=</body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>ZWg=</body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>hello world<br/></body></html>"
+        "contents": "hello world\r\n\r",
+        "is_html": false
       }
     }
   ],

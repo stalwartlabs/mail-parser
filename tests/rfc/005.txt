@@ -27,6 +27,33 @@ This is the epilogue.  It is also to be ignored.
 {
   "headers": {
     "values": {
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "to": {
+        "Address": {
+          "name": "Ned Freed",
+          "address": "ned@innosoft.com"
+        }
+      },
+      "from": {
+        "Address": {
+          "name": "Nathaniel Borenstein",
+          "address": "nsb@bellcore.com"
+        }
+      },
+      "subject": {
+        "Text": "Sample message"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "simple boundary"
+          }
+        }
+      },
       "date": {
         "DateTime": {
           "year": 1993,
@@ -38,33 +65,6 @@ This is the epilogue.  It is also to be ignored.
           "tz_before_gmt": true,
           "tz_hour": 8,
           "tz_minute": 0
-        }
-      },
-      "subject": {
-        "Text": "Sample message"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "from": {
-        "Address": {
-          "name": "Nathaniel Borenstein",
-          "address": "nsb@bellcore.com"
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Ned Freed",
-          "address": "ned@innosoft.com"
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "simple boundary"
-          }
         }
       }
     },
@@ -115,26 +115,17 @@ This is the epilogue.  It is also to be ignored.
   },
   "html_body": [
     0,
-    2
+    1
   ],
   "text_body": [
-    1,
-    3
+    0,
+    1
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>This is implicitly typed plain US-ASCII text.<br/>It does NOT end with a linebreak.</body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>This is explicitly typed plain US-ASCII text.<br/>It DOES end with a linebreak.<br/></body></html>"
+        "contents": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak.",
+        "is_html": false
       }
     },
     {
@@ -161,17 +152,18 @@ This is the epilogue.  It is also to be ignored.
             }
           ]
         },
-        "contents": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n"
+        "contents": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n",
+        "is_html": false
       }
     }
   ],
   "structure": {
     "List": [
       {
-        "Part": 1
+        "Part": 0
       },
       {
-        "Part": 3
+        "Part": 1
       }
     ]
   },

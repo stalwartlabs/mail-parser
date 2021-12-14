@@ -34,14 +34,9 @@ hello, world
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body>hello, world</body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -63,12 +58,13 @@ hello, world
             }
           ]
         },
-        "contents": "hello, world"
+        "contents": "hello, world",
+        "is_html": false
       }
     }
   ],
   "structure": {
-    "Part": 1
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 45,

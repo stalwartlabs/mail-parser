@@ -76,7 +76,8 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "contents": "--a--\n\n"
+        "contents": "--a--\n\n",
+        "is_html": false
       }
     }
   ],

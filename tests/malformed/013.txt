@@ -67,22 +67,17 @@ hello, world
   },
   "html_body": [
     0,
-    3,
-    6,
-    9
+    2,
+    4,
+    6
   ],
   "text_body": [
-    1,
+    0,
+    2,
     4,
-    7,
-    10
+    6
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body>hello, world</body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -104,7 +99,8 @@ hello, world
             }
           ]
         },
-        "contents": "hello, world"
+        "contents": "hello, world",
+        "is_html": false
       }
     },
     {
@@ -143,11 +139,6 @@ hello, world
     },
     {
       "Text": {
-        "contents": "<html><body>hello, world</body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
             "content_type": {
@@ -167,12 +158,16 @@ hello, world
             }
           ]
         },
-        "contents": "hello, world"
+        "contents": "hello, world",
+        "is_html": false
       }
     },
     {
       "Multipart": {
         "values": {
+          "mime_version": {
+            "Text": "abc"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "multipart",
@@ -181,9 +176,6 @@ hello, world
                 "boundary": "1"
               }
             }
-          },
-          "mime_version": {
-            "Text": "abc"
           }
         },
         "offsets": [
@@ -202,11 +194,6 @@ hello, world
             "end": 282
           }
         ]
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>hello, world</body></html>"
       }
     },
     {
@@ -230,7 +217,8 @@ hello, world
             }
           ]
         },
-        "contents": "hello, world"
+        "contents": "hello, world",
+        "is_html": false
       }
     },
     {
@@ -266,11 +254,6 @@ hello, world
     },
     {
       "Text": {
-        "contents": "<html><body>hello, world</body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
             "content_type": {
@@ -290,16 +273,17 @@ hello, world
             }
           ]
         },
-        "contents": "hello, world"
+        "contents": "hello, world",
+        "is_html": false
       }
     }
   ],
   "structure": {
     "MultiPart": [
-      8,
+      5,
       [
         {
-          "Part": 10
+          "Part": 6
         }
       ]
     ]

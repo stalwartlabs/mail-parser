@@ -81,6 +81,9 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
           "address": "vice-president@whitehouse.gov"
         }
       },
+      "subject": {
+        "Text": "[Fwd: Map of Argentina with Description]"
+      },
       "to": {
         "Address": {
           "name": "White House Transportation Coordinator",
@@ -95,9 +98,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
             "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
           }
         }
-      },
-      "subject": {
-        "Text": "[Fwd: Map of Argentina with Description]"
       }
     },
     "offsets": [
@@ -135,19 +135,14 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "attachments": [
     {
-      "Attachment": 3
+      "Attachment": 2
     }
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body>Fred,<br/><br/>Fire up Air Force One!  We're going South!<br/><br/>Thanks,<br/>Al</body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -182,7 +177,8 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
             }
           ]
         },
-        "contents": "Fred,\n\nFire up Air Force One!  We're going South!\n\nThanks,\nAl"
+        "contents": "Fred,\n\nFire up Air Force One!  We're going South!\n\nThanks,\nAl",
+        "is_html": false
       }
     },
     {
@@ -232,15 +228,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
       "Message": {
         "headers": {
           "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "mixed",
-                "attributes": {
-                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
-                }
-              }
-            },
             "to": {
               "Address": {
                 "name": "A1 Gore (The Enforcer)",
@@ -252,6 +239,19 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                 "name": "Bill Clinton",
                 "address": "president@whitehouse.gov"
               }
+            },
+            "return_path": {
+              "Text": "president@whitehouse.gov"
+            },
+            "received": {
+              "Collection": [
+                {
+                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                },
+                {
+                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                }
+              ]
             },
             "date": {
               "DateTime": {
@@ -266,27 +266,23 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                 "tz_minute": 0
               }
             },
-            "return_path": {
-              "Text": "president@whitehouse.gov"
-            },
             "mime_version": {
               "Text": "1.0"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+                }
+              }
             },
             "message_id": {
               "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
             },
             "subject": {
               "Text": "Map of Argentina with Description"
-            },
-            "received": {
-              "Collection": [
-                {
-                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
-                },
-                {
-                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
-                }
-              ]
             }
           },
           "offsets": [
@@ -364,23 +360,18 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         },
         "html_body": [
           0,
-          2
+          1
         ],
         "text_body": [
-          1,
-          2
+          0,
+          1
         ],
         "attachments": [
           {
-            "Inline": 2
+            "Inline": 1
           }
         ],
         "parts": [
-          {
-            "Text": {
-              "contents": "<html><body>Hi A1,<br/><br/>I finally figured out this MIME thing.  Pretty cool.  I'll send you<br/>some sax music in .au files next week!<br/><br/>Anyway, the attached image is really too small to get a good look at<br/>Argentina.  Try this for a much better map:<br/><br/>     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm<br/><br/>Then again, shouldn't the CIA have something like that?<br/><br/>Bill</body></html>"
-            }
-          },
           {
             "Text": {
               "headers": {
@@ -415,30 +406,31 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                   }
                 ]
               },
-              "contents": "Hi A1,\n\nI finally figured out this MIME thing.  Pretty cool.  I'll send you\nsome sax music in .au files next week!\n\nAnyway, the attached image is really too small to get a good look at\nArgentina.  Try this for a much better map:\n\n     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm\n\nThen again, shouldn't the CIA have something like that?\n\nBill"
+              "contents": "Hi A1,\n\nI finally figured out this MIME thing.  Pretty cool.  I'll send you\nsome sax music in .au files next week!\n\nAnyway, the attached image is really too small to get a good look at\nArgentina.  Try this for a much better map:\n\n     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm\n\nThen again, shouldn't the CIA have something like that?\n\nBill",
+              "is_html": false
             }
           },
           {
             "Binary": {
               "headers": {
                 "values": {
-                  "content_type": {
+                  "content_disposition": {
                     "ContentType": {
-                      "c_type": "image",
-                      "c_subtype": "gif",
+                      "c_type": "inline",
                       "attributes": {
-                        "name": "map_of_Argentina.gif"
+                        "fi1ename": "map_of_Argentina.gif"
                       }
                     }
                   },
                   "content_transfer_encoding": {
                     "Text": "base64"
                   },
-                  "content_disposition": {
+                  "content_type": {
                     "ContentType": {
-                      "c_type": "inline",
+                      "c_type": "image",
+                      "c_subtype": "gif",
                       "attributes": {
-                        "fi1ename": "map_of_Argentina.gif"
+                        "name": "map_of_Argentina.gif"
                       }
                     }
                   }
@@ -763,10 +755,10 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         "structure": {
           "List": [
             {
-              "Part": 1
+              "Part": 0
             },
             {
-              "Part": 2
+              "Part": 1
             }
           ]
         },
@@ -779,10 +771,10 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
   "structure": {
     "List": [
       {
-        "Part": 1
+        "Part": 0
       },
       {
-        "Part": 2
+        "Part": 1
       }
     ]
   },

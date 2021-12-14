@@ -37,7 +37,7 @@ Content-Type: text/plain
     1
   ],
   "text_body": [
-    2
+    1
   ],
   "parts": [
     {
@@ -66,12 +66,8 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "contents": "<html><body>Content-Type: text/plain<br/></body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "Content-Type: text/plain\n"
+        "contents": "Content-Type: text/plain\n",
+        "is_html": false
       }
     }
   ],
@@ -80,7 +76,7 @@ Content-Type: text/plain
       0,
       [
         {
-          "Part": 2
+          "Part": 1
         }
       ]
     ]

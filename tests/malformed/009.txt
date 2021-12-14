@@ -44,11 +44,11 @@ Content-Type: text/plain
     1
   ],
   "text_body": [
-    2
+    1
   ],
   "attachments": [
     {
-      "Attachment": 3
+      "Attachment": 2
     }
   ],
   "parts": [
@@ -78,11 +78,6 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "contents": "<html><body>1</body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
             "content_type": {
@@ -102,7 +97,8 @@ Content-Type: text/plain
             }
           ]
         },
-        "contents": "1"
+        "contents": "1",
+        "is_html": false
       }
     },
     {
@@ -126,7 +122,8 @@ Content-Type: text/plain
             }
           ]
         },
-        "contents": "22\n--1\nContent-Type: text/plain\n\n333\n"
+        "contents": "22\n--1\nContent-Type: text/plain\n\n333\n",
+        "is_html": false
       }
     }
   ],
@@ -135,10 +132,10 @@ Content-Type: text/plain
       0,
       [
         {
-          "Part": 2
+          "Part": 1
         },
         {
-          "Part": 3
+          "Part": 2
         }
       ]
     ]

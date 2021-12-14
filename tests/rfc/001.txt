@@ -43,24 +43,11 @@ get RFC-MIME.DOC
 {
   "headers": {
     "values": {
-      "message_id": {
-        "Text": "id1@host.com"
-      },
-      "to": {
-        "Address": {
-          "name": "Someone"
-        }
-      },
-      "subject": {
-        "Text": "whatever"
-      },
-      "from": {
-        "Address": {
-          "name": "Whomever"
-        }
-      },
       "mime_version": {
         "Text": "1.0"
+      },
+      "message_id": {
+        "Text": "id1@host.com"
       },
       "content_type": {
         "ContentType": {
@@ -73,6 +60,19 @@ get RFC-MIME.DOC
       },
       "content_id": {
         "Text": "id001@guppylake.bellcore.com"
+      },
+      "subject": {
+        "Text": "whatever"
+      },
+      "to": {
+        "Address": {
+          "name": "Someone"
+        }
+      },
+      "from": {
+        "Address": {
+          "name": "Whomever"
+        }
       }
     },
     "offsets": [
@@ -155,12 +155,12 @@ get RFC-MIME.DOC
                 "c_type": "message",
                 "c_subtype": "external-body",
                 "attributes": {
-                  "access-type": "ANON-FTP",
-                  "directory": "pub",
                   "name": "BodyFormats.ps",
-                  "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
+                  "site": "thumper.bellcore.com",
                   "mode": "image",
-                  "site": "thumper.bellcore.com"
+                  "directory": "pub",
+                  "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
+                  "access-type": "ANON-FTP"
                 }
               }
             }
@@ -267,10 +267,10 @@ get RFC-MIME.DOC
                 "c_type": "message",
                 "c_subtype": "external-body",
                 "attributes": {
-                  "access-type": "local-file",
+                  "site": "thumper.bellcore.com",
                   "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
-                  "name": "/u/nsb/writing/rfcs/RFC-MIME.ps",
-                  "site": "thumper.bellcore.com"
+                  "access-type": "local-file",
+                  "name": "/u/nsb/writing/rfcs/RFC-MIME.ps"
                 }
               }
             }
@@ -377,9 +377,9 @@ get RFC-MIME.DOC
                 "c_type": "message",
                 "c_subtype": "external-body",
                 "attributes": {
-                  "access-type": "mail-server",
                   "server": "listserv@bogus.bitnet",
-                  "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                  "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
+                  "access-type": "mail-server"
                 }
               }
             }

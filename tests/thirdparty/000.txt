@@ -53,8 +53,8 @@ ZWg=
     ]
   },
   "html_body": [
-    2,
-    3
+    0,
+    1
   ],
   "text_body": [
     0,
@@ -92,21 +92,22 @@ ZWg=
             }
           ]
         },
-        "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
+        "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
                 "c_subtype": "plain"
               }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
           },
           "offsets": [
@@ -126,17 +127,8 @@ ZWg=
             }
           ]
         },
-        "contents": "eh"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>we havea lot <br/>of \u0000binary stuff in here<br/>b adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a</body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>eh</body></html>"
+        "contents": "eh",
+        "is_html": false
       }
     }
   ],

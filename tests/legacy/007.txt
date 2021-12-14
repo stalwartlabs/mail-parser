@@ -43,17 +43,17 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
           }
         }
       },
-      "message_id": {
-        "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
+      "to": {
+        "Address": {
+          "name": "Jürgen Schmürgen",
+          "address": "schmuergen@example.com"
+        }
       },
       "mime_version": {
         "Text": "1.0"
       },
-      "content_transfer_encoding": {
-        "Text": "quoted-printable"
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+      "message_id": {
+        "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
       },
       "date": {
         "DateTime": {
@@ -74,16 +74,16 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
           "address": "doug@example.com"
         }
       },
-      "to": {
-        "Address": {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
+      "content_transfer_encoding": {
+        "Text": "quoted-printable"
+      },
+      "subject": {
+        "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
       }
     },
     "other_values": {
-      "X-MSMail-Priority": {
-        "Text": "Normal"
+      "X-Priority": {
+        "Text": "3 (Normal)"
       },
       "Importance": {
         "Text": "Normal"
@@ -94,8 +94,8 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
       "X-Mailer": {
         "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       },
-      "X-Priority": {
-        "Text": "3 (Normal)"
+      "X-MSMail-Priority": {
+        "Text": "Normal"
       }
     },
     "offsets": [
@@ -196,22 +196,18 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/></body></html>"
-      }
-    },
-    {
-      "Text": {
-        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
+        "is_html": false
       }
     }
   ],
   "structure": {
-    "Part": 1
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 601,

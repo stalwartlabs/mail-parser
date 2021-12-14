@@ -109,22 +109,18 @@ Content-Type: text/plain
                 0
               ],
               "text_body": [
-                1
+                0
               ],
               "parts": [
                 {
                   "Text": {
-                    "contents": "<html><body>1<br/></body></html>"
-                  }
-                },
-                {
-                  "Text": {
-                    "contents": "1\n"
+                    "contents": "1\n",
+                    "is_html": false
                   }
                 }
               ],
               "structure": {
-                "Part": 1
+                "Part": 0
               },
               "offset_header": 60,
               "offset_body": 86,

@@ -159,9 +159,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 {
   "headers": {
     "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
       "content_type": {
         "ContentType": {
           "c_type": "multipart",
@@ -170,6 +167,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             "boundary": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
           }
         }
+      },
+      "subject": {
+        "Text": "Test message from Microsoft Outlook 00"
       },
       "to": {
         "Address": {
@@ -196,28 +196,28 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "tz_minute": 0
         }
       },
+      "mime_version": {
+        "Text": "1.0"
+      },
       "message_id": {
         "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
-      },
-      "subject": {
-        "Text": "Test message from Microsoft Outlook 00"
       }
     },
     "other_values": {
+      "X-Priority": {
+        "Text": "3 (Normal)"
+      },
       "X-MSMail-Priority": {
         "Text": "Normal"
       },
       "Importance": {
         "Text": "Normal"
       },
-      "X-Mailer": {
-        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      },
-      "X-Priority": {
-        "Text": "3 (Normal)"
-      },
       "X-MimeOLE": {
         "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      },
+      "X-Mailer": {
+        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
       }
     },
     "offsets": [
@@ -380,13 +380,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           ]
         },
-        "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n\n\n \nSlow but steady wins the race.  \n\n\n\n"
+        "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n\n\n \nSlow but steady wins the race.  \n\n\n\n",
+        "is_html": false
       }
     },
     {
       "Text": {
         "headers": {
           "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
@@ -395,9 +399,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                   "charset": "iso-8859-1"
                 }
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
             }
           },
           "offsets": [
@@ -417,15 +418,16 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           ]
         },
-        "contents": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp;&nbsp;</FONT></DIV>\n<DIV><FONT face=Arial size=2></FONT>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"blue ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f8d\"><BR>&nbsp;<BR>Slow but steady wins \nthe race.&nbsp; </FONT></DIV>\n<DIV>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"red ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f94\"><BR></DIV></FONT></BODY></HTML>\n"
+        "contents": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp;&nbsp;</FONT></DIV>\n<DIV><FONT face=Arial size=2></FONT>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"blue ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f8d\"><BR>&nbsp;<BR>Slow but steady wins \nthe race.&nbsp; </FONT></DIV>\n<DIV>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"red ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f94\"><BR></DIV></FONT></BODY></HTML>\n",
+        "is_html": true
       }
     },
     {
       "Binary": {
         "headers": {
           "values": {
-            "content_id": {
-              "Text": "823504223@17052000-0f8d"
+            "content_transfer_encoding": {
+              "Text": "base64"
             },
             "content_type": {
               "ContentType": {
@@ -436,8 +438,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 }
               }
             },
-            "content_transfer_encoding": {
-              "Text": "base64"
+            "content_id": {
+              "Text": "823504223@17052000-0f8d"
             }
           },
           "offsets": [
@@ -1797,9 +1799,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       "Binary": {
         "headers": {
           "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "image",
@@ -1811,6 +1810,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             },
             "content_id": {
               "Text": "823504223@17052000-0f94"
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
           },
           "offsets": [

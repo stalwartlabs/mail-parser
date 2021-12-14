@@ -13,11 +13,8 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{
-        base64::decode_base64,
-        charsets::map::get_charset_decoder,
-        html::{html_to_text, text_to_html},
-        quoted_printable::decode_quoted_printable,
-        DecodeFnc, DecodeResult,
+        base64::decode_base64, charsets::map::get_charset_decoder,
+        quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
     AttachmentType, BinaryPart, ContentType, HeaderName, HeaderValue, Headers, Message,
     MessagePart, MessagePartId, MessageStructure, TextPart,
@@ -413,6 +410,7 @@ impl<'x> Message<'x> {
             };
 
             if is_text {
+                let is_html = mime_type == MimeType::TextHtml;
                 let text_part = TextPart {
                     contents: result_to_string(bytes, stream.data, content_type),
                     headers: if !mime_part_header.is_empty() {
@@ -420,22 +418,13 @@ impl<'x> Message<'x> {
                     } else {
                         None
                     },
+                    is_html,
                 };
-
-                let is_html = mime_type == MimeType::TextHtml;
 
                 if add_to_html && !is_html {
                     message.html_body.push(message.parts.len());
-                    message.parts.push(MessagePart::Text(TextPart {
-                        headers: None,
-                        contents: text_to_html(&text_part.contents).into(),
-                    }));
                 } else if add_to_text && is_html {
                     message.text_body.push(message.parts.len());
-                    message.parts.push(MessagePart::Text(TextPart {
-                        headers: None,
-                        contents: html_to_text(&text_part.contents).into(),
-                    }));
                 }
 
                 if add_to_html && is_html {
@@ -515,24 +504,8 @@ impl<'x> Message<'x> {
                             if state.text_parts == message.text_body.len()
                                 && state.html_parts != message.html_body.len()
                             {
-                                for part_id in message.html_body[state.html_parts..].iter() {
-                                    message.text_body.push(
-                                        match message.parts.get(*part_id).unwrap() {
-                                            MessagePart::Text(text) => {
-                                                let part_id = message.parts.len();
-                                                let text = MessagePart::Text(TextPart {
-                                                    headers: None,
-                                                    contents: html_to_text(&text.contents).into(),
-                                                });
-                                                message.parts.push(text);
-                                                part_id
-                                            }
-                                            MessagePart::Binary(_) => *part_id,
-                                            _ => {
-                                                panic!("Unexpected part type");
-                                            }
-                                        },
-                                    );
+                                for &part_id in &message.html_body[state.html_parts..] {
+                                    message.text_body.push(part_id);
                                 }
                             }
 
@@ -540,24 +513,8 @@ impl<'x> Message<'x> {
                             if state.html_parts == message.html_body.len()
                                 && state.text_parts != message.text_body.len()
                             {
-                                for part_id in message.text_body[state.html_parts..].iter() {
-                                    message.html_body.push(
-                                        match message.parts.get(*part_id).unwrap() {
-                                            MessagePart::Text(text) => {
-                                                let part_id = message.parts.len();
-                                                let text = MessagePart::Text(TextPart {
-                                                    headers: None,
-                                                    contents: text_to_html(&text.contents).into(),
-                                                });
-                                                message.parts.push(text);
-                                                part_id
-                                            }
-                                            MessagePart::Binary(_) => *part_id,
-                                            _ => {
-                                                panic!("Unexpected part type");
-                                            }
-                                        },
-                                    );
+                                for &part_id in &message.text_body[state.html_parts..] {
+                                    message.html_body.push(part_id);
                                 }
                             }
                         }

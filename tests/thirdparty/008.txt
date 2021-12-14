@@ -59,14 +59,8 @@ Root MIME epilogue
 {
   "headers": {
     "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "foo bar"
-          }
-        }
+      "mime_version": {
+        "Text": "1.0"
       },
       "date": {
         "DateTime": {
@@ -81,8 +75,14 @@ Root MIME epilogue
           "tz_minute": 0
         }
       },
-      "mime_version": {
-        "Text": "1.0"
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "foo bar"
+          }
+        }
       },
       "from": {
         "Address": {
@@ -137,7 +137,7 @@ Root MIME epilogue
     3
   ],
   "text_body": [
-    4
+    3
   ],
   "attachments": [
     {
@@ -172,7 +172,8 @@ Root MIME epilogue
             }
           ]
         },
-        "contents": "hello\n"
+        "contents": "hello\n",
+        "is_html": false
       }
     },
     {
@@ -264,12 +265,12 @@ Root MIME epilogue
         },
         "html_body": [
           0,
-          5
+          4
         ],
         "text_body": [
           3,
           4,
-          6
+          5
         ],
         "parts": [
           {
@@ -293,7 +294,8 @@ Root MIME epilogue
                   }
                 ]
               },
-              "contents": "<p>Hello world</p>\n"
+              "contents": "<p>Hello world</p>\n",
+              "is_html": true
             }
           },
           {
@@ -346,22 +348,20 @@ Root MIME epilogue
           },
           {
             "Text": {
-              "contents": "sub3 text"
+              "contents": "sub3 text",
+              "is_html": false
             }
           },
           {
             "Text": {
-              "contents": "sub3 text2"
+              "contents": "sub3 text2",
+              "is_html": false
             }
           },
           {
             "Text": {
-              "contents": "<html><body>sub3 text2</body></html>"
-            }
-          },
-          {
-            "Text": {
-              "contents": "sub2 text2"
+              "contents": "sub2 text2",
+              "is_html": false
             }
           }
         ],
@@ -388,7 +388,7 @@ Root MIME epilogue
                     ]
                   },
                   {
-                    "Part": 6
+                    "Part": 5
                   }
                 ]
               ]
@@ -398,11 +398,6 @@ Root MIME epilogue
         "offset_header": 295,
         "offset_body": 424,
         "offset_end": 710
-      }
-    },
-    {
-      "Text": {
-        "contents": "<html><body>Another part</body></html>"
       }
     },
     {
@@ -426,7 +421,8 @@ Root MIME epilogue
             }
           ]
         },
-        "contents": "Another part"
+        "contents": "Another part",
+        "is_html": false
       }
     }
   ],
@@ -439,7 +435,7 @@ Root MIME epilogue
         "Part": 1
       },
       {
-        "Part": 4
+        "Part": 3
       }
     ]
   },

@@ -25,8 +25,8 @@ Content-Language: ja
           "c_type": "multipart",
           "c_subtype": "mixed",
           "attributes": {
-            "boundary": "1",
-            "comment": "人権の無視及"
+            "comment": "人権の無視及",
+            "boundary": "1"
           }
         }
       }
@@ -59,29 +59,24 @@ Content-Language: ja
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>人権の無視及</body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
-            },
             "content_transfer_encoding": {
               "Text": "binary"
             },
             "content_language": {
               "Text": "ja"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
             }
           },
           "offsets": [
@@ -108,12 +103,13 @@ Content-Language: ja
             }
           ]
         },
-        "contents": "人権の無視及"
+        "contents": "人権の無視及",
+        "is_html": false
       }
     }
   ],
   "structure": {
-    "Part": 1
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 146,

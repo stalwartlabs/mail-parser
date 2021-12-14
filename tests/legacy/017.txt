@@ -105,14 +105,29 @@ end
 {
   "headers": {
     "values": {
-      "message_id": {
-        "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
-      },
       "from": {
         "Address": {
           "name": "Doug Sauder",
           "address": "dwsauder@example.com"
         }
+      },
+      "subject": {
+        "Text": "The Hare and the Tortoise"
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "=====================_716177458==_"
+          }
+        }
+      },
+      "message_id": {
+        "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
       },
       "date": {
         "DateTime": {
@@ -127,25 +142,10 @@ end
           "tz_minute": 0
         }
       },
-      "subject": {
-        "Text": "The Hare and the Tortoise"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
       "to": {
         "Address": {
           "name": "J�rgen Schm�rgen",
           "address": "jschmuergen@example.com"
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "=====================_716177458==_"
-          }
         }
       }
     },
@@ -227,22 +227,17 @@ end
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "attachments": [
     {
-      "Attachment": 2
+      "Attachment": 1
     },
     {
-      "Attachment": 3
+      "Attachment": 2
     }
   ],
   "parts": [
-    {
-      "Text": {
-        "contents": "<html><body><br/>The Hare and the Tortoise <br/>  <br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  <br/>  <br/>Slow but steady wins the race.  <br/></body></html>"
-      }
-    },
     {
       "Text": {
         "headers": {
@@ -267,21 +262,14 @@ end
             }
           ]
         },
-        "contents": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n\r"
+        "contents": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n\r",
+        "is_html": false
       }
     },
     {
       "Binary": {
         "headers": {
           "values": {
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "greenball.png"
-                }
-              }
-            },
             "content_transfer_encoding": {
               "Text": "x-uuencode"
             },
@@ -291,6 +279,14 @@ end
                 "c_subtype": "png",
                 "attributes": {
                   "name": "greenball.png"
+                }
+              }
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "attachment",
+                "attributes": {
+                  "filename": "greenball.png"
                 }
               }
             }
@@ -2182,15 +2178,6 @@ end
       "Binary": {
         "headers": {
           "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
-              }
-            },
             "content_transfer_encoding": {
               "Text": "x-uuencode"
             },
@@ -2199,6 +2186,15 @@ end
                 "c_type": "attachment",
                 "attributes": {
                   "filename": "blueball.png"
+                }
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "png",
+                "attributes": {
+                  "name": "blueball.png"
                 }
               }
             }
@@ -4128,13 +4124,13 @@ end
   "structure": {
     "List": [
       {
+        "Part": 0
+      },
+      {
         "Part": 1
       },
       {
         "Part": 2
-      },
-      {
-        "Part": 3
       }
     ]
   },

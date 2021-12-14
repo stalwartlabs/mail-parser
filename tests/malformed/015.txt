@@ -28,17 +28,20 @@ invalid
 {
   "headers": {
     "values": {
-      "return_path": {
-        "Text": "test@example.org"
+      "from": {
+        "Address": {
+          "name": "Test User",
+          "address": "test@example.org"
+        }
       },
       "content_type": {
         "ContentType": {
           "c_type": "multipart",
           "c_subtype": "signed",
           "attributes": {
+            "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
             "protocol": "application/pgp-signature",
-            "micalg": "pgp-sha1",
-            "boundary": "=-GNQXLhuj24Pl1aCkk4/d"
+            "micalg": "pgp-sha1"
           }
         }
       },
@@ -47,6 +50,18 @@ invalid
           "name": "Another User",
           "address": "test2@example.org"
         }
+      },
+      "subject": {
+        "Text": "Hello world"
+      },
+      "message_id": {
+        "Text": "1.2.3.4@example"
+      },
+      "return_path": {
+        "Text": "test@example.org"
+      },
+      "mime_version": {
+        "Text": "1.0"
       },
       "date": {
         "DateTime": {
@@ -60,21 +75,6 @@ invalid
           "tz_hour": 3,
           "tz_minute": 0
         }
-      },
-      "message_id": {
-        "Text": "1.2.3.4@example"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "from": {
-        "Address": {
-          "name": "Test User",
-          "address": "test@example.org"
-        }
-      },
-      "subject": {
-        "Text": "Hello world"
       }
     },
     "offsets": [
@@ -140,31 +140,26 @@ invalid
     0
   ],
   "text_body": [
-    1
+    0
   ],
   "attachments": [
     {
-      "Attachment": 2
+      "Attachment": 1
     }
   ],
   "parts": [
     {
       "Text": {
-        "contents": "<html><body>There was a day <br/>a happy day<br/></body></html>"
-      }
-    },
-    {
-      "Text": {
         "headers": {
           "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "text",
                 "c_subtype": "plain"
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
             }
           },
           "offsets": [
@@ -184,7 +179,8 @@ invalid
             }
           ]
         },
-        "contents": "There was a day \na happy day\n"
+        "contents": "There was a day \na happy day\n",
+        "is_html": false
       }
     },
     {
@@ -227,10 +223,10 @@ invalid
   "structure": {
     "List": [
       {
-        "Part": 1
+        "Part": 0
       },
       {
-        "Part": 2
+        "Part": 1
       }
     ]
   },

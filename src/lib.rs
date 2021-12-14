@@ -263,6 +263,7 @@ pub mod parsers;
 
 use std::{borrow::Cow, collections::HashMap, fmt};
 
+use decoders::html::{html_to_text, text_to_html};
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
 
@@ -355,6 +356,7 @@ pub struct TextPart<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers: Option<Headers<'x>>,
     pub contents: Cow<'x, str>,
+    pub is_html: bool,
 }
 
 /// A binary (`[u8]`) message part.
@@ -933,14 +935,42 @@ impl<'x> Message<'x> {
         }
     }
 
+    /// Returns the transformed contents an inline HTML body part by position
+    pub fn get_html_body(&self, pos: usize) -> Option<Cow<'x, str>> {
+        match self.parts.get(*self.html_body.get(pos)?)? {
+            MessagePart::Text(text) => {
+                if text.is_html {
+                    Some(text.contents.clone())
+                } else {
+                    Some(text_to_html(text.contents.as_ref()).into())
+                }
+            }
+            _ => None,
+        }
+    }
+
+    /// Returns the transformed contents an inline text body part by position
+    pub fn get_text_body(&self, pos: usize) -> Option<Cow<'x, str>> {
+        match self.parts.get(*self.text_body.get(pos)?)? {
+            MessagePart::Text(text) => {
+                if !text.is_html {
+                    Some(text.contents.clone())
+                } else {
+                    Some(html_to_text(text.contents.as_ref()).into())
+                }
+            }
+            _ => None,
+        }
+    }
+
     /// Returns an inline HTML body part by position
-    pub fn get_html_body(&self, pos: usize) -> Option<&dyn BodyPart> {
+    pub fn get_html_part(&self, pos: usize) -> Option<&dyn BodyPart> {
         self.get_part(&self.html_body, pos)
     }
 
     /// Returns an inline text body part by position
-    pub fn get_text_body(&self, pos: usize) -> Option<&dyn BodyPart> {
-        self.get_part(&self.text_body, pos)
+    pub fn get_text_part(&self, pos: usize) -> Option<&dyn BodyPart> {
+        self.get_part(&self.html_body, pos)
     }
 
     /// Returns an attacment by position
