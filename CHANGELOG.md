@@ -1,3 +1,8 @@
+mail-parser 0.3.1
+================================
+- Support for non-standard headers.
+- Raw message offsets are stored in the message object.
+- Message body structure is now stored in the message object.
 
 mail-parser 0.3
 ================================

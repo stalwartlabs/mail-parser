@@ -19,13 +19,13 @@ use crate::{
         quoted_printable::decode_quoted_printable,
         DecodeFnc, DecodeResult,
     },
-    BinaryPart, ContentType, HeaderName, HeaderValue, Headers, InlinePart, Message, MessagePart,
-    TextPart,
+    AttachmentType, BinaryPart, ContentType, HeaderName, HeaderValue, Headers, Message,
+    MessagePart, MessagePartId, MessageStructure, TextPart,
 };
 
 use super::{
     header::parse_headers,
-    mime::{get_bytes_to_boundary, seek_next_part, skip_crlf, skip_multipart_end},
+    mime::{get_bytes_to_boundary, seek_crlf_end, seek_next_part, skip_crlf, skip_multipart_end},
 };
 
 #[derive(Debug, PartialEq)]
@@ -40,6 +40,12 @@ enum MimeType {
     Inline,
     Message,
     Other,
+}
+
+impl Default for MimeType {
+    fn default() -> Self {
+        MimeType::Message
+    }
 }
 
 fn result_to_string<'x>(
@@ -111,6 +117,7 @@ fn get_mime_type(
     }
 }
 
+#[derive(Default)]
 struct MessageParserState {
     mime_type: MimeType,
     mime_boundary: Option<Vec<u8>>,
@@ -120,6 +127,8 @@ struct MessageParserState {
     text_parts: usize,
     need_html_body: bool,
     need_text_body: bool,
+    header_id: Option<MessagePartId>,
+    structure: Vec<MessageStructure>,
 }
 
 impl MessageParserState {
@@ -133,6 +142,20 @@ impl MessageParserState {
             text_parts: 0,
             need_text_body: true,
             need_html_body: true,
+            ..Default::default()
+        }
+    }
+
+    pub fn get_structure(&mut self) -> MessageStructure {
+        if let Some(header_id) = self.header_id {
+            MessageStructure::MultiPart((header_id, std::mem::take(&mut self.structure)))
+        } else if self.structure.len() > 1 {
+            MessageStructure::List(std::mem::take(&mut self.structure))
+        } else if self.structure.len() == 1 {
+            self.structure.pop().unwrap()
+        } else {
+            debug_assert!(false, "No parts found.");
+            MessageStructure::default()
         }
     }
 }
@@ -180,20 +203,24 @@ impl<'x> Message<'x> {
 
         'outer: loop {
             // Obtain reference to either the message or the MIME part's header
-            let header = if let MimeType::Message = state.mime_type {
-                &mut message.headers
+            let (is_message, header) = if let MimeType::Message = state.mime_type {
+                message.offset_header = stream.pos;
+                (true, &mut message.headers)
             } else {
-                &mut mime_part_header
+                (false, &mut mime_part_header)
             };
 
             // Parse headers
             if !parse_headers(header, &mut stream) {
                 break;
+            } else if is_message {
+                message.offset_body = seek_crlf_end(&stream, stream.pos);
             }
 
             state.parts += 1;
 
             let content_type = header
+                .values
                 .get(&HeaderName::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
@@ -212,13 +239,32 @@ impl<'x> Message<'x> {
                                 || mime_type == MimeType::MultipartAlernative,
                             mime_type,
                             mime_boundary: mime_boundary.into(),
-                            parts: 0,
                             html_parts: message.html_body.len(),
                             text_parts: message.text_body.len(),
                             need_html_body: state.need_html_body,
                             need_text_body: state.need_text_body,
+                            header_id: if !is_message {
+                                Some(message.parts.len())
+                            } else {
+                                None
+                            },
+                            ..Default::default()
                         };
-                        mime_part_header.clear();
+                        if !is_message {
+                            if mime_part_header.is_empty() {
+                                mime_part_header.values.insert(
+                                    HeaderName::ContentType,
+                                    HeaderValue::ContentType(ContentType {
+                                        c_type: "text".into(),
+                                        c_subtype: Some("plain".into()),
+                                        attributes: None,
+                                    }),
+                                );
+                            }
+                            message.parts.push(MessagePart::Multipart(std::mem::take(
+                                &mut mime_part_header,
+                            )));
+                        }
                         state_stack.push(state);
                         state = new_state;
                         skip_crlf(&mut stream);
@@ -232,14 +278,26 @@ impl<'x> Message<'x> {
                 let new_state = MessageParserState {
                     mime_type: MimeType::Message,
                     mime_boundary: state.mime_boundary.take(),
-                    in_alternative: false,
-                    parts: 0,
-                    html_parts: 0,
-                    text_parts: 0,
                     need_html_body: true,
                     need_text_body: true,
+                    ..Default::default()
                 };
-                mime_part_header.clear();
+                if mime_part_header.is_empty() {
+                    mime_part_header.values.insert(
+                        HeaderName::ContentType,
+                        HeaderValue::ContentType(ContentType {
+                            c_type: "message".into(),
+                            c_subtype: Some("rfc822".into()),
+                            attributes: None,
+                        }),
+                    );
+                }
+                state
+                    .structure
+                    .push(MessageStructure::Part(message.parts.len()));
+                message.parts.push(MessagePart::Multipart(std::mem::take(
+                    &mut mime_part_header,
+                )));
                 message_stack.push(message);
                 state_stack.push(state);
                 message = Message::new();
@@ -251,6 +309,7 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
 
             let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
+                .values
                 .get(&HeaderName::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
@@ -322,6 +381,7 @@ impl<'x> Message<'x> {
 
             let is_inline = is_inline
                 && header
+                    .values
                     .get(&HeaderName::ContentDisposition)
                     .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
                 && (state.parts == 1
@@ -366,54 +426,63 @@ impl<'x> Message<'x> {
                 let is_html = mime_type == MimeType::TextHtml;
 
                 if add_to_html && !is_html {
-                    message.html_body.push(InlinePart::Text(TextPart {
+                    message.html_body.push(message.parts.len());
+                    message.parts.push(MessagePart::Text(TextPart {
                         headers: None,
                         contents: text_to_html(&text_part.contents).into(),
                     }));
                 } else if add_to_text && is_html {
-                    message.text_body.push(InlinePart::Text(TextPart {
+                    message.text_body.push(message.parts.len());
+                    message.parts.push(MessagePart::Text(TextPart {
                         headers: None,
                         contents: html_to_text(&text_part.contents).into(),
                     }));
                 }
 
                 if add_to_html && is_html {
-                    message.html_body.push(InlinePart::Text(text_part));
+                    message.html_body.push(message.parts.len());
                 } else if add_to_text && !is_html {
-                    message.text_body.push(InlinePart::Text(text_part));
+                    message.text_body.push(message.parts.len());
                 } else {
-                    message.attachments.push(MessagePart::Text(text_part));
+                    message
+                        .attachments
+                        .push(AttachmentType::Attachment(message.parts.len()));
                 }
+                state
+                    .structure
+                    .push(MessageStructure::Part(message.parts.len()));
+                message.parts.push(MessagePart::Text(text_part));
             } else {
-                let binary_part = BinaryPart {
+                if add_to_html {
+                    message.html_body.push(message.parts.len());
+                }
+                if add_to_text {
+                    message.text_body.push(message.parts.len());
+                }
+
+                message.attachments.push(if is_inline {
+                    AttachmentType::Inline(message.parts.len())
+                } else {
+                    AttachmentType::Attachment(message.parts.len())
+                });
+
+                state
+                    .structure
+                    .push(MessageStructure::Part(message.parts.len()));
+
+                message.parts.push(MessagePart::Binary(BinaryPart {
                     headers: if !mime_part_header.is_empty() {
                         Some(std::mem::take(&mut mime_part_header))
                     } else {
                         None
                     },
                     contents: result_to_bytes(bytes, stream.data),
-                };
-
-                if add_to_html {
-                    message
-                        .html_body
-                        .push(InlinePart::InlineBinary(message.attachments.len() as u32));
-                }
-                if add_to_text {
-                    message
-                        .text_body
-                        .push(InlinePart::InlineBinary(message.attachments.len() as u32));
-                }
-
-                message.attachments.push(if !is_inline {
-                    MessagePart::Binary(binary_part)
-                } else {
-                    MessagePart::InlineBinary(binary_part)
-                });
+                }));
             };
 
             if state.mime_boundary.is_some() {
                 // Currently processing a MIME part
+                let mut last_part_offset = stream.pos;
 
                 'inner: loop {
                     if let MimeType::Message = state.mime_type {
@@ -421,7 +490,12 @@ impl<'x> Message<'x> {
                         if let (Some(mut prev_message), Some(mut prev_state)) =
                             (message_stack.pop(), state_stack.pop())
                         {
-                            prev_message.attachments.push(MessagePart::Message(message));
+                            message.structure = state.get_structure();
+                            message.offset_end = seek_crlf_end(&stream, last_part_offset);
+                            prev_message
+                                .attachments
+                                .push(AttachmentType::Attachment(prev_message.parts.len()));
+                            prev_message.parts.push(MessagePart::Message(message));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
                             state = prev_state;
@@ -442,16 +516,24 @@ impl<'x> Message<'x> {
                             if state.text_parts == message.text_body.len()
                                 && state.html_parts != message.html_body.len()
                             {
-                                for part in message.html_body[state.html_parts..].iter() {
-                                    message.text_body.push(match part {
-                                        InlinePart::Text(part) => InlinePart::Text(TextPart {
-                                            headers: None,
-                                            contents: html_to_text(&part.contents).into(),
-                                        }),
-                                        InlinePart::InlineBinary(index) => {
-                                            InlinePart::InlineBinary(*index)
-                                        }
-                                    });
+                                for part_id in message.html_body[state.html_parts..].iter() {
+                                    message.text_body.push(
+                                        match message.parts.get(*part_id).unwrap() {
+                                            MessagePart::Text(text) => {
+                                                let part_id = message.parts.len();
+                                                let text = MessagePart::Text(TextPart {
+                                                    headers: None,
+                                                    contents: html_to_text(&text.contents).into(),
+                                                });
+                                                message.parts.push(text);
+                                                part_id
+                                            }
+                                            MessagePart::Binary(_) => *part_id,
+                                            _ => {
+                                                panic!("Unexpected part type");
+                                            }
+                                        },
+                                    );
                                 }
                             }
 
@@ -459,23 +541,35 @@ impl<'x> Message<'x> {
                             if state.html_parts == message.html_body.len()
                                 && state.text_parts != message.text_body.len()
                             {
-                                for part in message.text_body[state.text_parts..].iter() {
-                                    message.html_body.push(match part {
-                                        InlinePart::Text(part) => InlinePart::Text(TextPart {
-                                            headers: None,
-                                            contents: text_to_html(&part.contents).into(),
-                                        }),
-                                        InlinePart::InlineBinary(index) => {
-                                            InlinePart::InlineBinary(*index)
-                                        }
-                                    });
+                                for part_id in message.text_body[state.html_parts..].iter() {
+                                    message.html_body.push(
+                                        match message.parts.get(*part_id).unwrap() {
+                                            MessagePart::Text(text) => {
+                                                let part_id = message.parts.len();
+                                                let text = MessagePart::Text(TextPart {
+                                                    headers: None,
+                                                    contents: text_to_html(&text.contents).into(),
+                                                });
+                                                message.parts.push(text);
+                                                part_id
+                                            }
+                                            MessagePart::Binary(_) => *part_id,
+                                            _ => {
+                                                panic!("Unexpected part type");
+                                            }
+                                        },
+                                    );
                                 }
                             }
                         }
 
-                        if let Some(prev_state) = state_stack.pop() {
+                        if let Some(mut prev_state) = state_stack.pop() {
+                            // Add headers and substructure to parent part
+                            prev_state.structure.push(state.get_structure());
+
                             // Restore ancestor's state
                             state = prev_state;
+                            last_part_offset = stream.pos;
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
@@ -496,12 +590,23 @@ impl<'x> Message<'x> {
             }
         }
 
-        while let Some(mut prev_message) = message_stack.pop() {
+        while let (Some(mut prev_message), Some(prev_state)) =
+            (message_stack.pop(), state_stack.pop())
+        {
+            message.offset_end = stream.pos;
             if !message.is_empty() {
-                prev_message.attachments.push(MessagePart::Message(message));
+                message.structure = state.get_structure();
+                prev_message
+                    .attachments
+                    .push(AttachmentType::Attachment(prev_message.parts.len()));
+                prev_message.parts.push(MessagePart::Message(message));
             }
             message = prev_message;
+            state = prev_state;
         }
+
+        message.structure = state.get_structure();
+        message.offset_end = stream.pos;
 
         if !message.is_empty() {
             Some(message)
@@ -516,10 +621,10 @@ mod tests {
 
     use crate::parsers::message::Message;
 
+    const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
+
     #[test]
     fn parse_full_messages() {
-        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
-
         for test_suite in ["rfc", "legacy", "thirdparty", "malformed"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
@@ -567,6 +672,39 @@ mod tests {
                 test_dir.display()
             );
         }
+    }
+
+    #[test]
+    #[ignore]
+    fn message_to_yaml() {
+        let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        file_name.push("tests");
+        file_name.push("rfc");
+        file_name.push("002.txt");
+
+        let mut input = fs::read(&file_name).unwrap();
+        let mut pos = 0;
+
+        for sep_pos in 0..input.len() {
+            if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
+                pos = sep_pos;
+                break;
+            }
+        }
+
+        assert!(
+            pos > 0,
+            "Failed to find separator in test file '{}'.",
+            file_name.display()
+        );
+
+        let input = input.split_at_mut(pos);
+        let message = Message::parse(input.0).unwrap();
+        let result = serde_yaml::to_string(&message).unwrap();
+
+        //fs::write("test.yaml", &result).unwrap();
+
+        println!("{}", result);
     }
 
     /*

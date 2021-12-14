@@ -19,7 +19,7 @@ pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
 
         let mut match_count = 0;
 
-        for ch in stream.data[pos..].iter() {
+        for ch in &stream.data[pos..] {
             pos += 1;
 
             if ch == &boundary[match_count] {
@@ -52,10 +52,10 @@ pub fn get_bytes_to_boundary<'x>(
 ) -> (usize, DecodeResult) {
     let mut read_pos = start_pos;
 
-    return if !boundary.is_empty() {
+    if !boundary.is_empty() {
         let mut match_count = 0;
 
-        for ch in stream.data[read_pos..].iter() {
+        for ch in &stream.data[read_pos..] {
             read_pos += 1;
 
             if ch == &boundary[match_count] {
@@ -95,7 +95,7 @@ pub fn get_bytes_to_boundary<'x>(
         )
     } else {
         (0, DecodeResult::Empty)
-    };
+    }
 }
 
 #[inline(always)]
@@ -123,7 +123,7 @@ pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
 
 #[inline(always)]
 pub fn skip_crlf(stream: &mut MessageStream) {
-    for ch in stream.data[stream.pos..].iter() {
+    for ch in &stream.data[stream.pos..] {
         match ch {
             b'\r' | b' ' | b'\t' => stream.pos += 1,
             b'\n' => {
@@ -133,4 +133,16 @@ pub fn skip_crlf(stream: &mut MessageStream) {
             _ => break,
         }
     }
+}
+
+#[inline(always)]
+pub fn seek_crlf_end(stream: &MessageStream, mut start_pos: usize) -> usize {
+    for ch in &stream.data[start_pos..] {
+        if ch.is_ascii_whitespace() {
+            start_pos += 1;
+        } else {
+            break;
+        }
+    }
+    start_pos
 }

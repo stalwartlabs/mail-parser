@@ -34,8 +34,8 @@
 //! - **Fast parsing** of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
 //! - Written in **100% safe** Rust with no external dependencies.
 //! - Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and
-//!   meticulously [tested with MIRI](#testing-fuzzing--benchmarking).
-//! - Thoroughly **battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
+//!   thoroughly [tested with MIRI](#testing-fuzzing--benchmarking).
+//! - **Battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
 //!
 //! Jump to the [example](#usage-example).
 //!
@@ -261,7 +261,7 @@
 pub mod decoders;
 pub mod parsers;
 
-use std::{borrow::Cow, collections::HashMap, fmt, slice::Iter};
+use std::{borrow::Cow, collections::HashMap, fmt};
 
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
@@ -273,7 +273,7 @@ pub struct Message<'x> {
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     #[cfg_attr(
         feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
+        serde(skip_serializing_if = "Headers::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers: Headers<'x>,
@@ -283,19 +283,65 @@ pub struct Message<'x> {
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub html_body: Vec<InlinePart<'x>>,
+    pub html_body: Vec<MessagePartId>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub text_body: Vec<InlinePart<'x>>,
+    pub text_body: Vec<MessagePartId>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub attachments: Vec<MessagePart<'x>>,
+    pub attachments: Vec<AttachmentType>,
+
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub parts: Vec<MessagePart<'x>>,
+
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub structure: MessageStructure,
+
+    pub offset_header: usize,
+    pub offset_body: usize,
+    pub offset_end: usize,
+}
+
+/// Attachment type
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub enum AttachmentType {
+    Inline(MessagePartId),
+    Attachment(MessagePartId),
+}
+
+impl AttachmentType {
+    pub fn unwrap(&self) -> (MessagePartId, bool) {
+        match self {
+            AttachmentType::Inline(id) => (*id, false),
+            AttachmentType::Attachment(id) => (*id, true),
+        }
+    }
+}
+
+/// Body structure.
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub enum MessageStructure {
+    Part(MessagePartId),
+    List(Vec<MessageStructure>),
+    MultiPart((MessagePartId, Vec<MessageStructure>)),
+}
+
+impl Default for MessageStructure {
+    fn default() -> Self {
+        MessageStructure::Part(0)
+    }
 }
 
 /// A text message part.
@@ -326,21 +372,15 @@ pub struct BinaryPart<'x> {
     pub contents: Cow<'x, [u8]>,
 }
 
-#[doc(hidden)]
-#[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-#[cfg_attr(feature = "serde_support", serde(untagged))]
-pub enum InlinePart<'x> {
-    Text(TextPart<'x>),
-    InlineBinary(u32),
-}
+/// Unique ID representing a MIME part within a message.
+pub type MessagePartId = usize;
 
 /// A text, binary or nested e-mail MIME message part.
 ///
 /// - Text: Any text/* part
-/// - Binary: Any other part type that is not text, usually attachments.
-/// - InlineBinary: Same as the Binary variant but an inline part according to RFC 8621, Section 4.1.4
-/// - Message: A nested RFC5322 message.
+/// - Binary: Any other part type that is not text.
+/// - Message: Nested RFC5322 message.
+/// - MultiPart: Multipart part.
 ///
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -348,16 +388,15 @@ pub enum MessagePart<'x> {
     /// Any text/* part
     Text(TextPart<'x>),
 
-    /// Any other part type that is not text, usually attachments.
+    /// Any other part type that is not text.
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     Binary(BinaryPart<'x>),
 
-    /// Same as the Binary variant but an inline part according to RFC 8621, Section 4.1.4
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
-    InlineBinary(BinaryPart<'x>),
-
-    /// A nested RFC5322 message.
+    /// Nested RFC5322 message.
     Message(Message<'x>),
+
+    /// Multipart part
+    Multipart(Headers<'x>),
 }
 
 /// An RFC5322 or RFC2369 internet address.
@@ -402,52 +441,91 @@ pub struct Group<'x> {
     pub addresses: Vec<Addr<'x>>,
 }
 
-pub type Headers<'x> = HashMap<HeaderName, HeaderValue<'x>>;
+#[derive(Debug, Default, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub struct Headers<'x> {
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "HashMap::is_empty")
+    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub values: HashMap<HeaderName<'x>, HeaderValue<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Vec::is_empty")
+    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub offsets: Vec<HeaderOffset<'x>>,
+}
+
+impl<'x> Headers<'x> {
+    pub fn new() -> Self {
+        Default::default()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.values.is_empty() && self.offsets.is_empty()
+    }
+
+    pub fn clear(&mut self) {
+        self.values.clear();
+        self.offsets.clear();
+    }
+}
+
+/// Offset of a message element in the raw message.
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub struct HeaderOffset<'x> {
+    pub name: HeaderName<'x>,
+    pub start: usize,
+    pub end: usize,
+}
 
 /// A header field
-#[repr(u8)]
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
-pub enum HeaderName {
-    Subject = 0,
-    From = 1,
-    To = 2,
-    Cc = 3,
-    Date = 4,
-    Bcc = 5,
-    ReplyTo = 6,
-    Sender = 7,
-    Comments = 8,
-    InReplyTo = 9,
-    Keywords = 10,
-    Received = 11,
-    MessageId = 12,
-    References = 13,
-    ReturnPath = 14,
-    MimeVersion = 15,
-    ContentDescription = 16,
-    ContentId = 17,
-    ContentLanguage = 18,
-    ContentLocation = 19,
-    ContentTransferEncoding = 20,
-    ContentType = 21,
-    ContentDisposition = 22,
-    ResentTo = 23,
-    ResentFrom = 24,
-    ResentBcc = 25,
-    ResentCc = 26,
-    ResentSender = 27,
-    ResentDate = 28,
-    ResentMessageId = 29,
-    ListArchive = 30,
-    ListHelp = 31,
-    ListId = 32,
-    ListOwner = 33,
-    ListPost = 34,
-    ListSubscribe = 35,
-    ListUnsubscribe = 36,
-    Unsupported = 37,
+pub enum HeaderName<'x> {
+    Subject,
+    From,
+    To,
+    Cc,
+    Date,
+    Bcc,
+    ReplyTo,
+    Sender,
+    Comments,
+    InReplyTo,
+    Keywords,
+    Received,
+    MessageId,
+    References,
+    ReturnPath,
+    MimeVersion,
+    ContentDescription,
+    ContentId,
+    ContentLanguage,
+    ContentLocation,
+    ContentTransferEncoding,
+    ContentType,
+    ContentDisposition,
+    ResentTo,
+    ResentFrom,
+    ResentBcc,
+    ResentCc,
+    ResentSender,
+    ResentDate,
+    ResentMessageId,
+    ListArchive,
+    ListHelp,
+    ListId,
+    ListOwner,
+    ListPost,
+    ListSubscribe,
+    ListUnsubscribe,
+    Other(Cow<'x, str>),
+    Invalid,
 }
 
 /// A parsed header value.
@@ -583,12 +661,13 @@ pub struct DateTime {
 impl<'x> Message<'x> {
     /// Returns an iterator over the headers of this message.
     pub fn get_headers(&self) -> impl Iterator<Item = (&HeaderName, &HeaderValue<'x>)> {
-        self.headers.iter()
+        self.headers.values.iter()
     }
 
     /// Returns the BCC header field
     pub fn get_bcc(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Bcc)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -596,6 +675,7 @@ impl<'x> Message<'x> {
     /// Returns the CC header field
     pub fn get_cc(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Cc)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -603,6 +683,7 @@ impl<'x> Message<'x> {
     /// Returns all Comments header fields
     pub fn get_comments(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Comments)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -610,6 +691,7 @@ impl<'x> Message<'x> {
     /// Returns the Date header field
     pub fn get_date(&self) -> Option<&DateTime> {
         self.headers
+            .values
             .get(&HeaderName::Date)
             .and_then(|header| header.as_datetime_ref())
     }
@@ -617,6 +699,7 @@ impl<'x> Message<'x> {
     /// Returns the From header field
     pub fn get_from(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::From)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -624,6 +707,7 @@ impl<'x> Message<'x> {
     /// Returns all In-Reply-To header fields
     pub fn get_in_reply_to(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::InReplyTo)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -631,6 +715,7 @@ impl<'x> Message<'x> {
     /// Returns all Keywords header fields
     pub fn get_keywords(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Keywords)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -638,6 +723,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Archive header field
     pub fn get_list_archive(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListArchive)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -645,6 +731,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Help header field
     pub fn get_list_help(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListHelp)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -652,6 +739,7 @@ impl<'x> Message<'x> {
     /// Returns the List-ID header field
     pub fn get_list_id(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListId)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -659,6 +747,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Owner header field
     pub fn get_list_owner(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListOwner)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -666,6 +755,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Post header field
     pub fn get_list_post(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListPost)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -673,6 +763,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Subscribe header field
     pub fn get_list_subscribe(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListSubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -680,6 +771,7 @@ impl<'x> Message<'x> {
     /// Returns the List-Unsubscribe header field
     pub fn get_list_unsubscribe(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ListUnsubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -687,6 +779,7 @@ impl<'x> Message<'x> {
     /// Returns the Message-ID header field
     pub fn get_message_id(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::MessageId)
             .and_then(|header| header.as_text_ref())
     }
@@ -694,6 +787,7 @@ impl<'x> Message<'x> {
     /// Returns the MIME-Version header field
     pub fn get_mime_version(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::MimeVersion)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -701,6 +795,7 @@ impl<'x> Message<'x> {
     /// Returns all Received header fields
     pub fn get_received(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Received)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -708,6 +803,7 @@ impl<'x> Message<'x> {
     /// Returns all References header fields
     pub fn get_references(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::References)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -715,6 +811,7 @@ impl<'x> Message<'x> {
     /// Returns the Reply-To header field
     pub fn get_reply_to(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ReplyTo)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -722,6 +819,7 @@ impl<'x> Message<'x> {
     /// Returns the Resent-BCC header field
     pub fn get_resent_bcc(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentBcc)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -729,6 +827,7 @@ impl<'x> Message<'x> {
     /// Returns the Resent-CC header field
     pub fn get_resent_cc(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentTo)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -736,6 +835,7 @@ impl<'x> Message<'x> {
     /// Returns all Resent-Date header fields
     pub fn get_resent_date(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentDate)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -743,6 +843,7 @@ impl<'x> Message<'x> {
     /// Returns the Resent-From header field
     pub fn get_resent_from(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentFrom)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -750,6 +851,7 @@ impl<'x> Message<'x> {
     /// Returns all Resent-Message-ID header fields
     pub fn get_resent_message_id(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentMessageId)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -757,6 +859,7 @@ impl<'x> Message<'x> {
     /// Returns the Sender header field
     pub fn get_resent_sender(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentSender)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -764,6 +867,7 @@ impl<'x> Message<'x> {
     /// Returns the Resent-To header field
     pub fn get_resent_to(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ResentTo)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -771,6 +875,7 @@ impl<'x> Message<'x> {
     /// Returns all Return-Path header fields
     pub fn get_return_path(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ReturnPath)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -778,6 +883,7 @@ impl<'x> Message<'x> {
     /// Returns the Sender header field
     pub fn get_sender(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::Sender)
             .unwrap_or(&HeaderValue::Empty)
     }
@@ -785,6 +891,7 @@ impl<'x> Message<'x> {
     /// Returns the Subject header field
     pub fn get_subject(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::Subject)
             .and_then(|header| header.as_text_ref())
     }
@@ -792,35 +899,40 @@ impl<'x> Message<'x> {
     /// Returns the To header field
     pub fn get_to(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::To)
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    fn get_body_part(&self, list: &'x [InlinePart<'x>], pos: usize) -> Option<&'x dyn BodyPart> {
-        match list.get(pos) {
-            Some(InlinePart::Text(v)) => Some(v),
-            Some(InlinePart::InlineBinary(v)) => match self.attachments.get(*v as usize)? {
-                MessagePart::Text(v) => Some(v),
-                MessagePart::Binary(v) | MessagePart::InlineBinary(v) => Some(v),
-                _ => None,
-            },
+    /// Returns a non-standard header field
+    pub fn get_other(&self, name: &'x str) -> &HeaderValue<'x> {
+        self.headers
+            .values
+            .get(&HeaderName::Other(name.into()))
+            .unwrap_or(&HeaderValue::Empty)
+    }
+
+    fn get_part(&self, list: &'x [MessagePartId], pos: usize) -> Option<&'x dyn BodyPart> {
+        match self.parts.get(*list.get(pos)?)? {
+            MessagePart::Text(v) => Some(v),
+            MessagePart::Binary(v) => Some(v),
             _ => None,
         }
     }
 
     /// Returns an inline HTML body part by position
     pub fn get_html_body(&self, pos: usize) -> Option<&dyn BodyPart> {
-        self.get_body_part(&self.html_body, pos)
+        self.get_part(&self.html_body, pos)
     }
 
     /// Returns an inline text body part by position
     pub fn get_text_body(&self, pos: usize) -> Option<&dyn BodyPart> {
-        self.get_body_part(&self.text_body, pos)
+        self.get_part(&self.text_body, pos)
     }
 
     /// Returns an attacment by position
     pub fn get_attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.attachments.get(pos)
+        self.parts.get(self.attachments.get(pos)?.unwrap().0)
     }
 
     /// Returns the number of plain text body parts
@@ -849,8 +961,8 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an Interator over the attachments
-    pub fn get_attachments(&self) -> Iter<MessagePart<'_>> {
-        self.attachments.iter()
+    pub fn get_attachments(&'x self) -> AttachmentIterator<'x> {
+        AttachmentIterator::new(self)
     }
 }
 
@@ -875,42 +987,49 @@ pub trait MimeHeaders<'x> {
 impl<'x> MimeHeaders<'x> for Message<'x> {
     fn get_content_description(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::ContentDescription)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_disposition(&self) -> Option<&ContentType> {
         self.headers
+            .values
             .get(&HeaderName::ContentDisposition)
             .and_then(|header| header.as_content_type_ref())
     }
 
     fn get_content_id(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::ContentId)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_transfer_encoding(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::ContentTransferEncoding)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_type(&self) -> Option<&ContentType> {
         self.headers
+            .values
             .get(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type_ref())
     }
 
     fn get_content_language(&self) -> &HeaderValue<'x> {
         self.headers
+            .values
             .get(&HeaderName::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     fn get_content_location(&self) -> Option<&str> {
         self.headers
+            .values
             .get(&HeaderName::ContentLocation)
             .and_then(|header| header.as_text_ref())
     }
@@ -998,49 +1117,56 @@ impl<'x> fmt::Display for BinaryPart<'x> {
 impl<'x> MimeHeaders<'x> for TextPart<'x> {
     fn get_content_description(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentDescription)
+            h.values
+                .get(&HeaderName::ContentDescription)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_disposition(&self) -> Option<&ContentType> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentDisposition)
+            h.values
+                .get(&HeaderName::ContentDisposition)
                 .and_then(|header| header.as_content_type_ref())
         })
     }
 
     fn get_content_id(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentId)
+            h.values
+                .get(&HeaderName::ContentId)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_transfer_encoding(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentTransferEncoding)
+            h.values
+                .get(&HeaderName::ContentTransferEncoding)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_type(&self) -> Option<&ContentType> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentType)
+            h.values
+                .get(&HeaderName::ContentType)
                 .and_then(|header| header.as_content_type_ref())
         })
     }
 
     fn get_content_language(&self) -> &HeaderValue<'x> {
         self.headers.as_ref().map_or(&HeaderValue::Empty, |h| {
-            h.get(&HeaderName::ContentLanguage)
+            h.values
+                .get(&HeaderName::ContentLanguage)
                 .unwrap_or(&HeaderValue::Empty)
         })
     }
 
     fn get_content_location(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentLocation)
+            h.values
+                .get(&HeaderName::ContentLocation)
                 .and_then(|header| header.as_text_ref())
         })
     }
@@ -1049,49 +1175,56 @@ impl<'x> MimeHeaders<'x> for TextPart<'x> {
 impl<'x> MimeHeaders<'x> for BinaryPart<'x> {
     fn get_content_description(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentDescription)
+            h.values
+                .get(&HeaderName::ContentDescription)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_disposition(&self) -> Option<&ContentType> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentDisposition)
+            h.values
+                .get(&HeaderName::ContentDisposition)
                 .and_then(|header| header.as_content_type_ref())
         })
     }
 
     fn get_content_id(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentId)
+            h.values
+                .get(&HeaderName::ContentId)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_transfer_encoding(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentTransferEncoding)
+            h.values
+                .get(&HeaderName::ContentTransferEncoding)
                 .and_then(|header| header.as_text_ref())
         })
     }
 
     fn get_content_type(&self) -> Option<&ContentType> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentType)
+            h.values
+                .get(&HeaderName::ContentType)
                 .and_then(|header| header.as_content_type_ref())
         })
     }
 
     fn get_content_language(&self) -> &HeaderValue<'x> {
         self.headers.as_ref().map_or(&HeaderValue::Empty, |h| {
-            h.get(&HeaderName::ContentLanguage)
+            h.values
+                .get(&HeaderName::ContentLanguage)
                 .unwrap_or(&HeaderValue::Empty)
         })
     }
 
     fn get_content_location(&self) -> Option<&str> {
         self.headers.as_ref().and_then(|h| {
-            h.get(&HeaderName::ContentLocation)
+            h.values
+                .get(&HeaderName::ContentLocation)
                 .and_then(|header| header.as_text_ref())
         })
     }
@@ -1100,12 +1233,18 @@ impl<'x> MimeHeaders<'x> for BinaryPart<'x> {
 #[doc(hidden)]
 pub struct BodyPartIterator<'x> {
     message: &'x Message<'x>,
-    list: &'x [InlinePart<'x>],
+    list: &'x [MessagePartId],
+    pos: isize,
+}
+
+#[doc(hidden)]
+pub struct AttachmentIterator<'x> {
+    message: &'x Message<'x>,
     pos: isize,
 }
 
 impl<'x> BodyPartIterator<'x> {
-    fn new(message: &'x Message<'x>, list: &'x [InlinePart<'x>]) -> BodyPartIterator<'x> {
+    fn new(message: &'x Message<'x>, list: &'x [MessagePartId]) -> BodyPartIterator<'x> {
         BodyPartIterator {
             message,
             list,
@@ -1119,7 +1258,22 @@ impl<'x> Iterator for BodyPartIterator<'x> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.pos += 1;
-        self.message.get_body_part(self.list, self.pos as usize)
+        self.message.get_part(self.list, self.pos as usize)
+    }
+}
+
+impl<'x> AttachmentIterator<'x> {
+    fn new(message: &'x Message<'x>) -> AttachmentIterator<'x> {
+        AttachmentIterator { message, pos: -1 }
+    }
+}
+
+impl<'x> Iterator for AttachmentIterator<'x> {
+    type Item = &'x MessagePart<'x>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.pos += 1;
+        self.message.get_attachment(self.pos as usize)
     }
 }
 

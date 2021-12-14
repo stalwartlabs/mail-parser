@@ -29,8 +29,8 @@ Performance and memory safety were two important factors while designing _mail-p
 - **Fast parsing** of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
 - Written in **100% safe** Rust with no external dependencies.
 - Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and 
-  meticulously [tested with MIRI](#testing-fuzzing--benchmarking).
-- Thoroughly **battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
+  thoroughly [tested with MIRI](#testing-fuzzing--benchmarking).
+- **Battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
 
 ## Usage Example
 
