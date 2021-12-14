@@ -111,102 +111,251 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 0,
-        "minute": 39,
-        "second": 36,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "related",
-        "attributes": {
-          "boundary": "=====================_715546120==_.REL",
-          "type": "text/html"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    }
-  },
-  "html_body": [
-    {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "quoted-printable"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "html",
-            "attributes": {
-              "charset": "iso-8859-1"
-            }
+    "values": {
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "related",
+          "attributes": {
+            "type": "text/html",
+            "boundary": "=====================_715546120==_.REL"
           }
         }
       },
-      "contents": "<html>\n<img src=\"cid:4.2.0.58.20000519003934.00a866f0@pop.example.com.2\" width=27 height=27 alt=\"2aa658b6.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003934.00a866f0@pop.example.com.3\" width=27 height=27 alt=\"2aa658c0.png\"></font></html>\n"
-    }
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 19,
+          "hour": 0,
+          "minute": 39,
+          "second": 36,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
+        }
+      },
+      "to": {
+        "Address": {
+          "name": "Heinz Müller",
+          "address": "mueller@example.com"
+        }
+      },
+      "subject": {
+        "Text": "Die Hasen und die Frösche"
+      },
+      "message_id": {
+        "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com"
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "dwsauder@example.com"
+        }
+      }
+    },
+    "other_values": {
+      "X-Mailer": {
+        "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+      },
+      "X-Sender": {
+        "Text": "dwsauder@pop.example.com (Unverified)"
+      },
+      "X-Priority": {
+        "Text": "2 (High)"
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 11,
+        "end": 64
+      },
+      {
+        "name": {
+          "Other": "X-Sender"
+        },
+        "start": 73,
+        "end": 113
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 122,
+        "end": 170
+      },
+      {
+        "name": {
+          "Other": "X-Priority"
+        },
+        "start": 181,
+        "end": 192
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 197,
+        "end": 231
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 234,
+        "end": 288
+      },
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 293,
+        "end": 330
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 338,
+        "end": 383
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 396,
+        "end": 402
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 415,
+        "end": 508
+      }
+    ]
+  },
+  "html_body": [
+    1
   ],
   "text_body": [
-    {
-      "contents": "\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"\n\n"
-    }
+    0
   ],
   "attachments": [
     {
+      "Attachment": 2
+    },
+    {
+      "Attachment": 3
+    }
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"\n\n"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "html",
+                "attributes": {
+                  "charset": "iso-8859-1"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 565,
+              "end": 599
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 625,
+              "end": 644
+            }
+          ]
+        },
+        "contents": "<html>\n<img src=\"cid:4.2.0.58.20000519003934.00a866f0@pop.example.com.2\" width=27 height=27 alt=\"2aa658b6.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003934.00a866f0@pop.example.com.3\" width=27 height=27 alt=\"2aa658c0.png\"></font></html>\n"
+      }
+    },
+    {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "2aa658b6.png"
+          "values": {
+            "content_id": {
+              "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.2"
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline",
+                "attributes": {
+                  "filename": "2aa658b6.png"
+                }
               }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "png",
+                "attributes": {
+                  "name": "2aa658b6.png"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "2aa658b6.png"
-              }
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1942,
+              "end": 1975
+            },
+            {
+              "name": {
+                "Rfc": "content_id"
+              },
+              "start": 1986,
+              "end": 2041
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 2067,
+              "end": 2076
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 2096,
+              "end": 2130
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.2"
-          }
+          ]
         },
         "contents": [
           137,
@@ -1540,29 +1689,61 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "2aa658c0.png"
+          "values": {
+            "content_id": {
+              "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.3"
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline",
+                "attributes": {
+                  "filename": "2aa658c0.png"
+                }
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "png",
+                "attributes": {
+                  "name": "2aa658c0.png"
+                }
               }
             }
           },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "2aa658c0.png"
-              }
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 4003,
+              "end": 4036
+            },
+            {
+              "name": {
+                "Rfc": "content_id"
+              },
+              "start": 4047,
+              "end": 4102
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 4128,
+              "end": 4137
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 4157,
+              "end": 4191
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.3"
-          }
+          ]
         },
         "contents": [
           137,
@@ -3021,5 +3202,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         ]
       }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "Part": 2
+      },
+      {
+        "Part": 3
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 510,
+  "offset_end": 6227
 }

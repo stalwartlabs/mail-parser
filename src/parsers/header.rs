@@ -9,9 +9,9 @@
  * except according to those terms.
  */
 
-use std::collections::hash_map::Entry;
+use std::{borrow::Cow, collections::hash_map::Entry};
 
-use crate::{HeaderName, HeaderOffset, HeaderValue, Headers};
+use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, Headers};
 
 use super::{
     fields::{
@@ -23,7 +23,8 @@ use super::{
 
 #[derive(Debug, PartialEq)]
 pub enum HeaderParserResult<'x> {
-    Header(HeaderName<'x>),
+    Rfc(HeaderName),
+    Other(Cow<'x, str>),
     Lf,
     Eof,
 }
@@ -34,20 +35,20 @@ pub fn parse_headers<'x>(headers: &mut Headers<'x>, stream: &mut MessageStream<'
         stream.pos += bytes_read;
 
         match result {
-            HeaderParserResult::Header(name) => {
-                let (is_many, parser) = HDR_PARSER[name.id() as usize];
+            HeaderParserResult::Rfc(name) => {
+                let (is_many, parser) = HDR_PARSER[name as usize];
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
                 headers.offsets.push(HeaderOffset {
-                    name: name.clone(),
+                    name: HeaderOffsetName::Rfc(name),
                     start: from_offset,
                     end: stream.pos,
                 });
 
                 if !value.is_empty() {
                     if is_many {
-                        match headers.values.entry(name.clone()) {
+                        match headers.values.entry(name) {
                             Entry::Occupied(mut e) => {
                                 if let HeaderValue::Collection(col) = e.get_mut() {
                                     col.push(value);
@@ -65,6 +66,33 @@ pub fn parse_headers<'x>(headers: &mut Headers<'x>, stream: &mut MessageStream<'
                         }
                     } else {
                         headers.values.insert(name, value);
+                    }
+                }
+            }
+            HeaderParserResult::Other(name) => {
+                let from_offset = stream.pos;
+                let value = parse_raw(stream);
+                headers.offsets.push(HeaderOffset {
+                    name: HeaderOffsetName::Other(name.clone()),
+                    start: from_offset,
+                    end: stream.pos,
+                });
+
+                if !value.is_empty() {
+                    match headers.other_values.entry(name.clone()) {
+                        Entry::Occupied(mut e) => {
+                            if let HeaderValue::Collection(col) = e.get_mut() {
+                                col.push(value);
+                            } else {
+                                let old_value = e.remove();
+                                headers
+                                    .other_values
+                                    .insert(name, HeaderValue::Collection(vec![old_value, value]));
+                            }
+                        }
+                        Entry::Vacant(e) => {
+                            e.insert(value);
+                        }
                     }
                 }
             }
@@ -98,18 +126,13 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
                             let token_hash = token_hash - 4;
 
                             if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                                return (
-                                    bytes_read,
-                                    HeaderParserResult::Header(HDR_MAP[token_hash].clone()),
-                                );
+                                return (bytes_read, HeaderParserResult::Rfc(HDR_MAP[token_hash]));
                             }
                         }
                     }
                     return (
                         bytes_read,
-                        HeaderParserResult::Header(HeaderName::Other(String::from_utf8_lossy(
-                            field,
-                        ))),
+                        HeaderParserResult::Other(String::from_utf8_lossy(field)),
                     );
                 }
             }
@@ -138,49 +161,9 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
     (bytes_read, HeaderParserResult::Eof)
 }
 
-impl<'x> HeaderName<'x> {
-    fn id(&self) -> u8 {
-        match self {
-            HeaderName::Subject => 0,
-            HeaderName::From => 1,
-            HeaderName::To => 2,
-            HeaderName::Cc => 3,
-            HeaderName::Date => 4,
-            HeaderName::Bcc => 5,
-            HeaderName::ReplyTo => 6,
-            HeaderName::Sender => 7,
-            HeaderName::Comments => 8,
-            HeaderName::InReplyTo => 9,
-            HeaderName::Keywords => 10,
-            HeaderName::Received => 11,
-            HeaderName::MessageId => 12,
-            HeaderName::References => 13,
-            HeaderName::ReturnPath => 14,
-            HeaderName::MimeVersion => 15,
-            HeaderName::ContentDescription => 16,
-            HeaderName::ContentId => 17,
-            HeaderName::ContentLanguage => 18,
-            HeaderName::ContentLocation => 19,
-            HeaderName::ContentTransferEncoding => 20,
-            HeaderName::ContentType => 21,
-            HeaderName::ContentDisposition => 22,
-            HeaderName::ResentTo => 23,
-            HeaderName::ResentFrom => 24,
-            HeaderName::ResentBcc => 25,
-            HeaderName::ResentCc => 26,
-            HeaderName::ResentSender => 27,
-            HeaderName::ResentDate => 28,
-            HeaderName::ResentMessageId => 29,
-            HeaderName::ListArchive => 30,
-            HeaderName::ListHelp => 31,
-            HeaderName::ListId => 32,
-            HeaderName::ListOwner => 33,
-            HeaderName::ListPost => 34,
-            HeaderName::ListSubscribe => 35,
-            HeaderName::ListUnsubscribe => 36,
-            HeaderName::Other(_) => 37,
-            HeaderName::Invalid => 38,
-        }
+impl From<HeaderName> for u8 {
+    fn from(name: HeaderName) -> Self {
+        name as u8
     }
 }
 
@@ -193,30 +176,24 @@ mod tests {
     #[test]
     fn header_name_parse() {
         let inputs = [
-            ("From: ", HeaderParserResult::Header(HeaderName::From)),
-            (
-                "receiVED: ",
-                HeaderParserResult::Header(HeaderName::Received),
-            ),
+            ("From: ", HeaderParserResult::Rfc(HeaderName::From)),
+            ("receiVED: ", HeaderParserResult::Rfc(HeaderName::Received)),
             (
                 " subject   : ",
-                HeaderParserResult::Header(HeaderName::Subject),
+                HeaderParserResult::Rfc(HeaderName::Subject),
             ),
             (
                 "X-Custom-Field : ",
-                HeaderParserResult::Header(HeaderName::Other("X-Custom-Field".into())),
+                HeaderParserResult::Other("X-Custom-Field".into()),
             ),
-            (
-                " T : ",
-                HeaderParserResult::Header(HeaderName::Other("T".into())),
-            ),
+            (" T : ", HeaderParserResult::Other("T".into())),
             (
                 "mal formed: ",
-                HeaderParserResult::Header(HeaderName::Other("mal formed".into())),
+                HeaderParserResult::Other("mal formed".into()),
             ),
             (
                 "MIME-version : ",
-                HeaderParserResult::Header(HeaderName::MimeVersion),
+                HeaderParserResult::Rfc(HeaderName::MimeVersion),
             ),
         ];
 
@@ -289,18 +266,18 @@ static HDR_HASH: &[u8] = &[
 
 static HDR_MAP: &[HeaderName] = &[
     HeaderName::Date,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::Sender,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::Received,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::References,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::Cc,
     HeaderName::Comments,
     HeaderName::ResentCc,
     HeaderName::ContentId,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ResentMessageId,
     HeaderName::ReplyTo,
     HeaderName::ResentTo,
@@ -308,54 +285,54 @@ static HDR_MAP: &[HeaderName] = &[
     HeaderName::ContentLanguage,
     HeaderName::Subject,
     HeaderName::ResentSender,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
+    HeaderName::Other,
+    HeaderName::Other,
     HeaderName::ResentDate,
     HeaderName::To,
     HeaderName::Bcc,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ContentTransferEncoding,
     HeaderName::ReturnPath,
     HeaderName::ListId,
     HeaderName::Keywords,
     HeaderName::ContentDescription,
     HeaderName::ListOwner,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ContentType,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ListHelp,
     HeaderName::MessageId,
     HeaderName::ContentLocation,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
+    HeaderName::Other,
+    HeaderName::Other,
     HeaderName::ListSubscribe,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
     HeaderName::ListPost,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ResentFrom,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
+    HeaderName::Other,
+    HeaderName::Other,
     HeaderName::ContentDisposition,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::InReplyTo,
     HeaderName::ListArchive,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::From,
-    HeaderName::Invalid,
+    HeaderName::Other,
     HeaderName::ListUnsubscribe,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
-    HeaderName::Invalid,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
+    HeaderName::Other,
     HeaderName::MimeVersion,
 ];
 

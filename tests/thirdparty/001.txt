@@ -26,69 +26,170 @@ hello world
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "bound"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "alternative",
+          "attributes": {
+            "boundary": "bound"
+          }
         }
+      },
+      "mime_version": {
+        "Text": "1.0"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    }
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 13,
+        "end": 19
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 32,
+        "end": 76
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz<br/>aWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk<br/>Z2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=</body></html>"
-    },
-    {
-      "contents": "<html><body>ZWg=</body></html>"
-    },
-    {
-      "contents": "<html><body>hello world<br/></body></html>"
-    }
+    3,
+    4,
+    5
   ],
   "text_body": [
+    0,
+    1,
+    2
+  ],
+  "parts": [
     {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "binary"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 128,
+              "end": 137
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 150,
+              "end": 163
+            }
+          ]
         },
-        "content_transfer_encoding": {
-          "Text": "binary"
-        }
-      },
-      "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
+        "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
+      }
     },
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "binary"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "binary"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 413,
+              "end": 426
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 452,
+              "end": 461
+            }
+          ]
         },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "ZWg="
+        "contents": "ZWg="
+      }
     },
     {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "hello world\r\n\r"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 490,
+              "end": 503
+            }
+          ]
+        },
+        "contents": "hello world\r\n\r"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz<br/>aWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk<br/>Z2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>ZWg=</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>hello world<br/></body></html>"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 1
+      },
+      {
+        "Part": 2
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 78,
+  "offset_end": 529
 }

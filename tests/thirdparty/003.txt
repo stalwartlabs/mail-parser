@@ -36,121 +36,283 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "1"
+    "values": {
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "1"
+          }
         }
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    }
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 44
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 57,
+        "end": 62
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>Move black king to queen's bishop<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
-    }
+    0,
+    2,
+    4,
+    6,
+    8
   ],
   "text_body": [
+    1,
+    3,
+    5,
+    7,
+    9
+  ],
+  "parts": [
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "7bit"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "us-ascii"
-            }
-          }
-        }
-      },
-      "contents": "Move black king to queen's bishop\n"
+      "Text": {
+        "contents": "<html><body>Move black king to queen's bishop<br/></body></html>"
+      }
     },
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "binary"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "UTF-8"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "7bit"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "us-ascii"
+                }
+              }
             }
-          }
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 93,
+              "end": 104
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 117,
+              "end": 147
+            }
+          ]
+        },
+        "contents": "Move black king to queen's bishop\n"
+      }
     },
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "8bit"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "UTF-8"
-            }
-          }
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
+      "Text": {
+        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+      }
     },
     {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "UTF-8"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "binary"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "UTF-8"
+                }
+              }
             }
-          }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 213,
+              "end": 224
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 237,
+              "end": 264
+            }
+          ]
         },
-        "content_transfer_encoding": {
-          "Text": "quoted-printable"
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
+        "contents": "Move ♚ to ♛'s ♝\n"
+      }
     },
     {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "UTF-8"
+      "Text": {
+        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "8bit"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "UTF-8"
+                }
+              }
             }
-          }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 318,
+              "end": 328
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 341,
+              "end": 368
+            }
+          ]
         },
-        "content_transfer_encoding": {
-          "Text": "base64"
-        }
-      },
-      "contents": "Move ♚ to ♛'s ♝\n"
+        "contents": "Move ♚ to ♛'s ♝\n"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "UTF-8"
+                }
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 422,
+              "end": 455
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 468,
+              "end": 495
+            }
+          ]
+        },
+        "contents": "Move ♚ to ♛'s ♝\n"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>Move ♚ to ♛'s ♝<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "UTF-8"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 567,
+              "end": 575
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 588,
+              "end": 615
+            }
+          ]
+        },
+        "contents": "Move ♚ to ♛'s ♝\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "Part": 3
+      },
+      {
+        "Part": 5
+      },
+      {
+        "Part": 7
+      },
+      {
+        "Part": 9
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 63,
+  "offset_end": 655
 }

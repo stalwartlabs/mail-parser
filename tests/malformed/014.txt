@@ -9,32 +9,68 @@ hello, world
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "1"
-        }
-      }
-    }
-  },
-  "html_body": [
-    {
-      "contents": "<html><body>hello, world</body></html>"
-    }
-  ],
-  "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "1"
           }
         }
-      },
-      "contents": "hello, world"
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 44
+      }
+    ]
+  },
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    1
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "<html><body>hello, world</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 62,
+              "end": 74
+            }
+          ]
+        },
+        "contents": "hello, world"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 1
+  },
+  "offset_header": 0,
+  "offset_body": 45,
+  "offset_end": 92
 }

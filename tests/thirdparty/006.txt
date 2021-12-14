@@ -31,67 +31,205 @@ Signed by undersigned
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Hide and seek"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "1"
+    "values": {
+      "subject": {
+        "Text": "Hide and seek"
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "1"
+          }
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 8,
+        "end": 23
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 36,
+        "end": 41
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 54,
+        "end": 83
+      }
+    ]
   },
   "html_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "html",
-            "attributes": {
-              "charset": "us-ascii"
-            }
-          }
-        }
-      },
-      "contents": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n"
-    }
+    2
   ],
   "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        },
-        "content_transfer_encoding": {
-          "Text": "binary"
-        }
-      },
-      "contents": "Search me, and Find me here"
-    }
+    3
   ],
   "attachments": [
     {
-      "Binary": {
-        "headers": {
+      "Attachment": 4
+    }
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "signature",
-              "c_subtype": "plain",
+              "c_type": "multipart",
+              "c_subtype": "signed",
               "attributes": {
-                "charset": "us-ascii"
+                "protocol": "signature/plain",
+                "boundary": "2",
+                "migalc": "pen+paper"
               }
             }
           }
+        },
+        "other_values": {
+          "X-Signature-Type": {
+            "Text": "penmanship"
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 101,
+            "end": 179
+          },
+          {
+            "name": {
+              "Other": "X-Signature-Type"
+            },
+            "start": 196,
+            "end": 208
+          }
+        ]
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "3"
+              }
+            }
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 226,
+            "end": 261
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "html",
+                "attributes": {
+                  "charset": "us-ascii"
+                }
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 279,
+              "end": 308
+            }
+          ]
+        },
+        "contents": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "binary"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 416,
+              "end": 428
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 454,
+              "end": 462
+            }
+          ]
+        },
+        "contents": "Search me, and Find me here"
+      }
+    },
+    {
+      "Binary": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "signature",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "us-ascii"
+                }
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 515,
+              "end": 550
+            }
+          ]
         },
         "contents": [
           83,
@@ -118,5 +256,31 @@ Signed by undersigned
         ]
       }
     }
-  ]
+  ],
+  "structure": {
+    "MultiPart": [
+      0,
+      [
+        {
+          "MultiPart": [
+            1,
+            [
+              {
+                "Part": 2
+              },
+              {
+                "Part": 3
+              }
+            ]
+          ]
+        },
+        {
+          "Part": 4
+        }
+      ]
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 84,
+  "offset_end": 585
 }

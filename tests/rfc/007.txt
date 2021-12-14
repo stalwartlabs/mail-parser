@@ -74,120 +74,248 @@ K
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "subject": {
-      "Text": "RFC 8621 Section 4.1.4 test"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "1"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "1"
+          }
         }
+      },
+      "subject": {
+        "Text": "RFC 8621 Section 4.1.4 test"
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 8,
+        "end": 37
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 50,
+        "end": 81
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>A</body></html>"
-    },
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "html"
-          }
-        }
-      },
-      "contents": "<html>E</html>"
-    },
-    {
-      "contents": "<html><body>K</body></html>"
-    }
+    0,
+    9,
+    15
   ],
   "text_body": [
-    {
-      "headers": {
-        "content_disposition": {
-          "ContentType": {
-            "c_type": "inline"
-          }
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "A"
-    },
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        },
-        "content_disposition": {
-          "ContentType": {
-            "c_type": "inline"
-          }
-        }
-      },
-      "contents": "B"
-    },
-    0,
-    {
-      "headers": {
-        "content_disposition": {
-          "ContentType": {
-            "c_type": "inline"
-          }
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "D"
-    },
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        },
-        "content_disposition": {
-          "ContentType": {
-            "c_type": "inline"
-          }
-        }
-      },
-      "contents": "K"
-    }
+    1,
+    5,
+    6,
+    7,
+    16
   ],
   "attachments": [
     {
-      "InlineBinary": {
+      "Inline": 6
+    },
+    {
+      "Attachment": 10
+    },
+    {
+      "Attachment": 11
+    },
+    {
+      "Attachment": 12
+    },
+    {
+      "Attachment": 14
+    }
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "<html><body>A</body></html>"
+      }
+    },
+    {
+      "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg"
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline"
+              }
             }
           },
-          "content_disposition": {
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 99,
+              "end": 111
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 131,
+              "end": 139
+            }
+          ]
+        },
+        "contents": "A"
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
             "ContentType": {
-              "c_type": "inline"
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
+              }
             }
           }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 161,
+            "end": 192
+          }
+        ]
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "3"
+              }
+            }
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 210,
+            "end": 247
+          }
+        ]
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "4"
+              }
+            }
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 265,
+            "end": 296
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline"
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 314,
+              "end": 326
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 346,
+              "end": 354
+            }
+          ]
+        },
+        "contents": "B"
+      }
+    },
+    {
+      "Binary": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "jpeg"
+              }
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 376,
+              "end": 388
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 408,
+              "end": 416
+            }
+          ]
         },
         "contents": [
           67
@@ -195,14 +323,109 @@ K
       }
     },
     {
-      "Binary": {
+      "Text": {
         "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            },
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 438,
+              "end": 450
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 470,
+              "end": 478
+            }
+          ]
+        },
+        "contents": "D"
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg"
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": {
+                "boundary": "5"
+              }
             }
           }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 506,
+            "end": 539
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "html"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 557,
+              "end": 568
+            }
+          ]
+        },
+        "contents": "<html>E</html>"
+      }
+    },
+    {
+      "Binary": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "jpeg"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 603,
+              "end": 615
+            }
+          ]
         },
         "contents": [
           70
@@ -212,17 +435,35 @@ K
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg"
+          "values": {
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "attachment"
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "jpeg"
+              }
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment"
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 655,
+              "end": 667
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 687,
+              "end": 699
             }
-          }
+          ]
         },
         "contents": [
           71
@@ -232,12 +473,23 @@ K
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "x-excel"
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "application",
+                "c_subtype": "x-excel"
+              }
             }
-          }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 721,
+              "end": 742
+            }
+          ]
         },
         "contents": [
           72
@@ -245,23 +497,175 @@ K
       }
     },
     {
-      "Message": {
-        "headers": {
-          "subject": {
-            "Text": "J"
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
           }
         },
-        "html_body": [
+        "offsets": [
           {
-            "contents": "<html><body>J</body></html>"
-          }
-        ],
-        "text_body": [
-          {
-            "contents": "J"
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 764,
+            "end": 780
           }
         ]
       }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "subject": {
+              "Text": "J"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 789,
+              "end": 792
+            }
+          ]
+        },
+        "html_body": [
+          0
+        ],
+        "text_body": [
+          1
+        ],
+        "parts": [
+          {
+            "Text": {
+              "contents": "<html><body>J</body></html>"
+            }
+          },
+          {
+            "Text": {
+              "contents": "J"
+            }
+          }
+        ],
+        "structure": {
+          "Part": 1
+        },
+        "offset_header": 781,
+        "offset_body": 793,
+        "offset_end": 798
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>K</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline"
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 821,
+              "end": 833
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 853,
+              "end": 861
+            }
+          ]
+        },
+        "contents": "K"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "MultiPart": [
+          2,
+          [
+            {
+              "MultiPart": [
+                3,
+                [
+                  {
+                    "MultiPart": [
+                      4,
+                      [
+                        {
+                          "Part": 5
+                        },
+                        {
+                          "Part": 6
+                        },
+                        {
+                          "Part": 7
+                        }
+                      ]
+                    ]
+                  },
+                  {
+                    "MultiPart": [
+                      8,
+                      [
+                        {
+                          "Part": 9
+                        },
+                        {
+                          "Part": 10
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            },
+            {
+              "Part": 11
+            },
+            {
+              "Part": 12
+            },
+            {
+              "Part": 13
+            }
+          ]
+        ]
+      },
+      {
+        "Part": 16
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 82,
+  "offset_end": 869
 }

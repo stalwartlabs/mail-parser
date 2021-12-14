@@ -9,49 +9,142 @@ Content-Type: text/plain
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "message",
-        "c_subtype": "rfc822"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "message",
+          "c_subtype": "rfc822"
+        }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 29
+      }
+    ]
   },
   "attachments": [
     {
-      "Message": {
-        "headers": {
+      "Attachment": 1
+    }
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
               "c_subtype": "rfc822"
             }
           }
+        }
+      }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "message",
+                "c_subtype": "rfc822"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 43,
+              "end": 59
+            }
+          ]
         },
         "attachments": [
           {
-            "Message": {
-              "headers": {
+            "Attachment": 1
+          }
+        ],
+        "parts": [
+          {
+            "Multipart": {
+              "values": {
                 "content_type": {
                   "ContentType": {
-                    "c_type": "text",
-                    "c_subtype": "plain"
+                    "c_type": "message",
+                    "c_subtype": "rfc822"
                   }
                 }
+              }
+            }
+          },
+          {
+            "Message": {
+              "headers": {
+                "values": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain"
+                    }
+                  }
+                },
+                "offsets": [
+                  {
+                    "name": {
+                      "Rfc": "content_type"
+                    },
+                    "start": 73,
+                    "end": 85
+                  }
+                ]
               },
               "html_body": [
-                {
-                  "contents": "<html><body>1<br/></body></html>"
-                }
+                0
               ],
               "text_body": [
+                1
+              ],
+              "parts": [
                 {
-                  "contents": "1\n"
+                  "Text": {
+                    "contents": "<html><body>1<br/></body></html>"
+                  }
+                },
+                {
+                  "Text": {
+                    "contents": "1\n"
+                  }
                 }
-              ]
+              ],
+              "structure": {
+                "Part": 1
+              },
+              "offset_header": 60,
+              "offset_body": 86,
+              "offset_end": 88
             }
           }
-        ]
+        ],
+        "structure": {
+          "Part": 0
+        },
+        "offset_header": 30,
+        "offset_body": 60,
+        "offset_end": 88
       }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 0
+  },
+  "offset_header": 0,
+  "offset_body": 30,
+  "offset_end": 88
 }

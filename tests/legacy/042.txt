@@ -60,102 +60,244 @@ Birds of a feather flock together.
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------77060D866A66DC8D0921E051"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "3923686C.99FB5E36@example.com"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 50,
-        "second": 4,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    }
-  },
-  "html_body": [
-    {
-      "contents": "<html><body><br/>The Hare and the Tortoise <br/> <br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise,<br/>who replied, laughing:  \"Though you be swift as the wind, I will beat<br/>you in a race.\"  The Hare, believing her assertion to be simply<br/>impossible, assented to the proposal; and they agreed that the Fox<br/>should choose the course and fix the goal.  On the day appointed for the<br/>race the two started together.  The Tortoise never for a moment stopped,<br/>but went on with a slow but steady pace straight to the end of the<br/>course.  The Hare, lying down by the wayside, fell fast asleep.  At last<br/>waking up, and moving as fast as he could, he saw the Tortoise had<br/>reached the goal, and was comfortably dozing after her fatigue.  <br/> <br/>Slow but steady wins the race.</body></html>"
-    }
-  ],
-  "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "us-ascii"
-            }
-          }
-        },
-        "content_transfer_encoding": {
-          "Text": "7bit"
+    "values": {
+      "subject": {
+        "Text": "Test message from Netscape Communicator 4.7"
+      },
+      "message_id": {
+        "Text": "3923686C.99FB5E36@example.com"
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "dwsauder@example.com"
         }
       },
-      "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
-    }
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 17,
+          "hour": 23,
+          "minute": 50,
+          "second": 4,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
+        }
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "to": {
+        "Address": {
+          "name": "Joe Blow",
+          "address": "blow@example.com"
+        }
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "------------77060D866A66DC8D0921E051"
+          }
+        }
+      }
+    },
+    "other_values": {
+      "X-Accept-Language": {
+        "Text": "en"
+      },
+      "X-Mailer": {
+        "Text": "Mozilla 4.7 [en] (WinNT; I)"
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 11,
+        "end": 45
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 50,
+        "end": 84
+      },
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 89,
+        "end": 126
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 135,
+        "end": 165
+      },
+      {
+        "name": {
+          "Other": "X-Accept-Language"
+        },
+        "start": 183,
+        "end": 188
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 201,
+        "end": 207
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 210,
+        "end": 240
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 248,
+        "end": 294
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 307,
+        "end": 376
+      }
+    ]
+  },
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    1
   ],
   "attachments": [
     {
+      "Attachment": 2
+    }
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "<html><body><br/>The Hare and the Tortoise <br/> <br/>A HARE one day ridiculed the short feet and slow pace of the Tortoise,<br/>who replied, laughing:  \"Though you be swift as the wind, I will beat<br/>you in a race.\"  The Hare, believing her assertion to be simply<br/>impossible, assented to the proposal; and they agreed that the Fox<br/>should choose the course and fix the goal.  On the day appointed for the<br/>race the two started together.  The Tortoise never for a moment stopped,<br/>but went on with a slow but steady pace straight to the end of the<br/>course.  The Hare, lying down by the wayside, fell fast asleep.  At last<br/>waking up, and moving as fast as he could, he saw the Tortoise had<br/>reached the goal, and was comfortably dozing after her fatigue.  <br/> <br/>Slow but steady wins the race.</body></html>"
+      }
+    },
+    {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "us-ascii",
-                "name": "farmerandstork.txt"
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "7bit"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "us-ascii"
+                }
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "farmerandstork.txt"
-              }
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 477,
+              "end": 508
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 534,
+              "end": 541
             }
-          }
+          ]
+        },
+        "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_disposition": {
+              "ContentType": {
+                "c_type": "inline",
+                "attributes": {
+                  "filename": "farmerandstork.txt"
+                }
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "us-ascii",
+                  "name": "farmerandstork.txt"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "7bit"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1365,
+              "end": 1425
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 1451,
+              "end": 1458
+            },
+            {
+              "name": {
+                "Rfc": "content_disposition"
+              },
+              "start": 1478,
+              "end": 1520
+            }
+          ]
         },
         "contents": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n\r"
       }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "Part": 2
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 378,
+  "offset_end": 2368
 }

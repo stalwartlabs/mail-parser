@@ -922,7 +922,6 @@ mod tests {
         ];
 
         for input in inputs {
-            println!("Testiong {}", input.0);
             let str = input.0.to_string();
             let result = parse_address(&mut MessageStream::new(str.as_bytes()));
             let expected: HeaderValue = serde_yaml::from_str(input.1).unwrap_or(HeaderValue::Empty);

@@ -15,32 +15,99 @@ body2
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "a--"
-        }
-      }
-    }
-  },
-  "html_body": [
-    {
-      "contents": "<html><body>body</body></html>"
-    }
-  ],
-  "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "a--"
           }
         }
-      },
-      "contents": "body"
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 46
+      }
+    ]
+  },
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    2
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "a----"
+              }
+            }
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 66,
+            "end": 101
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>body</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 123,
+              "end": 135
+            }
+          ]
+        },
+        "contents": "body"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "MultiPart": [
+      0,
+      [
+        {
+          "Part": 2
+        }
+      ]
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 47,
+  "offset_end": 189
 }

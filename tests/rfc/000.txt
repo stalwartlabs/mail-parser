@@ -74,87 +74,212 @@ Content-Transfer-Encoding: Quoted-printable
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "unique-boundary-1"
+    "values": {
+      "from": {
+        "Address": {
+          "name": "Nathaniel Borenstein",
+          "address": "nsb@nsb.fv.com"
         }
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@nsb.fv.com"
-      }
-    },
-    "subject": {
-      "Text": "A multipart example"
-    },
-    "date": {
-      "DateTime": {
-        "year": 1994,
-        "month": 10,
-        "day": 7,
-        "hour": 16,
-        "minute": 15,
-        "second": 5,
-        "tz_before_gmt": true,
-        "tz_hour": 7,
-        "tz_minute": 0
-      }
-    }
-  },
-  "html_body": [
-    {
-      "contents": "<html><body>... Some text appears here ...<br/><br/>[Note that the blank between the boundary and the start<br/>of the text in this part means no header fields were<br/>given and this is text in the US-ASCII character set.<br/>It could have been done with explicit typing as in the<br/>next part.]<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>This could have been part of the previous part, but<br/>illustrates explicit versus implicit typing of body<br/>parts.<br/></body></html>"
-    }
-  ],
-  "text_body": [
-    {
-      "contents": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
-    },
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "US-ASCII"
-            }
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "unique-boundary-1"
           }
         }
       },
-      "contents": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n"
-    }
+      "subject": {
+        "Text": "A multipart example"
+      },
+      "to": {
+        "Address": {
+          "name": "Ned Freed",
+          "address": "ned@innosoft.com"
+        }
+      },
+      "date": {
+        "DateTime": {
+          "year": 1994,
+          "month": 10,
+          "day": 7,
+          "hour": 16,
+          "minute": 15,
+          "second": 5,
+          "tz_before_gmt": true,
+          "tz_hour": 7,
+          "tz_minute": 0
+        }
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 13,
+        "end": 18
+      },
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 23,
+        "end": 62
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 65,
+        "end": 95
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 100,
+        "end": 139
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 147,
+        "end": 168
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 181,
+        "end": 238
+      }
+    ]
+  },
+  "html_body": [
+    0,
+    2
+  ],
+  "text_body": [
+    1,
+    3
   ],
   "attachments": [
     {
+      "Attachment": 5
+    },
+    {
+      "Attachment": 6
+    },
+    {
+      "Attachment": 7
+    },
+    {
+      "Attachment": 9
+    }
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "<html><body>... Some text appears here ...<br/><br/>[Note that the blank between the boundary and the start<br/>of the text in this part means no header fields were<br/>given and this is text in the US-ASCII character set.<br/>It could have been done with explicit typing as in the<br/>next part.]<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>This could have been part of the previous part, but<br/>illustrates explicit versus implicit typing of body<br/>parts.<br/></body></html>"
+      }
+    },
+    {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "audio",
-              "c_subtype": "basic"
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "US-ASCII"
+                }
+              }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 827,
+              "end": 857
+            }
+          ]
+        },
+        "contents": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n"
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "parallel",
+              "attributes": {
+                "boundary": "unique-boundary-2"
+              }
+            }
           }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 1003,
+            "end": 1051
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "audio",
+                "c_subtype": "basic"
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1085,
+              "end": 1098
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 1124,
+              "end": 1132
+            }
+          ]
         },
         "contents": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
       }
@@ -162,15 +287,33 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg"
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "image",
+                "c_subtype": "jpeg"
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
             }
-          }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1252,
+              "end": 1264
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 1290,
+              "end": 1298
+            }
+          ]
         },
         "contents": "... base64-encoded image data goes here ...\n"
       }
@@ -178,56 +321,173 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "enriched"
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "enriched"
+              }
             }
-          }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1400,
+              "end": 1415
+            }
+          ]
         },
         "contents": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n"
       }
     },
     {
-      "Message": {
-        "headers": {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "ISO-8859-1"
-              }
+              "c_type": "message",
+              "c_subtype": "rfc822"
             }
-          },
-          "from": {
-            "Address": {
-              "name": "mailbox in US-ASCII"
-            }
-          },
-          "subject": {
-            "Text": "(subject in US-ASCII)"
-          },
-          "to": {
-            "Address": {
-              "name": "address in US-ASCII"
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "Quoted-printable"
           }
         },
-        "html_body": [
+        "offsets": [
           {
-            "contents": "<html><body>... Additional text in ISO-8859-1 goes here ...<br/></body></html>"
-          }
-        ],
-        "text_body": [
-          {
-            "contents": "... Additional text in ISO-8859-1 goes here ...\n"
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 1590,
+            "end": 1606
           }
         ]
       }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "to": {
+              "Address": {
+                "name": "address in US-ASCII"
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "ISO-8859-1"
+                }
+              }
+            },
+            "subject": {
+              "Text": "(subject in US-ASCII)"
+            },
+            "content_transfer_encoding": {
+              "Text": "Quoted-printable"
+            },
+            "from": {
+              "Address": {
+                "name": "mailbox in US-ASCII"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 1612,
+              "end": 1635
+            },
+            {
+              "name": {
+                "Rfc": "to"
+              },
+              "start": 1638,
+              "end": 1661
+            },
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 1669,
+              "end": 1692
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1705,
+              "end": 1737
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 1763,
+              "end": 1781
+            }
+          ]
+        },
+        "html_body": [
+          0
+        ],
+        "text_body": [
+          1
+        ],
+        "parts": [
+          {
+            "Text": {
+              "contents": "<html><body>... Additional text in ISO-8859-1 goes here ...<br/></body></html>"
+            }
+          },
+          {
+            "Text": {
+              "contents": "... Additional text in ISO-8859-1 goes here ...\n"
+            }
+          }
+        ],
+        "structure": {
+          "Part": 1
+        },
+        "offset_header": 1607,
+        "offset_body": 1782,
+        "offset_end": 1850
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "Part": 3
+      },
+      {
+        "MultiPart": [
+          4,
+          [
+            {
+              "Part": 5
+            },
+            {
+              "Part": 6
+            }
+          ]
+        ]
+      },
+      {
+        "Part": 7
+      },
+      {
+        "Part": 8
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 239,
+  "offset_end": 1852
 }

@@ -12,24 +12,80 @@ Content-Type: text/plain
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "ab"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "ab"
+          }
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 45
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>Content-Type: text/plain<br/></body></html>"
-    }
+    1
   ],
   "text_body": [
+    2
+  ],
+  "parts": [
     {
-      "contents": "Content-Type: text/plain\n"
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "a"
+              }
+            }
+          }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 64,
+            "end": 95
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>Content-Type: text/plain<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "Content-Type: text/plain\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "MultiPart": [
+      0,
+      [
+        {
+          "Part": 2
+        }
+      ]
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 46,
+  "offset_end": 132
 }

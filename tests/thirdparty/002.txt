@@ -21,79 +21,177 @@ Content-Type: text/plain; charset=utf-8
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "foo"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "foo"
+          }
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 44
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>päivää<br/></body></html>"
-    },
-    {
-      "contents": "<html><body>yötä vaan.<br/>�\t�</body></html>"
-    }
+    0,
+    2
   ],
   "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "utf-8"
-            }
-          }
-        },
-        "content_transfer_encoding": {
-          "Text": "quoted-printable"
-        }
-      },
-      "contents": "päivää\n"
-    },
-    {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "base64"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "utf-8"
-            }
-          }
-        }
-      },
-      "contents": "yötä vaan.\n�\t�"
-    }
+    1,
+    3
   ],
   "attachments": [
     {
+      "Attachment": 4
+    }
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "<html><body>päivää<br/></body></html>"
+      }
+    },
+    {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "utf-8"
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "utf-8"
+                }
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          }
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 77,
+              "end": 95
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 108,
+              "end": 135
+            }
+          ]
+        },
+        "contents": "päivää\n"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>yötä vaan.<br/>�\t�</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "utf-8"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 191,
+              "end": 199
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 212,
+              "end": 239
+            }
+          ]
+        },
+        "contents": "yötä vaan.\n�\t�"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "base64"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "utf-8"
+                }
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 301,
+              "end": 309
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 322,
+              "end": 349
+            }
+          ]
         },
         "contents": "?garbage"
       }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 1
+      },
+      {
+        "Part": 3
+      },
+      {
+        "Part": 4
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 45,
+  "offset_end": 366
 }

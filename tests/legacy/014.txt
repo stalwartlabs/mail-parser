@@ -74,86 +74,248 @@ race.&nbsp;=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
+    "values": {
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "doug@example.com"
+        }
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "alternative",
+          "attributes": {
+            "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
+          }
+        }
+      },
+      "to": {
+        "Address": {
+          "name": "Joe Blow",
+          "address": "jblow@example.com"
+        }
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "message_id": {
+        "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
+      },
+      "subject": {
+        "Text": "Test message from Microsoft Outlook 00"
+      },
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 17,
+          "hour": 19,
+          "minute": 38,
+          "second": 28,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+    "other_values": {
+      "X-Mailer": {
+        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+      },
+      "X-MSMail-Priority": {
+        "Text": "Normal"
+      },
+      "X-Priority": {
+        "Text": "3 (Normal)"
+      },
+      "Importance": {
+        "Text": "Normal"
+      },
+      "X-MimeOLE": {
+        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
       }
     },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 5,
+        "end": 40
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 43,
+        "end": 76
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 84,
+        "end": 125
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 130,
+        "end": 164
+      },
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 175,
+        "end": 225
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 238,
+        "end": 244
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 257,
+        "end": 337
+      },
+      {
+        "name": {
+          "Other": "X-Priority"
+        },
+        "start": 348,
+        "end": 361
+      },
+      {
+        "name": {
+          "Other": "X-MSMail-Priority"
+        },
+        "start": 379,
+        "end": 388
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 397,
+        "end": 450
+      },
+      {
+        "name": {
+          "Other": "Importance"
+        },
+        "start": 461,
+        "end": 470
+      },
+      {
+        "name": {
+          "Other": "X-MimeOLE"
+        },
+        "start": 480,
+        "end": 528
       }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 38,
-        "second": 28,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    }
+    ]
   },
   "html_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "html",
-            "attributes": {
-              "charset": "iso-8859-1"
-            }
-          }
-        },
-        "content_transfer_encoding": {
-          "Text": "quoted-printable"
-        }
-      },
-      "contents": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n"
-    }
+    1
   ],
   "text_body": [
+    0
+  ],
+  "parts": [
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "quoted-printable"
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain",
-            "attributes": {
-              "charset": "iso-8859-1"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain",
+                "attributes": {
+                  "charset": "iso-8859-1"
+                }
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
             }
-          }
-        }
-      },
-      "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n"
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 636,
+              "end": 673
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 699,
+              "end": 718
+            }
+          ]
+        },
+        "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "quoted-printable"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "html",
+                "attributes": {
+                  "charset": "iso-8859-1"
+                }
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1581,
+              "end": 1617
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 1643,
+              "end": 1662
+            }
+          ]
+        },
+        "contents": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 1
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 530,
+  "offset_end": 2901
 }

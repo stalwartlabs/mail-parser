@@ -36,67 +36,193 @@ m+APw-ssen als wir.+ACI-=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "mime_version": {
-      "Text": "1.0"
+    "values": {
+      "content_transfer_encoding": {
+        "Text": "quoted-printable"
+      },
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 17,
+          "hour": 19,
+          "minute": 18,
+          "second": 39,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
+        }
+      },
+      "message_id": {
+        "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
+      },
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "to": {
+        "AddressList": [
+          {
+            "name": "Joe Blow",
+            "address": "jblow@example.com"
+          },
+          {
+            "name": "Jürgen Schmürgen",
+            "address": "schmuergen@example.com"
+          }
+        ]
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "utf-7"
+          }
+        }
+      },
+      "subject": {
+        "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "doug@example.com"
+        }
+      }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    "other_values": {
+      "X-Mailer": {
+        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+      },
+      "X-MimeOLE": {
+        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      },
+      "X-Priority": {
+        "Text": "3 (Normal)"
+      },
+      "X-MSMail-Priority": {
+        "Text": "Normal"
+      },
+      "Importance": {
+        "Text": "Normal"
+      }
     },
-    "to": {
-      "AddressList": [
-        {
-          "name": "Joe Blow",
-          "address": "jblow@example.com"
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "from"
         },
-        {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
-      ]
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+        "start": 5,
+        "end": 39
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 42,
+        "end": 146
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 154,
+        "end": 224
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 229,
+        "end": 262
+      },
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 273,
+        "end": 322
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 335,
+        "end": 340
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 353,
+        "end": 383
+      },
+      {
+        "name": {
+          "Rfc": "content_transfer_encoding"
+        },
+        "start": 409,
+        "end": 427
+      },
+      {
+        "name": {
+          "Other": "X-Priority"
+        },
+        "start": 438,
+        "end": 450
+      },
+      {
+        "name": {
+          "Other": "X-MSMail-Priority"
+        },
+        "start": 468,
+        "end": 476
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 485,
+        "end": 537
+      },
+      {
+        "name": {
+          "Other": "Importance"
+        },
+        "start": 548,
+        "end": 556
+      },
+      {
+        "name": {
+          "Other": "X-MimeOLE"
+        },
+        "start": 566,
+        "end": 613
       }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 18,
-        "second": 39,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "utf-7"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
-    }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/></body></html>"
-    }
+    0
   ],
   "text_body": [
+    1
+  ],
+  "parts": [
     {
-      "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+      "Text": {
+        "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" <br/><br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 1
+  },
+  "offset_header": 0,
+  "offset_body": 614,
+  "offset_end": 1491
 }

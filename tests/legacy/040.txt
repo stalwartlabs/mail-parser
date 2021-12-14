@@ -30,61 +30,157 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "iso-8859-1"
+    "values": {
+      "content_transfer_encoding": {
+        "Text": "quoted-printable"
+      },
+      "to": {
+        "Address": {
+          "name": "Jürgen Schmürgen",
+          "address": "schmuergen@example.com"
         }
+      },
+      "message_id": {
+        "Text": "39236653.CAA8A090@example.com"
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "dwsauder@example.com"
+        }
+      },
+      "subject": {
+        "Text": "Die Hasen und die Frösche"
+      },
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 17,
+          "hour": 23,
+          "minute": 41,
+          "second": 7,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
+        }
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "text",
+          "c_subtype": "plain",
+          "attributes": {
+            "charset": "iso-8859-1"
+          }
+        }
+      },
+      "mime_version": {
+        "Text": "1.0"
       }
     },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 41,
-        "second": 7,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
+    "other_values": {
+      "X-Accept-Language": {
+        "Text": "en"
+      },
+      "X-Mailer": {
+        "Text": "Mozilla 4.7 [en] (WinNT; I)"
       }
     },
-    "message_id": {
-      "Text": "39236653.CAA8A090@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 11,
+        "end": 45
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 50,
+        "end": 84
+      },
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 89,
+        "end": 126
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 135,
+        "end": 165
+      },
+      {
+        "name": {
+          "Other": "X-Accept-Language"
+        },
+        "start": 183,
+        "end": 188
+      },
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 201,
+        "end": 207
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 210,
+        "end": 277
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 285,
+        "end": 332
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 345,
+        "end": 378
+      },
+      {
+        "name": {
+          "Rfc": "content_transfer_encoding"
+        },
+        "start": 404,
+        "end": 423
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"<br/></body></html>"
-    }
+    0
   ],
   "text_body": [
+    1
+  ],
+  "parts": [
     {
-      "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"\n"
+      "Text": {
+        "contents": "<html><body>Die Hasen und die Frösche<br/><br/>Die Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" <br/><br/>In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. <br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"<br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\"\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 1
+  },
+  "offset_header": 0,
+  "offset_body": 425,
+  "offset_end": 1231
 }

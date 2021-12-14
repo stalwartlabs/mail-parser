@@ -35,133 +35,334 @@ Foobar
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": "moderator"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "digest",
-        "attributes": {
-          "boundary": "1"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "digest",
+          "attributes": {
+            "boundary": "1"
+          }
+        }
+      },
+      "from": {
+        "Address": {
+          "name": "Moderator-Address",
+          "address": "moderator"
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 5,
+        "end": 36
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 49,
+        "end": 80
+      }
+    ]
   },
   "attachments": [
     {
-      "Message": {
-        "headers": {
-          "subject": {
-            "Text": "my opinion"
-          },
-          "from": {
-            "Address": {
-              "name": "someone-else",
-              "address": "someone@else"
-            }
-          }
-        },
-        "html_body": [
-          {
-            "contents": "<html><body>This is my opinion</body></html>"
-          }
-        ],
-        "text_body": [
-          {
-            "contents": "This is my opinion"
-          }
-        ]
-      }
+      "Attachment": 1
     },
     {
-      "Message": {
-        "headers": {
-          "subject": {
-            "Text": "i disagree"
-          },
-          "from": {
-            "Address": {
-              "name": "another one",
-              "address": "another@one"
-            }
-          }
-        },
-        "html_body": [
-          {
-            "contents": "<html><body>Not agreeing one bit!</body></html>"
-          }
-        ],
-        "text_body": [
-          {
-            "contents": "Not agreeing one bit!"
-          }
-        ]
-      }
+      "Attachment": 3
     },
     {
-      "Message": {
-        "headers": {
-          "subject": {
-            "Text": "funny hat"
-          },
-          "from": {
-            "Address": {
-              "name": "attachment",
-              "address": "attachment@user"
-            }
-          },
+      "Attachment": 5
+    }
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "2"
-              }
+              "c_type": "message",
+              "c_subtype": "rfc822"
             }
           }
+        }
+      }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "subject": {
+              "Text": "my opinion"
+            },
+            "from": {
+              "Address": {
+                "name": "someone-else",
+                "address": "someone@else"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 92,
+              "end": 121
+            },
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 129,
+              "end": 141
+            }
+          ]
         },
         "html_body": [
-          {
-            "contents": "<html><body>Lovely attachment for you</body></html>"
-          }
+          0
         ],
         "text_body": [
+          1
+        ],
+        "parts": [
           {
-            "headers": {
-              "content_type": {
-                "ContentType": {
-                  "c_type": "text",
-                  "c_subtype": "plain"
-                }
-              },
-              "content_transfer_encoding": {
-                "Text": "binary"
+            "Text": {
+              "contents": "<html><body>This is my opinion</body></html>"
+            }
+          },
+          {
+            "Text": {
+              "contents": "This is my opinion"
+            }
+          }
+        ],
+        "structure": {
+          "Part": 1
+        },
+        "offset_header": 87,
+        "offset_body": 142,
+        "offset_end": 166
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
+          }
+        }
+      }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "from": {
+              "Address": {
+                "name": "another one",
+                "address": "another@one"
               }
             },
-            "contents": "Lovely attachment for you"
+            "subject": {
+              "Text": "i disagree"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 171,
+              "end": 198
+            },
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 206,
+              "end": 218
+            }
+          ]
+        },
+        "html_body": [
+          0
+        ],
+        "text_body": [
+          1
+        ],
+        "parts": [
+          {
+            "Text": {
+              "contents": "<html><body>Not agreeing one bit!</body></html>"
+            }
+          },
+          {
+            "Text": {
+              "contents": "Not agreeing one bit!"
+            }
           }
+        ],
+        "structure": {
+          "Part": 1
+        },
+        "offset_header": 166,
+        "offset_body": 219,
+        "offset_end": 246
+      }
+    },
+    {
+      "Multipart": {
+        "values": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
+          }
+        }
+      }
+    },
+    {
+      "Message": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "2"
+                }
+              }
+            },
+            "from": {
+              "Address": {
+                "name": "attachment",
+                "address": "attachment@user"
+              }
+            },
+            "subject": {
+              "Text": "funny hat"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 251,
+              "end": 281
+            },
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 289,
+              "end": 300
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 313,
+              "end": 342
+            }
+          ]
+        },
+        "html_body": [
+          0
+        ],
+        "text_body": [
+          1
         ],
         "attachments": [
           {
-            "Binary": {
+            "Attachment": 2
+          }
+        ],
+        "parts": [
+          {
+            "Text": {
+              "contents": "<html><body>Lovely attachment for you</body></html>"
+            }
+          },
+          {
+            "Text": {
               "headers": {
-                "content_transfer_encoding": {
-                  "Text": "binary"
-                },
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "application",
-                    "c_subtype": "octet-stream",
-                    "attributes": {
-                      "name": "test.txt",
-                      "disposition": "attachment"
+                "values": {
+                  "content_transfer_encoding": {
+                    "Text": "binary"
+                  },
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain"
                     }
                   }
-                }
+                },
+                "offsets": [
+                  {
+                    "name": {
+                      "Rfc": "content_type"
+                    },
+                    "start": 360,
+                    "end": 372
+                  },
+                  {
+                    "name": {
+                      "Rfc": "content_transfer_encoding"
+                    },
+                    "start": 398,
+                    "end": 406
+                  }
+                ]
+              },
+              "contents": "Lovely attachment for you"
+            }
+          },
+          {
+            "Binary": {
+              "headers": {
+                "values": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "application",
+                      "c_subtype": "octet-stream",
+                      "attributes": {
+                        "name": "test.txt",
+                        "disposition": "attachment"
+                      }
+                    }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "binary"
+                  }
+                },
+                "offsets": [
+                  {
+                    "name": {
+                      "Rfc": "content_type"
+                    },
+                    "start": 450,
+                    "end": 517
+                  },
+                  {
+                    "name": {
+                      "Rfc": "content_transfer_encoding"
+                    },
+                    "start": 543,
+                    "end": 551
+                  }
+                ]
               },
               "contents": [
                 70,
@@ -173,8 +374,37 @@ Foobar
               ]
             }
           }
-        ]
+        ],
+        "structure": {
+          "List": [
+            {
+              "Part": 1
+            },
+            {
+              "Part": 2
+            }
+          ]
+        },
+        "offset_header": 246,
+        "offset_body": 343,
+        "offset_end": 565
       }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 2
+      },
+      {
+        "Part": 4
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 82,
+  "offset_end": 570
 }

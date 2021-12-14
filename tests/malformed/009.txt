@@ -19,47 +19,131 @@ Content-Type: text/plain
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "1"
-        }
-      }
-    }
-  },
-  "html_body": [
-    {
-      "contents": "<html><body>1</body></html>"
-    }
-  ],
-  "text_body": [
-    {
-      "headers": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "1"
           }
         }
-      },
-      "contents": "1"
-    }
+      }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 44
+      }
+    ]
+  },
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    2
   ],
   "attachments": [
     {
-      "Text": {
-        "headers": {
+      "Attachment": 3
+    }
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain"
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
+              }
             }
           }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 62,
+            "end": 93
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>1</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 111,
+              "end": 123
+            }
+          ]
+        },
+        "contents": "1"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 143,
+              "end": 155
+            }
+          ]
         },
         "contents": "22\n--1\nContent-Type: text/plain\n\n333\n"
       }
     }
-  ]
+  ],
+  "structure": {
+    "MultiPart": [
+      0,
+      [
+        {
+          "Part": 2
+        },
+        {
+          "Part": 3
+        }
+      ]
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 45,
+  "offset_end": 193
 }

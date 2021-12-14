@@ -21,55 +21,136 @@ ZWg=
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "bound"
+    "values": {
+      "mime_version": {
+        "Text": "1.0"
+      },
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "alternative",
+          "attributes": {
+            "boundary": "bound"
+          }
         }
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    }
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "mime_version"
+        },
+        "start": 13,
+        "end": 19
+      },
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 32,
+        "end": 76
+      }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>we havea lot <br/>of \u0000binary stuff in here<br/>b adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a</body></html>"
-    },
-    {
-      "contents": "<html><body>eh</body></html>"
-    }
+    2,
+    3
   ],
   "text_body": [
+    0,
+    1
+  ],
+  "parts": [
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "base64"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            },
+            "content_transfer_encoding": {
+              "Text": "base64"
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 128,
+              "end": 137
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 150,
+              "end": 163
+            }
+          ]
         },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
+        "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
+      }
     },
     {
-      "headers": {
-        "content_transfer_encoding": {
-          "Text": "base64"
+      "Text": {
+        "headers": {
+          "values": {
+            "content_transfer_encoding": {
+              "Text": "base64"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 413,
+              "end": 426
+            },
+            {
+              "name": {
+                "Rfc": "content_transfer_encoding"
+              },
+              "start": 452,
+              "end": 461
+            }
+          ]
         },
-        "content_type": {
-          "ContentType": {
-            "c_type": "text",
-            "c_subtype": "plain"
-          }
-        }
-      },
-      "contents": "eh"
+        "contents": "eh"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>we havea lot <br/>of \u0000binary stuff in here<br/>b adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a</body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "<html><body>eh</body></html>"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 1
+      }
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 78,
+  "offset_end": 478
 }

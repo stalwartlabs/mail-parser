@@ -11,29 +11,93 @@ body
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "a"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "a"
+          }
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 44
+      }
+    ]
   },
   "attachments": [
     {
-      "Text": {
-        "headers": {
+      "Attachment": 1
+    }
+  ],
+  "parts": [
+    {
+      "Multipart": {
+        "values": {
           "content_type": {
             "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain"
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "a"
+              }
             }
           }
+        },
+        "offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 62,
+            "end": 93
+          }
+        ]
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "values": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 111,
+              "end": 123
+            }
+          ]
         },
         "contents": "body\n"
       }
     }
-  ]
+  ],
+  "structure": {
+    "MultiPart": [
+      0,
+      [
+        {
+          "Part": 1
+        }
+      ]
+    ]
+  },
+  "offset_header": 0,
+  "offset_body": 45,
+  "offset_end": 129
 }

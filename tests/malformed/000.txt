@@ -12,14 +12,31 @@ Content-Type: text/html
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": ":foo"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": ":foo"
+          }
         }
       }
-    }
-  }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 47
+      }
+    ]
+  },
+  "structure": {
+    "List": []
+  },
+  "offset_header": 0,
+  "offset_body": 48,
+  "offset_end": 160
 }

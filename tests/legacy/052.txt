@@ -29,46 +29,151 @@ welche also wohl noch unglücklicher sein müssen als wir."
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 28,
-        "second": 40,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
+    "values": {
+      "to": {
+        "Address": {
+          "name": "Heinz Mï¿½ller",
+          "address": "mueller@example.com"
+        }
+      },
+      "subject": {
+        "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
+      },
+      "date": {
+        "DateTime": {
+          "year": 2000,
+          "month": 5,
+          "day": 17,
+          "hour": 19,
+          "minute": 28,
+          "second": 40,
+          "tz_before_gmt": true,
+          "tz_hour": 4,
+          "tz_minute": 0
+        }
+      },
+      "from": {
+        "Address": {
+          "name": "Doug Sauder",
+          "address": "doug@example.com"
+        }
+      },
+      "message_id": {
+        "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
       }
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Mï¿½ller",
-        "address": "mueller@example.com"
+    "other_values": {
+      "X-Mailer": {
+        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+      },
+      "X-Priority": {
+        "Text": "3 (Normal)"
+      },
+      "X-MimeOLE": {
+        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+      },
+      "X-MSMail-Priority": {
+        "Text": "Normal"
+      },
+      "Importance": {
+        "Text": "Normal"
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "from"
+        },
+        "start": 5,
+        "end": 40
+      },
+      {
+        "name": {
+          "Rfc": "to"
+        },
+        "start": 43,
+        "end": 82
+      },
+      {
+        "name": {
+          "Rfc": "subject"
+        },
+        "start": 90,
+        "end": 141
+      },
+      {
+        "name": {
+          "Rfc": "date"
+        },
+        "start": 146,
+        "end": 180
+      },
+      {
+        "name": {
+          "Rfc": "message_id"
+        },
+        "start": 191,
+        "end": 241
+      },
+      {
+        "name": {
+          "Other": "X-Priority"
+        },
+        "start": 252,
+        "end": 265
+      },
+      {
+        "name": {
+          "Other": "X-MSMail-Priority"
+        },
+        "start": 283,
+        "end": 292
+      },
+      {
+        "name": {
+          "Other": "X-Mailer"
+        },
+        "start": 301,
+        "end": 354
+      },
+      {
+        "name": {
+          "Other": "Importance"
+        },
+        "start": 365,
+        "end": 374
+      },
+      {
+        "name": {
+          "Other": "X-MimeOLE"
+        },
+        "start": 384,
+        "end": 432
       }
-    }
+    ]
   },
   "html_body": [
-    {
-      "contents": "<html><body>Die Hasen und die Frï¿½sche<br/><br/>Die Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der<br/>Adler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod<br/>selbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"<br/><br/>In einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;<br/>allein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte<br/>eine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste<br/>untertauchten.<br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein<br/>wenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,<br/>welche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"<br/><br/></body></html>"
-    }
+    0
   ],
   "text_body": [
+    1
+  ],
+  "parts": [
     {
-      "contents": "Die Hasen und die Frï¿½sche\r\n\r\nDie Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod\r\nselbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;\r\nallein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte\r\neine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein\r\nwenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"\r\n\r\n"
+      "Text": {
+        "contents": "<html><body>Die Hasen und die Frï¿½sche<br/><br/>Die Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein<br/>Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der<br/>Adler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod<br/>selbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"<br/><br/>In einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;<br/>allein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte<br/>eine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste<br/>untertauchten.<br/><br/>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein<br/>wenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,<br/>welche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"<br/><br/></body></html>"
+      }
+    },
+    {
+      "Text": {
+        "contents": "Die Hasen und die Frï¿½sche\r\n\r\nDie Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod\r\nselbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;\r\nallein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte\r\neine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein\r\nwenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"\r\n\r\n"
+      }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 1
+  },
+  "offset_header": 0,
+  "offset_body": 434,
+  "offset_end": 1186
 }

@@ -154,8 +154,7 @@ impl MessageParserState {
         } else if self.structure.len() == 1 {
             self.structure.pop().unwrap()
         } else {
-            debug_assert!(false, "No parts found.");
-            MessageStructure::default()
+            MessageStructure::List(vec![])
         }
     }
 }
@@ -674,13 +673,12 @@ mod tests {
         }
     }
 
-    #[test]
-    #[ignore]
+    /*#[test]
     fn message_to_yaml() {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");
-        file_name.push("rfc");
-        file_name.push("002.txt");
+        file_name.push("legacy");
+        file_name.push("000.txt");
 
         let mut input = fs::read(&file_name).unwrap();
         let mut pos = 0;
@@ -700,19 +698,18 @@ mod tests {
 
         let input = input.split_at_mut(pos);
         let message = Message::parse(input.0).unwrap();
-        let result = serde_yaml::to_string(&message).unwrap();
+        let result = serde_json::to_string_pretty(&message).unwrap(); //serde_yaml::to_string(&message).unwrap();
 
         //fs::write("test.yaml", &result).unwrap();
 
         println!("{}", result);
     }
 
-    /*
     #[test]
     fn generate_test_samples() {
         const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
-        for test_suite in ["malformed", "legacy", "rfc", "thirdparty"] {
+        for test_suite in ["legacy", "malformed", "rfc", "thirdparty"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
@@ -749,8 +746,8 @@ mod tests {
                 output.extend_from_slice(input.0);
                 output.extend_from_slice(SEPARATOR);
                 output.extend_from_slice(
-                    serde_json::to_string_pretty(&Message::parse(input.0))
-                        .unwrap_or_else(|_| "".to_string())
+                    serde_json::to_string_pretty(&Message::parse(input.0).unwrap())
+                        .unwrap()
                         .as_bytes(),
                 );
                 fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();

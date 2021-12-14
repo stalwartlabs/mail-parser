@@ -5,21 +5,43 @@ body
 ---- EXPECTED STRUCTURE ----
 {
   "headers": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "ab"
+    "values": {
+      "content_type": {
+        "ContentType": {
+          "c_type": "multipart",
+          "c_subtype": "mixed",
+          "attributes": {
+            "boundary": "ab"
+          }
         }
       }
-    }
+    },
+    "offsets": [
+      {
+        "name": {
+          "Rfc": "content_type"
+        },
+        "start": 13,
+        "end": 45
+      }
+    ]
   },
   "attachments": [
+    {
+      "Attachment": 0
+    }
+  ],
+  "parts": [
     {
       "Text": {
         "contents": "body\n"
       }
     }
-  ]
+  ],
+  "structure": {
+    "Part": 0
+  },
+  "offset_header": 0,
+  "offset_body": 46,
+  "offset_end": 51
 }

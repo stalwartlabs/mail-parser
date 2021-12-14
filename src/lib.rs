@@ -449,7 +449,13 @@ pub struct Headers<'x> {
         serde(skip_serializing_if = "HashMap::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub values: HashMap<HeaderName<'x>, HeaderValue<'x>>,
+    pub values: HashMap<HeaderName, HeaderValue<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "HashMap::is_empty")
+    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub other_values: HashMap<Cow<'x, str>, HeaderValue<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Vec::is_empty")
@@ -464,7 +470,7 @@ impl<'x> Headers<'x> {
     }
 
     pub fn is_empty(&self) -> bool {
-        self.values.is_empty() && self.offsets.is_empty()
+        self.values.is_empty() && self.other_values.is_empty() && self.offsets.is_empty()
     }
 
     pub fn clear(&mut self) {
@@ -477,55 +483,62 @@ impl<'x> Headers<'x> {
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct HeaderOffset<'x> {
-    pub name: HeaderName<'x>,
+    pub name: HeaderOffsetName<'x>,
     pub start: usize,
     pub end: usize,
 }
 
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub enum HeaderOffsetName<'x> {
+    Rfc(HeaderName),
+    Other(Cow<'x, str>),
+}
+
 /// A header field
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+#[repr(u8)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
-pub enum HeaderName<'x> {
-    Subject,
-    From,
-    To,
-    Cc,
-    Date,
-    Bcc,
-    ReplyTo,
-    Sender,
-    Comments,
-    InReplyTo,
-    Keywords,
-    Received,
-    MessageId,
-    References,
-    ReturnPath,
-    MimeVersion,
-    ContentDescription,
-    ContentId,
-    ContentLanguage,
-    ContentLocation,
-    ContentTransferEncoding,
-    ContentType,
-    ContentDisposition,
-    ResentTo,
-    ResentFrom,
-    ResentBcc,
-    ResentCc,
-    ResentSender,
-    ResentDate,
-    ResentMessageId,
-    ListArchive,
-    ListHelp,
-    ListId,
-    ListOwner,
-    ListPost,
-    ListSubscribe,
-    ListUnsubscribe,
-    Other(Cow<'x, str>),
-    Invalid,
+pub enum HeaderName {
+    Subject = 0,
+    From = 1,
+    To = 2,
+    Cc = 3,
+    Date = 4,
+    Bcc = 5,
+    ReplyTo = 6,
+    Sender = 7,
+    Comments = 8,
+    InReplyTo = 9,
+    Keywords = 10,
+    Received = 11,
+    MessageId = 12,
+    References = 13,
+    ReturnPath = 14,
+    MimeVersion = 15,
+    ContentDescription = 16,
+    ContentId = 17,
+    ContentLanguage = 18,
+    ContentLocation = 19,
+    ContentTransferEncoding = 20,
+    ContentType = 21,
+    ContentDisposition = 22,
+    ResentTo = 23,
+    ResentFrom = 24,
+    ResentBcc = 25,
+    ResentCc = 26,
+    ResentSender = 27,
+    ResentDate = 28,
+    ResentMessageId = 29,
+    ListArchive = 30,
+    ListHelp = 31,
+    ListId = 32,
+    ListOwner = 33,
+    ListPost = 34,
+    ListSubscribe = 35,
+    ListUnsubscribe = 36,
+    Other = 37,
 }
 
 /// A parsed header value.
@@ -907,8 +920,8 @@ impl<'x> Message<'x> {
     /// Returns a non-standard header field
     pub fn get_other(&self, name: &'x str) -> &HeaderValue<'x> {
         self.headers
-            .values
-            .get(&HeaderName::Other(name.into()))
+            .other_values
+            .get(&Cow::from(name))
             .unwrap_or(&HeaderValue::Empty)
     }
 
