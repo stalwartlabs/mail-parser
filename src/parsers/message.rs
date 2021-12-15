@@ -623,7 +623,7 @@ mod tests {
         }
     }
 
-    #[test]
+    /*#[test]
     fn message_to_yaml() {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");
@@ -703,5 +703,5 @@ mod tests {
                 fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
             }
         }
-    }
+    }*/
 }
