@@ -35,38 +35,36 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "1"
-          }
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      }
+  "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 44
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 57,
-        "end": 62
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 44
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 57,
+      "end": 62
+    }
+  ],
   "html_body": [
     0,
     1,
@@ -85,36 +83,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "7bit"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 93,
-              "end": 104
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 117,
-              "end": 147
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          }
         },
         "contents": "Move black king to queen's bishop\n",
         "is_html": false
@@ -123,36 +103,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "binary"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "UTF-8"
-                }
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 213,
-              "end": 224
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 237,
-              "end": 264
-            }
-          ]
+          }
         },
         "contents": "Move ♚ to ♛'s ♝\n",
         "is_html": false
@@ -161,36 +123,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "UTF-8"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "8bit"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 318,
-              "end": 328
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 341,
-              "end": 368
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "8bit"
+          }
         },
         "contents": "Move ♚ to ♛'s ♝\n",
         "is_html": false
@@ -199,36 +143,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "UTF-8"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            }
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 422,
-              "end": 455
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 468,
-              "end": 495
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
+              }
             }
-          ]
+          }
         },
         "contents": "Move ♚ to ♛'s ♝\n",
         "is_html": false
@@ -237,36 +163,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "UTF-8"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 567,
-              "end": 575
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 588,
-              "end": 615
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": "Move ♚ to ♛'s ♝\n",
         "is_html": false

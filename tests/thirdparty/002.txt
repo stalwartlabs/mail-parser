@@ -20,28 +20,26 @@ Content-Type: text/plain; charset=utf-8
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "foo"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "foo"
         }
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 44
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 44
+    }
+  ],
   "html_body": [
     0,
     1
@@ -59,36 +57,18 @@ Content-Type: text/plain; charset=utf-8
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "utf-8"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "utf-8"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 77,
-              "end": 95
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 108,
-              "end": 135
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          }
         },
         "contents": "päivää\n",
         "is_html": false
@@ -97,36 +77,18 @@ Content-Type: text/plain; charset=utf-8
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "utf-8"
-                }
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "utf-8"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 191,
-              "end": 199
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 212,
-              "end": 239
-            }
-          ]
+          }
         },
         "contents": "yötä vaan.\n�\t�",
         "is_html": false
@@ -135,36 +97,18 @@ Content-Type: text/plain; charset=utf-8
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "utf-8"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "utf-8"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 301,
-              "end": 309
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 322,
-              "end": 349
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": "?garbage",
         "is_html": false

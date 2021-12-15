@@ -32,166 +32,164 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
-          }
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "message_id": {
-        "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 19,
-          "minute": 15,
-          "second": 35,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "doug@example.com"
-        }
-      },
-      "content_transfer_encoding": {
-        "Text": "quoted-printable"
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+  "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
-    "other_values": {
-      "X-Priority": {
-        "Text": "3 (Normal)"
-      },
-      "Importance": {
-        "Text": "Normal"
-      },
-      "X-MimeOLE": {
-        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      },
-      "X-Mailer": {
-        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      },
-      "X-MSMail-Priority": {
-        "Text": "Normal"
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 40
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 43,
-        "end": 112
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 120,
-        "end": 194
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 199,
-        "end": 233
-      },
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 244,
-        "end": 294
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 307,
-        "end": 313
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 326,
-        "end": 363
-      },
-      {
-        "name": {
-          "Rfc": "content_transfer_encoding"
-        },
-        "start": 389,
-        "end": 408
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 419,
-        "end": 432
-      },
-      {
-        "name": {
-          "Other": "X-MSMail-Priority"
-        },
-        "start": 450,
-        "end": 459
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 468,
-        "end": 521
-      },
-      {
-        "name": {
-          "Other": "Importance"
-        },
-        "start": 532,
-        "end": 541
-      },
-      {
-        "name": {
-          "Other": "X-MimeOLE"
-        },
-        "start": 551,
-        "end": 599
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 15,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
-    ]
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
+    }
   },
+  "headers_other": {
+    "Importance": {
+      "Text": "Normal"
+    },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    },
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
+    "X-MSMail-Priority": {
+      "Text": "Normal"
+    },
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 40
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 43,
+      "end": 112
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 120,
+      "end": 194
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 199,
+      "end": 233
+    },
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 244,
+      "end": 294
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 307,
+      "end": 313
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 326,
+      "end": 363
+    },
+    {
+      "name": {
+        "Rfc": "content_transfer_encoding"
+      },
+      "start": 389,
+      "end": 408
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 419,
+      "end": 432
+    },
+    {
+      "name": {
+        "Other": "X-MSMail-Priority"
+      },
+      "start": 450,
+      "end": 459
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 468,
+      "end": 521
+    },
+    {
+      "name": {
+        "Other": "Importance"
+      },
+      "start": 532,
+      "end": 541
+    },
+    {
+      "name": {
+        "Other": "X-MimeOLE"
+      },
+      "start": 551,
+      "end": 599
+    }
+  ],
   "html_body": [
     0
   ],

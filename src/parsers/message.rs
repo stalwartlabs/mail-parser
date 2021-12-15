@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    AttachmentType, BinaryPart, ContentType, HeaderName, HeaderValue, Headers, Message,
-    MessagePart, MessagePartId, MessageStructure, TextPart,
+    AttachmentType, BinaryPart, ContentType, HeaderName, HeaderValue, Message, MessagePart,
+    MessagePartId, MessageStructure, RfcHeaders, TextPart,
 };
 
 use super::{
@@ -170,14 +170,13 @@ impl<'x> MessageStream<'x> {
 impl<'x> Message<'x> {
     fn new() -> Message<'x> {
         Message {
-            headers: Headers::new(),
             ..Default::default()
         }
     }
 
     /// Returns `false` if at least one header field was successfully parsed.
     pub fn is_empty(&self) -> bool {
-        self.headers.is_empty()
+        self.headers_rfc.is_empty() && self.headers_other.is_empty()
     }
 
     /// Parses a byte slice containing the RFC5322 raw message and returns a
@@ -195,28 +194,32 @@ impl<'x> Message<'x> {
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::new();
 
-        let mut mime_part_header = Headers::new();
+        let mut mime_part_header = RfcHeaders::new();
 
         'outer: loop {
-            // Obtain reference to either the message or the MIME part's header
+            // Parse headers
             let (is_message, header) = if let MimeType::Message = state.mime_type {
                 message.offset_header = stream.pos;
-                (true, &mut message.headers)
+                if !parse_headers(
+                    &mut message.headers_rfc,
+                    Some(&mut message.headers_other),
+                    Some(&mut message.headers_offsets),
+                    &mut stream,
+                ) {
+                    break;
+                }
+                message.offset_body = seek_crlf_end(&stream, stream.pos);
+                (true, &mut message.headers_rfc)
             } else {
+                if !parse_headers(&mut mime_part_header, None, None, &mut stream) {
+                    break;
+                }
                 (false, &mut mime_part_header)
             };
-
-            // Parse headers
-            if !parse_headers(header, &mut stream) {
-                break;
-            } else if is_message {
-                message.offset_body = seek_crlf_end(&stream, stream.pos);
-            }
 
             state.parts += 1;
 
             let content_type = header
-                .values
                 .get(&HeaderName::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
@@ -248,7 +251,7 @@ impl<'x> Message<'x> {
                         };
                         if !is_message {
                             if mime_part_header.is_empty() {
-                                mime_part_header.values.insert(
+                                mime_part_header.insert(
                                     HeaderName::ContentType,
                                     HeaderValue::ContentType(ContentType {
                                         c_type: "text".into(),
@@ -279,7 +282,7 @@ impl<'x> Message<'x> {
                     ..Default::default()
                 };
                 if mime_part_header.is_empty() {
-                    mime_part_header.values.insert(
+                    mime_part_header.insert(
                         HeaderName::ContentType,
                         HeaderValue::ContentType(ContentType {
                             c_type: "message".into(),
@@ -305,7 +308,6 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
 
             let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
-                .values
                 .get(&HeaderName::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
@@ -377,7 +379,6 @@ impl<'x> Message<'x> {
 
             let is_inline = is_inline
                 && header
-                    .values
                     .get(&HeaderName::ContentDisposition)
                     .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
                 && (state.parts == 1
@@ -413,11 +414,7 @@ impl<'x> Message<'x> {
                 let is_html = mime_type == MimeType::TextHtml;
                 let text_part = TextPart {
                     contents: result_to_string(bytes, stream.data, content_type),
-                    headers: if !mime_part_header.is_empty() {
-                        Some(std::mem::take(&mut mime_part_header))
-                    } else {
-                        None
-                    },
+                    headers: std::mem::take(&mut mime_part_header),
                     is_html,
                 };
 
@@ -459,11 +456,7 @@ impl<'x> Message<'x> {
                     .push(MessageStructure::Part(message.parts.len()));
 
                 message.parts.push(MessagePart::Binary(BinaryPart {
-                    headers: if !mime_part_header.is_empty() {
-                        Some(std::mem::take(&mut mime_part_header))
-                    } else {
-                        None
-                    },
+                    headers: std::mem::take(&mut mime_part_header),
                     contents: result_to_bytes(bytes, stream.data),
                 }));
             };
@@ -630,7 +623,7 @@ mod tests {
         }
     }
 
-    /*#[test]
+    #[test]
     fn message_to_yaml() {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");
@@ -655,9 +648,9 @@ mod tests {
 
         let input = input.split_at_mut(pos);
         let message = Message::parse(input.0).unwrap();
-        let result = serde_json::to_string_pretty(&message).unwrap(); //serde_yaml::to_string(&message).unwrap();
+        let result = serde_yaml::to_string(&message).unwrap();
 
-        //fs::write("test.yaml", &result).unwrap();
+        fs::write("test.yaml", &result).unwrap();
 
         println!("{}", result);
     }
@@ -710,5 +703,5 @@ mod tests {
                 fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
             }
         }
-    }*/
+    }
 }

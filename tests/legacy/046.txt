@@ -33,136 +33,134 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
-      },
-      "to": {
-        "Address": {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
-      },
-      "message_id": {
-        "Text": "3923561C.B7078DEF@example.com"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 22,
-          "minute": 31,
-          "second": 57,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
-          }
-        }
-      },
-      "content_transfer_encoding": {
-        "Text": "quoted-printable"
-      },
-      "mime_version": {
-        "Text": "1.0"
+  "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
       }
     },
-    "other_values": {
-      "X-Accept-Language": {
-        "Text": "en"
-      },
-      "X-Mailer": {
-        "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 22,
+        "minute": 31,
+        "second": 57,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 45
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 50,
-        "end": 84
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 89,
-        "end": 126
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 135,
-        "end": 165
-      },
-      {
-        "name": {
-          "Other": "X-Accept-Language"
-        },
-        "start": 183,
-        "end": 188
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 201,
-        "end": 207
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 210,
-        "end": 277
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 285,
-        "end": 360
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 373,
-        "end": 406
-      },
-      {
-        "name": {
-          "Rfc": "content_transfer_encoding"
-        },
-        "start": 432,
-        "end": 451
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
       }
-    ]
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "3923561C.B7078DEF@example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+    }
   },
+  "headers_other": {
+    "X-Accept-Language": {
+      "Text": "en"
+    },
+    "X-Mailer": {
+      "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 45
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 50,
+      "end": 84
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 89,
+      "end": 126
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 135,
+      "end": 165
+    },
+    {
+      "name": {
+        "Other": "X-Accept-Language"
+      },
+      "start": 183,
+      "end": 188
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 201,
+      "end": 207
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 210,
+      "end": 277
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 285,
+      "end": 360
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 373,
+      "end": 406
+    },
+    {
+      "name": {
+        "Rfc": "content_transfer_encoding"
+      },
+      "start": 432,
+      "end": 451
+    }
+  ],
   "html_body": [
     0
   ],

@@ -103,126 +103,124 @@ end
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "subject": {
-        "Text": "The Hare and the Tortoise"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "=====================_716177458==_"
-          }
-        }
-      },
-      "message_id": {
-        "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 19,
-          "hour": 0,
-          "minute": 50,
-          "second": 8,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "J�rgen Schm�rgen",
-          "address": "jschmuergen@example.com"
+  "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "jschmuergen@example.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716177458==_"
         }
       }
     },
-    "other_values": {
-      "X-Sender": {
-        "Text": "dwsauder@pop.example.com (Unverified)"
-      },
-      "X-Mailer": {
-        "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    "message_id": {
+      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 50,
+        "second": 8,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 64
-      },
-      {
-        "name": {
-          "Other": "X-Sender"
-        },
-        "start": 73,
-        "end": 113
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 122,
-        "end": 170
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 175,
-        "end": 209
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 212,
-        "end": 257
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 262,
-        "end": 299
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 307,
-        "end": 335
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 348,
-        "end": 354
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 367,
-        "end": 434
-      }
-    ]
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    }
   },
+  "headers_other": {
+    "X-Mailer": {
+      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    },
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 64
+    },
+    {
+      "name": {
+        "Other": "X-Sender"
+      },
+      "start": 73,
+      "end": 113
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 122,
+      "end": 170
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 175,
+      "end": 209
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 212,
+      "end": 257
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 262,
+      "end": 299
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 307,
+      "end": 335
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 348,
+      "end": 354
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 367,
+      "end": 434
+    }
+  ],
   "html_body": [
     0
   ],
@@ -241,26 +239,15 @@ end
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 487,
-              "end": 520
-            }
-          ]
+          }
         },
         "contents": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n\r",
         "is_html": false
@@ -269,51 +256,26 @@ end
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "x-uuencode"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "greenball.png"
-                }
-              }
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "greenball.png"
-                }
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1339,
-              "end": 1373
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1399,
-              "end": 1412
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 1432,
-              "end": 1471
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
-          ]
+          }
         },
         "contents": [
           13,
@@ -2177,51 +2139,26 @@ end
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "x-uuencode"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "blueball.png"
-                }
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 3380,
-              "end": 3413
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 3439,
-              "end": 3452
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 3472,
-              "end": 3510
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
-          ]
+          }
         },
         "contents": [
           13,

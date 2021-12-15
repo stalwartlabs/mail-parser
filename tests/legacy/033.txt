@@ -34,146 +34,144 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_transfer_encoding": {
-        "Text": "quoted-printable"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "UTF-8"
-          }
-        }
-      },
-      "message_id": {
-        "Text": "392363E1.2AC47AB3@example.com"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 23,
-          "minute": 30,
-          "second": 41,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Joe Blow",
-          "address": "blow@example.com"
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "subject": {
-        "Text": "Test message from Netscape Communicator 4.7"
+  "headers_rfc": {
+    "message_id": {
+      "Text": "392363E1.2AC47AB3@example.com"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
     },
-    "other_values": {
-      "X-Mailer": {
-        "Text": "Mozilla 4.7 [en] (WinNT; I)"
-      },
-      "X-Accept-Language": {
-        "Text": "en"
-      },
-      "X-Priority": {
-        "Text": "5 (Lowest)"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 45
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 50,
-        "end": 84
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 89,
-        "end": 126
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 135,
-        "end": 165
-      },
-      {
-        "name": {
-          "Other": "X-Accept-Language"
-        },
-        "start": 183,
-        "end": 188
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 201,
-        "end": 207
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 210,
-        "end": 240
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 248,
-        "end": 294
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 305,
-        "end": 318
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 331,
-        "end": 359
-      },
-      {
-        "name": {
-          "Rfc": "content_transfer_encoding"
-        },
-        "start": 385,
-        "end": 404
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "UTF-8"
+        }
       }
-    ]
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 30,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    }
   },
+  "headers_other": {
+    "X-Mailer": {
+      "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    },
+    "X-Priority": {
+      "Text": "5 (Lowest)"
+    },
+    "X-Accept-Language": {
+      "Text": "en"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 45
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 50,
+      "end": 84
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 89,
+      "end": 126
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 135,
+      "end": 165
+    },
+    {
+      "name": {
+        "Other": "X-Accept-Language"
+      },
+      "start": 183,
+      "end": 188
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 201,
+      "end": 207
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 210,
+      "end": 240
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 248,
+      "end": 294
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 305,
+      "end": 318
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 331,
+      "end": 359
+    },
+    {
+      "name": {
+        "Rfc": "content_transfer_encoding"
+      },
+      "start": 385,
+      "end": 404
+    }
+  ],
   "html_body": [
     0
   ],

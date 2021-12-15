@@ -25,28 +25,26 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1234567890123456789012345678901234567890123456789012345678901234567890123456789012"
         }
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 125
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 125
+    }
+  ],
   "html_body": [
     2
   ],
@@ -61,72 +59,39 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "123456789012345678901234567890123456789012345678901234567890123456789012345678901"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "123456789012345678901234567890123456789012345678901234567890123456789012345678901"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 224,
-            "end": 335
-          }
-        ]
+        }
       }
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 433,
-            "end": 543
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 640,
-              "end": 652
-            }
-          ]
+          }
         },
         "contents": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333",
         "is_html": false
@@ -135,23 +100,12 @@ Content-Type: text/plain
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 979,
-              "end": 991
-            }
-          ]
+          }
         },
         "contents": "4444\n",
         "is_html": false

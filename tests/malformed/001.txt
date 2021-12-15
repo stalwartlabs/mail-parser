@@ -11,28 +11,26 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "ab"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "ab"
         }
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 45
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 45
+    }
+  ],
   "html_body": [
     1
   ],
@@ -42,26 +40,15 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "a"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "a"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 64,
-            "end": 95
-          }
-        ]
+        }
       }
     },
     {

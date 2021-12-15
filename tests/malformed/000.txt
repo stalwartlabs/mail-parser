@@ -11,32 +11,67 @@ Content-Type: text/html
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": ":foo"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": ":foo"
         }
       }
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 47
+    }
+  ],
+  "html_body": [
+    0,
+    1
+  ],
+  "text_body": [
+    0,
+    1
+  ],
+  "parts": [
+    {
+      "Text": {
+        "contents": "Content-Type: text/plain",
+        "is_html": false
+      }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
+    {
+      "Text": {
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
+            }
+          }
         },
-        "start": 13,
-        "end": 47
+        "contents": "Content-Type: text/html",
+        "is_html": false
+      }
+    }
+  ],
+  "structure": {
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 1
       }
     ]
   },
-  "structure": {
-    "List": []
-  },
   "offset_header": 0,
   "offset_body": 48,
-  "offset_end": 160
+  "offset_end": 159
 }

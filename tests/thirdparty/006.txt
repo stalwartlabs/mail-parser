@@ -30,48 +30,46 @@ Signed by undersigned
 --1--
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "1"
-          }
+  "headers_rfc": {
+    "subject": {
+      "Text": "Hide and seek"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
         }
-      },
-      "subject": {
-        "Text": "Hide and seek"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 8,
-        "end": 23
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 36,
-        "end": 41
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 54,
-        "end": 83
-      }
-    ]
+    "mime_version": {
+      "Text": "1.0"
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 8,
+      "end": 23
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 36,
+      "end": 41
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 54,
+      "end": 83
+    }
+  ],
   "html_body": [
     2
   ],
@@ -86,89 +84,44 @@ Signed by undersigned
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "signed",
-              "attributes": {
-                "boundary": "2",
-                "protocol": "signature/plain",
-                "migalc": "pen+paper"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "signed",
+            "attributes": {
+              "protocol": "signature/plain",
+              "migalc": "pen+paper",
+              "boundary": "2"
             }
           }
-        },
-        "other_values": {
-          "X-Signature-Type": {
-            "Text": "penmanship"
-          }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 101,
-            "end": 179
-          },
-          {
-            "name": {
-              "Other": "X-Signature-Type"
-            },
-            "start": 196,
-            "end": 208
-          }
-        ]
+        }
       }
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
-              "attributes": {
-                "boundary": "3"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "alternative",
+            "attributes": {
+              "boundary": "3"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 226,
-            "end": 261
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "html",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 279,
-              "end": 308
-            }
-          ]
+          }
         },
         "contents": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n",
         "is_html": true
@@ -177,33 +130,15 @@ Signed by undersigned
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "binary"
-            }
+          "content_transfer_encoding": {
+            "Text": "binary"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 416,
-              "end": 428
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 454,
-              "end": 462
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          ]
+          }
         },
         "contents": "Search me, and Find me here",
         "is_html": false
@@ -212,26 +147,15 @@ Signed by undersigned
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "signature",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "signature",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 515,
-              "end": 550
-            }
-          ]
+          }
         },
         "contents": [
           83,

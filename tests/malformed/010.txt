@@ -8,25 +8,23 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "message",
-          "c_subtype": "rfc822"
-        }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "message",
+        "c_subtype": "rfc822"
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 29
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 29
+    }
+  ],
   "attachments": [
     {
       "Attachment": 1
@@ -35,37 +33,33 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
         }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "message",
-                "c_subtype": "rfc822"
-              }
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 43,
-              "end": 59
-            }
-          ]
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 43,
+            "end": 59
+          }
+        ],
         "attachments": [
           {
             "Attachment": 1
@@ -74,37 +68,33 @@ Content-Type: text/plain
         "parts": [
           {
             "Multipart": {
-              "values": {
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "message",
-                    "c_subtype": "rfc822"
-                  }
+              "content_type": {
+                "ContentType": {
+                  "c_type": "message",
+                  "c_subtype": "rfc822"
                 }
               }
             }
           },
           {
             "Message": {
-              "headers": {
-                "values": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain"
-                    }
+              "headers_rfc": {
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "plain"
                   }
-                },
-                "offsets": [
-                  {
-                    "name": {
-                      "Rfc": "content_type"
-                    },
-                    "start": 73,
-                    "end": 85
-                  }
-                ]
+                }
               },
+              "headers_offsets": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "start": 73,
+                  "end": 85
+                }
+              ],
               "html_body": [
                 0
               ],

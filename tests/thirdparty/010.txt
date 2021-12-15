@@ -12,49 +12,47 @@ Content-Language: ja
 --1--
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "subject": {
-        "Text": "こんにちは"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "comment": "人権の無視及",
-            "boundary": "1"
-          }
+  "headers_rfc": {
+    "subject": {
+      "Text": "こんにちは"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "comment": "人権の無視及",
+          "boundary": "1"
         }
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 8,
-        "end": 42
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 55,
-        "end": 60
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 73,
-        "end": 145
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 8,
+      "end": 42
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 55,
+      "end": 60
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 73,
+      "end": 145
+    }
+  ],
   "html_body": [
     0
   ],
@@ -65,43 +63,18 @@ Content-Language: ja
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "binary"
-            },
-            "content_language": {
-              "Text": "ja"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "binary"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 163,
-              "end": 175
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 201,
-              "end": 209
-            },
-            {
-              "name": {
-                "Rfc": "content_language"
-              },
-              "start": 226,
-              "end": 230
+          "content_language": {
+            "Text": "ja"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          ]
+          }
         },
         "contents": "人権の無視及",
         "is_html": false

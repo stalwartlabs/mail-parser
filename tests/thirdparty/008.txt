@@ -57,82 +57,80 @@ Root MIME epilogue
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2007,
-          "month": 3,
-          "day": 24,
-          "hour": 23,
-          "minute": 0,
-          "second": 0,
-          "tz_before_gmt": false,
-          "tz_hour": 2,
-          "tz_minute": 0
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "foo bar"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "address": "user@domain.org"
-        }
+  "headers_rfc": {
+    "from": {
+      "Address": {
+        "address": "user@domain.org"
       }
     },
-    "other_values": {
-      "From user@domain  Fri Feb 22 17": {
-        "Text": "06:23 2008"
+    "date": {
+      "DateTime": {
+        "year": 2007,
+        "month": 3,
+        "day": 24,
+        "hour": 23,
+        "minute": 0,
+        "second": 0,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Other": "From user@domain  Fri Feb 22 17"
-        },
-        "start": 32,
-        "end": 43
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 48,
-        "end": 65
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 70,
-        "end": 103
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 116,
-        "end": 121
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 134,
-        "end": 171
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "foo bar"
+        }
       }
-    ]
+    }
   },
+  "headers_other": {
+    "From user@domain  Fri Feb 22 17": {
+      "Text": "06:23 2008"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Other": "From user@domain  Fri Feb 22 17"
+      },
+      "start": 32,
+      "end": 43
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 48,
+      "end": 65
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 70,
+      "end": 103
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 116,
+      "end": 121
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 134,
+      "end": 171
+    }
+  ],
   "html_body": [
     3
   ],
@@ -151,26 +149,15 @@ Root MIME epilogue
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "x-myown",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "x-myown",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 215,
-              "end": 247
-            }
-          ]
+          }
         },
         "contents": "hello\n",
         "is_html": false
@@ -178,91 +165,78 @@ Root MIME epilogue
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 278,
-            "end": 294
-          }
-        ]
+        }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "subject": {
-              "Text": "submsg"
-            },
-            "from": {
-              "Address": {
-                "address": "sub@domain.org"
-              }
-            },
-            "date": {
-              "DateTime": {
-                "year": 2012,
-                "month": 8,
-                "day": 12,
-                "hour": 12,
-                "minute": 34,
-                "second": 56,
-                "tz_before_gmt": false,
-                "tz_hour": 3,
-                "tz_minute": 0
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "alternative",
-                "attributes": {
-                  "boundary": "sub1"
-                }
-              }
+        "headers_rfc": {
+          "subject": {
+            "Text": "submsg"
+          },
+          "from": {
+            "Address": {
+              "address": "sub@domain.org"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 300,
-              "end": 316
-            },
-            {
-              "name": {
-                "Rfc": "date"
-              },
-              "start": 321,
-              "end": 354
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 362,
-              "end": 370
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 383,
-              "end": 423
+          "date": {
+            "DateTime": {
+              "year": 2012,
+              "month": 8,
+              "day": 12,
+              "hour": 12,
+              "minute": 34,
+              "second": 56,
+              "tz_before_gmt": false,
+              "tz_hour": 3,
+              "tz_minute": 0
             }
-          ]
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "sub1"
+              }
+            }
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "from"
+            },
+            "start": 300,
+            "end": 316
+          },
+          {
+            "name": {
+              "Rfc": "date"
+            },
+            "start": 321,
+            "end": 354
+          },
+          {
+            "name": {
+              "Rfc": "subject"
+            },
+            "start": 362,
+            "end": 370
+          },
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 383,
+            "end": 423
+          }
+        ],
         "html_body": [
           0,
           4
@@ -276,23 +250,12 @@ Root MIME epilogue
           {
             "Text": {
               "headers": {
-                "values": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "html"
-                    }
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "html"
                   }
-                },
-                "offsets": [
-                  {
-                    "name": {
-                      "Rfc": "content_type"
-                    },
-                    "start": 462,
-                    "end": 473
-                  }
-                ]
+                }
               },
               "contents": "<p>Hello world</p>\n",
               "is_html": true
@@ -300,50 +263,28 @@ Root MIME epilogue
           },
           {
             "Multipart": {
-              "values": {
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "multipart",
-                    "c_subtype": "alternative",
-                    "attributes": {
-                      "boundary": "sub2"
-                    }
+              "content_type": {
+                "ContentType": {
+                  "c_type": "multipart",
+                  "c_subtype": "alternative",
+                  "attributes": {
+                    "boundary": "sub2"
                   }
                 }
-              },
-              "offsets": [
-                {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
-                  "start": 514,
-                  "end": 554
-                }
-              ]
+              }
             }
           },
           {
             "Multipart": {
-              "values": {
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "multipart",
-                    "c_subtype": "alternative",
-                    "attributes": {
-                      "boundary": "sub3"
-                    }
+              "content_type": {
+                "ContentType": {
+                  "c_type": "multipart",
+                  "c_subtype": "alternative",
+                  "attributes": {
+                    "boundary": "sub3"
                   }
                 }
-              },
-              "offsets": [
-                {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
-                  "start": 575,
-                  "end": 615
-                }
-              ]
+              }
             }
           },
           {
@@ -403,23 +344,12 @@ Root MIME epilogue
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 752,
-              "end": 764
-            }
-          ]
+          }
         },
         "contents": "Another part",
         "is_html": false

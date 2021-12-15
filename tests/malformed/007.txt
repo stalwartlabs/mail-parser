@@ -12,28 +12,26 @@ Content-Type: text/plain
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "a"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "a"
         }
       }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 44
-      }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 44
+    }
+  ],
   "attachments": [
     {
       "Attachment": 1
@@ -42,36 +40,18 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "mime_version": {
-            "Text": "1.0"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "ab"
-              }
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "ab"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 62,
-            "end": 94
-          },
-          {
-            "name": {
-              "Rfc": "mime_version"
-            },
-            "start": 107,
-            "end": 112
-          }
-        ]
+        }
       }
     },
     {

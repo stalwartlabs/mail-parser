@@ -157,156 +157,154 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "related",
-          "attributes": {
-            "boundary": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
-          }
-        }
-      },
-      "subject": {
-        "Text": "Test message from Microsoft Outlook 00"
-      },
-      "to": {
-        "Address": {
-          "name": "Joe Blow",
-          "address": "jblow@example.com"
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "doug@example.com"
-        }
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 19,
-          "minute": 44,
-          "second": 45,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "message_id": {
-        "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
+  "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 44,
+        "second": 45,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "other_values": {
-      "X-Priority": {
-        "Text": "3 (Normal)"
-      },
-      "X-MSMail-Priority": {
-        "Text": "Normal"
-      },
-      "Importance": {
-        "Text": "Normal"
-      },
-      "X-MimeOLE": {
-        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      },
-      "X-Mailer": {
-        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 40
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 43,
-        "end": 76
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 84,
-        "end": 125
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 130,
-        "end": 164
-      },
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 175,
-        "end": 225
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 238,
-        "end": 244
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 257,
-        "end": 333
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 344,
-        "end": 357
-      },
-      {
-        "name": {
-          "Other": "X-MSMail-Priority"
-        },
-        "start": 375,
-        "end": 384
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 393,
-        "end": 446
-      },
-      {
-        "name": {
-          "Other": "Importance"
-        },
-        "start": 457,
-        "end": 466
-      },
-      {
-        "name": {
-          "Other": "X-MimeOLE"
-        },
-        "start": 476,
-        "end": 524
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
       }
-    ]
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "related",
+        "attributes": {
+          "boundary": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
+        }
+      }
+    }
   },
+  "headers_other": {
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    },
+    "Importance": {
+      "Text": "Normal"
+    },
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    },
+    "X-MSMail-Priority": {
+      "Text": "Normal"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 40
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 43,
+      "end": 76
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 84,
+      "end": 125
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 130,
+      "end": 164
+    },
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 175,
+      "end": 225
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 238,
+      "end": 244
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 257,
+      "end": 333
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 344,
+      "end": 357
+    },
+    {
+      "name": {
+        "Other": "X-MSMail-Priority"
+      },
+      "start": 375,
+      "end": 384
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 393,
+      "end": 446
+    },
+    {
+      "name": {
+        "Other": "Importance"
+      },
+      "start": 457,
+      "end": 466
+    },
+    {
+      "name": {
+        "Other": "X-MimeOLE"
+      },
+      "start": 476,
+      "end": 524
+    }
+  ],
   "html_body": [
     2
   ],
@@ -324,61 +322,32 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
-              "attributes": {
-                "boundary": "----=_NextPart_001_000D_01BFC038.5A5C8E60"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "alternative",
+            "attributes": {
+              "boundary": "----=_NextPart_001_000D_01BFC038.5A5C8E60"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 632,
-            "end": 712
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "iso-8859-1"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            }
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 774,
-              "end": 811
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 837,
-              "end": 856
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
             }
-          ]
+          }
         },
         "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n\n\n \nSlow but steady wins the race.  \n\n\n\n",
         "is_html": false
@@ -387,36 +356,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "html",
-                "attributes": {
-                  "charset": "iso-8859-1"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": {
+                "charset": "iso-8859-1"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1727,
-              "end": 1763
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1789,
-              "end": 1808
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          }
         },
         "contents": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp;&nbsp;</FONT></DIV>\n<DIV><FONT face=Arial size=2></FONT>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"blue ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f8d\"><BR>&nbsp;<BR>Slow but steady wins \nthe race.&nbsp; </FONT></DIV>\n<DIV>&nbsp;</DIV>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"red ball\" border=0 \nhspace=0 src=\"cid:823504223@17052000-0f94\"><BR></DIV></FONT></BODY></HTML>\n",
         "is_html": true
@@ -425,46 +376,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
+          "content_id": {
+            "Text": "823504223@17052000-0f8d"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
-            },
-            "content_id": {
-              "Text": "823504223@17052000-0f8d"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 3495,
-              "end": 3530
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 3556,
-              "end": 3565
-            },
-            {
-              "name": {
-                "Rfc": "content_id"
-              },
-              "start": 3576,
-              "end": 3604
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,
@@ -1798,46 +1724,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "redball.png"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
               }
-            },
-            "content_id": {
-              "Text": "823504223@17052000-0f94"
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 5482,
-              "end": 5516
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 5542,
-              "end": 5551
-            },
-            {
-              "name": {
-                "Rfc": "content_id"
-              },
-              "start": 5562,
-              "end": 5590
-            }
-          ]
+          "content_id": {
+            "Text": "823504223@17052000-0f94"
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,

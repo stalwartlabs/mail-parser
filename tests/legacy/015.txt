@@ -199,136 +199,134 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 19,
-          "hour": 0,
-          "minute": 36,
-          "second": 58,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "=====================_715392540==_"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche"
-      },
-      "message_id": {
-        "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com"
-      },
-      "to": {
-        "Address": {
-          "name": "Heinz Müller",
-          "address": "mueller@example.com"
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
+  "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
       }
     },
-    "other_values": {
-      "X-Mailer": {
-        "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      },
-      "X-Sender": {
-        "Text": "dwsauder@pop.example.com (Unverified)"
-      },
-      "X-Priority": {
-        "Text": "2 (High)"
+    "message_id": {
+      "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 64
-      },
-      {
-        "name": {
-          "Other": "X-Sender"
-        },
-        "start": 73,
-        "end": 113
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 122,
-        "end": 170
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 181,
-        "end": 192
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 197,
-        "end": 231
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 234,
-        "end": 288
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 293,
-        "end": 330
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 338,
-        "end": 383
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 396,
-        "end": 402
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 415,
-        "end": 482
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_715392540==_"
+        }
       }
-    ]
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 36,
+        "second": 58,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
   },
+  "headers_other": {
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
+    },
+    "X-Mailer": {
+      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    },
+    "X-Priority": {
+      "Text": "2 (High)"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 64
+    },
+    {
+      "name": {
+        "Other": "X-Sender"
+      },
+      "start": 73,
+      "end": 113
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 122,
+      "end": 170
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 181,
+      "end": 192
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 197,
+      "end": 231
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 234,
+      "end": 288
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 293,
+      "end": 330
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 338,
+      "end": 383
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 396,
+      "end": 402
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 415,
+      "end": 482
+    }
+  ],
   "html_body": [
     3
   ],
@@ -352,86 +350,46 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "related",
-              "attributes": {
-                "boundary": "=====================_715392540==_.REL",
-                "type": "multipart/alternative"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "related",
+            "attributes": {
+              "boundary": "=====================_715392540==_.REL",
+              "type": "multipart/alternative"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 535,
-            "end": 640
-          }
-        ]
+        }
       }
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
-              "attributes": {
-                "boundary": "=====================_715392550==_.ALT"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "alternative",
+            "attributes": {
+              "boundary": "=====================_715392550==_.ALT"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 697,
-            "end": 774
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "iso-8859-1"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            }
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 831,
-              "end": 866
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 892,
-              "end": 911
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
             }
-          ]
+          }
         },
         "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n2aa3ed95.png2aa3edd1.png",
         "is_html": false
@@ -440,36 +398,18 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "html",
-                "attributes": {
-                  "charset": "iso-8859-1"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            }
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1803,
-              "end": 1837
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1863,
-              "end": 1882
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
             }
-          ]
+          }
         },
         "contents": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font><img src=\"cid:4.2.0.58.20000519003556.00a918e0@pop.example.com.2\" width=27 height=27 alt=\"2aa3ed95.png\"><img src=\"cid:4.2.0.58.20000519003556.00a918e0@pop.example.com.3\" width=27 height=27 alt=\"2aa3edd1.png\"></html>\n",
         "is_html": true
@@ -478,61 +418,29 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "inline",
-                "attributes": {
-                  "filename": "2aa3ed95.png"
-                }
-              }
-            },
-            "content_id": {
-              "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com.2"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "2aa3ed95.png"
-                }
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa3ed95.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 3217,
-              "end": 3250
-            },
-            {
-              "name": {
-                "Rfc": "content_id"
-              },
-              "start": 3261,
-              "end": 3316
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 3342,
-              "end": 3351
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 3371,
-              "end": 3405
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa3ed95.png"
+              }
             }
-          ]
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com.2"
+          }
         },
         "contents": [
           137,
@@ -1866,61 +1774,29 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_id": {
-              "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com.3"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "inline",
-                "attributes": {
-                  "filename": "2aa3edd1.png"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa3edd1.png"
               }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "2aa3edd1.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 5278,
-              "end": 5311
-            },
-            {
-              "name": {
-                "Rfc": "content_id"
-              },
-              "start": 5322,
-              "end": 5377
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 5403,
-              "end": 5412
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 5432,
-              "end": 5466
+          "content_id": {
+            "Text": "4.2.0.58.20000519003556.00a918e0@pop.example.com.3"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "2aa3edd1.png"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,
@@ -3382,51 +3258,26 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "blueball.png"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 7557,
-              "end": 7590
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 7616,
-              "end": 7625
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 7645,
-              "end": 7683
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
+              }
             }
-          ]
+          }
         },
         "contents": [
           137,
@@ -4760,51 +4611,26 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "greenball.png"
-                }
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "greenball.png"
-                }
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 9552,
-              "end": 9586
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 9612,
-              "end": 9621
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 9641,
-              "end": 9680
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,

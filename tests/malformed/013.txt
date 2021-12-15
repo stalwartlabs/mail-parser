@@ -33,38 +33,36 @@ hello, world
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "1"
-          }
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
         }
-      },
-      "mime_version": {
-        "Text": "1.0"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 13,
-        "end": 44
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 57,
-        "end": 62
-      }
-    ]
+    "mime_version": {
+      "Text": "1.0"
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 13,
+      "end": 44
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 57,
+      "end": 62
+    }
+  ],
   "html_body": [
     0,
     2,
@@ -81,23 +79,12 @@ hello, world
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 80,
-              "end": 92
-            }
-          ]
+          }
         },
         "contents": "hello, world",
         "is_html": false
@@ -105,58 +92,29 @@ hello, world
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "1"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "1"
             }
-          },
-          "mime_version": {
-            "Text": "2.0"
           }
         },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 123,
-            "end": 154
-          },
-          {
-            "name": {
-              "Rfc": "mime_version"
-            },
-            "start": 167,
-            "end": 172
-          }
-        ]
+        "mime_version": {
+          "Text": "2.0"
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 190,
-              "end": 202
-            }
-          ]
+          }
         },
         "contents": "hello, world",
         "is_html": false
@@ -164,58 +122,29 @@ hello, world
     },
     {
       "Multipart": {
-        "values": {
-          "mime_version": {
-            "Text": "abc"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "1"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "1"
             }
           }
         },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 233,
-            "end": 264
-          },
-          {
-            "name": {
-              "Rfc": "mime_version"
-            },
-            "start": 277,
-            "end": 282
-          }
-        ]
+        "mime_version": {
+          "Text": "abc"
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 300,
-              "end": 312
-            }
-          ]
+          }
         },
         "contents": "hello, world",
         "is_html": false
@@ -223,55 +152,26 @@ hello, world
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "1"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "1"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 343,
-            "end": 374
-          },
-          {
-            "name": {
-              "Rfc": "mime_version"
-            },
-            "start": 387,
-            "end": 388
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 406,
-              "end": 418
-            }
-          ]
+          }
         },
         "contents": "hello, world",
         "is_html": false

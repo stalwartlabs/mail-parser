@@ -25,94 +25,92 @@ Content-Type: application/x-whatever
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "from": {
-        "Address": {
-          "name": "Nathaniel Borenstein",
-          "address": "nsb@bellcore.com"
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Ned Freed",
-          "address": "ned@innosoft.com"
-        }
-      },
-      "subject": {
-        "Text": "Formatted text mail"
-      },
-      "date": {
-        "DateTime": {
-          "year": 1993,
-          "month": 3,
-          "day": 22,
-          "hour": 9,
-          "minute": 41,
-          "second": 9,
-          "tz_before_gmt": true,
-          "tz_hour": 8,
-          "tz_minute": 0
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "alternative",
-          "attributes": {
-            "boundary": "boundary42"
-          }
-        }
+  "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 46
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 49,
-        "end": 79
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 84,
-        "end": 123
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 131,
-        "end": 152
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 165,
-        "end": 170
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 183,
-        "end": 227
+    "subject": {
+      "Text": "Formatted text mail"
+    },
+    "date": {
+      "DateTime": {
+        "year": 1993,
+        "month": 3,
+        "day": 22,
+        "hour": 9,
+        "minute": 41,
+        "second": 9,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
       }
-    ]
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "boundary42"
+        }
+      }
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 46
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 49,
+      "end": 79
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 84,
+      "end": 123
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 131,
+      "end": 152
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 165,
+      "end": 170
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 183,
+      "end": 227
+    }
+  ],
   "html_body": [
     0
   ],
@@ -131,26 +129,15 @@ Content-Type: application/x-whatever
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 254,
-              "end": 284
-            }
-          ]
+          }
         },
         "contents": "... plain text version of message goes here ...\n",
         "is_html": false
@@ -159,23 +146,12 @@ Content-Type: application/x-whatever
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "enriched"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 360,
-              "end": 375
-            }
-          ]
+          }
         },
         "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n",
         "is_html": false
@@ -184,23 +160,12 @@ Content-Type: application/x-whatever
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "application",
-                "c_subtype": "x-whatever"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "x-whatever"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 472,
-              "end": 496
-            }
-          ]
+          }
         },
         "contents": [
           46,

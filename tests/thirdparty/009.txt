@@ -21,48 +21,46 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "subject": {
-        "Text": "In parts"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "1"
-          }
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      }
+  "headers_rfc": {
+    "subject": {
+      "Text": "In parts"
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 8,
-        "end": 18
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 31,
-        "end": 36
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 49,
-        "end": 78
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "1"
+        }
       }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 8,
+      "end": 18
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 31,
+      "end": 36
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 49,
+      "end": 78
+    }
+  ],
   "html_body": [
     0
   ],
@@ -78,33 +76,15 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain"
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "binary"
-            }
+          "content_transfer_encoding": {
+            "Text": "binary"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 96,
-              "end": 108
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 134,
-              "end": 142
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain"
             }
-          ]
+          }
         },
         "contents": "Hi, this is the fancy thing I was talking about!",
         "is_html": false
@@ -113,28 +93,17 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "message",
-                "c_subtype": "partial",
-                "attributes": {
-                  "number": "1",
-                  "total": "5",
-                  "id": "heks68ewe@example.org"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "partial",
+              "attributes": {
+                "number": "1",
+                "total": "5",
+                "id": "heks68ewe@example.org"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 209,
-              "end": 273
-            }
-          ]
+          }
         },
         "contents": [
           88,

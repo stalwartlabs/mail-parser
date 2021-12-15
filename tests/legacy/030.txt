@@ -112,126 +112,124 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
+  "headers_rfc": {
+    "message_id": {
+      "Text": "3923635B.85C58444@example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------0BBC657DDC74A0B8454627FD"
         }
-      },
-      "message_id": {
-        "Text": "3923635B.85C58444@example.com"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 23,
-          "minute": 28,
-          "second": 27,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "------------0BBC657DDC74A0B8454627FD"
-          }
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Joe Blow",
-          "address": "blow@example.com"
-        }
-      },
-      "subject": {
-        "Text": "Test message from Netscape Communicator 4.7"
-      },
-      "mime_version": {
-        "Text": "1.0"
       }
     },
-    "other_values": {
-      "X-Accept-Language": {
-        "Text": "en"
-      },
-      "X-Mailer": {
-        "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 45
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 50,
-        "end": 84
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 89,
-        "end": 126
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 135,
-        "end": 165
-      },
-      {
-        "name": {
-          "Other": "X-Accept-Language"
-        },
-        "start": 183,
-        "end": 188
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 201,
-        "end": 207
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 210,
-        "end": 240
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 248,
-        "end": 294
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 307,
-        "end": 376
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
-    ]
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 28,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    }
   },
+  "headers_other": {
+    "X-Accept-Language": {
+      "Text": "en"
+    },
+    "X-Mailer": {
+      "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 45
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 50,
+      "end": 84
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 89,
+      "end": 126
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 135,
+      "end": 165
+    },
+    {
+      "name": {
+        "Other": "X-Accept-Language"
+      },
+      "start": 183,
+      "end": 188
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 201,
+      "end": 207
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 210,
+      "end": 240
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 248,
+      "end": 294
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 307,
+      "end": 376
+    }
+  ],
   "html_body": [
     0,
     1,
@@ -257,36 +255,18 @@ Slow but steady wins the race.
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
-            },
-            "content_transfer_encoding": {
-              "Text": "7bit"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 477,
-              "end": 508
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 534,
-              "end": 541
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          }
         },
         "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r",
         "is_html": false
@@ -295,51 +275,26 @@ Slow but steady wins the race.
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "inline",
-                "attributes": {
-                  "filename": "blueball.png"
-                }
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
               }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1365,
-              "end": 1400
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1426,
-              "end": 1435
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 1455,
-              "end": 1491
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
-          ]
+          }
         },
         "contents": [
           137,
@@ -1673,51 +1628,26 @@ Slow but steady wins the race.
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "greenball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "inline",
-                "attributes": {
-                  "filename": "greenball.png"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 3364,
-              "end": 3400
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 3426,
-              "end": 3435
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 3455,
-              "end": 3492
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "greenball.png"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,
@@ -3024,52 +2954,27 @@ Slow but steady wins the race.
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii",
-                  "name": "hareandtoroise.txt"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii",
+                "name": "hareandtoroise.txt"
               }
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "inline",
-                "attributes": {
-                  "filename": "hareandtoroise.txt"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "7bit"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 5329,
-              "end": 5389
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 5415,
-              "end": 5422
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 5442,
-              "end": 5484
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "hareandtoroise.txt"
+              }
             }
-          ]
+          }
         },
         "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.  \r\n\r",
         "is_html": false

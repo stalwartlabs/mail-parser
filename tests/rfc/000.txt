@@ -73,94 +73,92 @@ Content-Transfer-Encoding: Quoted-printable
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "date": {
-        "DateTime": {
-          "year": 1994,
-          "month": 10,
-          "day": 7,
-          "hour": 16,
-          "minute": 15,
-          "second": 5,
-          "tz_before_gmt": true,
-          "tz_hour": 7,
-          "tz_minute": 0
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Ned Freed",
-          "address": "ned@innosoft.com"
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "subject": {
-        "Text": "A multipart example"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "unique-boundary-1"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Nathaniel Borenstein",
-          "address": "nsb@nsb.fv.com"
+  "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "unique-boundary-1"
         }
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 13,
-        "end": 18
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 23,
-        "end": 62
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 65,
-        "end": 95
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 100,
-        "end": 139
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 147,
-        "end": 168
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 181,
-        "end": 238
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@nsb.fv.com"
       }
-    ]
+    },
+    "date": {
+      "DateTime": {
+        "year": 1994,
+        "month": 10,
+        "day": 7,
+        "hour": 16,
+        "minute": 15,
+        "second": 5,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "A multipart example"
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 13,
+      "end": 18
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 23,
+      "end": 62
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 65,
+      "end": 95
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 100,
+      "end": 139
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 147,
+      "end": 168
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 181,
+      "end": 238
+    }
+  ],
   "html_body": [
     0,
     1
@@ -193,26 +191,15 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "US-ASCII"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "US-ASCII"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 827,
-              "end": 857
-            }
-          ]
+          }
         },
         "contents": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n",
         "is_html": false
@@ -220,58 +207,29 @@ Content-Transfer-Encoding: Quoted-printable
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "parallel",
-              "attributes": {
-                "boundary": "unique-boundary-2"
-              }
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "parallel",
+            "attributes": {
+              "boundary": "unique-boundary-2"
             }
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 1003,
-            "end": 1051
-          }
-        ]
+        }
       }
     },
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "audio",
-                "c_subtype": "basic"
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
+          "content_type": {
+            "ContentType": {
+              "c_type": "audio",
+              "c_subtype": "basic"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1085,
-              "end": 1098
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1124,
-              "end": 1132
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n",
         "is_html": false
@@ -280,33 +238,15 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "jpeg"
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1252,
-              "end": 1264
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1290,
-              "end": 1298
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg"
             }
-          ]
+          }
         },
         "contents": "... base64-encoded image data goes here ...\n",
         "is_html": false
@@ -315,23 +255,12 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "enriched"
-              }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched"
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1400,
-              "end": 1415
-            }
-          ]
+          }
         },
         "contents": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n",
         "is_html": false
@@ -339,93 +268,80 @@ Content-Transfer-Encoding: Quoted-printable
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
-        },
-        "offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 1590,
-            "end": 1606
-          }
-        ]
+        }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "ISO-8859-1"
-                }
-              }
-            },
-            "from": {
-              "Address": {
-                "name": "mailbox in US-ASCII"
-              }
-            },
-            "to": {
-              "Address": {
-                "name": "address in US-ASCII"
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "Quoted-printable"
-            },
-            "subject": {
-              "Text": "(subject in US-ASCII)"
+        "headers_rfc": {
+          "from": {
+            "Address": {
+              "name": "mailbox in US-ASCII"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 1612,
-              "end": 1635
-            },
-            {
-              "name": {
-                "Rfc": "to"
-              },
-              "start": 1638,
-              "end": 1661
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 1669,
-              "end": 1692
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1705,
-              "end": 1737
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1763,
-              "end": 1781
+          "to": {
+            "Address": {
+              "name": "address in US-ASCII"
             }
-          ]
+          },
+          "subject": {
+            "Text": "(subject in US-ASCII)"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "ISO-8859-1"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "Quoted-printable"
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "from"
+            },
+            "start": 1612,
+            "end": 1635
+          },
+          {
+            "name": {
+              "Rfc": "to"
+            },
+            "start": 1638,
+            "end": 1661
+          },
+          {
+            "name": {
+              "Rfc": "subject"
+            },
+            "start": 1669,
+            "end": 1692
+          },
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 1705,
+            "end": 1737
+          },
+          {
+            "name": {
+              "Rfc": "content_transfer_encoding"
+            },
+            "start": 1763,
+            "end": 1781
+          }
+        ],
         "html_body": [
           0
         ],

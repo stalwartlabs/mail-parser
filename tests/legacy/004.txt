@@ -19,136 +19,134 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Joe Blow",
-          "address": "blow@example.com"
-        }
-      },
-      "subject": {
-        "Text": "The Hare and the Tortoise"
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "message_id": {
-        "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "us-ascii"
-          }
-        }
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 19,
-          "hour": 1,
-          "minute": 13,
-          "second": 19,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
+  "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "us-ascii"
         }
       }
     },
-    "other_values": {
-      "X-Mailer": {
-        "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      },
-      "X-Priority": {
-        "Text": "5 (Lowest)"
-      },
-      "X-Sender": {
-        "Text": "dwsauder@pop.example.com (Unverified)"
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 64
-      },
-      {
-        "name": {
-          "Other": "X-Sender"
-        },
-        "start": 73,
-        "end": 113
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 122,
-        "end": 170
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 181,
-        "end": 194
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 199,
-        "end": 233
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 236,
-        "end": 266
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 271,
-        "end": 308
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 316,
-        "end": 344
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 357,
-        "end": 363
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 376,
-        "end": 409
+    "message_id": {
+      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 1,
+        "minute": 13,
+        "second": 19,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
-    ]
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    }
   },
+  "headers_other": {
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
+    },
+    "X-Mailer": {
+      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    },
+    "X-Priority": {
+      "Text": "5 (Lowest)"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 64
+    },
+    {
+      "name": {
+        "Other": "X-Sender"
+      },
+      "start": 73,
+      "end": 113
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 122,
+      "end": 170
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 181,
+      "end": 194
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 199,
+      "end": 233
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 236,
+      "end": 266
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 271,
+      "end": 308
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 316,
+      "end": 344
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 357,
+      "end": 363
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 376,
+      "end": 409
+    }
+  ],
   "html_body": [
     0
   ],

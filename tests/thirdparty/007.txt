@@ -34,41 +34,39 @@ Foobar
 --1--
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "digest",
-          "attributes": {
-            "boundary": "1"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Moderator-Address",
-          "address": "moderator"
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "digest",
+        "attributes": {
+          "boundary": "1"
         }
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 36
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 49,
-        "end": 80
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": "moderator"
       }
-    ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 36
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 49,
+      "end": 80
+    }
+  ],
   "attachments": [
     {
       "Attachment": 1
@@ -83,47 +81,43 @@ Foobar
   "parts": [
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
         }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "from": {
-              "Address": {
-                "name": "someone-else",
-                "address": "someone@else"
-              }
-            },
-            "subject": {
-              "Text": "my opinion"
+        "headers_rfc": {
+          "from": {
+            "Address": {
+              "name": "someone-else",
+              "address": "someone@else"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 92,
-              "end": 121
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 129,
-              "end": 141
-            }
-          ]
+          "subject": {
+            "Text": "my opinion"
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "from"
+            },
+            "start": 92,
+            "end": 121
+          },
+          {
+            "name": {
+              "Rfc": "subject"
+            },
+            "start": 129,
+            "end": 141
+          }
+        ],
         "html_body": [
           0
         ],
@@ -148,47 +142,43 @@ Foobar
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
         }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "subject": {
-              "Text": "i disagree"
-            },
-            "from": {
-              "Address": {
-                "name": "another one",
-                "address": "another@one"
-              }
-            }
+        "headers_rfc": {
+          "subject": {
+            "Text": "i disagree"
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 171,
-              "end": 198
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 206,
-              "end": 218
+          "from": {
+            "Address": {
+              "name": "another one",
+              "address": "another@one"
             }
-          ]
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "from"
+            },
+            "start": 171,
+            "end": 198
+          },
+          {
+            "name": {
+              "Rfc": "subject"
+            },
+            "start": 206,
+            "end": 218
+          }
+        ],
         "html_body": [
           0
         ],
@@ -213,63 +203,59 @@ Foobar
     },
     {
       "Multipart": {
-        "values": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822"
-            }
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822"
           }
         }
       }
     },
     {
       "Message": {
-        "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "mixed",
-                "attributes": {
-                  "boundary": "2"
-                }
+        "headers_rfc": {
+          "subject": {
+            "Text": "funny hat"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
               }
-            },
-            "from": {
-              "Address": {
-                "name": "attachment",
-                "address": "attachment@user"
-              }
-            },
-            "subject": {
-              "Text": "funny hat"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 251,
-              "end": 281
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 289,
-              "end": 300
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 313,
-              "end": 342
+          "from": {
+            "Address": {
+              "name": "attachment",
+              "address": "attachment@user"
             }
-          ]
+          }
         },
+        "headers_offsets": [
+          {
+            "name": {
+              "Rfc": "from"
+            },
+            "start": 251,
+            "end": 281
+          },
+          {
+            "name": {
+              "Rfc": "subject"
+            },
+            "start": 289,
+            "end": 300
+          },
+          {
+            "name": {
+              "Rfc": "content_type"
+            },
+            "start": 313,
+            "end": 342
+          }
+        ],
         "html_body": [
           0
         ],
@@ -285,33 +271,15 @@ Foobar
           {
             "Text": {
               "headers": {
-                "values": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain"
-                    }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "binary"
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "plain"
                   }
                 },
-                "offsets": [
-                  {
-                    "name": {
-                      "Rfc": "content_type"
-                    },
-                    "start": 360,
-                    "end": 372
-                  },
-                  {
-                    "name": {
-                      "Rfc": "content_transfer_encoding"
-                    },
-                    "start": 398,
-                    "end": 406
-                  }
-                ]
+                "content_transfer_encoding": {
+                  "Text": "binary"
+                }
               },
               "contents": "Lovely attachment for you",
               "is_html": false
@@ -320,37 +288,19 @@ Foobar
           {
             "Binary": {
               "headers": {
-                "values": {
-                  "content_transfer_encoding": {
-                    "Text": "binary"
-                  },
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "application",
-                      "c_subtype": "octet-stream",
-                      "attributes": {
-                        "name": "test.txt",
-                        "disposition": "attachment"
-                      }
+                "content_transfer_encoding": {
+                  "Text": "binary"
+                },
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "application",
+                    "c_subtype": "octet-stream",
+                    "attributes": {
+                      "name": "test.txt",
+                      "disposition": "attachment"
                     }
                   }
-                },
-                "offsets": [
-                  {
-                    "name": {
-                      "Rfc": "content_type"
-                    },
-                    "start": 450,
-                    "end": 517
-                  },
-                  {
-                    "name": {
-                      "Rfc": "content_transfer_encoding"
-                    },
-                    "start": 543,
-                    "end": 551
-                  }
-                ]
+                }
               },
               "contents": [
                 70,

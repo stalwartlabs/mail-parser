@@ -25,94 +25,92 @@ This is the epilogue.  It is also to be ignored.
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "to": {
-        "Address": {
-          "name": "Ned Freed",
-          "address": "ned@innosoft.com"
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Nathaniel Borenstein",
-          "address": "nsb@bellcore.com"
-        }
-      },
-      "subject": {
-        "Text": "Sample message"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "simple boundary"
-          }
-        }
-      },
-      "date": {
-        "DateTime": {
-          "year": 1993,
-          "month": 3,
-          "day": 21,
-          "hour": 23,
-          "minute": 56,
-          "second": 48,
-          "tz_before_gmt": true,
-          "tz_hour": 8,
-          "tz_minute": 0
-        }
+  "headers_rfc": {
+    "date": {
+      "DateTime": {
+        "year": 1993,
+        "month": 3,
+        "day": 21,
+        "hour": 23,
+        "minute": 56,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 46
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 49,
-        "end": 79
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 84,
-        "end": 123
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 131,
-        "end": 147
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 160,
-        "end": 165
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 178,
-        "end": 223
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Sample message"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
       }
-    ]
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "simple boundary"
+        }
+      }
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 46
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 49,
+      "end": 79
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 84,
+      "end": 123
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 131,
+      "end": 147
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 160,
+      "end": 165
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 178,
+      "end": 223
+    }
+  ],
   "html_body": [
     0,
     1
@@ -131,26 +129,15 @@ This is the epilogue.  It is also to be ignored.
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "us-ascii"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "us-ascii"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 512,
-              "end": 542
-            }
-          ]
+          }
         },
         "contents": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n",
         "is_html": false

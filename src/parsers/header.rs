@@ -11,7 +11,7 @@
 
 use std::{borrow::Cow, collections::hash_map::Entry};
 
-use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, Headers};
+use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, OtherHeaders, RfcHeaders};
 
 use super::{
     fields::{
@@ -29,7 +29,12 @@ pub enum HeaderParserResult<'x> {
     Eof,
 }
 
-pub fn parse_headers<'x>(headers: &mut Headers<'x>, stream: &mut MessageStream<'x>) -> bool {
+pub fn parse_headers<'x>(
+    headers_rfc: &mut RfcHeaders<'x>,
+    mut headers_other: Option<&mut OtherHeaders<'x>>,
+    mut headers_offsets: Option<&mut Vec<HeaderOffset<'x>>>,
+    stream: &mut MessageStream<'x>,
+) -> bool {
     loop {
         let (bytes_read, result) = parse_header_name(&stream.data[stream.pos..]);
         stream.pos += bytes_read;
@@ -40,21 +45,23 @@ pub fn parse_headers<'x>(headers: &mut Headers<'x>, stream: &mut MessageStream<'
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
-                headers.offsets.push(HeaderOffset {
-                    name: HeaderOffsetName::Rfc(name),
-                    start: from_offset,
-                    end: stream.pos,
-                });
+                if let Some(headers_offsets) = headers_offsets.as_mut() {
+                    headers_offsets.push(HeaderOffset {
+                        name: HeaderOffsetName::Rfc(name),
+                        start: from_offset,
+                        end: stream.pos,
+                    });
+                }
 
                 if !value.is_empty() {
                     if is_many {
-                        match headers.values.entry(name) {
+                        match headers_rfc.entry(name) {
                             Entry::Occupied(mut e) => {
                                 if let HeaderValue::Collection(col) = e.get_mut() {
                                     col.push(value);
                                 } else {
                                     let old_value = e.remove();
-                                    headers.values.insert(
+                                    headers_rfc.insert(
                                         name,
                                         HeaderValue::Collection(vec![old_value, value]),
                                     );
@@ -65,33 +72,38 @@ pub fn parse_headers<'x>(headers: &mut Headers<'x>, stream: &mut MessageStream<'
                             }
                         }
                     } else {
-                        headers.values.insert(name, value);
+                        headers_rfc.insert(name, value);
                     }
                 }
             }
             HeaderParserResult::Other(name) => {
-                let from_offset = stream.pos;
-                let value = parse_raw(stream);
-                headers.offsets.push(HeaderOffset {
-                    name: HeaderOffsetName::Other(name.clone()),
-                    start: from_offset,
-                    end: stream.pos,
-                });
+                if let Some(headers_other) = headers_other.as_mut() {
+                    let from_offset = stream.pos;
+                    let value = parse_raw(stream);
+                    if let Some(headers_offsets) = headers_offsets.as_mut() {
+                        headers_offsets.push(HeaderOffset {
+                            name: HeaderOffsetName::Other(name.clone()),
+                            start: from_offset,
+                            end: stream.pos,
+                        });
+                    }
 
-                if !value.is_empty() {
-                    match headers.other_values.entry(name.clone()) {
-                        Entry::Occupied(mut e) => {
-                            if let HeaderValue::Collection(col) = e.get_mut() {
-                                col.push(value);
-                            } else {
-                                let old_value = e.remove();
-                                headers
-                                    .other_values
-                                    .insert(name, HeaderValue::Collection(vec![old_value, value]));
+                    if !value.is_empty() {
+                        match headers_other.entry(name.clone()) {
+                            Entry::Occupied(mut e) => {
+                                if let HeaderValue::Collection(col) = e.get_mut() {
+                                    col.push(value);
+                                } else {
+                                    let old_value = e.remove();
+                                    headers_other.insert(
+                                        name,
+                                        HeaderValue::Collection(vec![old_value, value]),
+                                    );
+                                }
                             }
-                        }
-                        Entry::Vacant(e) => {
-                            e.insert(value);
+                            Entry::Vacant(e) => {
+                                e.insert(value);
+                            }
                         }
                     }
                 }

@@ -136,156 +136,154 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 17,
-          "hour": 19,
-          "minute": 32,
-          "second": 47,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "message_id": {
-        "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
-      },
-      "subject": {
-        "Text": "Test message from Microsoft Outlook 00"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "doug@example.com"
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Heinz Müller",
-          "address": "mueller@example.com"
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
         }
       }
     },
-    "other_values": {
-      "X-Mailer": {
-        "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-      },
-      "X-Priority": {
-        "Text": "3 (Normal)"
-      },
-      "X-MimeOLE": {
-        "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-      },
-      "Importance": {
-        "Text": "Normal"
-      },
-      "X-MSMail-Priority": {
-        "Text": "Normal"
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 32,
+        "second": 47,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 5,
-        "end": 40
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 43,
-        "end": 99
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 107,
-        "end": 148
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 153,
-        "end": 187
-      },
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 198,
-        "end": 248
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 261,
-        "end": 267
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 280,
-        "end": 354
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 365,
-        "end": 378
-      },
-      {
-        "name": {
-          "Other": "X-MSMail-Priority"
-        },
-        "start": 396,
-        "end": 405
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 414,
-        "end": 467
-      },
-      {
-        "name": {
-          "Other": "Importance"
-        },
-        "start": 478,
-        "end": 487
-      },
-      {
-        "name": {
-          "Other": "X-MimeOLE"
-        },
-        "start": 497,
-        "end": 545
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
-    ]
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    }
   },
+  "headers_other": {
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
+    "X-MSMail-Priority": {
+      "Text": "Normal"
+    },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    },
+    "Importance": {
+      "Text": "Normal"
+    },
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 5,
+      "end": 40
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 43,
+      "end": 99
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 107,
+      "end": 148
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 153,
+      "end": 187
+    },
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 198,
+      "end": 248
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 261,
+      "end": 267
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 280,
+      "end": 354
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 365,
+      "end": 378
+    },
+    {
+      "name": {
+        "Other": "X-MSMail-Priority"
+      },
+      "start": 396,
+      "end": 405
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 414,
+      "end": 467
+    },
+    {
+      "name": {
+        "Other": "Importance"
+      },
+      "start": 478,
+      "end": 487
+    },
+    {
+      "name": {
+        "Other": "X-MimeOLE"
+      },
+      "start": 497,
+      "end": 545
+    }
+  ],
   "html_body": [
     0
   ],
@@ -307,36 +305,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_transfer_encoding": {
-              "Text": "quoted-printable"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "iso-8859-1"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 653,
-              "end": 690
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 716,
-              "end": 735
-            }
-          ]
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          }
         },
         "contents": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n",
         "is_html": false
@@ -345,51 +325,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "blueball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "blueball.png"
-                }
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "blueball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1596,
-              "end": 1631
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1657,
-              "end": 1666
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 1686,
-              "end": 1726
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
             }
-          ]
+          }
         },
         "contents": [
           137,
@@ -1723,51 +1678,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "greenball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "greenball.png"
-                }
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "greenball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 3604,
-              "end": 3640
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 3666,
-              "end": 3675
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 3695,
-              "end": 3736
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,
@@ -3074,51 +3004,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "image",
-                "c_subtype": "png",
-                "attributes": {
-                  "name": "redball.png"
-                }
-              }
-            },
-            "content_transfer_encoding": {
-              "Text": "base64"
-            },
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "redball.png"
-                }
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "redball.png"
               }
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 5576,
-              "end": 5610
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 5636,
-              "end": 5645
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 5665,
-              "end": 5704
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
         },
         "contents": [
           137,

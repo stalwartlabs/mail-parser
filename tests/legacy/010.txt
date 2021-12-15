@@ -22,146 +22,144 @@ In einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein da
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "message_id": {
-        "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frï¿½sche"
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "text",
-          "c_subtype": "plain",
-          "attributes": {
-            "charset": "iso-8859-1"
-          }
-        }
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 19,
-          "hour": 1,
-          "minute": 10,
-          "second": 27,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
-        }
-      },
-      "to": {
-        "Address": {
-          "name": "Heinz Mï¿½ller",
-          "address": "mueller@example.com"
-        }
-      },
-      "content_transfer_encoding": {
-        "Text": "8bit"
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "dwsauder@example.com"
+  "headers_rfc": {
+    "subject": {
+      "Text": "Die Hasen und die Frï¿½sche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Mï¿½ller",
+        "address": "mueller@example.com"
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "8bit"
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 1,
+        "minute": 10,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
         }
       }
     },
-    "other_values": {
-      "X-Sender": {
-        "Text": "dwsauder@pop.example.com (Unverified)"
-      },
-      "X-Mailer": {
-        "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-      },
-      "X-Priority": {
-        "Text": "1 (Highest)"
-      }
-    },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 11,
-        "end": 64
-      },
-      {
-        "name": {
-          "Other": "X-Sender"
-        },
-        "start": 73,
-        "end": 113
-      },
-      {
-        "name": {
-          "Other": "X-Mailer"
-        },
-        "start": 122,
-        "end": 170
-      },
-      {
-        "name": {
-          "Other": "X-Priority"
-        },
-        "start": 181,
-        "end": 195
-      },
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 200,
-        "end": 234
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 237,
-        "end": 274
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 279,
-        "end": 316
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 324,
-        "end": 352
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 365,
-        "end": 371
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 384,
-        "end": 419
-      },
-      {
-        "name": {
-          "Rfc": "content_transfer_encoding"
-        },
-        "start": 445,
-        "end": 452
-      }
-    ]
+    "message_id": {
+      "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
+    }
   },
+  "headers_other": {
+    "X-Priority": {
+      "Text": "1 (Highest)"
+    },
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
+    },
+    "X-Mailer": {
+      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    }
+  },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 11,
+      "end": 64
+    },
+    {
+      "name": {
+        "Other": "X-Sender"
+      },
+      "start": 73,
+      "end": 113
+    },
+    {
+      "name": {
+        "Other": "X-Mailer"
+      },
+      "start": 122,
+      "end": 170
+    },
+    {
+      "name": {
+        "Other": "X-Priority"
+      },
+      "start": 181,
+      "end": 195
+    },
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 200,
+      "end": 234
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 237,
+      "end": 274
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 279,
+      "end": 316
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 324,
+      "end": 352
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 365,
+      "end": 371
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 384,
+      "end": 419
+    },
+    {
+      "name": {
+        "Rfc": "content_transfer_encoding"
+      },
+      "start": 445,
+      "end": 452
+    }
+  ],
   "html_body": [
     0
   ],

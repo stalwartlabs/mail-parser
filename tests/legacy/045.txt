@@ -43,110 +43,108 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
 
 ---- EXPECTED STRUCTURE ----
 {
-  "headers": {
-    "values": {
-      "message_id": {
-        "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
-      },
-      "to": {
-        "AddressList": [
-          {
-            "name": "Joe Blow",
-            "address": "blow@example.com"
-          },
-          {
-            "name": "Heinz Müller",
-            "address": "mueller@example.com"
-          }
-        ]
-      },
-      "mime_version": {
-        "Text": "1.0"
-      },
-      "date": {
-        "DateTime": {
-          "year": 2000,
-          "month": 5,
-          "day": 19,
-          "hour": 10,
-          "minute": 26,
-          "second": 12,
-          "tz_before_gmt": true,
-          "tz_hour": 4,
-          "tz_minute": 0
+  "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-891160829-958746372=:8452"
         }
-      },
-      "content_type": {
-        "ContentType": {
-          "c_type": "multipart",
-          "c_subtype": "mixed",
-          "attributes": {
-            "boundary": "-1463757054-891160829-958746372=:8452"
-          }
-        }
-      },
-      "from": {
-        "Address": {
-          "name": "Doug Sauder",
-          "address": "doug@penguin.example.com"
-        }
-      },
-      "subject": {
-        "Text": "Die Hasen und die Frösche"
       }
     },
-    "offsets": [
-      {
-        "name": {
-          "Rfc": "date"
-        },
-        "start": 5,
-        "end": 45
-      },
-      {
-        "name": {
-          "Rfc": "from"
-        },
-        "start": 50,
-        "end": 91
-      },
-      {
-        "name": {
-          "Rfc": "to"
-        },
-        "start": 94,
-        "end": 185
-      },
-      {
-        "name": {
-          "Rfc": "subject"
-        },
-        "start": 193,
-        "end": 240
-      },
-      {
-        "name": {
-          "Rfc": "message_id"
-        },
-        "start": 251,
-        "end": 315
-      },
-      {
-        "name": {
-          "Rfc": "mime_version"
-        },
-        "start": 328,
-        "end": 334
-      },
-      {
-        "name": {
-          "Rfc": "content_type"
-        },
-        "start": 347,
-        "end": 415
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
       }
-    ]
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 10,
+        "minute": 26,
+        "second": 12,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
+    },
+    "to": {
+      "AddressList": [
+        {
+          "name": "Joe Blow",
+          "address": "blow@example.com"
+        },
+        {
+          "name": "Heinz Müller",
+          "address": "mueller@example.com"
+        }
+      ]
+    }
   },
+  "headers_offsets": [
+    {
+      "name": {
+        "Rfc": "date"
+      },
+      "start": 5,
+      "end": 45
+    },
+    {
+      "name": {
+        "Rfc": "from"
+      },
+      "start": 50,
+      "end": 91
+    },
+    {
+      "name": {
+        "Rfc": "to"
+      },
+      "start": 94,
+      "end": 185
+    },
+    {
+      "name": {
+        "Rfc": "subject"
+      },
+      "start": 193,
+      "end": 240
+    },
+    {
+      "name": {
+        "Rfc": "message_id"
+      },
+      "start": 251,
+      "end": 315
+    },
+    {
+      "name": {
+        "Rfc": "mime_version"
+      },
+      "start": 328,
+      "end": 334
+    },
+    {
+      "name": {
+        "Rfc": "content_type"
+      },
+      "start": 347,
+      "end": 415
+    }
+  ],
   "html_body": [
     0
   ],
@@ -162,26 +160,15 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "US-ASCII"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "US-ASCII"
               }
             }
-          },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 691,
-              "end": 722
-            }
-          ]
+          }
         },
         "contents": "\r",
         "is_html": false
@@ -190,72 +177,33 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
     {
       "Text": {
         "headers": {
-          "values": {
-            "content_disposition": {
-              "ContentType": {
-                "c_type": "attachment",
-                "attributes": {
-                  "filename": "HasenundFrösche.txt"
-                }
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1",
+                "name": "HasenundFrösche.txt"
               }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "text",
-                "c_subtype": "plain",
-                "attributes": {
-                  "charset": "iso-8859-1",
-                  "name": "HasenundFrösche.txt"
-                }
-              }
-            },
-            "content_id": {
-              "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
-            },
-            "content_transfer_encoding": {
-              "Text": "BASE64"
-            },
-            "content_description": {
-              "Text": "Short story in German"
             }
           },
-          "offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 780,
-              "end": 856
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 882,
-              "end": 891
-            },
-            {
-              "name": {
-                "Rfc": "content_id"
-              },
-              "start": 902,
-              "end": 959
-            },
-            {
-              "name": {
-                "Rfc": "content_description"
-              },
-              "start": 979,
-              "end": 1003
-            },
-            {
-              "name": {
-                "Rfc": "content_disposition"
-              },
-              "start": 1023,
-              "end": 1083
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "attributes": {
+                "filename": "HasenundFrösche.txt"
+              }
             }
-          ]
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
+          },
+          "content_description": {
+            "Text": "Short story in German"
+          }
         },
         "contents": "Die Hasen und die Frösche\r\r\n\r\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\r\n\r\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\r\n\r\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\r\n\r\r\n",
         "is_html": false
