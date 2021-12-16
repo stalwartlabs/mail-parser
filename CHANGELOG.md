@@ -1,3 +1,8 @@
+mail-parser 0.4.1
+================================
+- Lazy parsing of nested e-mail messages.
+- Support for base64/quoted-printable nested messages.
+
 mail-parser 0.4.0
 ================================
 - Lazy conversion to/from HTML an plain text parts.
