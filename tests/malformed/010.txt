@@ -53,8 +53,8 @@ Content-Type: text/plain
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 43,
-              "end": 59
+              "start": 13,
+              "end": 29
             }
           ],
           "attachments": [
@@ -85,8 +85,8 @@ Content-Type: text/plain
                       "name": {
                         "Rfc": "content_type"
                       },
-                      "start": 73,
-                      "end": 85
+                      "start": 13,
+                      "end": 25
                     }
                   ],
                   "html_body": [
@@ -105,25 +105,25 @@ Content-Type: text/plain
                   "structure": {
                     "Part": 0
                   },
-                  "offset_header": 60,
-                  "offset_body": 86,
-                  "offset_end": 88
+                  "offset_header": 0,
+                  "offset_body": 26,
+                  "offset_end": 28
                 }
               }
             }
           ],
           "structure": {
-            "List": []
+            "Part": 0
           },
-          "offset_header": 30,
-          "offset_body": 60,
-          "offset_end": 88
+          "offset_header": 0,
+          "offset_body": 30,
+          "offset_end": 58
         }
       }
     }
   ],
   "structure": {
-    "List": []
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 30,

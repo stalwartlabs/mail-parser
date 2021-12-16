@@ -63,9 +63,9 @@ fn write_attachments(message: &Message) {
         match attachment {
             MessagePart::Text(text) | MessagePart::Html(text) => write_part(text),
             MessagePart::Binary(blob) | MessagePart::InlineBinary(blob) => write_part(blob),
-            MessagePart::Message(message) => {
-                write_part(message);
-                write_attachments(message.get_body());
+            MessagePart::Message(raw_message) => {
+                write_part(raw_message);
+                write_attachments(&raw_message.parse().unwrap());
             }
             _ => (),
         }

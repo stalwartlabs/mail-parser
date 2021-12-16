@@ -146,8 +146,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     let nested_message = message
         .get_attachment(0)
         .unwrap()
-        .unwrap_message()
-        .get_body();
+        .unwrap_message();
 
     assert_eq!(
         nested_message.get_subject().unwrap(),

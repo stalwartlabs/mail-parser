@@ -100,15 +100,15 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 92,
-              "end": 121
+              "start": 5,
+              "end": 34
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 129,
-              "end": 141
+              "start": 42,
+              "end": 54
             }
           ],
           "html_body": [
@@ -127,9 +127,9 @@ Foobar
           "structure": {
             "Part": 0
           },
-          "offset_header": 87,
-          "offset_body": 142,
-          "offset_end": 166
+          "offset_header": 0,
+          "offset_body": 55,
+          "offset_end": 73
         }
       }
     },
@@ -145,14 +145,14 @@ Foobar
         },
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "i disagree"
-            },
             "from": {
               "Address": {
                 "name": "another one",
                 "address": "another@one"
               }
+            },
+            "subject": {
+              "Text": "i disagree"
             }
           },
           "headers_offsets": [
@@ -160,15 +160,15 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 171,
-              "end": 198
+              "start": 5,
+              "end": 32
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 206,
-              "end": 218
+              "start": 40,
+              "end": 52
             }
           ],
           "html_body": [
@@ -187,9 +187,9 @@ Foobar
           "structure": {
             "Part": 0
           },
-          "offset_header": 166,
-          "offset_body": 219,
-          "offset_end": 246
+          "offset_header": 0,
+          "offset_body": 53,
+          "offset_end": 74
         }
       }
     },
@@ -208,6 +208,12 @@ Foobar
             "subject": {
               "Text": "funny hat"
             },
+            "from": {
+              "Address": {
+                "name": "attachment",
+                "address": "attachment@user"
+              }
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -216,12 +222,6 @@ Foobar
                   "boundary": "2"
                 }
               }
-            },
-            "from": {
-              "Address": {
-                "name": "attachment",
-                "address": "attachment@user"
-              }
             }
           },
           "headers_offsets": [
@@ -229,22 +229,22 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 251,
-              "end": 281
+              "start": 5,
+              "end": 35
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 289,
-              "end": 300
+              "start": 43,
+              "end": 54
             },
             {
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 313,
-              "end": 342
+              "start": 67,
+              "end": 96
             }
           ],
           "html_body": [
@@ -260,14 +260,14 @@ Foobar
             {
               "Text": {
                 "headers": {
-                  "content_transfer_encoding": {
-                    "Text": "binary"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain"
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "binary"
                   }
                 },
                 "body": "Lovely attachment for you"
@@ -311,15 +311,25 @@ Foobar
               }
             ]
           },
-          "offset_header": 246,
-          "offset_body": 343,
-          "offset_end": 565
+          "offset_header": 0,
+          "offset_body": 97,
+          "offset_end": 318
         }
       }
     }
   ],
   "structure": {
-    "List": []
+    "List": [
+      {
+        "Part": 0
+      },
+      {
+        "Part": 1
+      },
+      {
+        "Part": 2
+      }
+    ]
   },
   "offset_header": 0,
   "offset_body": 82,

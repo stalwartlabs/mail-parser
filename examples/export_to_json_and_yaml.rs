@@ -120,11 +120,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     // Supports nested messages as well as multipart/digest
-    let nested_message = message
-        .get_attachment(0)
-        .unwrap()
-        .unwrap_message()
-        .get_body();
+    let nested_message = message.get_attachment(0).unwrap().unwrap_message();
 
     assert_eq!(
         nested_message.get_subject().unwrap(),

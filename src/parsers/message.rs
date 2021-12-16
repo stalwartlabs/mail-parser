@@ -114,6 +114,24 @@ fn get_mime_type(
     }
 }
 
+#[inline(always)]
+fn add_missing_type<'x>(
+    headers: &mut RfcHeaders<'x>,
+    c_type: Cow<'x, str>,
+    c_subtype: Cow<'x, str>,
+) {
+    if headers.is_empty() {
+        headers.insert(
+            HeaderName::ContentType,
+            HeaderValue::ContentType(ContentType {
+                c_type,
+                c_subtype: Some(c_subtype),
+                attributes: None,
+            }),
+        );
+    }
+}
+
 #[derive(Default)]
 struct MessageParserState {
     mime_type: MimeType,
@@ -187,17 +205,12 @@ impl<'x> Message<'x> {
     ///
     pub fn parse(raw_message: &'x [u8]) -> Option<Message<'x>> {
         let mut stream = MessageStream::new(raw_message);
-
         let mut message = Message::new();
-        let mut message_stack = Vec::new();
-        let mut message_header_stack = Vec::new();
 
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::new();
 
         let mut mime_part_header = RfcHeaders::new();
-
-        message.raw_message = raw_message;
 
         'outer: loop {
             // Parse headers
@@ -253,16 +266,7 @@ impl<'x> Message<'x> {
                             ..Default::default()
                         };
                         if !is_message {
-                            if mime_part_header.is_empty() {
-                                mime_part_header.insert(
-                                    HeaderName::ContentType,
-                                    HeaderValue::ContentType(ContentType {
-                                        c_type: "text".into(),
-                                        c_subtype: Some("plain".into()),
-                                        attributes: None,
-                                    }),
-                                );
-                            }
+                            add_missing_type(&mut mime_part_header, "text".into(), "plain".into());
                             message.parts.push(MessagePart::Multipart(std::mem::take(
                                 &mut mime_part_header,
                             )));
@@ -276,31 +280,6 @@ impl<'x> Message<'x> {
                         is_text = true;
                     }
                 }
-            } else if mime_type == MimeType::Message {
-                let new_state = MessageParserState {
-                    mime_type: MimeType::Message,
-                    mime_boundary: state.mime_boundary.take(),
-                    need_html_body: true,
-                    need_text_body: true,
-                    ..Default::default()
-                };
-                if mime_part_header.is_empty() {
-                    mime_part_header.insert(
-                        HeaderName::ContentType,
-                        HeaderValue::ContentType(ContentType {
-                            c_type: "message".into(),
-                            c_subtype: Some("rfc822".into()),
-                            attributes: None,
-                        }),
-                    );
-                }
-                message_header_stack.push(std::mem::take(&mut mime_part_header));
-                message_stack.push(message);
-                state_stack.push(state);
-                message = Message::new();
-                state = new_state;
-                skip_crlf(&mut stream);
-                continue;
             }
 
             skip_crlf(&mut stream);
@@ -375,121 +354,106 @@ impl<'x> Message<'x> {
                 stream.pos += bytes_read;
             }
 
-            let is_inline = is_inline
-                && header
-                    .get(&HeaderName::ContentDisposition)
-                    .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
-                && (state.parts == 1
-                    || (state.mime_type != MimeType::MultipartRelated
-                        && (mime_type == MimeType::Inline
-                            || content_type.map_or_else(|| true, |c| !c.has_attribute("name")))));
+            state
+                .structure
+                .push(MessageStructure::Part(message.parts.len()));
 
-            let (add_to_html, add_to_text) = if let MimeType::MultipartAlernative = state.mime_type
-            {
-                match mime_type {
-                    MimeType::TextHtml => (true, false),
-                    MimeType::TextPlain => (false, true),
-                    _ => (false, false),
-                }
-            } else if is_inline {
-                if state.in_alternative && (state.need_text_body || state.need_html_body) {
-                    match mime_type {
-                        MimeType::TextHtml => {
-                            state.need_text_body = false;
+            if mime_type != MimeType::Message {
+                let is_inline = is_inline
+                    && header
+                        .get(&HeaderName::ContentDisposition)
+                        .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
+                    && (state.parts == 1
+                        || (state.mime_type != MimeType::MultipartRelated
+                            && (mime_type == MimeType::Inline
+                                || content_type
+                                    .map_or_else(|| true, |c| !c.has_attribute("name")))));
+
+                let (add_to_html, add_to_text) =
+                    if let MimeType::MultipartAlernative = state.mime_type {
+                        match mime_type {
+                            MimeType::TextHtml => (true, false),
+                            MimeType::TextPlain => (false, true),
+                            _ => (false, false),
                         }
-                        MimeType::TextPlain => {
-                            state.need_html_body = false;
+                    } else if is_inline {
+                        if state.in_alternative && (state.need_text_body || state.need_html_body) {
+                            match mime_type {
+                                MimeType::TextHtml => {
+                                    state.need_text_body = false;
+                                }
+                                MimeType::TextPlain => {
+                                    state.need_html_body = false;
+                                }
+                                _ => (),
+                            }
                         }
-                        _ => (),
+                        (state.need_html_body, state.need_text_body)
+                    } else {
+                        (false, false)
+                    };
+
+                if is_text {
+                    let is_html = mime_type == MimeType::TextHtml;
+                    let text_part = Part {
+                        body: result_to_string(bytes, stream.data, content_type),
+                        headers: std::mem::take(&mut mime_part_header),
+                    };
+
+                    if add_to_html && !is_html {
+                        message.html_body.push(message.parts.len());
+                    } else if add_to_text && is_html {
+                        message.text_body.push(message.parts.len());
                     }
-                }
-                (state.need_html_body, state.need_text_body)
-            } else {
-                (false, false)
-            };
 
-            if is_text {
-                let is_html = mime_type == MimeType::TextHtml;
-                let text_part = Part {
-                    body: result_to_string(bytes, stream.data, content_type),
-                    headers: std::mem::take(&mut mime_part_header),
-                };
+                    if add_to_html && is_html {
+                        message.html_body.push(message.parts.len());
+                    } else if add_to_text && !is_html {
+                        message.text_body.push(message.parts.len());
+                    } else {
+                        message.attachments.push(message.parts.len());
+                    }
 
-                if add_to_html && !is_html {
-                    message.html_body.push(message.parts.len());
-                } else if add_to_text && is_html {
-                    message.text_body.push(message.parts.len());
-                }
-
-                if add_to_html && is_html {
-                    message.html_body.push(message.parts.len());
-                } else if add_to_text && !is_html {
-                    message.text_body.push(message.parts.len());
+                    message.parts.push(if is_html {
+                        MessagePart::Html(text_part)
+                    } else {
+                        MessagePart::Text(text_part)
+                    });
                 } else {
+                    if add_to_html {
+                        message.html_body.push(message.parts.len());
+                    }
+                    if add_to_text {
+                        message.text_body.push(message.parts.len());
+                    }
+
                     message.attachments.push(message.parts.len());
-                }
-                state
-                    .structure
-                    .push(MessageStructure::Part(message.parts.len()));
-                message.parts.push(if is_html {
-                    MessagePart::Html(text_part)
-                } else {
-                    MessagePart::Text(text_part)
-                });
+
+                    let binary_part = Part::new(
+                        std::mem::take(&mut mime_part_header),
+                        result_to_bytes(bytes, stream.data),
+                    );
+
+                    message.parts.push(if !is_inline {
+                        MessagePart::Binary(binary_part)
+                    } else {
+                        MessagePart::InlineBinary(binary_part)
+                    });
+                };
             } else {
-                if add_to_html {
-                    message.html_body.push(message.parts.len());
-                }
-                if add_to_text {
-                    message.text_body.push(message.parts.len());
-                }
-
+                add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
-
-                state
-                    .structure
-                    .push(MessageStructure::Part(message.parts.len()));
-
-                let binary_part = Part::new(
+                message.parts.push(MessagePart::Message(Part::new(
                     std::mem::take(&mut mime_part_header),
-                    result_to_bytes(bytes, stream.data),
-                );
-
-                message.parts.push(if !is_inline {
-                    MessagePart::Binary(binary_part)
-                } else {
-                    MessagePart::InlineBinary(binary_part)
-                });
-            };
+                    crate::MessageAttachment {
+                        raw_message: result_to_bytes(bytes, stream.data),
+                    },
+                )));
+            }
 
             if state.mime_boundary.is_some() {
                 // Currently processing a MIME part
-                let mut last_part_offset = stream.pos;
-
                 'inner: loop {
-                    if let MimeType::Message = state.mime_type {
-                        // Finished processing nested message, restore parent message from stack
-                        if let (Some(mut prev_message), Some(mut prev_state)) =
-                            (message_stack.pop(), state_stack.pop())
-                        {
-                            message.structure = state.get_structure();
-                            message.offset_end = seek_crlf_end(&stream, last_part_offset);
-                            message.raw_message =
-                                &raw_message[message.offset_header..message.offset_end];
-                            prev_message.attachments.push(prev_message.parts.len());
-                            prev_message.parts.push(MessagePart::Message(Part::new(
-                                message_header_stack.pop().unwrap(),
-                                Box::new(message),
-                            )));
-                            message = prev_message;
-                            prev_state.mime_boundary = state.mime_boundary;
-                            state = prev_state;
-                        } else {
-                            debug_assert!(false, "Failed to restore parent message. Aborting.");
-                            break 'outer;
-                        }
-                    }
-
                     if skip_multipart_end(&mut stream) {
                         // End of MIME part reached
 
@@ -522,7 +486,6 @@ impl<'x> Message<'x> {
 
                             // Restore ancestor's state
                             state = prev_state;
-                            last_part_offset = stream.pos;
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
@@ -543,22 +506,6 @@ impl<'x> Message<'x> {
             }
         }
 
-        while let (Some(mut prev_message), Some(prev_state)) =
-            (message_stack.pop(), state_stack.pop())
-        {
-            message.offset_end = stream.pos;
-            if !message.is_empty() {
-                message.structure = state.get_structure();
-                prev_message.attachments.push(prev_message.parts.len());
-                prev_message.parts.push(MessagePart::Message(Part::new(
-                    message_header_stack.pop().unwrap(),
-                    Box::new(message),
-                )));
-            }
-            message = prev_message;
-            state = prev_state;
-        }
-
         message.structure = state.get_structure();
         message.offset_end = stream.pos;
 
@@ -573,7 +520,9 @@ impl<'x> Message<'x> {
 mod tests {
     use std::{fs, path::PathBuf};
 
-    use crate::{parsers::message::Message, MessagePart};
+    use serde_json::Value;
+
+    use crate::parsers::message::Message;
 
     const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
@@ -608,27 +557,18 @@ mod tests {
                     tests_run += 1;
 
                     let input = input.split_at_mut(pos);
-                    let mut message = Message::parse(input.0).unwrap();
-
-                    // Remove raw message references before comparing
-                    message.raw_message = &[];
-                    for parts in &mut message.parts {
-                        if let MessagePart::Message(part) = parts {
-                            part.body.raw_message = &[];
-                            for parts in &mut part.body.parts {
-                                if let MessagePart::Message(part) = parts {
-                                    part.body.raw_message = &[];
-                                }
-                            }
-                        }
-                    }
+                    let message = Message::parse(input.0).unwrap();
+                    let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     assert_eq!(
-                        message,
-                        serde_json::from_slice::<Message>(&input.1[SEPARATOR.len()..]).unwrap(),
+                        serde_json::from_str::<Value>(&json_message).unwrap(),
+                        serde_json::from_str::<Value>(
+                            std::str::from_utf8(&input.1[SEPARATOR.len()..]).unwrap()
+                        )
+                        .unwrap(),
                         "Test failed for '{}', result was:\n{}",
                         file_name.display(),
-                        serde_json::to_string_pretty(&message).unwrap()
+                        json_message
                     );
                 }
             }
@@ -646,7 +586,7 @@ mod tests {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");
         file_name.push("rfc");
-        file_name.push("007.txt");
+        file_name.push("003.txt");
 
         let mut input = fs::read(&file_name).unwrap();
         let mut pos = 0;

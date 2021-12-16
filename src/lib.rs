@@ -223,8 +223,7 @@
 //!    let nested_message = message
 //!        .get_attachment(0)
 //!        .unwrap()
-//!        .unwrap_message()
-//!        .get_body();
+//!        .unwrap_message();
 //!
 //!    assert_eq!(
 //!        nested_message.get_subject().unwrap(),
@@ -325,8 +324,6 @@ pub struct Message<'x> {
     pub offset_header: usize,
     pub offset_body: usize,
     pub offset_end: usize,
-    #[cfg_attr(feature = "serde_support", serde(skip))]
-    pub raw_message: &'x [u8],
 }
 
 /// Body structure.
@@ -396,7 +393,7 @@ pub enum MessagePart<'x> {
     InlineBinary(Part<'x, Cow<'x, [u8]>>),
 
     /// Nested RFC5322 message.
-    Message(Part<'x, Box<Message<'x>>>),
+    Message(Part<'x, MessageAttachment<'x>>),
 
     /// Multipart part
     Multipart(RfcHeaders<'x>),
@@ -419,9 +416,9 @@ impl<'x> MessagePart<'x> {
         }
     }
 
-    pub fn unwrap_message(&self) -> &Part<'x, Box<Message<'x>>> {
+    pub fn unwrap_message(&self) -> Message {
         match self {
-            MessagePart::Message(part) => part,
+            MessagePart::Message(part) => part.parse().unwrap(),
             _ => panic!("Expected message part."),
         }
     }
@@ -1111,13 +1108,13 @@ impl<'x> fmt::Display for Part<'x, Cow<'x, [u8]>> {
     }
 }
 
-impl<'x> BodyPart<'x> for Part<'x, Box<Message<'x>>> {
+impl<'x> BodyPart<'x> for Part<'x, MessageAttachment<'x>> {
     fn get_contents(&'x self) -> &'x [u8] {
-        self.body.raw_message
+        self.body.raw_message.as_ref()
     }
 
     fn get_text_contents(&'x self) -> &'x str {
-        std::str::from_utf8(self.body.raw_message).unwrap_or("")
+        std::str::from_utf8(self.body.raw_message.as_ref()).unwrap_or("")
     }
 
     fn is_text(&self) -> bool {
@@ -1133,9 +1130,9 @@ impl<'x> BodyPart<'x> for Part<'x, Box<Message<'x>>> {
     }
 }
 
-impl<'x> fmt::Display for Part<'x, Box<Message<'x>>> {
+impl<'x> fmt::Display for Part<'x, MessageAttachment<'x>> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(String::from_utf8_lossy(self.body.raw_message).as_ref())
+        fmt.write_str(String::from_utf8_lossy(self.body.raw_message.as_ref()).as_ref())
     }
 }
 
@@ -1262,5 +1259,45 @@ impl<'x> ContentType<'x> {
     /// Returns ```true``` if the Content-Disposition type is "inline"
     pub fn is_inline(&'x self) -> bool {
         self.c_type.eq_ignore_ascii_case("inline")
+    }
+}
+
+/// Raw contents of an e-mail message attachment.
+#[derive(Debug, PartialEq, Eq)]
+pub struct MessageAttachment<'x> {
+    pub raw_message: Cow<'x, [u8]>,
+}
+
+impl<'x> MessageAttachment<'x> {
+    /// Parse the message attachment and return a `Message` object.
+    pub fn parse(&'x self) -> Option<Message<'x>> {
+        Message::parse(self.raw_message.as_ref())
+    }
+}
+
+impl<'x> Part<'x, MessageAttachment<'x>> {
+    /// Parse the message attachment and return a `Message` object.
+    pub fn parse(&'x self) -> Option<Message<'x>> {
+        self.body.parse()
+    }
+}
+
+impl<'x> Serialize for MessageAttachment<'x> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        self.parse()
+            .ok_or_else(|| serde::ser::Error::custom("Failed to parse message attachment."))?
+            .serialize(serializer)
+    }
+}
+
+impl<'x, 'de> Deserialize<'de> for MessageAttachment<'x> {
+    fn deserialize<D>(_deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        panic!("Deserializing message attachments is not supported at this time.")
     }
 }
