@@ -21,6 +21,9 @@ ZWg=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -29,9 +32,6 @@ ZWg=
           "boundary": "bound"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -62,35 +62,33 @@ ZWg=
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
-        "contents": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a",
-        "is_html": false
+        "body": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
       }
     },
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
-        "contents": "eh",
-        "is_html": false
+        "body": "eh"
       }
     }
   ],

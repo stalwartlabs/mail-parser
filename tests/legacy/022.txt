@@ -32,6 +32,30 @@ IiANCg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "schmuergen@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
+    },
+    "content_transfer_encoding": {
+      "Text": "base64"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -45,24 +69,6 @@ IiANCg==
         "tz_minute": 0
       }
     },
-    "content_transfer_encoding": {
-      "Text": "base64"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "text",
@@ -71,29 +77,23 @@ IiANCg==
           "charset": "iso-8859-1"
         }
       }
-    },
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "schmuergen@example.com"
-      }
     }
   },
   "headers_other": {
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
     "X-MSMail-Priority": {
       "Text": "Normal"
     },
     "X-Mailer": {
       "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
     "Importance": {
       "Text": "Normal"
     },
-    "X-Priority": {
-      "Text": "3 (Normal)"
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
     }
   },
   "headers_offsets": [
@@ -198,8 +198,7 @@ IiANCg==
   "parts": [
     {
       "Text": {
-        "contents": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n",
-        "is_html": false
+        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n"
       }
     }
   ],

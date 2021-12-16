@@ -45,9 +45,7 @@ Content-Type: text/plain
     1
   ],
   "attachments": [
-    {
-      "Attachment": 2
-    }
+    2
   ],
   "parts": [
     {
@@ -73,8 +71,7 @@ Content-Type: text/plain
             }
           }
         },
-        "contents": "1",
-        "is_html": false
+        "body": "1"
       }
     },
     {
@@ -87,8 +84,7 @@ Content-Type: text/plain
             }
           }
         },
-        "contents": "22\n--1\nContent-Type: text/plain\n\n333\n",
-        "is_html": false
+        "body": "22\n--1\nContent-Type: text/plain\n\n333\n"
       }
     }
   ],

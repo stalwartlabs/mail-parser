@@ -45,12 +45,8 @@ Content-Type: text/plain
     }
   ],
   "attachments": [
-    {
-      "Attachment": 2
-    },
-    {
-      "Attachment": 4
-    }
+    1,
+    2
   ],
   "parts": [
     {
@@ -67,118 +63,107 @@ Content-Type: text/plain
       }
     },
     {
-      "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "message",
-            "c_subtype": "rfc822"
+      "Message": {
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
           }
+        },
+        "body": {
+          "headers_rfc": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "headers_offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 141,
+              "end": 153
+            }
+          ],
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "parts": [
+            {
+              "Text": {
+                "body": "1"
+              }
+            }
+          ],
+          "structure": {
+            "Part": 0
+          },
+          "offset_header": 128,
+          "offset_body": 154,
+          "offset_end": 160
         }
       }
     },
     {
       "Message": {
-        "headers_rfc": {
+        "headers": {
           "content_type": {
             "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain"
+              "c_type": "message",
+              "c_subtype": "rfc822"
             }
           }
         },
-        "headers_offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 141,
-            "end": 153
-          }
-        ],
-        "html_body": [
-          0
-        ],
-        "text_body": [
-          0
-        ],
-        "parts": [
-          {
-            "Text": {
-              "contents": "1",
-              "is_html": false
+        "body": {
+          "headers_rfc": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
             }
-          }
-        ],
-        "structure": {
-          "Part": 0
-        },
-        "offset_header": 128,
-        "offset_body": 154,
-        "offset_end": 160
-      }
-    },
-    {
-      "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "message",
-            "c_subtype": "rfc822"
-          }
+          },
+          "headers_offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 203,
+              "end": 215
+            }
+          ],
+          "attachments": [
+            0
+          ],
+          "parts": [
+            {
+              "Text": {
+                "body": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+              }
+            }
+          ],
+          "structure": {
+            "Part": 0
+          },
+          "offset_header": 190,
+          "offset_body": 216,
+          "offset_end": 283
         }
-      }
-    },
-    {
-      "Message": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain"
-            }
-          }
-        },
-        "headers_offsets": [
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 203,
-            "end": 215
-          }
-        ],
-        "attachments": [
-          {
-            "Attachment": 0
-          }
-        ],
-        "parts": [
-          {
-            "Text": {
-              "contents": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n",
-              "is_html": false
-            }
-          }
-        ],
-        "structure": {
-          "Part": 0
-        },
-        "offset_header": 190,
-        "offset_body": 216,
-        "offset_end": 283
       }
     }
   ],
   "structure": {
     "MultiPart": [
       0,
-      [
-        {
-          "Part": 1
-        },
-        {
-          "Part": 3
-        }
-      ]
+      []
     ]
   },
   "offset_header": 0,

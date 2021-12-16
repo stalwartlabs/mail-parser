@@ -25,15 +25,12 @@ body
     }
   ],
   "attachments": [
-    {
-      "Attachment": 0
-    }
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "body\n",
-        "is_html": false
+        "body": "body\n"
       }
     }
   ],

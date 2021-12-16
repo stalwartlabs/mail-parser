@@ -22,12 +22,6 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "In parts"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -36,6 +30,12 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
           "boundary": "1"
         }
       }
+    },
+    "subject": {
+      "Text": "In parts"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -68,9 +68,7 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
     0
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    }
+    1
   ],
   "parts": [
     {
@@ -86,8 +84,7 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
             }
           }
         },
-        "contents": "Hi, this is the fancy thing I was talking about!",
-        "is_html": false
+        "body": "Hi, this is the fancy thing I was talking about!"
       }
     },
     {
@@ -98,14 +95,14 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
               "c_type": "message",
               "c_subtype": "partial",
               "attributes": {
-                "number": "1",
+                "id": "heks68ewe@example.org",
                 "total": "5",
-                "id": "heks68ewe@example.org"
+                "number": "1"
               }
             }
           }
         },
-        "contents": [
+        "body": [
           88,
           45,
           87,

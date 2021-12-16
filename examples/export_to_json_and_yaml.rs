@@ -102,7 +102,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
     assert_eq!(
-        message.get_html_body(0).unwrap().to_string(),
+        message.get_html_body(0).unwrap(),
         concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -112,7 +112,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // HTML parts are converted to plain text (and viceversa) when missing
     assert_eq!(
-        message.get_text_body(0).unwrap().to_string(),
+        message.get_text_body(0).unwrap(),
         concat!(
             "I was thinking about quitting the “exporting” to focus just on the",
             " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -120,10 +120,11 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     // Supports nested messages as well as multipart/digest
-    let nested_message = match message.get_attachment(0).unwrap() {
-        MessagePart::Message(v) => v,
-        _ => unreachable!(),
-    };
+    let nested_message = message
+        .get_attachment(0)
+        .unwrap()
+        .unwrap_message()
+        .get_body();
 
     assert_eq!(
         nested_message.get_subject().unwrap(),
@@ -132,18 +133,15 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Handles UTF-* as well as many legacy encodings
     assert_eq!(
-        nested_message.get_text_body(0).unwrap().to_string(),
+        nested_message.get_text_body(0).unwrap(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
     assert_eq!(
-        nested_message.get_html_body(0).unwrap().to_string(),
+        nested_message.get_html_body(0).unwrap(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 
-    let nested_attachment = match nested_message.get_attachment(0).unwrap() {
-        MessagePart::Binary(v) => v,
-        _ => unreachable!(),
-    };
+    let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
 
     assert_eq!(nested_attachment.len(), 42);
 

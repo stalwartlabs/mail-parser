@@ -49,36 +49,14 @@ Content-Type: text/plain; charset=utf-8
     1
   ],
   "attachments": [
-    {
-      "Attachment": 2
-    }
+    2
   ],
   "parts": [
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "utf-8"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
-          }
-        },
-        "contents": "päivää\n",
-        "is_html": false
-      }
-    },
-    {
-      "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -90,8 +68,7 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
-        "contents": "yötä vaan.\n�\t�",
-        "is_html": false
+        "body": "päivää\n"
       }
     },
     {
@@ -110,8 +87,26 @@ Content-Type: text/plain; charset=utf-8
             "Text": "base64"
           }
         },
-        "contents": "?garbage",
-        "is_html": false
+        "body": "yötä vaan.\n�\t�"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "utf-8"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          }
+        },
+        "body": "?garbage"
       }
     }
   ],

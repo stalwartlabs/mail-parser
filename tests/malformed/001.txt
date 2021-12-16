@@ -53,8 +53,7 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "contents": "Content-Type: text/plain\n",
-        "is_html": false
+        "body": "Content-Type: text/plain\n"
       }
     }
   ],

@@ -86,12 +86,14 @@ hello, world
             }
           }
         },
-        "contents": "hello, world",
-        "is_html": false
+        "body": "hello, world"
       }
     },
     {
       "Multipart": {
+        "mime_version": {
+          "Text": "2.0"
+        },
         "content_type": {
           "ContentType": {
             "c_type": "multipart",
@@ -100,9 +102,6 @@ hello, world
               "boundary": "1"
             }
           }
-        },
-        "mime_version": {
-          "Text": "2.0"
         }
       }
     },
@@ -116,8 +115,7 @@ hello, world
             }
           }
         },
-        "contents": "hello, world",
-        "is_html": false
+        "body": "hello, world"
       }
     },
     {
@@ -146,8 +144,7 @@ hello, world
             }
           }
         },
-        "contents": "hello, world",
-        "is_html": false
+        "body": "hello, world"
       }
     },
     {
@@ -173,8 +170,7 @@ hello, world
             }
           }
         },
-        "contents": "hello, world",
-        "is_html": false
+        "body": "hello, world"
       }
     }
   ],

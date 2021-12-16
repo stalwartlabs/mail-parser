@@ -35,9 +35,7 @@ body2
     }
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    }
+    1
   ],
   "parts": [
     {
@@ -63,8 +61,7 @@ body2
             }
           }
         },
-        "contents": "body\n--ab\nContent-Type: text/html\n\nbody2\n",
-        "is_html": false
+        "body": "body\n--ab\nContent-Type: text/html\n\nbody2\n"
       }
     }
   ],

@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    AttachmentType, BinaryPart, ContentType, HeaderName, HeaderValue, Message, MessagePart,
-    MessagePartId, MessageStructure, RfcHeaders, TextPart,
+    ContentType, HeaderName, HeaderValue, Message, MessagePart, MessagePartId, MessageStructure,
+    Part, RfcHeaders,
 };
 
 use super::{
@@ -185,16 +185,19 @@ impl<'x> Message<'x> {
     /// This function never panics, a best-effort is made to parse the message and
     /// if no headers are found None is returned.
     ///
-    pub fn parse(bytes: &'x [u8]) -> Option<Message<'x>> {
-        let mut stream = MessageStream::new(bytes);
+    pub fn parse(raw_message: &'x [u8]) -> Option<Message<'x>> {
+        let mut stream = MessageStream::new(raw_message);
 
         let mut message = Message::new();
         let mut message_stack = Vec::new();
+        let mut message_header_stack = Vec::new();
 
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::new();
 
         let mut mime_part_header = RfcHeaders::new();
+
+        message.raw_message = raw_message;
 
         'outer: loop {
             // Parse headers
@@ -291,12 +294,7 @@ impl<'x> Message<'x> {
                         }),
                     );
                 }
-                state
-                    .structure
-                    .push(MessageStructure::Part(message.parts.len()));
-                message.parts.push(MessagePart::Multipart(std::mem::take(
-                    &mut mime_part_header,
-                )));
+                message_header_stack.push(std::mem::take(&mut mime_part_header));
                 message_stack.push(message);
                 state_stack.push(state);
                 message = Message::new();
@@ -412,10 +410,9 @@ impl<'x> Message<'x> {
 
             if is_text {
                 let is_html = mime_type == MimeType::TextHtml;
-                let text_part = TextPart {
-                    contents: result_to_string(bytes, stream.data, content_type),
+                let text_part = Part {
+                    body: result_to_string(bytes, stream.data, content_type),
                     headers: std::mem::take(&mut mime_part_header),
-                    is_html,
                 };
 
                 if add_to_html && !is_html {
@@ -429,14 +426,16 @@ impl<'x> Message<'x> {
                 } else if add_to_text && !is_html {
                     message.text_body.push(message.parts.len());
                 } else {
-                    message
-                        .attachments
-                        .push(AttachmentType::Attachment(message.parts.len()));
+                    message.attachments.push(message.parts.len());
                 }
                 state
                     .structure
                     .push(MessageStructure::Part(message.parts.len()));
-                message.parts.push(MessagePart::Text(text_part));
+                message.parts.push(if is_html {
+                    MessagePart::Html(text_part)
+                } else {
+                    MessagePart::Text(text_part)
+                });
             } else {
                 if add_to_html {
                     message.html_body.push(message.parts.len());
@@ -445,20 +444,22 @@ impl<'x> Message<'x> {
                     message.text_body.push(message.parts.len());
                 }
 
-                message.attachments.push(if is_inline {
-                    AttachmentType::Inline(message.parts.len())
-                } else {
-                    AttachmentType::Attachment(message.parts.len())
-                });
+                message.attachments.push(message.parts.len());
 
                 state
                     .structure
                     .push(MessageStructure::Part(message.parts.len()));
 
-                message.parts.push(MessagePart::Binary(BinaryPart {
-                    headers: std::mem::take(&mut mime_part_header),
-                    contents: result_to_bytes(bytes, stream.data),
-                }));
+                let binary_part = Part::new(
+                    std::mem::take(&mut mime_part_header),
+                    result_to_bytes(bytes, stream.data),
+                );
+
+                message.parts.push(if !is_inline {
+                    MessagePart::Binary(binary_part)
+                } else {
+                    MessagePart::InlineBinary(binary_part)
+                });
             };
 
             if state.mime_boundary.is_some() {
@@ -473,10 +474,13 @@ impl<'x> Message<'x> {
                         {
                             message.structure = state.get_structure();
                             message.offset_end = seek_crlf_end(&stream, last_part_offset);
-                            prev_message
-                                .attachments
-                                .push(AttachmentType::Attachment(prev_message.parts.len()));
-                            prev_message.parts.push(MessagePart::Message(message));
+                            message.raw_message =
+                                &raw_message[message.offset_header..message.offset_end];
+                            prev_message.attachments.push(prev_message.parts.len());
+                            prev_message.parts.push(MessagePart::Message(Part::new(
+                                message_header_stack.pop().unwrap(),
+                                Box::new(message),
+                            )));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
                             state = prev_state;
@@ -545,10 +549,11 @@ impl<'x> Message<'x> {
             message.offset_end = stream.pos;
             if !message.is_empty() {
                 message.structure = state.get_structure();
-                prev_message
-                    .attachments
-                    .push(AttachmentType::Attachment(prev_message.parts.len()));
-                prev_message.parts.push(MessagePart::Message(message));
+                prev_message.attachments.push(prev_message.parts.len());
+                prev_message.parts.push(MessagePart::Message(Part::new(
+                    message_header_stack.pop().unwrap(),
+                    Box::new(message),
+                )));
             }
             message = prev_message;
             state = prev_state;
@@ -568,7 +573,7 @@ impl<'x> Message<'x> {
 mod tests {
     use std::{fs, path::PathBuf};
 
-    use crate::parsers::message::Message;
+    use crate::{parsers::message::Message, MessagePart};
 
     const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
 
@@ -603,7 +608,20 @@ mod tests {
                     tests_run += 1;
 
                     let input = input.split_at_mut(pos);
-                    let message = Message::parse(input.0).unwrap();
+                    let mut message = Message::parse(input.0).unwrap();
+
+                    // Remove raw message references before comparing
+                    message.raw_message = &[];
+                    for parts in &mut message.parts {
+                        if let MessagePart::Message(part) = parts {
+                            part.body.raw_message = &[];
+                            for parts in &mut part.body.parts {
+                                if let MessagePart::Message(part) = parts {
+                                    part.body.raw_message = &[];
+                                }
+                            }
+                        }
+                    }
 
                     assert_eq!(
                         message,
@@ -627,8 +645,8 @@ mod tests {
     fn message_to_yaml() {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");
-        file_name.push("legacy");
-        file_name.push("000.txt");
+        file_name.push("rfc");
+        file_name.push("007.txt");
 
         let mut input = fs::read(&file_name).unwrap();
         let mut pos = 0;
@@ -646,13 +664,13 @@ mod tests {
             file_name.display()
         );
 
-        let input = input.split_at_mut(pos);
-        let message = Message::parse(input.0).unwrap();
+        let input = input.split_at_mut(pos).0;
+        let message = Message::parse(input).unwrap();
         let result = serde_yaml::to_string(&message).unwrap();
 
         fs::write("test.yaml", &result).unwrap();
 
-        println!("{}", result);
+        println!("{:}", result);
     }
 
     #[test]

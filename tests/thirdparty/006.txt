@@ -31,6 +31,9 @@ Signed by undersigned
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "subject": {
       "Text": "Hide and seek"
     },
@@ -42,9 +45,6 @@ Signed by undersigned
           "boundary": "1"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -77,9 +77,7 @@ Signed by undersigned
     3
   ],
   "attachments": [
-    {
-      "Attachment": 4
-    }
+    4
   ],
   "parts": [
     {
@@ -89,9 +87,9 @@ Signed by undersigned
             "c_type": "multipart",
             "c_subtype": "signed",
             "attributes": {
-              "protocol": "signature/plain",
               "migalc": "pen+paper",
-              "boundary": "2"
+              "boundary": "2",
+              "protocol": "signature/plain"
             }
           }
         }
@@ -111,7 +109,7 @@ Signed by undersigned
       }
     },
     {
-      "Text": {
+      "Html": {
         "headers": {
           "content_type": {
             "ContentType": {
@@ -123,8 +121,7 @@ Signed by undersigned
             }
           }
         },
-        "contents": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n",
-        "is_html": true
+        "body": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n"
       }
     },
     {
@@ -140,8 +137,7 @@ Signed by undersigned
             }
           }
         },
-        "contents": "Search me, and Find me here",
-        "is_html": false
+        "body": "Search me, and Find me here"
       }
     },
     {
@@ -157,7 +153,7 @@ Signed by undersigned
             }
           }
         },
-        "contents": [
+        "body": [
           83,
           105,
           103,

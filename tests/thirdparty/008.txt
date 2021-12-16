@@ -63,6 +63,18 @@ Root MIME epilogue
         "address": "user@domain.org"
       }
     },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "foo bar"
+        }
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "date": {
       "DateTime": {
         "year": 2007,
@@ -74,18 +86,6 @@ Root MIME epilogue
         "tz_before_gmt": false,
         "tz_hour": 2,
         "tz_minute": 0
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "foo bar"
-        }
       }
     }
   },
@@ -132,18 +132,14 @@ Root MIME epilogue
     }
   ],
   "html_body": [
-    3
+    2
   ],
   "text_body": [
-    3
+    2
   ],
   "attachments": [
-    {
-      "Attachment": 0
-    },
-    {
-      "Attachment": 2
-    }
+    0,
+    1
   ],
   "parts": [
     {
@@ -159,186 +155,181 @@ Root MIME epilogue
             }
           }
         },
-        "contents": "hello\n",
-        "is_html": false
-      }
-    },
-    {
-      "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "message",
-            "c_subtype": "rfc822"
-          }
-        }
+        "body": "hello\n"
       }
     },
     {
       "Message": {
-        "headers_rfc": {
-          "subject": {
-            "Text": "submsg"
-          },
-          "from": {
-            "Address": {
-              "address": "sub@domain.org"
-            }
-          },
-          "date": {
-            "DateTime": {
-              "year": 2012,
-              "month": 8,
-              "day": 12,
-              "hour": 12,
-              "minute": 34,
-              "second": 56,
-              "tz_before_gmt": false,
-              "tz_hour": 3,
-              "tz_minute": 0
-            }
-          },
+        "headers": {
           "content_type": {
             "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
-              "attributes": {
-                "boundary": "sub1"
-              }
+              "c_type": "message",
+              "c_subtype": "rfc822"
             }
           }
         },
-        "headers_offsets": [
-          {
-            "name": {
-              "Rfc": "from"
+        "body": {
+          "headers_rfc": {
+            "from": {
+              "Address": {
+                "address": "sub@domain.org"
+              }
             },
-            "start": 300,
-            "end": 316
+            "subject": {
+              "Text": "submsg"
+            },
+            "date": {
+              "DateTime": {
+                "year": 2012,
+                "month": 8,
+                "day": 12,
+                "hour": 12,
+                "minute": 34,
+                "second": 56,
+                "tz_before_gmt": false,
+                "tz_hour": 3,
+                "tz_minute": 0
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "alternative",
+                "attributes": {
+                  "boundary": "sub1"
+                }
+              }
+            }
           },
-          {
-            "name": {
-              "Rfc": "date"
+          "headers_offsets": [
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 300,
+              "end": 316
             },
-            "start": 321,
-            "end": 354
-          },
-          {
-            "name": {
-              "Rfc": "subject"
+            {
+              "name": {
+                "Rfc": "date"
+              },
+              "start": 321,
+              "end": 354
             },
-            "start": 362,
-            "end": 370
-          },
-          {
-            "name": {
-              "Rfc": "content_type"
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 362,
+              "end": 370
             },
-            "start": 383,
-            "end": 423
-          }
-        ],
-        "html_body": [
-          0,
-          4
-        ],
-        "text_body": [
-          3,
-          4,
-          5
-        ],
-        "parts": [
-          {
-            "Text": {
-              "headers": {
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 383,
+              "end": 423
+            }
+          ],
+          "html_body": [
+            0,
+            4
+          ],
+          "text_body": [
+            3,
+            4,
+            5
+          ],
+          "parts": [
+            {
+              "Html": {
+                "headers": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "html"
+                    }
+                  }
+                },
+                "body": "<p>Hello world</p>\n"
+              }
+            },
+            {
+              "Multipart": {
                 "content_type": {
                   "ContentType": {
-                    "c_type": "text",
-                    "c_subtype": "html"
-                  }
-                }
-              },
-              "contents": "<p>Hello world</p>\n",
-              "is_html": true
-            }
-          },
-          {
-            "Multipart": {
-              "content_type": {
-                "ContentType": {
-                  "c_type": "multipart",
-                  "c_subtype": "alternative",
-                  "attributes": {
-                    "boundary": "sub2"
+                    "c_type": "multipart",
+                    "c_subtype": "alternative",
+                    "attributes": {
+                      "boundary": "sub2"
+                    }
                   }
                 }
               }
-            }
-          },
-          {
-            "Multipart": {
-              "content_type": {
-                "ContentType": {
-                  "c_type": "multipart",
-                  "c_subtype": "alternative",
-                  "attributes": {
-                    "boundary": "sub3"
-                  }
-                }
-              }
-            }
-          },
-          {
-            "Text": {
-              "contents": "sub3 text",
-              "is_html": false
-            }
-          },
-          {
-            "Text": {
-              "contents": "sub3 text2",
-              "is_html": false
-            }
-          },
-          {
-            "Text": {
-              "contents": "sub2 text2",
-              "is_html": false
-            }
-          }
-        ],
-        "structure": {
-          "List": [
-            {
-              "Part": 0
             },
             {
-              "MultiPart": [
-                1,
-                [
-                  {
-                    "MultiPart": [
-                      2,
-                      [
-                        {
-                          "Part": 3
-                        },
-                        {
-                          "Part": 4
-                        }
-                      ]
-                    ]
-                  },
-                  {
-                    "Part": 5
+              "Multipart": {
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "multipart",
+                    "c_subtype": "alternative",
+                    "attributes": {
+                      "boundary": "sub3"
+                    }
                   }
-                ]
-              ]
+                }
+              }
+            },
+            {
+              "Text": {
+                "body": "sub3 text"
+              }
+            },
+            {
+              "Text": {
+                "body": "sub3 text2"
+              }
+            },
+            {
+              "Text": {
+                "body": "sub2 text2"
+              }
             }
-          ]
-        },
-        "offset_header": 295,
-        "offset_body": 424,
-        "offset_end": 710
+          ],
+          "structure": {
+            "List": [
+              {
+                "Part": 0
+              },
+              {
+                "MultiPart": [
+                  1,
+                  [
+                    {
+                      "MultiPart": [
+                        2,
+                        [
+                          {
+                            "Part": 3
+                          },
+                          {
+                            "Part": 4
+                          }
+                        ]
+                      ]
+                    },
+                    {
+                      "Part": 5
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "offset_header": 295,
+          "offset_body": 424,
+          "offset_end": 710
+        }
       }
     },
     {
@@ -351,8 +342,7 @@ Root MIME epilogue
             }
           }
         },
-        "contents": "Another part",
-        "is_html": false
+        "body": "Another part"
       }
     }
   ],
@@ -362,10 +352,7 @@ Root MIME epilogue
         "Part": 0
       },
       {
-        "Part": 1
-      },
-      {
-        "Part": 3
+        "Part": 2
       }
     ]
   },

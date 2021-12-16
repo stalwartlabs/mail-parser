@@ -64,8 +64,7 @@ body2
             }
           }
         },
-        "contents": "body",
-        "is_html": false
+        "body": "body"
       }
     }
   ],

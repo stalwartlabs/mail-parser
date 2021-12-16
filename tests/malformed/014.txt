@@ -45,8 +45,7 @@ hello, world
             }
           }
         },
-        "contents": "hello, world",
-        "is_html": false
+        "body": "hello, world"
       }
     }
   ],

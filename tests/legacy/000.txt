@@ -45,28 +45,23 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
-    },
-    "content_disposition": {
-      "ContentType": {
-        "c_type": "attachment",
-        "attributes": {
-          "filename": "redball.png"
-        }
-      }
-    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "image",
+        "c_subtype": "png",
+        "attributes": {
+          "name": "redball.png"
+        }
       }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     },
     "date": {
       "DateTime": {
@@ -81,40 +76,45 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
     },
     "content_transfer_encoding": {
       "Text": "base64"
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "image",
-        "c_subtype": "png",
-        "attributes": {
-          "name": "redball.png"
-        }
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_disposition": {
+      "ContentType": {
+        "c_type": "attachment",
+        "attributes": {
+          "filename": "redball.png"
+        }
+      }
     }
   },
   "headers_other": {
+    "X-MSMail-Priority": {
+      "Text": "Normal"
+    },
     "X-MimeOLE": {
       "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     },
     "X-Priority": {
       "Text": "3 (Normal)"
     },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
     "Importance": {
       "Text": "Normal"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     }
   },
   "headers_offsets": [
@@ -218,14 +218,12 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     }
   ],
   "attachments": [
-    {
-      "Attachment": 0
-    }
+    0
   ],
   "parts": [
     {
       "Binary": {
-        "contents": [
+        "body": [
           137,
           80,
           78,

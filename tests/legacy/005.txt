@@ -34,6 +34,12 @@ m+APw-ssen als wir.+ACI-=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
@@ -53,8 +59,14 @@ m+APw-ssen als wir.+ACI-=20
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     },
     "content_type": {
       "ContentType": {
@@ -65,28 +77,16 @@ m+APw-ssen als wir.+ACI-=20
         }
       }
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com"
     }
   },
   "headers_other": {
-    "Importance": {
-      "Text": "Normal"
-    },
     "X-Priority": {
       "Text": "3 (Normal)"
+    },
+    "Importance": {
+      "Text": "Normal"
     },
     "X-Mailer": {
       "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
@@ -200,8 +200,7 @@ m+APw-ssen als wir.+ACI-=20
   "parts": [
     {
       "Text": {
-        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n",
-        "is_html": false
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n"
       }
     }
   ],

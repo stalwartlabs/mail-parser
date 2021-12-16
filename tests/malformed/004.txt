@@ -31,15 +31,12 @@ body
     }
   ],
   "attachments": [
-    {
-      "Attachment": 0
-    }
+    0
   ],
   "parts": [
     {
       "Text": {
-        "contents": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n",
-        "is_html": false
+        "body": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
       }
     }
   ],

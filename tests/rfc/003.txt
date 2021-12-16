@@ -26,14 +26,29 @@ Content-Type: application/x-whatever
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "boundary42"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Formatted text mail"
+    },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
       }
     },
-    "subject": {
-      "Text": "Formatted text mail"
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
     },
     "date": {
       "DateTime": {
@@ -48,23 +63,8 @@ Content-Type: application/x-whatever
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
-      }
-    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "boundary42"
-        }
-      }
     }
   },
   "headers_offsets": [
@@ -118,12 +118,8 @@ Content-Type: application/x-whatever
     0
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    },
-    {
-      "Attachment": 2
-    }
+    1,
+    2
   ],
   "parts": [
     {
@@ -139,8 +135,7 @@ Content-Type: application/x-whatever
             }
           }
         },
-        "contents": "... plain text version of message goes here ...\n",
-        "is_html": false
+        "body": "... plain text version of message goes here ...\n"
       }
     },
     {
@@ -153,8 +148,7 @@ Content-Type: application/x-whatever
             }
           }
         },
-        "contents": "... RFC 1896 text/enriched version of same message\n    goes here ...\n",
-        "is_html": false
+        "body": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
       }
     },
     {
@@ -167,7 +161,7 @@ Content-Type: application/x-whatever
             }
           }
         },
-        "contents": [
+        "body": [
           46,
           46,
           46,

@@ -27,39 +27,39 @@ invalid
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
-      }
-    },
     "message_id": {
       "Text": "1.2.3.4@example"
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "return_path": {
-      "Text": "test@example.org"
+    "subject": {
+      "Text": "Hello world"
     },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
         "c_subtype": "signed",
         "attributes": {
-          "protocol": "application/pgp-signature",
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
           "micalg": "pgp-sha1",
-          "boundary": "=-GNQXLhuj24Pl1aCkk4/d"
+          "protocol": "application/pgp-signature"
         }
       }
-    },
-    "subject": {
-      "Text": "Hello world"
     },
     "to": {
       "Address": {
         "name": "Another User",
         "address": "test2@example.org"
+      }
+    },
+    "return_path": {
+      "Text": "test@example.org"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
       }
     },
     "date": {
@@ -141,26 +141,23 @@ invalid
     0
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    }
+    1
   ],
   "parts": [
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
-        "contents": "There was a day \na happy day\n",
-        "is_html": false
+        "body": "There was a day \na happy day\n"
       }
     },
     {
@@ -176,7 +173,7 @@ invalid
             }
           }
         },
-        "contents": [
+        "body": [
           105,
           110,
           118,

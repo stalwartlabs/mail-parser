@@ -173,17 +173,35 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "39236103.FFE674FC@example.com"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
     },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------B7133A01A6B323BF00DBC9A7"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "message_id": {
+      "Text": "39236103.FFE674FC@example.com"
+    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
+      }
     },
     "date": {
       "DateTime": {
@@ -197,32 +215,14 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------B7133A01A6B323BF00DBC9A7"
-        }
-      }
     }
   },
   "headers_other": {
-    "X-Accept-Language": {
-      "Text": "en"
-    },
     "X-Mailer": {
       "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    },
+    "X-Accept-Language": {
+      "Text": "en"
     }
   },
   "headers_offsets": [
@@ -301,18 +301,10 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     5
   ],
   "attachments": [
-    {
-      "Attachment": 2
-    },
-    {
-      "Attachment": 3
-    },
-    {
-      "Inline": 4
-    },
-    {
-      "Inline": 5
-    }
+    2,
+    3,
+    4,
+    5
   ],
   "parts": [
     {
@@ -329,7 +321,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "Text": {
+      "Html": {
         "headers": {
           "content_transfer_encoding": {
             "Text": "7bit"
@@ -344,13 +336,23 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
-        "contents": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n\r",
-        "is_html": true
+        "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n\r"
       }
     },
     {
       "Binary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "C:TEMPnsmailV0.png"
+              }
+            }
+          },
+          "content_id": {
+            "Text": "part1.39236103.1B697A54@example.com"
+          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -359,20 +361,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               "c_type": "image",
               "c_subtype": "png"
             }
-          },
-          "content_id": {
-            "Text": "part1.39236103.1B697A54@example.com"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "C:TEMPnsmailV0.png"
-              }
-            }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,
@@ -1704,8 +1695,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_id": {
-            "Text": "part2.39236103.1B697A54@example.com"
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -1715,8 +1706,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_id": {
+            "Text": "part2.39236103.1B697A54@example.com"
           },
           "content_type": {
             "ContentType": {
@@ -1725,7 +1716,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,
@@ -3183,16 +3174,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "Binary": {
+      "InlineBinary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -3204,9 +3187,17 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "greenball.png"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,
@@ -4509,10 +4500,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     },
     {
-      "Binary": {
+      "InlineBinary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
           },
           "content_type": {
             "ContentType": {
@@ -4523,16 +4519,11 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,

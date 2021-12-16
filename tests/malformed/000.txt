@@ -42,8 +42,7 @@ Content-Type: text/html
   "parts": [
     {
       "Text": {
-        "contents": "Content-Type: text/plain",
-        "is_html": false
+        "body": "Content-Type: text/plain"
       }
     },
     {
@@ -56,8 +55,7 @@ Content-Type: text/html
             }
           }
         },
-        "contents": "Content-Type: text/html",
-        "is_html": false
+        "body": "Content-Type: text/html"
       }
     }
   ],

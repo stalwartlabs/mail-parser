@@ -44,26 +44,20 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-891160829-958746372=:8452"
+    "to": {
+      "AddressList": [
+        {
+          "name": "Joe Blow",
+          "address": "blow@example.com"
+        },
+        {
+          "name": "Heinz Müller",
+          "address": "mueller@example.com"
         }
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
+      ]
     },
     "mime_version": {
       "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
     },
     "date": {
       "DateTime": {
@@ -78,20 +72,26 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
         "tz_minute": 0
       }
     },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "message_id": {
       "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
     },
-    "to": {
-      "AddressList": [
-        {
-          "name": "Joe Blow",
-          "address": "blow@example.com"
-        },
-        {
-          "name": "Heinz Müller",
-          "address": "mueller@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-891160829-958746372=:8452"
         }
-      ]
+      }
     }
   },
   "headers_offsets": [
@@ -152,9 +152,7 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
     0
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    }
+    1
   ],
   "parts": [
     {
@@ -170,8 +168,7 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
             }
           }
         },
-        "contents": "\r",
-        "is_html": false
+        "body": "\r"
       }
     },
     {
@@ -182,10 +179,16 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
-                "charset": "iso-8859-1",
-                "name": "HasenundFrösche.txt"
+                "name": "HasenundFrösche.txt",
+                "charset": "iso-8859-1"
               }
             }
+          },
+          "content_description": {
+            "Text": "Short story in German"
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
           },
           "content_disposition": {
             "ContentType": {
@@ -195,18 +198,11 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
-          },
-          "content_description": {
-            "Text": "Short story in German"
           }
         },
-        "contents": "Die Hasen und die Frösche\r\r\n\r\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\r\n\r\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\r\n\r\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\r\n\r\r\n",
-        "is_html": false
+        "body": "Die Hasen und die Frösche\r\r\n\r\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\r\n\r\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\r\n\r\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\r\n\r\r\n"
       }
     }
   ],

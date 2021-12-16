@@ -98,14 +98,20 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from PINE"
     },
     "message_id": {
       "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
     },
-    "subject": {
-      "Text": "Test message from PINE"
+    "mime_version": {
+      "Text": "1.0"
     },
     "content_type": {
       "ContentType": {
@@ -114,12 +120,6 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "attributes": {
           "boundary": "-1463757054-952513540-958744548=:8452"
         }
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
       }
     },
     "date": {
@@ -200,12 +200,8 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     0
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    },
-    {
-      "Attachment": 2
-    }
+    1,
+    2
   ],
   "parts": [
     {
@@ -221,19 +217,12 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
-        "contents": "This is a test message from PINE MUA.\r\n\r\n\r",
-        "is_html": false
+        "body": "This is a test message from PINE MUA.\r\n\r\n\r"
       }
     },
     {
       "Binary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "application",
@@ -243,9 +232,6 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_description": {
-            "Text": "A PNG graphic file"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -253,9 +239,18 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,
@@ -1724,14 +1719,14 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
+          },
           "content_transfer_encoding": {
             "Text": "BASE64"
           },
           "content_description": {
             "Text": "A PNG graphic file"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
           },
           "content_disposition": {
             "ContentType": {
@@ -1742,7 +1737,7 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,

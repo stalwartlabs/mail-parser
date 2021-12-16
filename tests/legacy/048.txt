@@ -157,6 +157,30 @@ end
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------177483472E7788F4AD46AB1A"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "3923670C.67D83A99@example.com"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -169,30 +193,6 @@ end
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------177483472E7788F4AD46AB1A"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "3923670C.67D83A99@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     },
     "from": {
       "Address": {
@@ -287,20 +287,17 @@ end
     3
   ],
   "attachments": [
-    {
-      "Inline": 1
-    },
-    {
-      "Inline": 2
-    },
-    {
-      "Inline": 3
-    }
+    1,
+    2,
+    3
   ],
   "parts": [
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -309,27 +306,14 @@ end
                 "charset": "us-ascii"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
           }
         },
-        "contents": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r",
-        "is_html": false
+        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
       }
     },
     {
-      "Binary": {
+      "InlineBinary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "redball.png"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
@@ -340,9 +324,18 @@ end
                 "filename": "redball.png"
               }
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
+              }
+            }
           }
         },
-        "contents": [
+        "body": [
           98,
           101,
           103,
@@ -2415,8 +2408,17 @@ end
       }
     },
     {
-      "Binary": {
+      "InlineBinary": {
         "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
@@ -2427,18 +2429,9 @@ end
                 "filename": "greenball.png"
               }
             }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
-            }
           }
         },
-        "contents": [
+        "body": [
           98,
           101,
           103,
@@ -4293,7 +4286,7 @@ end
       }
     },
     {
-      "Binary": {
+      "InlineBinary": {
         "headers": {
           "content_transfer_encoding": {
             "Text": "x-uuencode"
@@ -4316,7 +4309,7 @@ end
             }
           }
         },
-        "contents": [
+        "body": [
           98,
           101,
           103,

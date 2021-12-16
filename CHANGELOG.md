@@ -1,3 +1,9 @@
+mail-parser 0.4.0
+================================
+- Lazy conversion to/from HTML an plain text parts.
+- Improved API.
+- Parts are now generics.
+
 mail-parser 0.3.1
 ================================
 - Support for non-standard headers.

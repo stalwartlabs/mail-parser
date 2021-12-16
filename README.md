@@ -35,42 +35,46 @@ Performance and memory safety were two important factors while designing _mail-p
 ## Usage Example
 
 ```rust
-    let input = concat!(
-        "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
-        "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
-        "    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;\n",
-        "Date: Sat, 20 Nov 2021 14:22:01 -0800\n",
-        "Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=\n",
-        "Content-Type: multipart/mixed; boundary=\"festivus\";\n\n",
-        "--festivus\n",
-        "Content-Type: text/html; charset=\"us-ascii\"\n",
-        "Content-Transfer-Encoding: base64\n\n",
-        "PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle\n",
-        "HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm\n",
-        "cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8\n",
-        "gJiN4MjYzQTs8L3A+PC9odG1sPg==\n",
-        "--festivus\n",
-        "Content-Type: message/rfc822\n\n",
-        "From: \"Cosmo Kramer\" <kramer@kramerica.com>\n",
-        "Subject: Exporting my book about coffee tables\n",
-        "Content-Type: multipart/mixed; boundary=\"giddyup\";\n\n",
-        "--giddyup\n",
-        "Content-Type: text/plain; charset=\"utf-16\"\n",
-        "Content-Transfer-Encoding: quoted-printable\n\n",
-        "=FF=FE=0C!5=D8\"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8\"=DD =005=D8\"=\n",
-        "=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =\n",
-        "=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8\"=\n",
-        "=DD5=D8=1E=DD5=D80=DD5=D8\"=DD!=00\n",
-        "--giddyup\n",
-        "Content-Type: image/gif; name*1=\"about \"; name*0=\"Book \";\n",
-        "              name*2*=utf-8''%e2%98%95 tables.gif\n",
-        "Content-Transfer-Encoding: Base64\n",
-        "Content-Disposition: attachment\n\n",
-        "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\n",
-        "--giddyup--\n",
-        "--festivus--\n",
-    )
-    .as_bytes();
+    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
+To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
+    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
+Date: Sat, 20 Nov 2021 14:22:01 -0800
+Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=
+Content-Type: multipart/mixed; boundary="festivus";
+
+--festivus
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: base64
+
+PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle
+HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm
+cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
+gJiN4MjYzQTs8L3A+PC9odG1sPg==
+--festivus
+Content-Type: message/rfc822
+
+From: "Cosmo Kramer" <kramer@kramerica.com>
+Subject: Exporting my book about coffee tables
+Content-Type: multipart/mixed; boundary="giddyup";
+
+--giddyup
+Content-Type: text/plain; charset="utf-16"
+Content-Transfer-Encoding: quoted-printable
+
+=FF=FE=0C!5=D8"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8"=DD =005=D8"=
+=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =
+=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8"=
+=DD5=D8=1E=DD5=D80=DD5=D8"=DD!=00
+--giddyup
+Content-Type: image/gif; name*1="about "; name*0="Book ";
+              name*2*=utf-8''%e2%98%95 tables.gif
+Content-Transfer-Encoding: Base64
+Content-Disposition: attachment
+
+R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
+--giddyup--
+--festivus--
+"#;
 
     let message = Message::parse(input).unwrap();
 
@@ -119,9 +123,9 @@ Performance and memory safety were two important factors while designing _mail-p
         "Why not both importing AND exporting? ☺"
     );
 
-    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4 
+    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
     assert_eq!(
-        message.get_html_body(0).unwrap().to_string(),
+        message.get_html_body(0).unwrap(),
         concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -131,7 +135,7 @@ Performance and memory safety were two important factors while designing _mail-p
 
     // HTML parts are converted to plain text (and viceversa) when missing
     assert_eq!(
-        message.get_text_body(0).unwrap().to_string(),
+        message.get_text_body(0).unwrap(),
         concat!(
             "I was thinking about quitting the “exporting” to focus just on the",
             " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -139,10 +143,11 @@ Performance and memory safety were two important factors while designing _mail-p
     );
 
     // Supports nested messages as well as multipart/digest
-    let nested_message = match message.get_attachment(0).unwrap() {
-        MessagePart::Message(v) => v,
-        _ => unreachable!(),
-    };
+    let nested_message = message
+        .get_attachment(0)
+        .unwrap()
+        .unwrap_message()
+        .get_body();
 
     assert_eq!(
         nested_message.get_subject().unwrap(),
@@ -151,18 +156,15 @@ Performance and memory safety were two important factors while designing _mail-p
 
     // Handles UTF-* as well as many legacy encodings
     assert_eq!(
-        nested_message.get_text_body(0).unwrap().to_string(),
+        nested_message.get_text_body(0).unwrap(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
     assert_eq!(
-        nested_message.get_html_body(0).unwrap().to_string(),
+        nested_message.get_html_body(0).unwrap(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 
-    let nested_attachment = match nested_message.get_attachment(0).unwrap() {
-        MessagePart::Binary(v) => v,
-        _ => unreachable!(),
-    };
+    let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
 
     assert_eq!(nested_attachment.len(), 42);
 

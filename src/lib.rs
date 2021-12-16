@@ -112,42 +112,46 @@
 //! ```
 //!    use mail_parser::*;
 //!
-//!    let input = concat!(
-//!        "From: Art Vandelay <art@vandelay.com> (Vandelay Industries)\n",
-//!        "To: \"Colleagues\": \"James Smythe\" <james@vandelay.com>; Friends:\n",
-//!        "    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;\n",
-//!        "Date: Sat, 20 Nov 2021 14:22:01 -0800\n",
-//!        "Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=\n",
-//!        "Content-Type: multipart/mixed; boundary=\"festivus\";\n\n",
-//!        "--festivus\n",
-//!        "Content-Type: text/html; charset=\"us-ascii\"\n",
-//!        "Content-Transfer-Encoding: base64\n\n",
-//!        "PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle\n",
-//!        "HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm\n",
-//!        "cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8\n",
-//!        "gJiN4MjYzQTs8L3A+PC9odG1sPg==\n",
-//!        "--festivus\n",
-//!        "Content-Type: message/rfc822\n\n",
-//!        "From: \"Cosmo Kramer\" <kramer@kramerica.com>\n",
-//!        "Subject: Exporting my book about coffee tables\n",
-//!        "Content-Type: multipart/mixed; boundary=\"giddyup\";\n\n",
-//!        "--giddyup\n",
-//!        "Content-Type: text/plain; charset=\"utf-16\"\n",
-//!        "Content-Transfer-Encoding: quoted-printable\n\n",
-//!        "=FF=FE=0C!5=D8\"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8\"=DD =005=D8\"=\n",
-//!        "=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =\n",
-//!        "=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8\"=\n",
-//!        "=DD5=D8=1E=DD5=D80=DD5=D8\"=DD!=00\n",
-//!        "--giddyup\n",
-//!        "Content-Type: image/gif; name*1=\"about \"; name*0=\"Book \";\n",
-//!        "              name*2*=utf-8''%e2%98%95 tables.gif\n",
-//!        "Content-Transfer-Encoding: Base64\n",
-//!        "Content-Disposition: attachment\n\n",
-//!        "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\n",
-//!        "--giddyup--\n",
-//!        "--festivus--\n",
-//!    )
-//!    .as_bytes();
+//!    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
+//!To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
+//!    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
+//!Date: Sat, 20 Nov 2021 14:22:01 -0800
+//!Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=
+//!Content-Type: multipart/mixed; boundary="festivus";
+//!
+//!--festivus
+//!Content-Type: text/html; charset="us-ascii"
+//!Content-Transfer-Encoding: base64
+//!
+//!PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle
+//!HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm
+//!cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
+//!gJiN4MjYzQTs8L3A+PC9odG1sPg==
+//!--festivus
+//!Content-Type: message/rfc822
+//!
+//!From: "Cosmo Kramer" <kramer@kramerica.com>
+//!Subject: Exporting my book about coffee tables
+//!Content-Type: multipart/mixed; boundary="giddyup";
+//!
+//!--giddyup
+//!Content-Type: text/plain; charset="utf-16"
+//!Content-Transfer-Encoding: quoted-printable
+//!
+//!=FF=FE=0C!5=D8"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8"=DD =005=D8"=
+//!=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =
+//!=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8"=
+//!=DD5=D8=1E=DD5=D80=DD5=D8"=DD!=00
+//!--giddyup
+//!Content-Type: image/gif; name*1="about "; name*0="Book ";
+//!              name*2*=utf-8''%e2%98%95 tables.gif
+//!Content-Transfer-Encoding: Base64
+//!Content-Disposition: attachment
+//!
+//!R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
+//!--giddyup--
+//!--festivus--
+//!"#;
 //!
 //!    let message = Message::parse(input).unwrap();
 //!
@@ -198,7 +202,7 @@
 //!
 //!    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
 //!    assert_eq!(
-//!        message.get_html_body(0).unwrap().to_string(),
+//!        message.get_html_body(0).unwrap(),
 //!        concat!(
 //!            "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
 //!            "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -208,7 +212,7 @@
 //!
 //!    // HTML parts are converted to plain text (and viceversa) when missing
 //!    assert_eq!(
-//!        message.get_text_body(0).unwrap().to_string(),
+//!        message.get_text_body(0).unwrap(),
 //!        concat!(
 //!            "I was thinking about quitting the “exporting” to focus just on the",
 //!            " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -216,10 +220,11 @@
 //!    );
 //!
 //!    // Supports nested messages as well as multipart/digest
-//!    let nested_message = match message.get_attachment(0).unwrap() {
-//!        MessagePart::Message(v) => v,
-//!        _ => unreachable!(),
-//!    };
+//!    let nested_message = message
+//!        .get_attachment(0)
+//!        .unwrap()
+//!        .unwrap_message()
+//!        .get_body();
 //!
 //!    assert_eq!(
 //!        nested_message.get_subject().unwrap(),
@@ -228,18 +233,15 @@
 //!
 //!    // Handles UTF-* as well as many legacy encodings
 //!    assert_eq!(
-//!        nested_message.get_text_body(0).unwrap().to_string(),
+//!        nested_message.get_text_body(0).unwrap(),
 //!        "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
 //!    );
 //!    assert_eq!(
-//!        nested_message.get_html_body(0).unwrap().to_string(),
+//!        nested_message.get_html_body(0).unwrap(),
 //!        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
 //!    );
 //!
-//!    let nested_attachment = match nested_message.get_attachment(0).unwrap() {
-//!        MessagePart::Binary(v) => v,
-//!        _ => unreachable!(),
-//!    };
+//!    let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
 //!
 //!    assert_eq!(nested_attachment.len(), 42);
 //!
@@ -307,7 +309,7 @@ pub struct Message<'x> {
         serde(skip_serializing_if = "Vec::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub attachments: Vec<AttachmentType>,
+    pub attachments: Vec<MessagePartId>,
 
     #[cfg_attr(
         feature = "serde_support",
@@ -323,23 +325,8 @@ pub struct Message<'x> {
     pub offset_header: usize,
     pub offset_body: usize,
     pub offset_end: usize,
-}
-
-/// Attachment type
-#[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub enum AttachmentType {
-    Inline(MessagePartId),
-    Attachment(MessagePartId),
-}
-
-impl AttachmentType {
-    pub fn unwrap(&self) -> (MessagePartId, bool) {
-        match self {
-            AttachmentType::Inline(id) => (*id, false),
-            AttachmentType::Attachment(id) => (*id, true),
-        }
-    }
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub raw_message: &'x [u8],
 }
 
 /// Body structure.
@@ -357,33 +344,28 @@ impl Default for MessageStructure {
     }
 }
 
-/// A text message part.
+// Part of the message.
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct TextPart<'x> {
+pub struct Part<'x, T> {
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "HashMap::is_empty")
     )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers: RfcHeaders<'x>,
-    pub contents: Cow<'x, str>,
-    pub is_html: bool,
+
+    pub body: T,
 }
 
-/// A binary (`[u8]`) message part.
-#[derive(Debug, Default, PartialEq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct BinaryPart<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
-    )]
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub headers: RfcHeaders<'x>,
-    #[cfg_attr(feature = "serde_support", serde(with = "serde_bytes"))]
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
-    pub contents: Cow<'x, [u8]>,
+impl<'x, T> Part<'x, T> {
+    pub fn new(headers: RfcHeaders<'x>, body: T) -> Self {
+        Self { headers, body }
+    }
+
+    pub fn get_body(&self) -> &T {
+        &self.body
+    }
 }
 
 /// Unique ID representing a MIME part within a message.
@@ -400,17 +382,49 @@ pub type MessagePartId = usize;
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum MessagePart<'x> {
     /// Any text/* part
-    Text(TextPart<'x>),
+    Text(Part<'x, Cow<'x, str>>),
+
+    /// A text/html part
+    Html(Part<'x, Cow<'x, str>>),
 
     /// Any other part type that is not text.
     #[cfg_attr(feature = "serde_support", serde(borrow))]
-    Binary(BinaryPart<'x>),
+    Binary(Part<'x, Cow<'x, [u8]>>),
+
+    /// Any inline binary data that.
+    #[cfg_attr(feature = "serde_support", serde(borrow))]
+    InlineBinary(Part<'x, Cow<'x, [u8]>>),
 
     /// Nested RFC5322 message.
-    Message(Message<'x>),
+    Message(Part<'x, Box<Message<'x>>>),
 
     /// Multipart part
     Multipart(RfcHeaders<'x>),
+}
+
+impl<'x> MessagePart<'x> {
+    pub fn unwrap_text(&self) -> &Part<'x, Cow<'x, str>> {
+        match self {
+            MessagePart::Text(part) => part,
+            MessagePart::Html(part) => part,
+            _ => panic!("Expected text part."),
+        }
+    }
+
+    pub fn unwrap_binary(&self) -> &Part<'x, Cow<'x, [u8]>> {
+        match self {
+            MessagePart::Binary(part) => part,
+            MessagePart::InlineBinary(part) => part,
+            _ => panic!("Expected binary part."),
+        }
+    }
+
+    pub fn unwrap_message(&self) -> &Part<'x, Box<Message<'x>>> {
+        match self {
+            MessagePart::Message(part) => part,
+            _ => panic!("Expected message part."),
+        }
+    }
 }
 
 /// An RFC5322 or RFC2369 internet address.
@@ -876,52 +890,53 @@ impl<'x> Message<'x> {
     fn get_part(&self, list: &'x [MessagePartId], pos: usize) -> Option<&'x dyn BodyPart> {
         match self.parts.get(*list.get(pos)?)? {
             MessagePart::Text(v) => Some(v),
+            MessagePart::Html(v) => Some(v),
             MessagePart::Binary(v) => Some(v),
+            MessagePart::InlineBinary(v) => Some(v),
+            MessagePart::Message(v) => Some(v),
             _ => None,
         }
     }
 
     /// Returns the transformed contents an inline HTML body part by position
-    pub fn get_html_body(&self, pos: usize) -> Option<Cow<'x, str>> {
+    pub fn get_html_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
         match self.parts.get(*self.html_body.get(pos)?)? {
-            MessagePart::Text(text) => {
-                if text.is_html {
-                    Some(text.contents.clone())
-                } else {
-                    Some(text_to_html(text.contents.as_ref()).into())
-                }
-            }
+            MessagePart::Html(html) => Some(html.body.as_ref().into()),
+            MessagePart::Text(text) => Some(text_to_html(text.body.as_ref()).into()),
             _ => None,
         }
     }
 
     /// Returns the transformed contents an inline text body part by position
-    pub fn get_text_body(&self, pos: usize) -> Option<Cow<'x, str>> {
+    pub fn get_text_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
         match self.parts.get(*self.text_body.get(pos)?)? {
-            MessagePart::Text(text) => {
-                if !text.is_html {
-                    Some(text.contents.clone())
-                } else {
-                    Some(html_to_text(text.contents.as_ref()).into())
-                }
-            }
+            MessagePart::Text(text) => Some(text.body.as_ref().into()),
+            MessagePart::Html(html) => Some(html_to_text(html.body.as_ref()).into()),
             _ => None,
         }
     }
 
     /// Returns an inline HTML body part by position
-    pub fn get_html_part(&self, pos: usize) -> Option<&dyn BodyPart> {
-        self.get_part(&self.html_body, pos)
+    pub fn get_html_part(&self, pos: usize) -> Option<&Part<Cow<'x, str>>> {
+        match self.parts.get(*self.html_body.get(pos)?)? {
+            MessagePart::Html(html) => Some(html),
+            MessagePart::Text(text) => Some(text),
+            _ => None,
+        }
     }
 
     /// Returns an inline text body part by position
-    pub fn get_text_part(&self, pos: usize) -> Option<&dyn BodyPart> {
-        self.get_part(&self.html_body, pos)
+    pub fn get_text_part(&self, pos: usize) -> Option<&Part<Cow<'x, str>>> {
+        match self.parts.get(*self.text_body.get(pos)?)? {
+            MessagePart::Html(html) => Some(html),
+            MessagePart::Text(text) => Some(text),
+            _ => None,
+        }
     }
 
     /// Returns an attacment by position
     pub fn get_attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(self.attachments.get(pos)?.unwrap().0)
+        self.parts.get(*self.attachments.get(pos)?)
     }
 
     /// Returns the number of plain text body parts
@@ -1018,7 +1033,7 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
 }
 
 /// An inline Text or Binary body part.
-pub trait BodyPart<'x>: fmt::Display {
+pub trait BodyPart<'x>: fmt::Display + MimeHeaders<'x> {
     /// Returns the body part's contents as a `u8` slice
     fn get_contents(&'x self) -> &'x [u8];
 
@@ -1040,9 +1055,9 @@ pub trait BodyPart<'x>: fmt::Display {
     }
 }
 
-impl<'x> BodyPart<'x> for TextPart<'x> {
+impl<'x> BodyPart<'x> for Part<'x, Cow<'x, str>> {
     fn get_contents(&'x self) -> &'x [u8] {
-        self.contents.as_bytes()
+        self.body.as_bytes()
     }
 
     fn is_text(&self) -> bool {
@@ -1054,27 +1069,27 @@ impl<'x> BodyPart<'x> for TextPart<'x> {
     }
 
     fn get_text_contents(&'x self) -> &'x str {
-        self.contents.as_ref()
+        self.body.as_ref()
     }
 
     fn len(&self) -> usize {
-        self.contents.len()
+        self.body.len()
     }
 }
 
-impl<'x> fmt::Display for TextPart<'x> {
+impl<'x> fmt::Display for Part<'x, Cow<'x, str>> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(self.contents.as_ref())
+        fmt.write_str(self.body.as_ref())
     }
 }
 
-impl<'x> BodyPart<'x> for BinaryPart<'x> {
+impl<'x> BodyPart<'x> for Part<'x, Cow<'x, [u8]>> {
     fn get_contents(&'x self) -> &'x [u8] {
-        self.contents.as_ref()
+        self.body.as_ref()
     }
 
     fn get_text_contents(&'x self) -> &'x str {
-        std::str::from_utf8(self.contents.as_ref()).unwrap_or("")
+        std::str::from_utf8(self.body.as_ref()).unwrap_or("")
     }
 
     fn is_text(&self) -> bool {
@@ -1086,61 +1101,45 @@ impl<'x> BodyPart<'x> for BinaryPart<'x> {
     }
 
     fn len(&self) -> usize {
-        self.contents.len()
+        self.body.len()
     }
 }
 
-impl<'x> fmt::Display for BinaryPart<'x> {
+impl<'x> fmt::Display for Part<'x, Cow<'x, [u8]>> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         fmt.write_str("[binary contents]")
     }
 }
 
-impl<'x> MimeHeaders<'x> for TextPart<'x> {
-    fn get_content_description(&self) -> Option<&str> {
-        self.headers
-            .get(&HeaderName::ContentDescription)
-            .and_then(|header| header.as_text_ref())
+impl<'x> BodyPart<'x> for Part<'x, Box<Message<'x>>> {
+    fn get_contents(&'x self) -> &'x [u8] {
+        self.body.raw_message
     }
 
-    fn get_content_disposition(&self) -> Option<&ContentType> {
-        self.headers
-            .get(&HeaderName::ContentDisposition)
-            .and_then(|header| header.as_content_type_ref())
+    fn get_text_contents(&'x self) -> &'x str {
+        std::str::from_utf8(self.body.raw_message).unwrap_or("")
     }
 
-    fn get_content_id(&self) -> Option<&str> {
-        self.headers
-            .get(&HeaderName::ContentId)
-            .and_then(|header| header.as_text_ref())
+    fn is_text(&self) -> bool {
+        false
     }
 
-    fn get_content_transfer_encoding(&self) -> Option<&str> {
-        self.headers
-            .get(&HeaderName::ContentTransferEncoding)
-            .and_then(|header| header.as_text_ref())
+    fn is_binary(&self) -> bool {
+        true
     }
 
-    fn get_content_type(&self) -> Option<&ContentType> {
-        self.headers
-            .get(&HeaderName::ContentType)
-            .and_then(|header| header.as_content_type_ref())
-    }
-
-    fn get_content_language(&self) -> &HeaderValue<'x> {
-        self.headers
-            .get(&HeaderName::ContentLanguage)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    fn get_content_location(&self) -> Option<&str> {
-        self.headers
-            .get(&HeaderName::ContentLocation)
-            .and_then(|header| header.as_text_ref())
+    fn len(&self) -> usize {
+        self.body.raw_message.len()
     }
 }
 
-impl<'x> MimeHeaders<'x> for BinaryPart<'x> {
+impl<'x> fmt::Display for Part<'x, Box<Message<'x>>> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt.write_str(String::from_utf8_lossy(self.body.raw_message).as_ref())
+    }
+}
+
+impl<'x, T> MimeHeaders<'x> for Part<'x, T> {
     fn get_content_description(&self) -> Option<&str> {
         self.headers
             .get(&HeaderName::ContentDescription)

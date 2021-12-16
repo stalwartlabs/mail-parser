@@ -85,35 +85,23 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKECHAA.doug@example.com"
-    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0004_01BFC037.28F2FA90"
-        }
-      }
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGOEKECHAA.doug@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -127,23 +115,35 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0004_01BFC037.28F2FA90"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     }
   },
   "headers_other": {
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "Importance": {
-      "Text": "Normal"
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
     },
     "X-MSMail-Priority": {
       "Text": "Normal"
     },
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
     "X-Mailer": {
       "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    "Importance": {
+      "Text": "Normal"
     }
   },
   "headers_offsets": [
@@ -233,25 +233,15 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     }
   ],
   "attachments": [
-    {
-      "Attachment": 0
-    },
-    {
-      "Attachment": 1
-    }
+    0,
+    1
   ],
   "parts": [
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -261,11 +251,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,
@@ -1597,6 +1593,15 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -1607,18 +1612,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "redball.png"
               }
             }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "redball.png"
-              }
-            }
           }
         },
-        "contents": [
+        "body": [
           137,
           80,
           78,

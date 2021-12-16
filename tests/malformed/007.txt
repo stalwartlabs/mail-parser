@@ -33,16 +33,11 @@ Content-Type: text/plain
     }
   ],
   "attachments": [
-    {
-      "Attachment": 1
-    }
+    1
   ],
   "parts": [
     {
       "Multipart": {
-        "mime_version": {
-          "Text": "1.0"
-        },
         "content_type": {
           "ContentType": {
             "c_type": "multipart",
@@ -51,13 +46,15 @@ Content-Type: text/plain
               "boundary": "ab"
             }
           }
+        },
+        "mime_version": {
+          "Text": "1.0"
         }
       }
     },
     {
       "Text": {
-        "contents": "--a--\n\n",
-        "is_html": false
+        "body": "--a--\n\n"
       }
     }
   ],

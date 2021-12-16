@@ -52,9 +52,7 @@ Content-Type: text/plain
     2
   ],
   "attachments": [
-    {
-      "Attachment": 3
-    }
+    3
   ],
   "parts": [
     {
@@ -93,8 +91,7 @@ Content-Type: text/plain
             }
           }
         },
-        "contents": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333",
-        "is_html": false
+        "body": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333"
       }
     },
     {
@@ -107,8 +104,7 @@ Content-Type: text/plain
             }
           }
         },
-        "contents": "4444\n",
-        "is_html": false
+        "body": "4444\n"
       }
     }
   ],

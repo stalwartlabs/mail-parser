@@ -74,12 +74,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "White House Transportation Coordinator",
-        "address": "transport@whitehouse.gov"
-      }
-    },
     "subject": {
       "Text": "[Fwd: Map of Argentina with Description]"
     },
@@ -96,6 +90,12 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         "attributes": {
           "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
         }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "White House Transportation Coordinator",
+        "address": "transport@whitehouse.gov"
       }
     }
   },
@@ -136,9 +136,7 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
     0
   ],
   "attachments": [
-    {
-      "Attachment": 2
-    }
+    1
   ],
   "parts": [
     {
@@ -157,536 +155,525 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
             "Text": "7bit"
           }
         },
-        "contents": "Fred,\n\nFire up Air Force One!  We're going South!\n\nThanks,\nAl",
-        "is_html": false
-      }
-    },
-    {
-      "Multipart": {
-        "content_transfer_encoding": {
-          "Text": "7bit"
-        },
-        "content_disposition": {
-          "ContentType": {
-            "c_type": "inline"
-          }
-        },
-        "content_type": {
-          "ContentType": {
-            "c_type": "message",
-            "c_subtype": "rfc822"
-          }
-        }
+        "body": "Fred,\n\nFire up Air Force One!  We're going South!\n\nThanks,\nAl"
       }
     },
     {
       "Message": {
-        "headers_rfc": {
-          "from": {
-            "Address": {
-              "name": "Bill Clinton",
-              "address": "president@whitehouse.gov"
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
             }
-          },
-          "mime_version": {
-            "Text": "1.0"
-          },
-          "subject": {
-            "Text": "Map of Argentina with Description"
           },
           "content_type": {
             "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": {
-                "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+              "c_type": "message",
+              "c_subtype": "rfc822"
+            }
+          }
+        },
+        "body": {
+          "headers_rfc": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+                }
+              }
+            },
+            "message_id": {
+              "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
+            },
+            "subject": {
+              "Text": "Map of Argentina with Description"
+            },
+            "from": {
+              "Address": {
+                "name": "Bill Clinton",
+                "address": "president@whitehouse.gov"
+              }
+            },
+            "return_path": {
+              "Text": "president@whitehouse.gov"
+            },
+            "received": {
+              "Collection": [
+                {
+                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                },
+                {
+                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                }
+              ]
+            },
+            "date": {
+              "DateTime": {
+                "year": 1998,
+                "month": 8,
+                "day": 13,
+                "hour": 17,
+                "minute": 42,
+                "second": 41,
+                "tz_before_gmt": false,
+                "tz_hour": 10,
+                "tz_minute": 0
+              }
+            },
+            "mime_version": {
+              "Text": "1.0"
+            },
+            "to": {
+              "Address": {
+                "name": "A1 Gore (The Enforcer)",
+                "address": "vice-president@whitehouse.gov"
               }
             }
           },
-          "date": {
-            "DateTime": {
-              "year": 1998,
-              "month": 8,
-              "day": 13,
-              "hour": 17,
-              "minute": 42,
-              "second": 41,
-              "tz_before_gmt": false,
-              "tz_hour": 10,
-              "tz_minute": 0
+          "headers_offsets": [
+            {
+              "name": {
+                "Rfc": "return_path"
+              },
+              "start": 639,
+              "end": 667
+            },
+            {
+              "name": {
+                "Rfc": "received"
+              },
+              "start": 676,
+              "end": 893
+            },
+            {
+              "name": {
+                "Rfc": "received"
+              },
+              "start": 902,
+              "end": 1100
+            },
+            {
+              "name": {
+                "Rfc": "date"
+              },
+              "start": 1105,
+              "end": 1138
+            },
+            {
+              "name": {
+                "Rfc": "message_id"
+              },
+              "start": 1149,
+              "end": 1198
+            },
+            {
+              "name": {
+                "Rfc": "from"
+              },
+              "start": 1203,
+              "end": 1244
+            },
+            {
+              "name": {
+                "Rfc": "to"
+              },
+              "start": 1247,
+              "end": 1303
+            },
+            {
+              "name": {
+                "Rfc": "subject"
+              },
+              "start": 1311,
+              "end": 1347
+            },
+            {
+              "name": {
+                "Rfc": "mime_version"
+              },
+              "start": 1360,
+              "end": 1365
+            },
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 1378,
+              "end": 1461
             }
-          },
-          "return_path": {
-            "Text": "president@whitehouse.gov"
-          },
-          "to": {
-            "Address": {
-              "name": "A1 Gore (The Enforcer)",
-              "address": "vice-president@whitehouse.gov"
+          ],
+          "html_body": [
+            0,
+            1
+          ],
+          "text_body": [
+            0,
+            1
+          ],
+          "attachments": [
+            1
+          ],
+          "parts": [
+            {
+              "Text": {
+                "headers": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": {
+                        "charset": "us-ascii"
+                      }
+                    }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
+                  }
+                },
+                "body": "Hi A1,\n\nI finally figured out this MIME thing.  Pretty cool.  I'll send you\nsome sax music in .au files next week!\n\nAnyway, the attached image is really too small to get a good look at\nArgentina.  Try this for a much better map:\n\n     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm\n\nThen again, shouldn't the CIA have something like that?\n\nBill"
+              }
+            },
+            {
+              "InlineBinary": {
+                "headers": {
+                  "content_disposition": {
+                    "ContentType": {
+                      "c_type": "inline",
+                      "attributes": {
+                        "fi1ename": "map_of_Argentina.gif"
+                      }
+                    }
+                  },
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "image",
+                      "c_subtype": "gif",
+                      "attributes": {
+                        "name": "map_of_Argentina.gif"
+                      }
+                    }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "base64"
+                  }
+                },
+                "body": [
+                  71,
+                  77,
+                  70,
+                  56,
+                  61,
+                  97,
+                  37,
+                  0,
+                  53,
+                  0,
+                  162,
+                  0,
+                  0,
+                  255,
+                  255,
+                  255,
+                  255,
+                  251,
+                  240,
+                  255,
+                  232,
+                  154,
+                  125,
+                  125,
+                  125,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  44,
+                  0,
+                  0,
+                  0,
+                  0,
+                  37,
+                  0,
+                  53,
+                  0,
+                  0,
+                  3,
+                  237,
+                  8,
+                  186,
+                  220,
+                  254,
+                  112,
+                  192,
+                  73,
+                  163,
+                  4,
+                  34,
+                  235,
+                  157,
+                  9,
+                  225,
+                  96,
+                  40,
+                  12,
+                  215,
+                  8,
+                  126,
+                  166,
+                  72,
+                  42,
+                  169,
+                  224,
+                  189,
+                  94,
+                  187,
+                  173,
+                  152,
+                  25,
+                  187,
+                  132,
+                  2,
+                  183,
+                  180,
+                  253,
+                  245,
+                  128,
+                  87,
+                  0,
+                  136,
+                  82,
+                  149,
+                  66,
+                  177,
+                  133,
+                  71,
+                  169,
+                  44,
+                  114,
+                  122,
+                  39,
+                  77,
+                  238,
+                  197,
+                  0,
+                  6,
+                  157,
+                  26,
+                  232,
+                  38,
+                  70,
+                  237,
+                  194,
+                  154,
+                  32,
+                  109,
+                  231,
+                  183,
+                  236,
+                  86,
+                  173,
+                  216,
+                  209,
+                  81,
+                  74,
+                  158,
+                  150,
+                  29,
+                  196,
+                  240,
+                  186,
+                  51,
+                  182,
+                  94,
+                  225,
+                  202,
+                  231,
+                  156,
+                  123,
+                  166,
+                  226,
+                  131,
+                  122,
+                  44,
+                  82,
+                  117,
+                  110,
+                  126,
+                  77,
+                  93,
+                  51,
+                  123,
+                  56,
+                  94,
+                  95,
+                  66,
+                  67,
+                  121,
+                  89,
+                  138,
+                  48,
+                  4,
+                  67,
+                  118,
+                  118,
+                  65,
+                  144,
+                  25,
+                  98,
+                  109,
+                  75,
+                  58,
+                  134,
+                  76,
+                  128,
+                  137,
+                  130,
+                  116,
+                  46,
+                  76,
+                  147,
+                  127,
+                  88,
+                  155,
+                  40,
+                  141,
+                  167,
+                  125,
+                  169,
+                  115,
+                  46,
+                  132,
+                  133,
+                  157,
+                  141,
+                  114,
+                  163,
+                  99,
+                  139,
+                  94,
+                  158,
+                  58,
+                  58,
+                  182,
+                  53,
+                  108,
+                  178,
+                  77,
+                  160,
+                  105,
+                  106,
+                  183,
+                  184,
+                  99,
+                  87,
+                  83,
+                  166,
+                  70,
+                  198,
+                  199,
+                  178,
+                  147,
+                  196,
+                  154,
+                  176,
+                  108,
+                  55,
+                  39,
+                  209,
+                  145,
+                  205,
+                  212,
+                  208,
+                  147,
+                  45,
+                  98,
+                  28,
+                  219,
+                  220,
+                  60,
+                  211,
+                  72,
+                  225,
+                  50,
+                  222,
+                  41,
+                  215,
+                  204,
+                  191,
+                  45,
+                  47,
+                  50,
+                  162,
+                  235,
+                  34,
+                  219,
+                  238,
+                  197,
+                  240,
+                  214,
+                  242,
+                  230,
+                  227,
+                  185,
+                  224,
+                  237,
+                  38,
+                  231,
+                  243,
+                  238,
+                  43,
+                  72,
+                  8,
+                  28,
+                  72,
+                  72,
+                  160,
+                  193,
+                  131,
+                  8,
+                  19,
+                  42,
+                  60,
+                  152,
+                  0,
+                  0,
+                  59
+                ]
+              }
             }
-          },
-          "received": {
-            "Collection": [
+          ],
+          "structure": {
+            "List": [
               {
-                "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                "Part": 0
               },
               {
-                "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                "Part": 1
               }
             ]
           },
-          "message_id": {
-            "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
-          }
-        },
-        "headers_offsets": [
-          {
-            "name": {
-              "Rfc": "return_path"
-            },
-            "start": 639,
-            "end": 667
-          },
-          {
-            "name": {
-              "Rfc": "received"
-            },
-            "start": 676,
-            "end": 893
-          },
-          {
-            "name": {
-              "Rfc": "received"
-            },
-            "start": 902,
-            "end": 1100
-          },
-          {
-            "name": {
-              "Rfc": "date"
-            },
-            "start": 1105,
-            "end": 1138
-          },
-          {
-            "name": {
-              "Rfc": "message_id"
-            },
-            "start": 1149,
-            "end": 1198
-          },
-          {
-            "name": {
-              "Rfc": "from"
-            },
-            "start": 1203,
-            "end": 1244
-          },
-          {
-            "name": {
-              "Rfc": "to"
-            },
-            "start": 1247,
-            "end": 1303
-          },
-          {
-            "name": {
-              "Rfc": "subject"
-            },
-            "start": 1311,
-            "end": 1347
-          },
-          {
-            "name": {
-              "Rfc": "mime_version"
-            },
-            "start": 1360,
-            "end": 1365
-          },
-          {
-            "name": {
-              "Rfc": "content_type"
-            },
-            "start": 1378,
-            "end": 1461
-          }
-        ],
-        "html_body": [
-          0,
-          1
-        ],
-        "text_body": [
-          0,
-          1
-        ],
-        "attachments": [
-          {
-            "Inline": 1
-          }
-        ],
-        "parts": [
-          {
-            "Text": {
-              "headers": {
-                "content_transfer_encoding": {
-                  "Text": "7bit"
-                },
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "text",
-                    "c_subtype": "plain",
-                    "attributes": {
-                      "charset": "us-ascii"
-                    }
-                  }
-                }
-              },
-              "contents": "Hi A1,\n\nI finally figured out this MIME thing.  Pretty cool.  I'll send you\nsome sax music in .au files next week!\n\nAnyway, the attached image is really too small to get a good look at\nArgentina.  Try this for a much better map:\n\n     http://www.1one1yp1anet.com/dest/sam/graphics/map-arg.htm\n\nThen again, shouldn't the CIA have something like that?\n\nBill",
-              "is_html": false
-            }
-          },
-          {
-            "Binary": {
-              "headers": {
-                "content_transfer_encoding": {
-                  "Text": "base64"
-                },
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "image",
-                    "c_subtype": "gif",
-                    "attributes": {
-                      "name": "map_of_Argentina.gif"
-                    }
-                  }
-                },
-                "content_disposition": {
-                  "ContentType": {
-                    "c_type": "inline",
-                    "attributes": {
-                      "fi1ename": "map_of_Argentina.gif"
-                    }
-                  }
-                }
-              },
-              "contents": [
-                71,
-                77,
-                70,
-                56,
-                61,
-                97,
-                37,
-                0,
-                53,
-                0,
-                162,
-                0,
-                0,
-                255,
-                255,
-                255,
-                255,
-                251,
-                240,
-                255,
-                232,
-                154,
-                125,
-                125,
-                125,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                44,
-                0,
-                0,
-                0,
-                0,
-                37,
-                0,
-                53,
-                0,
-                0,
-                3,
-                237,
-                8,
-                186,
-                220,
-                254,
-                112,
-                192,
-                73,
-                163,
-                4,
-                34,
-                235,
-                157,
-                9,
-                225,
-                96,
-                40,
-                12,
-                215,
-                8,
-                126,
-                166,
-                72,
-                42,
-                169,
-                224,
-                189,
-                94,
-                187,
-                173,
-                152,
-                25,
-                187,
-                132,
-                2,
-                183,
-                180,
-                253,
-                245,
-                128,
-                87,
-                0,
-                136,
-                82,
-                149,
-                66,
-                177,
-                133,
-                71,
-                169,
-                44,
-                114,
-                122,
-                39,
-                77,
-                238,
-                197,
-                0,
-                6,
-                157,
-                26,
-                232,
-                38,
-                70,
-                237,
-                194,
-                154,
-                32,
-                109,
-                231,
-                183,
-                236,
-                86,
-                173,
-                216,
-                209,
-                81,
-                74,
-                158,
-                150,
-                29,
-                196,
-                240,
-                186,
-                51,
-                182,
-                94,
-                225,
-                202,
-                231,
-                156,
-                123,
-                166,
-                226,
-                131,
-                122,
-                44,
-                82,
-                117,
-                110,
-                126,
-                77,
-                93,
-                51,
-                123,
-                56,
-                94,
-                95,
-                66,
-                67,
-                121,
-                89,
-                138,
-                48,
-                4,
-                67,
-                118,
-                118,
-                65,
-                144,
-                25,
-                98,
-                109,
-                75,
-                58,
-                134,
-                76,
-                128,
-                137,
-                130,
-                116,
-                46,
-                76,
-                147,
-                127,
-                88,
-                155,
-                40,
-                141,
-                167,
-                125,
-                169,
-                115,
-                46,
-                132,
-                133,
-                157,
-                141,
-                114,
-                163,
-                99,
-                139,
-                94,
-                158,
-                58,
-                58,
-                182,
-                53,
-                108,
-                178,
-                77,
-                160,
-                105,
-                106,
-                183,
-                184,
-                99,
-                87,
-                83,
-                166,
-                70,
-                198,
-                199,
-                178,
-                147,
-                196,
-                154,
-                176,
-                108,
-                55,
-                39,
-                209,
-                145,
-                205,
-                212,
-                208,
-                147,
-                45,
-                98,
-                28,
-                219,
-                220,
-                60,
-                211,
-                72,
-                225,
-                50,
-                222,
-                41,
-                215,
-                204,
-                191,
-                45,
-                47,
-                50,
-                162,
-                235,
-                34,
-                219,
-                238,
-                197,
-                240,
-                214,
-                242,
-                230,
-                227,
-                185,
-                224,
-                237,
-                38,
-                231,
-                243,
-                238,
-                43,
-                72,
-                8,
-                28,
-                72,
-                72,
-                160,
-                193,
-                131,
-                8,
-                19,
-                42,
-                60,
-                152,
-                0,
-                0,
-                59
-              ]
-            }
-          }
-        ],
-        "structure": {
-          "List": [
-            {
-              "Part": 0
-            },
-            {
-              "Part": 1
-            }
-          ]
-        },
-        "offset_header": 627,
-        "offset_body": 1462,
-        "offset_end": 2607
+          "offset_header": 627,
+          "offset_body": 1462,
+          "offset_end": 2607
+        }
       }
     }
   ],
   "structure": {
-    "List": [
-      {
-        "Part": 0
-      },
-      {
-        "Part": 1
-      }
-    ]
+    "Part": 0
   },
   "offset_header": 0,
   "offset_body": 270,

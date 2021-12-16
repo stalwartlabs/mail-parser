@@ -26,6 +26,9 @@ hello world
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -34,9 +37,6 @@ hello world
           "boundary": "bound"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -79,8 +79,7 @@ hello world
             "Text": "binary"
           }
         },
-        "contents": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r",
-        "is_html": false
+        "body": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
       }
     },
     {
@@ -96,8 +95,7 @@ hello world
             }
           }
         },
-        "contents": "ZWg=",
-        "is_html": false
+        "body": "ZWg="
       }
     },
     {
@@ -110,8 +108,7 @@ hello world
             }
           }
         },
-        "contents": "hello world\r\n\r",
-        "is_html": false
+        "body": "hello world\r\n\r"
       }
     }
   ],

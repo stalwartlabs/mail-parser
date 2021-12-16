@@ -42,6 +42,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -50,9 +53,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
           "boundary": "1"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -91,26 +91,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "UTF-8"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "6bit"
-          }
-        },
-        "contents": "Move black king to queen's bishop\n",
-        "is_html": false
-      }
-    },
-    {
-      "Text": {
-        "headers": {
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -119,18 +102,17 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
-          },
+          }
+        },
+        "body": "Move black king to queen's bishop\n"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
           "content_transfer_encoding": {
             "Text": "7bits"
-          }
-        },
-        "contents": "Move ♚ to ♛'s ♝\n",
-        "is_html": false
-      }
-    },
-    {
-      "Text": {
-        "headers": {
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -139,13 +121,28 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "8 bit"
           }
         },
-        "contents": "Move ♚ to ♛'s ♝\n",
-        "is_html": false
+        "body": "Move ♚ to ♛'s ♝\n"
+      }
+    },
+    {
+      "Text": {
+        "headers": {
+          "content_transfer_encoding": {
+            "Text": "8 bit"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
+              }
+            }
+          }
+        },
+        "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
@@ -164,8 +161,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
-        "contents": "Move ♚ to ♛'s ♝\n",
-        "is_html": false
+        "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
@@ -184,8 +180,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
-        "contents": "Move ♚ to ♛'s ♝\n",
-        "is_html": false
+        "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
@@ -201,8 +196,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
-        "contents": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n",
-        "is_html": false
+        "body": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n"
       }
     }
   ],

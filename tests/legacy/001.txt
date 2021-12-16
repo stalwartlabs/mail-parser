@@ -36,11 +36,38 @@ m+APw-ssen als wir.+ACI-=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
     },
     "content_transfer_encoding": {
       "Text": "quoted-printable"
+    },
+    "to": {
+      "AddressList": [
+        {
+          "name": "Joe Blow",
+          "address": "jblow@example.com"
+        },
+        {
+          "name": "Jürgen Schmürgen",
+          "address": "schmuergen@example.com"
+        }
+      ]
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "utf-7"
+        }
+      }
     },
     "date": {
       "DateTime": {
@@ -55,55 +82,28 @@ m+APw-ssen als wir.+ACI-=20
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "utf-7"
-        }
-      }
-    },
-    "to": {
-      "AddressList": [
-        {
-          "name": "Joe Blow",
-          "address": "jblow@example.com"
-        },
-        {
-          "name": "Jürgen Schmürgen",
-          "address": "schmuergen@example.com"
-        }
-      ]
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
     },
     "mime_version": {
       "Text": "1.0"
     }
   },
   "headers_other": {
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
     "X-MSMail-Priority": {
       "Text": "Normal"
     },
     "X-MimeOLE": {
       "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    },
+    "Importance": {
+      "Text": "Normal"
+    },
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     }
   },
   "headers_offsets": [
@@ -208,8 +208,7 @@ m+APw-ssen als wir.+ACI-=20
   "parts": [
     {
       "Text": {
-        "contents": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
-        "is_html": false
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
       }
     }
   ],
