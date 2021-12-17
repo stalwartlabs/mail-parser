@@ -246,11 +246,7 @@
 //!
 //!    // Full RFC2231 support for continuations and character sets
 //!    assert_eq!(
-//!        nested_attachment
-//!            .get_content_type()
-//!            .unwrap()
-//!            .get_attribute("name")
-//!            .unwrap(),
+//!        nested_attachment.get_attachment_name().unwrap(),
 //!        "Book about ☕ tables.gif"
 //!    );
 //!
@@ -998,6 +994,15 @@ pub trait MimeHeaders<'x> {
     fn get_content_language(&self) -> &HeaderValue<'x>;
     /// Returns the Content-Location field
     fn get_content_location(&self) -> Option<&str>;
+    /// Returns the attachment name, if any.
+    fn get_attachment_name(&self) -> Option<&str> {
+        self.get_content_disposition()
+            .and_then(|cd| cd.get_attribute("filename"))
+            .or_else(|| {
+                self.get_content_type()
+                    .and_then(|ct| ct.get_attribute("name"))
+            })
+    }
 }
 
 impl<'x> MimeHeaders<'x> for Message<'x> {

@@ -128,11 +128,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
     assert_eq!(nested_attachment.len(), 42);
     assert_eq!(
-        nested_attachment
-            .get_content_type()
-            .unwrap()
-            .get_attribute("name")
-            .unwrap(),
+        nested_attachment.get_attachment_name().unwrap(),
         "Book about ☕ tables.gif"
     );
 

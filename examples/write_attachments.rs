@@ -63,12 +63,12 @@ fn write_attachments(message: &Message) {
         match attachment {
             MessagePart::Text(text) | MessagePart::Html(text) => write_part(text),
             MessagePart::Binary(blob) | MessagePart::InlineBinary(blob) => write_part(blob),
-            MessagePart::Message(raw_message) => {
-                write_part(raw_message);
-                if raw_message.is_parsed() {
-                    write_attachments(raw_message.as_ref().unwrap());
+            MessagePart::Message(attached_message) => {
+                write_part(attached_message);
+                if attached_message.is_parsed() {
+                    write_attachments(attached_message.as_ref().unwrap());
                 } else {
-                    write_attachments(&raw_message.parse_raw().unwrap());
+                    write_attachments(&attached_message.parse_raw().unwrap());
                 }
             }
             _ => (),
@@ -78,13 +78,7 @@ fn write_attachments(message: &Message) {
 
 fn write_part<'x>(part: &'x impl BodyPart<'x>) {
     std::fs::write(
-        part.get_content_disposition()
-            .and_then(|cd| cd.get_attribute("filename"))
-            .unwrap_or_else(|| {
-                part.get_content_type()
-                    .and_then(|ct| ct.get_attribute("name"))
-                    .unwrap_or("Untitled")
-            }),
+        part.get_attachment_name().unwrap_or("Untitled"),
         part.get_contents(),
     )
     .unwrap();

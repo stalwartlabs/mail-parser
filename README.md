@@ -169,11 +169,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Full RFC2231 support for continuations and character sets
     assert_eq!(
-        nested_attachment
-            .get_content_type()
-            .unwrap()
-            .get_attribute("name")
-            .unwrap(),
+        nested_attachment.get_attachment_name().unwrap(),
         "Book about ☕ tables.gif"
     );
 
