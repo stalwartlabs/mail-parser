@@ -74,10 +74,13 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "White House Transportation Coordinator",
-        "address": "transport@whitehouse.gov"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
+        }
       }
     },
     "from": {
@@ -86,13 +89,10 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         "address": "vice-president@whitehouse.gov"
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
-        }
+    "to": {
+      "Address": {
+        "name": "White House Transportation Coordinator",
+        "address": "transport@whitehouse.gov"
       }
     },
     "subject": {
@@ -161,11 +161,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
     {
       "Message": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_transfer_encoding": {
             "Text": "7bit"
           },
@@ -174,43 +169,23 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
               "c_type": "message",
               "c_subtype": "rfc822"
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
+            }
           }
         },
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "Bill Clinton",
-                "address": "president@whitehouse.gov"
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "mixed",
-                "attributes": {
-                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
-                }
-              }
-            },
-            "received": {
-              "Collection": [
-                {
-                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
-                },
-                {
-                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
-                }
-              ]
+            "return_path": {
+              "Text": "president@whitehouse.gov"
             },
             "message_id": {
               "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
             },
             "subject": {
               "Text": "Map of Argentina with Description"
-            },
-            "mime_version": {
-              "Text": "1.0"
             },
             "date": {
               "DateTime": {
@@ -225,14 +200,39 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                 "tz_minute": 0
               }
             },
-            "return_path": {
-              "Text": "president@whitehouse.gov"
+            "received": {
+              "Collection": [
+                {
+                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                },
+                {
+                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                }
+              ]
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+                }
+              }
             },
             "to": {
               "Address": {
                 "name": "A1 Gore (The Enforcer)",
                 "address": "vice-president@whitehouse.gov"
               }
+            },
+            "from": {
+              "Address": {
+                "name": "Bill Clinton",
+                "address": "president@whitehouse.gov"
+              }
+            },
+            "mime_version": {
+              "Text": "1.0"
             }
           },
           "headers_offsets": [
@@ -240,71 +240,71 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
               "name": {
                 "Rfc": "return_path"
               },
-              "start": 12,
-              "end": 40
+              "start": 639,
+              "end": 667
             },
             {
               "name": {
                 "Rfc": "received"
               },
-              "start": 49,
-              "end": 266
+              "start": 676,
+              "end": 893
             },
             {
               "name": {
                 "Rfc": "received"
               },
-              "start": 275,
-              "end": 473
+              "start": 902,
+              "end": 1100
             },
             {
               "name": {
                 "Rfc": "date"
               },
-              "start": 478,
-              "end": 511
+              "start": 1105,
+              "end": 1138
             },
             {
               "name": {
                 "Rfc": "message_id"
               },
-              "start": 522,
-              "end": 571
+              "start": 1149,
+              "end": 1198
             },
             {
               "name": {
                 "Rfc": "from"
               },
-              "start": 576,
-              "end": 617
+              "start": 1203,
+              "end": 1244
             },
             {
               "name": {
                 "Rfc": "to"
               },
-              "start": 620,
-              "end": 676
+              "start": 1247,
+              "end": 1303
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 684,
-              "end": 720
+              "start": 1311,
+              "end": 1347
             },
             {
               "name": {
                 "Rfc": "mime_version"
               },
-              "start": 733,
-              "end": 738
+              "start": 1360,
+              "end": 1365
             },
             {
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 751,
-              "end": 834
+              "start": 1378,
+              "end": 1461
             }
           ],
           "html_body": [
@@ -344,20 +344,20 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                   "content_transfer_encoding": {
                     "Text": "base64"
                   },
+                  "content_disposition": {
+                    "ContentType": {
+                      "c_type": "inline",
+                      "attributes": {
+                        "fi1ename": "map_of_Argentina.gif"
+                      }
+                    }
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "image",
                       "c_subtype": "gif",
                       "attributes": {
                         "name": "map_of_Argentina.gif"
-                      }
-                    }
-                  },
-                  "content_disposition": {
-                    "ContentType": {
-                      "c_type": "inline",
-                      "attributes": {
-                        "fi1ename": "map_of_Argentina.gif"
                       }
                     }
                   }
@@ -665,9 +665,9 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
               }
             ]
           },
-          "offset_header": 0,
-          "offset_body": 835,
-          "offset_end": 1978
+          "offset_header": 627,
+          "offset_body": 1462,
+          "offset_end": 2607
         }
       }
     }

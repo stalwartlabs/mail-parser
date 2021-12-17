@@ -58,6 +58,9 @@ Root MIME epilogue
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -66,9 +69,6 @@ Root MIME epilogue
           "boundary": "foo bar"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "from": {
       "Address": {
@@ -170,19 +170,8 @@ Root MIME epilogue
         },
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "address": "sub@domain.org"
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "alternative",
-                "attributes": {
-                  "boundary": "sub1"
-                }
-              }
+            "subject": {
+              "Text": "submsg"
             },
             "date": {
               "DateTime": {
@@ -197,8 +186,19 @@ Root MIME epilogue
                 "tz_minute": 0
               }
             },
-            "subject": {
-              "Text": "submsg"
+            "from": {
+              "Address": {
+                "address": "sub@domain.org"
+              }
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "alternative",
+                "attributes": {
+                  "boundary": "sub1"
+                }
+              }
             }
           },
           "headers_offsets": [
@@ -206,29 +206,29 @@ Root MIME epilogue
               "name": {
                 "Rfc": "from"
               },
-              "start": 5,
-              "end": 21
+              "start": 300,
+              "end": 316
             },
             {
               "name": {
                 "Rfc": "date"
               },
-              "start": 26,
-              "end": 59
+              "start": 321,
+              "end": 354
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 67,
-              "end": 75
+              "start": 362,
+              "end": 370
             },
             {
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 88,
-              "end": 128
+              "start": 383,
+              "end": 423
             }
           ],
           "html_body": [
@@ -326,9 +326,9 @@ Root MIME epilogue
               }
             ]
           },
-          "offset_header": 0,
-          "offset_body": 129,
-          "offset_end": 414
+          "offset_header": 295,
+          "offset_body": 424,
+          "offset_end": 710
         }
       }
     },

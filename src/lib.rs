@@ -416,9 +416,24 @@ impl<'x> MessagePart<'x> {
         }
     }
 
-    pub fn unwrap_message(&self) -> Message {
+    pub fn unwrap_message(&self) -> &Message {
         match self {
-            MessagePart::Message(part) => part.parse().unwrap(),
+            MessagePart::Message(part) => {
+                if part.is_parsed() {
+                    part.as_ref().unwrap()
+                } else {
+                    panic!(
+                        "This message part has not been parsed yet, use parse_message() instead."
+                    );
+                }
+            }
+            _ => panic!("Expected message part."),
+        }
+    }
+
+    pub fn parse_message(&'x self) -> Option<Message<'x>> {
+        match self {
+            MessagePart::Message(part) => Message::parse(part.body.raw_message.as_ref()),
             _ => panic!("Expected message part."),
         }
     }
@@ -1262,23 +1277,58 @@ impl<'x> ContentType<'x> {
     }
 }
 
-/// Raw contents of an e-mail message attachment.
-#[derive(Debug, PartialEq, Eq)]
+/// Contents of an e-mail message attachment.
+#[derive(Debug, PartialEq)]
 pub struct MessageAttachment<'x> {
     pub raw_message: Cow<'x, [u8]>,
+    pub message: Option<Box<Message<'x>>>,
 }
 
 impl<'x> MessageAttachment<'x> {
     /// Parse the message attachment and return a `Message` object.
-    pub fn parse(&'x self) -> Option<Message<'x>> {
+    pub fn parse_raw(&'x self) -> Option<Message<'x>> {
         Message::parse(self.raw_message.as_ref())
+    }
+
+    /// Returns a reference to the parsed `Message` object.
+    pub fn as_ref(&self) -> Option<&Message> {
+        self.message.as_ref()?.as_ref().into()
+    }
+
+    /// Returns ```true``` is the message has been parsed.
+    /// Call `MessageAttachment::parse_raw` when this method returns ```false```,
+    /// otherwise use `MessageAttachment::as_ref`.
+    pub fn is_parsed(&self) -> bool {
+        self.message.is_some()
+    }
+
+    /// Returns the parsed message if available, otherwise
+    /// parses the raw message and returns the results.
+    pub fn unwrap(&'x mut self) -> Option<Message<'x>> {
+        if self.message.is_some() {
+            (*std::mem::take(&mut self.message).unwrap()).into()
+        } else {
+            self.parse_raw()
+        }
     }
 }
 
 impl<'x> Part<'x, MessageAttachment<'x>> {
     /// Parse the message attachment and return a `Message` object.
-    pub fn parse(&'x self) -> Option<Message<'x>> {
-        self.body.parse()
+    pub fn parse_raw(&'x self) -> Option<Message<'x>> {
+        self.body.parse_raw()
+    }
+
+    /// Returns a reference to the parsed `Message` object.
+    pub fn as_ref(&self) -> Option<&Message> {
+        self.body.as_ref()
+    }
+
+    /// Returns ```true``` is the message has been parsed.
+    /// Call `MessageAttachment::parse_raw` when this method returns ```false```,
+    /// otherwise use `MessageAttachment::as_ref`.
+    pub fn is_parsed(&self) -> bool {
+        self.body.is_parsed()
     }
 }
 
@@ -1287,9 +1337,15 @@ impl<'x> Serialize for MessageAttachment<'x> {
     where
         S: serde::Serializer,
     {
-        self.parse()
-            .ok_or_else(|| serde::ser::Error::custom("Failed to parse message attachment."))?
-            .serialize(serializer)
+        if let Some(message) = self.message.as_ref() {
+            message.serialize(serializer)
+        } else if let Some(message) = self.parse_raw() {
+            message.serialize(serializer)
+        } else {
+            Err(serde::ser::Error::custom(
+                "Failed to parse message attachment.",
+            ))
+        }
     }
 }
 

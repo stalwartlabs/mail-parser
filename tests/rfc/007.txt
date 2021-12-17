@@ -74,9 +74,6 @@ K
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "RFC 8621 Section 4.1.4 test"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -85,6 +82,9 @@ K
           "boundary": "1"
         }
       }
+    },
+    "subject": {
+      "Text": "RFC 8621 Section 4.1.4 test"
     }
   },
   "headers_offsets": [
@@ -126,15 +126,15 @@ K
     {
       "Text": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
             }
           }
         },
@@ -183,15 +183,15 @@ K
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
             }
           }
         },
@@ -221,15 +221,15 @@ K
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
             }
           }
         },
@@ -280,15 +280,15 @@ K
     {
       "Binary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment"
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "jpeg"
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment"
             }
           }
         },
@@ -333,8 +333,8 @@ K
               "name": {
                 "Rfc": "subject"
               },
-              "start": 8,
-              "end": 11
+              "start": 789,
+              "end": 792
             }
           ],
           "html_body": [
@@ -353,24 +353,24 @@ K
           "structure": {
             "Part": 0
           },
-          "offset_header": 0,
-          "offset_body": 12,
-          "offset_end": 13
+          "offset_header": 781,
+          "offset_body": 793,
+          "offset_end": 798
         }
       }
     },
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain"
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline"
             }
           }
         },

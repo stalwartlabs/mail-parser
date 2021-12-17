@@ -100,15 +100,15 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 5,
-              "end": 34
+              "start": 92,
+              "end": 121
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 42,
-              "end": 54
+              "start": 129,
+              "end": 141
             }
           ],
           "html_body": [
@@ -127,9 +127,9 @@ Foobar
           "structure": {
             "Part": 0
           },
-          "offset_header": 0,
-          "offset_body": 55,
-          "offset_end": 73
+          "offset_header": 87,
+          "offset_body": 142,
+          "offset_end": 166
         }
       }
     },
@@ -160,15 +160,15 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 5,
-              "end": 32
+              "start": 171,
+              "end": 198
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 40,
-              "end": 52
+              "start": 206,
+              "end": 218
             }
           ],
           "html_body": [
@@ -187,9 +187,9 @@ Foobar
           "structure": {
             "Part": 0
           },
-          "offset_header": 0,
-          "offset_body": 53,
-          "offset_end": 74
+          "offset_header": 166,
+          "offset_body": 219,
+          "offset_end": 246
         }
       }
     },
@@ -205,14 +205,14 @@ Foobar
         },
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "funny hat"
-            },
             "from": {
               "Address": {
                 "name": "attachment",
                 "address": "attachment@user"
               }
+            },
+            "subject": {
+              "Text": "funny hat"
             },
             "content_type": {
               "ContentType": {
@@ -229,22 +229,22 @@ Foobar
               "name": {
                 "Rfc": "from"
               },
-              "start": 5,
-              "end": 35
+              "start": 251,
+              "end": 281
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 43,
-              "end": 54
+              "start": 289,
+              "end": 300
             },
             {
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 67,
-              "end": 96
+              "start": 313,
+              "end": 342
             }
           ],
           "html_body": [
@@ -311,9 +311,9 @@ Foobar
               }
             ]
           },
-          "offset_header": 0,
-          "offset_body": 97,
-          "offset_end": 318
+          "offset_header": 246,
+          "offset_body": 343,
+          "offset_end": 565
         }
       }
     }

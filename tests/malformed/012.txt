@@ -86,8 +86,8 @@ Content-Type: text/plain
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 13,
-              "end": 25
+              "start": 141,
+              "end": 153
             }
           ],
           "html_body": [
@@ -106,14 +106,14 @@ Content-Type: text/plain
           "structure": {
             "Part": 0
           },
-          "offset_header": 0,
-          "offset_body": 26,
-          "offset_end": 27
+          "offset_header": 128,
+          "offset_body": 154,
+          "offset_end": 160
         }
       }
     },
     {
-      "Text": {
+      "Message": {
         "headers": {
           "content_type": {
             "ContentType": {
@@ -122,7 +122,41 @@ Content-Type: text/plain
             }
           }
         },
-        "body": "Content-Type: text/plain\n\n22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+        "body": {
+          "headers_rfc": {
+            "content_type": {
+              "ContentType": {
+                "c_type": "text",
+                "c_subtype": "plain"
+              }
+            }
+          },
+          "headers_offsets": [
+            {
+              "name": {
+                "Rfc": "content_type"
+              },
+              "start": 203,
+              "end": 215
+            }
+          ],
+          "attachments": [
+            0
+          ],
+          "parts": [
+            {
+              "Text": {
+                "body": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+              }
+            }
+          ],
+          "structure": {
+            "Part": 0
+          },
+          "offset_header": 190,
+          "offset_body": 216,
+          "offset_end": 283
+        }
       }
     }
   ],

@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, HeaderName, HeaderValue, Message, MessagePart, MessagePartId, MessageStructure,
-    Part, RfcHeaders,
+    ContentType, HeaderName, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
+    MessageStructure, Part, RfcHeaders,
 };
 
 use super::{
@@ -205,7 +205,9 @@ impl<'x> Message<'x> {
     ///
     pub fn parse(raw_message: &'x [u8]) -> Option<Message<'x>> {
         let mut stream = MessageStream::new(raw_message);
+
         let mut message = Message::new();
+        let mut message_stack = Vec::new();
 
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::new();
@@ -298,6 +300,26 @@ impl<'x> Message<'x> {
                 _ => (true, get_bytes_to_boundary),
             };
 
+            state
+                .structure
+                .push(MessageStructure::Part(message.parts.len()));
+
+            if is_binary && mime_type == MimeType::Message {
+                let new_state = MessageParserState {
+                    mime_type: MimeType::Message,
+                    mime_boundary: state.mime_boundary.take(),
+                    need_html_body: true,
+                    need_text_body: true,
+                    ..Default::default()
+                };
+                add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
+                message_stack.push((message, std::mem::take(&mut mime_part_header)));
+                state_stack.push(state);
+                message = Message::new();
+                state = new_state;
+                continue;
+            }
+
             let (bytes_read, mut bytes) = decode_fnc(
                 &stream,
                 stream.pos,
@@ -311,6 +333,7 @@ impl<'x> Message<'x> {
             // Attempt to recover contents of an invalid message
             if bytes_read == 0 {
                 if stream.pos >= stream.data.len() || (is_binary && state.mime_boundary.is_none()) {
+                    state.structure.pop();
                     break;
                 }
 
@@ -338,9 +361,11 @@ impl<'x> Message<'x> {
                             bytes = r_bytes;
                             stream.pos += bytes_read;
                         } else {
+                            state.structure.pop();
                             break;
                         }
                     } else {
+                        state.structure.pop();
                         break;
                     }
                 } else {
@@ -353,10 +378,6 @@ impl<'x> Message<'x> {
             } else {
                 stream.pos += bytes_read;
             }
-
-            state
-                .structure
-                .push(MessageStructure::Part(message.parts.len()));
 
             if mime_type != MimeType::Message {
                 let is_inline = is_inline
@@ -445,15 +466,44 @@ impl<'x> Message<'x> {
                 message.attachments.push(message.parts.len());
                 message.parts.push(MessagePart::Message(Part::new(
                     std::mem::take(&mut mime_part_header),
-                    crate::MessageAttachment {
+                    MessageAttachment {
                         raw_message: result_to_bytes(bytes, stream.data),
+                        message: None,
                     },
                 )));
             }
 
             if state.mime_boundary.is_some() {
                 // Currently processing a MIME part
+                let mut last_part_offset = stream.pos;
+
                 'inner: loop {
+                    if let MimeType::Message = state.mime_type {
+                        // Finished processing nested message, restore parent message from stack
+                        if let (Some((mut prev_message, headers)), Some(mut prev_state)) =
+                            (message_stack.pop(), state_stack.pop())
+                        {
+                            message.structure = state.get_structure();
+                            message.offset_end = seek_crlf_end(&stream, last_part_offset);
+                            prev_message.attachments.push(prev_message.parts.len());
+                            prev_message.parts.push(MessagePart::Message(Part::new(
+                                headers,
+                                MessageAttachment {
+                                    raw_message: raw_message
+                                        [message.offset_header..message.offset_end]
+                                        .into(),
+                                    message: Some(Box::new(message)),
+                                },
+                            )));
+                            message = prev_message;
+                            prev_state.mime_boundary = state.mime_boundary;
+                            state = prev_state;
+                        } else {
+                            debug_assert!(false, "Failed to restore parent message. Aborting.");
+                            break 'outer;
+                        }
+                    }
+
                     if skip_multipart_end(&mut stream) {
                         // End of MIME part reached
 
@@ -486,6 +536,7 @@ impl<'x> Message<'x> {
 
                             // Restore ancestor's state
                             state = prev_state;
+                            last_part_offset = stream.pos;
 
                             if let Some(ref mime_boundary) = state.mime_boundary {
                                 // Ancestor has a MIME boundary, seek it.
@@ -504,6 +555,25 @@ impl<'x> Message<'x> {
             } else if stream.pos >= stream.data.len() {
                 break 'outer;
             }
+        }
+
+        while let (Some((mut prev_message, headers)), Some(prev_state)) =
+            (message_stack.pop(), state_stack.pop())
+        {
+            message.offset_end = stream.pos;
+            if !message.is_empty() {
+                message.structure = state.get_structure();
+                prev_message.attachments.push(prev_message.parts.len());
+                prev_message.parts.push(MessagePart::Message(Part::new(
+                    headers,
+                    MessageAttachment {
+                        raw_message: raw_message[message.offset_header..message.offset_end].into(),
+                        message: Box::new(message).into(),
+                    },
+                )));
+            }
+            message = prev_message;
+            state = prev_state;
         }
 
         message.structure = state.get_structure();

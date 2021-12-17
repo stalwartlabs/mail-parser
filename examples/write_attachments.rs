@@ -65,7 +65,11 @@ fn write_attachments(message: &Message) {
             MessagePart::Binary(blob) | MessagePart::InlineBinary(blob) => write_part(blob),
             MessagePart::Message(raw_message) => {
                 write_part(raw_message);
-                write_attachments(&raw_message.parse().unwrap());
+                if raw_message.is_parsed() {
+                    write_attachments(raw_message.as_ref().unwrap());
+                } else {
+                    write_attachments(&raw_message.parse_raw().unwrap());
+                }
             }
             _ => (),
         }

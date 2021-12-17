@@ -74,11 +74,32 @@ Content-Transfer-Encoding: Quoted-printable
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "unique-boundary-1"
+        }
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@nsb.fv.com"
       }
+    },
+    "subject": {
+      "Text": "A multipart example"
     },
     "date": {
       "DateTime": {
@@ -92,27 +113,6 @@ Content-Transfer-Encoding: Quoted-printable
         "tz_hour": 7,
         "tz_minute": 0
       }
-    },
-    "subject": {
-      "Text": "A multipart example"
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "unique-boundary-1"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "headers_offsets": [
@@ -211,14 +211,14 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "audio",
               "c_subtype": "basic"
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
@@ -227,14 +227,14 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "jpeg"
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": "... base64-encoded image data goes here ...\n"
@@ -265,9 +265,9 @@ Content-Transfer-Encoding: Quoted-printable
         },
         "body": {
           "headers_rfc": {
-            "from": {
+            "to": {
               "Address": {
-                "name": "mailbox in US-ASCII"
+                "name": "address in US-ASCII"
               }
             },
             "content_type": {
@@ -279,9 +279,9 @@ Content-Transfer-Encoding: Quoted-printable
                 }
               }
             },
-            "to": {
+            "from": {
               "Address": {
-                "name": "address in US-ASCII"
+                "name": "mailbox in US-ASCII"
               }
             },
             "content_transfer_encoding": {
@@ -296,36 +296,36 @@ Content-Transfer-Encoding: Quoted-printable
               "name": {
                 "Rfc": "from"
               },
-              "start": 5,
-              "end": 28
+              "start": 1612,
+              "end": 1635
             },
             {
               "name": {
                 "Rfc": "to"
               },
-              "start": 31,
-              "end": 54
+              "start": 1638,
+              "end": 1661
             },
             {
               "name": {
                 "Rfc": "subject"
               },
-              "start": 62,
-              "end": 85
+              "start": 1669,
+              "end": 1692
             },
             {
               "name": {
                 "Rfc": "content_type"
               },
-              "start": 98,
-              "end": 130
+              "start": 1705,
+              "end": 1737
             },
             {
               "name": {
                 "Rfc": "content_transfer_encoding"
               },
-              "start": 156,
-              "end": 174
+              "start": 1763,
+              "end": 1781
             }
           ],
           "html_body": [
@@ -344,9 +344,9 @@ Content-Transfer-Encoding: Quoted-printable
           "structure": {
             "Part": 0
           },
-          "offset_header": 0,
-          "offset_body": 175,
-          "offset_end": 223
+          "offset_header": 1607,
+          "offset_body": 1782,
+          "offset_end": 1850
         }
       }
     }
