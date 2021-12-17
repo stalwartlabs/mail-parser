@@ -320,6 +320,8 @@ pub struct Message<'x> {
     pub offset_header: usize,
     pub offset_body: usize,
     pub offset_end: usize,
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub raw_message: Cow<'x, [u8]>,
 }
 
 /// Body structure.
@@ -414,22 +416,22 @@ impl<'x> MessagePart<'x> {
 
     pub fn unwrap_message(&self) -> &Message {
         match self {
-            MessagePart::Message(part) => {
-                if part.is_parsed() {
-                    part.as_ref().unwrap()
-                } else {
-                    panic!(
-                        "This message part has not been parsed yet, use parse_message() instead."
-                    );
-                }
-            }
+            MessagePart::Message(part) => match &part.body {
+                MessageAttachment::Parsed(message) => message.as_ref(),
+                MessageAttachment::Raw(_) => panic!(
+                    "This message part has not been parsed yet, use parse_message() instead."
+                ),
+            },
             _ => panic!("Expected message part."),
         }
     }
 
     pub fn parse_message(&'x self) -> Option<Message<'x>> {
         match self {
-            MessagePart::Message(part) => Message::parse(part.body.raw_message.as_ref()),
+            MessagePart::Message(part) => match &part.body {
+                MessageAttachment::Parsed(_) => None,
+                MessageAttachment::Raw(raw_message) => Message::parse(raw_message.as_ref()),
+            },
             _ => panic!("Expected message part."),
         }
     }
@@ -1130,11 +1132,14 @@ impl<'x> fmt::Display for Part<'x, Cow<'x, [u8]>> {
 
 impl<'x> BodyPart<'x> for Part<'x, MessageAttachment<'x>> {
     fn get_contents(&'x self) -> &'x [u8] {
-        self.body.raw_message.as_ref()
+        match &self.body {
+            MessageAttachment::Parsed(msg) => msg.raw_message.as_ref(),
+            MessageAttachment::Raw(raw) => raw.as_ref(),
+        }
     }
 
     fn get_text_contents(&'x self) -> &'x str {
-        std::str::from_utf8(self.body.raw_message.as_ref()).unwrap_or("")
+        std::str::from_utf8(self.get_contents()).unwrap_or("")
     }
 
     fn is_text(&self) -> bool {
@@ -1146,13 +1151,16 @@ impl<'x> BodyPart<'x> for Part<'x, MessageAttachment<'x>> {
     }
 
     fn len(&self) -> usize {
-        self.body.raw_message.len()
+        match &self.body {
+            MessageAttachment::Parsed(msg) => msg.raw_message.len(),
+            MessageAttachment::Raw(raw) => raw.len(),
+        }
     }
 }
 
 impl<'x> fmt::Display for Part<'x, MessageAttachment<'x>> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(String::from_utf8_lossy(self.body.raw_message.as_ref()).as_ref())
+        fmt.write_str(self.get_text_contents())
     }
 }
 
@@ -1284,38 +1292,51 @@ impl<'x> ContentType<'x> {
 
 /// Contents of an e-mail message attachment.
 #[derive(Debug, PartialEq)]
-pub struct MessageAttachment<'x> {
-    pub raw_message: Cow<'x, [u8]>,
-    pub message: Option<Box<Message<'x>>>,
+pub enum MessageAttachment<'x> {
+    Parsed(Box<Message<'x>>),
+    Raw(Cow<'x, [u8]>),
+}
+
+impl<'x> Default for MessageAttachment<'x> {
+    fn default() -> Self {
+        MessageAttachment::Raw((&[] as &[u8]).into())
+    }
 }
 
 impl<'x> MessageAttachment<'x> {
     /// Parse the message attachment and return a `Message` object.
     pub fn parse_raw(&'x self) -> Option<Message<'x>> {
-        Message::parse(self.raw_message.as_ref())
+        if let MessageAttachment::Raw(raw) = self {
+            Message::parse(raw.as_ref())
+        } else {
+            None
+        }
     }
 
     /// Returns a reference to the parsed `Message` object.
     pub fn as_ref(&self) -> Option<&Message> {
-        self.message.as_ref()?.as_ref().into()
+        if let MessageAttachment::Parsed(message) = self {
+            message.as_ref().into()
+        } else {
+            None
+        }
     }
 
     /// Returns ```true``` is the message has been parsed.
     /// Call `MessageAttachment::parse_raw` when this method returns ```false```,
     /// otherwise use `MessageAttachment::as_ref`.
     pub fn is_parsed(&self) -> bool {
-        self.message.is_some()
+        matches!(self, MessageAttachment::Parsed(_))
     }
 
-    /// Returns the parsed message if available, otherwise
+    /*/// Returns the parsed message if available, otherwise
     /// parses the raw message and returns the results.
     pub fn unwrap(&'x mut self) -> Option<Message<'x>> {
-        if self.message.is_some() {
-            (*std::mem::take(&mut self.message).unwrap()).into()
-        } else {
-            self.parse_raw()
+        match self {
+            MessageAttachment::Parsed(message) => (*std::mem::take(&mut message).unwrap()).into(),
+            MessageAttachment::Raw(raw) => Message::parse(raw.as_ref()),
         }
-    }
+    }*/
 }
 
 impl<'x> Part<'x, MessageAttachment<'x>> {
@@ -1342,14 +1363,11 @@ impl<'x> Serialize for MessageAttachment<'x> {
     where
         S: serde::Serializer,
     {
-        if let Some(message) = self.message.as_ref() {
-            message.serialize(serializer)
-        } else if let Some(message) = self.parse_raw() {
-            message.serialize(serializer)
-        } else {
-            Err(serde::ser::Error::custom(
-                "Failed to parse message attachment.",
-            ))
+        match self {
+            MessageAttachment::Parsed(message) => message.serialize(serializer),
+            MessageAttachment::Raw(raw) => Message::parse(raw.as_ref())
+                .ok_or_else(|| serde::ser::Error::custom("Failed to parse message attachment."))?
+                .serialize(serializer),
         }
     }
 }

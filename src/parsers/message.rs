@@ -466,10 +466,7 @@ impl<'x> Message<'x> {
                 message.attachments.push(message.parts.len());
                 message.parts.push(MessagePart::Message(Part::new(
                     std::mem::take(&mut mime_part_header),
-                    MessageAttachment {
-                        raw_message: result_to_bytes(bytes, stream.data),
-                        message: None,
-                    },
+                    MessageAttachment::Raw(result_to_bytes(bytes, stream.data)),
                 )));
             }
 
@@ -485,15 +482,12 @@ impl<'x> Message<'x> {
                         {
                             message.structure = state.get_structure();
                             message.offset_end = seek_crlf_end(&stream, last_part_offset);
+                            message.raw_message =
+                                raw_message[message.offset_header..message.offset_end].into();
                             prev_message.attachments.push(prev_message.parts.len());
                             prev_message.parts.push(MessagePart::Message(Part::new(
                                 headers,
-                                MessageAttachment {
-                                    raw_message: raw_message
-                                        [message.offset_header..message.offset_end]
-                                        .into(),
-                                    message: Some(Box::new(message)),
-                                },
+                                MessageAttachment::Parsed(Box::new(message)),
                             )));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
@@ -563,19 +557,18 @@ impl<'x> Message<'x> {
             message.offset_end = stream.pos;
             if !message.is_empty() {
                 message.structure = state.get_structure();
+                message.raw_message = raw_message[message.offset_header..message.offset_end].into();
                 prev_message.attachments.push(prev_message.parts.len());
                 prev_message.parts.push(MessagePart::Message(Part::new(
                     headers,
-                    MessageAttachment {
-                        raw_message: raw_message[message.offset_header..message.offset_end].into(),
-                        message: Box::new(message).into(),
-                    },
+                    MessageAttachment::Parsed(Box::new(message)),
                 )));
             }
             message = prev_message;
             state = prev_state;
         }
 
+        message.raw_message = raw_message.into();
         message.structure = state.get_structure();
         message.offset_end = stream.pos;
 
