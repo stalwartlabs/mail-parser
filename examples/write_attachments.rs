@@ -64,12 +64,16 @@ fn write_attachments(message: &Message) {
             MessagePart::Text(text) | MessagePart::Html(text) => write_part(text),
             MessagePart::Binary(blob) | MessagePart::InlineBinary(blob) => write_part(blob),
             MessagePart::Message(attached_message) => {
-                write_part(attached_message);
-                if attached_message.is_parsed() {
-                    write_attachments(attached_message.as_ref().unwrap());
-                } else {
-                    write_attachments(&attached_message.parse_raw().unwrap());
+                // Write attachments of nested messages
+                match &attached_message.body {
+                    MessageAttachment::Parsed(message) => write_attachments(message.as_ref()),
+                    MessageAttachment::Raw(_) => {
+                        write_attachments(&attached_message.parse_raw().unwrap())
+                    }
                 }
+
+                // Write raw message
+                write_part(attached_message);
             }
             _ => (),
         }

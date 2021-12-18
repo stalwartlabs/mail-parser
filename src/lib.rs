@@ -261,6 +261,7 @@ pub mod parsers;
 use std::{borrow::Cow, collections::HashMap, fmt};
 
 use decoders::html::{html_to_text, text_to_html};
+use parsers::fields::unstructured::thread_name;
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
 
@@ -881,6 +882,11 @@ impl<'x> Message<'x> {
         self.headers_rfc
             .get(&HeaderName::Subject)
             .and_then(|header| header.as_text_ref())
+    }
+
+    /// Returns the message thread name
+    pub fn get_thread_name(&self) -> Option<&str> {
+        thread_name(self.get_subject()?).into()
     }
 
     /// Returns the To header field
