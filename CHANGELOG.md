@@ -1,3 +1,8 @@
+mail-parser 0.4.2
+================================
+- Added `Message::get_thread_name()` to obtain the base subject of a message as defined in [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1).
+- Added `MimeHeader::get_attachment_name` for simplified access to a MIME attachment file name.
+
 mail-parser 0.4.1
 ================================
 - Lazy parsing of nested e-mail messages.

@@ -59,6 +59,7 @@
 //! - [RFC 2919 - List-Id: A Structured Field and Namespace for the Identification of Mailing Lists](https://datatracker.ietf.org/doc/html/rfc2919)
 //! - [RFC 3339 - Date and Time on the Internet: Timestamps](https://datatracker.ietf.org/doc/html/rfc3339)
 //! - [RFC 8621 - The JSON Meta Application Protocol (JMAP) for Mail (Section 4.1.4)](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4)
+//! - [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1)
 //!
 //! ## Supported Character Sets
 //!
@@ -261,7 +262,7 @@ pub mod parsers;
 use std::{borrow::Cow, collections::HashMap, fmt};
 
 use decoders::html::{html_to_text, text_to_html};
-use parsers::fields::unstructured::thread_name;
+use parsers::fields::thread::thread_name;
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
 

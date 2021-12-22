@@ -22,11 +22,12 @@ use mail_parser::{
             id::parse_id,
             list::parse_comma_separared,
             raw::{parse_and_ignore, parse_raw},
+            thread::{thread_name, trim_trailing_fwd},
             unstructured::parse_unstructured,
         },
-        mime::*,
         header::parse_header_name,
         message::MessageStream,
+        mime::*,
     },
     Message,
 };
@@ -62,7 +63,7 @@ fuzz_target!(|data: &[u8]| {
                 parse_content_type(&mut stream);
             }
             9 => {
-                parse_header_name(&mut stream);
+                parse_header_name(&data);
             }
             10 => {
                 decode_rfc2047(&mut stream, 0);
@@ -113,26 +114,27 @@ fuzz_target!(|data: &[u8]| {
         }
     }
 
-    // Fuzz HTML functions
+    // Fuzz text functions
     let mut html_str = String::with_capacity(data.len());
     let str_data = String::from_utf8_lossy(data);
     add_html_token(&mut html_str, str_data.as_ref().as_bytes(), false);
     html_to_text(&str_data);
     text_to_html(&str_data);
+    thread_name(&str_data);
+    trim_trailing_fwd(&str_data);
 
     // Fuzz decoding functions
     decode_hex(data);
     get_charset_decoder(data);
 
-    let decoders: &[for<'x> fn(&'x [u8]) -> String] = &[
+    for decoder in &[
         decoder_utf7,
         decoder_utf16_le,
         decoder_utf16_be,
         decoder_utf16,
         decoder_iso_8859_1,
-    ];
-
-    for decoder in decoders {
+    ] as &[for<'x> fn(&'x [u8]) -> String]
+    {
         decoder(data);
     }
 

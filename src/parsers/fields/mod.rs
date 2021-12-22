@@ -15,4 +15,5 @@ pub mod date;
 pub mod id;
 pub mod list;
 pub mod raw;
+pub mod thread;
 pub mod unstructured;
