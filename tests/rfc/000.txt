@@ -74,32 +74,11 @@ Content-Transfer-Encoding: Quoted-printable
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "unique-boundary-1"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
       }
-    },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@nsb.fv.com"
-      }
-    },
-    "subject": {
-      "Text": "A multipart example"
     },
     "date": {
       "DateTime": {
@@ -113,8 +92,30 @@ Content-Transfer-Encoding: Quoted-printable
         "tz_hour": 7,
         "tz_minute": 0
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@nsb.fv.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "unique-boundary-1"
+        }
+      }
+    },
+    "subject": {
+      "Text": "A multipart example"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -176,6 +177,7 @@ Content-Transfer-Encoding: Quoted-printable
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
       }
     },
@@ -211,14 +213,15 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "audio",
-              "c_subtype": "basic"
+              "c_subtype": "basic",
+              "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "body": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
@@ -233,7 +236,8 @@ Content-Transfer-Encoding: Quoted-printable
           "content_type": {
             "ContentType": {
               "c_type": "image",
-              "c_subtype": "jpeg"
+              "c_subtype": "jpeg",
+              "attributes": null
             }
           }
         },
@@ -246,7 +250,8 @@ Content-Transfer-Encoding: Quoted-printable
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "enriched"
+              "c_subtype": "enriched",
+              "attributes": null
             }
           }
         },
@@ -259,7 +264,8 @@ Content-Transfer-Encoding: Quoted-printable
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -267,7 +273,14 @@ Content-Transfer-Encoding: Quoted-printable
           "headers_rfc": {
             "to": {
               "Address": {
-                "name": "address in US-ASCII"
+                "name": "address in US-ASCII",
+                "address": null
+              }
+            },
+            "from": {
+              "Address": {
+                "name": "mailbox in US-ASCII",
+                "address": null
               }
             },
             "content_type": {
@@ -279,18 +292,14 @@ Content-Transfer-Encoding: Quoted-printable
                 }
               }
             },
-            "from": {
-              "Address": {
-                "name": "mailbox in US-ASCII"
-              }
+            "subject": {
+              "Text": "(subject in US-ASCII)"
             },
             "content_transfer_encoding": {
               "Text": "Quoted-printable"
-            },
-            "subject": {
-              "Text": "(subject in US-ASCII)"
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -334,9 +343,11 @@ Content-Transfer-Encoding: Quoted-printable
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "... Additional text in ISO-8859-1 goes here ...\n"
               }
             }

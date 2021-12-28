@@ -97,26 +97,11 @@ JB@ac)(GTFLiL)!d09'8!!!:
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -131,6 +116,9 @@ JB@ac)(GTFLiL)!d09'8!!!:
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -139,6 +127,18 @@ JB@ac)(GTFLiL)!d09'8!!!:
           "boundary": "=====================_716373961==_"
         }
       }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "jschmuergen@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "headers_other": {
@@ -247,20 +247,21 @@ JB@ac)(GTFLiL)!d09'8!!!:
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "application",
               "c_subtype": "mac-binhex40",
               "attributes": {
                 "name": "blueball.png"
+              }
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
               }
             }
           }
@@ -2214,6 +2215,7 @@ JB@ac)(GTFLiL)!d09'8!!!:
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "HasenundFr�sche.txt"
               }

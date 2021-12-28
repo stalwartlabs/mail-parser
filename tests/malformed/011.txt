@@ -29,6 +29,7 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -67,7 +68,8 @@ Content-Type: text/plain
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },
@@ -80,7 +82,8 @@ Content-Type: text/plain
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

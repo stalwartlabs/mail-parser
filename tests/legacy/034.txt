@@ -41,6 +41,24 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Die Hasen und die Fr+APY-sche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "7bit"
+    },
+    "message_id": {
+      "Text": "39236497.12FA2A89@example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz M+APw-ller",
+        "address": "mueller@example.com"
+      }
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
@@ -55,24 +73,6 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
           "charset": "UTF-7"
         }
       }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz M+APw-ller",
-        "address": "mueller@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr+APY-sche"
-    },
-    "content_transfer_encoding": {
-      "Text": "7bit"
-    },
-    "message_id": {
-      "Text": "39236497.12FA2A89@example.com"
     }
   },
   "headers_other": {
@@ -161,9 +161,11 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n"
       }
     }

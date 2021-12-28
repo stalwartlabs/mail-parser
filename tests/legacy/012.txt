@@ -32,17 +32,19 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 30,
-        "second": 20,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
       }
     },
     "mime_version": {
@@ -50,12 +52,6 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
     },
     "content_transfer_encoding": {
       "Text": "quoted-printable"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
     },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
@@ -69,31 +65,35 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         }
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 30,
+        "second": 20,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
       }
     }
   },
   "headers_other": {
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
     "Importance": {
       "Text": "Normal"
     },
     "X-Priority": {
       "Text": "3 (Normal)"
     },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    },
     "X-MSMail-Priority": {
       "Text": "Normal"
     },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
     }
   },
   "headers_offsets": [
@@ -195,9 +195,11 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n"
       }
     }

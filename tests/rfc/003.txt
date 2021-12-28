@@ -26,6 +26,9 @@ Content-Type: application/x-whatever
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "subject": {
+      "Text": "Formatted text mail"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -35,19 +38,19 @@ Content-Type: application/x-whatever
         }
       }
     },
-    "subject": {
-      "Text": "Formatted text mail"
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@bellcore.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
       }
     },
     "date": {
@@ -62,11 +65,9 @@ Content-Type: application/x-whatever
         "tz_hour": 8,
         "tz_minute": 0
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -144,7 +145,8 @@ Content-Type: application/x-whatever
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "enriched"
+              "c_subtype": "enriched",
+              "attributes": null
             }
           }
         },
@@ -157,7 +159,8 @@ Content-Type: application/x-whatever
           "content_type": {
             "ContentType": {
               "c_type": "application",
-              "c_subtype": "x-whatever"
+              "c_subtype": "x-whatever",
+              "attributes": null
             }
           }
         },

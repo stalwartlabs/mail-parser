@@ -31,11 +31,11 @@ Signed by undersigned
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "subject": {
       "Text": "Hide and seek"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "content_type": {
       "ContentType": {
@@ -47,6 +47,7 @@ Signed by undersigned
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -88,8 +89,8 @@ Signed by undersigned
             "c_subtype": "signed",
             "attributes": {
               "migalc": "pen+paper",
-              "boundary": "2",
-              "protocol": "signature/plain"
+              "protocol": "signature/plain",
+              "boundary": "2"
             }
           }
         }
@@ -133,7 +134,8 @@ Signed by undersigned
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

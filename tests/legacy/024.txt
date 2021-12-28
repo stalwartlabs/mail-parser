@@ -111,12 +111,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -127,16 +121,16 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     },
     "date": {
@@ -152,19 +146,25 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "subject": {
       "Text": "Die Hasen und die Frösche"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
     }
   },
   "headers_other": {
     "X-Sender": {
       "Text": "dwsauder@pop.example.com (Unverified)"
     },
-    "X-Priority": {
-      "Text": "2 (High)"
-    },
     "X-Mailer": {
       "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    },
+    "X-Priority": {
+      "Text": "2 (High)"
     }
   },
   "headers_offsets": [
@@ -281,6 +281,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
+              "c_subtype": null,
               "attributes": {
                 "filename": "2aa48eb6.png"
               }
@@ -1631,6 +1632,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
+              "c_subtype": null,
               "attributes": {
                 "filename": "2aa48ec0.png"
               }

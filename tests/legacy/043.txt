@@ -63,6 +63,9 @@ als wir."
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+    },
     "message_id": {
       "Text": "392359CF.DFF4527@example.com"
     },
@@ -72,8 +75,14 @@ als wir."
         "address": "mueller@example.com"
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "------------9D454F23DA86BCD63FA3805F"
+        }
+      }
     },
     "date": {
       "DateTime": {
@@ -96,23 +105,14 @@ als wir."
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "------------9D454F23DA86BCD63FA3805F"
-        }
-      }
     }
   },
   "headers_other": {
-    "X-Accept-Language": {
-      "Text": "en"
-    },
     "X-Mailer": {
       "Text": "Mozilla 4.7 [en] (WinNT; I)"
+    },
+    "X-Accept-Language": {
+      "Text": "en"
     }
   },
   "headers_offsets": [
@@ -186,6 +186,7 @@ als wir."
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {

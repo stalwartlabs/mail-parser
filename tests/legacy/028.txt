@@ -158,17 +158,10 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 44,
-        "second": 45,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
       }
     },
     "message_id": {
@@ -183,40 +176,47 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
     "mime_version": {
       "Text": "1.0"
     },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 44,
+        "second": 45,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "headers_other": {
+    "X-Priority": {
+      "Text": "3 (Normal)"
+    },
+    "X-MimeOLE": {
+      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+    },
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    },
     "Importance": {
       "Text": "Normal"
     },
     "X-MSMail-Priority": {
       "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
     }
   },
   "headers_offsets": [
@@ -332,6 +332,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -340,9 +343,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "body": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n\n\n \nSlow but steady wins the race.  \n\n\n\n"
@@ -370,9 +370,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_id": {
-            "Text": "823504223@17052000-0f8d"
-          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -384,6 +381,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "blueball.png"
               }
             }
+          },
+          "content_id": {
+            "Text": "823504223@17052000-0f8d"
           }
         },
         "body": [
@@ -1718,6 +1718,12 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
+          "content_id": {
+            "Text": "823504223@17052000-0f94"
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1726,12 +1732,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "redball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_id": {
-            "Text": "823504223@17052000-0f94"
           }
         },
         "body": [

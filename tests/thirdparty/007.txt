@@ -35,6 +35,12 @@ Foobar
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": "moderator"
+      }
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -43,14 +49,9 @@ Foobar
           "boundary": "1"
         }
       }
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": "moderator"
-      }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -67,6 +68,8 @@ Foobar
       "end": 80
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     0,
     1,
@@ -79,7 +82,8 @@ Foobar
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -95,6 +99,7 @@ Foobar
               }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -117,9 +122,11 @@ Foobar
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "This is my opinion"
               }
             }
@@ -139,22 +146,24 @@ Foobar
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
         "body": {
           "headers_rfc": {
+            "subject": {
+              "Text": "i disagree"
+            },
             "from": {
               "Address": {
                 "name": "another one",
                 "address": "another@one"
               }
-            },
-            "subject": {
-              "Text": "i disagree"
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -177,9 +186,11 @@ Foobar
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "Not agreeing one bit!"
               }
             }
@@ -199,21 +210,13 @@ Foobar
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "attachment",
-                "address": "attachment@user"
-              }
-            },
-            "subject": {
-              "Text": "funny hat"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -222,8 +225,18 @@ Foobar
                   "boundary": "2"
                 }
               }
+            },
+            "from": {
+              "Address": {
+                "name": "attachment",
+                "address": "attachment@user"
+              }
+            },
+            "subject": {
+              "Text": "funny hat"
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -260,14 +273,15 @@ Foobar
             {
               "Text": {
                 "headers": {
+                  "content_transfer_encoding": {
+                    "Text": "binary"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
-                      "c_subtype": "plain"
+                      "c_subtype": "plain",
+                      "attributes": null
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "binary"
                   }
                 },
                 "body": "Lovely attachment for you"

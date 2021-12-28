@@ -98,15 +98,6 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from PINE"
-    },
     "message_id": {
       "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
     },
@@ -140,8 +131,18 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
+    },
+    "subject": {
+      "Text": "Test message from PINE"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -232,9 +233,13 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "redball.png"
               }
@@ -242,9 +247,6 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "BASE64"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           },
           "content_description": {
             "Text": "A PNG graphic file"
@@ -1710,6 +1712,21 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "application",
@@ -1719,22 +1736,8 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
-          },
           "content_transfer_encoding": {
             "Text": "BASE64"
-          },
-          "content_description": {
-            "Text": "A PNG graphic file"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
           }
         },
         "body": [

@@ -137,17 +137,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -162,8 +153,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
     },
     "content_type": {
       "ContentType": {
@@ -174,28 +165,37 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
     },
     "subject": {
       "Text": "Test message from Microsoft Outlook 00"
     }
   },
   "headers_other": {
-    "Importance": {
-      "Text": "Normal"
+    "X-Priority": {
+      "Text": "3 (Normal)"
     },
     "X-MimeOLE": {
       "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
     },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
     "X-Mailer": {
       "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     },
-    "X-Priority": {
-      "Text": "3 (Normal)"
+    "X-MSMail-Priority": {
+      "Text": "Normal"
+    },
+    "Importance": {
+      "Text": "Normal"
     }
   },
   "headers_offsets": [
@@ -318,20 +318,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": {
                 "name": "blueball.png"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "blueball.png"
               }
             }
           },
@@ -1671,20 +1672,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": {
                 "name": "greenball.png"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "greenball.png"
               }
             }
           },
@@ -2997,16 +2999,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "redball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           },
           "content_type": {
             "ContentType": {

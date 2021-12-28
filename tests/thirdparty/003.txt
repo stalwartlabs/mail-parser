@@ -49,6 +49,7 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
       "Text": "1.0"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -79,10 +80,14 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     3,
     4
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -91,9 +96,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "us-ascii"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
           }
         },
         "body": "Move black king to queen's bishop\n"
@@ -121,6 +123,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "8bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -129,9 +134,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "8bit"
           }
         },
         "body": "Move ♚ to ♛'s ♝\n"
@@ -159,6 +161,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -167,9 +172,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": "Move ♚ to ♛'s ♝\n"

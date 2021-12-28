@@ -166,12 +166,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     "subject": {
       "Text": "Die Hasen und die Frösche"
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -181,17 +175,11 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         }
       }
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "message_id": {
+      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -205,17 +193,29 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     }
   },
   "headers_other": {
-    "X-Priority": {
-      "Text": "2 (High)"
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
     },
     "X-Mailer": {
       "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
     },
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
+    "X-Priority": {
+      "Text": "2 (High)"
     }
   },
   "headers_offsets": [
@@ -310,8 +310,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "c_type": "multipart",
             "c_subtype": "related",
             "attributes": {
-              "type": "text/plain",
-              "boundary": "=====================_715515186==_.REL"
+              "boundary": "=====================_715515186==_.REL",
+              "type": "text/plain"
             }
           }
         }
@@ -339,16 +339,20 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
+              "c_subtype": null,
               "attributes": {
                 "filename": "2aa5e03a.png"
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_id": {
+            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
           },
           "content_type": {
             "ContentType": {
@@ -358,9 +362,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "2aa5e03a.png"
               }
             }
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
           }
         },
         "body": [
@@ -1695,8 +1696,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_id": {
+            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
           },
           "content_type": {
             "ContentType": {
@@ -1707,12 +1708,13 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
+              "c_subtype": null,
               "attributes": {
                 "filename": "2aa5e044.png"
               }
@@ -3179,20 +3181,21 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": {
                 "name": "blueball.png"
+              }
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
               }
             }
           },
@@ -4532,17 +4535,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -4551,6 +4543,18 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "greenball.png"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "body": [

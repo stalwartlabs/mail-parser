@@ -39,6 +39,7 @@ hello world
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -65,6 +66,7 @@ hello world
     1,
     2
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
@@ -72,7 +74,8 @@ hello world
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           },
           "content_transfer_encoding": {
@@ -91,7 +94,8 @@ hello world
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },
@@ -104,7 +108,8 @@ hello world
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

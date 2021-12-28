@@ -87,6 +87,7 @@ K
       "Text": "RFC 8621 Section 4.1.4 test"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -126,15 +127,18 @@ K
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
             }
           }
         },
@@ -186,12 +190,15 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           },
           "content_disposition": {
             "ContentType": {
-              "c_type": "inline"
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
             }
           }
         },
@@ -201,15 +208,18 @@ K
     {
       "InlineBinary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
-              "c_subtype": "jpeg"
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
+              "c_subtype": "jpeg",
+              "attributes": null
             }
           }
         },
@@ -224,12 +234,15 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           },
           "content_disposition": {
             "ContentType": {
-              "c_type": "inline"
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
             }
           }
         },
@@ -255,7 +268,8 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "html"
+              "c_subtype": "html",
+              "attributes": null
             }
           }
         },
@@ -268,7 +282,8 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "image",
-              "c_subtype": "jpeg"
+              "c_subtype": "jpeg",
+              "attributes": null
             }
           }
         },
@@ -280,15 +295,18 @@ K
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
-              "c_subtype": "jpeg"
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": null
             }
           }
         },
@@ -303,7 +321,8 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "application",
-              "c_subtype": "x-excel"
+              "c_subtype": "x-excel",
+              "attributes": null
             }
           }
         },
@@ -318,7 +337,8 @@ K
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -328,6 +348,7 @@ K
               "Text": "J"
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -343,9 +364,11 @@ K
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "J"
               }
             }
@@ -362,15 +385,18 @@ K
     {
       "Text": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

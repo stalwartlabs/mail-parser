@@ -41,6 +41,7 @@ YWFhYWFhYWFhYWFhYS0tDQo=
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -82,28 +83,30 @@ YWFhYWFhYWFhYWFhYS0tDQo=
     {
       "Message": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "attached_email.eml"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "attached_email.eml"
+              }
+            }
           }
         },
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "HTML test"
+            "content_language": {
+              "Text": "en-US"
             },
             "to": {
               "Address": {
@@ -111,14 +114,8 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "address": "email@example.com"
               }
             },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "alternative",
-                "attributes": {
-                  "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                }
-              }
+            "subject": {
+              "Text": "HTML test"
             },
             "from": {
               "Address": {
@@ -126,8 +123,8 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "address": "email@example.com"
               }
             },
-            "content_language": {
-              "Text": "en-US"
+            "message_id": {
+              "Text": "random-message-id@example.com"
             },
             "date": {
               "DateTime": {
@@ -142,13 +139,20 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "tz_minute": 0
               }
             },
-            "message_id": {
-              "Text": "random-message-id@example.com"
-            },
             "mime_version": {
               "Text": "1.0"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "alternative",
+                "attributes": {
+                  "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                }
+              }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -213,6 +217,7 @@ YWFhYWFhYWFhYWFhYS0tDQo=
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {

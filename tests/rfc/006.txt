@@ -24,18 +24,20 @@ Content-Disposition: inline
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "subject": {
+      "Text": "Multipart Email Example"
+    },
     "to": {
       "Address": {
+        "name": null,
         "address": "recipient@example.com"
       }
     },
     "from": {
       "Address": {
+        "name": null,
         "address": "sender@example.com"
       }
-    },
-    "subject": {
-      "Text": "Multipart Email Example"
     },
     "content_type": {
       "ContentType": {
@@ -47,6 +49,7 @@ Content-Disposition: inline
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -83,17 +86,13 @@ Content-Disposition: inline
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
         "headers": {
           "content_transfer_encoding": {
             "Text": "quoted-printable"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
           },
           "content_type": {
             "ContentType": {
@@ -103,6 +102,13 @@ Content-Disposition: inline
                 "charset": "utf-8"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
         "body": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n"
@@ -111,11 +117,6 @@ Content-Disposition: inline
     {
       "Html": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline"
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -127,6 +128,13 @@ Content-Disposition: inline
           },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
         "body": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n"

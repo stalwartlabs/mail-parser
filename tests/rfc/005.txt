@@ -26,19 +26,19 @@ This is the epilogue.  It is also to be ignored.
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
+    "subject": {
+      "Text": "Sample message"
     },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
       }
     },
     "date": {
@@ -63,10 +63,11 @@ This is the epilogue.  It is also to be ignored.
         }
       }
     },
-    "subject": {
-      "Text": "Sample message"
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -119,9 +120,11 @@ This is the epilogue.  It is also to be ignored.
     0,
     1
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
       }
     },

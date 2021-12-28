@@ -58,8 +58,11 @@ Root MIME epilogue
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "from": {
+      "Address": {
+        "name": null,
+        "address": "user@domain.org"
+      }
     },
     "content_type": {
       "ContentType": {
@@ -68,11 +71,6 @@ Root MIME epilogue
         "attributes": {
           "boundary": "foo bar"
         }
-      }
-    },
-    "from": {
-      "Address": {
-        "address": "user@domain.org"
       }
     },
     "date": {
@@ -87,6 +85,9 @@ Root MIME epilogue
         "tz_hour": 2,
         "tz_minute": 0
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "headers_other": {
@@ -164,7 +165,8 @@ Root MIME epilogue
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -172,6 +174,21 @@ Root MIME epilogue
           "headers_rfc": {
             "subject": {
               "Text": "submsg"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "alternative",
+                "attributes": {
+                  "boundary": "sub1"
+                }
+              }
+            },
+            "from": {
+              "Address": {
+                "name": null,
+                "address": "sub@domain.org"
+              }
             },
             "date": {
               "DateTime": {
@@ -185,22 +202,9 @@ Root MIME epilogue
                 "tz_hour": 3,
                 "tz_minute": 0
               }
-            },
-            "from": {
-              "Address": {
-                "address": "sub@domain.org"
-              }
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "alternative",
-                "attributes": {
-                  "boundary": "sub1"
-                }
-              }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -240,6 +244,7 @@ Root MIME epilogue
             4,
             5
           ],
+          "attachments": [],
           "parts": [
             {
               "Html": {
@@ -247,7 +252,8 @@ Root MIME epilogue
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
-                      "c_subtype": "html"
+                      "c_subtype": "html",
+                      "attributes": null
                     }
                   }
                 },
@@ -282,16 +288,19 @@ Root MIME epilogue
             },
             {
               "Text": {
+                "headers": {},
                 "body": "sub3 text"
               }
             },
             {
               "Text": {
+                "headers": {},
                 "body": "sub3 text2"
               }
             },
             {
               "Text": {
+                "headers": {},
                 "body": "sub2 text2"
               }
             }
@@ -338,7 +347,8 @@ Root MIME epilogue
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

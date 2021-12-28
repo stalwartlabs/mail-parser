@@ -40,27 +40,14 @@ Subject: my different opinion
     "mime_version": {
       "Text": "1.0"
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "---- main boundary ----"
-        }
+    "to": {
+      "Address": {
+        "name": "Recipient-List",
+        "address": null
       }
     },
     "subject": {
       "Text": "Internet Digest, volume 42"
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Recipient-List"
-      }
     },
     "date": {
       "DateTime": {
@@ -74,8 +61,24 @@ Subject: my different opinion
         "tz_hour": 0,
         "tz_minute": 0
       }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "---- main boundary ----"
+        }
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": null
+      }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -133,6 +136,7 @@ Subject: my different opinion
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "...Introductory text or table of contents...\n"
       }
     },
@@ -155,17 +159,13 @@ Subject: my different opinion
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "someone-else"
-              }
-            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -179,10 +179,17 @@ Subject: my different opinion
                 "tz_minute": 0
               }
             },
+            "from": {
+              "Address": {
+                "name": "someone-else",
+                "address": null
+              }
+            },
             "subject": {
               "Text": "my opinion"
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -212,9 +219,11 @@ Subject: my different opinion
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "...body goes here ...\n"
               }
             }
@@ -234,7 +243,8 @@ Subject: my different opinion
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -258,10 +268,12 @@ Subject: my different opinion
             },
             "from": {
               "Address": {
-                "name": "someone-else-again"
+                "name": "someone-else-again",
+                "address": null
               }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -291,9 +303,11 @@ Subject: my different opinion
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "... another body goes here ...\n"
               }
             }

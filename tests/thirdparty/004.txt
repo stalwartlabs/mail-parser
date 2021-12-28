@@ -55,6 +55,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -87,13 +88,11 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     4,
     5
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "6bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -102,6 +101,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "6bit"
           }
         },
         "body": "Move black king to queen's bishop\n"
@@ -148,9 +150,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "7-bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -159,6 +158,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7-bit"
           }
         },
         "body": "Move ♚ to ♛'s ♝\n"

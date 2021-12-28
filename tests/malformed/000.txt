@@ -22,6 +22,7 @@ Content-Type: text/html
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -39,9 +40,11 @@ Content-Type: text/html
     0,
     1
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "Content-Type: text/plain"
       }
     },
@@ -51,7 +54,8 @@ Content-Type: text/html
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

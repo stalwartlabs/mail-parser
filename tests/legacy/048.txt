@@ -163,11 +163,20 @@ end
         "address": "blow@example.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "subject": {
       "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "3923670C.67D83A99@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "content_type": {
       "ContentType": {
@@ -177,9 +186,6 @@ end
           "boundary": "------------177483472E7788F4AD46AB1A"
         }
       }
-    },
-    "message_id": {
-      "Text": "3923670C.67D83A99@example.com"
     },
     "date": {
       "DateTime": {
@@ -192,12 +198,6 @@ end
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
       }
     }
   },
@@ -317,14 +317,6 @@ end
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -333,6 +325,15 @@ end
                 "name": "redball.png"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "redball.png"
+              }
+            }
           }
         },
         "body": [
@@ -2410,6 +2411,18 @@ end
     {
       "InlineBinary": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -2418,17 +2431,6 @@ end
                 "name": "greenball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
           }
         },
         "body": [
@@ -4288,23 +4290,24 @@ end
     {
       "InlineBinary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": {
                 "name": "blueball.png"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
               }
             }
           }

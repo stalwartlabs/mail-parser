@@ -60,6 +60,27 @@ Birds of a feather flock together.
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "3923686C.99FB5E36@example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------77060D866A66DC8D0921E051"
+        }
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -76,32 +97,11 @@ Birds of a feather flock together.
     "mime_version": {
       "Text": "1.0"
     },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------77060D866A66DC8D0921E051"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "3923686C.99FB5E36@example.com"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     }
   },
   "headers_other": {
@@ -190,9 +190,6 @@ Birds of a feather flock together.
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -201,6 +198,9 @@ Birds of a feather flock together.
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
@@ -212,6 +212,7 @@ Birds of a feather flock together.
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
+              "c_subtype": null,
               "attributes": {
                 "filename": "farmerandstork.txt"
               }
@@ -225,8 +226,8 @@ Birds of a feather flock together.
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
-                "charset": "us-ascii",
-                "name": "farmerandstork.txt"
+                "name": "farmerandstork.txt",
+                "charset": "us-ascii"
               }
             }
           }

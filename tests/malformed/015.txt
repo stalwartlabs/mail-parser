@@ -30,18 +30,10 @@ invalid
     "message_id": {
       "Text": "1.2.3.4@example"
     },
-    "subject": {
-      "Text": "Hello world"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "signed",
-        "attributes": {
-          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
-          "micalg": "pgp-sha1",
-          "protocol": "application/pgp-signature"
-        }
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
       }
     },
     "to": {
@@ -50,17 +42,8 @@ invalid
         "address": "test2@example.org"
       }
     },
-    "return_path": {
-      "Text": "test@example.org"
-    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
-      }
     },
     "date": {
       "DateTime": {
@@ -74,8 +57,26 @@ invalid
         "tz_hour": 3,
         "tz_minute": 0
       }
+    },
+    "subject": {
+      "Text": "Hello world"
+    },
+    "return_path": {
+      "Text": "test@example.org"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "signed",
+        "attributes": {
+          "protocol": "application/pgp-signature",
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
+          "micalg": "pgp-sha1"
+        }
+      }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -150,7 +151,8 @@ invalid
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           },
           "content_transfer_encoding": {

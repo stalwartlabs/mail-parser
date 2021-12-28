@@ -13,9 +13,6 @@ Content-Language: ja
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -28,8 +25,12 @@ Content-Language: ja
     },
     "subject": {
       "Text": "こんにちは"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -59,21 +60,23 @@ Content-Language: ja
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain"
-            }
+          "content_transfer_encoding": {
+            "Text": "binary"
           },
           "content_language": {
             "Text": "ja"
           },
-          "content_transfer_encoding": {
-            "Text": "binary"
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
           }
         },
         "body": "人権の無視及"

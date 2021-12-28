@@ -31,6 +31,7 @@ Content-Type: text/plain; charset=utf-8
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -74,6 +75,9 @@ Content-Type: text/plain; charset=utf-8
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -82,9 +86,6 @@ Content-Type: text/plain; charset=utf-8
                 "charset": "utf-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": "yötä vaan.\n�\t�"
@@ -93,6 +94,9 @@ Content-Type: text/plain; charset=utf-8
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -101,9 +105,6 @@ Content-Type: text/plain; charset=utf-8
                 "charset": "utf-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": "?garbage"

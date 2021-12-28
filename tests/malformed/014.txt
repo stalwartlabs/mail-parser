@@ -19,6 +19,7 @@ hello, world
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -34,6 +35,7 @@ hello, world
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
@@ -41,7 +43,8 @@ hello, world
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

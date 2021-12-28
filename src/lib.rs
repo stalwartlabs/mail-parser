@@ -270,48 +270,20 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Message<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_rfc: RfcHeaders<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_other: OtherHeaders<'x>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_offsets: Vec<HeaderOffset<'x>>,
 
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub html_body: Vec<MessagePartId>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub text_body: Vec<MessagePartId>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub attachments: Vec<MessagePartId>,
 
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     pub parts: Vec<MessagePart<'x>>,
@@ -345,10 +317,6 @@ impl Default for MessageStructure {
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Part<'x, T> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "HashMap::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers: RfcHeaders<'x>,
 
@@ -444,18 +412,10 @@ impl<'x> MessagePart<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Addr<'x> {
     /// The address name including comments
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub name: Option<Cow<'x, str>>,
 
     /// An e-mail address (RFC5322/RFC2369) or URL (RFC2369)
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub address: Option<Cow<'x, str>>,
 }
@@ -465,18 +425,10 @@ pub struct Addr<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Group<'x> {
     /// Group name
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub name: Option<Cow<'x, str>>,
 
     /// Addressess member of the group
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Vec::is_empty")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub addresses: Vec<Addr<'x>>,
 }
@@ -549,6 +501,7 @@ pub enum HeaderName {
 /// A parsed header value.
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+//#[cfg_attr(feature = "serde_support", serde(tag = "type"))]
 pub enum HeaderValue<'x> {
     /// A single address
     Address(Addr<'x>),
@@ -647,16 +600,8 @@ impl<'x> HeaderValue<'x> {
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct ContentType<'x> {
     pub c_type: Cow<'x, str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub c_subtype: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
 }

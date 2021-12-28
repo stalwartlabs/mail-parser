@@ -23,6 +23,7 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -32,12 +33,17 @@ Content-Type: text/plain
       "end": 44
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     1
   ],
   "parts": [
     {
       "Multipart": {
+        "mime_version": {
+          "Text": "1.0"
+        },
         "content_type": {
           "ContentType": {
             "c_type": "multipart",
@@ -46,14 +52,12 @@ Content-Type: text/plain
               "boundary": "ab"
             }
           }
-        },
-        "mime_version": {
-          "Text": "1.0"
         }
       }
     },
     {
       "Text": {
+        "headers": {},
         "body": "--a--\n\n"
       }
     }

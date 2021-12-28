@@ -15,6 +15,7 @@ body
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -24,12 +25,15 @@ body
       "end": 45
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     0
   ],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "body\n"
       }
     }

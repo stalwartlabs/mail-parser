@@ -21,6 +21,7 @@ body
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -30,12 +31,15 @@ body
       "end": 44
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     0
   ],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
       }
     }

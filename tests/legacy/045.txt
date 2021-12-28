@@ -44,6 +44,18 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-891160829-958746372=:8452"
+        }
+      }
+    },
     "to": {
       "AddressList": [
         {
@@ -55,9 +67,6 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
           "address": "mueller@example.com"
         }
       ]
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -72,6 +81,9 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
         "tz_minute": 0
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
@@ -80,20 +92,9 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
     },
     "subject": {
       "Text": "Die Hasen und die Frösche"
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-891160829-958746372=:8452"
-        }
-      }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -184,22 +185,23 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
               }
             }
           },
-          "content_description": {
-            "Text": "Short story in German"
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           },
           "content_transfer_encoding": {
             "Text": "BASE64"
           },
+          "content_description": {
+            "Text": "Short story in German"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "HasenundFrösche.txt"
               }
             }
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           }
         },
         "body": "Die Hasen und die Frösche\r\r\n\r\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\r\n\r\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\r\n\r\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\r\n\r\r\n"

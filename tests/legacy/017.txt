@@ -104,14 +104,8 @@ end
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "subject": {
-      "Text": "The Hare and the Tortoise"
+    "message_id": {
+      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
     },
     "to": {
       "Address": {
@@ -119,20 +113,11 @@ end
         "address": "jschmuergen@example.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "=====================_716177458==_"
-        }
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
     },
     "date": {
       "DateTime": {
@@ -146,14 +131,29 @@ end
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716177458==_"
+        }
+      }
     }
   },
   "headers_other": {
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    },
     "X-Sender": {
       "Text": "dwsauder@pop.example.com (Unverified)"
+    },
+    "X-Mailer": {
+      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
     }
   },
   "headers_offsets": [
@@ -251,6 +251,15 @@ end
     {
       "Binary": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
@@ -260,14 +269,6 @@ end
               "c_subtype": "png",
               "attributes": {
                 "name": "greenball.png"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "greenball.png"
               }
             }
           }
@@ -2149,6 +2150,7 @@ end
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "blueball.png"
               }

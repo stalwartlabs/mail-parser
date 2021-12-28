@@ -57,12 +57,19 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     let message = Message::parse(input).unwrap();
 
     assert_eq!(
+        bincode::deserialize::<RfcHeaders>(&bincode::serialize(&message.headers_rfc).unwrap())
+            .unwrap(),
+        message.headers_rfc
+    );
+
+    assert_eq!(
         message.get_from(),
         &HeaderValue::Address(Addr {
             name: Some("Art Vandelay (Vandelay Industries)".into()),
             address: Some("art@vandelay.com".into())
         })
     );
+
     assert_eq!(
         message.get_to(),
         &HeaderValue::GroupList(vec![
@@ -93,10 +100,12 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         message.get_date().unwrap().to_iso8601(),
         "2021-11-20T14:22:01-08:00"
     );
+
     assert_eq!(
         message.get_subject().unwrap(),
         "Why not both importing AND exporting? ☺"
     );
+
     assert_eq!(
         message.get_html_body(0).unwrap(),
         concat!(
@@ -105,6 +114,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
             " why not do both? &#x263A;</p></html>"
         )
     );
+
     assert_eq!(
         message.get_text_body(0).unwrap(),
         concat!(
@@ -112,26 +122,30 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
             " “importing”,\nbut then I thought, why not do both? ☺\n"
         )
     );
+
     let nested_message = message.get_attachment(0).unwrap().unwrap_message();
+
     assert_eq!(
         nested_message.get_subject().unwrap(),
         "Exporting my book about coffee tables"
     );
+
     assert_eq!(
         nested_message.get_text_body(0).unwrap(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
+
     assert_eq!(
         nested_message.get_html_body(0).unwrap(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
+
     let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
+
     assert_eq!(nested_attachment.len(), 42);
+
     assert_eq!(
         nested_attachment.get_attachment_name().unwrap(),
         "Book about ☕ tables.gif"
     );
-
-    //println!("{}", serde_json::to_string_pretty(&message).unwrap());
-    //println!("{}", serde_yaml::to_string(&message).unwrap());
 }

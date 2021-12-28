@@ -35,6 +35,7 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -44,6 +45,8 @@ Content-Type: text/plain
       "end": 44
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     1,
     2
@@ -68,7 +71,8 @@ Content-Type: text/plain
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -77,10 +81,12 @@ Content-Type: text/plain
             "content_type": {
               "ContentType": {
                 "c_type": "text",
-                "c_subtype": "plain"
+                "c_subtype": "plain",
+                "attributes": null
               }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -96,9 +102,11 @@ Content-Type: text/plain
           "text_body": [
             0
           ],
+          "attachments": [],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "1"
               }
             }
@@ -118,7 +126,8 @@ Content-Type: text/plain
           "content_type": {
             "ContentType": {
               "c_type": "message",
-              "c_subtype": "rfc822"
+              "c_subtype": "rfc822",
+              "attributes": null
             }
           }
         },
@@ -127,10 +136,12 @@ Content-Type: text/plain
             "content_type": {
               "ContentType": {
                 "c_type": "text",
-                "c_subtype": "plain"
+                "c_subtype": "plain",
+                "attributes": null
               }
             }
           },
+          "headers_other": {},
           "headers_offsets": [
             {
               "name": {
@@ -140,12 +151,15 @@ Content-Type: text/plain
               "end": 215
             }
           ],
+          "html_body": [],
+          "text_body": [],
           "attachments": [
             0
           ],
           "parts": [
             {
               "Text": {
+                "headers": {},
                 "body": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
               }
             }

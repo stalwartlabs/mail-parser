@@ -22,6 +22,9 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -33,11 +36,9 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
     },
     "subject": {
       "Text": "In parts"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -80,7 +81,8 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },
@@ -95,8 +97,8 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
               "c_type": "message",
               "c_subtype": "partial",
               "attributes": {
-                "id": "heks68ewe@example.org",
                 "total": "5",
+                "id": "heks68ewe@example.org",
                 "number": "1"
               }
             }

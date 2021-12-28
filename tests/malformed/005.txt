@@ -25,6 +25,7 @@ body2
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -40,6 +41,7 @@ body2
   "text_body": [
     1
   ],
+  "attachments": [],
   "parts": [
     {
       "Multipart": {
@@ -60,7 +62,8 @@ body2
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

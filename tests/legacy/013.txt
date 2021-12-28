@@ -33,38 +33,8 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "iso-8859-1"
-        }
-      }
-    },
     "subject": {
       "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
-    },
-    "content_transfer_encoding": {
-      "Text": "8bit"
     },
     "date": {
       "DateTime": {
@@ -78,17 +48,47 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "8bit"
     }
   },
   "headers_other": {
-    "X-Priority": {
-      "Text": "3 (Normal)"
+    "X-Mailer": {
+      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
     },
     "X-MSMail-Priority": {
       "Text": "Normal"
     },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+    "X-Priority": {
+      "Text": "3 (Normal)"
     },
     "Importance": {
       "Text": "Normal"
@@ -196,9 +196,11 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
   "text_body": [
     0
   ],
+  "attachments": [],
   "parts": [
     {
       "Text": {
+        "headers": {},
         "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n"
       }
     }

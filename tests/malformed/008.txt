@@ -25,6 +25,7 @@ body2
       }
     }
   },
+  "headers_other": {},
   "headers_offsets": [
     {
       "name": {
@@ -34,6 +35,8 @@ body2
       "end": 45
     }
   ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
     1
   ],
@@ -57,7 +60,8 @@ body2
           "content_type": {
             "ContentType": {
               "c_type": "text",
-              "c_subtype": "plain"
+              "c_subtype": "plain",
+              "attributes": null
             }
           }
         },

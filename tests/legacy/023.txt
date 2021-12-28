@@ -116,6 +116,9 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "address": "jschmuergen@example.com"
       }
     },
+    "message_id": {
+      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
+    },
     "subject": {
       "Text": "Die Hasen und die Frösche"
     },
@@ -123,19 +126,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 0,
-        "minute": 56,
-        "second": 13,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
       }
     },
     "mime_version": {
@@ -150,16 +140,26 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         }
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 56,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     }
   },
   "headers_other": {
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    },
     "X-Mailer": {
       "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+    },
+    "X-Sender": {
+      "Text": "dwsauder@pop.example.com (Unverified)"
     }
   },
   "headers_offsets": [
@@ -261,6 +261,9 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Binary": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -270,12 +273,10 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
+              "c_subtype": null,
               "attributes": {
                 "filename": "blueball.png"
               }
@@ -1614,20 +1615,21 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "farmerandstork.txt"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
                 "charset": "us-ascii"
+              }
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "farmerandstork.txt"
               }
             }
           }
@@ -1638,6 +1640,15 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Text": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "HasenundFr�sche.txt"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -1647,14 +1658,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
               "c_subtype": "plain",
               "attributes": {
                 "charset": "iso-8859-1"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "attributes": {
-                "filename": "HasenundFr�sche.txt"
               }
             }
           }
