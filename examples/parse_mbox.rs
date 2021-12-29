@@ -9,8 +9,13 @@
  * except according to those terms.
  */
 
-pub mod fields;
-pub mod header;
-pub mod mbox;
-pub mod message;
-pub mod mime;
+use mail_parser::{parsers::mbox::MBoxParser, Message};
+
+fn main() {
+    // Read an MBox mailbox from stdin and prints each message as YAML.
+
+    for raw_message in MBoxParser::new(std::io::stdin()) {
+        let message = Message::parse(&raw_message).unwrap();
+        println!("{}", serde_yaml::to_string(&message).unwrap());
+    }
+}
