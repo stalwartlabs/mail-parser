@@ -11,6 +11,9 @@
 
 use std::io::{BufRead, BufReader, Read};
 
+/// Parses an MBox mailbox from a `Read` stream, returning each message as a
+/// `Vec<u8>`.
+/// supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
 pub struct MBoxParser<T: Read> {
     reader: BufReader<T>,
     found_from: bool,

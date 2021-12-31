@@ -1,3 +1,8 @@
+mail-parser 0.4.3
+================================
+- Mbox file parsing support (issue #11) conforming to the [QMail specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
+- Support for bincode serialize/deserialize.
+
 mail-parser 0.4.2
 ================================
 - Added `Message::get_thread_name()` to obtain the base subject of a message as defined in [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1).

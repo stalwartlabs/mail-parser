@@ -4,7 +4,6 @@
 [![build](https://github.com/stalwartlabs/mail-parser/actions/workflows/rust.yml/badge.svg)](https://github.com/stalwartlabs/mail-parser/actions/workflows/rust.yml)
 [![docs.rs](https://img.shields.io/docsrs/mail-parser)](https://docs.rs/mail-parser)
 [![crates.io](https://img.shields.io/crates/l/mail-parser)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Twitter Follow](https://img.shields.io/twitter/follow/stalwartlabs?style=social)](https://twitter.com/stalwartlabs)
 
 _mail-parser_ is an **e-mail parsing library** written in Rust that fully conforms to the Internet Message Format standard (_RFC 5322_), the
 Multipurpose Internet Mail Extensions (MIME; _RFC 2045 - 2049_) as well as many other [internet messaging RFCs](#conformed-rfcs).
@@ -177,6 +176,8 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     println!("{}", serde_json::to_string_pretty(&message).unwrap());
     println!("{}", serde_yaml::to_string(&message).unwrap());
 ```
+
+More examples available under the [examples](examples) directory.
 
 ## Testing, Fuzzing & Benchmarking
 
