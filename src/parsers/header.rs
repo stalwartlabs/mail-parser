@@ -231,7 +231,7 @@ static HDR_PARSER: &[(
     (false, parse_address),         // ReplyTo = 6,
     (false, parse_address),         // Sender = 7,
     (true, parse_unstructured),     // Comments = 8,
-    (false, parse_address),         // InReplyTo = 9,
+    (false, parse_id),              // InReplyTo = 9,
     (true, parse_comma_separared),  // Keywords = 10,
     (true, parse_raw),              // Received = 11,
     (false, parse_id),              // MessageId = 12,
