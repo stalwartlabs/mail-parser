@@ -173,29 +173,17 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "39236103.FFE674FC@example.com"
+    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------B7133A01A6B323BF00DBC9A7"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "39236103.FFE674FC@example.com"
     },
     "to": {
       "Address": {
@@ -215,81 +203,20 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------B7133A01A6B323BF00DBC9A7"
+        }
+      }
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "Mozilla 4.7 [en] (WinNT; I)"
-    },
-    "X-Accept-Language": {
-      "Text": "en"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 45
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 50,
-      "end": 84
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 89,
-      "end": 126
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 135,
-      "end": 165
-    },
-    {
-      "name": {
-        "Other": "X-Accept-Language"
-      },
-      "start": 183,
-      "end": 188
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 201,
-      "end": 207
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 210,
-      "end": 277
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 285,
-      "end": 331
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 344,
-      "end": 413
-    }
-  ],
   "html_body": [
     1,
     4,
@@ -1697,11 +1624,11 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_id": {
-            "Text": "part2.39236103.1B697A54@example.com"
-          },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_id": {
+            "Text": "part2.39236103.1B697A54@example.com"
           },
           "content_type": {
             "ContentType": {
@@ -3180,6 +3107,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "InlineBinary": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -3197,9 +3127,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "greenball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "body": [
@@ -4507,6 +4434,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "InlineBinary": {
         "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -4518,15 +4454,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
           }
         },
         "body": [

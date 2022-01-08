@@ -163,6 +163,25 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 0,
+        "minute": 39,
+        "second": 5,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    },
     "subject": {
       "Text": "Die Hasen und die Frösche"
     },
@@ -178,118 +197,16 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     "message_id": {
       "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 0,
-        "minute": 39,
-        "second": 5,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    },
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    },
-    "X-Priority": {
-      "Text": "2 (High)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 181,
-      "end": 192
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 197,
-      "end": 231
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 234,
-      "end": 288
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 293,
-      "end": 330
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 338,
-      "end": 383
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 396,
-      "end": 402
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 415,
-      "end": 482
-    }
-  ],
   "html_body": [
     1
   ],
@@ -310,8 +227,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "c_type": "multipart",
             "c_subtype": "related",
             "attributes": {
-              "boundary": "=====================_715515186==_.REL",
-              "type": "text/plain"
+              "type": "text/plain",
+              "boundary": "=====================_715515186==_.REL"
             }
           }
         }
@@ -339,9 +256,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -351,9 +265,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -362,6 +273,12 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "2aa5e03a.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
           }
         },
         "body": [
@@ -1699,15 +1616,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           "content_id": {
             "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
           },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "2aa5e044.png"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -1717,6 +1625,15 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               "c_subtype": null,
               "attributes": {
                 "filename": "2aa5e044.png"
+              }
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "2aa5e044.png"
               }
             }
           }
@@ -3181,21 +3098,21 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": {
                 "filename": "blueball.png"
+              }
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
             }
           },
@@ -4535,14 +4452,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -4553,8 +4464,14 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
+            }
           }
         },
         "body": [

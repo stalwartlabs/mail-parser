@@ -11,12 +11,17 @@
 
 use std::{borrow::Cow, collections::hash_map::Entry};
 
-use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, OtherHeaders, RfcHeaders};
+use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, RawHeaders, RfcHeaders};
 
 use super::{
     fields::{
-        address::parse_address, content_type::parse_content_type, date::parse_date, id::parse_id,
-        list::parse_comma_separared, raw::parse_raw, unstructured::parse_unstructured,
+        address::parse_address,
+        content_type::parse_content_type,
+        date::parse_date,
+        id::parse_id,
+        list::parse_comma_separared,
+        raw::{parse_and_ignore, parse_raw},
+        unstructured::parse_unstructured,
     },
     message::MessageStream,
 };
@@ -31,8 +36,7 @@ pub enum HeaderParserResult<'x> {
 
 pub fn parse_headers<'x>(
     headers_rfc: &mut RfcHeaders<'x>,
-    mut headers_other: Option<&mut OtherHeaders<'x>>,
-    mut headers_offsets: Option<&mut Vec<HeaderOffset<'x>>>,
+    mut headers_raw: Option<&mut RawHeaders<'x>>,
     stream: &mut MessageStream<'x>,
 ) -> bool {
     loop {
@@ -45,12 +49,14 @@ pub fn parse_headers<'x>(
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
-                if let Some(headers_offsets) = headers_offsets.as_mut() {
-                    headers_offsets.push(HeaderOffset {
-                        name: HeaderOffsetName::Rfc(name),
-                        start: from_offset,
-                        end: stream.pos,
-                    });
+                if let Some(headers_raw) = headers_raw.as_mut() {
+                    headers_raw
+                        .entry(HeaderOffsetName::Rfc(name))
+                        .or_insert_with(Vec::new)
+                        .push(HeaderOffset {
+                            start: from_offset,
+                            end: stream.pos,
+                        });
                 }
 
                 if !value.is_empty() {
@@ -77,35 +83,16 @@ pub fn parse_headers<'x>(
                 }
             }
             HeaderParserResult::Other(name) => {
-                if let Some(headers_other) = headers_other.as_mut() {
-                    let from_offset = stream.pos;
-                    let value = parse_raw(stream);
-                    if let Some(headers_offsets) = headers_offsets.as_mut() {
-                        headers_offsets.push(HeaderOffset {
-                            name: HeaderOffsetName::Other(name.clone()),
+                let from_offset = stream.pos;
+                parse_and_ignore(stream);
+                if let Some(headers_raw) = headers_raw.as_mut() {
+                    headers_raw
+                        .entry(HeaderOffsetName::Other(name))
+                        .or_insert_with(Vec::new)
+                        .push(HeaderOffset {
                             start: from_offset,
                             end: stream.pos,
                         });
-                    }
-
-                    if !value.is_empty() {
-                        match headers_other.entry(name.clone()) {
-                            Entry::Occupied(mut e) => {
-                                if let HeaderValue::Collection(col) = e.get_mut() {
-                                    col.push(value);
-                                } else {
-                                    let old_value = e.remove();
-                                    headers_other.insert(
-                                        name,
-                                        HeaderValue::Collection(vec![old_value, value]),
-                                    );
-                                }
-                            }
-                            Entry::Vacant(e) => {
-                                e.insert(value);
-                            }
-                        }
-                    }
                 }
             }
             HeaderParserResult::Lf => return true,

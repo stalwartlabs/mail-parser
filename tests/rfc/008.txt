@@ -41,16 +41,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 82
-    }
-  ],
   "html_body": [
     0
   ],
@@ -64,9 +54,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -75,6 +62,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "charset": "utf-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "body": "This is a message with a base64 encoded attached email"
@@ -108,20 +98,8 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             "content_language": {
               "Text": "en-US"
             },
-            "to": {
-              "Address": {
-                "name": "email@example.com",
-                "address": "email@example.com"
-              }
-            },
             "subject": {
               "Text": "HTML test"
-            },
-            "from": {
-              "Address": {
-                "name": "Name",
-                "address": "email@example.com"
-              }
             },
             "message_id": {
               "Text": "random-message-id@example.com"
@@ -150,67 +128,20 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                   "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 }
               }
+            },
+            "from": {
+              "Address": {
+                "name": "Name",
+                "address": "email@example.com"
+              }
+            },
+            "to": {
+              "Address": {
+                "name": "email@example.com",
+                "address": "email@example.com"
+              }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "to"
-              },
-              "start": 3,
-              "end": 45
-            },
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 50,
-              "end": 77
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 85,
-              "end": 97
-            },
-            {
-              "name": {
-                "Rfc": "message_id"
-              },
-              "start": 108,
-              "end": 142
-            },
-            {
-              "name": {
-                "Rfc": "date"
-              },
-              "start": 147,
-              "end": 181
-            },
-            {
-              "name": {
-                "Rfc": "mime_version"
-              },
-              "start": 194,
-              "end": 200
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 213,
-              "end": 292
-            },
-            {
-              "name": {
-                "Rfc": "content_language"
-              },
-              "start": 309,
-              "end": 317
-            }
-          ],
           "html_body": [
             1
           ],
@@ -222,18 +153,18 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             {
               "Text": {
                 "headers": {
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": {
-                        "charset": "utf-8",
-                        "format": "flowed"
+                        "format": "flowed",
+                        "charset": "utf-8"
                       }
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "7bit"
                   }
                 },
                 "body": "This is an *HTML* test message\r"

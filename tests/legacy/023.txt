@@ -110,26 +110,8 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
-    },
     "subject": {
       "Text": "Die Hasen und die Frösche"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "content_type": {
       "ContentType": {
@@ -138,6 +120,12 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "attributes": {
           "boundary": "=====================_716541962==_"
         }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "jschmuergen@example.com"
       }
     },
     "date": {
@@ -152,81 +140,20 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    },
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 175,
-      "end": 209
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 212,
-      "end": 295
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 300,
-      "end": 337
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 345,
-      "end": 390
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 403,
-      "end": 409
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 422,
-      "end": 489
-    }
-  ],
   "html_body": [
     0
   ],
@@ -242,9 +169,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -253,6 +177,9 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
@@ -261,9 +188,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Binary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -281,6 +205,9 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "filename": "blueball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "body": [
@@ -1640,6 +1567,15 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Text": {
         "headers": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
+            }
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -1651,15 +1587,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
           },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
           }
         },
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"

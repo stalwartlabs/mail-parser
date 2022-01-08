@@ -37,17 +37,14 @@ Subject: my different opinion
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Recipient-List",
-        "address": null
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "---- main boundary ----"
+        }
       }
-    },
-    "subject": {
-      "Text": "Internet Digest, volume 42"
     },
     "date": {
       "DateTime": {
@@ -62,67 +59,25 @@ Subject: my different opinion
         "tz_minute": 0
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "---- main boundary ----"
-        }
-      }
-    },
     "from": {
       "Address": {
         "name": "Moderator-Address",
         "address": null
       }
+    },
+    "to": {
+      "Address": {
+        "name": "Recipient-List",
+        "address": null
+      }
+    },
+    "subject": {
+      "Text": "Internet Digest, volume 42"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 24
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 27,
-      "end": 43
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 48,
-      "end": 81
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 89,
-      "end": 117
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 130,
-      "end": 135
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 148,
-      "end": 213
-    }
-  ],
   "html_body": [
     0
   ],
@@ -166,6 +121,15 @@ Subject: my different opinion
         },
         "body": {
           "headers_rfc": {
+            "subject": {
+              "Text": "my opinion"
+            },
+            "from": {
+              "Address": {
+                "name": "someone-else",
+                "address": null
+              }
+            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -178,41 +142,8 @@ Subject: my different opinion
                 "tz_hour": 2,
                 "tz_minute": 0
               }
-            },
-            "from": {
-              "Address": {
-                "name": "someone-else",
-                "address": null
-              }
-            },
-            "subject": {
-              "Text": "my opinion"
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 423,
-              "end": 437
-            },
-            {
-              "name": {
-                "Rfc": "date"
-              },
-              "start": 442,
-              "end": 475
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 483,
-              "end": 495
-            }
-          ],
           "html_body": [
             0
           ],
@@ -250,6 +181,9 @@ Subject: my different opinion
         },
         "body": {
           "headers_rfc": {
+            "subject": {
+              "Text": "my different opinion"
+            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -263,9 +197,6 @@ Subject: my different opinion
                 "tz_minute": 0
               }
             },
-            "subject": {
-              "Text": "my different opinion"
-            },
             "from": {
               "Address": {
                 "name": "someone-else-again",
@@ -273,30 +204,6 @@ Subject: my different opinion
               }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 550,
-              "end": 570
-            },
-            {
-              "name": {
-                "Rfc": "date"
-              },
-              "start": 575,
-              "end": 608
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 616,
-              "end": 638
-            }
-          ],
           "html_body": [
             0
           ],

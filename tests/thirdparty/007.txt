@@ -51,23 +51,6 @@ Foobar
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 36
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 49,
-      "end": 80
-    }
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -89,33 +72,16 @@ Foobar
         },
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "my opinion"
-            },
             "from": {
               "Address": {
                 "name": "someone-else",
                 "address": "someone@else"
               }
+            },
+            "subject": {
+              "Text": "my opinion"
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 92,
-              "end": 121
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 129,
-              "end": 141
-            }
-          ],
           "html_body": [
             0
           ],
@@ -163,23 +129,6 @@ Foobar
               }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 171,
-              "end": 198
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 206,
-              "end": 218
-            }
-          ],
           "html_body": [
             0
           ],
@@ -217,15 +166,6 @@ Foobar
         },
         "body": {
           "headers_rfc": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "mixed",
-                "attributes": {
-                  "boundary": "2"
-                }
-              }
-            },
             "from": {
               "Address": {
                 "name": "attachment",
@@ -234,32 +174,17 @@ Foobar
             },
             "subject": {
               "Text": "funny hat"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "2"
+                }
+              }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 251,
-              "end": 281
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 289,
-              "end": 300
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 313,
-              "end": 342
-            }
-          ],
           "html_body": [
             0
           ],
@@ -273,15 +198,15 @@ Foobar
             {
               "Text": {
                 "headers": {
-                  "content_transfer_encoding": {
-                    "Text": "binary"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": null
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "binary"
                   }
                 },
                 "body": "Lovely attachment for you"

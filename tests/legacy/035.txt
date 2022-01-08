@@ -214,6 +214,21 @@ YII=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "39235FC5.276CCE00@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Messenger 4.7)"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -222,18 +237,6 @@ YII=
           "boundary": "------------A1E83A41894D3755390B838A"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Netscape Messenger 4.7)"
     },
     "date": {
       "DateTime": {
@@ -253,84 +256,8 @@ YII=
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
-    },
-    "message_id": {
-      "Text": "39235FC5.276CCE00@example.com"
     }
   },
-  "headers_other": {
-    "X-Accept-Language": {
-      "Text": "en"
-    },
-    "X-Mailer": {
-      "Text": "Mozilla 4.7 [en] (WinNT; I)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 45
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 50,
-      "end": 84
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 89,
-      "end": 126
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 135,
-      "end": 165
-    },
-    {
-      "name": {
-        "Other": "X-Accept-Language"
-      },
-      "start": 183,
-      "end": 188
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 201,
-      "end": 207
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 210,
-      "end": 266
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 274,
-      "end": 346
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 359,
-      "end": 428
-    }
-  ],
   "html_body": [
     3,
     6,
@@ -396,9 +323,6 @@ YII=
     {
       "Html": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -407,6 +331,9 @@ YII=
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39235FC5.E71D8178@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b>Die Hasen und die Fr&ouml;sche</b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39235FC5.E71D8178@example.com\" height=27 width=27>\r\n<br>&nbsp;\r\n<br>&nbsp;</html>\r\n\r"
@@ -417,9 +344,6 @@ YII=
         "headers": {
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_id": {
-            "Text": "part1.39235FC5.E71D8178@example.com"
           },
           "content_disposition": {
             "ContentType": {
@@ -436,6 +360,9 @@ YII=
               "c_subtype": "png",
               "attributes": null
             }
+          },
+          "content_id": {
+            "Text": "part1.39235FC5.E71D8178@example.com"
           }
         },
         "body": [
@@ -1770,9 +1697,6 @@ YII=
     {
       "Binary": {
         "headers": {
-          "content_id": {
-            "Text": "part2.39235FC5.E71D8178@example.com"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1791,6 +1715,9 @@ YII=
           },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_id": {
+            "Text": "part2.39235FC5.E71D8178@example.com"
           }
         },
         "body": [

@@ -26,9 +26,6 @@ hello world
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -37,25 +34,11 @@ hello world
           "boundary": "bound"
         }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 13,
-      "end": 19
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 32,
-      "end": 76
-    }
-  ],
   "html_body": [
     0,
     1,

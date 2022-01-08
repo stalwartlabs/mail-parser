@@ -49,23 +49,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
       "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 44
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 57,
-      "end": 62
-    }
-  ],
   "html_body": [
     0,
     1,
@@ -85,9 +68,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -96,6 +76,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "body": "Move black king to queen's bishop\n"
@@ -142,6 +125,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -150,9 +136,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "body": "Move ♚ to ♛'s ♝\n"

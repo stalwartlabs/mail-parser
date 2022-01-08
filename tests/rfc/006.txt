@@ -24,6 +24,12 @@ Content-Disposition: inline
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": null,
+        "address": "sender@example.com"
+      }
+    },
     "subject": {
       "Text": "Multipart Email Example"
     },
@@ -31,12 +37,6 @@ Content-Disposition: inline
       "Address": {
         "name": null,
         "address": "recipient@example.com"
-      }
-    },
-    "from": {
-      "Address": {
-        "name": null,
-        "address": "sender@example.com"
       }
     },
     "content_type": {
@@ -49,37 +49,6 @@ Content-Disposition: inline
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 25
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 28,
-      "end": 51
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 59,
-      "end": 84
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 97,
-      "end": 148
-    }
-  ],
   "html_body": [
     1
   ],
@@ -91,6 +60,13 @@ Content-Disposition: inline
     {
       "Text": {
         "headers": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -102,13 +78,6 @@ Content-Disposition: inline
                 "charset": "utf-8"
               }
             }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
           }
         },
         "body": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n"
@@ -117,15 +86,6 @@ Content-Disposition: inline
     {
       "Html": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": {
-                "charset": "utf-8"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -134,6 +94,15 @@ Content-Disposition: inline
               "c_type": "inline",
               "c_subtype": null,
               "attributes": null
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": {
+                "charset": "utf-8"
+              }
             }
           }
         },

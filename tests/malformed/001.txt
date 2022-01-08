@@ -22,16 +22,6 @@ Content-Type: text/plain
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 45
-    }
-  ],
   "html_body": [
     1
   ],

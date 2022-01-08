@@ -86,6 +86,27 @@ Birds of a feather flock together.
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "4.2.0.58.20000519005818.00a86aa0@pop.example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -93,12 +114,6 @@ Birds of a feather flock together.
         "attributes": {
           "boundary": "=====================_716740438==_"
         }
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
       }
     },
     "date": {
@@ -113,96 +128,8 @@ Birds of a feather flock together.
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005818.00a86aa0@pop.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    },
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 175,
-      "end": 209
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 212,
-      "end": 266
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 271,
-      "end": 308
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 316,
-      "end": 361
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 374,
-      "end": 380
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 393,
-      "end": 460
-    }
-  ],
   "html_body": [
     0
   ],
@@ -217,6 +144,9 @@ Birds of a feather flock together.
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -225,9 +155,6 @@ Birds of a feather flock together.
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
@@ -239,23 +166,23 @@ Birds of a feather flock together.
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "x-mac-creator": "74747874",
+                "x-mac-type": "54455854",
+                "name": "HasenundFr�sche.txt"
+              }
+            }
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": {
                 "filename": "HasenundFr�sche.txt"
-              }
-            }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "x-mac-type": "54455854",
-                "name": "HasenundFr�sche.txt",
-                "x-mac-creator": "74747874"
               }
             }
           }
@@ -266,21 +193,21 @@ Birds of a feather flock together.
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "farmerandstork.txt"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
                 "charset": "us-ascii"
+              }
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "farmerandstork.txt"
               }
             }
           }

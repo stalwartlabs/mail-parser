@@ -27,23 +27,34 @@ invalid
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "1.2.3.4@example"
-    },
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
-      }
-    },
     "to": {
       "Address": {
         "name": "Another User",
         "address": "test2@example.org"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "message_id": {
+      "Text": "1.2.3.4@example"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "signed",
+        "attributes": {
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
+          "micalg": "pgp-sha1",
+          "protocol": "application/pgp-signature"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Hello world"
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
+      }
     },
     "date": {
       "DateTime": {
@@ -58,83 +69,13 @@ invalid
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Hello world"
-    },
     "return_path": {
       "Text": "test@example.org"
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "signed",
-        "attributes": {
-          "protocol": "application/pgp-signature",
-          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
-          "micalg": "pgp-sha1"
-        }
-      }
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "return_path"
-      },
-      "start": 12,
-      "end": 32
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 40,
-      "end": 53
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 58,
-      "end": 88
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 91,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 136,
-      "end": 155
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 168,
-      "end": 173
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 178,
-      "end": 211
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 224,
-      "end": 334
-    }
-  ],
   "html_body": [
     0
   ],
@@ -148,15 +89,15 @@ invalid
     {
       "Text": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "body": "There was a day \na happy day\n"

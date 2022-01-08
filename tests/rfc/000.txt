@@ -74,10 +74,10 @@ Content-Transfer-Encoding: Quoted-printable
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
+    "from": {
       "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@nsb.fv.com"
       }
     },
     "date": {
@@ -96,11 +96,8 @@ Content-Transfer-Encoding: Quoted-printable
     "mime_version": {
       "Text": "1.0"
     },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@nsb.fv.com"
-      }
+    "subject": {
+      "Text": "A multipart example"
     },
     "content_type": {
       "ContentType": {
@@ -111,55 +108,13 @@ Content-Transfer-Encoding: Quoted-printable
         }
       }
     },
-    "subject": {
-      "Text": "A multipart example"
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 13,
-      "end": 18
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 23,
-      "end": 62
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 65,
-      "end": 95
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 100,
-      "end": 139
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 147,
-      "end": 168
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 181,
-      "end": 238
-    }
-  ],
   "html_body": [
     0,
     1
@@ -277,11 +232,8 @@ Content-Transfer-Encoding: Quoted-printable
                 "address": null
               }
             },
-            "from": {
-              "Address": {
-                "name": "mailbox in US-ASCII",
-                "address": null
-              }
+            "content_transfer_encoding": {
+              "Text": "Quoted-printable"
             },
             "content_type": {
               "ContentType": {
@@ -292,51 +244,16 @@ Content-Transfer-Encoding: Quoted-printable
                 }
               }
             },
+            "from": {
+              "Address": {
+                "name": "mailbox in US-ASCII",
+                "address": null
+              }
+            },
             "subject": {
               "Text": "(subject in US-ASCII)"
-            },
-            "content_transfer_encoding": {
-              "Text": "Quoted-printable"
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 1612,
-              "end": 1635
-            },
-            {
-              "name": {
-                "Rfc": "to"
-              },
-              "start": 1638,
-              "end": 1661
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 1669,
-              "end": 1692
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 1705,
-              "end": 1737
-            },
-            {
-              "name": {
-                "Rfc": "content_transfer_encoding"
-              },
-              "start": 1763,
-              "end": 1781
-            }
-          ],
           "html_body": [
             0
           ],

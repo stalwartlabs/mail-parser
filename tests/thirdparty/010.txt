@@ -13,6 +13,9 @@ Content-Language: ja
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -25,35 +28,8 @@ Content-Language: ja
     },
     "subject": {
       "Text": "こんにちは"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 8,
-      "end": 42
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 55,
-      "end": 60
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 73,
-      "end": 145
-    }
-  ],
   "html_body": [
     0
   ],

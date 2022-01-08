@@ -28,8 +28,18 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 19,
+        "hour": 10,
+        "minute": 18,
+        "second": 3,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "to": {
       "Address": {
@@ -52,88 +62,19 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         "address": "doug@penguin.example.com"
       }
     },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 10,
-        "minute": 18,
-        "second": 3,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
     },
     "content_transfer_encoding": {
       "Text": "QUOTED-PRINTABLE"
     },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 5,
-      "end": 45
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 50,
-      "end": 91
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 94,
-      "end": 159
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 167,
-      "end": 214
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 225,
-      "end": 289
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 302,
-      "end": 308
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 321,
-      "end": 354
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 380,
-      "end": 399
-    }
-  ],
   "html_body": [
     0
   ],

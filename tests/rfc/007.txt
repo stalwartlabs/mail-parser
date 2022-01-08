@@ -74,6 +74,9 @@ K
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "subject": {
+      "Text": "RFC 8621 Section 4.1.4 test"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -82,28 +85,8 @@ K
           "boundary": "1"
         }
       }
-    },
-    "subject": {
-      "Text": "RFC 8621 Section 4.1.4 test"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 8,
-      "end": 37
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 50,
-      "end": 81
-    }
-  ],
   "html_body": [
     0,
     8,
@@ -127,17 +110,17 @@ K
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
               "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
               "attributes": null
             }
           }
@@ -187,17 +170,17 @@ K
     {
       "Text": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
               "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
               "attributes": null
             }
           }
@@ -348,16 +331,6 @@ K
               "Text": "J"
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 789,
-              "end": 792
-            }
-          ],
           "html_body": [
             0
           ],
@@ -385,17 +358,17 @@ K
     {
       "Text": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
               "attributes": null
             }
           }

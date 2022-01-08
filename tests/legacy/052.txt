@@ -29,8 +29,18 @@ welche also wohl noch unglücklicher sein müssen als wir."
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 28,
+        "second": 40,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -47,109 +57,10 @@ welche also wohl noch unglücklicher sein müssen als wir."
     "subject": {
       "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
     },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 28,
-        "second": 40,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
     }
   },
-  "headers_other": {
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 82
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 90,
-      "end": 141
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 146,
-      "end": 180
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 191,
-      "end": 241
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 252,
-      "end": 265
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 283,
-      "end": 292
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 301,
-      "end": 354
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 365,
-      "end": 374
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 384,
-      "end": 432
-    }
-  ],
   "html_body": [
     0
   ],

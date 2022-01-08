@@ -194,7 +194,7 @@ impl<'x> Message<'x> {
 
     /// Returns `false` if at least one header field was successfully parsed.
     pub fn is_empty(&self) -> bool {
-        self.headers_rfc.is_empty() && self.headers_other.is_empty()
+        self.headers_rfc.is_empty() && self.headers_raw.is_empty()
     }
 
     /// Parses a byte slice containing the RFC5322 raw message and returns a
@@ -220,8 +220,7 @@ impl<'x> Message<'x> {
                 message.offset_header = stream.pos;
                 if !parse_headers(
                     &mut message.headers_rfc,
-                    Some(&mut message.headers_other),
-                    Some(&mut message.headers_offsets),
+                    Some(&mut message.headers_raw),
                     &mut stream,
                 ) {
                     break;
@@ -229,7 +228,7 @@ impl<'x> Message<'x> {
                 message.offset_body = seek_crlf_end(&stream, stream.pos);
                 (true, &mut message.headers_rfc)
             } else {
-                if !parse_headers(&mut mime_part_header, None, None, &mut stream) {
+                if !parse_headers(&mut mime_part_header, None, &mut stream) {
                     break;
                 }
                 (false, &mut mime_part_header)
@@ -644,8 +643,7 @@ mod tests {
         }
     }
 
-    /*/
-    #[test]
+    /*#[test]
     fn message_to_yaml() {
         let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         file_name.push("tests");

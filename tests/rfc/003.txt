@@ -26,6 +26,18 @@ Content-Type: application/x-whatever
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
     "subject": {
       "Text": "Formatted text mail"
     },
@@ -41,18 +53,6 @@ Content-Type: application/x-whatever
     "mime_version": {
       "Text": "1.0"
     },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 1993,
@@ -67,51 +67,6 @@ Content-Type: application/x-whatever
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 46
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 49,
-      "end": 79
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 84,
-      "end": 123
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 131,
-      "end": 152
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 165,
-      "end": 170
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 183,
-      "end": 227
-    }
-  ],
   "html_body": [
     0
   ],

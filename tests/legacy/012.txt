@@ -32,39 +32,6 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "Windows-1252"
-        }
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -77,118 +44,41 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "Windows-1252"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
     }
   },
-  "headers_other": {
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 101
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 109,
-      "end": 185
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 190,
-      "end": 224
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 235,
-      "end": 285
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 298,
-      "end": 304
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 317,
-      "end": 356
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 382,
-      "end": 401
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 412,
-      "end": 425
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 443,
-      "end": 452
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 461,
-      "end": 514
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 525,
-      "end": 534
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 544,
-      "end": 592
-    }
-  ],
   "html_body": [
     0
   ],

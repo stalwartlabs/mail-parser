@@ -45,38 +45,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "image",
-        "c_subtype": "png",
-        "attributes": {
-          "name": "redball.png"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
-    },
-    "content_transfer_encoding": {
-      "Text": "base64"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
     },
     "date": {
       "DateTime": {
@@ -91,6 +64,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
     "content_disposition": {
       "ContentType": {
         "c_type": "attachment",
@@ -99,125 +75,32 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "filename": "redball.png"
         }
       }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "image",
+        "c_subtype": "png",
+        "attributes": {
+          "name": "redball.png"
+        }
+      }
+    },
+    "content_transfer_encoding": {
+      "Text": "base64"
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
     }
   },
-  "headers_other": {
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "Importance": {
-      "Text": "Normal"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 76
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 84,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 130,
-      "end": 164
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 175,
-      "end": 225
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 238,
-      "end": 244
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 257,
-      "end": 291
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 317,
-      "end": 326
-    },
-    {
-      "name": {
-        "Rfc": "content_disposition"
-      },
-      "start": 346,
-      "end": 385
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 396,
-      "end": 409
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 427,
-      "end": 436
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 445,
-      "end": 498
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 509,
-      "end": 518
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 528,
-      "end": 576
-    }
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [

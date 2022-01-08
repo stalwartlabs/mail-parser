@@ -31,12 +31,6 @@ Signed by undersigned
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "Hide and seek"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -45,32 +39,14 @@ Signed by undersigned
           "boundary": "1"
         }
       }
+    },
+    "subject": {
+      "Text": "Hide and seek"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 8,
-      "end": 23
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 36,
-      "end": 41
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 54,
-      "end": 83
-    }
-  ],
   "html_body": [
     2
   ],
@@ -88,9 +64,9 @@ Signed by undersigned
             "c_type": "multipart",
             "c_subtype": "signed",
             "attributes": {
-              "migalc": "pen+paper",
               "protocol": "signature/plain",
-              "boundary": "2"
+              "boundary": "2",
+              "migalc": "pen+paper"
             }
           }
         }

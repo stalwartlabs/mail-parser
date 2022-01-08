@@ -85,10 +85,10 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
+    "from": {
       "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
     "content_type": {
@@ -100,20 +100,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKECHAA.doug@example.com"
-    },
-    "from": {
+    "to": {
       "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -127,111 +118,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGOEKECHAA.doug@example.com"
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
-  "headers_other": {
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "Importance": {
-      "Text": "Normal"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 76
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 84,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 130,
-      "end": 164
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 175,
-      "end": 225
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 238,
-      "end": 244
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 257,
-      "end": 331
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 342,
-      "end": 355
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 373,
-      "end": 382
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 391,
-      "end": 444
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 455,
-      "end": 464
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 474,
-      "end": 522
-    }
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -242,24 +139,24 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": {
                 "filename": "blueball.png"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
             }
           }
@@ -1596,9 +1493,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1607,6 +1501,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {

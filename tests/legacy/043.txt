@@ -63,17 +63,23 @@ als wir."
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+    "mime_version": {
+      "Text": "1.0"
     },
-    "message_id": {
-      "Text": "392359CF.DFF4527@example.com"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
     },
     "content_type": {
       "ContentType": {
@@ -97,89 +103,10 @@ als wir."
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "message_id": {
+      "Text": "392359CF.DFF4527@example.com"
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "Mozilla 4.7 [en] (WinNT; I)"
-    },
-    "X-Accept-Language": {
-      "Text": "en"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 44
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 49,
-      "end": 83
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 88,
-      "end": 125
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 134,
-      "end": 164
-    },
-    {
-      "name": {
-        "Other": "X-Accept-Language"
-      },
-      "start": 182,
-      "end": 187
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 200,
-      "end": 206
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 209,
-      "end": 265
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 273,
-      "end": 348
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 361,
-      "end": 436
-    }
-  ],
   "html_body": [
     1
   ],

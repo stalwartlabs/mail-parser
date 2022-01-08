@@ -26,15 +26,6 @@ This is the epilogue.  It is also to be ignored.
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "subject": {
-      "Text": "Sample message"
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
@@ -54,6 +45,18 @@ This is the epilogue.  It is also to be ignored.
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Sample message"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -62,56 +65,8 @@ This is the epilogue.  It is also to be ignored.
           "boundary": "simple boundary"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 46
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 49,
-      "end": 79
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 84,
-      "end": 123
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 131,
-      "end": 147
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 160,
-      "end": 165
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 178,
-      "end": 223
-    }
-  ],
   "html_body": [
     0,
     1

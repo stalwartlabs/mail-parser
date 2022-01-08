@@ -19,21 +19,8 @@ Slow but steady wins the race.
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 24,
-        "second": 11,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "content_transfer_encoding": {
-      "Text": "7bit"
+    "mime_version": {
+      "Text": "1.0"
     },
     "to": {
       "Address": {
@@ -50,11 +37,18 @@ Slow but steady wins the race.
         }
       }
     },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "mime_version": {
-      "Text": "1.0"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 23,
+        "minute": 24,
+        "second": 11,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "from": {
       "Address": {
@@ -62,90 +56,16 @@ Slow but steady wins the race.
         "address": "dwsauder@example.com"
       }
     },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "content_transfer_encoding": {
+      "Text": "7bit"
+    },
     "message_id": {
       "Text": "3923625B.59F0C3AC@example.com"
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "Mozilla 4.7 [en] (WinNT; I)"
-    },
-    "X-Accept-Language": {
-      "Text": "en"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 45
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 50,
-      "end": 84
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 89,
-      "end": 126
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 135,
-      "end": 165
-    },
-    {
-      "name": {
-        "Other": "X-Accept-Language"
-      },
-      "start": 183,
-      "end": 188
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 201,
-      "end": 207
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 210,
-      "end": 240
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 248,
-      "end": 294
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 307,
-      "end": 338
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 364,
-      "end": 371
-    }
-  ],
   "html_body": [
     0
   ],

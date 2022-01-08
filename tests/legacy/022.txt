@@ -32,11 +32,8 @@ IiANCg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_transfer_encoding": {
-      "Text": "base64"
-    },
-    "mime_version": {
-      "Text": "1.0"
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
     },
     "content_type": {
       "ContentType": {
@@ -46,9 +43,6 @@ IiANCg==
           "charset": "iso-8859-1"
         }
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
     },
     "to": {
       "Address": {
@@ -62,8 +56,14 @@ IiANCg==
         "address": "doug@example.com"
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
+    "subject": {
+      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+    },
+    "content_transfer_encoding": {
+      "Text": "base64"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -79,116 +79,6 @@ IiANCg==
       }
     }
   },
-  "headers_other": {
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 89
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 97,
-      "end": 148
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 153,
-      "end": 187
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 198,
-      "end": 248
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 261,
-      "end": 267
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 280,
-      "end": 317
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 343,
-      "end": 352
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 363,
-      "end": 376
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 394,
-      "end": 403
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 412,
-      "end": 465
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 476,
-      "end": 485
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 495,
-      "end": 543
-    }
-  ],
   "html_body": [
     0
   ],

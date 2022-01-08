@@ -107,18 +107,6 @@ end
     "message_id": {
       "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
     },
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "jschmuergen@example.com"
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -135,8 +123,20 @@ end
     "subject": {
       "Text": "The Hare and the Tortoise"
     },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "jschmuergen@example.com"
+      }
     },
     "content_type": {
       "ContentType": {
@@ -148,79 +148,6 @@ end
       }
     }
   },
-  "headers_other": {
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    },
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 175,
-      "end": 209
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 212,
-      "end": 257
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 262,
-      "end": 299
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 307,
-      "end": 335
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 348,
-      "end": 354
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 367,
-      "end": 434
-    }
-  ],
   "html_body": [
     0
   ],
@@ -260,9 +187,6 @@ end
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -271,6 +195,9 @@ end
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
           }
         },
         "body": [
@@ -2135,15 +2062,6 @@ end
     {
       "Binary": {
         "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
           },
@@ -2153,6 +2071,15 @@ end
               "c_subtype": null,
               "attributes": {
                 "filename": "blueball.png"
+              }
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
               }
             }
           }

@@ -74,6 +74,30 @@ race.&nbsp;=20
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
+        }
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -87,140 +111,13 @@ race.&nbsp;=20
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
-        }
-      }
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 76
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 84,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 130,
-      "end": 164
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 175,
-      "end": 225
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 238,
-      "end": 244
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 257,
-      "end": 337
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 348,
-      "end": 361
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 379,
-      "end": 388
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 397,
-      "end": 450
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 461,
-      "end": 470
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 480,
-      "end": 528
-    }
-  ],
   "html_body": [
     1
   ],
@@ -251,6 +148,9 @@ race.&nbsp;=20
     {
       "Html": {
         "headers": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -259,9 +159,6 @@ race.&nbsp;=20
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "body": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n"

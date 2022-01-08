@@ -158,14 +158,33 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
+    "date": {
+      "DateTime": {
+        "year": 2000,
+        "month": 5,
+        "day": 17,
+        "hour": 19,
+        "minute": 44,
+        "second": 45,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
     },
     "content_type": {
       "ContentType": {
@@ -181,130 +200,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     "subject": {
       "Text": "Test message from Microsoft Outlook 00"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 44,
-        "second": 45,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
     }
   },
-  "headers_other": {
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 76
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 84,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 130,
-      "end": 164
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 175,
-      "end": 225
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 238,
-      "end": 244
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 257,
-      "end": 333
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 344,
-      "end": 357
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 375,
-      "end": 384
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 393,
-      "end": 446
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 457,
-      "end": 466
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 476,
-      "end": 524
-    }
-  ],
   "html_body": [
     2
   ],
@@ -373,6 +270,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "content_transfer_encoding": {
             "Text": "base64"
           },
+          "content_id": {
+            "Text": "823504223@17052000-0f8d"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -381,9 +281,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "blueball.png"
               }
             }
-          },
-          "content_id": {
-            "Text": "823504223@17052000-0f8d"
           }
         },
         "body": [
@@ -1721,9 +1618,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           "content_id": {
             "Text": "823504223@17052000-0f94"
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1732,6 +1626,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "body": [

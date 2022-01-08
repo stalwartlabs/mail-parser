@@ -133,14 +133,14 @@ end
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "to": {
+    "from": {
       "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
     },
     "date": {
       "DateTime": {
@@ -155,105 +155,16 @@ end
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
-    },
-    "from": {
+    "to": {
       "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
       }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     }
   },
-  "headers_other": {
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 76
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 84,
-      "end": 125
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 130,
-      "end": 164
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 175,
-      "end": 225
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 236,
-      "end": 249
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 267,
-      "end": 276
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 285,
-      "end": 338
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 349,
-      "end": 358
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 368,
-      "end": 416
-    }
-  ],
   "html_body": [
     0
   ],

@@ -34,6 +34,9 @@ hello, world
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -42,28 +45,8 @@ hello, world
           "boundary": "1"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 44
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 57,
-      "end": 62
-    }
-  ],
   "html_body": [
     0,
     2,
@@ -94,9 +77,6 @@ hello, world
     },
     {
       "Multipart": {
-        "mime_version": {
-          "Text": "2.0"
-        },
         "content_type": {
           "ContentType": {
             "c_type": "multipart",
@@ -105,6 +85,9 @@ hello, world
               "boundary": "1"
             }
           }
+        },
+        "mime_version": {
+          "Text": "2.0"
         }
       }
     },

@@ -23,16 +23,6 @@ Content-Type: text/plain
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 44
-    }
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -41,9 +31,6 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "mime_version": {
-          "Text": "1.0"
-        },
         "content_type": {
           "ContentType": {
             "c_type": "multipart",
@@ -52,6 +39,9 @@ Content-Type: text/plain
               "boundary": "ab"
             }
           }
+        },
+        "mime_version": {
+          "Text": "1.0"
         }
       }
     },

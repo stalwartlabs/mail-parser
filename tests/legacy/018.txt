@@ -140,15 +140,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "related",
-        "attributes": {
-          "type": "multipart/alternative",
-          "boundary": "=====================_715157131==_.REL"
-        }
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com"
     },
     "subject": {
       "Text": "Die Hasen und die Frösche"
@@ -159,16 +158,17 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "mueller@example.com"
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com"
-    },
     "mime_version": {
       "Text": "1.0"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "related",
+        "attributes": {
+          "type": "multipart/alternative",
+          "boundary": "=====================_715157131==_.REL"
+        }
       }
     },
     "date": {
@@ -185,89 +185,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     }
   },
-  "headers_other": {
-    "X-Priority": {
-      "Text": "2 (High)"
-    },
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    },
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 181,
-      "end": 192
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 197,
-      "end": 231
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 234,
-      "end": 288
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 293,
-      "end": 330
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 338,
-      "end": 383
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 396,
-      "end": 402
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 415,
-      "end": 520
-    }
-  ],
   "html_body": [
     2
   ],
@@ -295,9 +212,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -306,6 +220,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "body": "blueball.png\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\nredball.png"
@@ -314,9 +231,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Html": {
         "headers": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -325,6 +239,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "body": "<html>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.0\" width=27 height=27 alt=\"blueball.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003143.00a8d550@pop.example.com.1\" width=27 height=27 alt=\"redball.png\"></font></html>\n"
@@ -333,18 +250,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -356,6 +261,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
           }
         },
         "body": [
@@ -1690,9 +1607,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers": {
-          "content_id": {
-            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.1"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -1701,6 +1615,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -1711,8 +1628,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_id": {
+            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.1"
           }
         },
         "body": [

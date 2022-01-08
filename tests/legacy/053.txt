@@ -37,9 +37,6 @@ als wir."=20
     "mime_version": {
       "Text": "1.0"
     },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -53,24 +50,6 @@ als wir."=20
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "text",
@@ -79,118 +58,29 @@ als wir."=20
           "charset": "utf-8"
         }
       }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "content_transfer_encoding": {
+      "Text": "quoted-printable"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com"
     }
   },
-  "headers_other": {
-    "X-MSMail-Priority": {
-      "Text": "Normal"
-    },
-    "X-MimeOLE": {
-      "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
-    },
-    "X-Mailer": {
-      "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
-    },
-    "Importance": {
-      "Text": "Normal"
-    },
-    "X-Priority": {
-      "Text": "3 (Normal)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 5,
-      "end": 40
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 43,
-      "end": 97
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 105,
-      "end": 177
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 182,
-      "end": 216
-    },
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 227,
-      "end": 277
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 290,
-      "end": 296
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 309,
-      "end": 341
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 367,
-      "end": 386
-    },
-    {
-      "name": {
-        "Other": "X-Priority"
-      },
-      "start": 397,
-      "end": 410
-    },
-    {
-      "name": {
-        "Other": "X-MSMail-Priority"
-      },
-      "start": 428,
-      "end": 437
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 446,
-      "end": 499
-    },
-    {
-      "name": {
-        "Other": "Importance"
-      },
-      "start": 510,
-      "end": 519
-    },
-    {
-      "name": {
-        "Other": "X-MimeOLE"
-      },
-      "start": 529,
-      "end": 577
-    }
-  ],
   "html_body": [
     0
   ],

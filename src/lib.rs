@@ -159,34 +159,26 @@
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
 //!        message.get_from(),
-//!        &HeaderValue::Address(Addr {
-//!            name: Some("Art Vandelay (Vandelay Industries)".into()),
-//!            address: Some("art@vandelay.com".into())
-//!        })
+//!        &HeaderValue::Address(Addr::new(
+//!            "Art Vandelay (Vandelay Industries)".into(),
+//!            "art@vandelay.com"
+//!        ))
 //!    );
+//!    
 //!    assert_eq!(
 //!        message.get_to(),
 //!        &HeaderValue::GroupList(vec![
-//!            Group {
-//!                name: Some("Colleagues".into()),
-//!                addresses: vec![Addr {
-//!                    name: Some("James Smythe".into()),
-//!                    address: Some("james@vandelay.com".into())
-//!                }]
-//!            },
-//!            Group {
-//!                name: Some("Friends".into()),
-//!                addresses: vec![
-//!                    Addr {
-//!                        name: None,
-//!                        address: Some("jane@example.com".into())
-//!                    },
-//!                    Addr {
-//!                        name: Some("John Smîth".into()),
-//!                        address: Some("john@example.com".into())
-//!                    }
+//!            Group::new(
+//!                "Colleagues",
+//!                vec![Addr::new("James Smythe".into(), "james@vandelay.com")]
+//!            ),
+//!            Group::new(
+//!                "Friends",
+//!                vec![
+//!                    Addr::new(None, "jane@example.com"),
+//!                    Addr::new("John Smîth".into(), "john@example.com"),
 //!                ]
-//!            }
+//!            )
 //!        ])
 //!    );
 //!
@@ -273,9 +265,8 @@ pub struct Message<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_rfc: RfcHeaders<'x>,
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub headers_other: OtherHeaders<'x>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub headers_offsets: Vec<HeaderOffset<'x>>,
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub headers_raw: RawHeaders<'x>,
 
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub html_body: Vec<MessagePartId>,
@@ -420,6 +411,22 @@ pub struct Addr<'x> {
     pub address: Option<Cow<'x, str>>,
 }
 
+impl<'x> Addr<'x> {
+    pub fn new(name: Option<&'x str>, address: &'x str) -> Self {
+        Self {
+            name: name.map(|name| name.into()),
+            address: Some(address.into()),
+        }
+    }
+
+    pub fn into_owned<'y>(self) -> Addr<'y> {
+        Addr {
+            name: self.name.map(|s| s.into_owned().into()),
+            address: self.address.map(|s| s.into_owned().into()),
+        }
+    }
+}
+
 /// An RFC5322 address group.
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -433,19 +440,34 @@ pub struct Group<'x> {
     pub addresses: Vec<Addr<'x>>,
 }
 
+impl<'x> Group<'x> {
+    pub fn new(name: &'x str, addresses: Vec<Addr<'x>>) -> Self {
+        Self {
+            name: Some(name.into()),
+            addresses,
+        }
+    }
+
+    pub fn into_owned<'y>(self) -> Group<'y> {
+        Group {
+            name: self.name.map(|s| s.into_owned().into()),
+            addresses: self.addresses.into_iter().map(|a| a.into_owned()).collect(),
+        }
+    }
+}
+
 pub type RfcHeaders<'x> = HashMap<HeaderName, HeaderValue<'x>>;
-pub type OtherHeaders<'x> = HashMap<Cow<'x, str>, HeaderValue<'x>>;
+pub type RawHeaders<'x> = HashMap<HeaderOffsetName<'x>, Vec<HeaderOffset>>;
 
 /// Offset of a message element in the raw message.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct HeaderOffset<'x> {
-    pub name: HeaderOffsetName<'x>,
+pub struct HeaderOffset {
     pub start: usize,
     pub end: usize,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum HeaderOffsetName<'x> {
     Rfc(HeaderName),
@@ -544,22 +566,22 @@ impl<'x> HeaderValue<'x> {
         *self == HeaderValue::Empty
     }
 
-    pub fn unwrap_text(&mut self) -> Cow<'x, str> {
-        match std::mem::take(self) {
+    pub fn unwrap_text(self) -> Cow<'x, str> {
+        match self {
             HeaderValue::Text(s) => s,
             _ => panic!("HeaderValue::unwrap_text called on non-Text value"),
         }
     }
 
-    pub fn unwrap_datetime(&mut self) -> DateTime {
-        match std::mem::take(self) {
+    pub fn unwrap_datetime(self) -> DateTime {
+        match self {
             HeaderValue::DateTime(d) => d,
             _ => panic!("HeaderValue::unwrap_datetime called on non-DateTime value"),
         }
     }
 
-    pub fn unwrap_content_type(&mut self) -> ContentType<'x> {
-        match std::mem::take(self) {
+    pub fn unwrap_content_type(self) -> ContentType<'x> {
+        match self {
             HeaderValue::ContentType(c) => c,
             _ => panic!("HeaderValue::unwrap_content_type called on non-ContentType value"),
         }
@@ -591,6 +613,40 @@ impl<'x> HeaderValue<'x> {
         match *self {
             HeaderValue::DateTime(ref d) => Some(d),
             _ => None,
+        }
+    }
+
+    pub fn into_owned<'y>(self) -> HeaderValue<'y> {
+        match self {
+            HeaderValue::Address(addr) => HeaderValue::Address(addr.into_owned()),
+            HeaderValue::AddressList(list) => {
+                HeaderValue::AddressList(list.into_iter().map(|addr| addr.into_owned()).collect())
+            }
+            HeaderValue::Group(group) => HeaderValue::Group(group.into_owned()),
+            HeaderValue::GroupList(list) => {
+                HeaderValue::GroupList(list.into_iter().map(|group| group.into_owned()).collect())
+            }
+            HeaderValue::Text(text) => HeaderValue::Text(text.into_owned().into()),
+            HeaderValue::TextList(list) => HeaderValue::TextList(
+                list.into_iter()
+                    .map(|text| text.into_owned().into())
+                    .collect(),
+            ),
+            HeaderValue::DateTime(datetime) => HeaderValue::DateTime(datetime),
+            HeaderValue::ContentType(ct) => HeaderValue::ContentType(ContentType {
+                c_type: ct.c_type.into_owned().into(),
+                c_subtype: ct.c_subtype.map(|s| s.into_owned().into()),
+                attributes: ct.attributes.map(|attributes| {
+                    attributes
+                        .into_iter()
+                        .map(|(k, v)| (k.into_owned().into(), v.into_owned().into()))
+                        .collect()
+                }),
+            }),
+            HeaderValue::Collection(list) => {
+                HeaderValue::Collection(list.into_iter().map(|v| v.into_owned()).collect())
+            }
+            HeaderValue::Empty => HeaderValue::Empty,
         }
     }
 }
@@ -830,7 +886,8 @@ impl<'x> Message<'x> {
             .and_then(|header| header.as_text_ref())
     }
 
-    /// Returns the message thread name
+    /// Returns the message thread name or 'base subject' as defined in
+    /// [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1)
     pub fn get_thread_name(&self) -> Option<&str> {
         thread_name(self.get_subject()?).into()
     }
@@ -842,11 +899,25 @@ impl<'x> Message<'x> {
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    /// Returns a non-standard header field
-    pub fn get_other(&self, name: &'x str) -> &HeaderValue<'x> {
-        self.headers_other
-            .get(&Cow::from(name))
-            .unwrap_or(&HeaderValue::Empty)
+    pub fn _get_raw(&'x self, name: HeaderOffsetName) -> Option<Vec<Cow<'x, str>>> {
+        self.headers_raw
+            .get(&name)?
+            .iter()
+            .map(|offset| {
+                String::from_utf8_lossy(self.raw_message.get(offset.start..offset.end).unwrap())
+            })
+            .collect::<Vec<Cow<str>>>()
+            .into()
+    }
+
+    /// Returns in raw format a header field not defined in the conformed RFCs
+    pub fn get_other_header(&'x self, name: &str) -> Option<Vec<Cow<'x, str>>> {
+        self._get_raw(HeaderOffsetName::Other(name.into()))
+    }
+
+    /// Returns in raw format a header field defined in the conformed RFCs
+    pub fn get_rfc_header(&'x self, name: HeaderName) -> Option<Vec<Cow<'x, str>>> {
+        self._get_raw(HeaderOffsetName::Rfc(name))
     }
 
     fn get_part(&self, list: &'x [MessagePartId], pos: usize) -> Option<&'x dyn BodyPart> {

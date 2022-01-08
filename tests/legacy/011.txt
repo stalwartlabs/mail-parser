@@ -31,6 +31,36 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "jschmuergen@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "text",
+        "c_subtype": "plain",
+        "attributes": {
+          "charset": "iso-8859-1"
+        }
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -44,120 +74,10 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
-    },
     "content_transfer_encoding": {
       "Text": "quoted-printable"
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "iso-8859-1"
-        }
-      }
     }
   },
-  "headers_other": {
-    "X-Mailer": {
-      "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
-    },
-    "X-Sender": {
-      "Text": "dwsauder@pop.example.com (Unverified)"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "message_id"
-      },
-      "start": 11,
-      "end": 64
-    },
-    {
-      "name": {
-        "Other": "X-Sender"
-      },
-      "start": 73,
-      "end": 113
-    },
-    {
-      "name": {
-        "Other": "X-Mailer"
-      },
-      "start": 122,
-      "end": 170
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 175,
-      "end": 209
-    },
-    {
-      "name": {
-        "Rfc": "to"
-      },
-      "start": 212,
-      "end": 299
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 304,
-      "end": 341
-    },
-    {
-      "name": {
-        "Rfc": "subject"
-      },
-      "start": 349,
-      "end": 396
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 409,
-      "end": 415
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 428,
-      "end": 463
-    },
-    {
-      "name": {
-        "Rfc": "content_transfer_encoding"
-      },
-      "start": 489,
-      "end": 508
-    }
-  ],
   "html_body": [
     0
   ],

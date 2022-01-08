@@ -58,12 +58,6 @@ Root MIME epilogue
 ---- EXPECTED STRUCTURE ----
 {
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": null,
-        "address": "user@domain.org"
-      }
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -86,52 +80,16 @@ Root MIME epilogue
         "tz_minute": 0
       }
     },
+    "from": {
+      "Address": {
+        "name": null,
+        "address": "user@domain.org"
+      }
+    },
     "mime_version": {
       "Text": "1.0"
     }
   },
-  "headers_other": {
-    "From user@domain  Fri Feb 22 17": {
-      "Text": "06:23 2008"
-    }
-  },
-  "headers_offsets": [
-    {
-      "name": {
-        "Other": "From user@domain  Fri Feb 22 17"
-      },
-      "start": 32,
-      "end": 43
-    },
-    {
-      "name": {
-        "Rfc": "from"
-      },
-      "start": 48,
-      "end": 65
-    },
-    {
-      "name": {
-        "Rfc": "date"
-      },
-      "start": 70,
-      "end": 103
-    },
-    {
-      "name": {
-        "Rfc": "mime_version"
-      },
-      "start": 116,
-      "end": 121
-    },
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 134,
-      "end": 171
-    }
-  ],
   "html_body": [
     2
   ],
@@ -175,6 +133,12 @@ Root MIME epilogue
             "subject": {
               "Text": "submsg"
             },
+            "from": {
+              "Address": {
+                "name": null,
+                "address": "sub@domain.org"
+              }
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -182,12 +146,6 @@ Root MIME epilogue
                 "attributes": {
                   "boundary": "sub1"
                 }
-              }
-            },
-            "from": {
-              "Address": {
-                "name": null,
-                "address": "sub@domain.org"
               }
             },
             "date": {
@@ -204,37 +162,6 @@ Root MIME epilogue
               }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "from"
-              },
-              "start": 300,
-              "end": 316
-            },
-            {
-              "name": {
-                "Rfc": "date"
-              },
-              "start": 321,
-              "end": 354
-            },
-            {
-              "name": {
-                "Rfc": "subject"
-              },
-              "start": 362,
-              "end": 370
-            },
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 383,
-              "end": 423
-            }
-          ],
           "html_body": [
             0,
             4

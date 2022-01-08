@@ -17,16 +17,6 @@ Content-Type: text/plain
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 29
-    }
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -54,16 +44,6 @@ Content-Type: text/plain
               }
             }
           },
-          "headers_other": {},
-          "headers_offsets": [
-            {
-              "name": {
-                "Rfc": "content_type"
-              },
-              "start": 43,
-              "end": 59
-            }
-          ],
           "html_body": [],
           "text_body": [],
           "attachments": [
@@ -91,16 +71,6 @@ Content-Type: text/plain
                       }
                     }
                   },
-                  "headers_other": {},
-                  "headers_offsets": [
-                    {
-                      "name": {
-                        "Rfc": "content_type"
-                      },
-                      "start": 73,
-                      "end": 85
-                    }
-                  ],
                   "html_body": [
                     0
                   ],

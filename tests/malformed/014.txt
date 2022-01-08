@@ -19,16 +19,6 @@ hello, world
       }
     }
   },
-  "headers_other": {},
-  "headers_offsets": [
-    {
-      "name": {
-        "Rfc": "content_type"
-      },
-      "start": 13,
-      "end": 44
-    }
-  ],
   "html_body": [
     0
   ],
