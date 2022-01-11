@@ -28,8 +28,7 @@ CiAgPC9oZWFkPg0KICA8Ym9keT4NCiAgICBUaGlzIGlzIGFuIDxiPkhUTUw8L2I+IHRlc3QgbWVz
 c2FnZQ0KICA8L2JvZHk+DQo8L2h0bWw+DQoNCi0tYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh
 YWFhYWFhYWFhYWFhYS0tDQo=
 --bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb--
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -53,7 +52,7 @@ YWFhYWFhYWFhYWFhYS0tDQo=
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -67,12 +66,13 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             "Text": "7bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "This is a message with a base64 encoded attached email"
       }
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -93,17 +93,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "content_language": {
-              "Text": "en-US"
-            },
-            "subject": {
-              "Text": "HTML test"
-            },
-            "message_id": {
-              "Text": "random-message-id@example.com"
-            },
             "date": {
               "DateTime": {
                 "year": 2021,
@@ -117,18 +109,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "tz_minute": 0
               }
             },
-            "mime_version": {
-              "Text": "1.0"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "alternative",
-                "attributes": {
-                  "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                }
-              }
-            },
             "from": {
               "Address": {
                 "name": "Name",
@@ -140,6 +120,27 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "name": "email@example.com",
                 "address": "email@example.com"
               }
+            },
+            "content_language": {
+              "Text": "en-US"
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "alternative",
+                "attributes": {
+                  "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                }
+              }
+            },
+            "subject": {
+              "Text": "HTML test"
+            },
+            "message_id": {
+              "Text": "random-message-id@example.com"
+            },
+            "mime_version": {
+              "Text": "1.0"
             }
           },
           "html_body": [
@@ -152,27 +153,31 @@ YWFhYWFhYWFhYWFhYS0tDQo=
           "parts": [
             {
               "Text": {
-                "headers": {
-                  "content_transfer_encoding": {
-                    "Text": "7bit"
-                  },
+                "headers_rfc": {
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": {
-                        "format": "flowed",
-                        "charset": "utf-8"
+                        "charset": "utf-8",
+                        "format": "flowed"
                       }
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
                   }
                 },
+                "is_encoding_problem": false,
                 "body": "This is an *HTML* test message\r"
               }
             },
             {
               "Html": {
-                "headers": {
+                "headers_rfc": {
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
@@ -181,11 +186,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                         "charset": "utf-8"
                       }
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "7bit"
                   }
                 },
+                "is_encoding_problem": false,
                 "body": "<html>\r\n  <head>\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\r\n  </head>\r\n  <body>\r\n    This is an <b>HTML</b> test message\r\n  </body>\r\n</html>\r\n\r"
               }
             }

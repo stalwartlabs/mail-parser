@@ -6,8 +6,7 @@ Content-Type: text/plain
 
 1
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -25,7 +24,7 @@ Content-Type: text/plain
   "parts": [
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -34,6 +33,7 @@ Content-Type: text/plain
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
             "content_type": {
@@ -52,7 +52,7 @@ Content-Type: text/plain
           "parts": [
             {
               "Message": {
-                "headers": {
+                "headers_rfc": {
                   "content_type": {
                     "ContentType": {
                       "c_type": "message",
@@ -61,16 +61,9 @@ Content-Type: text/plain
                     }
                   }
                 },
+                "is_encoding_problem": false,
                 "body": {
-                  "headers_rfc": {
-                    "content_type": {
-                      "ContentType": {
-                        "c_type": "text",
-                        "c_subtype": "plain",
-                        "attributes": null
-                      }
-                    }
-                  },
+                  "headers_rfc": {},
                   "html_body": [
                     0
                   ],
@@ -81,7 +74,16 @@ Content-Type: text/plain
                   "parts": [
                     {
                       "Text": {
-                        "headers": {},
+                        "headers_rfc": {
+                          "content_type": {
+                            "ContentType": {
+                              "c_type": "text",
+                              "c_subtype": "plain",
+                              "attributes": null
+                            }
+                          }
+                        },
+                        "is_encoding_problem": false,
                         "body": "1\n"
                       }
                     }

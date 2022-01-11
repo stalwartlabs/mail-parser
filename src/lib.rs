@@ -304,24 +304,57 @@ impl Default for MessageStructure {
     }
 }
 
-// Part of the message.
+/// Part of the message.
 #[derive(Debug, Default, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Part<'x, T> {
     #[cfg_attr(feature = "serde_support", serde(default))]
-    pub headers: RfcHeaders<'x>,
-
+    pub headers_rfc: RfcHeaders<'x>,
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub headers_raw: RawHeaders<'x>,
+    pub is_encoding_problem: bool,
     pub body: T,
 }
 
 impl<'x, T> Part<'x, T> {
-    pub fn new(headers: RfcHeaders<'x>, body: T) -> Self {
-        Self { headers, body }
+    pub fn new(
+        headers_rfc: RfcHeaders<'x>,
+        headers_raw: RawHeaders<'x>,
+        body: T,
+        is_encoding_problem: bool,
+    ) -> Self {
+        Self {
+            headers_rfc,
+            headers_raw,
+            body,
+            is_encoding_problem,
+        }
     }
 
     pub fn get_body(&self) -> &T {
         &self.body
     }
+}
+
+impl<'x> MultiPart<'x> {
+    pub fn new(headers_rfc: RfcHeaders<'x>, headers_raw: RawHeaders<'x>) -> Self {
+        Self {
+            headers_rfc,
+            headers_raw,
+        }
+    }
+}
+
+/// Multipart part
+#[derive(Debug, Default, PartialEq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub struct MultiPart<'x> {
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    pub headers_rfc: RfcHeaders<'x>,
+    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub headers_raw: RawHeaders<'x>,
 }
 
 /// Unique ID representing a MIME part within a message.
@@ -355,7 +388,7 @@ pub enum MessagePart<'x> {
     Message(Part<'x, MessageAttachment<'x>>),
 
     /// Multipart part
-    Multipart(RfcHeaders<'x>),
+    Multipart(MultiPart<'x>),
 }
 
 impl<'x> MessagePart<'x> {
@@ -460,7 +493,7 @@ pub type RfcHeaders<'x> = HashMap<HeaderName, HeaderValue<'x>>;
 pub type RawHeaders<'x> = HashMap<HeaderOffsetName<'x>, Vec<HeaderOffset>>;
 
 /// Offset of a message element in the raw message.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct HeaderOffset {
     pub start: usize,
@@ -1189,43 +1222,43 @@ impl<'x> fmt::Display for Part<'x, MessageAttachment<'x>> {
 
 impl<'x, T> MimeHeaders<'x> for Part<'x, T> {
     fn get_content_description(&self) -> Option<&str> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentDescription)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_disposition(&self) -> Option<&ContentType> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentDisposition)
             .and_then(|header| header.as_content_type_ref())
     }
 
     fn get_content_id(&self) -> Option<&str> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentId)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_transfer_encoding(&self) -> Option<&str> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentTransferEncoding)
             .and_then(|header| header.as_text_ref())
     }
 
     fn get_content_type(&self) -> Option<&ContentType> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type_ref())
     }
 
     fn get_content_language(&self) -> &HeaderValue<'x> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     fn get_content_location(&self) -> Option<&str> {
-        self.headers
+        self.headers_rfc
             .get(&HeaderName::ContentLocation)
             .and_then(|header| header.as_text_ref())
     }

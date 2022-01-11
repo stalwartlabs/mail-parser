@@ -18,8 +18,7 @@ Content-Type: text/plain; charset=utf-8
 ?garbage
 --foo--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -45,7 +44,7 @@ Content-Type: text/plain; charset=utf-8
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -59,12 +58,13 @@ Content-Type: text/plain; charset=utf-8
             "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "päivää\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -78,12 +78,13 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "yötä vaan.\n�\t�"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -97,6 +98,7 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
+        "is_encoding_problem": true,
         "body": "?garbage"
       }
     }

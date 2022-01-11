@@ -10,9 +10,11 @@ Content-Language: ja
 
 人権の無視及
 --1--
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "こんにちは"
+    },
     "mime_version": {
       "Text": "1.0"
     },
@@ -21,13 +23,10 @@ Content-Language: ja
         "c_type": "multipart",
         "c_subtype": "mixed",
         "attributes": {
-          "boundary": "1",
-          "comment": "人権の無視及"
+          "comment": "人権の無視及",
+          "boundary": "1"
         }
       }
-    },
-    "subject": {
-      "Text": "こんにちは"
     }
   },
   "html_body": [
@@ -40,21 +39,22 @@ Content-Language: ja
   "parts": [
     {
       "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "binary"
-          },
-          "content_language": {
-            "Text": "ja"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
+          "content_language": {
+            "Text": "ja"
           }
         },
+        "is_encoding_problem": false,
         "body": "人権の無視及"
       }
     }

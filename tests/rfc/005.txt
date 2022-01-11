@@ -23,14 +23,28 @@ It DOES end with a linebreak.
 
 This is the epilogue.  It is also to be ignored.
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "simple boundary"
+        }
+      }
+    },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@bellcore.com"
       }
+    },
+    "subject": {
+      "Text": "Sample message"
     },
     "date": {
       "DateTime": {
@@ -45,25 +59,10 @@ This is the epilogue.  It is also to be ignored.
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Sample message"
-    },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "simple boundary"
-        }
       }
     }
   },
@@ -79,13 +78,22 @@ This is the epilogue.  It is also to be ignored.
   "parts": [
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -96,6 +104,7 @@ This is the epilogue.  It is also to be ignored.
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n"
       }
     }

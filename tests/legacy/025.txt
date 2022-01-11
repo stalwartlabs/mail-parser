@@ -170,18 +170,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 --=====================_715462801==_--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -189,15 +179,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "attributes": {
           "boundary": "=====================_715462801==_"
         }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
       }
     },
     "message_id": {
@@ -215,6 +196,24 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [
@@ -232,13 +231,15 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "related",
-            "attributes": {
-              "boundary": "=====================_715462801==_.REL",
-              "type": "text/html"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": {
+                "type": "text/html",
+                "boundary": "=====================_715462801==_.REL"
+              }
             }
           }
         }
@@ -246,7 +247,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -260,26 +261,18 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font><img src=\"cid:4.2.0.58.20000519003809.00a85140@pop.example.com.2\" width=27 height=27 alt=\"2aa51367.png\"><img src=\"cid:4.2.0.58.20000519003809.00a85140@pop.example.com.3\" width=27 height=27 alt=\"2aa51371.png\"></html>\n"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
+        "headers_rfc": {
           "content_id": {
             "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.2"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa51367.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -289,8 +282,18 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "2aa51367.png"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "2aa51367.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1622,10 +1625,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1644,10 +1644,14 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_id": {
             "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.3"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -3107,9 +3111,15 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
+        "headers_rfc": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
           },
           "content_type": {
             "ContentType": {
@@ -3120,16 +3130,11 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -4461,7 +4466,7 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -4471,9 +4476,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -4482,8 +4484,12 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

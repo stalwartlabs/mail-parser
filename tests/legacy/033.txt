@@ -32,14 +32,10 @@ n
 wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere,
 welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "from": {
       "Address": {
@@ -47,14 +43,17 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "address": "dwsauder@example.com"
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "UTF-8"
-        }
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
+    },
+    "message_id": {
+      "Text": "392363E1.2AC47AB3@example.com"
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     },
     "date": {
       "DateTime": {
@@ -68,18 +67,6 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
-    },
-    "message_id": {
-      "Text": "392363E1.2AC47AB3@example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     }
   },
   "html_body": [
@@ -92,7 +79,21 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
   "parts": [
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
+              }
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "Die Hasen und die Fr�sche\n\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\nschnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\n"
       }
     }

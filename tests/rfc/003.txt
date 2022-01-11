@@ -23,8 +23,7 @@ Content-Type: application/x-whatever
 
 --boundary42--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "from": {
       "Address": {
@@ -32,26 +31,14 @@ Content-Type: application/x-whatever
         "address": "nsb@bellcore.com"
       }
     },
+    "subject": {
+      "Text": "Formatted text mail"
+    },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
       }
-    },
-    "subject": {
-      "Text": "Formatted text mail"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "boundary42"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -64,6 +51,18 @@ Content-Type: application/x-whatever
         "tz_before_gmt": true,
         "tz_hour": 8,
         "tz_minute": 0
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "boundary42"
+        }
       }
     }
   },
@@ -80,7 +79,7 @@ Content-Type: application/x-whatever
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -91,12 +90,13 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "... plain text version of message goes here ...\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -105,12 +105,13 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "application",
@@ -119,6 +120,7 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           46,
           46,

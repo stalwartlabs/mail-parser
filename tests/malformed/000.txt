@@ -9,8 +9,7 @@ Content-Type: text/plain
 Content-Type: text/html
 --:foo--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {

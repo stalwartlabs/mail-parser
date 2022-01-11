@@ -132,25 +132,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 --------------C78F594988075E36AE03C243--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
       }
     },
     "content_type": {
@@ -162,8 +152,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         }
       }
     },
-    "message_id": {
-      "Text": "39235EAD.E48E2160@example.com"
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -176,6 +166,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
+      }
+    },
+    "message_id": {
+      "Text": "39235EAD.E48E2160@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     }
   },
@@ -196,12 +195,14 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "------------D74AE2393FB01D1B284AE257"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "------------D74AE2393FB01D1B284AE257"
+              }
             }
           }
         }
@@ -209,10 +210,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -221,14 +219,18 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
       }
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -242,12 +244,13 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "7bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<b>Die Hasen und die Fr&ouml;sche</b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<br>&nbsp;\r\n<br>&nbsp;</html>\r\n\r"
       }
     },
     {
       "InlineBinary": {
-        "headers": {
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -270,6 +273,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1574,7 +1578,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "InlineBinary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1597,6 +1601,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

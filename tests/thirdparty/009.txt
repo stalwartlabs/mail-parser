@@ -19,9 +19,14 @@ Content-Transfer-Encoding: base64
 dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
 --1--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "In parts"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -30,12 +35,6 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
           "boundary": "1"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "In parts"
     }
   },
   "html_body": [
@@ -50,7 +49,7 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -62,24 +61,26 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
             "Text": "binary"
           }
         },
+        "is_encoding_problem": false,
         "body": "Hi, this is the fancy thing I was talking about!"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
               "c_subtype": "partial",
               "attributes": {
+                "number": "1",
                 "id": "heks68ewe@example.org",
-                "total": "5",
-                "number": "1"
+                "total": "5"
               }
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           88,
           45,

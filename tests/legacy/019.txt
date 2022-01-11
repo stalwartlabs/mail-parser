@@ -143,21 +143,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ------=_NextPart_000_0008_01BFC037.FDD8EE90--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0008_01BFC037.FDD8EE90"
-        }
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -174,11 +161,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     "mime_version": {
       "Text": "1.0"
     },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     },
     "from": {
       "Address": {
@@ -186,8 +170,23 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "doug@example.com"
       }
     },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
+    },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGGEKFCHAA.doug@example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0008_01BFC037.FDD8EE90"
+        }
+      }
     }
   },
   "html_body": [
@@ -203,12 +202,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "----=_NextPart_001_0009_01BFC037.FDD8EE90"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "----=_NextPart_001_0009_01BFC037.FDD8EE90"
+              }
             }
           }
         }
@@ -216,7 +217,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -230,12 +231,16 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n"
       }
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -244,29 +249,15 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><BR><FONT face=Arial size=2>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -275,8 +266,21 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1581,7 +1585,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -1604,6 +1608,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

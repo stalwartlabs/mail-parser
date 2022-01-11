@@ -55,8 +55,7 @@ Another part
 Root MIME epilogue
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -103,7 +102,7 @@ Root MIME epilogue
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -114,12 +113,13 @@ Root MIME epilogue
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "hello\n"
       }
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -128,10 +128,24 @@ Root MIME epilogue
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
             "subject": {
               "Text": "submsg"
+            },
+            "date": {
+              "DateTime": {
+                "year": 2012,
+                "month": 8,
+                "day": 12,
+                "hour": 12,
+                "minute": 34,
+                "second": 56,
+                "tz_before_gmt": false,
+                "tz_hour": 3,
+                "tz_minute": 0
+              }
             },
             "from": {
               "Address": {
@@ -146,19 +160,6 @@ Root MIME epilogue
                 "attributes": {
                   "boundary": "sub1"
                 }
-              }
-            },
-            "date": {
-              "DateTime": {
-                "year": 2012,
-                "month": 8,
-                "day": 12,
-                "hour": 12,
-                "minute": 34,
-                "second": 56,
-                "tz_before_gmt": false,
-                "tz_hour": 3,
-                "tz_minute": 0
               }
             }
           },
@@ -175,7 +176,7 @@ Root MIME epilogue
           "parts": [
             {
               "Html": {
-                "headers": {
+                "headers_rfc": {
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
@@ -184,17 +185,20 @@ Root MIME epilogue
                     }
                   }
                 },
+                "is_encoding_problem": false,
                 "body": "<p>Hello world</p>\n"
               }
             },
             {
               "Multipart": {
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "multipart",
-                    "c_subtype": "alternative",
-                    "attributes": {
-                      "boundary": "sub2"
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "multipart",
+                      "c_subtype": "alternative",
+                      "attributes": {
+                        "boundary": "sub2"
+                      }
                     }
                   }
                 }
@@ -202,12 +206,14 @@ Root MIME epilogue
             },
             {
               "Multipart": {
-                "content_type": {
-                  "ContentType": {
-                    "c_type": "multipart",
-                    "c_subtype": "alternative",
-                    "attributes": {
-                      "boundary": "sub3"
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "multipart",
+                      "c_subtype": "alternative",
+                      "attributes": {
+                        "boundary": "sub3"
+                      }
                     }
                   }
                 }
@@ -215,19 +221,46 @@ Root MIME epilogue
             },
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "sub3 text"
               }
             },
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "sub3 text2"
               }
             },
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "sub2 text2"
               }
             }
@@ -270,7 +303,7 @@ Root MIME epilogue
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -279,6 +312,7 @@ Root MIME epilogue
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Another part"
       }
     }

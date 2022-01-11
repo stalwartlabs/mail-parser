@@ -170,14 +170,16 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 --------------B7133A01A6B323BF00DBC9A7--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "39236103.FFE674FC@example.com"
-    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
+      }
     },
     "from": {
       "Address": {
@@ -185,11 +187,17 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "address": "dwsauder@example.com"
       }
     },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------B7133A01A6B323BF00DBC9A7"
+        }
       }
+    },
+    "message_id": {
+      "Text": "39236103.FFE674FC@example.com"
     },
     "date": {
       "DateTime": {
@@ -206,15 +214,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     "subject": {
       "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------B7133A01A6B323BF00DBC9A7"
-        }
-      }
     }
   },
   "html_body": [
@@ -236,12 +235,14 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "related",
-            "attributes": {
-              "boundary": "------------8E6A06810565BCAB5E1F7D97"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": {
+                "boundary": "------------8E6A06810565BCAB5E1F7D97"
+              }
             }
           }
         }
@@ -249,7 +250,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -263,14 +264,22 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "7bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n\r"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_id": {
             "Text": "part1.39236103.1B697A54@example.com"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": null
+            }
           },
           "content_disposition": {
             "ContentType": {
@@ -283,15 +292,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
-            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1623,19 +1626,19 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_id": {
-            "Text": "part2.39236103.1B697A54@example.com"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_id": {
+            "Text": "part2.39236103.1B697A54@example.com"
           },
           "content_disposition": {
             "ContentType": {
@@ -1647,6 +1650,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -3106,10 +3110,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "InlineBinary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -3118,6 +3119,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -3129,6 +3133,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -4433,7 +4438,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "InlineBinary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -4443,6 +4448,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -4451,11 +4459,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "blueball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

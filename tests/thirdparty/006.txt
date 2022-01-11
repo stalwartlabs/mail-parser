@@ -28,9 +28,11 @@ Signed by undersigned
 --2--
 
 --1--
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "Hide and seek"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -39,9 +41,6 @@ Signed by undersigned
           "boundary": "1"
         }
       }
-    },
-    "subject": {
-      "Text": "Hide and seek"
     },
     "mime_version": {
       "Text": "1.0"
@@ -59,14 +58,16 @@ Signed by undersigned
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "signed",
-            "attributes": {
-              "protocol": "signature/plain",
-              "boundary": "2",
-              "migalc": "pen+paper"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "signed",
+              "attributes": {
+                "migalc": "pen+paper",
+                "protocol": "signature/plain",
+                "boundary": "2"
+              }
             }
           }
         }
@@ -74,12 +75,14 @@ Signed by undersigned
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "3"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "3"
+              }
             }
           }
         }
@@ -87,7 +90,7 @@ Signed by undersigned
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -98,29 +101,31 @@ Signed by undersigned
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n"
       }
     },
     {
       "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "binary"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "binary"
           }
         },
+        "is_encoding_problem": false,
         "body": "Search me, and Find me here"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "signature",
@@ -131,6 +136,7 @@ Signed by undersigned
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           83,
           105,

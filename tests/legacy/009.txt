@@ -35,8 +35,7 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "date": {
       "DateTime": {
@@ -51,17 +50,14 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "content_transfer_encoding": {
-      "Text": "quoted-printable"
     },
     "mime_version": {
       "Text": "1.0"
@@ -72,18 +68,8 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "address": "jschmuergen@example.com"
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "text",
-        "c_subtype": "plain",
-        "attributes": {
-          "charset": "iso-8859-1",
-          "format": "flowed"
-        }
-      }
+    "message_id": {
+      "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
     }
   },
   "html_body": [
@@ -96,7 +82,22 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
   "parts": [
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1",
+                "format": "flowed"
+              }
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein \nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, \nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der \nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; \nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte \neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste \nuntertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein \nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, \nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
       }
     }

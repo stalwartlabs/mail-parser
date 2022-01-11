@@ -94,13 +94,15 @@ JB@ac)(GTFLiL)!d09'8!!!:
 --=====================_716373961==_--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716373961==_"
+        }
       }
     },
     "message_id": {
@@ -111,21 +113,6 @@ JB@ac)(GTFLiL)!d09'8!!!:
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "=====================_716373961==_"
-        }
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     },
     "date": {
       "DateTime": {
@@ -138,6 +125,18 @@ JB@ac)(GTFLiL)!d09'8!!!:
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "jschmuergen@example.com"
       }
     }
   },
@@ -154,7 +153,7 @@ JB@ac)(GTFLiL)!d09'8!!!:
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -168,21 +167,13 @@ JB@ac)(GTFLiL)!d09'8!!!:
             "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "mac-binhex40",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -191,8 +182,18 @@ JB@ac)(GTFLiL)!d09'8!!!:
                 "filename": "blueball.png"
               }
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "mac-binhex40",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           13,
           10,
@@ -2129,16 +2130,7 @@ JB@ac)(GTFLiL)!d09'8!!!:
     },
     {
       "Binary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "mac-binhex40",
-              "attributes": {
-                "name": "HasenundFr�sche.txt"
-              }
-            }
-          },
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -2147,8 +2139,18 @@ JB@ac)(GTFLiL)!d09'8!!!:
                 "filename": "HasenundFr�sche.txt"
               }
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "mac-binhex40",
+              "attributes": {
+                "name": "HasenundFr�sche.txt"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           13,
           10,

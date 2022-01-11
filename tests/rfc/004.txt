@@ -34,9 +34,17 @@ Subject: my different opinion
 
 ------ main boundary ------
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Recipient-List",
+        "address": null
+      }
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -45,6 +53,15 @@ Subject: my different opinion
           "boundary": "---- main boundary ----"
         }
       }
+    },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": null
+      }
+    },
+    "subject": {
+      "Text": "Internet Digest, volume 42"
     },
     "date": {
       "DateTime": {
@@ -58,24 +75,6 @@ Subject: my different opinion
         "tz_hour": 0,
         "tz_minute": 0
       }
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": null
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Recipient-List",
-        "address": null
-      }
-    },
-    "subject": {
-      "Text": "Internet Digest, volume 42"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -91,18 +90,29 @@ Subject: my different opinion
   "parts": [
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "...Introductory text or table of contents...\n"
       }
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "digest",
-            "attributes": {
-              "boundary": "---- next message ----"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "digest",
+              "attributes": {
+                "boundary": "---- next message ----"
+              }
             }
           }
         }
@@ -110,7 +120,7 @@ Subject: my different opinion
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -119,11 +129,9 @@ Subject: my different opinion
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "my opinion"
-            },
             "from": {
               "Address": {
                 "name": "someone-else",
@@ -142,6 +150,9 @@ Subject: my different opinion
                 "tz_hour": 2,
                 "tz_minute": 0
               }
+            },
+            "subject": {
+              "Text": "my opinion"
             }
           },
           "html_body": [
@@ -154,7 +165,16 @@ Subject: my different opinion
           "parts": [
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "...body goes here ...\n"
               }
             }
@@ -170,7 +190,7 @@ Subject: my different opinion
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -179,11 +199,9 @@ Subject: my different opinion
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "my different opinion"
-            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -202,6 +220,9 @@ Subject: my different opinion
                 "name": "someone-else-again",
                 "address": null
               }
+            },
+            "subject": {
+              "Text": "my different opinion"
             }
           },
           "html_body": [
@@ -214,7 +235,16 @@ Subject: my different opinion
           "parts": [
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "... another body goes here ...\n"
               }
             }

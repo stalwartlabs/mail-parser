@@ -56,8 +56,7 @@ JXRFWHRDb21tZW50AGNsaXAyZ2lmIHYuMC42IGJ5IFl2ZXMgUGlndWV0NnM7
 vAAAAABJRU5ErkJggg==
 ---1463757054-170444605-958746196=:8452--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "date": {
       "DateTime": {
@@ -78,17 +77,11 @@ vAAAAABJRU5ErkJggg==
         "address": "doug@penguin.example.com"
       }
     },
-    "subject": {
-      "Text": "PNG graphic"
-    },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
       }
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
     },
     "mime_version": {
       "Text": "1.0"
@@ -101,6 +94,12 @@ vAAAAABJRU5ErkJggg==
           "boundary": "-1463757054-170444605-958746196=:8452"
         }
       }
+    },
+    "subject": {
+      "Text": "PNG graphic"
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
     }
   },
   "html_body": [
@@ -115,7 +114,7 @@ vAAAAABJRU5ErkJggg==
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -126,23 +125,18 @@ vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "\r"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
-          },
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "BASE64"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
           },
           "content_type": {
             "ContentType": {
@@ -153,13 +147,20 @@ vAAAAABJRU5ErkJggg==
               }
             }
           },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "redball.png"
+              }
+            }
+          },
           "content_description": {
             "Text": "red ball"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

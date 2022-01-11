@@ -39,8 +39,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
 
 --1--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -75,7 +74,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "6bit"
           },
@@ -89,12 +88,13 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move black king to queen's bishop\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "7bits"
           },
@@ -108,12 +108,13 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -127,15 +128,13 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             "Text": "8 bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "7-bit"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -144,14 +143,18 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7-bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "8-bit"
           },
@@ -165,12 +168,13 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -181,6 +185,7 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n"
       }
     }

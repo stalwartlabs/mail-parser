@@ -95,11 +95,28 @@ mWkOvwAAACV0RVh0Q29tbWVudABjbGlwMmdpZiB2LjAuNiBieSBZdmVzIFBp
 Z3VldDZzO7wAAAAASUVORK5CYII=
 ---1463757054-952513540-958744548=:8452--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Test message from PINE"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-952513540-958744548=:8452"
+        }
+      }
     },
     "date": {
       "DateTime": {
@@ -114,31 +131,13 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-952513540-958744548=:8452"
-        }
-      }
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
     },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from PINE"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
       }
     }
   },
@@ -155,7 +154,7 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -166,20 +165,15 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "This is a test message from PINE MUA.\r\n\r\n\r"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "BASE64"
           },
           "content_description": {
             "Text": "A PNG graphic file"
@@ -193,13 +187,20 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "redball.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1659,21 +1660,9 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     },
     {
       "Binary": {
-        "headers": {
-          "content_description": {
-            "Text": "A PNG graphic file"
-          },
+        "headers_rfc": {
           "content_id": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "octet-stream",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
           },
           "content_disposition": {
             "ContentType": {
@@ -1686,8 +1675,21 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "BASE64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "octet-stream",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

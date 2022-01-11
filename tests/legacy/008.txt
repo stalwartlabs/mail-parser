@@ -134,13 +134,30 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ------=_NextPart_000_0002_01BFC036.AE309650--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
+        }
+      }
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
       }
     },
     "date": {
@@ -156,29 +173,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
-        }
-      }
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
     },
     "mime_version": {
       "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
     }
   },
   "html_body": [
@@ -195,7 +194,10 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -204,17 +206,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -232,11 +235,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "blueball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1568,7 +1569,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -1578,6 +1579,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1586,11 +1590,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "greenball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -2895,7 +2897,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -2918,6 +2920,7 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

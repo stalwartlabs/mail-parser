@@ -16,8 +16,7 @@ Content-Type: text/plain
 
 333
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -41,12 +40,14 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "2"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
+              }
             }
           }
         }
@@ -54,7 +55,7 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -63,12 +64,13 @@ Content-Type: text/plain
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "1"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -77,6 +79,7 @@ Content-Type: text/plain
             }
           }
         },
+        "is_encoding_problem": true,
         "body": "22\n--1\nContent-Type: text/plain\n\n333\n"
       }
     }

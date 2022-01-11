@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, HeaderName, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
-    MessageStructure, Part, RfcHeaders,
+    ContentType, HeaderName, HeaderOffsetName, HeaderValue, Message, MessageAttachment,
+    MessagePart, MessagePartId, MessageStructure, MultiPart, Part, RawHeaders, RfcHeaders,
 };
 
 use super::{
@@ -213,6 +213,7 @@ impl<'x> Message<'x> {
         let mut state_stack = Vec::new();
 
         let mut mime_part_header = RfcHeaders::new();
+        let mut mime_part_header_raw = RawHeaders::new();
 
         'outer: loop {
             // Parse headers
@@ -220,7 +221,7 @@ impl<'x> Message<'x> {
                 message.offset_header = stream.pos;
                 if !parse_headers(
                     &mut message.headers_rfc,
-                    Some(&mut message.headers_raw),
+                    &mut message.headers_raw,
                     &mut stream,
                 ) {
                     break;
@@ -228,7 +229,11 @@ impl<'x> Message<'x> {
                 message.offset_body = seek_crlf_end(&stream, stream.pos);
                 (true, &mut message.headers_rfc)
             } else {
-                if !parse_headers(&mut mime_part_header, None, &mut stream) {
+                if !parse_headers(
+                    &mut mime_part_header,
+                    &mut mime_part_header_raw,
+                    &mut stream,
+                ) {
                     break;
                 }
                 (false, &mut mime_part_header)
@@ -268,8 +273,9 @@ impl<'x> Message<'x> {
                         };
                         if !is_message {
                             add_missing_type(&mut mime_part_header, "text".into(), "plain".into());
-                            message.parts.push(MessagePart::Multipart(std::mem::take(
-                                &mut mime_part_header,
+                            message.parts.push(MessagePart::Multipart(MultiPart::new(
+                                std::mem::take(&mut mime_part_header),
+                                std::mem::take(&mut mime_part_header_raw),
                             )));
                         }
                         state_stack.push(state);
@@ -312,7 +318,11 @@ impl<'x> Message<'x> {
                     ..Default::default()
                 };
                 add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
-                message_stack.push((message, std::mem::take(&mut mime_part_header)));
+                message_stack.push((
+                    message,
+                    std::mem::take(&mut mime_part_header),
+                    std::mem::take(&mut mime_part_header_raw),
+                ));
                 state_stack.push(state);
                 message = Message::new();
                 state = new_state;
@@ -330,7 +340,8 @@ impl<'x> Message<'x> {
             );
 
             // Attempt to recover contents of an invalid message
-            if bytes_read == 0 {
+            let is_encoding_problem = bytes_read == 0;
+            if is_encoding_problem {
                 if stream.pos >= stream.data.len() || (is_binary && state.mime_boundary.is_none()) {
                     state.structure.pop();
                     break;
@@ -415,10 +426,38 @@ impl<'x> Message<'x> {
 
                 if is_text {
                     let is_html = mime_type == MimeType::TextHtml;
-                    let text_part = Part {
+                    let mut text_part = Part {
                         body: result_to_string(bytes, stream.data, content_type),
-                        headers: std::mem::take(&mut mime_part_header),
+                        headers_rfc: std::mem::take(&mut mime_part_header),
+                        headers_raw: std::mem::take(&mut mime_part_header_raw),
+                        is_encoding_problem,
                     };
+
+                    // If there is a single part in the message, move MIME headers
+                    // to the part
+                    if is_message {
+                        for header_name in [
+                            HeaderName::ContentType,
+                            HeaderName::ContentDisposition,
+                            HeaderName::ContentId,
+                            HeaderName::ContentLanguage,
+                            HeaderName::ContentLocation,
+                            HeaderName::ContentTransferEncoding,
+                            HeaderName::ContentDescription,
+                        ] {
+                            if let Some(value) = message.headers_rfc.remove(&header_name) {
+                                text_part.headers_rfc.insert(header_name, value);
+                            }
+                            if let Some(value) =
+                                message.headers_raw.get(&HeaderOffsetName::Rfc(header_name))
+                            {
+                                text_part
+                                    .headers_raw
+                                    .insert(HeaderOffsetName::Rfc(header_name), value.to_vec());
+                            }
+                        }
+                    }
+                    add_missing_type(&mut text_part.headers_rfc, "text".into(), "plain".into());
 
                     if add_to_html && !is_html {
                         message.html_body.push(message.parts.len());
@@ -449,10 +488,37 @@ impl<'x> Message<'x> {
 
                     message.attachments.push(message.parts.len());
 
-                    let binary_part = Part::new(
+                    let mut binary_part = Part::new(
                         std::mem::take(&mut mime_part_header),
+                        std::mem::take(&mut mime_part_header_raw),
                         result_to_bytes(bytes, stream.data),
+                        is_encoding_problem,
                     );
+
+                    // If there is a single part in the message, move MIME headers
+                    // to the part
+                    if is_message {
+                        for header_name in [
+                            HeaderName::ContentType,
+                            HeaderName::ContentDisposition,
+                            HeaderName::ContentId,
+                            HeaderName::ContentLanguage,
+                            HeaderName::ContentLocation,
+                            HeaderName::ContentTransferEncoding,
+                            HeaderName::ContentDescription,
+                        ] {
+                            if let Some(value) = message.headers_rfc.remove(&header_name) {
+                                binary_part.headers_rfc.insert(header_name, value);
+                            }
+                            if let Some(value) =
+                                message.headers_raw.get(&HeaderOffsetName::Rfc(header_name))
+                            {
+                                binary_part
+                                    .headers_raw
+                                    .insert(HeaderOffsetName::Rfc(header_name), value.to_vec());
+                            }
+                        }
+                    }
 
                     message.parts.push(if !is_inline {
                         MessagePart::Binary(binary_part)
@@ -465,7 +531,9 @@ impl<'x> Message<'x> {
                 message.attachments.push(message.parts.len());
                 message.parts.push(MessagePart::Message(Part::new(
                     std::mem::take(&mut mime_part_header),
+                    std::mem::take(&mut mime_part_header_raw),
                     MessageAttachment::Raw(result_to_bytes(bytes, stream.data)),
+                    is_encoding_problem,
                 )));
             }
 
@@ -476,8 +544,10 @@ impl<'x> Message<'x> {
                 'inner: loop {
                     if let MimeType::Message = state.mime_type {
                         // Finished processing nested message, restore parent message from stack
-                        if let (Some((mut prev_message, headers)), Some(mut prev_state)) =
-                            (message_stack.pop(), state_stack.pop())
+                        if let (
+                            Some((mut prev_message, headers, headers_raw)),
+                            Some(mut prev_state),
+                        ) = (message_stack.pop(), state_stack.pop())
                         {
                             message.structure = state.get_structure();
                             message.offset_end = seek_crlf_end(&stream, last_part_offset);
@@ -486,7 +556,9 @@ impl<'x> Message<'x> {
                             prev_message.attachments.push(prev_message.parts.len());
                             prev_message.parts.push(MessagePart::Message(Part::new(
                                 headers,
+                                headers_raw,
                                 MessageAttachment::Parsed(Box::new(message)),
+                                false,
                             )));
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
@@ -550,7 +622,7 @@ impl<'x> Message<'x> {
             }
         }
 
-        while let (Some((mut prev_message, headers)), Some(prev_state)) =
+        while let (Some((mut prev_message, headers, headers_raw)), Some(prev_state)) =
             (message_stack.pop(), state_stack.pop())
         {
             message.offset_end = stream.pos;
@@ -560,7 +632,9 @@ impl<'x> Message<'x> {
                 prev_message.attachments.push(prev_message.parts.len());
                 prev_message.parts.push(MessagePart::Message(Part::new(
                     headers,
+                    headers_raw,
                     MessageAttachment::Parsed(Box::new(message)),
+                    false,
                 )));
             }
             message = prev_message;
@@ -586,7 +660,7 @@ mod tests {
 
     use crate::parsers::message::Message;
 
-    const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
+    const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
 
     #[test]
     fn parse_full_messages() {

@@ -23,9 +23,11 @@ hello world
 
 --bound--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -34,9 +36,6 @@ hello world
           "boundary": "bound"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -53,24 +52,25 @@ hello world
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "binary"
           }
         },
+        "is_encoding_problem": false,
         "body": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=\r"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "binary"
           },
@@ -82,12 +82,13 @@ hello world
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "ZWg="
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -96,6 +97,7 @@ hello world
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "hello world\r\n\r"
       }
     }

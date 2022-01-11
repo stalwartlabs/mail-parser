@@ -39,11 +39,25 @@ get RFC-MIME.DOC
 --42--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "mime_version": {
       "Text": "1.0"
+    },
+    "content_id": {
+      "Text": "id001@guppylake.bellcore.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Someone",
+        "address": null
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Whomever",
+        "address": null
+      }
     },
     "content_type": {
       "ContentType": {
@@ -54,26 +68,11 @@ get RFC-MIME.DOC
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Whomever",
-        "address": null
-      }
-    },
     "message_id": {
       "Text": "id1@host.com"
     },
-    "content_id": {
-      "Text": "id001@guppylake.bellcore.com"
-    },
     "subject": {
       "Text": "whatever"
-    },
-    "to": {
-      "Address": {
-        "name": "Someone",
-        "address": null
-      }
     }
   },
   "html_body": [],
@@ -86,22 +85,123 @@ get RFC-MIME.DOC
   "parts": [
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
               "c_subtype": "external-body",
               "attributes": {
-                "access-type": "ANON-FTP",
-                "site": "thumper.bellcore.com",
+                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
                 "mode": "image",
+                "site": "thumper.bellcore.com",
                 "name": "BodyFormats.ps",
-                "directory": "pub",
+                "access-type": "ANON-FTP",
+                "directory": "pub"
+              }
+            }
+          }
+        },
+        "is_encoding_problem": false,
+        "body": [
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          116,
+          121,
+          112,
+          101,
+          58,
+          32,
+          97,
+          112,
+          112,
+          108,
+          105,
+          99,
+          97,
+          116,
+          105,
+          111,
+          110,
+          47,
+          112,
+          111,
+          115,
+          116,
+          115,
+          99,
+          114,
+          105,
+          112,
+          116,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          73,
+          68,
+          58,
+          32,
+          60,
+          105,
+          100,
+          52,
+          50,
+          64,
+          103,
+          117,
+          112,
+          112,
+          121,
+          108,
+          97,
+          107,
+          101,
+          46,
+          98,
+          101,
+          108,
+          108,
+          99,
+          111,
+          114,
+          101,
+          46,
+          99,
+          111,
+          109,
+          62,
+          10
+        ]
+      }
+    },
+    {
+      "Binary": {
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": {
+                "site": "thumper.bellcore.com",
+                "access-type": "local-file",
+                "name": "/u/nsb/writing/rfcs/RFC-MIME.ps",
                 "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
               }
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           67,
           111,
@@ -187,118 +287,20 @@ get RFC-MIME.DOC
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
               "c_subtype": "external-body",
               "attributes": {
-                "access-type": "local-file",
-                "site": "thumper.bellcore.com",
-                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
-                "name": "/u/nsb/writing/rfcs/RFC-MIME.ps"
-              }
-            }
-          }
-        },
-        "body": [
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          116,
-          121,
-          112,
-          101,
-          58,
-          32,
-          97,
-          112,
-          112,
-          108,
-          105,
-          99,
-          97,
-          116,
-          105,
-          111,
-          110,
-          47,
-          112,
-          111,
-          115,
-          116,
-          115,
-          99,
-          114,
-          105,
-          112,
-          116,
-          10,
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          73,
-          68,
-          58,
-          32,
-          60,
-          105,
-          100,
-          52,
-          50,
-          64,
-          103,
-          117,
-          112,
-          112,
-          121,
-          108,
-          97,
-          107,
-          101,
-          46,
-          98,
-          101,
-          108,
-          108,
-          99,
-          111,
-          114,
-          101,
-          46,
-          99,
-          111,
-          109,
-          62,
-          10
-        ]
-      }
-    },
-    {
-      "Binary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "external-body",
-              "attributes": {
+                "access-type": "mail-server",
                 "server": "listserv@bogus.bitnet",
-                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)",
-                "access-type": "mail-server"
+                "expiration": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
               }
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           67,
           111,

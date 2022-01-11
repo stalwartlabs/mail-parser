@@ -211,32 +211,13 @@ YII=
 --------------A1E83A41894D3755390B838A--
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "39235FC5.276CCE00@example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
     "mime_version": {
       "Text": "1.0"
     },
     "subject": {
       "Text": "Die Hasen und die Frösche (Netscape Messenger 4.7)"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------A1E83A41894D3755390B838A"
-        }
-      }
     },
     "date": {
       "DateTime": {
@@ -251,10 +232,28 @@ YII=
         "tz_minute": 0
       }
     },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------A1E83A41894D3755390B838A"
+        }
+      }
+    },
     "to": {
       "Address": {
         "name": "Heinz Müller",
         "address": "mueller@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "39235FC5.276CCE00@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     }
   },
@@ -277,12 +276,14 @@ YII=
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "------------F03F94BA73D3B9E8C1B94D92"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "------------F03F94BA73D3B9E8C1B94D92"
+              }
             }
           }
         }
@@ -290,7 +291,7 @@ YII=
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -304,17 +305,20 @@ YII=
             "Text": "quoted-printable"
           }
         },
+        "is_encoding_problem": false,
         "body": "[blue ball]\n\nDie Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n[Image]\n\n\n"
       }
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "related",
-            "attributes": {
-              "boundary": "------------C02FA3D0A04E95F295FB25EB"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": {
+                "boundary": "------------C02FA3D0A04E95F295FB25EB"
+              }
             }
           }
         }
@@ -322,7 +326,10 @@ YII=
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -331,19 +338,24 @@ YII=
                 "charset": "us-ascii"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39235FC5.E71D8178@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b>Die Hasen und die Fr&ouml;sche</b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39235FC5.E71D8178@example.com\" height=27 width=27>\r\n<br>&nbsp;\r\n<br>&nbsp;</html>\r\n\r"
       }
     },
     {
       "Binary": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "base64"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": null
+            }
+          },
+          "content_id": {
+            "Text": "part1.39235FC5.E71D8178@example.com"
           },
           "content_disposition": {
             "ContentType": {
@@ -354,17 +366,11 @@ YII=
               }
             }
           },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
-            }
-          },
-          "content_id": {
-            "Text": "part1.39235FC5.E71D8178@example.com"
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -1696,13 +1702,9 @@ YII=
     },
     {
       "Binary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
-            }
+        "headers_rfc": {
+          "content_id": {
+            "Text": "part2.39235FC5.E71D8178@example.com"
           },
           "content_disposition": {
             "ContentType": {
@@ -1713,13 +1715,18 @@ YII=
               }
             }
           },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": null
+            }
+          },
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_id": {
-            "Text": "part2.39235FC5.E71D8178@example.com"
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -3179,18 +3186,9 @@ YII=
     },
     {
       "InlineBinary": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
           },
           "content_type": {
             "ContentType": {
@@ -3200,8 +3198,18 @@ YII=
                 "name": "redball.png"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "redball.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,
@@ -4661,16 +4669,7 @@ YII=
     },
     {
       "InlineBinary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
-            }
-          },
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -4682,8 +4681,18 @@ YII=
                 "filename": "greenball.png"
               }
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "greenball.png"
+              }
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           137,
           80,

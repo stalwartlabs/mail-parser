@@ -9,8 +9,7 @@ Content-Type: text/plain
 --a
 
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -32,12 +31,14 @@ Content-Type: text/plain
   "parts": [
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "a"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "a"
+              }
             }
           }
         }
@@ -45,7 +46,16 @@ Content-Type: text/plain
     },
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "Content-Type: text/plain\n"
       }
     }

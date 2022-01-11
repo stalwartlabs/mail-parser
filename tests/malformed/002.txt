@@ -2,19 +2,8 @@ Content-Type: multipart/mixed; boundary="ab"
 
 body
 
----- EXPECTED STRUCTURE ----
-{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "ab"
-        }
-      }
-    }
-  },
+---- EXPECTED STRUCTURE ----{
+  "headers_rfc": {},
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -23,7 +12,18 @@ body
   "parts": [
     {
       "Text": {
-        "headers": {},
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "ab"
+              }
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "body\n"
       }
     }

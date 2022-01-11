@@ -33,8 +33,7 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
 
 --1--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -67,7 +66,7 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -81,15 +80,13 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             "Text": "7bit"
           }
         },
+        "is_encoding_problem": false,
         "body": "Move black king to queen's bishop\n"
       }
     },
     {
       "Text": {
-        "headers": {
-          "content_transfer_encoding": {
-            "Text": "binary"
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -98,14 +95,18 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "binary"
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "8bit"
           },
@@ -119,12 +120,13 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -138,12 +140,13 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -157,6 +160,7 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "Move ♚ to ♛'s ♝\n"
       }
     }

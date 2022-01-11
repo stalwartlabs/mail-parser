@@ -18,8 +18,7 @@ Content-Transfer-Encoding: base64
 ZWg=
 --bound--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "mime_version": {
       "Text": "1.0"
@@ -46,7 +45,7 @@ ZWg=
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -58,12 +57,13 @@ ZWg=
             "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
       }
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -75,6 +75,7 @@ ZWg=
             "Text": "base64"
           }
         },
+        "is_encoding_problem": false,
         "body": "eh"
       }
     }

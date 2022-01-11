@@ -31,8 +31,7 @@ Content-Type: text/plain
 hello, world
 --1
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "mime_version": {
       "Text": "1.0"
@@ -63,7 +62,7 @@ hello, world
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -72,77 +71,23 @@ hello, world
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "hello, world"
       }
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "1"
-            }
-          }
-        },
-        "mime_version": {
-          "Text": "2.0"
-        }
-      }
-    },
-    {
-      "Text": {
-        "headers": {
+        "headers_rfc": {
+          "mime_version": {
+            "Text": "2.0"
+          },
           "content_type": {
             "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          }
-        },
-        "body": "hello, world"
-      }
-    },
-    {
-      "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "1"
-            }
-          }
-        },
-        "mime_version": {
-          "Text": "abc"
-        }
-      }
-    },
-    {
-      "Text": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          }
-        },
-        "body": "hello, world"
-      }
-    },
-    {
-      "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "1"
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "1"
+              }
             }
           }
         }
@@ -150,7 +95,7 @@ hello, world
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -159,6 +104,70 @@ hello, world
             }
           }
         },
+        "is_encoding_problem": false,
+        "body": "hello, world"
+      }
+    },
+    {
+      "Multipart": {
+        "headers_rfc": {
+          "mime_version": {
+            "Text": "abc"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "1"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "Text": {
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          }
+        },
+        "is_encoding_problem": false,
+        "body": "hello, world"
+      }
+    },
+    {
+      "Multipart": {
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "1"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "Text": {
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          }
+        },
+        "is_encoding_problem": false,
         "body": "hello, world"
       }
     }

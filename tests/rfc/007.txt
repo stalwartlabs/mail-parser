@@ -71,8 +71,7 @@ Content-Disposition: inline
 K
 --1--
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "subject": {
       "Text": "RFC 8621 Section 4.1.4 test"
@@ -109,33 +108,36 @@ K
   "parts": [
     {
       "Text": {
-        "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": "A"
       }
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "2"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "2"
+              }
             }
           }
         }
@@ -143,12 +145,14 @@ K
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "alternative",
-            "attributes": {
-              "boundary": "3"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": {
+                "boundary": "3"
+              }
             }
           }
         }
@@ -156,12 +160,14 @@ K
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "mixed",
-            "attributes": {
-              "boundary": "4"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": {
+                "boundary": "4"
+              }
             }
           }
         }
@@ -169,28 +175,29 @@ K
     },
     {
       "Text": {
-        "headers": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": "B"
       }
     },
     {
       "InlineBinary": {
-        "headers": {
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -206,6 +213,7 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           67
         ]
@@ -213,33 +221,36 @@ K
     },
     {
       "Text": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
               "c_subtype": null,
               "attributes": null
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": "D"
       }
     },
     {
       "Multipart": {
-        "content_type": {
-          "ContentType": {
-            "c_type": "multipart",
-            "c_subtype": "related",
-            "attributes": {
-              "boundary": "5"
+        "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": {
+                "boundary": "5"
+              }
             }
           }
         }
@@ -247,7 +258,7 @@ K
     },
     {
       "Html": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -256,12 +267,13 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "<html>E</html>"
       }
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -270,6 +282,7 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           70
         ]
@@ -277,22 +290,23 @@ K
     },
     {
       "Binary": {
-        "headers": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg",
-              "attributes": null
-            }
-          },
+        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": null
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           71
         ]
@@ -300,7 +314,7 @@ K
     },
     {
       "Binary": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "application",
@@ -309,6 +323,7 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": [
           72
         ]
@@ -316,7 +331,7 @@ K
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -325,6 +340,7 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
             "subject": {
@@ -341,7 +357,16 @@ K
           "parts": [
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "J"
               }
             }
@@ -357,7 +382,7 @@ K
     },
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -373,6 +398,7 @@ K
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "K"
       }
     }

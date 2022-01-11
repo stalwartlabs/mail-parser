@@ -6,8 +6,7 @@ Content-Type: text/plain
 hello, world
 --1
 
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
     "content_type": {
       "ContentType": {
@@ -29,7 +28,7 @@ hello, world
   "parts": [
     {
       "Text": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -38,6 +37,7 @@ hello, world
             }
           }
         },
+        "is_encoding_problem": false,
         "body": "hello, world"
       }
     }

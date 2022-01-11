@@ -32,15 +32,8 @@ Content-Transfer-Encoding: binary
 Foobar
 --2--
 --1--
----- EXPECTED STRUCTURE ----
-{
+---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": "moderator"
-      }
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -48,6 +41,12 @@ Foobar
         "attributes": {
           "boundary": "1"
         }
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": "moderator"
       }
     }
   },
@@ -61,7 +60,7 @@ Foobar
   "parts": [
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -70,16 +69,17 @@ Foobar
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
+            "subject": {
+              "Text": "my opinion"
+            },
             "from": {
               "Address": {
                 "name": "someone-else",
                 "address": "someone@else"
               }
-            },
-            "subject": {
-              "Text": "my opinion"
             }
           },
           "html_body": [
@@ -92,7 +92,16 @@ Foobar
           "parts": [
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "This is my opinion"
               }
             }
@@ -108,7 +117,7 @@ Foobar
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -117,16 +126,17 @@ Foobar
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "i disagree"
-            },
             "from": {
               "Address": {
                 "name": "another one",
                 "address": "another@one"
               }
+            },
+            "subject": {
+              "Text": "i disagree"
             }
           },
           "html_body": [
@@ -139,7 +149,16 @@ Foobar
           "parts": [
             {
               "Text": {
-                "headers": {},
+                "headers_rfc": {
+                  "content_type": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  }
+                },
+                "is_encoding_problem": false,
                 "body": "Not agreeing one bit!"
               }
             }
@@ -155,7 +174,7 @@ Foobar
     },
     {
       "Message": {
-        "headers": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "message",
@@ -164,14 +183,9 @@ Foobar
             }
           }
         },
+        "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "attachment",
-                "address": "attachment@user"
-              }
-            },
             "subject": {
               "Text": "funny hat"
             },
@@ -182,6 +196,12 @@ Foobar
                 "attributes": {
                   "boundary": "2"
                 }
+              }
+            },
+            "from": {
+              "Address": {
+                "name": "attachment",
+                "address": "attachment@user"
               }
             }
           },
@@ -197,24 +217,25 @@ Foobar
           "parts": [
             {
               "Text": {
-                "headers": {
+                "headers_rfc": {
+                  "content_transfer_encoding": {
+                    "Text": "binary"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": null
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "binary"
                   }
                 },
+                "is_encoding_problem": false,
                 "body": "Lovely attachment for you"
               }
             },
             {
               "Binary": {
-                "headers": {
+                "headers_rfc": {
                   "content_type": {
                     "ContentType": {
                       "c_type": "application",
@@ -229,6 +250,7 @@ Foobar
                     "Text": "binary"
                   }
                 },
+                "is_encoding_problem": false,
                 "body": [
                   70,
                   111,

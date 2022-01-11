@@ -36,7 +36,7 @@ pub enum HeaderParserResult<'x> {
 
 pub fn parse_headers<'x>(
     headers_rfc: &mut RfcHeaders<'x>,
-    mut headers_raw: Option<&mut RawHeaders<'x>>,
+    headers_raw: &mut RawHeaders<'x>,
     stream: &mut MessageStream<'x>,
 ) -> bool {
     loop {
@@ -49,15 +49,13 @@ pub fn parse_headers<'x>(
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
-                if let Some(headers_raw) = headers_raw.as_mut() {
-                    headers_raw
-                        .entry(HeaderOffsetName::Rfc(name))
-                        .or_insert_with(Vec::new)
-                        .push(HeaderOffset {
-                            start: from_offset,
-                            end: stream.pos,
-                        });
-                }
+                headers_raw
+                    .entry(HeaderOffsetName::Rfc(name))
+                    .or_insert_with(Vec::new)
+                    .push(HeaderOffset {
+                        start: from_offset,
+                        end: stream.pos,
+                    });
 
                 if !value.is_empty() {
                     if is_many {
@@ -85,15 +83,13 @@ pub fn parse_headers<'x>(
             HeaderParserResult::Other(name) => {
                 let from_offset = stream.pos;
                 parse_and_ignore(stream);
-                if let Some(headers_raw) = headers_raw.as_mut() {
-                    headers_raw
-                        .entry(HeaderOffsetName::Other(name))
-                        .or_insert_with(Vec::new)
-                        .push(HeaderOffset {
-                            start: from_offset,
-                            end: stream.pos,
-                        });
-                }
+                headers_raw
+                    .entry(HeaderOffsetName::Other(name))
+                    .or_insert_with(Vec::new)
+                    .push(HeaderOffset {
+                        start: from_offset,
+                        end: stream.pos,
+                    });
             }
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
