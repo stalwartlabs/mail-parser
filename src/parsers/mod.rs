@@ -14,3 +14,4 @@ pub mod header;
 pub mod mbox;
 pub mod message;
 pub mod mime;
+pub mod preview;

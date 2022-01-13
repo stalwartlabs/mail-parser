@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, HeaderName, HeaderOffsetName, HeaderValue, Message, MessageAttachment,
-    MessagePart, MessagePartId, MessageStructure, MultiPart, Part, RawHeaders, RfcHeaders,
+    ContentType, HeaderName, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
+    MessageStructure, MultiPart, Part, RawHeaders, RfcHeader, RfcHeaders,
 };
 
 use super::{
@@ -122,7 +122,7 @@ fn add_missing_type<'x>(
 ) {
     if headers.is_empty() {
         headers.insert(
-            HeaderName::ContentType,
+            RfcHeader::ContentType,
             HeaderValue::ContentType(ContentType {
                 c_type,
                 c_subtype: Some(c_subtype),
@@ -242,7 +242,7 @@ impl<'x> Message<'x> {
             state.parts += 1;
 
             let content_type = header
-                .get(&HeaderName::ContentType)
+                .get(&RfcHeader::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
@@ -292,7 +292,7 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
 
             let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
-                .get(&HeaderName::ContentTransferEncoding)
+                .get(&RfcHeader::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
                     (false, decode_base64)
@@ -392,7 +392,7 @@ impl<'x> Message<'x> {
             if mime_type != MimeType::Message {
                 let is_inline = is_inline
                     && header
-                        .get(&HeaderName::ContentDisposition)
+                        .get(&RfcHeader::ContentDisposition)
                         .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
                     && (state.parts == 1
                         || (state.mime_type != MimeType::MultipartRelated
@@ -437,23 +437,23 @@ impl<'x> Message<'x> {
                     // to the part
                     if is_message {
                         for header_name in [
-                            HeaderName::ContentType,
-                            HeaderName::ContentDisposition,
-                            HeaderName::ContentId,
-                            HeaderName::ContentLanguage,
-                            HeaderName::ContentLocation,
-                            HeaderName::ContentTransferEncoding,
-                            HeaderName::ContentDescription,
+                            RfcHeader::ContentType,
+                            RfcHeader::ContentDisposition,
+                            RfcHeader::ContentId,
+                            RfcHeader::ContentLanguage,
+                            RfcHeader::ContentLocation,
+                            RfcHeader::ContentTransferEncoding,
+                            RfcHeader::ContentDescription,
                         ] {
                             if let Some(value) = message.headers_rfc.remove(&header_name) {
                                 text_part.headers_rfc.insert(header_name, value);
                             }
                             if let Some(value) =
-                                message.headers_raw.get(&HeaderOffsetName::Rfc(header_name))
+                                message.headers_raw.get(&HeaderName::Rfc(header_name))
                             {
                                 text_part
                                     .headers_raw
-                                    .insert(HeaderOffsetName::Rfc(header_name), value.to_vec());
+                                    .insert(HeaderName::Rfc(header_name), value.to_vec());
                             }
                         }
                     }
@@ -499,23 +499,23 @@ impl<'x> Message<'x> {
                     // to the part
                     if is_message {
                         for header_name in [
-                            HeaderName::ContentType,
-                            HeaderName::ContentDisposition,
-                            HeaderName::ContentId,
-                            HeaderName::ContentLanguage,
-                            HeaderName::ContentLocation,
-                            HeaderName::ContentTransferEncoding,
-                            HeaderName::ContentDescription,
+                            RfcHeader::ContentType,
+                            RfcHeader::ContentDisposition,
+                            RfcHeader::ContentId,
+                            RfcHeader::ContentLanguage,
+                            RfcHeader::ContentLocation,
+                            RfcHeader::ContentTransferEncoding,
+                            RfcHeader::ContentDescription,
                         ] {
                             if let Some(value) = message.headers_rfc.remove(&header_name) {
                                 binary_part.headers_rfc.insert(header_name, value);
                             }
                             if let Some(value) =
-                                message.headers_raw.get(&HeaderOffsetName::Rfc(header_name))
+                                message.headers_raw.get(&HeaderName::Rfc(header_name))
                             {
                                 binary_part
                                     .headers_raw
-                                    .insert(HeaderOffsetName::Rfc(header_name), value.to_vec());
+                                    .insert(HeaderName::Rfc(header_name), value.to_vec());
                             }
                         }
                     }

@@ -11,7 +11,7 @@
 
 use std::{borrow::Cow, collections::hash_map::Entry};
 
-use crate::{HeaderName, HeaderOffset, HeaderOffsetName, HeaderValue, RawHeaders, RfcHeaders};
+use crate::{HeaderName, HeaderOffset, HeaderValue, RawHeaders, RfcHeader, RfcHeaders};
 
 use super::{
     fields::{
@@ -28,7 +28,7 @@ use super::{
 
 #[derive(Debug, PartialEq)]
 pub enum HeaderParserResult<'x> {
-    Rfc(HeaderName),
+    Rfc(RfcHeader),
     Other(Cow<'x, str>),
     Lf,
     Eof,
@@ -50,7 +50,7 @@ pub fn parse_headers<'x>(
                 let from_offset = stream.pos;
                 let value = parser(stream);
                 headers_raw
-                    .entry(HeaderOffsetName::Rfc(name))
+                    .entry(HeaderName::Rfc(name))
                     .or_insert_with(Vec::new)
                     .push(HeaderOffset {
                         start: from_offset,
@@ -84,7 +84,7 @@ pub fn parse_headers<'x>(
                 let from_offset = stream.pos;
                 parse_and_ignore(stream);
                 headers_raw
-                    .entry(HeaderOffsetName::Other(name))
+                    .entry(HeaderName::Other(name))
                     .or_insert_with(Vec::new)
                     .push(HeaderOffset {
                         start: from_offset,
@@ -156,27 +156,24 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
     (bytes_read, HeaderParserResult::Eof)
 }
 
-impl From<HeaderName> for u8 {
-    fn from(name: HeaderName) -> Self {
+impl From<RfcHeader> for u8 {
+    fn from(name: RfcHeader) -> Self {
         name as u8
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::header::parse_header_name, HeaderName};
+    use crate::{parsers::header::parse_header_name, RfcHeader};
 
     use super::HeaderParserResult;
 
     #[test]
     fn header_name_parse() {
         let inputs = [
-            ("From: ", HeaderParserResult::Rfc(HeaderName::From)),
-            ("receiVED: ", HeaderParserResult::Rfc(HeaderName::Received)),
-            (
-                " subject   : ",
-                HeaderParserResult::Rfc(HeaderName::Subject),
-            ),
+            ("From: ", HeaderParserResult::Rfc(RfcHeader::From)),
+            ("receiVED: ", HeaderParserResult::Rfc(RfcHeader::Received)),
+            (" subject   : ", HeaderParserResult::Rfc(RfcHeader::Subject)),
             (
                 "X-Custom-Field : ",
                 HeaderParserResult::Other("X-Custom-Field".into()),
@@ -188,7 +185,7 @@ mod tests {
             ),
             (
                 "MIME-version : ",
-                HeaderParserResult::Rfc(HeaderName::MimeVersion),
+                HeaderParserResult::Rfc(RfcHeader::MimeVersion),
             ),
         ];
 
@@ -259,76 +256,76 @@ static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
 ];
 
-static HDR_MAP: &[HeaderName] = &[
-    HeaderName::Date,
-    HeaderName::Other,
-    HeaderName::Sender,
-    HeaderName::Other,
-    HeaderName::Received,
-    HeaderName::Other,
-    HeaderName::References,
-    HeaderName::Other,
-    HeaderName::Cc,
-    HeaderName::Comments,
-    HeaderName::ResentCc,
-    HeaderName::ContentId,
-    HeaderName::Other,
-    HeaderName::ResentMessageId,
-    HeaderName::ReplyTo,
-    HeaderName::ResentTo,
-    HeaderName::ResentBcc,
-    HeaderName::ContentLanguage,
-    HeaderName::Subject,
-    HeaderName::ResentSender,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::ResentDate,
-    HeaderName::To,
-    HeaderName::Bcc,
-    HeaderName::Other,
-    HeaderName::ContentTransferEncoding,
-    HeaderName::ReturnPath,
-    HeaderName::ListId,
-    HeaderName::Keywords,
-    HeaderName::ContentDescription,
-    HeaderName::ListOwner,
-    HeaderName::Other,
-    HeaderName::ContentType,
-    HeaderName::Other,
-    HeaderName::ListHelp,
-    HeaderName::MessageId,
-    HeaderName::ContentLocation,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::ListSubscribe,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::ListPost,
-    HeaderName::Other,
-    HeaderName::ResentFrom,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::ContentDisposition,
-    HeaderName::Other,
-    HeaderName::InReplyTo,
-    HeaderName::ListArchive,
-    HeaderName::Other,
-    HeaderName::From,
-    HeaderName::Other,
-    HeaderName::ListUnsubscribe,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::Other,
-    HeaderName::MimeVersion,
+static HDR_MAP: &[RfcHeader] = &[
+    RfcHeader::Date,
+    RfcHeader::Other,
+    RfcHeader::Sender,
+    RfcHeader::Other,
+    RfcHeader::Received,
+    RfcHeader::Other,
+    RfcHeader::References,
+    RfcHeader::Other,
+    RfcHeader::Cc,
+    RfcHeader::Comments,
+    RfcHeader::ResentCc,
+    RfcHeader::ContentId,
+    RfcHeader::Other,
+    RfcHeader::ResentMessageId,
+    RfcHeader::ReplyTo,
+    RfcHeader::ResentTo,
+    RfcHeader::ResentBcc,
+    RfcHeader::ContentLanguage,
+    RfcHeader::Subject,
+    RfcHeader::ResentSender,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::ResentDate,
+    RfcHeader::To,
+    RfcHeader::Bcc,
+    RfcHeader::Other,
+    RfcHeader::ContentTransferEncoding,
+    RfcHeader::ReturnPath,
+    RfcHeader::ListId,
+    RfcHeader::Keywords,
+    RfcHeader::ContentDescription,
+    RfcHeader::ListOwner,
+    RfcHeader::Other,
+    RfcHeader::ContentType,
+    RfcHeader::Other,
+    RfcHeader::ListHelp,
+    RfcHeader::MessageId,
+    RfcHeader::ContentLocation,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::ListSubscribe,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::ListPost,
+    RfcHeader::Other,
+    RfcHeader::ResentFrom,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::ContentDisposition,
+    RfcHeader::Other,
+    RfcHeader::InReplyTo,
+    RfcHeader::ListArchive,
+    RfcHeader::Other,
+    RfcHeader::From,
+    RfcHeader::Other,
+    RfcHeader::ListUnsubscribe,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::Other,
+    RfcHeader::MimeVersion,
 ];
 
 static HDR_NAMES: &[&[u8]] = &[
