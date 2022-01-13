@@ -258,18 +258,18 @@ static HDR_HASH: &[u8] = &[
 
 static HDR_MAP: &[RfcHeader] = &[
     RfcHeader::Date,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::Sender,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::Received,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::References,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::Cc,
     RfcHeader::Comments,
     RfcHeader::ResentCc,
     RfcHeader::ContentId,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ResentMessageId,
     RfcHeader::ReplyTo,
     RfcHeader::ResentTo,
@@ -277,54 +277,54 @@ static HDR_MAP: &[RfcHeader] = &[
     RfcHeader::ContentLanguage,
     RfcHeader::Subject,
     RfcHeader::ResentSender,
-    RfcHeader::Other,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ResentDate,
     RfcHeader::To,
     RfcHeader::Bcc,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ContentTransferEncoding,
     RfcHeader::ReturnPath,
     RfcHeader::ListId,
     RfcHeader::Keywords,
     RfcHeader::ContentDescription,
     RfcHeader::ListOwner,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ContentType,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ListHelp,
     RfcHeader::MessageId,
     RfcHeader::ContentLocation,
-    RfcHeader::Other,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ListSubscribe,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ListPost,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ResentFrom,
-    RfcHeader::Other,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ContentDisposition,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::InReplyTo,
     RfcHeader::ListArchive,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::From,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::ListUnsubscribe,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
-    RfcHeader::Other,
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
+    RfcHeader::MimeVersion, // Invalid
     RfcHeader::MimeVersion,
 ];
 

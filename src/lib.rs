@@ -251,7 +251,11 @@
 pub mod decoders;
 pub mod parsers;
 
-use std::{borrow::Cow, collections::HashMap, fmt};
+use std::{
+    borrow::Cow,
+    collections::HashMap,
+    fmt::{self, Display},
+};
 
 use decoders::html::{html_to_text, text_to_html};
 use parsers::{
@@ -562,7 +566,50 @@ pub enum RfcHeader {
     ListPost = 34,
     ListSubscribe = 35,
     ListUnsubscribe = 36,
-    Other = 37,
+}
+
+impl Display for RfcHeader {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            RfcHeader::Subject => write!(f, "Subject"),
+            RfcHeader::From => write!(f, "From"),
+            RfcHeader::To => write!(f, "To"),
+            RfcHeader::Cc => write!(f, "Cc"),
+            RfcHeader::Date => write!(f, "Date"),
+            RfcHeader::Bcc => write!(f, "Bcc"),
+            RfcHeader::ReplyTo => write!(f, "Reply-To"),
+            RfcHeader::Sender => write!(f, "Sender"),
+            RfcHeader::Comments => write!(f, "Comments"),
+            RfcHeader::InReplyTo => write!(f, "In-Reply-To"),
+            RfcHeader::Keywords => write!(f, "Keywords"),
+            RfcHeader::Received => write!(f, "Received"),
+            RfcHeader::MessageId => write!(f, "Message-ID"),
+            RfcHeader::References => write!(f, "References"),
+            RfcHeader::ReturnPath => write!(f, "Return-Path"),
+            RfcHeader::MimeVersion => write!(f, "MIME-Version"),
+            RfcHeader::ContentDescription => write!(f, "Content-Description"),
+            RfcHeader::ContentId => write!(f, "Content-ID"),
+            RfcHeader::ContentLanguage => write!(f, "Content-Language"),
+            RfcHeader::ContentLocation => write!(f, "Content-Location"),
+            RfcHeader::ContentTransferEncoding => write!(f, "Content-Transfer-Encoding"),
+            RfcHeader::ContentType => write!(f, "Content-Type"),
+            RfcHeader::ContentDisposition => write!(f, "Content-Disposition"),
+            RfcHeader::ResentTo => write!(f, "Resent-To"),
+            RfcHeader::ResentFrom => write!(f, "Resent-From"),
+            RfcHeader::ResentBcc => write!(f, "Resent-Bcc"),
+            RfcHeader::ResentCc => write!(f, "Resent-Cc"),
+            RfcHeader::ResentSender => write!(f, "Resent-Sender"),
+            RfcHeader::ResentDate => write!(f, "Resent-Date"),
+            RfcHeader::ResentMessageId => write!(f, "Resent-Message-ID"),
+            RfcHeader::ListArchive => write!(f, "List-Archive"),
+            RfcHeader::ListHelp => write!(f, "List-Help"),
+            RfcHeader::ListId => write!(f, "List-ID"),
+            RfcHeader::ListOwner => write!(f, "List-Owner"),
+            RfcHeader::ListPost => write!(f, "List-Post"),
+            RfcHeader::ListSubscribe => write!(f, "List-Subscribe"),
+            RfcHeader::ListUnsubscribe => write!(f, "List-Unsubscribe"),
+        }
+    }
 }
 
 /// A parsed header value.
