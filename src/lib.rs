@@ -682,7 +682,7 @@ impl<'x> HeaderValue<'x> {
     pub fn as_text_ref(&self) -> Option<&str> {
         match *self {
             HeaderValue::Text(ref s) => Some(s),
-            HeaderValue::TextList(ref l) => l.get(0)?.as_ref().into(),
+            HeaderValue::TextList(ref l) => l.last()?.as_ref().into(),
             _ => None,
         }
     }

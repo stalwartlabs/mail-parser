@@ -45,7 +45,7 @@ pub fn parse_headers<'x>(
 
         match result {
             HeaderParserResult::Rfc(name) => {
-                let (is_many, parser) = HDR_PARSER[name as usize];
+                let (_, parser) = HDR_PARSER[name as usize];
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
@@ -58,25 +58,19 @@ pub fn parse_headers<'x>(
                     });
 
                 if !value.is_empty() {
-                    if is_many {
-                        match headers_rfc.entry(name) {
-                            Entry::Occupied(mut e) => {
-                                if let HeaderValue::Collection(col) = e.get_mut() {
-                                    col.push(value);
-                                } else {
-                                    let old_value = e.remove();
-                                    headers_rfc.insert(
-                                        name,
-                                        HeaderValue::Collection(vec![old_value, value]),
-                                    );
-                                }
-                            }
-                            Entry::Vacant(e) => {
-                                e.insert(value);
+                    match headers_rfc.entry(name) {
+                        Entry::Occupied(mut e) => {
+                            if let HeaderValue::Collection(col) = e.get_mut() {
+                                col.push(value);
+                            } else {
+                                let old_value = e.remove();
+                                headers_rfc
+                                    .insert(name, HeaderValue::Collection(vec![old_value, value]));
                             }
                         }
-                    } else {
-                        headers_rfc.insert(name, value);
+                        Entry::Vacant(e) => {
+                            e.insert(value);
+                        }
                     }
                 }
             }
