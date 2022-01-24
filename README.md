@@ -169,7 +169,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     println!("{}", serde_yaml::to_string(&message).unwrap());
 ```
 
-More examples available under the [examples](examples) directory.
+More examples available under the [examples](examples) directory. Please note that this library does not support building e-mail messages as this functionality is provided separately by the [`mail-builder`](https://crates.io/crates/mail-builder) crate.
 
 ## Testing, Fuzzing & Benchmarking
 

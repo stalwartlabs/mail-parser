@@ -1,7 +1,7 @@
 [package]
 name = "mail-parser"
 description = "Fast and robust e-mail parsing library for Rust"
-version = "0.4.3"
+version = "0.4.4"
 edition = "2018"
 authors = [ "Stalwart Labs <hello@stalw.art>"]
 license = "Apache-2.0 OR MIT"
@@ -14,7 +14,6 @@ readme = "README.md"
 [dependencies]
 encoding_rs = {version="0.8", optional=true}
 serde = { version = "1.0", features = ["derive"], optional=true}
-serde_bytes = { version = "0.11", optional=true}
 
 [dev-dependencies]
 serde_yaml = "0.8"
@@ -24,7 +23,7 @@ bincode = "1.3.3"
 [features]
 default = ["serde_support", "full_encoding"]
 full_encoding = ["encoding_rs"]
-serde_support = ["serde", "serde_bytes"]
+serde_support = ["serde"]
 
 [profile.bench]
 debug = true

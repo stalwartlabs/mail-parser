@@ -1,3 +1,9 @@
+mail-parser 0.4.4
+================================
+- Support for multi-line headers.
+- Text and HTML message body preview.
+- Improved support for raw headers.
+
 mail-parser 0.4.3
 ================================
 - Mbox file parsing support (issue #11) conforming to the [QMail specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
