@@ -515,6 +515,13 @@ pub enum HeaderName<'x> {
 }
 
 impl<'x> HeaderName<'x> {
+    pub fn as_str(&self) -> &str {
+        match self {
+            HeaderName::Rfc(header) => header.as_str(),
+            HeaderName::Other(name) => name.as_ref(),
+        }
+    }
+
     pub fn into_owned<'y>(&self) -> HeaderName<'y> {
         match self {
             HeaderName::Rfc(header) => HeaderName::Rfc(*header),
@@ -568,47 +575,53 @@ pub enum RfcHeader {
     ListUnsubscribe = 36,
 }
 
+impl RfcHeader {
+    pub fn as_str(&self) -> &str {
+        match self {
+            RfcHeader::Subject => "Subject",
+            RfcHeader::From => "From",
+            RfcHeader::To => "To",
+            RfcHeader::Cc => "Cc",
+            RfcHeader::Date => "Date",
+            RfcHeader::Bcc => "Bcc",
+            RfcHeader::ReplyTo => "Reply-To",
+            RfcHeader::Sender => "Sender",
+            RfcHeader::Comments => "Comments",
+            RfcHeader::InReplyTo => "In-Reply-To",
+            RfcHeader::Keywords => "Keywords",
+            RfcHeader::Received => "Received",
+            RfcHeader::MessageId => "Message-ID",
+            RfcHeader::References => "References",
+            RfcHeader::ReturnPath => "Return-Path",
+            RfcHeader::MimeVersion => "MIME-Version",
+            RfcHeader::ContentDescription => "Content-Description",
+            RfcHeader::ContentId => "Content-ID",
+            RfcHeader::ContentLanguage => "Content-Language",
+            RfcHeader::ContentLocation => "Content-Location",
+            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding",
+            RfcHeader::ContentType => "Content-Type",
+            RfcHeader::ContentDisposition => "Content-Disposition",
+            RfcHeader::ResentTo => "Resent-To",
+            RfcHeader::ResentFrom => "Resent-From",
+            RfcHeader::ResentBcc => "Resent-Bcc",
+            RfcHeader::ResentCc => "Resent-Cc",
+            RfcHeader::ResentSender => "Resent-Sender",
+            RfcHeader::ResentDate => "Resent-Date",
+            RfcHeader::ResentMessageId => "Resent-Message-ID",
+            RfcHeader::ListArchive => "List-Archive",
+            RfcHeader::ListHelp => "List-Help",
+            RfcHeader::ListId => "List-ID",
+            RfcHeader::ListOwner => "List-Owner",
+            RfcHeader::ListPost => "List-Post",
+            RfcHeader::ListSubscribe => "List-Subscribe",
+            RfcHeader::ListUnsubscribe => "List-Unsubscribe",
+        }
+    }
+}
+
 impl Display for RfcHeader {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            RfcHeader::Subject => write!(f, "Subject"),
-            RfcHeader::From => write!(f, "From"),
-            RfcHeader::To => write!(f, "To"),
-            RfcHeader::Cc => write!(f, "Cc"),
-            RfcHeader::Date => write!(f, "Date"),
-            RfcHeader::Bcc => write!(f, "Bcc"),
-            RfcHeader::ReplyTo => write!(f, "Reply-To"),
-            RfcHeader::Sender => write!(f, "Sender"),
-            RfcHeader::Comments => write!(f, "Comments"),
-            RfcHeader::InReplyTo => write!(f, "In-Reply-To"),
-            RfcHeader::Keywords => write!(f, "Keywords"),
-            RfcHeader::Received => write!(f, "Received"),
-            RfcHeader::MessageId => write!(f, "Message-ID"),
-            RfcHeader::References => write!(f, "References"),
-            RfcHeader::ReturnPath => write!(f, "Return-Path"),
-            RfcHeader::MimeVersion => write!(f, "MIME-Version"),
-            RfcHeader::ContentDescription => write!(f, "Content-Description"),
-            RfcHeader::ContentId => write!(f, "Content-ID"),
-            RfcHeader::ContentLanguage => write!(f, "Content-Language"),
-            RfcHeader::ContentLocation => write!(f, "Content-Location"),
-            RfcHeader::ContentTransferEncoding => write!(f, "Content-Transfer-Encoding"),
-            RfcHeader::ContentType => write!(f, "Content-Type"),
-            RfcHeader::ContentDisposition => write!(f, "Content-Disposition"),
-            RfcHeader::ResentTo => write!(f, "Resent-To"),
-            RfcHeader::ResentFrom => write!(f, "Resent-From"),
-            RfcHeader::ResentBcc => write!(f, "Resent-Bcc"),
-            RfcHeader::ResentCc => write!(f, "Resent-Cc"),
-            RfcHeader::ResentSender => write!(f, "Resent-Sender"),
-            RfcHeader::ResentDate => write!(f, "Resent-Date"),
-            RfcHeader::ResentMessageId => write!(f, "Resent-Message-ID"),
-            RfcHeader::ListArchive => write!(f, "List-Archive"),
-            RfcHeader::ListHelp => write!(f, "List-Help"),
-            RfcHeader::ListId => write!(f, "List-ID"),
-            RfcHeader::ListOwner => write!(f, "List-Owner"),
-            RfcHeader::ListPost => write!(f, "List-Post"),
-            RfcHeader::ListSubscribe => write!(f, "List-Subscribe"),
-            RfcHeader::ListUnsubscribe => write!(f, "List-Unsubscribe"),
-        }
+        write!(f, "{}", self.as_str())
     }
 }
 
