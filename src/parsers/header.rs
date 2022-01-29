@@ -105,24 +105,7 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
         match ch {
             b':' => {
                 if token_start != 0 {
-                    let field = &data[token_start - 1..token_end];
-
-                    if (2..=25).contains(&token_len) {
-                        token_hash +=
-                            token_len + HDR_HASH[last_ch.to_ascii_lowercase() as usize] as usize;
-
-                        if (4..=72).contains(&token_hash) {
-                            let token_hash = token_hash - 4;
-
-                            if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                                return (bytes_read, HeaderParserResult::Rfc(HDR_MAP[token_hash]));
-                            }
-                        }
-                    }
-                    return (
-                        bytes_read,
-                        HeaderParserResult::Other(String::from_utf8_lossy(field)),
-                    );
+                    break;
                 }
             }
             b'\n' => {
@@ -147,7 +130,27 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
         }
     }
 
-    (bytes_read, HeaderParserResult::Eof)
+    if token_start != 0 {
+        let field = &data[token_start - 1..token_end];
+
+        if (2..=25).contains(&token_len) {
+            token_hash += token_len + HDR_HASH[last_ch.to_ascii_lowercase() as usize] as usize;
+
+            if (4..=72).contains(&token_hash) {
+                let token_hash = token_hash - 4;
+
+                if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
+                    return (bytes_read, HeaderParserResult::Rfc(HDR_MAP[token_hash]));
+                }
+            }
+        }
+        return (
+            bytes_read,
+            HeaderParserResult::Other(String::from_utf8_lossy(field)),
+        );
+    } else {
+        (bytes_read, HeaderParserResult::Eof)
+    }
 }
 
 impl From<RfcHeader> for u8 {
