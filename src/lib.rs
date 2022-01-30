@@ -1497,6 +1497,7 @@ impl<'x> Part<'x, MessageAttachment<'x>> {
     }
 }
 
+#[cfg(feature = "serde_support")]
 impl<'x> Serialize for MessageAttachment<'x> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -1511,6 +1512,7 @@ impl<'x> Serialize for MessageAttachment<'x> {
     }
 }
 
+#[cfg(feature = "serde_support")]
 impl<'x, 'de> Deserialize<'de> for MessageAttachment<'x> {
     fn deserialize<D>(_deserializer: D) -> Result<Self, D::Error>
     where

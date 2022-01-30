@@ -12,9 +12,6 @@
 #[cfg(feature = "full_encoding")]
 use encoding_rs::*;
 
-#[cfg(not(feature = "full_encoding"))]
-use super::map::decoder_default;
-
 #[cfg(feature = "full_encoding")]
 fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 3);
@@ -35,7 +32,7 @@ pub fn decoder_shift_jis(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -47,7 +44,7 @@ pub fn decoder_big5(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -59,7 +56,7 @@ pub fn decoder_euc_jp(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -71,7 +68,7 @@ pub fn decoder_euc_kr(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -83,7 +80,7 @@ pub fn decoder_gb18030(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -95,7 +92,7 @@ pub fn decoder_gbk(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -107,7 +104,7 @@ pub fn decoder_iso2022_jp(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -119,7 +116,7 @@ pub fn decoder_windows874(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
 
@@ -131,6 +128,6 @@ pub fn decoder_ibm866(bytes: &[u8]) -> String {
 
     #[cfg(not(feature = "full_encoding"))]
     {
-        decoder_default(bytes)
+        String::from_utf8_lossy(bytes).into_owned()
     }
 }
