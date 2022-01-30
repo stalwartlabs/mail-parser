@@ -23,10 +23,13 @@ Content-Disposition: inline
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
+    "subject": {
+      "Text": "Multipart Email Example"
+    },
+    "to": {
       "Address": {
         "name": null,
-        "address": "sender@example.com"
+        "address": "recipient@example.com"
       }
     },
     "content_type": {
@@ -38,13 +41,10 @@ Content-Disposition: inline
         }
       }
     },
-    "subject": {
-      "Text": "Multipart Email Example"
-    },
-    "to": {
+    "from": {
       "Address": {
         "name": null,
-        "address": "recipient@example.com"
+        "address": "sender@example.com"
       }
     }
   },
@@ -59,8 +59,12 @@ Content-Disposition: inline
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           },
           "content_type": {
             "ContentType": {
@@ -71,12 +75,8 @@ Content-Disposition: inline
               }
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -86,6 +86,13 @@ Content-Disposition: inline
     {
       "Html": {
         "headers_rfc": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -97,13 +104,6 @@ Content-Disposition: inline
           },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
           }
         },
         "is_encoding_problem": false,

@@ -30,23 +30,17 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "message_id": {
       "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
     },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     },
     "date": {
       "DateTime": {
@@ -61,8 +55,14 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [

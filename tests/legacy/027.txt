@@ -32,21 +32,6 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
-    },
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "schmuergen@example.com"
-      }
-    },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGMEKBCHAA.doug@example.com"
     },
@@ -65,6 +50,21 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "schmuergen@example.com"
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
     }
   },
   "html_body": [

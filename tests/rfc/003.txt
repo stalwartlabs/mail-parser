@@ -25,21 +25,6 @@ Content-Type: application/x-whatever
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
-      }
-    },
-    "subject": {
-      "Text": "Formatted text mail"
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 1993,
@@ -53,6 +38,9 @@ Content-Type: application/x-whatever
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Formatted text mail"
+    },
     "mime_version": {
       "Text": "1.0"
     },
@@ -63,6 +51,18 @@ Content-Type: application/x-whatever
         "attributes": {
           "boundary": "boundary42"
         }
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
       }
     }
   },

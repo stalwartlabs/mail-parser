@@ -77,11 +77,8 @@ wir.&quot; <br>
         "tz_minute": 0
       }
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
     "mime_version": {
       "Text": "1.0"
@@ -92,11 +89,14 @@ wir.&quot; <br>
         "address": "dwsauder@example.com"
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
     "message_id": {
       "Text": "4.2.0.58.20000519002557.00a88870@pop.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     },
     "content_type": {
       "ContentType": {

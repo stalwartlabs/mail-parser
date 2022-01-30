@@ -85,6 +85,9 @@ Birds of a feather flock together.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -94,11 +97,8 @@ Birds of a feather flock together.
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -119,14 +119,14 @@ Birds of a feather flock together.
         "address": "mueller@example.com"
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     },
     "message_id": {
       "Text": "4.2.0.58.20000519005818.00a86aa0@pop.example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -143,6 +143,9 @@ Birds of a feather flock together.
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -151,9 +154,6 @@ Birds of a feather flock together.
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -163,17 +163,6 @@ Birds of a feather flock together.
     {
       "Text": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "name": "HasenundFr�sche.txt",
-                "x-mac-type": "54455854",
-                "x-mac-creator": "74747874"
-              }
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -185,10 +174,21 @@ Birds of a feather flock together.
           },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "x-mac-type": "54455854",
+                "name": "HasenundFr�sche.txt",
+                "x-mac-creator": "74747874"
+              }
+            }
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nbegin 600 HasenundFr�sche.txt\r\nM1&EE($AA<V5N('5N9\"!D:64@1G+V<V-H90T*#0I$:64@2&%S96X@:VQA9W1E\r\nM;B!E:6YS=\"#\\8F5R(&EH<F4@;6G?;&EC:&4@3&%G93L@(G=I<B!L96)E;B(L\r\nM('-P<F%C:\"!E:6X@4F5D;F5R+\"`B:6X@<W1E=&5R($9U<F-H=\"!V;W(@365N\r\nM<V-H96X@=6YD(%1I97)E;BP@96EN92!\"975T92!D97(@2'5N9&4L(&1E<B!!\r\nM9&QE<BP@:F$@9F%S=\"!A;&QE<B!2875B=&EE<F4A(%5N<V5R92!S=&5T92!!\r\nM;F=S=\"!I<W0@Y')G97(@86QS(&1E<B!4;V0@<V5L8G-T+B!!=68L(&QAWW0@\r\nM=6YS(&5I;B!F_'(@86QL96UA;\"!S=&5R8F5N+B(@#0H-\"DEN(&5I;F5M(&YA\r\nM:&5N(%1E:6-H('=O;&QT96X@<VEE('-I8V@@;G5N(&5R<^1U9F5N.R!S:64@\r\nM96EL=&5N(&EH;2!Z=3L@86QL96EN(&1A<R!A==]E<F]R9&5N=&QI8VAE($=E\r\nM=/9S92!U;F0@:6AR92!W=6YD97)B87)E($=E<W1A;'0@97)S8VAR96-K=&4@\r\nM96EN92!-96YG92!&<O9S8VAE+\"!D:64@86T@569E<B!S8=]E;BP@<V\\@<V5H\r\nM<BP@9&'?('-I92!A=69S('-C:&YE;&QS=&4@=6YT97)T875C:'1E;BX@#0H-\r\nM\"B)(86QT(BP@<FEE9B!N=6X@96)E;B!D:65S97(@4W!R96-H97(L(\")W:7(@\r\nM=V]L;&5N(&1A<R!%<G/D=69E;B!N;V-H(&5I;B!W96YI9R!A=69S8VAI96)E\r\nM;BP@9&5N;B!A=6-H('5N<R!F_')C:'1E;BP@=VEE(&EH<B!S96AT+\"!E:6YI\r\nM9V4@5&EE<F4L('=E;&-H92!A;'-O('=O:&P@;F]C:\"!U;F=L_&-K;&EC:&5R\r\n;('-E:6X@;?QS<V5N(&%L<R!W:7(N(B`-\"@T*\r\n`\r\nend\r\n\r"
+        "body": "\r\nbegin 600 HasenundFr�sche.txt\r\nM1&EE($AA<V5N('5N9\"!D:64@1G+V<V-H90T*#0I$:64@2&%S96X@:VQA9W1E\r\nM;B!E:6YS=\"#\\8F5R(&EH<F4@;6G?;&EC:&4@3&%G93L@(G=I<B!L96)E;B(L\r\nM('-P<F%C:\"!E:6X@4F5D;F5R+\"`B:6X@<W1E=&5R($9U<F-H=\"!V;W(@365N\r\nM<V-H96X@=6YD(%1I97)E;BP@96EN92!\"975T92!D97(@2'5N9&4L(&1E<B!!\r\nM9&QE<BP@:F$@9F%S=\"!A;&QE<B!2875B=&EE<F4A(%5N<V5R92!S=&5T92!!\r\nM;F=S=\"!I<W0@Y')G97(@86QS(&1E<B!4;V0@<V5L8G-T+B!!=68L(&QAWW0@\r\nM=6YS(&5I;B!F_'(@86QL96UA;\"!S=&5R8F5N+B(@#0H-\"DEN(&5I;F5M(&YA\r\nM:&5N(%1E:6-H('=O;&QT96X@<VEE('-I8V@@;G5N(&5R<^1U9F5N.R!S:64@\r\nM96EL=&5N(&EH;2!Z=3L@86QL96EN(&1A<R!A==]E<F]R9&5N=&QI8VAE($=E\r\nM=/9S92!U;F0@:6AR92!W=6YD97)B87)E($=E<W1A;'0@97)S8VAR96-K=&4@\r\nM96EN92!-96YG92!&<O9S8VAE+\"!D:64@86T@569E<B!S8=]E;BP@<V\\@<V5H\r\nM<BP@9&'?('-I92!A=69S('-C:&YE;&QS=&4@=6YT97)T875C:'1E;BX@#0H-\r\nM\"B)(86QT(BP@<FEE9B!N=6X@96)E;B!D:65S97(@4W!R96-H97(L(\")W:7(@\r\nM=V]L;&5N(&1A<R!%<G/D=69E;B!N;V-H(&5I;B!W96YI9R!A=69S8VAI96)E\r\nM;BP@9&5N;B!A=6-H('5N<R!F_')C:'1E;BP@=VEE(&EH<B!S96AT+\"!E:6YI\r\nM9V4@5&EE<F4L('=E;&-H92!A;'-O('=O:&P@;F]C:\"!U;F=L_&-K;&EC:&5R\r\n;('-E:6X@;?QS<V5N(&%L<R!W:7(N(B`-\"@T*\r\n`\r\nend\r\n"
       }
     },
     {
@@ -214,7 +214,7 @@ Birds of a feather flock together.
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n\r"
+        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n"
       }
     }
   ],

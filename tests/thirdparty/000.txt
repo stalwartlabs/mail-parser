@@ -46,15 +46,15 @@ ZWg=
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "is_encoding_problem": false,

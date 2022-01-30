@@ -162,6 +162,36 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_715515186==_"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -173,36 +203,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "=====================_715515186==_"
-        }
       }
     }
   },
@@ -258,8 +258,14 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers_rfc": {
-          "content_id": {
-            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "2aa5e03a.png"
+              }
+            }
           },
           "content_type": {
             "ContentType": {
@@ -270,14 +276,8 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa5e03a.png"
-              }
-            }
+          "content_id": {
+            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.2"
           },
           "content_transfer_encoding": {
             "Text": "base64"
@@ -1634,11 +1634,11 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
-          },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
           }
         },
         "is_encoding_problem": false,
@@ -3102,6 +3102,9 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -3110,9 +3113,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "blueball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -4457,6 +4457,15 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers_rfc": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -4466,15 +4475,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               "c_subtype": "png",
               "attributes": {
                 "name": "greenball.png"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
               }
             }
           }

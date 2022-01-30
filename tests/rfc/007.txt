@@ -109,17 +109,17 @@ K
     {
       "Text": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
               "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
               "attributes": null
             }
           }
@@ -198,17 +198,17 @@ K
     {
       "InlineBinary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
               "attributes": null
             }
           }

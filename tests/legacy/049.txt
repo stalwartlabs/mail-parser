@@ -132,6 +132,21 @@ end
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
+    },
     "subject": {
       "Text": "Test message from Microsoft Outlook 00"
     },
@@ -146,21 +161,6 @@ end
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
       }
     }
   },

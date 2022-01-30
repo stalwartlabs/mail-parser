@@ -61,8 +61,29 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------CA611088711119FBDB3473B4"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "392367BC.3D075C95@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     },
     "date": {
       "DateTime": {
@@ -80,29 +101,8 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
     "subject": {
       "Text": "Test message from Netscape Communicator 4.7"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "392367BC.3D075C95@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------CA611088711119FBDB3473B4"
-        }
-      }
+    "mime_version": {
+      "Text": "1.0"
     }
   },
   "html_body": [
@@ -132,24 +132,24 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
+        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race."
       }
     },
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
-                "charset": "iso-8859-1",
-                "name": "HasenundFrösche.txt"
+                "name": "HasenundFrösche.txt",
+                "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           },
           "content_disposition": {
             "ContentType": {

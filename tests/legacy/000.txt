@@ -44,8 +44,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
     },
     "date": {
       "DateTime": {
@@ -59,24 +77,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
     }
   },
   "html_body": [],
@@ -88,9 +88,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -99,6 +96,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {

@@ -19,11 +19,26 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -36,21 +51,6 @@ Slow but steady wins the race.
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "The Hare and the Tortoise"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
       }
     }
   },

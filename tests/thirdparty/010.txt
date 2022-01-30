@@ -12,9 +12,6 @@ Content-Language: ja
 --1--
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "こんにちは"
-    },
     "mime_version": {
       "Text": "1.0"
     },
@@ -27,6 +24,9 @@ Content-Language: ja
           "boundary": "1"
         }
       }
+    },
+    "subject": {
+      "Text": "こんにちは"
     }
   },
   "html_body": [
@@ -40,15 +40,15 @@ Content-Language: ja
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "binary"
           },
           "content_language": {
             "Text": "ja"

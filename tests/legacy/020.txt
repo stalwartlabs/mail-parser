@@ -32,9 +32,6 @@ welche also wohl noch unglücklicher sein müssen als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
-    },
     "to": {
       "Address": {
         "name": "Jï¿½rgen Schmï¿½rgen",
@@ -44,11 +41,8 @@ welche also wohl noch unglücklicher sein müssen als wir."
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGIEKBCHAA.doug@example.com"
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
     },
     "date": {
       "DateTime": {
@@ -61,6 +55,12 @@ welche also wohl noch unglücklicher sein müssen als wir."
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
     "mime_version": {
@@ -78,9 +78,6 @@ welche also wohl noch unglücklicher sein müssen als wir."
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "8bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -89,6 +86,9 @@ welche also wohl noch unglücklicher sein müssen als wir."
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "8bit"
           }
         },
         "is_encoding_problem": false,

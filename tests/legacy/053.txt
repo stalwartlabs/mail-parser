@@ -33,6 +33,12 @@ als wir."=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
     "mime_version": {
       "Text": "1.0"
     },
@@ -40,12 +46,6 @@ als wir."=20
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
       }
     },
     "date": {
@@ -61,11 +61,11 @@ als wir."=20
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGKEKDCHAA.doug@example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
     }
   },
   "html_body": [
@@ -79,6 +79,9 @@ als wir."=20
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -87,9 +90,6 @@ als wir."=20
                 "charset": "utf-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,

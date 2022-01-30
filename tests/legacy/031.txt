@@ -97,25 +97,10 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
+    "to": {
       "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from PINE"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-952513540-958744548=:8452"
-        }
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
     },
     "date": {
@@ -131,13 +116,28 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Test message from PINE"
+    },
     "message_id": {
       "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
     },
-    "to": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-952513540-958744548=:8452"
+        }
+      }
+    },
+    "from": {
       "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
       }
     }
   },
@@ -166,17 +166,26 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           }
         },
         "is_encoding_problem": false,
-        "body": "This is a test message from PINE MUA.\r\n\r\n\r"
+        "body": "This is a test message from PINE MUA.\r\n\r\n"
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "BASE64"
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           },
           "content_description": {
             "Text": "A PNG graphic file"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "redball.png"
+              }
+            }
           },
           "content_type": {
             "ContentType": {
@@ -187,17 +196,8 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "BASE64"
           }
         },
         "is_encoding_problem": false,
@@ -1661,20 +1661,14 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Binary": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "BASE64"
+          "content_description": {
+            "Text": "A PNG graphic file"
           },
           "content_type": {
             "ContentType": {
@@ -1685,8 +1679,14 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_description": {
-            "Text": "A PNG graphic file"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
           }
         },
         "is_encoding_problem": false,

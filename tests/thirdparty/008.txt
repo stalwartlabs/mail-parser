@@ -131,22 +131,6 @@ Root MIME epilogue
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "submsg"
-            },
-            "date": {
-              "DateTime": {
-                "year": 2012,
-                "month": 8,
-                "day": 12,
-                "hour": 12,
-                "minute": 34,
-                "second": 56,
-                "tz_before_gmt": false,
-                "tz_hour": 3,
-                "tz_minute": 0
-              }
-            },
             "from": {
               "Address": {
                 "name": null,
@@ -161,6 +145,22 @@ Root MIME epilogue
                   "boundary": "sub1"
                 }
               }
+            },
+            "date": {
+              "DateTime": {
+                "year": 2012,
+                "month": 8,
+                "day": 12,
+                "hour": 12,
+                "minute": 34,
+                "second": 56,
+                "tz_before_gmt": false,
+                "tz_hour": 3,
+                "tz_minute": 0
+              }
+            },
+            "subject": {
+              "Text": "submsg"
             }
           },
           "html_body": [

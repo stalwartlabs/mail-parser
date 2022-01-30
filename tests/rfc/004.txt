@@ -39,30 +39,6 @@ Subject: my different opinion
     "mime_version": {
       "Text": "1.0"
     },
-    "to": {
-      "Address": {
-        "name": "Recipient-List",
-        "address": null
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "---- main boundary ----"
-        }
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": null
-      }
-    },
-    "subject": {
-      "Text": "Internet Digest, volume 42"
-    },
     "date": {
       "DateTime": {
         "year": 1994,
@@ -74,6 +50,30 @@ Subject: my different opinion
         "tz_before_gmt": false,
         "tz_hour": 0,
         "tz_minute": 0
+      }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "---- main boundary ----"
+        }
+      }
+    },
+    "subject": {
+      "Text": "Internet Digest, volume 42"
+    },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": null
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Recipient-List",
+        "address": null
       }
     }
   },
@@ -215,14 +215,14 @@ Subject: my different opinion
                 "tz_minute": 0
               }
             },
+            "subject": {
+              "Text": "my different opinion"
+            },
             "from": {
               "Address": {
                 "name": "someone-else-again",
                 "address": null
               }
-            },
-            "subject": {
-              "Text": "my different opinion"
             }
           },
           "html_body": [

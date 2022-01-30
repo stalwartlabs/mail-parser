@@ -31,9 +31,6 @@ Content-Type: text/plain
     {
       "Multipart": {
         "headers_rfc": {
-          "mime_version": {
-            "Text": "1.0"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "multipart",
@@ -42,6 +39,9 @@ Content-Type: text/plain
                 "boundary": "ab"
               }
             }
+          },
+          "mime_version": {
+            "Text": "1.0"
           }
         }
       }

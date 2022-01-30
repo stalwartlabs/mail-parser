@@ -31,18 +31,6 @@ IiANCg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
-    },
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "schmuergen@example.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -56,14 +44,26 @@ IiANCg==
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
+    "mime_version": {
+      "Text": "1.0"
     },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "schmuergen@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGAEKCCHAA.doug@example.com"
     }
   },
   "html_body": [

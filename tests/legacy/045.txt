@@ -43,6 +43,15 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -52,8 +61,8 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
         }
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
     },
     "to": {
       "AddressList": [
@@ -67,11 +76,8 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
         }
       ]
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
     "date": {
       "DateTime": {
@@ -85,12 +91,6 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -117,22 +117,12 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
           }
         },
         "is_encoding_problem": false,
-        "body": "\r"
+        "body": "\n"
       }
     },
     {
       "Text": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1",
-                "name": "HasenundFrösche.txt"
-              }
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -142,14 +132,24 @@ bGljaGVyIHNlaW4gbfxzc2VuIGFscyB3aXIuIiANDQoNDQo=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "name": "HasenundFrösche.txt",
+                "charset": "iso-8859-1"
+              }
+            }
+          },
           "content_description": {
             "Text": "Short story in German"
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
           }
         },
         "is_encoding_problem": false,

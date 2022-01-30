@@ -73,17 +73,32 @@ Content-Transfer-Encoding: Quoted-printable
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@nsb.fv.com"
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
     "subject": {
       "Text": "A multipart example"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "unique-boundary-1"
+        }
+      }
     },
     "date": {
       "DateTime": {
@@ -96,21 +111,6 @@ Content-Transfer-Encoding: Quoted-printable
         "tz_before_gmt": true,
         "tz_hour": 7,
         "tz_minute": 0
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "unique-boundary-1"
-        }
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
       }
     }
   },
@@ -179,15 +179,15 @@ Content-Transfer-Encoding: Quoted-printable
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "audio",
               "c_subtype": "basic",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": true,
@@ -241,6 +241,9 @@ Content-Transfer-Encoding: Quoted-printable
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
+            "subject": {
+              "Text": "(subject in US-ASCII)"
+            },
             "to": {
               "Address": {
                 "name": "address in US-ASCII",
@@ -252,9 +255,6 @@ Content-Transfer-Encoding: Quoted-printable
                 "name": "mailbox in US-ASCII",
                 "address": null
               }
-            },
-            "subject": {
-              "Text": "(subject in US-ASCII)"
             }
           },
           "html_body": [

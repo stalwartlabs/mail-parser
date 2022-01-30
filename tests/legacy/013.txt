@@ -35,23 +35,8 @@ welche also wohl noch unglücklicher sein müssen als wir."
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
     },
-    "to": {
-      "Address": {
-        "name": "JÃ¼rgen SchmÃ¼rgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die FrÃ¶sche (Microsoft Outlook 00)"
-    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
     },
     "date": {
       "DateTime": {
@@ -64,6 +49,21 @@ welche also wohl noch unglücklicher sein müssen als wir."
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die FrÃ¶sche (Microsoft Outlook 00)"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "JÃ¼rgen SchmÃ¼rgen",
+        "address": "schmuergen@example.com"
       }
     }
   },
@@ -78,6 +78,9 @@ welche also wohl noch unglücklicher sein müssen als wir."
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "8bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -86,9 +89,6 @@ welche also wohl noch unglücklicher sein müssen als wir."
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "8bit"
           }
         },
         "is_encoding_problem": false,

@@ -26,6 +26,41 @@ invalid
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "return_path": {
+      "Text": "test@example.org"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "signed",
+        "attributes": {
+          "protocol": "application/pgp-signature",
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
+          "micalg": "pgp-sha1"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "1.2.3.4@example"
+    },
+    "to": {
+      "Address": {
+        "name": "Another User",
+        "address": "test2@example.org"
+      }
+    },
+    "subject": {
+      "Text": "Hello world"
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2007,
@@ -38,41 +73,6 @@ invalid
         "tz_hour": 3,
         "tz_minute": 0
       }
-    },
-    "return_path": {
-      "Text": "test@example.org"
-    },
-    "subject": {
-      "Text": "Hello world"
-    },
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Another User",
-        "address": "test2@example.org"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "signed",
-        "attributes": {
-          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
-          "protocol": "application/pgp-signature",
-          "micalg": "pgp-sha1"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "1.2.3.4@example"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -88,15 +88,15 @@ invalid
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,

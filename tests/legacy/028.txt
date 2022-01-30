@@ -163,6 +163,30 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "address": "jblow@example.com"
       }
     },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "related",
+        "attributes": {
+          "boundary": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -174,30 +198,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_before_gmt": true,
         "tz_hour": 4,
         "tz_minute": 0
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKFCHAA.doug@example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "related",
-        "attributes": {
-          "boundary": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
-        }
       }
     }
   },
@@ -230,9 +230,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -241,6 +238,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -270,8 +270,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_id": {
-            "Text": "823504223@17052000-0f8d"
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -282,8 +282,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          "content_id": {
+            "Text": "823504223@17052000-0f8d"
           }
         },
         "is_encoding_problem": false,
@@ -1619,9 +1619,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_id": {
-            "Text": "823504223@17052000-0f94"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1630,6 +1627,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "redball.png"
               }
             }
+          },
+          "content_id": {
+            "Text": "823504223@17052000-0f94"
           },
           "content_transfer_encoding": {
             "Text": "base64"

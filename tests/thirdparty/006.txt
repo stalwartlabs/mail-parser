@@ -30,9 +30,6 @@ Signed by undersigned
 --1--
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "Hide and seek"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -44,6 +41,9 @@ Signed by undersigned
     },
     "mime_version": {
       "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Hide and seek"
     }
   },
   "html_body": [
@@ -65,8 +65,8 @@ Signed by undersigned
               "c_subtype": "signed",
               "attributes": {
                 "migalc": "pen+paper",
-                "protocol": "signature/plain",
-                "boundary": "2"
+                "boundary": "2",
+                "protocol": "signature/plain"
               }
             }
           }

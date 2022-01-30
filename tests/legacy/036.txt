@@ -27,14 +27,17 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "schmuergen@example.com"
       }
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -51,9 +54,6 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
     },
     "subject": {
       "Text": "Die Hasen und die Frösche"
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
     },
     "from": {
       "Address": {

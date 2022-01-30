@@ -73,26 +73,20 @@ race.&nbsp;=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
+    "from": {
       "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
     },
     "mime_version": {
       "Text": "1.0"
     },
     "subject": {
       "Text": "Test message from Microsoft Outlook 00"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
-        }
-      }
     },
     "date": {
       "DateTime": {
@@ -107,14 +101,20 @@ race.&nbsp;=20
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0005_01BFC037.799BEF60"
+        }
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
+      }
     }
   },
   "html_body": [

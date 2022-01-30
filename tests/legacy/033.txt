@@ -34,8 +34,8 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "message_id": {
+      "Text": "392363E1.2AC47AB3@example.com"
     },
     "from": {
       "Address": {
@@ -43,17 +43,17 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "address": "dwsauder@example.com"
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
-    },
-    "message_id": {
-      "Text": "392363E1.2AC47AB3@example.com"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     },
     "date": {
       "DateTime": {

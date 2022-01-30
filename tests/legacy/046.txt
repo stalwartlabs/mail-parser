@@ -33,6 +33,9 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "message_id": {
+      "Text": "3923561C.B7078DEF@example.com"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -46,20 +49,17 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "3923561C.B7078DEF@example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "schmuergen@example.com"
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
     },
     "from": {
       "Address": {

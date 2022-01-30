@@ -53,6 +53,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "7bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -61,9 +64,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "charset": "utf-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
           }
         },
         "is_encoding_problem": false,
@@ -96,6 +96,27 @@ YWFhYWFhYWFhYWFhYS0tDQo=
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
+            "from": {
+              "Address": {
+                "name": "Name",
+                "address": "email@example.com"
+              }
+            },
+            "content_language": {
+              "Text": "en-US"
+            },
+            "to": {
+              "Address": {
+                "name": "email@example.com",
+                "address": "email@example.com"
+              }
+            },
+            "subject": {
+              "Text": "HTML test"
+            },
+            "message_id": {
+              "Text": "random-message-id@example.com"
+            },
             "date": {
               "DateTime": {
                 "year": 2021,
@@ -109,21 +130,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "tz_minute": 0
               }
             },
-            "from": {
-              "Address": {
-                "name": "Name",
-                "address": "email@example.com"
-              }
-            },
-            "to": {
-              "Address": {
-                "name": "email@example.com",
-                "address": "email@example.com"
-              }
-            },
-            "content_language": {
-              "Text": "en-US"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -132,12 +138,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                   "boundary": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 }
               }
-            },
-            "subject": {
-              "Text": "HTML test"
-            },
-            "message_id": {
-              "Text": "random-message-id@example.com"
             },
             "mime_version": {
               "Text": "1.0"
@@ -154,6 +154,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             {
               "Text": {
                 "headers_rfc": {
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
+                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
@@ -163,13 +166,10 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                         "format": "flowed"
                       }
                     }
-                  },
-                  "content_transfer_encoding": {
-                    "Text": "7bit"
                   }
                 },
                 "is_encoding_problem": false,
-                "body": "This is an *HTML* test message\r"
+                "body": "This is an *HTML* test message"
               }
             },
             {
@@ -189,7 +189,7 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                   }
                 },
                 "is_encoding_problem": false,
-                "body": "<html>\r\n  <head>\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\r\n  </head>\r\n  <body>\r\n    This is an <b>HTML</b> test message\r\n  </body>\r\n</html>\r\n\r"
+                "body": "<html>\r\n  <head>\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\r\n  </head>\r\n  <body>\r\n    This is an <b>HTML</b> test message\r\n  </body>\r\n</html>\r\n"
               }
             }
           ],

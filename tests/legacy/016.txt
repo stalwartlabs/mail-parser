@@ -105,14 +105,23 @@ JB@ac)(GTFLiL)!d09'8!!!:
         }
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "jschmuergen@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
     },
     "date": {
       "DateTime": {
@@ -129,15 +138,6 @@ JB@ac)(GTFLiL)!d09'8!!!:
     },
     "subject": {
       "Text": "Die Hasen und die Frösche"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
-      }
     }
   },
   "html_body": [
@@ -154,6 +154,9 @@ JB@ac)(GTFLiL)!d09'8!!!:
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -162,9 +165,6 @@ JB@ac)(GTFLiL)!d09'8!!!:
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -2123,8 +2123,7 @@ JB@ac)(GTFLiL)!d09'8!!!:
           33,
           58,
           13,
-          10,
-          13
+          10
         ]
       }
     },
@@ -3282,8 +3281,7 @@ JB@ac)(GTFLiL)!d09'8!!!:
           33,
           58,
           13,
-          10,
-          13
+          10
         ]
       }
     }

@@ -136,29 +136,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
-        }
-      }
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
     },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
     },
     "date": {
       "DateTime": {
@@ -173,11 +158,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
-    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0002_01BFC036.AE309650"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
     }
   },
   "html_body": [
@@ -215,9 +215,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -235,6 +232,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "blueball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,
@@ -1579,9 +1579,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1590,6 +1587,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,
@@ -2907,9 +2907,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -2918,6 +2915,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,

@@ -85,9 +85,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
         "address": "transport@whitehouse.gov"
       }
     },
-    "subject": {
-      "Text": "[Fwd: Map of Argentina with Description]"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -96,6 +93,9 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
           "boundary": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
         }
       }
+    },
+    "subject": {
+      "Text": "[Fwd: Map of Argentina with Description]"
     }
   },
   "html_body": [
@@ -131,12 +131,8 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
     {
       "Message": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
-            }
+          "content_transfer_encoding": {
+            "Text": "7bit"
           },
           "content_disposition": {
             "ContentType": {
@@ -145,46 +141,22 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
               "attributes": null
             }
           },
-          "content_transfer_encoding": {
-            "Text": "7bit"
+          "content_type": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
           }
         },
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "message_id": {
-              "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
-            },
-            "content_type": {
-              "ContentType": {
-                "c_type": "multipart",
-                "c_subtype": "mixed",
-                "attributes": {
-                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
-                }
-              }
-            },
-            "received": {
-              "Collection": [
-                {
-                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
-                },
-                {
-                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
-                }
-              ]
-            },
-            "to": {
-              "Address": {
-                "name": "A1 Gore (The Enforcer)",
-                "address": "vice-president@whitehouse.gov"
-              }
+            "mime_version": {
+              "Text": "1.0"
             },
             "subject": {
               "Text": "Map of Argentina with Description"
-            },
-            "mime_version": {
-              "Text": "1.0"
             },
             "date": {
               "DateTime": {
@@ -199,10 +171,38 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                 "tz_minute": 0
               }
             },
+            "message_id": {
+              "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
+            },
+            "received": {
+              "Collection": [
+                {
+                  "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                },
+                {
+                  "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                }
+              ]
+            },
+            "content_type": {
+              "ContentType": {
+                "c_type": "multipart",
+                "c_subtype": "mixed",
+                "attributes": {
+                  "boundary": "DC8------------DC8638F443D87A7F0726DEF7"
+                }
+              }
+            },
             "from": {
               "Address": {
                 "name": "Bill Clinton",
                 "address": "president@whitehouse.gov"
+              }
+            },
+            "to": {
+              "Address": {
+                "name": "A1 Gore (The Enforcer)",
+                "address": "vice-president@whitehouse.gov"
               }
             },
             "return_path": {
@@ -253,9 +253,6 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                       }
                     }
                   },
-                  "content_transfer_encoding": {
-                    "Text": "base64"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "image",
@@ -264,6 +261,9 @@ U6ZGxseyk8SasGw3J9GRzdTQky1iHNvcPNNI4TLeKdfMvy0vMqLrItvuxfDW8ubjueDtJufz
                         "name": "map_of_Argentina.gif"
                       }
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "base64"
                   }
                 },
                 "is_encoding_problem": false,

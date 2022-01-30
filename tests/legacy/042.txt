@@ -59,13 +59,16 @@ Birds of a feather flock together.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------77060D866A66DC8D0921E051"
-        }
+    "message_id": {
+      "Text": "3923686C.99FB5E36@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
       }
     },
     "subject": {
@@ -90,16 +93,13 @@ Birds of a feather flock together.
         "address": "dwsauder@example.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "3923686C.99FB5E36@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------77060D866A66DC8D0921E051"
+        }
       }
     }
   },
@@ -130,12 +130,21 @@ Birds of a feather flock together.
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r"
+        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race."
       }
     },
     {
       "Text": {
         "headers_rfc": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "farmerandstork.txt"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "7bit"
           },
@@ -148,19 +157,10 @@ Birds of a feather flock together.
                 "name": "farmerandstork.txt"
               }
             }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "farmerandstork.txt"
-              }
-            }
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n\r"
+        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n"
       }
     }
   ],

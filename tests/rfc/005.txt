@@ -25,16 +25,13 @@ This is the epilogue.  It is also to be ignored.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "subject": {
+      "Text": "Sample message"
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "simple boundary"
-        }
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
       }
     },
     "from": {
@@ -43,8 +40,8 @@ This is the epilogue.  It is also to be ignored.
         "address": "nsb@bellcore.com"
       }
     },
-    "subject": {
-      "Text": "Sample message"
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -59,10 +56,13 @@ This is the epilogue.  It is also to be ignored.
         "tz_minute": 0
       }
     },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "simple boundary"
+        }
       }
     }
   },

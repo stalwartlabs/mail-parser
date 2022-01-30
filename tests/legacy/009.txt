@@ -37,6 +37,18 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -50,15 +62,6 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
     "mime_version": {
       "Text": "1.0"
     },
@@ -67,9 +70,6 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
     }
   },
   "html_body": [

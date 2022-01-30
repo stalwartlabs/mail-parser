@@ -52,8 +52,20 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------E7889DDF0F75D34163841C59"
+        }
+      }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     },
     "message_id": {
       "Text": "392366A7.21929EA7@example.com"
@@ -71,14 +83,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
+    "mime_version": {
+      "Text": "1.0"
     },
     "to": {
       "Address": {
@@ -86,14 +92,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "address": "blow@example.com"
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------E7889DDF0F75D34163841C59"
-        }
-      }
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     }
   },
   "html_body": [
@@ -125,7 +125,7 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           }
         },
         "is_encoding_problem": false,
-        "body": " \r"
+        "body": " "
       }
     },
     {

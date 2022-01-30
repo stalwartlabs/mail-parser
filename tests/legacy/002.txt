@@ -37,18 +37,6 @@ wir.&quot; <br>
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003052.00a89c40@pop.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -67,6 +55,18 @@ wir.&quot; <br>
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003052.00a89c40@pop.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "subject": {
       "Text": "Die Hasen und die Frösche"

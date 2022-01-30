@@ -189,30 +189,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0010_01BFC038.B91BC650"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKFCHAA.doug@example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -226,10 +202,34 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGOEKFCHAA.doug@example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "----=_NextPart_000_0010_01BFC038.B91BC650"
+        }
+      }
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Microsoft Outlook 00"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "jblow@example.com"
       }
     }
   },
@@ -327,11 +327,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_id": {
-            "Text": "938014623@17052000-0f9b"
-          },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_id": {
+            "Text": "938014623@17052000-0f9b"
           }
         },
         "is_encoding_problem": false,
@@ -1667,6 +1667,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -1675,9 +1678,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "greenball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           },
           "content_type": {
             "ContentType": {

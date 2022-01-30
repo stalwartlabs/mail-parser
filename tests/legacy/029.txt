@@ -28,16 +28,25 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "message_id": {
+      "Text": "392362D8.B650789F@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     },
     "date": {
@@ -52,15 +61,6 @@ Slow but steady wins the race.
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "message_id": {
-      "Text": "392362D8.B650789F@example.com"
     }
   },
   "html_body": [

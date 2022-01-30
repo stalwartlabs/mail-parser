@@ -87,6 +87,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -95,9 +98,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "binary"
           }
         },
         "is_encoding_problem": false,
@@ -107,9 +107,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "8bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -118,6 +115,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "8bit"
           }
         },
         "is_encoding_problem": false,
@@ -147,9 +147,6 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -158,6 +155,9 @@ TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,

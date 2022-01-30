@@ -109,12 +109,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -126,6 +120,18 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     },
     "message_id": {
       "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -144,12 +150,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
       }
     }
   },
@@ -197,9 +197,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -208,6 +205,9 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "name": "blueball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,
@@ -1543,15 +1543,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     {
       "Text": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "farmerandstork.txt"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -1560,15 +1551,33 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "farmerandstork.txt"
+              }
+            }
           }
         },
         "is_encoding_problem": false,
-        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n\r"
+        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n"
       }
     },
     {
       "Text": {
         "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -1578,15 +1587,6 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
               "c_subtype": null,
               "attributes": {
                 "filename": "HasenundFr�sche.txt"
-              }
-            }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
               }
             }
           }

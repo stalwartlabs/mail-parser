@@ -32,10 +32,13 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
+    },
+    "from": {
       "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
       }
     },
     "subject": {
@@ -54,17 +57,14 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
         "tz_minute": 0
       }
     },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
+      }
+    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGIEKCCHAA.doug@example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
     }
   },
   "html_body": [
@@ -78,6 +78,9 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -86,9 +89,6 @@ Tiere, welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,

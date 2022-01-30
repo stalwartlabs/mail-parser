@@ -58,6 +58,12 @@ vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@penguin.example.com"
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -71,20 +77,11 @@ vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "subject": {
+      "Text": "PNG graphic"
     },
     "content_type": {
       "ContentType": {
@@ -95,11 +92,14 @@ vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "subject": {
-      "Text": "PNG graphic"
-    },
     "message_id": {
       "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     }
   },
   "html_body": [
@@ -126,7 +126,7 @@ vAAAAABJRU5ErkJggg==
           }
         },
         "is_encoding_problem": false,
-        "body": "\r"
+        "body": "\n"
       }
     },
     {
@@ -135,17 +135,11 @@ vAAAAABJRU5ErkJggg==
           "content_transfer_encoding": {
             "Text": "BASE64"
           },
+          "content_description": {
+            "Text": "red ball"
+          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "octet-stream",
-              "attributes": {
-                "name": "redball.png"
-              }
-            }
           },
           "content_disposition": {
             "ContentType": {
@@ -156,8 +150,14 @@ vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_description": {
-            "Text": "red ball"
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "octet-stream",
+              "attributes": {
+                "name": "redball.png"
+              }
+            }
           }
         },
         "is_encoding_problem": false,

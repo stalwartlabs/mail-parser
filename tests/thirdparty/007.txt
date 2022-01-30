@@ -34,6 +34,12 @@ Foobar
 --1--
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": "moderator"
+      }
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -41,12 +47,6 @@ Foobar
         "attributes": {
           "boundary": "1"
         }
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": "moderator"
       }
     }
   },
@@ -72,14 +72,14 @@ Foobar
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "my opinion"
-            },
             "from": {
               "Address": {
                 "name": "someone-else",
                 "address": "someone@else"
               }
+            },
+            "subject": {
+              "Text": "my opinion"
             }
           },
           "html_body": [
@@ -186,9 +186,6 @@ Foobar
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "funny hat"
-            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -203,6 +200,9 @@ Foobar
                 "name": "attachment",
                 "address": "attachment@user"
               }
+            },
+            "subject": {
+              "Text": "funny hat"
             }
           },
           "html_body": [
@@ -218,15 +218,15 @@ Foobar
             {
               "Text": {
                 "headers_rfc": {
-                  "content_transfer_encoding": {
-                    "Text": "binary"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": null
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "binary"
                   }
                 },
                 "is_encoding_problem": false,
@@ -241,8 +241,8 @@ Foobar
                       "c_type": "application",
                       "c_subtype": "octet-stream",
                       "attributes": {
-                        "disposition": "attachment",
-                        "name": "test.txt"
+                        "name": "test.txt",
+                        "disposition": "attachment"
                       }
                     }
                   },

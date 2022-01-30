@@ -751,7 +751,7 @@ mod tests {
 
     #[test]
     fn generate_test_samples() {
-        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----\n".as_bytes();
+        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
 
         for test_suite in ["legacy", "malformed", "rfc", "thirdparty"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -770,6 +770,7 @@ mod tests {
                     continue;
                 }
 
+                println!("{:}", file_name.as_ref().unwrap().path().display());
                 let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
                 let mut pos = 0;
                 for sep_pos in 0..input.len() {

@@ -139,6 +139,15 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -149,20 +158,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -180,8 +177,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     "message_id": {
       "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com"
     },
-    "mime_version": {
-      "Text": "1.0"
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     }
   },
   "html_body": [
@@ -213,9 +213,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -224,6 +221,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -233,6 +233,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Html": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -241,9 +244,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -262,6 +262,12 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -270,12 +276,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "filename": "blueball.png"
               }
             }
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.0"
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
         "is_encoding_problem": false,
@@ -1611,18 +1611,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "redball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_id": {
             "Text": "4.2.0.58.20000519003143.00a8d550@pop.example.com.1"
           },
@@ -1632,6 +1620,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               "c_subtype": null,
               "attributes": {
                 "filename": "redball.png"
+              }
+            }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "redball.png"
               }
             }
           }

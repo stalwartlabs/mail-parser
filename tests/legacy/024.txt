@@ -110,19 +110,13 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
         "c_subtype": "related",
         "attributes": {
-          "type": "text/html",
-          "boundary": "=====================_715429112==_.REL"
+          "boundary": "=====================_715429112==_.REL",
+          "type": "text/html"
         }
       }
     },
@@ -139,12 +133,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
@@ -153,6 +141,18 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [
@@ -169,9 +169,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Html": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -180,6 +177,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
@@ -189,14 +189,8 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa48eb6.png"
-              }
-            }
+          "content_id": {
+            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2"
           },
           "content_type": {
             "ContentType": {
@@ -207,8 +201,14 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2"
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "2aa48eb6.png"
+              }
+            }
           },
           "content_transfer_encoding": {
             "Text": "base64"
@@ -1547,12 +1547,6 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
     {
       "Binary": {
         "headers_rfc": {
-          "content_id": {
-            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3"
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -1562,6 +1556,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
               }
             }
           },
+          "content_id": {
+            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1570,6 +1567,9 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
                 "name": "2aa48ec0.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
         "is_encoding_problem": false,

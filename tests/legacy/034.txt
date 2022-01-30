@@ -27,16 +27,10 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "39236497.12FA2A89@example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr+APY-sche"
-    },
-    "from": {
+    "to": {
       "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
+        "name": "Heinz M+APw-ller",
+        "address": "mueller@example.com"
       }
     },
     "date": {
@@ -55,10 +49,16 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
     "mime_version": {
       "Text": "1.0"
     },
-    "to": {
+    "subject": {
+      "Text": "Die Hasen und die Fr+APY-sche"
+    },
+    "message_id": {
+      "Text": "39236497.12FA2A89@example.com"
+    },
+    "from": {
       "Address": {
-        "name": "Heinz M+APw-ller",
-        "address": "mueller@example.com"
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
     }
   },
@@ -73,9 +73,6 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -84,6 +81,9 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
                 "charset": "UTF-7"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "is_encoding_problem": false,

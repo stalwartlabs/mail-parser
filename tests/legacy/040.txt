@@ -29,15 +29,6 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -54,14 +45,23 @@ n wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere=
     "message_id": {
       "Text": "39236653.CAA8A090@example.com"
     },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "schmuergen@example.com"
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     }
   },
   "html_body": [

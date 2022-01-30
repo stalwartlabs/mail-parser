@@ -62,31 +62,13 @@ als wir."
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "alternative",
-        "attributes": {
-          "boundary": "------------9D454F23DA86BCD63FA3805F"
-        }
       }
     },
     "date": {
@@ -102,8 +84,26 @@ als wir."
         "tz_minute": 0
       }
     },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "alternative",
+        "attributes": {
+          "boundary": "------------9D454F23DA86BCD63FA3805F"
+        }
+      }
+    },
     "message_id": {
       "Text": "392359CF.DFF4527@example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
     }
   },
   "html_body": [
@@ -137,9 +137,6 @@ als wir."
     {
       "Html": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -148,10 +145,13 @@ als wir."
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
         "is_encoding_problem": false,
-        "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<b>Die Hasen und die Fr&ouml;sche</b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<br>&nbsp;\r\n<br>&nbsp;</html>\r\n\r"
+        "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<b>Die Hasen und die Fr&ouml;sche</b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<br>&nbsp;\r\n<br>&nbsp;</html>\r\n"
       }
     }
   ],

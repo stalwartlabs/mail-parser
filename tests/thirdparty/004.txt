@@ -41,6 +41,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -49,9 +52,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
           "boundary": "1"
         }
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
   "html_body": [
@@ -75,9 +75,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "6bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -86,6 +83,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "6bit"
           }
         },
         "is_encoding_problem": false,
@@ -95,9 +95,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bits"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -106,6 +103,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bits"
           }
         },
         "is_encoding_problem": false,
@@ -135,6 +135,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "7-bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -143,9 +146,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7-bit"
           }
         },
         "is_encoding_problem": false,

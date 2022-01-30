@@ -33,23 +33,11 @@ m+APw-ssen als wir.+ACI-=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
     },
     "date": {
       "DateTime": {
@@ -64,8 +52,20 @@ m+APw-ssen als wir.+ACI-=20
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com"
     }
   },
   "html_body": [
@@ -79,6 +79,9 @@ m+APw-ssen als wir.+ACI-=20
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -87,9 +90,6 @@ m+APw-ssen als wir.+ACI-=20
                 "charset": "utf-7"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
         "is_encoding_problem": false,
