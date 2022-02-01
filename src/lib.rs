@@ -528,6 +528,13 @@ impl<'x> HeaderName<'x> {
             HeaderName::Other(name) => HeaderName::Other(name.clone().into_owned().into()),
         }
     }
+
+    pub fn unwrap(self) -> String {
+        match self {
+            HeaderName::Rfc(header) => header.as_str().to_owned(),
+            HeaderName::Other(name) => name.into_owned(),
+        }
+    }
 }
 
 /// A header field
