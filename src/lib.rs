@@ -710,7 +710,11 @@ impl<'x> HeaderValue<'x> {
     pub fn get_content_type(&self) -> &ContentType<'x> {
         match *self {
             HeaderValue::ContentType(ref ct) => ct,
-            _ => panic!("HeaderValue::get_content_type called on non-ContentType value"),
+            HeaderValue::Collection(ref c) => c.last().unwrap().get_content_type(),
+            _ => panic!(
+                "HeaderValue::get_content_type called on non-ContentType: {:?}",
+                self
+            ),
         }
     }
 
