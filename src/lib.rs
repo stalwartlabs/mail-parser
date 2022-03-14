@@ -779,7 +779,7 @@ pub struct ContentType<'x> {
 }
 
 /// An RFC5322 datetime.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct DateTime {
     pub year: u32,

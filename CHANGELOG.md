@@ -1,3 +1,9 @@
+mail-parser 0.4.5
+================================
+- DateTime to UNIX timestamp conversion.
+- Ord, PartialOrd support for DateTime (#13).
+- Fixed Message::parse() panic on duplicate Content-Type headers (#14).
+
 mail-parser 0.4.4
 ================================
 - Support for multi-line headers.

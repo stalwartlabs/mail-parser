@@ -29,6 +29,64 @@ impl DateTime {
             self.tz_minute
         )
     }
+
+    /// Returns true if the date is vald
+    pub fn is_valid(&self) -> bool {
+        (0..23).contains(&self.tz_hour)
+            && (0..59).contains(&self.tz_minute)
+            && (1970..2500).contains(&self.year)
+            && (1..12).contains(&self.month)
+            && (1..31).contains(&self.day)
+            && (0..23).contains(&self.hour)
+            && (0..59).contains(&self.minute)
+            && (0..59).contains(&self.second)
+    }
+
+    /// Returns the numbers of seconds since 1970-01-01T00:00:00Z (Unix epoch)
+    /// or None if the date is invalid.
+    pub fn to_timestamp(&self) -> Option<i64> {
+        // Ported from https://github.com/protocolbuffers/upb/blob/22182e6e/upb/json_decode.c#L982-L992
+        if self.is_valid() {
+            let year_base = 4800; /* Before min year, multiple of 400. */
+            let m_adj = self.month.overflowing_sub(3).0; /* March-based month. */
+            let carry = if m_adj > self.month { 1 } else { 0 };
+            let adjust = if carry > 0 { 12 } else { 0 };
+            let y_adj = self.year as i64 + year_base - carry;
+            let month_days = ((m_adj.overflowing_add(adjust).0) * 62719 + 769) / 2048;
+            let leap_days = y_adj / 4 - y_adj / 100 + y_adj / 400;
+            ((y_adj * 365 + leap_days + month_days as i64 + (self.day as i64 - 1) - 2472632)
+                * 86400
+                + self.hour as i64 * 3600
+                + self.minute as i64 * 60
+                + self.second as i64
+                + ((self.tz_hour as i64 * 3600 + self.tz_minute as i64 * 60)
+                    * if self.tz_before_gmt { 1 } else { -1 }))
+            .into()
+        } else {
+            None
+        }
+    }
+}
+
+impl PartialOrd for DateTime {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        match self.to_timestamp()? - other.to_timestamp()? {
+            0 => std::cmp::Ordering::Equal,
+            x if x > 0 => std::cmp::Ordering::Greater,
+            _ => std::cmp::Ordering::Less,
+        }
+        .into()
+    }
+}
+
+impl Ord for DateTime {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        match self.to_timestamp().unwrap_or_default() - other.to_timestamp().unwrap_or_default() {
+            0 => std::cmp::Ordering::Equal,
+            x if x > 0 => std::cmp::Ordering::Greater,
+            _ => std::cmp::Ordering::Less,
+        }
+    }
 }
 
 impl fmt::Display for DateTime {
@@ -195,6 +253,8 @@ pub static MONTH_MAP: &[u8; 31] = &[
 
 #[cfg(test)]
 mod tests {
+    use chrono::{FixedOffset, LocalResult, SecondsFormat, TimeZone, Utc};
+
     use crate::{
         parsers::{fields::date::parse_date, message::MessageStream},
         HeaderValue,
@@ -265,9 +325,35 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             match parse_date(&mut MessageStream::new(str.as_bytes())) {
-                HeaderValue::DateTime(date) => {
-                    //println!("{} -> {}", input.0.escape_debug(), date.to_iso8601());
-                    assert_eq!(input.1, date.to_iso8601());
+                HeaderValue::DateTime(datetime) => {
+                    assert_eq!(input.1, datetime.to_iso8601());
+
+                    if datetime.is_valid() {
+                        if let LocalResult::Single(chrono_datetime)
+                        | LocalResult::Ambiguous(chrono_datetime, _) = FixedOffset::west_opt(
+                            ((datetime.tz_hour as i32 * 3600i32) + datetime.tz_minute as i32 * 60)
+                                * if datetime.tz_before_gmt { 1i32 } else { -1i32 },
+                        )
+                        .unwrap_or_else(|| FixedOffset::east(0))
+                        .ymd_opt(datetime.year as i32, datetime.month, datetime.day)
+                        .and_hms_opt(datetime.hour, datetime.minute, datetime.second)
+                        {
+                            assert_eq!(
+                                chrono_datetime.timestamp(),
+                                datetime.to_timestamp().unwrap(),
+                                "{} -> {} ({}) -> {} ({})",
+                                input.0.escape_debug(),
+                                datetime.to_timestamp().unwrap(),
+                                Utc.timestamp_opt(datetime.to_timestamp().unwrap(), 0)
+                                    .unwrap()
+                                    .to_rfc3339_opts(SecondsFormat::Secs, true),
+                                chrono_datetime.timestamp(),
+                                Utc.timestamp_opt(chrono_datetime.timestamp(), 0)
+                                    .unwrap()
+                                    .to_rfc3339_opts(SecondsFormat::Secs, true)
+                            );
+                        }
+                    }
                 }
                 HeaderValue::Empty => {
                     //println!("{} -> None", input.0.escape_debug());
