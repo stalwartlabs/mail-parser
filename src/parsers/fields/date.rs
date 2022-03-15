@@ -30,7 +30,7 @@ impl DateTime {
         )
     }
 
-    /// Returns true if the date is vald
+    /// Returns true if the date is valid
     pub fn is_valid(&self) -> bool {
         (0..23).contains(&self.tz_hour)
             && (0..59).contains(&self.tz_minute)
@@ -48,11 +48,11 @@ impl DateTime {
         // Ported from https://github.com/protocolbuffers/upb/blob/22182e6e/upb/json_decode.c#L982-L992
         if self.is_valid() {
             let year_base = 4800; /* Before min year, multiple of 400. */
-            let m_adj = self.month.overflowing_sub(3).0; /* March-based month. */
+            let m_adj = self.month.wrapping_sub(3); /* March-based month. */
             let carry = if m_adj > self.month { 1 } else { 0 };
             let adjust = if carry > 0 { 12 } else { 0 };
             let y_adj = self.year as i64 + year_base - carry;
-            let month_days = ((m_adj.overflowing_add(adjust).0) * 62719 + 769) / 2048;
+            let month_days = ((m_adj.wrapping_add(adjust)) * 62719 + 769) / 2048;
             let leap_days = y_adj / 4 - y_adj / 100 + y_adj / 400;
             ((y_adj * 365 + leap_days + month_days as i64 + (self.day as i64 - 1) - 2472632)
                 * 86400
