@@ -34,7 +34,6 @@ impl DateTime {
     pub fn is_valid(&self) -> bool {
         (0..=23).contains(&self.tz_hour)
             && (0..=59).contains(&self.tz_minute)
-            && (1970..=2500).contains(&self.year)
             && (1..=12).contains(&self.month)
             && (1..=31).contains(&self.day)
             && (0..=23).contains(&self.hour)
