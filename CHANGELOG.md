@@ -1,3 +1,7 @@
+mail-parser 0.4.6
+================================
+- DateTime is_valid() fix (#15)
+  
 mail-parser 0.4.5
 ================================
 - DateTime to UNIX timestamp conversion.

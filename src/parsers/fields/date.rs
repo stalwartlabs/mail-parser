@@ -33,6 +33,7 @@ impl DateTime {
     /// Returns true if the date is valid
     pub fn is_valid(&self) -> bool {
         (0..=23).contains(&self.tz_hour)
+            && (1970..=3000).contains(&self.year)
             && (0..=59).contains(&self.tz_minute)
             && (1..=12).contains(&self.month)
             && (1..=31).contains(&self.day)
@@ -43,44 +44,33 @@ impl DateTime {
 
     /// Returns the numbers of seconds since 1970-01-01T00:00:00Z (Unix epoch)
     /// or None if the date is invalid.
-    pub fn to_timestamp(&self) -> Option<i64> {
+    pub fn to_timestamp(&self) -> i64 {
         // Ported from https://github.com/protocolbuffers/upb/blob/22182e6e/upb/json_decode.c#L982-L992
-        if self.is_valid() {
-            let year_base = 4800; /* Before min year, multiple of 400. */
-            let m_adj = self.month.wrapping_sub(3); /* March-based month. */
-            let carry = if m_adj > self.month { 1 } else { 0 };
-            let adjust = if carry > 0 { 12 } else { 0 };
-            let y_adj = self.year as i64 + year_base - carry;
-            let month_days = ((m_adj.wrapping_add(adjust)) * 62719 + 769) / 2048;
-            let leap_days = y_adj / 4 - y_adj / 100 + y_adj / 400;
-            ((y_adj * 365 + leap_days + month_days as i64 + (self.day as i64 - 1) - 2472632)
-                * 86400
-                + self.hour as i64 * 3600
-                + self.minute as i64 * 60
-                + self.second as i64
-                + ((self.tz_hour as i64 * 3600 + self.tz_minute as i64 * 60)
-                    * if self.tz_before_gmt { 1 } else { -1 }))
-            .into()
-        } else {
-            None
-        }
+        let year_base = 4800; /* Before min year, multiple of 400. */
+        let m_adj = self.month.wrapping_sub(3); /* March-based month. */
+        let carry = if m_adj > self.month { 1 } else { 0 };
+        let adjust = if carry > 0 { 12 } else { 0 };
+        let y_adj = self.year as i64 + year_base - carry;
+        let month_days = ((m_adj.wrapping_add(adjust)) * 62719 + 769) / 2048;
+        let leap_days = y_adj / 4 - y_adj / 100 + y_adj / 400;
+        (y_adj * 365 + leap_days + month_days as i64 + (self.day as i64 - 1) - 2472632) * 86400
+            + self.hour as i64 * 3600
+            + self.minute as i64 * 60
+            + self.second as i64
+            + ((self.tz_hour as i64 * 3600 + self.tz_minute as i64 * 60)
+                * if self.tz_before_gmt { 1 } else { -1 })
     }
 }
 
 impl PartialOrd for DateTime {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        match self.to_timestamp()? - other.to_timestamp()? {
-            0 => std::cmp::Ordering::Equal,
-            x if x > 0 => std::cmp::Ordering::Greater,
-            _ => std::cmp::Ordering::Less,
-        }
-        .into()
+        self.cmp(other).into()
     }
 }
 
 impl Ord for DateTime {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        match self.to_timestamp().unwrap_or_default() - other.to_timestamp().unwrap_or_default() {
+        match self.to_timestamp() - other.to_timestamp() {
             0 => std::cmp::Ordering::Equal,
             x if x > 0 => std::cmp::Ordering::Greater,
             _ => std::cmp::Ordering::Less,
@@ -339,11 +329,11 @@ mod tests {
                         {
                             assert_eq!(
                                 chrono_datetime.timestamp(),
-                                datetime.to_timestamp().unwrap(),
+                                datetime.to_timestamp(),
                                 "{} -> {} ({}) -> {} ({})",
                                 input.0.escape_debug(),
-                                datetime.to_timestamp().unwrap(),
-                                Utc.timestamp_opt(datetime.to_timestamp().unwrap(), 0)
+                                datetime.to_timestamp(),
+                                Utc.timestamp_opt(datetime.to_timestamp(), 0)
                                     .unwrap()
                                     .to_rfc3339_opts(SecondsFormat::Secs, true),
                                 chrono_datetime.timestamp(),
