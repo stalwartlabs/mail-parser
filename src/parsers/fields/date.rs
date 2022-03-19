@@ -32,14 +32,14 @@ impl DateTime {
 
     /// Returns true if the date is valid
     pub fn is_valid(&self) -> bool {
-        (0..23).contains(&self.tz_hour)
-            && (0..59).contains(&self.tz_minute)
-            && (1970..2500).contains(&self.year)
-            && (1..12).contains(&self.month)
-            && (1..31).contains(&self.day)
-            && (0..23).contains(&self.hour)
-            && (0..59).contains(&self.minute)
-            && (0..59).contains(&self.second)
+        (0..=23).contains(&self.tz_hour)
+            && (0..=59).contains(&self.tz_minute)
+            && (1970..=2500).contains(&self.year)
+            && (1..=12).contains(&self.month)
+            && (1..=31).contains(&self.day)
+            && (0..=23).contains(&self.hour)
+            && (0..=59).contains(&self.minute)
+            && (0..=59).contains(&self.second)
     }
 
     /// Returns the numbers of seconds since 1970-01-01T00:00:00Z (Unix epoch)
