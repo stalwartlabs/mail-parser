@@ -16,11 +16,6 @@ use crate::{parsers::message::MessageStream, DateTime, HeaderValue};
 impl DateTime {
     /// Returns an ISO-8601 representation of the parsed RFC5322 datetime field
     pub fn to_iso8601(&self) -> String {
-        let tz_sign = if self.tz_before_gmt && (self.tz_hour > 0 || self.tz_minute > 0) {
-            "-"
-        } else {
-            "+"
-        };
         format!(
             "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}{}{:02}:{:02}",
             self.year,
@@ -29,7 +24,11 @@ impl DateTime {
             self.hour,
             self.minute,
             self.second,
-            tz_sign,
+            if self.tz_before_gmt && (self.tz_hour > 0 || self.tz_minute > 0) {
+                "-"
+            } else {
+                "+"
+            },
             self.tz_hour,
             self.tz_minute
         )
