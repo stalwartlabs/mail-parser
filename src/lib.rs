@@ -1532,3 +1532,9 @@ impl<'x, 'de> Deserialize<'de> for MessageAttachment<'x> {
         panic!("Deserializing message attachments is not supported at this time.")
     }
 }
+
+impl From<DateTime> for i64 {
+    fn from(value: DateTime) -> Self {
+        value.to_timestamp()
+    }
+}
