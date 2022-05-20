@@ -583,7 +583,7 @@ pub enum RfcHeader {
 }
 
 impl RfcHeader {
-    pub fn as_str(&self) -> &str {
+    pub fn as_str(&self) -> &'static str {
         match self {
             RfcHeader::Subject => "Subject",
             RfcHeader::From => "From",
@@ -1536,5 +1536,17 @@ impl<'x, 'de> Deserialize<'de> for MessageAttachment<'x> {
 impl From<DateTime> for i64 {
     fn from(value: DateTime) -> Self {
         value.to_timestamp()
+    }
+}
+
+impl From<RfcHeader> for String {
+    fn from(header: RfcHeader) -> Self {
+        header.to_string()
+    }
+}
+
+impl From<RfcHeader> for Cow<'_, str> {
+    fn from(header: RfcHeader) -> Self {
+        Cow::Borrowed(header.as_str())
     }
 }
