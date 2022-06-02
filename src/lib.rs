@@ -794,6 +794,11 @@ pub struct DateTime {
 }
 
 impl<'x> Message<'x> {
+    /// Returns a parsed RFC header.
+    pub fn get_header(&self, header: &RfcHeader) -> Option<&HeaderValue> {
+        self.headers_rfc.get(header)
+    }
+
     /// Returns an iterator over the RFC headers of this message.
     pub fn get_headers_rfc(&self) -> impl Iterator<Item = (&RfcHeader, &HeaderValue<'x>)> {
         self.headers_rfc.iter()
