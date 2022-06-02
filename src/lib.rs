@@ -497,7 +497,7 @@ impl<'x> Group<'x> {
 }
 
 pub type RfcHeaders<'x> = HashMap<RfcHeader, HeaderValue<'x>>;
-pub type RawHeaders<'x> = HashMap<HeaderName<'x>, Vec<HeaderOffset>>;
+pub type RawHeaders<'x> = Vec<(HeaderName<'x>, HeaderOffset)>;
 
 /// Offset of a message element in the raw message.
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -632,36 +632,36 @@ impl Display for RfcHeader {
     }
 }
 
-/// A parsed header value.
+/// Parsed header value.
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 //#[cfg_attr(feature = "serde_support", serde(tag = "type"))]
 pub enum HeaderValue<'x> {
-    /// A single address
+    /// Single address
     Address(Addr<'x>),
 
-    /// An address list
+    /// Address list
     AddressList(Vec<Addr<'x>>),
 
-    /// A group of addresses
+    /// Group of addresses
     Group(Group<'x>),
 
-    /// A list containing two or more address groups
+    /// List containing two or more address groups
     GroupList(Vec<Group<'x>>),
 
-    /// A string
+    /// String
     Text(Cow<'x, str>),
 
-    /// A list of strings
+    /// List of strings
     TextList(Vec<Cow<'x, str>>),
 
-    /// A datetime
+    /// Datetime
     DateTime(DateTime),
 
-    /// A Content-Type or Content-Disposition header
+    /// Content-Type or Content-Disposition header
     ContentType(ContentType<'x>),
 
-    /// A collection of multiple header fields, for example
+    /// Collection of multiple header fields, for example
     /// Resent-To, References, etc.
     Collection(Vec<HeaderValue<'x>>),
     Empty,
@@ -988,6 +988,22 @@ impl<'x> Message<'x> {
             .unwrap_or(&HeaderValue::Empty)
     }
 
+    /// Returns the return address from either the Return-Path
+    /// or From header fields
+    pub fn get_return_address(&self) -> Option<&str> {
+        match self.headers_rfc.get(&RfcHeader::ReturnPath) {
+            Some(HeaderValue::Text(text)) => Some(text.as_ref()),
+            Some(HeaderValue::TextList(text_list)) => text_list.last().map(|t| t.as_ref()),
+            _ => match self.headers_rfc.get(&RfcHeader::From) {
+                Some(HeaderValue::Address(addr)) => addr.address.as_deref(),
+                Some(HeaderValue::AddressList(addr_list)) => {
+                    addr_list.last().and_then(|a| a.address.as_deref())
+                }
+                _ => None,
+            },
+        }
+    }
+
     /// Returns the Sender header field
     pub fn get_sender(&self) -> &HeaderValue<'x> {
         self.headers_rfc
@@ -1026,15 +1042,30 @@ impl<'x> Message<'x> {
         }
     }
 
+    /// Returns all headers in raw format
+    pub fn get_raw_headers(&self) -> &[(HeaderName, HeaderOffset)] {
+        &self.headers_raw
+    }
+
     pub fn _get_raw(&'x self, name: HeaderName) -> Option<Vec<Cow<'x, str>>> {
-        self.headers_raw
-            .get(&name)?
+        let headers = self
+            .headers_raw
             .iter()
-            .map(|offset| {
-                String::from_utf8_lossy(self.raw_message.get(offset.start..offset.end).unwrap())
+            .filter_map(|(k, v)| {
+                if k == &name {
+                    Some(String::from_utf8_lossy(
+                        self.raw_message.get(v.start..v.end).unwrap(),
+                    ))
+                } else {
+                    None
+                }
             })
-            .collect::<Vec<Cow<str>>>()
-            .into()
+            .collect::<Vec<Cow<str>>>();
+        if !headers.is_empty() {
+            Some(headers)
+        } else {
+            None
+        }
     }
 
     /// Returns in raw format a header field not defined in the conformed RFCs

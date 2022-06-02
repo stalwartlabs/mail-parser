@@ -25,6 +25,16 @@ use super::{
     mime::{get_bytes_to_boundary, seek_crlf_end, seek_next_part, skip_crlf, skip_multipart_end},
 };
 
+const MIME_HEADERS: &[RfcHeader] = &[
+    RfcHeader::ContentType,
+    RfcHeader::ContentDisposition,
+    RfcHeader::ContentId,
+    RfcHeader::ContentLanguage,
+    RfcHeader::ContentLocation,
+    RfcHeader::ContentTransferEncoding,
+    RfcHeader::ContentDescription,
+];
+
 #[derive(Debug, PartialEq)]
 enum MimeType {
     MultipartMixed,
@@ -436,24 +446,22 @@ impl<'x> Message<'x> {
                     // If there is a single part in the message, move MIME headers
                     // to the part
                     if is_message {
-                        for header_name in [
-                            RfcHeader::ContentType,
-                            RfcHeader::ContentDisposition,
-                            RfcHeader::ContentId,
-                            RfcHeader::ContentLanguage,
-                            RfcHeader::ContentLocation,
-                            RfcHeader::ContentTransferEncoding,
-                            RfcHeader::ContentDescription,
-                        ] {
-                            if let Some(value) = message.headers_rfc.remove(&header_name) {
-                                text_part.headers_rfc.insert(header_name, value);
+                        for header_name in MIME_HEADERS {
+                            if let Some(value) = message.headers_rfc.remove(header_name) {
+                                text_part.headers_rfc.insert(*header_name, value);
                             }
-                            if let Some(value) =
-                                message.headers_raw.get(&HeaderName::Rfc(header_name))
-                            {
-                                text_part
-                                    .headers_raw
-                                    .insert(HeaderName::Rfc(header_name), value.to_vec());
+                        }
+
+                        for (header_name, offset) in &message.headers_raw {
+                            match header_name {
+                                HeaderName::Rfc(header_name)
+                                    if MIME_HEADERS.contains(header_name) =>
+                                {
+                                    text_part
+                                        .headers_raw
+                                        .push((HeaderName::Rfc(*header_name), offset.clone()));
+                                }
+                                _ => (),
                             }
                         }
                     }
@@ -498,24 +506,22 @@ impl<'x> Message<'x> {
                     // If there is a single part in the message, move MIME headers
                     // to the part
                     if is_message {
-                        for header_name in [
-                            RfcHeader::ContentType,
-                            RfcHeader::ContentDisposition,
-                            RfcHeader::ContentId,
-                            RfcHeader::ContentLanguage,
-                            RfcHeader::ContentLocation,
-                            RfcHeader::ContentTransferEncoding,
-                            RfcHeader::ContentDescription,
-                        ] {
-                            if let Some(value) = message.headers_rfc.remove(&header_name) {
-                                binary_part.headers_rfc.insert(header_name, value);
+                        for header_name in MIME_HEADERS {
+                            if let Some(value) = message.headers_rfc.remove(header_name) {
+                                binary_part.headers_rfc.insert(*header_name, value);
                             }
-                            if let Some(value) =
-                                message.headers_raw.get(&HeaderName::Rfc(header_name))
-                            {
-                                binary_part
-                                    .headers_raw
-                                    .insert(HeaderName::Rfc(header_name), value.to_vec());
+                        }
+
+                        for (header_name, offset) in &message.headers_raw {
+                            match header_name {
+                                HeaderName::Rfc(header_name)
+                                    if MIME_HEADERS.contains(header_name) =>
+                                {
+                                    binary_part
+                                        .headers_raw
+                                        .push((HeaderName::Rfc(*header_name), offset.clone()));
+                                }
+                                _ => (),
                             }
                         }
                     }

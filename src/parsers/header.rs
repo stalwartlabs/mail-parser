@@ -49,13 +49,13 @@ pub fn parse_headers<'x>(
 
                 let from_offset = stream.pos;
                 let value = parser(stream);
-                headers_raw
-                    .entry(HeaderName::Rfc(name))
-                    .or_insert_with(Vec::new)
-                    .push(HeaderOffset {
+                headers_raw.push((
+                    HeaderName::Rfc(name),
+                    HeaderOffset {
                         start: from_offset,
                         end: stream.pos,
-                    });
+                    },
+                ));
 
                 if !value.is_empty() {
                     match headers_rfc.entry(name) {
@@ -77,13 +77,13 @@ pub fn parse_headers<'x>(
             HeaderParserResult::Other(name) => {
                 let from_offset = stream.pos;
                 parse_and_ignore(stream);
-                headers_raw
-                    .entry(HeaderName::Other(name))
-                    .or_insert_with(Vec::new)
-                    .push(HeaderOffset {
+                headers_raw.push((
+                    HeaderName::Other(name),
+                    HeaderOffset {
                         start: from_offset,
                         end: stream.pos,
-                    });
+                    },
+                ));
             }
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
