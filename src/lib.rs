@@ -1048,8 +1048,13 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all headers in raw format
-    pub fn get_raw_headers(&self) -> &[(HeaderName, HeaderOffset)] {
-        &self.headers_raw
+    pub fn get_raw_headers(&self) -> impl Iterator<Item = (&HeaderName, Cow<str>)> {
+        self.headers_raw.iter().map(move |(name, offset)| {
+            (
+                name,
+                String::from_utf8_lossy(&self.raw_message[offset.start..offset.end]),
+            )
+        })
     }
 
     pub fn _get_raw(&'x self, name: HeaderName) -> Option<Vec<Cow<'x, str>>> {

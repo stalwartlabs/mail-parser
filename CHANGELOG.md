@@ -1,3 +1,10 @@
+mail-parser 0.4.7
+================================
+- Retrieving message headers in order (#19)
+- Added `get_raw_headers` and `get_header` methods.
+- Support for malformed Return-Path fields.
+- Support for ks_c_5601 charsets (#20)
+
 mail-parser 0.4.6
 ================================
 - DateTime is_valid() fix (#15)
