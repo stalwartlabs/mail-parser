@@ -2,7 +2,8 @@ mail-parser 0.4.7
 ================================
 - Retrieving message headers in order (#19)
 - Added `get_raw_headers` and `get_header` methods.
-- Support for malformed Return-Path fields.
+- Added `get_return_address` method to obtain the return address from the Return-Path or From headers.
+- Support for malformed Return-Path headers.
 - Support for ks_c_5601 charsets (#20)
 
 mail-parser 0.4.6
