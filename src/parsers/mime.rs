@@ -64,7 +64,7 @@ pub fn get_bytes_to_boundary<'x>(
                     if is_boundary_end(stream, read_pos) {
                         let mut match_pos = read_pos - match_count;
 
-                        if let Some(b'\r') = stream.data.get(match_pos - 1) {
+                        if let Some(b'\r') = stream.data.get(match_pos.saturating_sub(1)) {
                             match_pos -= 1;
                         }
 
