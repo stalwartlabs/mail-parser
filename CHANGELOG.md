@@ -1,3 +1,7 @@
+mail-parser 0.4.8
+================================
+- get_bytes_to_boundary fix (#21)
+
 mail-parser 0.4.7
 ================================
 - Retrieving message headers in order (#19)
