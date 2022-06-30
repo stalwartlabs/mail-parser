@@ -16,7 +16,7 @@ use super::{
     DecoderFnc,
 };
 
-pub fn get_charset_decoder<'x>(charset: &[u8]) -> Option<DecoderFnc<'x>> {
+pub fn get_charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
     if (2..=45).contains(&charset.len()) {
         let mut l_charset = [0u8; 45];
         let mut hash: u32 = charset.len() as u32;

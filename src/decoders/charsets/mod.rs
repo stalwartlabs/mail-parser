@@ -14,7 +14,7 @@ pub mod multi_byte;
 pub mod single_byte;
 pub mod utf;
 
-pub type DecoderFnc<'x> = fn(&'x [u8]) -> String;
+pub type DecoderFnc = fn(&[u8]) -> String;
 
 #[cfg(test)]
 mod tests {
