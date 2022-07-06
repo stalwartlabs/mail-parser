@@ -291,6 +291,7 @@ pub struct Message<'x> {
 
     pub offset_header: usize,
     pub offset_body: usize,
+    pub offset_last_part: usize,
     pub offset_end: usize,
     #[cfg_attr(feature = "serde_support", serde(skip))]
     pub raw_message: Cow<'x, [u8]>,
