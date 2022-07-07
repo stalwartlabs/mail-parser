@@ -323,6 +323,7 @@ pub struct Part<'x, T> {
     pub headers_raw: RawHeaders<'x>,
     pub is_encoding_problem: bool,
     pub body: T,
+    pub body_raw: Cow<'x, [u8]>,
 }
 
 impl<'x, T> Part<'x, T> {
@@ -330,12 +331,14 @@ impl<'x, T> Part<'x, T> {
         headers_rfc: RfcHeaders<'x>,
         headers_raw: RawHeaders<'x>,
         body: T,
+        body_raw: Cow<'x, [u8]>,
         is_encoding_problem: bool,
     ) -> Self {
         Self {
             headers_rfc,
             headers_raw,
             body,
+            body_raw,
             is_encoding_problem,
         }
     }

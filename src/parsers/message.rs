@@ -339,6 +339,8 @@ impl<'x> Message<'x> {
                 continue;
             }
 
+            let offset_part_begin = stream.pos;
+
             let (bytes_read, mut bytes) = decode_fnc(
                 &stream,
                 stream.pos,
@@ -399,10 +401,21 @@ impl<'x> Message<'x> {
                 stream.pos += bytes_read;
             }
 
-            message.offset_last_part = match bytes {
-                DecodeResult::Borrowed((_, pos)) => pos,
-                _ => stream.pos,
+            // The parser matches a MIME part PLUS its mime delimiter
+            // Part End is the offset of the end of the part or
+            // the beginning of the MIME delimiter.
+            let offset_part_end = match state.mime_boundary.as_ref() {
+                Some(b) => {
+                    let tmp_offset = stream.pos - b.len();
+                    if tmp_offset > 1 && stream.data[tmp_offset - 1] == b'\r' {
+                        tmp_offset - 1
+                    } else {
+                        tmp_offset
+                    }
+                },
+                None => stream.pos,
             };
+            message.offset_last_part = offset_part_end;
 
             if mime_type != MimeType::Message {
                 let is_inline = is_inline
@@ -443,6 +456,7 @@ impl<'x> Message<'x> {
                     let is_html = mime_type == MimeType::TextHtml;
                     let mut text_part = Part {
                         body: result_to_string(bytes, stream.data, content_type),
+                        body_raw: raw_message[offset_part_begin..offset_part_end].into(),
                         headers_rfc: std::mem::take(&mut mime_part_header),
                         headers_raw: std::mem::take(&mut mime_part_header_raw),
                         is_encoding_problem,
@@ -505,6 +519,7 @@ impl<'x> Message<'x> {
                         std::mem::take(&mut mime_part_header),
                         std::mem::take(&mut mime_part_header_raw),
                         result_to_bytes(bytes, stream.data),
+                        raw_message[offset_part_begin..offset_part_end].into(),
                         is_encoding_problem,
                     );
 
@@ -543,7 +558,8 @@ impl<'x> Message<'x> {
                 message.parts.push(MessagePart::Message(Part::new(
                     std::mem::take(&mut mime_part_header),
                     std::mem::take(&mut mime_part_header_raw),
-                    MessageAttachment::Raw(result_to_bytes(bytes, stream.data)),
+                    MessageAttachment::Raw(result_to_bytes(bytes, stream.data)),  
+                    raw_message[offset_part_begin..offset_part_end].into(),
                     is_encoding_problem,
                 )));
             }
@@ -569,6 +585,7 @@ impl<'x> Message<'x> {
                                 headers,
                                 headers_raw,
                                 MessageAttachment::Parsed(Box::new(message)),
+                                raw_message[offset_part_begin..offset_part_end].into(),
                                 false,
                             )));
                             message = prev_message;
@@ -641,10 +658,12 @@ impl<'x> Message<'x> {
                 message.structure = state.get_structure();
                 message.raw_message = raw_message[message.offset_header..message.offset_end].into();
                 prev_message.attachments.push(prev_message.parts.len());
+                let raw  = raw_message[message.offset_header..message.offset_last_part].into();
                 prev_message.parts.push(MessagePart::Message(Part::new(
                     headers,
                     headers_raw,
                     MessageAttachment::Parsed(Box::new(message)),
+                    raw,
                     false,
                 )));
             }
