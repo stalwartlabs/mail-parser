@@ -399,11 +399,6 @@ impl<'x> Message<'x> {
                 stream.pos += bytes_read;
             }
 
-            message.offset_last_part = match bytes {
-                DecodeResult::Borrowed((_, pos)) => pos,
-                _ => stream.pos,
-            };
-
             if mime_type != MimeType::Message {
                 let is_inline = is_inline
                     && header
