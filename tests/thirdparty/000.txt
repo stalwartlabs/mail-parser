@@ -33,6 +33,26 @@ ZWg=
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 13,
+        "end": 19
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 32,
+        "end": 76
+      }
+    ]
+  ],
   "html_body": [
     0,
     1
@@ -46,19 +66,42 @@ ZWg=
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 128,
+              "end": 137
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 150,
+              "end": 163
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
+        "body": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a",
+        "offset_header": 102,
+        "offset_body": 165,
+        "offset_end": 389
       }
     },
     {
@@ -75,8 +118,31 @@ ZWg=
             "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 413,
+              "end": 426
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 452,
+              "end": 461
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "eh"
+        "body": "eh",
+        "offset_header": 400,
+        "offset_body": 463,
+        "offset_end": 467
       }
     }
   ],

@@ -103,14 +103,26 @@ end
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "message_id": {
+      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "to": {
+      "Address": {
+        "name": "J�rgen Schm�rgen",
+        "address": "jschmuergen@example.com"
+      }
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -125,18 +137,6 @@ end
         "tz_minute": 0
       }
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "jschmuergen@example.com"
-      }
-    },
-    "subject": {
-      "Text": "The Hare and the Tortoise"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -147,6 +147,89 @@ end
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 175,
+        "end": 209
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 212,
+        "end": 257
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 262,
+        "end": 299
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 307,
+        "end": 335
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 348,
+        "end": 354
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 367,
+        "end": 434
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -171,13 +254,30 @@ end
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 487,
+              "end": 520
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n"
+        "body": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n",
+        "offset_header": 474,
+        "offset_body": 522,
+        "offset_end": 1286
       }
     },
     {
       "Binary": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "x-uuencode"
+          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -186,9 +286,6 @@ end
                 "filename": "greenball.png"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
           },
           "content_type": {
             "ContentType": {
@@ -200,6 +297,35 @@ end
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1339,
+              "end": 1373
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1399,
+              "end": 1412
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 1432,
+              "end": 1471
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           13,
@@ -2056,21 +2182,15 @@ end
           100,
           13,
           10
-        ]
+        ],
+        "offset_header": 1326,
+        "offset_body": 1473,
+        "offset_end": 3327
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -2082,8 +2202,46 @@ end
           },
           "content_transfer_encoding": {
             "Text": "x-uuencode"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 3380,
+              "end": 3413
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 3439,
+              "end": 3452
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 3472,
+              "end": 3510
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           13,
@@ -3978,7 +4136,10 @@ end
           100,
           13,
           10
-        ]
+        ],
+        "offset_header": 3367,
+        "offset_body": 3512,
+        "offset_end": 5404
       }
     }
   ],

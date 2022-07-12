@@ -109,29 +109,11 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "=====================_716541962==_"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -146,13 +128,114 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "tz_minute": 0
       }
     },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "=====================_716541962==_"
+        }
+      }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519005505.00a853a0@pop.example.com"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 175,
+        "end": 209
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 212,
+        "end": 295
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 300,
+        "end": 337
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 345,
+        "end": 390
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 403,
+        "end": 409
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 422,
+        "end": 489
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -181,22 +264,36 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 542,
+              "end": 577
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 603,
+              "end": 622
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
+        "offset_header": 529,
+        "offset_body": 624,
+        "offset_end": 1433
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -208,8 +305,46 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
           },
           "content_transfer_encoding": {
             "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "blueball.png"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1486,
+              "end": 1519
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1545,
+              "end": 1554
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 1574,
+              "end": 1612
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1537,21 +1672,15 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 1473,
+        "offset_body": 1614,
+        "offset_end": 3428
       }
     },
     {
       "Text": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "us-ascii"
-              }
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -1560,24 +1689,47 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "filename": "farmerandstork.txt"
               }
             }
-          }
-        },
-        "is_encoding_problem": false,
-        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n"
-      }
-    },
-    {
-      "Text": {
-        "headers_rfc": {
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": {
-                "charset": "iso-8859-1"
+                "charset": "us-ascii"
               }
             }
-          },
+          }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 3481,
+              "end": 3514
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 3534,
+              "end": 3578
+            }
+          ]
+        ],
+        "is_encoding_problem": false,
+        "body": "\r\nThe Farmer and the Stork \r\n \r\nA FARMER placed nets on his newly-sown plowlands and caught a\r\nnumber of Cranes, which came to pick up his seed.  With them he\r\ntrapped a Stork that had fractured his leg in the net and was\r\nearnestly beseeching the Farmer to spare his life.  \"Pray save\r\nme, Master,\" he said, \"and let me go free this once.  My broken\r\nlimb should excite your pity.  Besides, I am no Crane, I am a\r\nStork, a bird of excellent character; and see how I love and\r\nslave for my father and mother.  Look too, at my feathers--\r\nthey are not the least like those of a Crane.\"   The Farmer \r\nlaughed aloud and said, \"It may be all as you say, I only know \r\nthis:  I have taken you with these robbers, the Cranes, and you \r\nmust die in their company.\"  \r\n \r\nBirds of a feather flock together.   \r\n",
+        "offset_header": 3468,
+        "offset_body": 3580,
+        "offset_end": 4384
+      }
+    },
+    {
+      "Text": {
+        "headers_rfc": {
           "content_transfer_encoding": {
             "Text": "quoted-printable"
           },
@@ -1589,10 +1741,51 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
                 "filename": "HasenundFr�sche.txt"
               }
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "iso-8859-1"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 4437,
+              "end": 4472
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 4498,
+              "end": 4517
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 4537,
+              "end": 4582
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
+        "offset_header": 4424,
+        "offset_body": 4584,
+        "offset_end": 5393
       }
     }
   ],

@@ -39,6 +39,15 @@ Subject: my different opinion
     "mime_version": {
       "Text": "1.0"
     },
+    "from": {
+      "Address": {
+        "name": "Moderator-Address",
+        "address": null
+      }
+    },
+    "subject": {
+      "Text": "Internet Digest, volume 42"
+    },
     "date": {
       "DateTime": {
         "year": 1994,
@@ -61,15 +70,6 @@ Subject: my different opinion
         }
       }
     },
-    "subject": {
-      "Text": "Internet Digest, volume 42"
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": null
-      }
-    },
     "to": {
       "Address": {
         "name": "Recipient-List",
@@ -77,6 +77,62 @@ Subject: my different opinion
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 24
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 27,
+        "end": 43
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 48,
+        "end": 81
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 89,
+        "end": 117
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 130,
+        "end": 135
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 148,
+        "end": 213
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -99,8 +155,12 @@ Subject: my different opinion
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
-        "body": "...Introductory text or table of contents...\n"
+        "body": "...Introductory text or table of contents...\n",
+        "offset_header": 240,
+        "offset_body": 241,
+        "offset_end": 286
       }
     },
     {
@@ -115,7 +175,21 @@ Subject: my different opinion
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 326,
+              "end": 391
+            }
+          ]
+        ],
+        "offset_header": 313,
+        "offset_body": 392,
+        "offset_end": 698
       }
     },
     {
@@ -129,15 +203,10 @@ Subject: my different opinion
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "someone-else",
-                "address": null
-              }
-            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -153,8 +222,43 @@ Subject: my different opinion
             },
             "subject": {
               "Text": "my opinion"
+            },
+            "from": {
+              "Address": {
+                "name": "someone-else",
+                "address": null
+              }
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "from"
+              },
+              {
+                "start": 423,
+                "end": 437
+              }
+            ],
+            [
+              {
+                "Rfc": "date"
+              },
+              {
+                "start": 442,
+                "end": 475
+              }
+            ],
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 483,
+                "end": 495
+              }
+            ]
+          ],
           "html_body": [
             0
           ],
@@ -174,8 +278,12 @@ Subject: my different opinion
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "...body goes here ...\n"
+                "body": "...body goes here ...\n",
+                "offset_header": 418,
+                "offset_body": 496,
+                "offset_end": 518
               }
             }
           ],
@@ -184,8 +292,11 @@ Subject: my different opinion
           },
           "offset_header": 418,
           "offset_body": 496,
-          "offset_end": 545
-        }
+          "offset_end": 518
+        },
+        "offset_header": 417,
+        "offset_body": 418,
+        "offset_end": 518
       }
     },
     {
@@ -199,9 +310,19 @@ Subject: my different opinion
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
+            "from": {
+              "Address": {
+                "name": "someone-else-again",
+                "address": null
+              }
+            },
+            "subject": {
+              "Text": "my different opinion"
+            },
             "date": {
               "DateTime": {
                 "year": 1993,
@@ -214,17 +335,37 @@ Subject: my different opinion
                 "tz_hour": 5,
                 "tz_minute": 0
               }
-            },
-            "subject": {
-              "Text": "my different opinion"
-            },
-            "from": {
-              "Address": {
-                "name": "someone-else-again",
-                "address": null
-              }
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "from"
+              },
+              {
+                "start": 550,
+                "end": 570
+              }
+            ],
+            [
+              {
+                "Rfc": "date"
+              },
+              {
+                "start": 575,
+                "end": 608
+              }
+            ],
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 616,
+                "end": 638
+              }
+            ]
+          ],
           "html_body": [
             0
           ],
@@ -244,8 +385,12 @@ Subject: my different opinion
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "... another body goes here ...\n"
+                "body": "... another body goes here ...\n",
+                "offset_header": 545,
+                "offset_body": 639,
+                "offset_end": 670
               }
             }
           ],
@@ -254,8 +399,11 @@ Subject: my different opinion
           },
           "offset_header": 545,
           "offset_body": 639,
-          "offset_end": 695
-        }
+          "offset_end": 670
+        },
+        "offset_header": 544,
+        "offset_body": 545,
+        "offset_end": 670
       }
     }
   ],

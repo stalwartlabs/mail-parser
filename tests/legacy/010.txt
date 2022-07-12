@@ -25,17 +25,8 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
     "subject": {
       "Text": "Die Hasen und die Fr�sche"
     },
-    "to": {
-      "Address": {
-        "name": "Heinz M�ller",
-        "address": "mueller@example.com"
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -50,13 +41,123 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz M�ller",
+        "address": "mueller@example.com"
+      }
     },
     "message_id": {
       "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 181,
+        "end": 195
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 200,
+        "end": 234
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 237,
+        "end": 274
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 279,
+        "end": 316
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 324,
+        "end": 352
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 365,
+        "end": 371
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 384,
+        "end": 419
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 445,
+        "end": 452
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -68,6 +169,9 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "8bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -76,13 +180,33 @@ In einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu; allein da
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "8bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 384,
+              "end": 419
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 445,
+              "end": 452
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n\r\n\r\n"
+        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n\r\n\r\n",
+        "offset_header": 0,
+        "offset_body": 454,
+        "offset_end": 1203
       }
     }
   ],

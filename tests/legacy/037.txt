@@ -61,11 +61,8 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         }
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
     "message_id": {
       "Text": "392366A7.21929EA7@example.com"
@@ -83,19 +80,105 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 45
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 50,
+        "end": 84
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 89,
+        "end": 126
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 135,
+        "end": 165
+      }
+    ],
+    [
+      {
+        "Other": "X-Accept-Language"
+      },
+      {
+        "start": 183,
+        "end": 188
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 201,
+        "end": 207
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 210,
+        "end": 240
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 248,
+        "end": 294
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 307,
+        "end": 376
+      }
+    ]
+  ],
   "html_body": [
     0,
     1
@@ -111,9 +194,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -122,18 +202,41 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 477,
+              "end": 508
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 534,
+              "end": 541
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": " "
+        "body": " ",
+        "offset_header": 464,
+        "offset_body": 543,
+        "offset_end": 544
       }
     },
     {
       "InlineBinary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -142,6 +245,9 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "blueball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -153,6 +259,35 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 599,
+              "end": 634
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 660,
+              "end": 669
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 689,
+              "end": 725
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1480,7 +1615,10 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 586,
+        "offset_body": 727,
+        "offset_end": 2543
       }
     }
   ],

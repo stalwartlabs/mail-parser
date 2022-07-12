@@ -35,6 +35,17 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 125
+      }
+    ]
+  ],
   "html_body": [
     2
   ],
@@ -57,7 +68,21 @@ Content-Type: text/plain
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 224,
+              "end": 335
+            }
+          ]
+        ],
+        "offset_header": 211,
+        "offset_body": 336,
+        "offset_end": 997
       }
     },
     {
@@ -72,7 +97,21 @@ Content-Type: text/plain
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 433,
+              "end": 543
+            }
+          ]
+        ],
+        "offset_header": 420,
+        "offset_body": 544,
+        "offset_end": 997
       }
     },
     {
@@ -86,8 +125,22 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 640,
+              "end": 652
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333"
+        "body": "1\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\nContent-Type: text/plain\n\n22\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\nContent-Type: text/plain\n\n333",
+        "offset_header": 627,
+        "offset_body": 653,
+        "offset_end": 882
       }
     },
     {
@@ -101,20 +154,41 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 979,
+              "end": 991
+            }
+          ]
+        ],
         "is_encoding_problem": true,
-        "body": "4444\n"
+        "body": "4444\n",
+        "offset_header": 966,
+        "offset_body": 992,
+        "offset_end": 914
       }
     }
   ],
   "structure": {
     "MultiPart": [
-      1,
+      0,
       [
         {
-          "Part": 2
-        },
-        {
-          "Part": 3
+          "MultiPart": [
+            1,
+            [
+              {
+                "Part": 2
+              },
+              {
+                "Part": 3
+              }
+            ]
+          ]
         }
       ]
     ]

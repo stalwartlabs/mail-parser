@@ -26,22 +26,8 @@ invalid
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "return_path": {
-      "Text": "test@example.org"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "signed",
-        "attributes": {
-          "protocol": "application/pgp-signature",
-          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
-          "micalg": "pgp-sha1"
-        }
-      }
+    "subject": {
+      "Text": "Hello world"
     },
     "message_id": {
       "Text": "1.2.3.4@example"
@@ -52,14 +38,22 @@ invalid
         "address": "test2@example.org"
       }
     },
-    "subject": {
-      "Text": "Hello world"
-    },
-    "from": {
-      "Address": {
-        "name": "Test User",
-        "address": "test@example.org"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "signed",
+        "attributes": {
+          "micalg": "pgp-sha1",
+          "boundary": "=-GNQXLhuj24Pl1aCkk4/d",
+          "protocol": "application/pgp-signature"
+        }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "return_path": {
+      "Text": "test@example.org"
     },
     "date": {
       "DateTime": {
@@ -73,8 +67,88 @@ invalid
         "tz_hour": 3,
         "tz_minute": 0
       }
+    },
+    "from": {
+      "Address": {
+        "name": "Test User",
+        "address": "test@example.org"
+      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "return_path"
+      },
+      {
+        "start": 12,
+        "end": 32
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 40,
+        "end": 53
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 58,
+        "end": 88
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 91,
+        "end": 125
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 136,
+        "end": 155
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 168,
+        "end": 173
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 178,
+        "end": 211
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 224,
+        "end": 334
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -88,19 +162,42 @@ invalid
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 373,
+              "end": 385
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 411,
+              "end": 429
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "There was a day \na happy day\n"
+        "body": "There was a day \na happy day\n",
+        "offset_header": 360,
+        "offset_body": 430,
+        "offset_end": 463
       }
     },
     {
@@ -116,6 +213,17 @@ invalid
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 502,
+              "end": 549
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           105,
@@ -126,7 +234,10 @@ invalid
           105,
           100,
           10
-        ]
+        ],
+        "offset_header": 489,
+        "offset_body": 550,
+        "offset_end": 558
       }
     }
   ],

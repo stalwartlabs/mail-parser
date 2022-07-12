@@ -21,6 +21,17 @@ Content-Type: text/html
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 47
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [],

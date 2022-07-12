@@ -25,10 +25,20 @@ This is the epilogue.  It is also to be ignored.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "date": {
+      "DateTime": {
+        "year": 1993,
+        "month": 3,
+        "day": 21,
+        "hour": 23,
+        "minute": 56,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
       }
     },
     "content_type": {
@@ -46,24 +56,14 @@ This is the epilogue.  It is also to be ignored.
         "address": "ned@innosoft.com"
       }
     },
-    "date": {
-      "DateTime": {
-        "year": 1993,
-        "month": 3,
-        "day": 21,
-        "hour": 23,
-        "minute": 56,
-        "second": 48,
-        "tz_before_gmt": true,
-        "tz_hour": 8,
-        "tz_minute": 0
-      }
-    },
     "subject": {
       "Text": "Sample message"
     },
-    "mime_version": {
-      "Text": "1.0"
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
     }
   },
   "headers_raw": [

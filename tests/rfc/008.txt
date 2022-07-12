@@ -40,6 +40,17 @@ YWFhYWFhYWFhYWFhYS0tDQo=
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 82
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -66,22 +77,45 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 139,
+              "end": 166
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 192,
+              "end": 198
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "This is a message with a base64 encoded attached email"
+        "body": "This is a message with a base64 encoded attached email",
+        "offset_header": 126,
+        "offset_body": 199,
+        "offset_end": 253
       }
     },
     {
       "Message": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "message",
               "c_subtype": "rfc822",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           },
           "content_disposition": {
             "ContentType": {
@@ -93,6 +127,35 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 317,
+              "end": 360
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 373,
+              "end": 389
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 415,
+              "end": 423
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
@@ -102,20 +165,8 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "address": "email@example.com"
               }
             },
-            "content_language": {
-              "Text": "en-US"
-            },
-            "to": {
-              "Address": {
-                "name": "email@example.com",
-                "address": "email@example.com"
-              }
-            },
-            "subject": {
-              "Text": "HTML test"
-            },
-            "message_id": {
-              "Text": "random-message-id@example.com"
+            "mime_version": {
+              "Text": "1.0"
             },
             "date": {
               "DateTime": {
@@ -130,6 +181,9 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 "tz_minute": 0
               }
             },
+            "message_id": {
+              "Text": "random-message-id@example.com"
+            },
             "content_type": {
               "ContentType": {
                 "c_type": "multipart",
@@ -139,10 +193,93 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                 }
               }
             },
-            "mime_version": {
-              "Text": "1.0"
+            "subject": {
+              "Text": "HTML test"
+            },
+            "content_language": {
+              "Text": "en-US"
+            },
+            "to": {
+              "Address": {
+                "name": "email@example.com",
+                "address": "email@example.com"
+              }
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "to"
+              },
+              {
+                "start": 3,
+                "end": 45
+              }
+            ],
+            [
+              {
+                "Rfc": "from"
+              },
+              {
+                "start": 50,
+                "end": 77
+              }
+            ],
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 85,
+                "end": 97
+              }
+            ],
+            [
+              {
+                "Rfc": "message_id"
+              },
+              {
+                "start": 108,
+                "end": 142
+              }
+            ],
+            [
+              {
+                "Rfc": "date"
+              },
+              {
+                "start": 147,
+                "end": 181
+              }
+            ],
+            [
+              {
+                "Rfc": "mime_version"
+              },
+              {
+                "start": 194,
+                "end": 200
+              }
+            ],
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 213,
+                "end": 292
+              }
+            ],
+            [
+              {
+                "Rfc": "content_language"
+              },
+              {
+                "start": 309,
+                "end": 317
+              }
+            ]
+          ],
           "html_body": [
             1
           ],
@@ -154,9 +291,6 @@ YWFhYWFhYWFhYWFhYS0tDQo=
             {
               "Text": {
                 "headers_rfc": {
-                  "content_transfer_encoding": {
-                    "Text": "7bit"
-                  },
                   "content_type": {
                     "ContentType": {
                       "c_type": "text",
@@ -166,10 +300,36 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                         "format": "flowed"
                       }
                     }
+                  },
+                  "content_transfer_encoding": {
+                    "Text": "7bit"
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 422,
+                      "end": 465
+                    }
+                  ],
+                  [
+                    {
+                      "Rfc": "content_transfer_encoding"
+                    },
+                    {
+                      "start": 491,
+                      "end": 498
+                    }
+                  ]
+                ],
                 "is_encoding_problem": false,
-                "body": "This is an *HTML* test message"
+                "body": "This is an *HTML* test message",
+                "offset_header": 409,
+                "offset_body": 500,
+                "offset_end": 530
               }
             },
             {
@@ -188,8 +348,31 @@ YWFhYWFhYWFhYWFhYS0tDQo=
                     }
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 589,
+                      "end": 616
+                    }
+                  ],
+                  [
+                    {
+                      "Rfc": "content_transfer_encoding"
+                    },
+                    {
+                      "start": 642,
+                      "end": 649
+                    }
+                  ]
+                ],
                 "is_encoding_problem": false,
-                "body": "<html>\r\n  <head>\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\r\n  </head>\r\n  <body>\r\n    This is an <b>HTML</b> test message\r\n  </body>\r\n</html>\r\n"
+                "body": "<html>\r\n  <head>\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\r\n  </head>\r\n  <body>\r\n    This is an <b>HTML</b> test message\r\n  </body>\r\n</html>\r\n",
+                "offset_header": 576,
+                "offset_body": 651,
+                "offset_end": 824
               }
             }
           ],
@@ -206,7 +389,10 @@ YWFhYWFhYWFhYWFhYS0tDQo=
           "offset_header": 0,
           "offset_body": 319,
           "offset_end": 870
-        }
+        },
+        "offset_header": 297,
+        "offset_body": 424,
+        "offset_end": 1603
       }
     }
   ],

@@ -35,8 +35,23 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
     },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Jürgen Schmürgen",
+        "address": "schmuergen@example.com"
+      }
+    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
     },
     "date": {
       "DateTime": {
@@ -50,23 +65,127 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
         "tz_hour": 4,
         "tz_minute": 0
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
-      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 40
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 43,
+        "end": 112
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 120,
+        "end": 194
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 199,
+        "end": 233
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 244,
+        "end": 294
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 307,
+        "end": 313
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 326,
+        "end": 363
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 389,
+        "end": 396
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 407,
+        "end": 420
+      }
+    ],
+    [
+      {
+        "Other": "X-MSMail-Priority"
+      },
+      {
+        "start": 438,
+        "end": 447
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 456,
+        "end": 509
+      }
+    ],
+    [
+      {
+        "Other": "Importance"
+      },
+      {
+        "start": 520,
+        "end": 529
+      }
+    ],
+    [
+      {
+        "Other": "X-MimeOLE"
+      },
+      {
+        "start": 539,
+        "end": 587
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -78,9 +197,6 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "8bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -89,10 +205,36 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "8bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 326,
+              "end": 363
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 389,
+              "end": 396
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n"
+        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n",
+        "offset_header": 0,
+        "offset_body": 589,
+        "offset_end": 1341
       }
     }
   ],

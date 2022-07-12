@@ -30,6 +30,17 @@ Content-Type: text/plain; charset=utf-8
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 44
+      }
+    ]
+  ],
   "html_body": [
     0,
     1
@@ -58,8 +69,31 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 77,
+              "end": 95
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 108,
+              "end": 135
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "päivää\n"
+        "body": "päivää\n",
+        "offset_header": 51,
+        "offset_body": 136,
+        "offset_end": 158
       }
     },
     {
@@ -78,8 +112,31 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 191,
+              "end": 199
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 212,
+              "end": 239
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "yötä vaan.\n�\t�"
+        "body": "yötä vaan.\n�\t�",
+        "offset_header": 165,
+        "offset_body": 240,
+        "offset_end": 268
       }
     },
     {
@@ -98,8 +155,31 @@ Content-Type: text/plain; charset=utf-8
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 301,
+              "end": 309
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 322,
+              "end": 349
+            }
+          ]
+        ],
         "is_encoding_problem": true,
-        "body": "?garbage"
+        "body": "?garbage",
+        "offset_header": 275,
+        "offset_body": 350,
+        "offset_end": 358
       }
     }
   ],

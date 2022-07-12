@@ -33,14 +33,17 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
     "mime_version": {
       "Text": "1.0"
     },
-    "message_id": {
-      "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
-    },
     "to": {
       "Address": {
         "name": "Jürgen Schmürgen",
         "address": "jschmuergen@example.com"
       }
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
     },
     "date": {
       "DateTime": {
@@ -60,11 +63,100 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 175,
+        "end": 209
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 212,
+        "end": 299
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 304,
+        "end": 341
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 349,
+        "end": 396
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 409,
+        "end": 415
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 428,
+        "end": 463
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 489,
+        "end": 508
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -89,8 +181,31 @@ In einem nahen Teich wollten sie sich nun ers=E4ufen; sie eilten ihm zu;=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 428,
+              "end": 463
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 489,
+              "end": 508
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n",
+        "offset_header": 0,
+        "offset_body": 510,
+        "offset_end": 1321
       }
     }
   ],

@@ -4,6 +4,17 @@ body
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {},
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 45
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -23,8 +34,22 @@ body
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 13,
+              "end": 45
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "body\n"
+        "body": "body\n",
+        "offset_header": 0,
+        "offset_body": 46,
+        "offset_end": 51
       }
     }
   ],

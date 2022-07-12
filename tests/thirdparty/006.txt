@@ -39,13 +39,42 @@ Signed by undersigned
         }
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "subject": {
       "Text": "Hide and seek"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 8,
+        "end": 23
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 36,
+        "end": 41
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 54,
+        "end": 83
+      }
+    ]
+  ],
   "html_body": [
     2
   ],
@@ -70,7 +99,30 @@ Signed by undersigned
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 101,
+              "end": 179
+            }
+          ],
+          [
+            {
+              "Other": "X-Signature-Type"
+            },
+            {
+              "start": 196,
+              "end": 208
+            }
+          ]
+        ],
+        "offset_header": 88,
+        "offset_body": 209,
+        "offset_end": 579
       }
     },
     {
@@ -85,7 +137,21 @@ Signed by undersigned
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 226,
+              "end": 261
+            }
+          ]
+        ],
+        "offset_header": 213,
+        "offset_body": 262,
+        "offset_end": 497
       }
     },
     {
@@ -101,26 +167,63 @@ Signed by undersigned
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 279,
+              "end": 308
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n"
+        "body": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\n",
+        "offset_header": 266,
+        "offset_body": 309,
+        "offset_end": 398
       }
     },
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "binary"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "binary"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 416,
+              "end": 428
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 454,
+              "end": 462
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Search me, and Find me here"
+        "body": "Search me, and Find me here",
+        "offset_header": 403,
+        "offset_body": 463,
+        "offset_end": 490
       }
     },
     {
@@ -136,6 +239,17 @@ Signed by undersigned
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 515,
+              "end": 550
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           83,
@@ -159,7 +273,10 @@ Signed by undersigned
           110,
           101,
           100
-        ]
+        ],
+        "offset_header": 502,
+        "offset_body": 551,
+        "offset_end": 572
       }
     }
   ],

@@ -37,6 +37,18 @@ wir.&quot; <br>
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
     "date": {
       "DateTime": {
         "year": 2000,
@@ -50,28 +62,117 @@ wir.&quot; <br>
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
     "message_id": {
       "Text": "4.2.0.58.20000519003052.00a89c40@pop.example.com"
     },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 181,
+        "end": 192
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 197,
+        "end": 231
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 234,
+        "end": 290
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 295,
+        "end": 332
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 340,
+        "end": 387
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 400,
+        "end": 406
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 419,
+        "end": 453
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 479,
+        "end": 498
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -83,6 +184,9 @@ wir.&quot; <br>
     {
       "Html": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -91,13 +195,33 @@ wir.&quot; <br>
                 "charset": "iso-8859-1"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 419,
+              "end": 453
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 479,
+              "end": 498
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font></html>\n\n"
+        "body": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font></html>\n\n",
+        "offset_header": 0,
+        "offset_body": 500,
+        "offset_end": 1499
       }
     }
   ],

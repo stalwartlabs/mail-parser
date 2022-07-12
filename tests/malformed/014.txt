@@ -18,6 +18,17 @@ hello, world
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 44
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -37,8 +48,22 @@ hello, world
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 62,
+              "end": 74
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "hello, world"
+        "body": "hello, world",
+        "offset_header": 49,
+        "offset_body": 75,
+        "offset_end": 87
       }
     }
   ],

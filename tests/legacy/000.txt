@@ -44,26 +44,26 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@example.com"
       }
     },
+    "message_id": {
+      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
+    },
     "subject": {
       "Text": "Test message from Microsoft Outlook 00"
-    },
-    "mime_version": {
-      "Text": "1.0"
     },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "jblow@example.com"
       }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
     },
     "date": {
       "DateTime": {
@@ -79,6 +79,134 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 40
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 43,
+        "end": 76
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 84,
+        "end": 125
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 130,
+        "end": 164
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 175,
+        "end": 225
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 238,
+        "end": 244
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 257,
+        "end": 291
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 317,
+        "end": 326
+      }
+    ],
+    [
+      {
+        "Rfc": "content_disposition"
+      },
+      {
+        "start": 346,
+        "end": 385
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 396,
+        "end": 409
+      }
+    ],
+    [
+      {
+        "Other": "X-MSMail-Priority"
+      },
+      {
+        "start": 427,
+        "end": 436
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 445,
+        "end": 498
+      }
+    ],
+    [
+      {
+        "Other": "Importance"
+      },
+      {
+        "start": 509,
+        "end": 518
+      }
+    ],
+    [
+      {
+        "Other": "X-MimeOLE"
+      },
+      {
+        "start": 528,
+        "end": 576
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -110,6 +238,35 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 257,
+              "end": 291
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 317,
+              "end": 326
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 346,
+              "end": 385
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1565,7 +1722,10 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 0,
+        "offset_body": 578,
+        "offset_end": 2570
       }
     }
   ],

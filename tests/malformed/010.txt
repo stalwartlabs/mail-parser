@@ -16,6 +16,17 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 29
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -33,6 +44,7 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
@@ -44,6 +56,17 @@ Content-Type: text/plain
               }
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 43,
+                "end": 59
+              }
+            ]
+          ],
           "html_body": [],
           "text_body": [],
           "attachments": [
@@ -61,9 +84,21 @@ Content-Type: text/plain
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
                 "body": {
                   "headers_rfc": {},
+                  "headers_raw": [
+                    [
+                      {
+                        "Rfc": "content_type"
+                      },
+                      {
+                        "start": 73,
+                        "end": 85
+                      }
+                    ]
+                  ],
                   "html_body": [
                     0
                   ],
@@ -83,8 +118,22 @@ Content-Type: text/plain
                             }
                           }
                         },
+                        "headers_raw": [
+                          [
+                            {
+                              "Rfc": "content_type"
+                            },
+                            {
+                              "start": 73,
+                              "end": 85
+                            }
+                          ]
+                        ],
                         "is_encoding_problem": false,
-                        "body": "1\n"
+                        "body": "1\n",
+                        "offset_header": 60,
+                        "offset_body": 86,
+                        "offset_end": 88
                       }
                     }
                   ],
@@ -94,7 +143,10 @@ Content-Type: text/plain
                   "offset_header": 60,
                   "offset_body": 86,
                   "offset_end": 88
-                }
+                },
+                "offset_header": 30,
+                "offset_body": 60,
+                "offset_end": 88
               }
             }
           ],
@@ -104,7 +156,10 @@ Content-Type: text/plain
           "offset_header": 30,
           "offset_body": 60,
           "offset_end": 88
-        }
+        },
+        "offset_header": 0,
+        "offset_body": 30,
+        "offset_end": 88
       }
     }
   ],

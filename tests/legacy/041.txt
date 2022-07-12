@@ -58,10 +58,31 @@ vAAAAABJRU5ErkJggg==
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
+    },
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-170444605-958746196=:8452"
+        }
+      }
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@penguin.example.com"
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
       }
     },
     "date": {
@@ -77,31 +98,75 @@ vAAAAABJRU5ErkJggg==
         "tz_minute": 0
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "subject": {
       "Text": "PNG graphic"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-170444605-958746196=:8452"
-        }
-      }
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 5,
+        "end": 45
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 50,
+        "end": 91
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 94,
+        "end": 150
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 158,
+        "end": 172
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 183,
+        "end": 247
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 260,
+        "end": 266
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 279,
+        "end": 347
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -125,22 +190,27 @@ vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 623,
+              "end": 654
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "\n"
+        "body": "\n",
+        "offset_header": 610,
+        "offset_body": 656,
+        "offset_end": 656
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
-          "content_description": {
-            "Text": "red ball"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -149,6 +219,15 @@ vAAAAABJRU5ErkJggg==
                 "filename": "redball.png"
               }
             }
+          },
+          "content_description": {
+            "Text": "red ball"
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
           },
           "content_type": {
             "ContentType": {
@@ -160,6 +239,53 @@ vAAAAABJRU5ErkJggg==
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 712,
+              "end": 759
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 785,
+              "end": 794
+            }
+          ],
+          [
+            {
+              "Rfc": "content_id"
+            },
+            {
+              "start": 805,
+              "end": 862
+            }
+          ],
+          [
+            {
+              "Rfc": "content_description"
+            },
+            {
+              "start": 882,
+              "end": 893
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 913,
+              "end": 950
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1615,7 +1741,10 @@ vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 699,
+        "offset_body": 952,
+        "offset_end": 2956
       }
     }
   ],
@@ -1630,6 +1759,6 @@ vAAAAABJRU5ErkJggg==
     ]
   },
   "offset_header": 0,
-  "offset_body": 351,
+  "offset_body": 349,
   "offset_end": 2999
 }

@@ -22,6 +22,17 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 44
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -31,6 +42,9 @@ Content-Type: text/plain
     {
       "Multipart": {
         "headers_rfc": {
+          "mime_version": {
+            "Text": "1.0"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "multipart",
@@ -39,11 +53,31 @@ Content-Type: text/plain
                 "boundary": "ab"
               }
             }
-          },
-          "mime_version": {
-            "Text": "1.0"
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 62,
+              "end": 94
+            }
+          ],
+          [
+            {
+              "Rfc": "mime_version"
+            },
+            {
+              "start": 107,
+              "end": 112
+            }
+          ]
+        ],
+        "offset_header": 49,
+        "offset_body": 117,
+        "offset_end": 157
       }
     },
     {
@@ -57,8 +91,12 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": true,
-        "body": "--a--\n\n"
+        "body": "--a--\n\n",
+        "offset_header": 147,
+        "offset_body": 150,
+        "offset_end": 152
       }
     }
   ],

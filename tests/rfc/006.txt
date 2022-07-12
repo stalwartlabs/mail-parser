@@ -23,6 +23,12 @@ Content-Disposition: inline
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "from": {
+      "Address": {
+        "name": null,
+        "address": "sender@example.com"
+      }
+    },
     "subject": {
       "Text": "Multipart Email Example"
     },
@@ -40,14 +46,46 @@ Content-Disposition: inline
           "boundary": "boundary-string"
         }
       }
-    },
-    "from": {
-      "Address": {
-        "name": null,
-        "address": "sender@example.com"
-      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 25
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 28,
+        "end": 51
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 59,
+        "end": 84
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 97,
+        "end": 148
+      }
+    ]
+  ],
   "html_body": [
     1
   ],
@@ -59,13 +97,6 @@ Content-Disposition: inline
     {
       "Text": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -75,17 +106,6 @@ Content-Disposition: inline
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          }
-        },
-        "is_encoding_problem": false,
-        "body": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n"
-      }
-    },
-    {
-      "Html": {
-        "headers_rfc": {
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -93,6 +113,49 @@ Content-Disposition: inline
               "attributes": null
             }
           },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
+          }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 180,
+              "end": 209
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 235,
+              "end": 253
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 273,
+              "end": 281
+            }
+          ]
+        ],
+        "is_encoding_problem": false,
+        "body": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n",
+        "offset_header": 167,
+        "offset_body": 282,
+        "offset_end": 369
+      }
+    },
+    {
+      "Html": {
+        "headers_rfc": {
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -104,10 +167,49 @@ Content-Disposition: inline
           },
           "content_transfer_encoding": {
             "Text": "quoted-printable"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 401,
+              "end": 429
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 455,
+              "end": 473
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 493,
+              "end": 501
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n"
+        "body": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n",
+        "offset_header": 388,
+        "offset_body": 502,
+        "offset_end": 595
       }
     }
   ],

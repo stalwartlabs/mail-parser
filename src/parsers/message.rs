@@ -145,7 +145,7 @@ fn add_missing_type<'x>(
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 struct MessageParserState {
     mime_type: MimeType,
     mime_boundary: Option<Vec<u8>>,
@@ -663,28 +663,46 @@ impl<'x> Message<'x> {
             }
         }
 
-        while let (Some((mut prev_message, headers, headers_raw)), Some(prev_state)) =
-            (message_stack.pop(), state_stack.pop())
-        {
-            if !message.is_empty() {
-                message.offset_header = state.offset_header;
-                message.offset_body = state.offset_body;
-                message.offset_end = stream.pos;
-                message.structure = state.get_structure();
-                message.raw_message = raw_message[message.offset_header..message.offset_end].into();
-                prev_message.attachments.push(prev_message.parts.len());
-                prev_message.parts.push(MessagePart::Message(Part {
-                    headers_rfc: headers,
-                    headers_raw,
-                    is_encoding_problem: false,
-                    offset_header: prev_state.offset_header,
-                    offset_body: prev_state.offset_body,
-                    offset_end: message.offset_end,
-                    body: MessageAttachment::Parsed(Box::new(message)),
-                }));
+        // Corrupted MIME message, try to recover whatever is possible.
+        loop {
+            if let Some((mut prev_message, headers, headers_raw)) = message_stack.pop() {
+                let prev_state = state_stack.pop().unwrap();
+                if !message.is_empty() {
+                    message.offset_header = state.offset_header;
+                    message.offset_body = state.offset_body;
+                    message.offset_end = stream.pos;
+                    message.structure = state.get_structure();
+                    message.raw_message =
+                        raw_message[message.offset_header..message.offset_end].into();
+                    prev_message.attachments.push(prev_message.parts.len());
+                    prev_message.parts.push(MessagePart::Message(Part {
+                        headers_rfc: headers,
+                        headers_raw,
+                        is_encoding_problem: false,
+                        offset_header: prev_state.offset_header,
+                        offset_body: prev_state.offset_body,
+                        offset_end: message.offset_end,
+                        body: MessageAttachment::Parsed(Box::new(message)),
+                    }));
+                }
+                message = prev_message;
+                state = prev_state;
+            } else if let Some(mut prev_state) = state_stack.pop() {
+                if let Some(part_id) = state.part_id {
+                    if let Some(part) = message.parts.get_mut(part_id) {
+                        if let MessagePart::Multipart(ref mut part) = part {
+                            part.offset_end = stream.pos;
+                        }
+                    } else {
+                        debug_assert!(false, "This should not have happened.");
+                    }
+                }
+                // Add headers and substructure to parent part
+                prev_state.structure.push(state.get_structure());
+                state = prev_state;
+            } else {
+                break;
             }
-            message = prev_message;
-            state = prev_state;
         }
 
         message.raw_message = raw_message.into();
@@ -852,8 +870,8 @@ mod tests {
     fn raw_parts() {
         let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
         test_dir.push("tests");
-        test_dir.push("rfc");
-        test_dir.push("002.txt");
+        test_dir.push("malformed");
+        test_dir.push("007.txt");
         let mut input = fs::read(&test_dir).unwrap();
         let mut pos = 0;
 
@@ -888,13 +906,14 @@ mod tests {
                 std::str::from_utf8(&raw_message[start..mid]).unwrap(),
                 std::str::from_utf8(&raw_message[mid..end]).unwrap(),
                 match part {
-                    MessagePart::Text(text) | MessagePart::Html(text) => text.body.clone(),
-                    MessagePart::Binary(bin) | MessagePart::InlineBinary(bin) =>
+                    crate::MessagePart::Text(text) | crate::MessagePart::Html(text) =>
+                        text.body.clone(),
+                    crate::MessagePart::Binary(bin) | crate::MessagePart::InlineBinary(bin) =>
                         String::from_utf8_lossy(&bin.body),
-                    MessagePart::Message(_) | MessagePart::Multipart(_) => "".into(),
+                    crate::MessagePart::Message(_) | crate::MessagePart::Multipart(_) => "".into(),
                 }
             );
-            if let MessagePart::Message(sub) = part {
+            if let crate::MessagePart::Message(sub) = part {
                 println!("---- FROM ----");
                 match &sub.body {
                     crate::MessageAttachment::Parsed(message) => {

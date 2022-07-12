@@ -28,21 +28,6 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "message_id": {
-      "Text": "392362D8.B650789F@example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
@@ -61,8 +46,124 @@ Slow but steady wins the race.
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
+    },
+    "message_id": {
+      "Text": "392362D8.B650789F@example.com"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 45
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 50,
+        "end": 84
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 89,
+        "end": 126
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 135,
+        "end": 165
+      }
+    ],
+    [
+      {
+        "Other": "X-Accept-Language"
+      },
+      {
+        "start": 183,
+        "end": 188
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 201,
+        "end": 207
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 210,
+        "end": 240
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 248,
+        "end": 294
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 305,
+        "end": 319
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 332,
+        "end": 363
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 389,
+        "end": 396
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -74,9 +175,6 @@ Slow but steady wins the race.
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -85,10 +183,36 @@ Slow but steady wins the race.
                 "charset": "us-ascii"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "7bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 332,
+              "end": 363
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 389,
+              "end": 396
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r\n"
+        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r\n",
+        "offset_header": 0,
+        "offset_body": 398,
+        "offset_end": 1167
       }
     }
   ],
@@ -96,6 +220,6 @@ Slow but steady wins the race.
     "Part": 0
   },
   "offset_header": 0,
-  "offset_body": 400,
+  "offset_body": 398,
   "offset_end": 1167
 }

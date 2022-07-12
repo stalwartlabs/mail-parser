@@ -35,6 +35,18 @@ m+APw-ssen als wir.+ACI-=20
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "subject": {
+      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+    },
+    "mime_version": {
+      "Text": "1.0"
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "doug@example.com"
+      }
+    },
     "to": {
       "AddressList": [
         {
@@ -60,22 +72,129 @@ m+APw-ssen als wir.+ACI-=20
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
     "message_id": {
       "Text": "NDBBIAKOPKHFGPLCODIGMEKCCHAA.doug@example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 39
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 42,
+        "end": 146
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 154,
+        "end": 224
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 229,
+        "end": 262
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 273,
+        "end": 322
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 335,
+        "end": 340
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 353,
+        "end": 383
+      }
+    ],
+    [
+      {
+        "Rfc": "content_transfer_encoding"
+      },
+      {
+        "start": 409,
+        "end": 427
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 438,
+        "end": 450
+      }
+    ],
+    [
+      {
+        "Other": "X-MSMail-Priority"
+      },
+      {
+        "start": 468,
+        "end": 476
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 485,
+        "end": 537
+      }
+    ],
+    [
+      {
+        "Other": "Importance"
+      },
+      {
+        "start": 548,
+        "end": 556
+      }
+    ],
+    [
+      {
+        "Other": "X-MimeOLE"
+      },
+      {
+        "start": 566,
+        "end": 613
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -100,8 +219,31 @@ m+APw-ssen als wir.+ACI-=20
             "Text": "quoted-printable"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 353,
+              "end": 383
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 409,
+              "end": 427
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
+        "offset_header": 0,
+        "offset_body": 614,
+        "offset_end": 1491
       }
     }
   ],

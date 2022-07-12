@@ -19,26 +19,20 @@ Slow but steady wins the race.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
-    },
     "to": {
       "Address": {
         "name": "Joe Blow",
         "address": "blow@example.com"
       }
     },
-    "subject": {
-      "Text": "The Hare and the Tortoise"
-    },
     "mime_version": {
       "Text": "1.0"
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
+    },
+    "subject": {
+      "Text": "The Hare and the Tortoise"
     },
     "date": {
       "DateTime": {
@@ -52,8 +46,106 @@ Slow but steady wins the race.
         "tz_hour": 4,
         "tz_minute": 0
       }
+    },
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
+      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 181,
+        "end": 194
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 199,
+        "end": 233
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 236,
+        "end": 266
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 271,
+        "end": 308
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 316,
+        "end": 344
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 357,
+        "end": 363
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 376,
+        "end": 409
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -75,8 +167,22 @@ Slow but steady wins the race.
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 376,
+              "end": 409
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n\r\n"
+        "body": "\r\nThe Hare and the Tortoise \r\n  \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \r\n  \r\nSlow but steady wins the race.  \r\n\r\n",
+        "offset_header": 0,
+        "offset_body": 411,
+        "offset_end": 1177
       }
     }
   ],
@@ -84,6 +190,6 @@ Slow but steady wins the race.
     "Part": 0
   },
   "offset_header": 0,
-  "offset_body": 413,
+  "offset_body": 411,
   "offset_end": 1177
 }

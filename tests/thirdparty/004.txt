@@ -41,9 +41,6 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -52,8 +49,31 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
           "boundary": "1"
         }
       }
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 44
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 57,
+        "end": 62
+      }
+    ]
+  ],
   "html_body": [
     0,
     1,
@@ -75,6 +95,9 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
     {
       "Text": {
         "headers_rfc": {
+          "content_transfer_encoding": {
+            "Text": "6bit"
+          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -83,13 +106,33 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
                 "charset": "UTF-8"
               }
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "6bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 93,
+              "end": 99
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 112,
+              "end": 139
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move black king to queen's bishop\n"
+        "body": "Move black king to queen's bishop\n",
+        "offset_header": 67,
+        "offset_body": 140,
+        "offset_end": 174
       }
     },
     {
@@ -108,8 +151,31 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             "Text": "7bits"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 205,
+              "end": 218
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 231,
+              "end": 258
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move ♚ to ♛'s ♝\n"
+        "body": "Move ♚ to ♛'s ♝\n",
+        "offset_header": 179,
+        "offset_body": 259,
+        "offset_end": 281
       }
     },
     {
@@ -128,8 +194,31 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             "Text": "8 bit"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 312,
+              "end": 319
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 332,
+              "end": 359
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move ♚ to ♛'s ♝\n"
+        "body": "Move ♚ to ♛'s ♝\n",
+        "offset_header": 286,
+        "offset_body": 360,
+        "offset_end": 382
       }
     },
     {
@@ -148,28 +237,74 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 413,
+              "end": 420
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 433,
+              "end": 460
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move ♚ to ♛'s ♝\n"
+        "body": "Move ♚ to ♛'s ♝\n",
+        "offset_header": 387,
+        "offset_body": 461,
+        "offset_end": 483
       }
     },
     {
       "Text": {
         "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": {
+                "charset": "UTF-8"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "8-bit"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "UTF-8"
-              }
-            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 514,
+              "end": 521
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 534,
+              "end": 561
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move ♚ to ♛'s ♝\n"
+        "body": "Move ♚ to ♛'s ♝\n",
+        "offset_header": 488,
+        "offset_body": 562,
+        "offset_end": 584
       }
     },
     {
@@ -185,8 +320,31 @@ Move =E2=99=9A to =E2=99=9B's =E2=99=9D
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 615,
+              "end": 616
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 629,
+              "end": 656
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n"
+        "body": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n",
+        "offset_header": 589,
+        "offset_body": 657,
+        "offset_end": 697
       }
     }
   ],

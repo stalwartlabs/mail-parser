@@ -57,6 +57,9 @@ Root MIME epilogue
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "mime_version": {
+      "Text": "1.0"
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -84,11 +87,55 @@ Root MIME epilogue
         "name": null,
         "address": "user@domain.org"
       }
-    },
-    "mime_version": {
-      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Other": "From user@domain  Fri Feb 22 17"
+      },
+      {
+        "start": 32,
+        "end": 43
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 48,
+        "end": 65
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 70,
+        "end": 103
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 116,
+        "end": 121
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 134,
+        "end": 171
+      }
+    ]
+  ],
   "html_body": [
     2
   ],
@@ -113,8 +160,22 @@ Root MIME epilogue
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 215,
+              "end": 247
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "hello\n"
+        "body": "hello\n",
+        "offset_header": 202,
+        "offset_body": 248,
+        "offset_end": 254
       }
     },
     {
@@ -128,9 +189,33 @@ Root MIME epilogue
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 278,
+              "end": 294
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
+            "date": {
+              "DateTime": {
+                "year": 2012,
+                "month": 8,
+                "day": 12,
+                "hour": 12,
+                "minute": 34,
+                "second": 56,
+                "tz_before_gmt": false,
+                "tz_hour": 3,
+                "tz_minute": 0
+              }
+            },
             "from": {
               "Address": {
                 "name": null,
@@ -146,23 +231,48 @@ Root MIME epilogue
                 }
               }
             },
-            "date": {
-              "DateTime": {
-                "year": 2012,
-                "month": 8,
-                "day": 12,
-                "hour": 12,
-                "minute": 34,
-                "second": 56,
-                "tz_before_gmt": false,
-                "tz_hour": 3,
-                "tz_minute": 0
-              }
-            },
             "subject": {
               "Text": "submsg"
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "from"
+              },
+              {
+                "start": 300,
+                "end": 316
+              }
+            ],
+            [
+              {
+                "Rfc": "date"
+              },
+              {
+                "start": 321,
+                "end": 354
+              }
+            ],
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 362,
+                "end": 370
+              }
+            ],
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 383,
+                "end": 423
+              }
+            ]
+          ],
           "html_body": [
             0,
             4
@@ -185,8 +295,22 @@ Root MIME epilogue
                     }
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 462,
+                      "end": 473
+                    }
+                  ]
+                ],
                 "is_encoding_problem": false,
-                "body": "<p>Hello world</p>\n"
+                "body": "<p>Hello world</p>\n",
+                "offset_header": 449,
+                "offset_body": 474,
+                "offset_end": 493
               }
             },
             {
@@ -201,7 +325,21 @@ Root MIME epilogue
                       }
                     }
                   }
-                }
+                },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 514,
+                      "end": 554
+                    }
+                  ]
+                ],
+                "offset_header": 501,
+                "offset_body": 555,
+                "offset_end": 701
               }
             },
             {
@@ -216,7 +354,21 @@ Root MIME epilogue
                       }
                     }
                   }
-                }
+                },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 575,
+                      "end": 615
+                    }
+                  ]
+                ],
+                "offset_header": 562,
+                "offset_body": 616,
+                "offset_end": 662
               }
             },
             {
@@ -230,8 +382,12 @@ Root MIME epilogue
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "sub3 text"
+                "body": "sub3 text",
+                "offset_header": 623,
+                "offset_body": 624,
+                "offset_end": 633
               }
             },
             {
@@ -245,8 +401,12 @@ Root MIME epilogue
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "sub3 text2"
+                "body": "sub3 text2",
+                "offset_header": 641,
+                "offset_body": 642,
+                "offset_end": 652
               }
             },
             {
@@ -260,8 +420,12 @@ Root MIME epilogue
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "sub2 text2"
+                "body": "sub2 text2",
+                "offset_header": 680,
+                "offset_body": 681,
+                "offset_end": 691
               }
             }
           ],
@@ -297,8 +461,11 @@ Root MIME epilogue
           },
           "offset_header": 295,
           "offset_body": 424,
-          "offset_end": 710
-        }
+          "offset_end": 728
+        },
+        "offset_header": 265,
+        "offset_body": 295,
+        "offset_end": 728
       }
     },
     {
@@ -312,8 +479,22 @@ Root MIME epilogue
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 752,
+              "end": 764
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Another part"
+        "body": "Another part",
+        "offset_header": 739,
+        "offset_body": 765,
+        "offset_end": 777
       }
     }
   ],

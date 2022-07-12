@@ -24,6 +24,17 @@ body2
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 46
+      }
+    ]
+  ],
   "html_body": [
     1
   ],
@@ -44,7 +55,21 @@ body2
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 66,
+              "end": 101
+            }
+          ]
+        ],
+        "offset_header": 53,
+        "offset_body": 102,
+        "offset_end": 151
       }
     },
     {
@@ -58,8 +83,22 @@ body2
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 123,
+              "end": 135
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "body"
+        "body": "body",
+        "offset_header": 110,
+        "offset_body": 136,
+        "offset_end": 140
       }
     }
   ],

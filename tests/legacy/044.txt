@@ -147,17 +147,14 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "address": "blow@example.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------A1FCDEE154E03D875E5D6779"
-        }
+    "from": {
+      "Address": {
+        "name": "Doug Sauder",
+        "address": "dwsauder@example.com"
       }
+    },
+    "subject": {
+      "Text": "Test message from Netscape Communicator 4.7"
     },
     "date": {
       "DateTime": {
@@ -172,16 +169,102 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
+    "mime_version": {
+      "Text": "1.0"
     },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "------------A1FCDEE154E03D875E5D6779"
+        }
+      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 45
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 50,
+        "end": 84
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 89,
+        "end": 126
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 135,
+        "end": 165
+      }
+    ],
+    [
+      {
+        "Other": "X-Accept-Language"
+      },
+      {
+        "start": 183,
+        "end": 188
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 201,
+        "end": 207
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 210,
+        "end": 240
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 248,
+        "end": 294
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 307,
+        "end": 376
+      }
+    ]
+  ],
   "html_body": [
     0,
     1,
@@ -216,8 +299,31 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "quoted-printable"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 477,
+              "end": 510
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 536,
+              "end": 555
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n",
+        "offset_header": 464,
+        "offset_body": 557,
+        "offset_end": 1355
       }
     },
     {
@@ -232,9 +338,6 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -243,8 +346,40 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "redball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1410,
+              "end": 1444
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1470,
+              "end": 1479
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 1499,
+              "end": 1534
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1700,12 +1835,24 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 1397,
+        "offset_body": 1536,
+        "offset_end": 3528
       }
     },
     {
       "InlineBinary": {
         "headers_rfc": {
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
+          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -1717,17 +1864,37 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "base64"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 3583,
+              "end": 3619
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 3645,
+              "end": 3654
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 3674,
+              "end": 3711
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -3028,15 +3195,15 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 3570,
+        "offset_body": 3713,
+        "offset_end": 5493
       }
     },
     {
       "InlineBinary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
@@ -3054,8 +3221,40 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "blueball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 5548,
+              "end": 5583
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 5609,
+              "end": 5618
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 5638,
+              "end": 5674
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -4383,7 +4582,10 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 5535,
+        "offset_body": 5676,
+        "offset_end": 7492
       }
     }
   ],

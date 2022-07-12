@@ -73,23 +73,11 @@ Content-Transfer-Encoding: Quoted-printable
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@nsb.fv.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
     "to": {
       "Address": {
         "name": "Ned Freed",
         "address": "ned@innosoft.com"
       }
-    },
-    "subject": {
-      "Text": "A multipart example"
     },
     "content_type": {
       "ContentType": {
@@ -99,6 +87,18 @@ Content-Transfer-Encoding: Quoted-printable
           "boundary": "unique-boundary-1"
         }
       }
+    },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@nsb.fv.com"
+      }
+    },
+    "subject": {
+      "Text": "A multipart example"
+    },
+    "mime_version": {
+      "Text": "1.0"
     },
     "date": {
       "DateTime": {
@@ -114,6 +114,62 @@ Content-Transfer-Encoding: Quoted-printable
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 13,
+        "end": 18
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 23,
+        "end": 62
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 65,
+        "end": 95
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 100,
+        "end": 139
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 147,
+        "end": 168
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 181,
+        "end": 238
+      }
+    ]
+  ],
   "html_body": [
     0,
     1
@@ -140,8 +196,12 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
-        "body": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
+        "body": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n",
+        "offset_header": 530,
+        "offset_body": 531,
+        "offset_end": 793
       }
     },
     {
@@ -157,8 +217,22 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 827,
+              "end": 857
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n"
+        "body": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n",
+        "offset_header": 814,
+        "offset_body": 858,
+        "offset_end": 969
       }
     },
     {
@@ -173,7 +247,21 @@ Content-Transfer-Encoding: Quoted-printable
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1003,
+              "end": 1051
+            }
+          ]
+        ],
+        "offset_header": 990,
+        "offset_body": 1052,
+        "offset_end": 1366
       }
     },
     {
@@ -190,8 +278,31 @@ Content-Transfer-Encoding: Quoted-printable
             "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1085,
+              "end": 1098
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1124,
+              "end": 1132
+            }
+          ]
+        ],
         "is_encoding_problem": true,
-        "body": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
+        "body": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n",
+        "offset_header": 1072,
+        "offset_body": 1133,
+        "offset_end": 1218
       }
     },
     {
@@ -208,8 +319,31 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1252,
+              "end": 1264
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1290,
+              "end": 1298
+            }
+          ]
+        ],
         "is_encoding_problem": true,
-        "body": "... base64-encoded image data goes here ...\n"
+        "body": "... base64-encoded image data goes here ...\n",
+        "offset_header": 1239,
+        "offset_body": 1299,
+        "offset_end": 1343
       }
     },
     {
@@ -223,8 +357,22 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1400,
+              "end": 1415
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n"
+        "body": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n",
+        "offset_header": 1387,
+        "offset_body": 1416,
+        "offset_end": 1556
       }
     },
     {
@@ -238,17 +386,28 @@ Content-Transfer-Encoding: Quoted-printable
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1590,
+              "end": 1606
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
-            "subject": {
-              "Text": "(subject in US-ASCII)"
-            },
             "to": {
               "Address": {
                 "name": "address in US-ASCII",
                 "address": null
               }
+            },
+            "subject": {
+              "Text": "(subject in US-ASCII)"
             },
             "from": {
               "Address": {
@@ -257,6 +416,53 @@ Content-Transfer-Encoding: Quoted-printable
               }
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "from"
+              },
+              {
+                "start": 1612,
+                "end": 1635
+              }
+            ],
+            [
+              {
+                "Rfc": "to"
+              },
+              {
+                "start": 1638,
+                "end": 1661
+              }
+            ],
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 1669,
+                "end": 1692
+              }
+            ],
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 1705,
+                "end": 1737
+              }
+            ],
+            [
+              {
+                "Rfc": "content_transfer_encoding"
+              },
+              {
+                "start": 1763,
+                "end": 1781
+              }
+            ]
+          ],
           "html_body": [
             0
           ],
@@ -281,8 +487,31 @@ Content-Transfer-Encoding: Quoted-printable
                     }
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 1705,
+                      "end": 1737
+                    }
+                  ],
+                  [
+                    {
+                      "Rfc": "content_transfer_encoding"
+                    },
+                    {
+                      "start": 1763,
+                      "end": 1781
+                    }
+                  ]
+                ],
                 "is_encoding_problem": false,
-                "body": "... Additional text in ISO-8859-1 goes here ...\n"
+                "body": "... Additional text in ISO-8859-1 goes here ...\n",
+                "offset_header": 1607,
+                "offset_body": 1782,
+                "offset_end": 1830
               }
             }
           ],
@@ -291,8 +520,11 @@ Content-Transfer-Encoding: Quoted-printable
           },
           "offset_header": 1607,
           "offset_body": 1782,
-          "offset_end": 1850
-        }
+          "offset_end": 1830
+        },
+        "offset_header": 1577,
+        "offset_body": 1607,
+        "offset_end": 1830
       }
     }
   ],

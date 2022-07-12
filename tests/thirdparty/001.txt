@@ -38,6 +38,26 @@ hello world
       "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 13,
+        "end": 19
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 32,
+        "end": 76
+      }
+    ]
+  ],
   "html_body": [
     0,
     1,
@@ -53,19 +73,42 @@ hello world
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "binary"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "binary"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 128,
+              "end": 137
+            }
+          ],
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 150,
+              "end": 163
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE="
+        "body": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=",
+        "offset_header": 102,
+        "offset_body": 165,
+        "offset_end": 389
       }
     },
     {
@@ -82,8 +125,31 @@ hello world
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 413,
+              "end": 426
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 452,
+              "end": 461
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "ZWg="
+        "body": "ZWg=",
+        "offset_header": 400,
+        "offset_body": 463,
+        "offset_end": 467
       }
     },
     {
@@ -97,8 +163,22 @@ hello world
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 490,
+              "end": 503
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "hello world\r\n"
+        "body": "hello world\r\n",
+        "offset_header": 477,
+        "offset_body": 505,
+        "offset_end": 518
       }
     }
   ],

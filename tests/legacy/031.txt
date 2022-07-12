@@ -97,10 +97,13 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "-1463757054-952513540-958744548=:8452"
+        }
       }
     },
     "date": {
@@ -116,31 +119,93 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
         "tz_minute": 0
       }
     },
-    "subject": {
-      "Text": "Test message from PINE"
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
-    },
     "mime_version": {
       "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-952513540-958744548=:8452"
-        }
-      }
     },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "doug@penguin.example.com"
       }
+    },
+    "subject": {
+      "Text": "Test message from PINE"
+    },
+    "message_id": {
+      "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
+    },
+    "to": {
+      "Address": {
+        "name": "Joe Blow",
+        "address": "blow@example.com"
+      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 5,
+        "end": 45
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 50,
+        "end": 91
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 94,
+        "end": 124
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 132,
+        "end": 157
+      }
+    ],
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 168,
+        "end": 232
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 245,
+        "end": 251
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 264,
+        "end": 332
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -165,19 +230,27 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 608,
+              "end": 639
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "This is a test message from PINE MUA.\r\n\r\n"
+        "body": "This is a test message from PINE MUA.\r\n\r\n",
+        "offset_header": 595,
+        "offset_body": 641,
+        "offset_end": 682
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
-          },
-          "content_description": {
-            "Text": "A PNG graphic file"
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "attachment",
@@ -186,6 +259,9 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "redball.png"
               }
             }
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
           },
           "content_type": {
             "ContentType": {
@@ -198,8 +274,58 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           },
           "content_transfer_encoding": {
             "Text": "BASE64"
+          },
+          "content_id": {
+            "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 738,
+              "end": 785
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 811,
+              "end": 820
+            }
+          ],
+          [
+            {
+              "Rfc": "content_id"
+            },
+            {
+              "start": 831,
+              "end": 888
+            }
+          ],
+          [
+            {
+              "Rfc": "content_description"
+            },
+            {
+              "start": 908,
+              "end": 929
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 949,
+              "end": 986
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1655,29 +1781,17 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 725,
+        "offset_body": 988,
+        "offset_end": 2992
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
           "content_id": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
-          },
-          "content_description": {
-            "Text": "A PNG graphic file"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "octet-stream",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
           },
           "content_disposition": {
             "ContentType": {
@@ -1687,8 +1801,70 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "blueball.png"
               }
             }
+          },
+          "content_description": {
+            "Text": "A PNG graphic file"
+          },
+          "content_transfer_encoding": {
+            "Text": "BASE64"
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "octet-stream",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 3048,
+              "end": 3096
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 3122,
+              "end": 3131
+            }
+          ],
+          [
+            {
+              "Rfc": "content_id"
+            },
+            {
+              "start": 3142,
+              "end": 3199
+            }
+          ],
+          [
+            {
+              "Rfc": "content_description"
+            },
+            {
+              "start": 3219,
+              "end": 3240
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 3260,
+              "end": 3298
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -3016,7 +3192,10 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 3035,
+        "offset_body": 3300,
+        "offset_end": 5126
       }
     }
   ],
@@ -3034,6 +3213,6 @@ Z3VldDZzO7wAAAAASUVORK5CYII=
     ]
   },
   "offset_header": 0,
-  "offset_body": 336,
+  "offset_body": 334,
   "offset_end": 5169
 }

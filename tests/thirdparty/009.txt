@@ -37,6 +37,35 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
       "Text": "In parts"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 8,
+        "end": 18
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 31,
+        "end": 36
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 49,
+        "end": 78
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -50,19 +79,42 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "binary"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "binary"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 96,
+              "end": 108
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 134,
+              "end": 142
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Hi, this is the fancy thing I was talking about!"
+        "body": "Hi, this is the fancy thing I was talking about!",
+        "offset_header": 83,
+        "offset_body": 143,
+        "offset_end": 191
       }
     },
     {
@@ -73,13 +125,24 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
               "c_type": "message",
               "c_subtype": "partial",
               "attributes": {
+                "id": "heks68ewe@example.org",
                 "total": "5",
-                "number": "1",
-                "id": "heks68ewe@example.org"
+                "number": "1"
               }
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 209,
+              "end": 273
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           88,
@@ -323,7 +386,10 @@ dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
           81,
           111,
           61
-        ]
+        ],
+        "offset_header": 196,
+        "offset_body": 274,
+        "offset_end": 515
       }
     }
   ],

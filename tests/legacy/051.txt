@@ -162,11 +162,23 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Heinz Müller",
+        "address": "mueller@example.com"
+      }
+    },
     "from": {
       "Address": {
         "name": "Doug Sauder",
         "address": "dwsauder@example.com"
       }
+    },
+    "message_id": {
+      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
+    },
+    "subject": {
+      "Text": "Die Hasen und die Frösche"
     },
     "mime_version": {
       "Text": "1.0"
@@ -179,18 +191,6 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           "boundary": "=====================_715515186==_"
         }
       }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
     },
     "date": {
       "DateTime": {
@@ -206,6 +206,98 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "message_id"
+      },
+      {
+        "start": 11,
+        "end": 64
+      }
+    ],
+    [
+      {
+        "Other": "X-Sender"
+      },
+      {
+        "start": 73,
+        "end": 113
+      }
+    ],
+    [
+      {
+        "Other": "X-Mailer"
+      },
+      {
+        "start": 122,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Other": "X-Priority"
+      },
+      {
+        "start": 181,
+        "end": 192
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 197,
+        "end": 231
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 234,
+        "end": 288
+      }
+    ],
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 293,
+        "end": 330
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 338,
+        "end": 383
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 396,
+        "end": 402
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 415,
+        "end": 482
+      }
+    ]
+  ],
   "html_body": [
     1
   ],
@@ -227,20 +319,31 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": {
-                "boundary": "=====================_715515186==_.REL",
-                "type": "text/plain"
+                "type": "text/plain",
+                "boundary": "=====================_715515186==_.REL"
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 535,
+              "end": 629
+            }
+          ]
+        ],
+        "offset_header": 522,
+        "offset_body": 631,
+        "offset_end": 5945
       }
     },
     {
       "Text": {
         "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
@@ -249,30 +352,56 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "charset": "iso-8859-1"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "quoted-printable"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 686,
+              "end": 721
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 747,
+              "end": 766
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n2aa5e03a.png2aa5e044.png"
+        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n2aa5e03a.png2aa5e044.png",
+        "offset_header": 673,
+        "offset_body": 768,
+        "offset_end": 1601
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa5e03a.png"
-              }
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
               "c_subtype": "png",
               "attributes": {
                 "name": "2aa5e03a.png"
+              }
+            }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "2aa5e03a.png"
               }
             }
           },
@@ -283,6 +412,44 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
             "Text": "base64"
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 1658,
+              "end": 1691
+            }
+          ],
+          [
+            {
+              "Rfc": "content_id"
+            },
+            {
+              "start": 1702,
+              "end": 1757
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 1783,
+              "end": 1792
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 1812,
+              "end": 1846
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -1610,20 +1777,17 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 1645,
+        "offset_body": 1848,
+        "offset_end": 3662
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa5e044.png"
-              }
-            }
+          "content_transfer_encoding": {
+            "Text": "base64"
           },
           "content_type": {
             "ContentType": {
@@ -1634,13 +1798,57 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
               }
             }
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_id": {
             "Text": "4.2.0.58.20000519003903.00a859b0@pop.example.com.3"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "2aa5e044.png"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 3719,
+              "end": 3752
+            }
+          ],
+          [
+            {
+              "Rfc": "content_id"
+            },
+            {
+              "start": 3763,
+              "end": 3818
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 3844,
+              "end": 3853
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 3873,
+              "end": 3907
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -3096,12 +3304,24 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 3706,
+        "offset_body": 3909,
+        "offset_end": 5899
       }
     },
     {
       "Binary": {
         "headers_rfc": {
+          "content_type": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": {
+                "name": "blueball.png"
+              }
+            }
+          },
           "content_transfer_encoding": {
             "Text": "base64"
           },
@@ -3113,17 +3333,37 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "filename": "blueball.png"
               }
             }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 5998,
+              "end": 6031
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 6057,
+              "end": 6066
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 6086,
+              "end": 6124
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -4451,24 +4691,15 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 5985,
+        "offset_body": 6126,
+        "offset_end": 7940
       }
     },
     {
       "Binary": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
           "content_type": {
             "ContentType": {
               "c_type": "image",
@@ -4477,8 +4708,49 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
                 "name": "greenball.png"
               }
             }
+          },
+          "content_transfer_encoding": {
+            "Text": "base64"
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": {
+                "filename": "greenball.png"
+              }
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 7993,
+              "end": 8027
+            }
+          ],
+          [
+            {
+              "Rfc": "content_transfer_encoding"
+            },
+            {
+              "start": 8053,
+              "end": 8062
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 8082,
+              "end": 8121
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           137,
@@ -5779,7 +6051,10 @@ bGlwMmdpZiB2LjAuNiBieSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ]
+        ],
+        "offset_header": 7980,
+        "offset_body": 8123,
+        "offset_end": 9899
       }
     }
   ],

@@ -34,6 +34,17 @@ Content-Type: text/plain
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 13,
+        "end": 44
+      }
+    ]
+  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -53,7 +64,21 @@ Content-Type: text/plain
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 62,
+              "end": 93
+            }
+          ]
+        ],
+        "offset_header": 49,
+        "offset_body": 94,
+        "offset_end": 283
       }
     },
     {
@@ -67,9 +92,31 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 111,
+              "end": 127
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {},
+          "headers_raw": [
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 141,
+                "end": 153
+              }
+            ]
+          ],
           "html_body": [
             0
           ],
@@ -89,8 +136,22 @@ Content-Type: text/plain
                     }
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 141,
+                      "end": 153
+                    }
+                  ]
+                ],
                 "is_encoding_problem": false,
-                "body": "1"
+                "body": "1",
+                "offset_header": 128,
+                "offset_body": 154,
+                "offset_end": 155
               }
             }
           ],
@@ -99,8 +160,11 @@ Content-Type: text/plain
           },
           "offset_header": 128,
           "offset_body": 154,
-          "offset_end": 160
-        }
+          "offset_end": 155
+        },
+        "offset_header": 98,
+        "offset_body": 128,
+        "offset_end": 155
       }
     },
     {
@@ -114,9 +178,31 @@ Content-Type: text/plain
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 173,
+              "end": 189
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {},
+          "headers_raw": [
+            [
+              {
+                "Rfc": "content_type"
+              },
+              {
+                "start": 203,
+                "end": 215
+              }
+            ]
+          ],
           "html_body": [],
           "text_body": [],
           "attachments": [
@@ -134,8 +220,22 @@ Content-Type: text/plain
                     }
                   }
                 },
+                "headers_raw": [
+                  [
+                    {
+                      "Rfc": "content_type"
+                    },
+                    {
+                      "start": 203,
+                      "end": 215
+                    }
+                  ]
+                ],
                 "is_encoding_problem": true,
-                "body": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n"
+                "body": "22\n--1\nContent-Type: message/rfc822\n\nContent-Type: text/plain\n\n333\n",
+                "offset_header": 190,
+                "offset_body": 216,
+                "offset_end": 279
               }
             }
           ],
@@ -144,8 +244,11 @@ Content-Type: text/plain
           },
           "offset_header": 190,
           "offset_body": 216,
-          "offset_end": 283
-        }
+          "offset_end": 279
+        },
+        "offset_header": 160,
+        "offset_body": 190,
+        "offset_end": 279
       }
     }
   ],
