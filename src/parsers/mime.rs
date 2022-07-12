@@ -150,3 +150,38 @@ pub fn seek_crlf_end(stream: &MessageStream, mut start_pos: usize) -> usize {
     }
     start_pos
 }
+
+#[inline(always)]
+pub fn seek_crlf(stream: &MessageStream, mut start_pos: usize) -> usize {
+    for ch in &stream.data[start_pos..] {
+        match ch {
+            b'\r' | b' ' | b'\t' => start_pos += 1,
+            b'\n' => {
+                start_pos += 1;
+                break;
+            }
+            _ => break,
+        }
+    }
+
+    start_pos
+}
+
+#[inline(always)]
+pub fn seek_part_end(
+    stream: &MessageStream,
+    mut start_pos: usize,
+    boundary: Option<&[u8]>,
+) -> usize {
+    if let Some(boundary) = boundary {
+        start_pos = start_pos.saturating_sub(boundary.len());
+        if let Some(ch) = stream.data.get(start_pos - 1) {
+            if *ch == b'\r' {
+                start_pos = start_pos.saturating_sub(1);
+            }
+        }
+        start_pos
+    } else {
+        start_pos
+    }
+}

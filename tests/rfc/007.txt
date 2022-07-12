@@ -86,6 +86,26 @@ K
       }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 8,
+        "end": 37
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 50,
+        "end": 81
+      }
+    ]
+  ],
   "html_body": [
     0,
     8,
@@ -109,23 +129,46 @@ K
     {
       "Text": {
         "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
-            }
-          },
           "content_type": {
             "ContentType": {
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": null
             }
+          },
+          "content_disposition": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 99,
+              "end": 111
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 131,
+              "end": 139
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "A"
+        "body": "A",
+        "offset_header": 86,
+        "offset_body": 140,
+        "offset_end": 141
       }
     },
     {
@@ -140,7 +183,21 @@ K
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 161,
+              "end": 192
+            }
+          ]
+        ],
+        "offset_header": 148,
+        "offset_body": 193,
+        "offset_end": 801
       }
     },
     {
@@ -155,7 +212,21 @@ K
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 210,
+              "end": 247
+            }
+          ]
+        ],
+        "offset_header": 197,
+        "offset_body": 248,
+        "offset_end": 634
       }
     },
     {
@@ -170,29 +241,66 @@ K
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 265,
+              "end": 296
+            }
+          ]
+        ],
+        "offset_header": 252,
+        "offset_body": 297,
+        "offset_end": 487
       }
     },
     {
       "Text": {
         "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
           "content_disposition": {
             "ContentType": {
               "c_type": "inline",
               "c_subtype": null,
               "attributes": null
             }
+          },
+          "content_type": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 314,
+              "end": 326
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 346,
+              "end": 354
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "B"
+        "body": "B",
+        "offset_header": 301,
+        "offset_body": 355,
+        "offset_end": 356
       }
     },
     {
@@ -213,10 +321,33 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 376,
+              "end": 388
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 408,
+              "end": 416
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           67
-        ]
+        ],
+        "offset_header": 363,
+        "offset_body": 417,
+        "offset_end": 418
       }
     },
     {
@@ -237,8 +368,31 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 438,
+              "end": 450
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 470,
+              "end": 478
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "D"
+        "body": "D",
+        "offset_header": 425,
+        "offset_body": 479,
+        "offset_end": 480
       }
     },
     {
@@ -253,7 +407,21 @@ K
               }
             }
           }
-        }
+        },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 506,
+              "end": 539
+            }
+          ]
+        ],
+        "offset_header": 493,
+        "offset_body": 540,
+        "offset_end": 626
       }
     },
     {
@@ -267,8 +435,22 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 557,
+              "end": 568
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "<html>E</html>"
+        "body": "<html>E</html>",
+        "offset_header": 544,
+        "offset_body": 569,
+        "offset_end": 583
       }
     },
     {
@@ -282,10 +464,24 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 603,
+              "end": 615
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           70
-        ]
+        ],
+        "offset_header": 590,
+        "offset_body": 616,
+        "offset_end": 617
       }
     },
     {
@@ -306,10 +502,33 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 655,
+              "end": 667
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 687,
+              "end": 699
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           71
-        ]
+        ],
+        "offset_header": 642,
+        "offset_body": 700,
+        "offset_end": 701
       }
     },
     {
@@ -323,10 +542,24 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 721,
+              "end": 742
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           72
-        ]
+        ],
+        "offset_header": 708,
+        "offset_body": 743,
+        "offset_end": 744
       }
     },
     {
@@ -340,6 +573,17 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 764,
+              "end": 780
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": {
           "headers_rfc": {
@@ -347,6 +591,17 @@ K
               "Text": "J"
             }
           },
+          "headers_raw": [
+            [
+              {
+                "Rfc": "subject"
+              },
+              {
+                "start": 789,
+                "end": 792
+              }
+            ]
+          ],
           "html_body": [
             0
           ],
@@ -366,8 +621,12 @@ K
                     }
                   }
                 },
+                "headers_raw": [],
                 "is_encoding_problem": false,
-                "body": "J"
+                "body": "J",
+                "offset_header": 781,
+                "offset_body": 793,
+                "offset_end": 794
               }
             }
           ],
@@ -376,8 +635,11 @@ K
           },
           "offset_header": 781,
           "offset_body": 793,
-          "offset_end": 798
-        }
+          "offset_end": 794
+        },
+        "offset_header": 751,
+        "offset_body": 781,
+        "offset_end": 794
       }
     },
     {
@@ -398,8 +660,31 @@ K
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 821,
+              "end": 833
+            }
+          ],
+          [
+            {
+              "Rfc": "content_disposition"
+            },
+            {
+              "start": 853,
+              "end": 861
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "K"
+        "body": "K",
+        "offset_header": 808,
+        "offset_body": 862,
+        "offset_end": 863
       }
     }
   ],

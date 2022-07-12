@@ -25,6 +25,12 @@ Content-Type: application/x-whatever
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
+    },
     "date": {
       "DateTime": {
         "year": 1993,
@@ -44,6 +50,12 @@ Content-Type: application/x-whatever
     "mime_version": {
       "Text": "1.0"
     },
+    "from": {
+      "Address": {
+        "name": "Nathaniel Borenstein",
+        "address": "nsb@bellcore.com"
+      }
+    },
     "content_type": {
       "ContentType": {
         "c_type": "multipart",
@@ -52,20 +64,64 @@ Content-Type: application/x-whatever
           "boundary": "boundary42"
         }
       }
-    },
-    "from": {
-      "Address": {
-        "name": "Nathaniel Borenstein",
-        "address": "nsb@bellcore.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 46
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 49,
+        "end": 79
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 84,
+        "end": 123
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 131,
+        "end": 152
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 165,
+        "end": 170
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 183,
+        "end": 227
+      }
+    ]
+  ],
   "html_body": [
     0
   ],
@@ -90,8 +146,22 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 254,
+              "end": 284
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "... plain text version of message goes here ...\n"
+        "body": "... plain text version of message goes here ...\n",
+        "offset_header": 241,
+        "offset_body": 285,
+        "offset_end": 333
       }
     },
     {
@@ -105,8 +175,22 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 360,
+              "end": 375
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
+        "body": "... RFC 1896 text/enriched version of same message\n    goes here ...\n",
+        "offset_header": 347,
+        "offset_body": 376,
+        "offset_end": 445
       }
     },
     {
@@ -120,6 +204,17 @@ Content-Type: application/x-whatever
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 472,
+              "end": 496
+            }
+          ]
+        ],
         "is_encoding_problem": false,
         "body": [
           46,
@@ -173,7 +268,10 @@ Content-Type: application/x-whatever
           46,
           46,
           10
-        ]
+        ],
+        "offset_header": 459,
+        "offset_body": 497,
+        "offset_end": 548
       }
     }
   ],

@@ -25,23 +25,26 @@ This is the epilogue.  It is also to be ignored.
 
 ---- EXPECTED STRUCTURE ----{
   "headers_rfc": {
-    "subject": {
-      "Text": "Sample message"
-    },
-    "to": {
-      "Address": {
-        "name": "Ned Freed",
-        "address": "ned@innosoft.com"
-      }
-    },
     "from": {
       "Address": {
         "name": "Nathaniel Borenstein",
         "address": "nsb@bellcore.com"
       }
     },
-    "mime_version": {
-      "Text": "1.0"
+    "content_type": {
+      "ContentType": {
+        "c_type": "multipart",
+        "c_subtype": "mixed",
+        "attributes": {
+          "boundary": "simple boundary"
+        }
+      }
+    },
+    "to": {
+      "Address": {
+        "name": "Ned Freed",
+        "address": "ned@innosoft.com"
+      }
     },
     "date": {
       "DateTime": {
@@ -56,16 +59,69 @@ This is the epilogue.  It is also to be ignored.
         "tz_minute": 0
       }
     },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "simple boundary"
-        }
-      }
+    "subject": {
+      "Text": "Sample message"
+    },
+    "mime_version": {
+      "Text": "1.0"
     }
   },
+  "headers_raw": [
+    [
+      {
+        "Rfc": "from"
+      },
+      {
+        "start": 5,
+        "end": 46
+      }
+    ],
+    [
+      {
+        "Rfc": "to"
+      },
+      {
+        "start": 49,
+        "end": 79
+      }
+    ],
+    [
+      {
+        "Rfc": "date"
+      },
+      {
+        "start": 84,
+        "end": 123
+      }
+    ],
+    [
+      {
+        "Rfc": "subject"
+      },
+      {
+        "start": 131,
+        "end": 147
+      }
+    ],
+    [
+      {
+        "Rfc": "mime_version"
+      },
+      {
+        "start": 160,
+        "end": 165
+      }
+    ],
+    [
+      {
+        "Rfc": "content_type"
+      },
+      {
+        "start": 178,
+        "end": 223
+      }
+    ]
+  ],
   "html_body": [
     0,
     1
@@ -87,8 +143,12 @@ This is the epilogue.  It is also to be ignored.
             }
           }
         },
+        "headers_raw": [],
         "is_encoding_problem": false,
-        "body": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
+        "body": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak.",
+        "offset_header": 400,
+        "offset_body": 401,
+        "offset_end": 480
       }
     },
     {
@@ -104,8 +164,22 @@ This is the epilogue.  It is also to be ignored.
             }
           }
         },
+        "headers_raw": [
+          [
+            {
+              "Rfc": "content_type"
+            },
+            {
+              "start": 512,
+              "end": 542
+            }
+          ]
+        ],
         "is_encoding_problem": false,
-        "body": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n"
+        "body": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n",
+        "offset_header": 499,
+        "offset_body": 543,
+        "offset_end": 619
       }
     }
   ],

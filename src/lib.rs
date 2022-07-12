@@ -272,7 +272,6 @@ pub struct Message<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_rfc: RfcHeaders<'x>,
     #[cfg_attr(feature = "serde_support", serde(default))]
-    #[cfg_attr(feature = "serde_support", serde(skip))]
     pub headers_raw: RawHeaders<'x>,
 
     #[cfg_attr(feature = "serde_support", serde(default))]
@@ -318,38 +317,17 @@ pub struct Part<'x, T> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_rfc: RfcHeaders<'x>,
     #[cfg_attr(feature = "serde_support", serde(default))]
-    #[cfg_attr(feature = "serde_support", serde(skip))]
     pub headers_raw: RawHeaders<'x>,
     pub is_encoding_problem: bool,
     pub body: T,
+    pub offset_header: usize,
+    pub offset_body: usize,
+    pub offset_end: usize,
 }
 
 impl<'x, T> Part<'x, T> {
-    pub fn new(
-        headers_rfc: RfcHeaders<'x>,
-        headers_raw: RawHeaders<'x>,
-        body: T,
-        is_encoding_problem: bool,
-    ) -> Self {
-        Self {
-            headers_rfc,
-            headers_raw,
-            body,
-            is_encoding_problem,
-        }
-    }
-
     pub fn get_body(&self) -> &T {
         &self.body
-    }
-}
-
-impl<'x> MultiPart<'x> {
-    pub fn new(headers_rfc: RfcHeaders<'x>, headers_raw: RawHeaders<'x>) -> Self {
-        Self {
-            headers_rfc,
-            headers_raw,
-        }
     }
 }
 
@@ -360,8 +338,10 @@ pub struct MultiPart<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub headers_rfc: RfcHeaders<'x>,
     #[cfg_attr(feature = "serde_support", serde(default))]
-    #[cfg_attr(feature = "serde_support", serde(skip))]
     pub headers_raw: RawHeaders<'x>,
+    pub offset_header: usize,
+    pub offset_body: usize,
+    pub offset_end: usize,
 }
 
 /// Unique ID representing a MIME part within a message.
@@ -399,6 +379,19 @@ pub enum MessagePart<'x> {
 }
 
 impl<'x> MessagePart<'x> {
+    pub fn raw_offsets(&self) -> (usize, usize, usize) {
+        match self {
+            MessagePart::Text(part) => (part.offset_header, part.offset_body, part.offset_end),
+            MessagePart::Html(part) => (part.offset_header, part.offset_body, part.offset_end),
+            MessagePart::Binary(part) => (part.offset_header, part.offset_body, part.offset_end),
+            MessagePart::InlineBinary(part) => {
+                (part.offset_header, part.offset_body, part.offset_end)
+            }
+            MessagePart::Message(part) => (part.offset_header, part.offset_body, part.offset_end),
+            MessagePart::Multipart(part) => (part.offset_header, part.offset_body, part.offset_end),
+        }
+    }
+
     pub fn unwrap_text(&self) -> &Part<'x, Cow<'x, str>> {
         match self {
             MessagePart::Text(part) => part,
@@ -500,11 +493,17 @@ pub type RfcHeaders<'x> = HashMap<RfcHeader, HeaderValue<'x>>;
 pub type RawHeaders<'x> = Vec<(HeaderName<'x>, HeaderOffset)>;
 
 /// Offset of a message element in the raw message.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct HeaderOffset {
     pub start: usize,
     pub end: usize,
+}
+
+impl HeaderOffset {
+    pub fn new(start: usize, end: usize) -> Self {
+        Self { start, end }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
