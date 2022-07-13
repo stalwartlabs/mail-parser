@@ -223,10 +223,9 @@ impl<'x> Message<'x> {
         let mut stream = MessageStream::new(raw_message);
 
         let mut message = Message::new();
-        let mut message_stack = Vec::new();
 
         let mut state = MessageParserState::new();
-        let mut state_stack = Vec::new();
+        let mut state_stack = Vec::with_capacity(4);
 
         let mut mime_part_header = RfcHeaders::new();
         let mut mime_part_header_raw = RawHeaders::new();
@@ -297,7 +296,7 @@ impl<'x> Message<'x> {
                                 offset_end: 0,
                             }));
                         }
-                        state_stack.push(state);
+                        state_stack.push((state, None));
                         state = new_state;
                         skip_crlf(&mut stream);
                         continue;
@@ -338,12 +337,15 @@ impl<'x> Message<'x> {
                     ..Default::default()
                 };
                 add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
-                message_stack.push((
-                    message,
-                    std::mem::take(&mut mime_part_header),
-                    std::mem::take(&mut mime_part_header_raw),
+                state_stack.push((
+                    state,
+                    (
+                        message,
+                        std::mem::take(&mut mime_part_header),
+                        std::mem::take(&mut mime_part_header_raw),
+                    )
+                        .into(),
                 ));
-                state_stack.push(state);
                 message = Message::new();
                 state = new_state;
                 continue;
@@ -567,11 +569,11 @@ impl<'x> Message<'x> {
                 // Currently processing a MIME part
                 'inner: loop {
                     if let MimeType::Message = state.mime_type {
-                        // Finished processing nested message, restore parent message from stack
-                        if let (
+                        // Finished processing a nested message, restore parent message from stack
+                        if let Some((
+                            mut prev_state,
                             Some((mut prev_message, headers, headers_raw)),
-                            Some(mut prev_state),
-                        ) = (message_stack.pop(), state_stack.pop())
+                        )) = state_stack.pop()
                         {
                             message.structure = state.get_structure();
                             message.offset_header = state.offset_header;
@@ -636,7 +638,7 @@ impl<'x> Message<'x> {
                             }
                         }
 
-                        if let Some(mut prev_state) = state_stack.pop() {
+                        if let Some((mut prev_state, _)) = state_stack.pop() {
                             // Add headers and substructure to parent part
                             prev_state.structure.push(state.get_structure());
 
@@ -664,9 +666,8 @@ impl<'x> Message<'x> {
         }
 
         // Corrupted MIME message, try to recover whatever is possible.
-        loop {
-            if let Some((mut prev_message, headers, headers_raw)) = message_stack.pop() {
-                let prev_state = state_stack.pop().unwrap();
+        while let Some((mut prev_state, prev_message)) = state_stack.pop() {
+            if let Some((mut prev_message, headers, headers_raw)) = prev_message {
                 if !message.is_empty() {
                     message.offset_header = state.offset_header;
                     message.offset_body = state.offset_body;
@@ -684,10 +685,9 @@ impl<'x> Message<'x> {
                         offset_end: message.offset_end,
                         body: MessageAttachment::Parsed(Box::new(message)),
                     }));
+                    message = prev_message;
                 }
-                message = prev_message;
-                state = prev_state;
-            } else if let Some(mut prev_state) = state_stack.pop() {
+            } else {
                 if let Some(part_id) = state.part_id {
                     if let Some(part) = message.parts.get_mut(part_id) {
                         if let MessagePart::Multipart(ref mut part) = part {
@@ -699,10 +699,8 @@ impl<'x> Message<'x> {
                 }
                 // Add headers and substructure to parent part
                 prev_state.structure.push(state.get_structure());
-                state = prev_state;
-            } else {
-                break;
             }
+            state = prev_state;
         }
 
         message.raw_message = raw_message.into();
