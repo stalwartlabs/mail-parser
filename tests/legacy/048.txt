@@ -155,251 +155,265 @@ end
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------177483472E7788F4AD46AB1A"
-        }
-      }
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "3923670C.67D83A99@example.com"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 44,
-        "second": 12,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 50,
-        "end": 84
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 89,
-        "end": 126
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 135,
-        "end": 165
-      }
-    ],
-    [
-      {
-        "Other": "X-Accept-Language"
-      },
-      {
-        "start": 183,
-        "end": 188
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 201,
-        "end": 207
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 210,
-        "end": 240
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 248,
-        "end": 294
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 307,
-        "end": 376
-      }
-    ]
-  ],
   "html_body": [
-    0,
     1,
     2,
-    3
+    3,
+    4
   ],
   "text_body": [
-    0,
     1,
     2,
-    3
+    3,
+    4
   ],
   "attachments": [
-    1,
     2,
-    3
+    3,
+    4
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "us-ascii"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
+      "headers_rfc": {
+        "subject": {
+          "Text": "Test message from Netscape Communicator 4.7"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 477,
-              "end": 508
+        "to": {
+          "Address": {
+            "name": "Joe Blow",
+            "address": "blow@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 23,
+            "minute": 44,
+            "second": 12,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "3923670C.67D83A99@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "------------177483472E7788F4AD46AB1A"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 534,
-              "end": 541
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.",
-        "offset_header": 464,
-        "offset_body": 543,
-        "offset_end": 1310
-      }
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 50,
+            "end": 84
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 89,
+            "end": 126
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 135,
+            "end": 165
+          }
+        ],
+        [
+          {
+            "Other": "X-Accept-Language"
+          },
+          {
+            "start": 183,
+            "end": 188
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 201,
+            "end": 207
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 210,
+            "end": 240
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 248,
+            "end": 294
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 307,
+            "end": 376
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 378,
+      "offset_end": 7718
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "redball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
             }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
+          {
+            "start": 477,
+            "end": 508
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
+          {
+            "start": 534,
+            "end": 541
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race."
+      },
+      "offset_header": 464,
+      "offset_body": 543,
+      "offset_end": 1312
+    },
+    {
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "x-uuencode"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "redball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 1365,
-              "end": 1399
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "redball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 1425,
-              "end": 1438
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 1458,
-              "end": 1493
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 1365,
+            "end": 1399
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 1425,
+            "end": 1438
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 1458,
+            "end": 1493
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           98,
           101,
           103,
@@ -2467,68 +2481,68 @@ end
           100,
           13,
           10
-        ],
-        "offset_header": 1352,
-        "offset_body": 1495,
-        "offset_end": 3562
-      }
+        ]
+      },
+      "offset_header": 1352,
+      "offset_body": 1495,
+      "offset_end": 3564
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "x-uuencode"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "greenball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 3617,
-              "end": 3653
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "greenball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 3679,
-              "end": 3692
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 3712,
-              "end": 3749
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 3617,
+            "end": 3653
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 3679,
+            "end": 3692
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 3712,
+            "end": 3749
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           98,
           101,
           103,
@@ -4378,68 +4392,68 @@ end
           100,
           13,
           10
-        ],
-        "offset_header": 3604,
-        "offset_body": 3751,
-        "offset_end": 5600
-      }
+        ]
+      },
+      "offset_header": 3604,
+      "offset_body": 3751,
+      "offset_end": 5602
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "x-uuencode"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "blueball.png"
             }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "x-uuencode"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 5655,
-              "end": 5690
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "blueball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 5716,
-              "end": 5729
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 5749,
-              "end": 5785
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 5655,
+            "end": 5690
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 5716,
+            "end": 5729
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 5749,
+            "end": 5785
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           98,
           101,
           103,
@@ -6327,30 +6341,11 @@ end
           100,
           13,
           10
-        ],
-        "offset_header": 5642,
-        "offset_body": 5787,
-        "offset_end": 7674
-      }
+        ]
+      },
+      "offset_header": 5642,
+      "offset_body": 5787,
+      "offset_end": 7676
     }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
-      },
-      {
-        "Part": 1
-      },
-      {
-        "Part": 2
-      },
-      {
-        "Part": 3
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 378,
-  "offset_end": 7716
+  ]
 }

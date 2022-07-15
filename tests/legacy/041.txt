@@ -57,237 +57,249 @@ vAAAAABJRU5ErkJggg==
 ---1463757054-170444605-958746196=:8452--
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "-1463757054-170444605-958746196=:8452"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 10,
-        "minute": 23,
-        "second": 16,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "PNG graphic"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 5,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 50,
-        "end": 91
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 94,
-        "end": 150
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 158,
-        "end": 172
-      }
-    ],
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 183,
-        "end": 247
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 260,
-        "end": 266
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 279,
-        "end": 347
-      }
-    ]
-  ],
   "html_body": [
-    0
+    1
   ],
   "text_body": [
-    0
+    1
   ],
   "attachments": [
-    1
+    2
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "US-ASCII"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "PNG graphic"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "doug@penguin.example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 623,
-              "end": 654
+        "to": {
+          "Address": {
+            "name": "Heinz Müller",
+            "address": "mueller@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 19,
+            "hour": 10,
+            "minute": 23,
+            "second": 16,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "-1463757054-170444605-958746196=:8452"
             }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 5,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "\n",
-        "offset_header": 610,
-        "offset_body": 656,
-        "offset_end": 656
-      }
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 50,
+            "end": 91
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 94,
+            "end": 150
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 158,
+            "end": 172
+          }
+        ],
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 183,
+            "end": 247
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 260,
+            "end": 266
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 279,
+            "end": 347
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 349,
+      "offset_end": 3001
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "US-ASCII"
             }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "content_description": {
-            "Text": "red ball"
-          },
-          "content_transfer_encoding": {
-            "Text": "BASE64"
-          },
-          "content_id": {
-            "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "octet-stream",
-              "attributes": {
-                "name": "redball.png"
-              }
+          {
+            "start": 623,
+            "end": 654
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "\n"
+      },
+      "offset_header": 610,
+      "offset_body": 656,
+      "offset_end": 658
+    },
+    {
+      "headers_rfc": {
+        "content_description": {
+          "Text": "red ball"
+        },
+        "content_id": {
+          "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
+        },
+        "content_transfer_encoding": {
+          "Text": "BASE64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "application",
+            "c_subtype": "octet-stream",
+            "attributes": {
+              "name": "redball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 712,
-              "end": 759
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "attachment",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "redball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 785,
-              "end": 794
-            }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 805,
-              "end": 862
-            }
-          ],
-          [
-            {
-              "Rfc": "content_description"
-            },
-            {
-              "start": 882,
-              "end": 893
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 913,
-              "end": 950
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 712,
+            "end": 759
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 785,
+            "end": 794
+          }
+        ],
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 805,
+            "end": 862
+          }
+        ],
+        [
+          {
+            "Rfc": "content_description"
+          },
+          {
+            "start": 882,
+            "end": 893
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 913,
+            "end": 950
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -1741,24 +1753,11 @@ vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 699,
-        "offset_body": 952,
-        "offset_end": 2956
-      }
-    }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
+        ]
       },
-      {
-        "Part": 1
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 349,
-  "offset_end": 2999
+      "offset_header": 699,
+      "offset_body": 952,
+      "offset_end": 2958
+    }
+  ]
 }

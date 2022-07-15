@@ -31,161 +31,6 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "J�rgen Schm�rgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGIEKBCHAA.doug@example.com"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 8,
-        "second": 29,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 5,
-        "end": 40
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 43,
-        "end": 89
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 97,
-        "end": 148
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 153,
-        "end": 187
-      }
-    ],
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 198,
-        "end": 248
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 261,
-        "end": 267
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 280,
-        "end": 317
-      }
-    ],
-    [
-      {
-        "Rfc": "content_transfer_encoding"
-      },
-      {
-        "start": 343,
-        "end": 350
-      }
-    ],
-    [
-      {
-        "Other": "X-Priority"
-      },
-      {
-        "start": 361,
-        "end": 374
-      }
-    ],
-    [
-      {
-        "Other": "X-MSMail-Priority"
-      },
-      {
-        "start": 392,
-        "end": 401
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 410,
-        "end": 463
-      }
-    ],
-    [
-      {
-        "Other": "Importance"
-      },
-      {
-        "start": 474,
-        "end": 483
-      }
-    ],
-    [
-      {
-        "Other": "X-MimeOLE"
-      },
-      {
-        "start": 493,
-        "end": 541
-      }
-    ]
-  ],
   "html_body": [
     0
   ],
@@ -195,53 +40,180 @@ welche also wohl noch ungl�cklicher sein m�ssen als wir."
   "attachments": [],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "8bit"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "doug@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 280,
-              "end": 317
+        "to": {
+          "Address": {
+            "name": "J�rgen Schm�rgen",
+            "address": "schmuergen@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 19,
+            "minute": 8,
+            "second": 29,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "NDBBIAKOPKHFGPLCODIGIEKBCHAA.doug@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_transfer_encoding": {
+          "Text": "8bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 343,
-              "end": 350
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 5,
+            "end": 40
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n",
-        "offset_header": 0,
-        "offset_body": 543,
-        "offset_end": 1295
-      }
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 43,
+            "end": 89
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 97,
+            "end": 148
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 153,
+            "end": 187
+          }
+        ],
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 198,
+            "end": 248
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 261,
+            "end": 267
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 280,
+            "end": 317
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 343,
+            "end": 350
+          }
+        ],
+        [
+          {
+            "Other": "X-Priority"
+          },
+          {
+            "start": 361,
+            "end": 374
+          }
+        ],
+        [
+          {
+            "Other": "X-MSMail-Priority"
+          },
+          {
+            "start": 392,
+            "end": 401
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 410,
+            "end": 463
+          }
+        ],
+        [
+          {
+            "Other": "Importance"
+          },
+          {
+            "start": 474,
+            "end": 483
+          }
+        ],
+        [
+          {
+            "Other": "X-MimeOLE"
+          },
+          {
+            "start": 493,
+            "end": 541
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 543,
+      "offset_end": 1295
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 543,
-  "offset_end": 1295
+  ]
 }

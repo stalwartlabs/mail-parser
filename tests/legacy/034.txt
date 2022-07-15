@@ -26,134 +26,6 @@ wenig aufschieben, denn auch uns f+vGM-hten, wie ihr seht, einige Tiere,
 welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "message_id": {
-      "Text": "39236497.12FA2A89@example.com"
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "subject": {
-      "Text": "Die Hasen und die Fr+APY-sche"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz M+APw-ller",
-        "address": "mueller@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 33,
-        "second": 43,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 50,
-        "end": 84
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 89,
-        "end": 126
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 135,
-        "end": 165
-      }
-    ],
-    [
-      {
-        "Other": "X-Accept-Language"
-      },
-      {
-        "start": 183,
-        "end": 188
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 201,
-        "end": 207
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 210,
-        "end": 253
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 261,
-        "end": 293
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 306,
-        "end": 334
-      }
-    ],
-    [
-      {
-        "Rfc": "content_transfer_encoding"
-      },
-      {
-        "start": 360,
-        "end": 367
-      }
-    ]
-  ],
   "html_body": [
     0
   ],
@@ -163,53 +35,153 @@ welche also wohl noch ungl+uKs-licher sein m+vLM-en als wir."
   "attachments": [],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "7bit"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "UTF-7"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Fr+APY-sche"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 306,
-              "end": 334
+        "to": {
+          "Address": {
+            "name": "Heinz M+APw-ller",
+            "address": "mueller@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 23,
+            "minute": 33,
+            "second": 43,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "39236497.12FA2A89@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-7"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 360,
-              "end": 367
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n",
-        "offset_header": 0,
-        "offset_body": 369,
-        "offset_end": 1158
-      }
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 50,
+            "end": 84
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 89,
+            "end": 126
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 135,
+            "end": 165
+          }
+        ],
+        [
+          {
+            "Other": "X-Accept-Language"
+          },
+          {
+            "start": 183,
+            "end": 188
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 201,
+            "end": 207
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 210,
+            "end": 253
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 261,
+            "end": 293
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 306,
+            "end": 334
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 360,
+            "end": 367
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 369,
+      "offset_end": 1158
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 369,
-  "offset_end": 1158
+  ]
 }

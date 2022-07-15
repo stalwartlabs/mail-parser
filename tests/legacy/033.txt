@@ -33,143 +33,6 @@ wenig aufschieben, denn auch uns f=FCrchten, wie ihr seht, einige Tiere,
 welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 30,
-        "second": 41,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "message_id": {
-      "Text": "392363E1.2AC47AB3@example.com"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 50,
-        "end": 84
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 89,
-        "end": 126
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 135,
-        "end": 165
-      }
-    ],
-    [
-      {
-        "Other": "X-Accept-Language"
-      },
-      {
-        "start": 183,
-        "end": 188
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 201,
-        "end": 207
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 210,
-        "end": 240
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 248,
-        "end": 294
-      }
-    ],
-    [
-      {
-        "Other": "X-Priority"
-      },
-      {
-        "start": 305,
-        "end": 318
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 331,
-        "end": 359
-      }
-    ],
-    [
-      {
-        "Rfc": "content_transfer_encoding"
-      },
-      {
-        "start": 385,
-        "end": 404
-      }
-    ]
-  ],
   "html_body": [
     0
   ],
@@ -179,53 +42,162 @@ welche also wohl noch ungl=FCcklicher sein m=FCssen als wir."
   "attachments": [],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "UTF-8"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
+      "headers_rfc": {
+        "subject": {
+          "Text": "Test message from Netscape Communicator 4.7"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 331,
-              "end": 359
+        "to": {
+          "Address": {
+            "name": "Joe Blow",
+            "address": "blow@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 23,
+            "minute": 30,
+            "second": 41,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "392363E1.2AC47AB3@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "UTF-8"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 385,
-              "end": 404
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Fr�sche\n\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\nschnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\n",
-        "offset_header": 0,
-        "offset_body": 406,
-        "offset_end": 1208
-      }
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 50,
+            "end": 84
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 89,
+            "end": 126
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 135,
+            "end": 165
+          }
+        ],
+        [
+          {
+            "Other": "X-Accept-Language"
+          },
+          {
+            "start": 183,
+            "end": 188
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 201,
+            "end": 207
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 210,
+            "end": 240
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 248,
+            "end": 294
+          }
+        ],
+        [
+          {
+            "Other": "X-Priority"
+          },
+          {
+            "start": 305,
+            "end": 318
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 331,
+            "end": 359
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 385,
+            "end": 404
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Fr�sche\n\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\nschnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\n"
+      },
+      "offset_header": 0,
+      "offset_body": 406,
+      "offset_end": 1208
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 406,
-  "offset_end": 1208
+  ]
 }

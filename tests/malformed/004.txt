@@ -9,58 +9,63 @@ Content-Type: text/plain
 body
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "a"
-        }
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 13,
-        "end": 44
-      }
-    ]
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
-    0
+    1
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "a"
             }
           }
-        },
-        "headers_raw": [],
-        "is_encoding_problem": true,
-        "body": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n",
-        "offset_header": 48,
-        "offset_body": 50,
-        "offset_end": 127
-      }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 13,
+            "end": 44
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 45,
+      "offset_end": 131
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": null
+          }
+        }
+      },
+      "headers_raw": [],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
+      },
+      "offset_header": 48,
+      "offset_body": 50,
+      "offset_end": 128
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 45,
-  "offset_end": 131
+  ]
 }

@@ -188,367 +188,390 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 ------=_NextPart_000_0010_01BFC038.B91BC650--
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "jblow@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKFCHAA.doug@example.com"
-    },
-    "subject": {
-      "Text": "Test message from Microsoft Outlook 00"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 47,
-        "second": 24,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "----=_NextPart_000_0010_01BFC038.B91BC650"
-        }
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 5,
-        "end": 40
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 43,
-        "end": 76
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 84,
-        "end": 125
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 130,
-        "end": 164
-      }
-    ],
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 175,
-        "end": 225
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 238,
-        "end": 244
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 257,
-        "end": 331
-      }
-    ],
-    [
-      {
-        "Other": "X-Priority"
-      },
-      {
-        "start": 342,
-        "end": 355
-      }
-    ],
-    [
-      {
-        "Other": "X-MSMail-Priority"
-      },
-      {
-        "start": 373,
-        "end": 382
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 391,
-        "end": 444
-      }
-    ],
-    [
-      {
-        "Other": "Importance"
-      },
-      {
-        "start": 455,
-        "end": 464
-      }
-    ],
-    [
-      {
-        "Other": "X-MimeOLE"
-      },
-      {
-        "start": 474,
-        "end": 522
-      }
-    ]
-  ],
   "html_body": [
-    3
+    4
   ],
   "text_body": [
-    2
+    3
   ],
   "attachments": [
-    4,
     5,
-    6
+    6,
+    7
   ],
   "parts": [
     {
-      "Multipart": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "related",
-              "attributes": {
-                "boundary": "----=_NextPart_001_0011_01BFC038.B91BC650"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Test message from Microsoft Outlook 00"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "doug@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 630,
-              "end": 706
+        "to": {
+          "Address": {
+            "name": "Joe Blow",
+            "address": "jblow@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 19,
+            "minute": 47,
+            "second": 24,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "NDBBIAKOPKHFGPLCODIGOEKFCHAA.doug@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "----=_NextPart_000_0010_01BFC038.B91BC650"
             }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 5,
+            "end": 40
+          }
         ],
-        "offset_header": 617,
-        "offset_body": 708,
-        "offset_end": 5424
-      }
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 43,
+            "end": 76
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 84,
+            "end": 125
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 130,
+            "end": 164
+          }
+        ],
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 175,
+            "end": 225
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 238,
+            "end": 244
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 257,
+            "end": 331
+          }
+        ],
+        [
+          {
+            "Other": "X-Priority"
+          },
+          {
+            "start": 342,
+            "end": 355
+          }
+        ],
+        [
+          {
+            "Other": "X-MSMail-Priority"
+          },
+          {
+            "start": 373,
+            "end": 382
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 391,
+            "end": 444
+          }
+        ],
+        [
+          {
+            "Other": "Importance"
+          },
+          {
+            "start": 455,
+            "end": 464
+          }
+        ],
+        [
+          {
+            "Other": "X-MimeOLE"
+          },
+          {
+            "start": 474,
+            "end": 522
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          6,
+          7
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 524,
+      "offset_end": 9627
     },
     {
-      "Multipart": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
-              "attributes": {
-                "boundary": "----=_NextPart_002_0012_01BFC038.B91BC650"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "related",
+            "attributes": {
+              "boundary": "----=_NextPart_001_0011_01BFC038.B91BC650"
             }
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 768,
-              "end": 848
-            }
-          ]
-        ],
-        "offset_header": 755,
-        "offset_body": 850,
-        "offset_end": 3388
-      }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 630,
+            "end": 706
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          5
+        ]
+      },
+      "offset_header": 617,
+      "offset_body": 708,
+      "offset_end": 5424
     },
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "alternative",
+            "attributes": {
+              "boundary": "----=_NextPart_002_0012_01BFC038.B91BC650"
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 910,
-              "end": 947
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 973,
-              "end": 992
-            }
-          ]
-        ],
-        "is_encoding_problem": false,
-        "body": "\n\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n\n",
-        "offset_header": 897,
-        "offset_body": 994,
-        "offset_end": 1799
-      }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 768,
+            "end": 848
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 755,
+      "offset_body": 850,
+      "offset_end": 3388
     },
     {
-      "Html": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 1859,
-              "end": 1895
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 1921,
-              "end": 1940
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 910,
+            "end": 947
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"blue ball\" border=0 \nhspace=0 src=\"cid:938014623@17052000-0f9b\"></FONT></DIV>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n</FONT></DIV>\n<DIV><FONT face=Arial size=2><BR>&nbsp;</DIV></FONT></BODY></HTML>\n",
-        "offset_header": 1846,
-        "offset_body": 1942,
-        "offset_end": 3339
-      }
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 973,
+            "end": 992
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "\n\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n\n"
+      },
+      "offset_header": 897,
+      "offset_body": 994,
+      "offset_end": 1801
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
-            }
-          },
-          "content_id": {
-            "Text": "938014623@17052000-0f9b"
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 3448,
-              "end": 3483
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 3509,
-              "end": 3518
-            }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 3529,
-              "end": 3557
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 1859,
+            "end": 1895
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 1921,
+            "end": 1940
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><IMG align=baseline alt=\"blue ball\" border=0 \nhspace=0 src=\"cid:938014623@17052000-0f9b\"></FONT></DIV>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n</FONT></DIV>\n<DIV><FONT face=Arial size=2><BR>&nbsp;</DIV></FONT></BODY></HTML>\n"
+      },
+      "offset_header": 1846,
+      "offset_body": 1942,
+      "offset_end": 3341
+    },
+    {
+      "headers_rfc": {
+        "content_id": {
+          "Text": "938014623@17052000-0f9b"
+        },
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "blueball.png"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 3448,
+            "end": 3483
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 3509,
+            "end": 3518
+          }
+        ],
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 3529,
+            "end": 3557
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -1874,68 +1897,68 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 3435,
-        "offset_body": 3559,
-        "offset_end": 5375
-      }
+        ]
+      },
+      "offset_header": 3435,
+      "offset_body": 3559,
+      "offset_end": 5377
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "greenball.png"
             }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 5484,
-              "end": 5520
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "attachment",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "greenball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 5546,
-              "end": 5555
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 5575,
-              "end": 5616
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 5484,
+            "end": 5520
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 5546,
+            "end": 5555
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 5575,
+            "end": 5616
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -3234,68 +3257,68 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 5471,
-        "offset_body": 5618,
-        "offset_end": 7396
-      }
+        ]
+      },
+      "offset_header": 5471,
+      "offset_body": 5618,
+      "offset_end": 7398
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "redball.png"
-              }
-            }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "redball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "redball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 7456,
-              "end": 7490
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "attachment",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "redball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 7516,
-              "end": 7525
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 7545,
-              "end": 7584
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 7456,
+            "end": 7490
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 7516,
+            "end": 7525
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 7545,
+            "end": 7584
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -4749,47 +4772,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 7443,
-        "offset_body": 7586,
-        "offset_end": 9578
-      }
-    }
-  ],
-  "structure": {
-    "List": [
-      {
-        "MultiPart": [
-          0,
-          [
-            {
-              "MultiPart": [
-                1,
-                [
-                  {
-                    "Part": 2
-                  },
-                  {
-                    "Part": 3
-                  }
-                ]
-              ]
-            },
-            {
-              "Part": 4
-            }
-          ]
         ]
       },
-      {
-        "Part": 5
-      },
-      {
-        "Part": 6
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 524,
-  "offset_end": 9625
+      "offset_header": 7443,
+      "offset_body": 7586,
+      "offset_end": 9580
+    }
+  ]
 }

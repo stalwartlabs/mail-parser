@@ -95,232 +95,245 @@ JB@ac)(GTFLiL)!d09'8!!!:
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 0,
-        "minute": 53,
-        "second": 25,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "=====================_716373961==_"
-        }
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "jschmuergen@example.com"
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 64
-      }
-    ],
-    [
-      {
-        "Other": "X-Sender"
-      },
-      {
-        "start": 73,
-        "end": 113
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 122,
-        "end": 170
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 175,
-        "end": 209
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 212,
-        "end": 295
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 300,
-        "end": 337
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 345,
-        "end": 390
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 403,
-        "end": 409
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 422,
-        "end": 489
-      }
-    ]
-  ],
   "html_body": [
-    0
+    1
   ],
   "text_body": [
-    0
+    1
   ],
   "attachments": [
-    1,
-    2
+    2,
+    3
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Frösche"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 542,
-              "end": 577
+        "to": {
+          "Address": {
+            "name": "Jürgen Schmürgen",
+            "address": "jschmuergen@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 19,
+            "hour": 0,
+            "minute": 53,
+            "second": 25,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "=====================_716373961==_"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 603,
-              "end": 622
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 64
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
-        "offset_header": 529,
-        "offset_body": 624,
-        "offset_end": 1433
-      }
+        [
+          {
+            "Other": "X-Sender"
+          },
+          {
+            "start": 73,
+            "end": 113
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 122,
+            "end": 170
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 175,
+            "end": 209
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 212,
+            "end": 295
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 300,
+            "end": 337
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 345,
+            "end": 390
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 403,
+            "end": 409
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 422,
+            "end": 489
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 491,
+      "offset_end": 4871
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "mac-binhex40",
-              "attributes": {
-                "name": "blueball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
+          {
+            "start": 542,
+            "end": 577
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 603,
+            "end": 622
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+      },
+      "offset_header": 529,
+      "offset_body": 624,
+      "offset_end": 1435
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "application",
+            "c_subtype": "mac-binhex40",
+            "attributes": {
+              "name": "blueball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 1486,
-              "end": 1534
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "attachment",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "blueball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 1554,
-              "end": 1592
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 1486,
+            "end": 1534
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 1554,
+            "end": 1592
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           13,
           10,
           40,
@@ -2250,56 +2263,56 @@ JB@ac)(GTFLiL)!d09'8!!!:
           58,
           13,
           10
-        ],
-        "offset_header": 1473,
-        "offset_body": 1594,
-        "offset_end": 3523
-      }
+        ]
+      },
+      "offset_header": 1473,
+      "offset_body": 1594,
+      "offset_end": 3525
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "mac-binhex40",
-              "attributes": {
-                "name": "HasenundFr�sche.txt"
-              }
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "HasenundFr�sche.txt"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "application",
+            "c_subtype": "mac-binhex40",
+            "attributes": {
+              "name": "HasenundFr�sche.txt"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 3576,
-              "end": 3631
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "attachment",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "HasenundFr�sche.txt"
             }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 3651,
-              "end": 3696
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 3576,
+            "end": 3631
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 3651,
+            "end": 3696
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           13,
           10,
           40,
@@ -3431,27 +3444,11 @@ JB@ac)(GTFLiL)!d09'8!!!:
           58,
           13,
           10
-        ],
-        "offset_header": 3563,
-        "offset_body": 3698,
-        "offset_end": 4829
-      }
+        ]
+      },
+      "offset_header": 3563,
+      "offset_body": 3698,
+      "offset_end": 4831
     }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
-      },
-      {
-        "Part": 1
-      },
-      {
-        "Part": 2
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 491,
-  "offset_end": 4869
+  ]
 }

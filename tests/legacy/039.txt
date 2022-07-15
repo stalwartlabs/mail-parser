@@ -171,289 +171,308 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------B7133A01A6B323BF00DBC9A7"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 18,
-        "second": 27,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "message_id": {
-      "Text": "39236103.FFE674FC@example.com"
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 50,
-        "end": 84
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 89,
-        "end": 126
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 135,
-        "end": 165
-      }
-    ],
-    [
-      {
-        "Other": "X-Accept-Language"
-      },
-      {
-        "start": 183,
-        "end": 188
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 201,
-        "end": 207
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 210,
-        "end": 277
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 285,
-        "end": 331
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 344,
-        "end": 413
-      }
-    ]
-  ],
   "html_body": [
-    1,
-    4,
-    5
+    2,
+    5,
+    6
   ],
   "text_body": [
-    1,
-    4,
-    5
+    2,
+    5,
+    6
   ],
   "attachments": [
-    2,
     3,
     4,
-    5
+    5,
+    6
   ],
   "parts": [
     {
-      "Multipart": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "related",
-              "attributes": {
-                "boundary": "------------8E6A06810565BCAB5E1F7D97"
-              }
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Test message from Netscape Communicator 4.7"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 514,
-              "end": 585
+        "to": {
+          "Address": {
+            "name": "Jürgen Schmürgen",
+            "address": "schmuergen@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 23,
+            "minute": 18,
+            "second": 27,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "39236103.FFE674FC@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "------------B7133A01A6B323BF00DBC9A7"
             }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 45
+          }
         ],
-        "offset_header": 501,
-        "offset_body": 587,
-        "offset_end": 6127
-      }
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 50,
+            "end": 84
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 89,
+            "end": 126
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 135,
+            "end": 165
+          }
+        ],
+        [
+          {
+            "Other": "X-Accept-Language"
+          },
+          {
+            "start": 183,
+            "end": 188
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 201,
+            "end": 207
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 210,
+            "end": 277
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 285,
+            "end": 331
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 344,
+            "end": 413
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          5,
+          6
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 415,
+      "offset_end": 10135
     },
     {
-      "Html": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": {
-                "charset": "us-ascii"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "related",
+            "attributes": {
+              "boundary": "------------8E6A06810565BCAB5E1F7D97"
             }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 642,
-              "end": 672
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 698,
-              "end": 705
-            }
-          ]
-        ],
-        "is_encoding_problem": false,
-        "body": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n",
-        "offset_header": 629,
-        "offset_body": 707,
-        "offset_end": 1841
-      }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 514,
+            "end": 585
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3,
+          4
+        ]
+      },
+      "offset_header": 501,
+      "offset_body": 587,
+      "offset_end": 6127
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_id": {
-            "Text": "part1.39236103.1B697A54@example.com"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
-            }
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "C:TEMPnsmailV0.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "us-ascii"
             }
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 1896,
-              "end": 1908
-            }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 1919,
-              "end": 1959
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 1985,
-              "end": 1994
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 2014,
-              "end": 2056
-            }
-          ]
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 642,
+            "end": 672
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 698,
+            "end": 705
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\r\n<html>\r\n<img SRC=\"cid:part1.39236103.1B697A54@example.com\" ALT=\"blue ball\" height=27 width=27><b></b>\r\n<p><b><font size=+2>Die Hasen und die Fr&ouml;sche</font></b>\r\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\r\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\r\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\r\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\r\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\r\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\r\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\r\nsehr, da&szlig; sie aufs schnellste untertauchten.\r\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\r\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\r\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\r\nals wir.\"\r\n<p><img SRC=\"cid:part2.39236103.1B697A54@example.com\" ALT=\"red ball\" height=27 width=27></html>\r\n"
+      },
+      "offset_header": 629,
+      "offset_body": 707,
+      "offset_end": 1843
+    },
+    {
+      "headers_rfc": {
+        "content_id": {
+          "Text": "part1.39236103.1B697A54@example.com"
+        },
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": null
+          }
+        },
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "C:TEMPnsmailV0.png"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 1896,
+            "end": 1908
+          }
+        ],
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 1919,
+            "end": 1959
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 1985,
+            "end": 1994
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 2014,
+            "end": 2056
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -1779,78 +1798,78 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ],
-        "offset_header": 1883,
-        "offset_body": 2058,
-        "offset_end": 3874
-      }
+        ]
+      },
+      "offset_header": 1883,
+      "offset_body": 2058,
+      "offset_end": 3876
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
-            }
-          },
-          "content_id": {
-            "Text": "part2.39236103.1B697A54@example.com"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "C:TEMPnsmailNM.png"
-              }
-            }
+      "headers_rfc": {
+        "content_id": {
+          "Text": "part2.39236103.1B697A54@example.com"
+        },
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": null
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 3929,
-              "end": 3941
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "C:TEMPnsmailNM.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 3952,
-              "end": 3992
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 4018,
-              "end": 4027
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 4047,
-              "end": 4089
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 3929,
+            "end": 3941
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 3952,
+            "end": 3992
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 4018,
+            "end": 4027
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 4047,
+            "end": 4089
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -3304,68 +3323,68 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ],
-        "offset_header": 3916,
-        "offset_body": 4091,
-        "offset_end": 6083
-      }
+        ]
+      },
+      "offset_header": 3916,
+      "offset_body": 4091,
+      "offset_end": 6085
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "greenball.png"
-              }
-            }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "greenball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "greenball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 6182,
-              "end": 6218
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "greenball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 6244,
-              "end": 6253
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 6273,
-              "end": 6310
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 6182,
+            "end": 6218
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 6244,
+            "end": 6253
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 6273,
+            "end": 6310
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           137,
           80,
           78,
@@ -4664,68 +4683,68 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ],
-        "offset_header": 6169,
-        "offset_body": 6312,
-        "offset_end": 8092
-      }
+        ]
+      },
+      "offset_header": 6169,
+      "offset_body": 6312,
+      "offset_end": 8094
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
-            }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "blueball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 8147,
-              "end": 8182
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "blueball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 8208,
-              "end": 8217
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 8237,
-              "end": 8273
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 8147,
+            "end": 8182
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 8208,
+            "end": 8217
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 8237,
+            "end": 8273
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           137,
           80,
           78,
@@ -6051,40 +6070,11 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ],
-        "offset_header": 8134,
-        "offset_body": 8275,
-        "offset_end": 10091
-      }
-    }
-  ],
-  "structure": {
-    "List": [
-      {
-        "MultiPart": [
-          0,
-          [
-            {
-              "Part": 1
-            },
-            {
-              "Part": 2
-            },
-            {
-              "Part": 3
-            }
-          ]
         ]
       },
-      {
-        "Part": 4
-      },
-      {
-        "Part": 5
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 415,
-  "offset_end": 10133
+      "offset_header": 8134,
+      "offset_body": 8275,
+      "offset_end": 10093
+    }
+  ]
 }

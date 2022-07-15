@@ -27,131 +27,6 @@ welche also wohl noch unglücklicher sein müssen als wir."
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "to": {
-      "Address": {
-        "name": "Heinz Mï¿½ller",
-        "address": "mueller@example.com"
-      }
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 19,
-        "minute": 28,
-        "second": 40,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "message_id": {
-      "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@example.com"
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 5,
-        "end": 40
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 43,
-        "end": 82
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 90,
-        "end": 141
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 146,
-        "end": 180
-      }
-    ],
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 191,
-        "end": 241
-      }
-    ],
-    [
-      {
-        "Other": "X-Priority"
-      },
-      {
-        "start": 252,
-        "end": 265
-      }
-    ],
-    [
-      {
-        "Other": "X-MSMail-Priority"
-      },
-      {
-        "start": 283,
-        "end": 292
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 301,
-        "end": 354
-      }
-    ],
-    [
-      {
-        "Other": "Importance"
-      },
-      {
-        "start": 365,
-        "end": 374
-      }
-    ],
-    [
-      {
-        "Other": "X-MimeOLE"
-      },
-      {
-        "start": 384,
-        "end": 432
-      }
-    ]
-  ],
   "html_body": [
     0
   ],
@@ -161,29 +36,138 @@ welche also wohl noch unglücklicher sein müssen als wir."
   "attachments": [],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Frï¿½sche (Microsoft Outlook 00)"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "doug@example.com"
           }
         },
-        "headers_raw": [],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Frï¿½sche\r\n\r\nDie Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod\r\nselbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;\r\nallein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte\r\neine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein\r\nwenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"\r\n\r\n",
-        "offset_header": 0,
-        "offset_body": 434,
-        "offset_end": 1186
-      }
+        "to": {
+          "Address": {
+            "name": "Heinz Mï¿½ller",
+            "address": "mueller@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 19,
+            "minute": 28,
+            "second": 40,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 5,
+            "end": 40
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 43,
+            "end": 82
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 90,
+            "end": 141
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 146,
+            "end": 180
+          }
+        ],
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 191,
+            "end": 241
+          }
+        ],
+        [
+          {
+            "Other": "X-Priority"
+          },
+          {
+            "start": 252,
+            "end": 265
+          }
+        ],
+        [
+          {
+            "Other": "X-MSMail-Priority"
+          },
+          {
+            "start": 283,
+            "end": 292
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 301,
+            "end": 354
+          }
+        ],
+        [
+          {
+            "Other": "Importance"
+          },
+          {
+            "start": 365,
+            "end": 374
+          }
+        ],
+        [
+          {
+            "Other": "X-MimeOLE"
+          },
+          {
+            "start": 384,
+            "end": 432
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frï¿½sche\r\n\r\nDie Hasen klagten einst ï¿½ber ihre miï¿½liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ï¿½rger als der Tod\r\nselbst. Auf, laï¿½t uns ein fï¿½r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersï¿½ufen; sie eilten ihm zu;\r\nallein das auï¿½erordentliche Getï¿½se und ihre wunderbare Gestalt erschreckte\r\neine Menge Frï¿½sche, die am Ufer saï¿½en, so sehr, daï¿½ sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersï¿½ufen noch ein\r\nwenig aufschieben, denn auch uns fï¿½rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglï¿½cklicher sein mï¿½ssen als wir.\"\r\n\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 434,
+      "offset_end": 1186
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 434,
-  "offset_end": 1186
+  ]
 }

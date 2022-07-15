@@ -19,184 +19,181 @@ Content-Type: text/plain; charset=utf-8
 --foo--
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "foo"
-        }
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 13,
-        "end": 44
-      }
-    ]
-  ],
   "html_body": [
-    0,
-    1
+    1,
+    2
   ],
   "text_body": [
-    0,
-    1
+    1,
+    2
   ],
   "attachments": [
-    2
+    3
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "utf-8"
-              }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "foo"
             }
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 77,
-              "end": 95
-            }
-          ],
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 108,
-              "end": 135
-            }
-          ]
-        ],
-        "is_encoding_problem": false,
-        "body": "päivää\n",
-        "offset_header": 51,
-        "offset_body": 136,
-        "offset_end": 158
-      }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 13,
+            "end": 44
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 45,
+      "offset_end": 367
     },
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "utf-8"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
             }
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 191,
-              "end": 199
-            }
-          ],
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 212,
-              "end": 239
-            }
-          ]
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 77,
+            "end": 95
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "yötä vaan.\n�\t�",
-        "offset_header": 165,
-        "offset_body": 240,
-        "offset_end": 268
-      }
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 108,
+            "end": 135
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "päivää\n"
+      },
+      "offset_header": 51,
+      "offset_body": 136,
+      "offset_end": 159
     },
     {
-      "Text": {
-        "headers_rfc": {
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "utf-8"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
             }
           }
-        },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 301,
-              "end": 309
-            }
-          ],
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 322,
-              "end": 349
-            }
-          ]
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 191,
+            "end": 199
+          }
         ],
-        "is_encoding_problem": true,
-        "body": "?garbage",
-        "offset_header": 275,
-        "offset_body": 350,
-        "offset_end": 358
-      }
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 212,
+            "end": 239
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "yötä vaan.\n�\t�"
+      },
+      "offset_header": 165,
+      "offset_body": 240,
+      "offset_end": 269
+    },
+    {
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "utf-8"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 301,
+            "end": 309
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 322,
+            "end": 349
+          }
+        ]
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "?garbage"
+      },
+      "offset_header": 275,
+      "offset_body": 350,
+      "offset_end": 359
     }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
-      },
-      {
-        "Part": 1
-      },
-      {
-        "Part": 2
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 45,
-  "offset_end": 366
+  ]
 }

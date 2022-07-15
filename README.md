@@ -137,7 +137,8 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     let nested_message = message
         .get_attachment(0)
         .unwrap()
-        .unwrap_message();
+        .get_message();
+        .unwrap();
 
     assert_eq!(
         nested_message.get_subject().unwrap(),
@@ -154,7 +155,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 
-    let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
+    let nested_attachment = nested_message.get_attachment(0).unwrap();
 
     assert_eq!(nested_attachment.len(), 42);
 

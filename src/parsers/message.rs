@@ -613,7 +613,7 @@ mod tests {
 
     use crate::{
         parsers::message::Message, HeaderValue, MessagePart, MessagePartId, PartType, RawHeaders,
-        RfcHeader, RfcHeaders,
+        RfcHeader,
     };
 
     const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
@@ -664,7 +664,7 @@ mod tests {
 
     #[test]
     fn parse_full_messages() {
-        for test_suite in ["rfc", "legacy", "thirdparty", "malformed"] {
+        for test_suite in ["malformed", "rfc", "legacy", "thirdparty", "malformed"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
@@ -791,77 +791,13 @@ mod tests {
                 output.extend_from_slice(input.0);
                 output.extend_from_slice(SEPARATOR);
                 output.extend_from_slice(
-                    serde_json::to_string_pretty(&Message::parse(input.0).unwrap())
-                        .unwrap()
-                        .as_bytes(),
+                    serde_json::to_string_pretty(&SortedMessage::from(
+                        Message::parse(input.0).unwrap(),
+                    ))
+                    .unwrap()
+                    .as_bytes(),
                 );
                 fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
-            }
-        }
-    }*/
-
-    /*#[test]
-    fn raw_parts() {
-        let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        test_dir.push("tests");
-        test_dir.push("malformed");
-        test_dir.push("007.txt");
-        let mut input = fs::read(&test_dir).unwrap();
-        let mut pos = 0;
-
-        /*let mut input = Vec::with_capacity(input_.len());
-        for ch in &input_ {
-            if ch == &b'\r' {
-                continue;
-            } else if ch == &b'\n' {
-                input.push(b'\r');
-            }
-            input.push(*ch);
-        }*/
-        for sep_pos in 0..input.len() {
-            if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
-                pos = sep_pos;
-                break;
-            }
-        }
-
-        let (raw_message, other) = input.split_at_mut(pos);
-        let message = Message::parse(raw_message).unwrap();
-        print_stuff(&message, raw_message);
-    }
-
-    fn print_stuff(message: &Message, raw_message: &[u8]) {
-        for (pos, part) in message.parts.iter().enumerate() {
-            let (start, mid, end) = part.raw_offsets();
-
-            println!(
-                "part {}, header {:?}\ncontent: {:?}\nrealcontent: {:?}\n",
-                pos,
-                std::str::from_utf8(&raw_message[start..mid]).unwrap(),
-                std::str::from_utf8(&raw_message[mid..end]).unwrap(),
-                match part {
-                    crate::MessagePart::Text(text) | crate::MessagePart::Html(text) =>
-                        text.body.clone(),
-                    crate::MessagePart::Binary(bin) | crate::MessagePart::InlineBinary(bin) =>
-                        String::from_utf8_lossy(&bin.body),
-                    crate::MessagePart::Message(_) | crate::MessagePart::Multipart(_) => "".into(),
-                }
-            );
-            if let crate::MessagePart::Message(sub) = part {
-                println!("---- FROM ----");
-                match &sub.body {
-                    crate::MessageAttachment::Parsed(message) => {
-                        println!(
-                            "coco {:?}",
-                            std::str::from_utf8(message.raw_message.as_ref()).unwrap()
-                        );
-                        print_stuff(message, raw_message);
-                    }
-                    crate::MessageAttachment::Raw(raw) => {
-                        print_stuff(&Message::parse(raw.as_ref()).unwrap(), raw);
-                    }
-                }
-                println!("---- TO ----");
             }
         }
     }*/

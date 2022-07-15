@@ -35,399 +35,303 @@ Subject: my different opinion
 ------ main boundary ------
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "from": {
-      "Address": {
-        "name": "Moderator-Address",
-        "address": null
-      }
-    },
-    "subject": {
-      "Text": "Internet Digest, volume 42"
-    },
-    "date": {
-      "DateTime": {
-        "year": 1994,
-        "month": 3,
-        "day": 22,
-        "hour": 13,
-        "minute": 34,
-        "second": 51,
-        "tz_before_gmt": false,
-        "tz_hour": 0,
-        "tz_minute": 0
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "---- main boundary ----"
-        }
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Recipient-List",
-        "address": null
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 5,
-        "end": 24
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 27,
-        "end": 43
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 48,
-        "end": 81
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 89,
-        "end": 117
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 130,
-        "end": 135
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 148,
-        "end": 213
-      }
-    ]
-  ],
   "html_body": [
-    0
+    1
   ],
   "text_body": [
-    0
+    1
   ],
   "attachments": [
-    2,
-    3
+    3,
+    4
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
+      "headers_rfc": {
+        "subject": {
+          "Text": "Internet Digest, volume 42"
+        },
+        "from": {
+          "Address": {
+            "name": "Moderator-Address",
+            "address": null
           }
         },
-        "headers_raw": [],
-        "is_encoding_problem": false,
-        "body": "...Introductory text or table of contents...\n",
-        "offset_header": 240,
-        "offset_body": 241,
-        "offset_end": 286
-      }
-    },
-    {
-      "Multipart": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "digest",
-              "attributes": {
-                "boundary": "---- next message ----"
-              }
-            }
+        "to": {
+          "Address": {
+            "name": "Recipient-List",
+            "address": null
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 326,
-              "end": 391
-            }
-          ]
-        ],
-        "offset_header": 313,
-        "offset_body": 392,
-        "offset_end": 698
-      }
-    },
-    {
-      "Message": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
-            }
+        "date": {
+          "DateTime": {
+            "year": 1994,
+            "month": 3,
+            "day": 22,
+            "hour": 13,
+            "minute": 34,
+            "second": 51,
+            "tz_before_gmt": false,
+            "tz_hour": 0,
+            "tz_minute": 0
           }
         },
-        "headers_raw": [],
-        "is_encoding_problem": false,
-        "body": {
-          "headers_rfc": {
-            "date": {
-              "DateTime": {
-                "year": 1993,
-                "month": 3,
-                "day": 26,
-                "hour": 11,
-                "minute": 13,
-                "second": 32,
-                "tz_before_gmt": false,
-                "tz_hour": 2,
-                "tz_minute": 0
-              }
-            },
-            "subject": {
-              "Text": "my opinion"
-            },
-            "from": {
-              "Address": {
-                "name": "someone-else",
-                "address": null
-              }
-            }
-          },
-          "headers_raw": [
-            [
-              {
-                "Rfc": "from"
-              },
-              {
-                "start": 423,
-                "end": 437
-              }
-            ],
-            [
-              {
-                "Rfc": "date"
-              },
-              {
-                "start": 442,
-                "end": 475
-              }
-            ],
-            [
-              {
-                "Rfc": "subject"
-              },
-              {
-                "start": 483,
-                "end": 495
-              }
-            ]
-          ],
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "Text": {
-                "headers_rfc": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": null
-                    }
-                  }
-                },
-                "headers_raw": [],
-                "is_encoding_problem": false,
-                "body": "...body goes here ...\n",
-                "offset_header": 418,
-                "offset_body": 496,
-                "offset_end": 518
-              }
-            }
-          ],
-          "structure": {
-            "Part": 0
-          },
-          "offset_header": 418,
-          "offset_body": 496,
-          "offset_end": 518
+        "mime_version": {
+          "Text": "1.0"
         },
-        "offset_header": 417,
-        "offset_body": 418,
-        "offset_end": 518
-      }
-    },
-    {
-      "Message": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "---- main boundary ----"
             }
           }
-        },
-        "headers_raw": [],
-        "is_encoding_problem": false,
-        "body": {
-          "headers_rfc": {
-            "from": {
-              "Address": {
-                "name": "someone-else-again",
-                "address": null
-              }
-            },
-            "subject": {
-              "Text": "my different opinion"
-            },
-            "date": {
-              "DateTime": {
-                "year": 1993,
-                "month": 3,
-                "day": 26,
-                "hour": 10,
-                "minute": 7,
-                "second": 13,
-                "tz_before_gmt": true,
-                "tz_hour": 5,
-                "tz_minute": 0
-              }
-            }
-          },
-          "headers_raw": [
-            [
-              {
-                "Rfc": "from"
-              },
-              {
-                "start": 550,
-                "end": 570
-              }
-            ],
-            [
-              {
-                "Rfc": "date"
-              },
-              {
-                "start": 575,
-                "end": 608
-              }
-            ],
-            [
-              {
-                "Rfc": "subject"
-              },
-              {
-                "start": 616,
-                "end": 638
-              }
-            ]
-          ],
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "Text": {
-                "headers_rfc": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": null
-                    }
-                  }
-                },
-                "headers_raw": [],
-                "is_encoding_problem": false,
-                "body": "... another body goes here ...\n",
-                "offset_header": 545,
-                "offset_body": 639,
-                "offset_end": 670
-              }
-            }
-          ],
-          "structure": {
-            "Part": 0
-          },
-          "offset_header": 545,
-          "offset_body": 639,
-          "offset_end": 670
-        },
-        "offset_header": 544,
-        "offset_body": 545,
-        "offset_end": 670
-      }
-    }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
+        }
       },
-      {
-        "MultiPart": [
+      "headers_raw": [
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 5,
+            "end": 24
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 27,
+            "end": 43
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 48,
+            "end": 81
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 89,
+            "end": 117
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 130,
+            "end": 135
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 148,
+            "end": 213
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
           1,
-          [
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 214,
+      "offset_end": 727
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": null
+          }
+        }
+      },
+      "headers_raw": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "...Introductory text or table of contents...\n"
+      },
+      "offset_header": 240,
+      "offset_body": 241,
+      "offset_end": 287
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "digest",
+            "attributes": {
+              "boundary": "---- next message ----"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 326,
+            "end": 391
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 313,
+      "offset_body": 392,
+      "offset_end": 698
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822",
+            "attributes": null
+          }
+        }
+      },
+      "headers_raw": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
             {
-              "Part": 2
-            },
-            {
-              "Part": 3
+              "headers_rfc": {
+                "from": {
+                  "Address": {
+                    "name": "someone-else",
+                    "address": null
+                  }
+                },
+                "subject": {
+                  "Text": "my opinion"
+                },
+                "date": {
+                  "DateTime": {
+                    "year": 1993,
+                    "month": 3,
+                    "day": 26,
+                    "hour": 11,
+                    "minute": 13,
+                    "second": 32,
+                    "tz_before_gmt": false,
+                    "tz_hour": 2,
+                    "tz_minute": 0
+                  }
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "...body goes here ...\n"
+              },
+              "offset_header": 418,
+              "offset_body": 496,
+              "offset_end": 519
             }
           ]
-        ]
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 214,
-  "offset_end": 726
+        }
+      },
+      "offset_header": 417,
+      "offset_body": 418,
+      "offset_end": 519
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822",
+            "attributes": null
+          }
+        }
+      },
+      "headers_raw": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers_rfc": {
+                "subject": {
+                  "Text": "my different opinion"
+                },
+                "date": {
+                  "DateTime": {
+                    "year": 1993,
+                    "month": 3,
+                    "day": 26,
+                    "hour": 10,
+                    "minute": 7,
+                    "second": 13,
+                    "tz_before_gmt": true,
+                    "tz_hour": 5,
+                    "tz_minute": 0
+                  }
+                },
+                "from": {
+                  "Address": {
+                    "name": "someone-else-again",
+                    "address": null
+                  }
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "... another body goes here ...\n"
+              },
+              "offset_header": 545,
+              "offset_body": 639,
+              "offset_end": 671
+            }
+          ]
+        }
+      },
+      "offset_header": 544,
+      "offset_body": 545,
+      "offset_end": 671
+    }
+  ]
 }

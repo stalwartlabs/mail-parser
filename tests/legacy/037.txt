@@ -51,245 +51,257 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": "------------E7889DDF0F75D34163841C59"
-        }
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "message_id": {
-      "Text": "392366A7.21929EA7@example.com"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 17,
-        "hour": 23,
-        "minute": 42,
-        "second": 31,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Test message from Netscape Communicator 4.7"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Joe Blow",
-        "address": "blow@example.com"
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 50,
-        "end": 84
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 89,
-        "end": 126
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 135,
-        "end": 165
-      }
-    ],
-    [
-      {
-        "Other": "X-Accept-Language"
-      },
-      {
-        "start": 183,
-        "end": 188
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 201,
-        "end": 207
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 210,
-        "end": 240
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 248,
-        "end": 294
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 307,
-        "end": 376
-      }
-    ]
-  ],
   "html_body": [
-    0,
-    1
+    1,
+    2
   ],
   "text_body": [
-    0,
-    1
+    1,
+    2
   ],
   "attachments": [
-    1
+    2
   ],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "us-ascii"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "7bit"
+      "headers_rfc": {
+        "subject": {
+          "Text": "Test message from Netscape Communicator 4.7"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 477,
-              "end": 508
+        "to": {
+          "Address": {
+            "name": "Joe Blow",
+            "address": "blow@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 17,
+            "hour": 23,
+            "minute": 42,
+            "second": 31,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "392366A7.21929EA7@example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "------------E7889DDF0F75D34163841C59"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 534,
-              "end": 541
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": " ",
-        "offset_header": 464,
-        "offset_body": 543,
-        "offset_end": 544
-      }
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 50,
+            "end": 84
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 89,
+            "end": 126
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 135,
+            "end": 165
+          }
+        ],
+        [
+          {
+            "Other": "X-Accept-Language"
+          },
+          {
+            "start": 183,
+            "end": 188
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 201,
+            "end": 207
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 210,
+            "end": 240
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 248,
+            "end": 294
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 307,
+            "end": 376
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 378,
+      "offset_end": 2587
     },
     {
-      "InlineBinary": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "blueball.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "7bit"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "us-ascii"
             }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "content_transfer_encoding": {
-            "Text": "base64"
+          {
+            "start": 477,
+            "end": 508
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "blueball.png"
-              }
+          {
+            "start": 534,
+            "end": 541
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": " "
+      },
+      "offset_header": 464,
+      "offset_body": 543,
+      "offset_end": 546
+    },
+    {
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "blueball.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 599,
-              "end": 634
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "blueball.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 660,
-              "end": 669
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 689,
-              "end": 725
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 599,
+            "end": 634
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 660,
+            "end": 669
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 689,
+            "end": 725
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
           137,
           80,
           78,
@@ -1615,24 +1627,11 @@ eSBZdmVzIFBpZ3VldDZzO7wAAAAASUVORK5CYII=
           66,
           96,
           130
-        ],
-        "offset_header": 586,
-        "offset_body": 727,
-        "offset_end": 2543
-      }
-    }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
+        ]
       },
-      {
-        "Part": 1
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 378,
-  "offset_end": 2585
+      "offset_header": 586,
+      "offset_body": 727,
+      "offset_end": 2545
+    }
+  ]
 }

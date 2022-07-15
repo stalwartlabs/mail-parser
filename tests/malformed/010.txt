@@ -7,26 +7,6 @@ Content-Type: text/plain
 1
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "message",
-        "c_subtype": "rfc822",
-        "attributes": null
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 13,
-        "end": 29
-      }
-    ]
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [
@@ -34,39 +14,29 @@ Content-Type: text/plain
   ],
   "parts": [
     {
-      "Message": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
-            }
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822",
+            "attributes": null
           }
-        },
-        "headers_raw": [],
-        "is_encoding_problem": false,
-        "body": {
-          "headers_rfc": {
-            "content_type": {
-              "ContentType": {
-                "c_type": "message",
-                "c_subtype": "rfc822",
-                "attributes": null
-              }
-            }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "headers_raw": [
-            [
-              {
-                "Rfc": "content_type"
-              },
-              {
-                "start": 43,
-                "end": 59
-              }
-            ]
-          ],
+          {
+            "start": 13,
+            "end": 29
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
           "html_body": [],
           "text_body": [],
           "attachments": [
@@ -74,31 +44,18 @@ Content-Type: text/plain
           ],
           "parts": [
             {
-              "Message": {
-                "headers_rfc": {
-                  "content_type": {
-                    "ContentType": {
-                      "c_type": "message",
-                      "c_subtype": "rfc822",
-                      "attributes": null
-                    }
+              "headers_rfc": {
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "message",
+                    "c_subtype": "rfc822",
+                    "attributes": null
                   }
-                },
-                "headers_raw": [],
-                "is_encoding_problem": false,
-                "body": {
-                  "headers_rfc": {},
-                  "headers_raw": [
-                    [
-                      {
-                        "Rfc": "content_type"
-                      },
-                      {
-                        "start": 73,
-                        "end": 85
-                      }
-                    ]
-                  ],
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Message": {
                   "html_body": [
                     0
                   ],
@@ -108,65 +65,36 @@ Content-Type: text/plain
                   "attachments": [],
                   "parts": [
                     {
-                      "Text": {
-                        "headers_rfc": {
-                          "content_type": {
-                            "ContentType": {
-                              "c_type": "text",
-                              "c_subtype": "plain",
-                              "attributes": null
-                            }
+                      "headers_rfc": {
+                        "content_type": {
+                          "ContentType": {
+                            "c_type": "text",
+                            "c_subtype": "plain",
+                            "attributes": null
                           }
-                        },
-                        "headers_raw": [
-                          [
-                            {
-                              "Rfc": "content_type"
-                            },
-                            {
-                              "start": 73,
-                              "end": 85
-                            }
-                          ]
-                        ],
-                        "is_encoding_problem": false,
-                        "body": "1\n",
-                        "offset_header": 60,
-                        "offset_body": 86,
-                        "offset_end": 88
-                      }
+                        }
+                      },
+                      "is_encoding_problem": false,
+                      "body": {
+                        "Text": "1\n"
+                      },
+                      "offset_header": 60,
+                      "offset_body": 86,
+                      "offset_end": 88
                     }
-                  ],
-                  "structure": {
-                    "Part": 0
-                  },
-                  "offset_header": 60,
-                  "offset_body": 86,
-                  "offset_end": 88
-                },
-                "offset_header": 30,
-                "offset_body": 60,
-                "offset_end": 88
-              }
+                  ]
+                }
+              },
+              "offset_header": 30,
+              "offset_body": 60,
+              "offset_end": 88
             }
-          ],
-          "structure": {
-            "Part": 0
-          },
-          "offset_header": 30,
-          "offset_body": 60,
-          "offset_end": 88
-        },
-        "offset_header": 0,
-        "offset_body": 30,
-        "offset_end": 88
-      }
+          ]
+        }
+      },
+      "offset_header": 0,
+      "offset_body": 30,
+      "offset_end": 88
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 30,
-  "offset_end": 88
+  ]
 }

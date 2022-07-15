@@ -216,7 +216,8 @@
 //!    let nested_message = message
 //!        .get_attachment(0)
 //!        .unwrap()
-//!        .unwrap_message();
+//!        .get_message()
+//!        .unwrap();
 //!
 //!    assert_eq!(
 //!        nested_message.get_subject().unwrap(),
@@ -233,7 +234,7 @@
 //!        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
 //!    );
 //!
-//!    let nested_attachment = nested_message.get_attachment(0).unwrap().unwrap_binary();
+//!    let nested_attachment = nested_message.get_attachment(0).unwrap();
 //!
 //!    assert_eq!(nested_attachment.len(), 42);
 //!
@@ -1244,7 +1245,14 @@ impl<'x> MessagePart<'x> {
 
     /// Returns the body part's length
     pub fn len(&self) -> usize {
-        self.offset_end.saturating_sub(self.offset_header)
+        match &self.body {
+            PartType::Text(text) | PartType::Html(text) => text.len(),
+            PartType::Binary(bin)
+            | PartType::InlineBinary(bin)
+            | PartType::Message(MessageAttachment::Raw(bin)) => bin.len(),
+            PartType::Message(MessageAttachment::Parsed(message)) => message.raw_message.len(),
+            PartType::Multipart(_) => 0,
+        }
     }
 
     /// Returns `true` when the body part MIME type is text/*
@@ -1277,9 +1285,24 @@ impl<'x> MessagePart<'x> {
         &self.headers_rfc
     }
 
-    /// Get the raw offsets of this part
-    pub fn raw_offsets(&self) -> (usize, usize, usize) {
-        (self.offset_header, self.offset_body, self.offset_end)
+    /// Returns the body raw length
+    pub fn raw_len(&self) -> usize {
+        self.offset_end.saturating_sub(self.offset_header)
+    }
+
+    /// Get the raw header offset of this part
+    pub fn raw_header_offset(&self) -> usize {
+        self.offset_header
+    }
+
+    /// Get the raw body offset of this part
+    pub fn raw_body_offset(&self) -> usize {
+        self.offset_body
+    }
+
+    /// Get the raw body end offset of this part
+    pub fn raw_end_offset(&self) -> usize {
+        self.offset_header
     }
 }
 

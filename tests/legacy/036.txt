@@ -26,116 +26,6 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "doug@penguin.example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Jürgen Schmürgen",
-        "address": "schmuergen@example.com"
-      }
-    },
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 10,
-        "minute": 18,
-        "second": 3,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "message_id": {
-      "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 5,
-        "end": 45
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 50,
-        "end": 91
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 94,
-        "end": 159
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 167,
-        "end": 214
-      }
-    ],
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 225,
-        "end": 289
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 302,
-        "end": 308
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 321,
-        "end": 354
-      }
-    ],
-    [
-      {
-        "Rfc": "content_transfer_encoding"
-      },
-      {
-        "start": 380,
-        "end": 399
-      }
-    ]
-  ],
   "html_body": [
     0
   ],
@@ -145,53 +35,135 @@ lche also wohl noch ungl=FCcklicher sein m=FCssen als wir."=20
   "attachments": [],
   "parts": [
     {
-      "Text": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "QUOTED-PRINTABLE"
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Frösche"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "doug@penguin.example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 321,
-              "end": 354
+        "to": {
+          "Address": {
+            "name": "Jürgen Schmürgen",
+            "address": "schmuergen@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 19,
+            "hour": 10,
+            "minute": 18,
+            "second": 3,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_transfer_encoding": {
+          "Text": "QUOTED-PRINTABLE"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "plain",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 380,
-              "end": 399
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 5,
+            "end": 45
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n",
-        "offset_header": 0,
-        "offset_body": 401,
-        "offset_end": 1212
-      }
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 50,
+            "end": 91
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 94,
+            "end": 159
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 167,
+            "end": 214
+          }
+        ],
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 225,
+            "end": 289
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 302,
+            "end": 308
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 321,
+            "end": 354
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 380,
+            "end": 399
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n\n"
+      },
+      "offset_header": 0,
+      "offset_body": 401,
+      "offset_end": 1212
     }
-  ],
-  "structure": {
-    "Part": 0
-  },
-  "offset_header": 0,
-  "offset_body": 401,
-  "offset_end": 1212
+  ]
 }

@@ -10,36 +10,40 @@ Content-Type: text/html
 --:foo--
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "mixed",
-        "attributes": {
-          "boundary": ":foo"
-        }
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 13,
-        "end": 47
-      }
-    ]
-  ],
   "html_body": [],
   "text_body": [],
   "attachments": [],
-  "parts": [],
-  "structure": {
-    "List": []
-  },
-  "offset_header": 0,
-  "offset_body": 48,
-  "offset_end": 160
+  "parts": [
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": ":foo"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 13,
+            "end": 47
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": []
+      },
+      "offset_header": 0,
+      "offset_body": 48,
+      "offset_end": 160
+    }
+  ]
 }

@@ -109,266 +109,279 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
 
 
 ---- EXPECTED STRUCTURE ----{
-  "headers_rfc": {
-    "mime_version": {
-      "Text": "1.0"
-    },
-    "date": {
-      "DateTime": {
-        "year": 2000,
-        "month": 5,
-        "day": 19,
-        "hour": 0,
-        "minute": 37,
-        "second": 39,
-        "tz_before_gmt": true,
-        "tz_hour": 4,
-        "tz_minute": 0
-      }
-    },
-    "subject": {
-      "Text": "Die Hasen und die Frösche"
-    },
-    "message_id": {
-      "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
-    },
-    "from": {
-      "Address": {
-        "name": "Doug Sauder",
-        "address": "dwsauder@example.com"
-      }
-    },
-    "to": {
-      "Address": {
-        "name": "Heinz Müller",
-        "address": "mueller@example.com"
-      }
-    },
-    "content_type": {
-      "ContentType": {
-        "c_type": "multipart",
-        "c_subtype": "related",
-        "attributes": {
-          "boundary": "=====================_715429112==_.REL",
-          "type": "text/html"
-        }
-      }
-    }
-  },
-  "headers_raw": [
-    [
-      {
-        "Rfc": "message_id"
-      },
-      {
-        "start": 11,
-        "end": 64
-      }
-    ],
-    [
-      {
-        "Other": "X-Sender"
-      },
-      {
-        "start": 73,
-        "end": 113
-      }
-    ],
-    [
-      {
-        "Other": "X-Mailer"
-      },
-      {
-        "start": 122,
-        "end": 170
-      }
-    ],
-    [
-      {
-        "Other": "X-Priority"
-      },
-      {
-        "start": 181,
-        "end": 192
-      }
-    ],
-    [
-      {
-        "Rfc": "date"
-      },
-      {
-        "start": 197,
-        "end": 231
-      }
-    ],
-    [
-      {
-        "Rfc": "to"
-      },
-      {
-        "start": 234,
-        "end": 288
-      }
-    ],
-    [
-      {
-        "Rfc": "from"
-      },
-      {
-        "start": 293,
-        "end": 330
-      }
-    ],
-    [
-      {
-        "Rfc": "subject"
-      },
-      {
-        "start": 338,
-        "end": 383
-      }
-    ],
-    [
-      {
-        "Rfc": "mime_version"
-      },
-      {
-        "start": 396,
-        "end": 402
-      }
-    ],
-    [
-      {
-        "Rfc": "content_type"
-      },
-      {
-        "start": 415,
-        "end": 508
-      }
-    ]
-  ],
   "html_body": [
-    0
+    1
   ],
   "text_body": [
-    0
+    1
   ],
   "attachments": [
-    1,
-    2
+    2,
+    3
   ],
   "parts": [
     {
-      "Html": {
-        "headers_rfc": {
-          "content_type": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": {
-                "charset": "iso-8859-1"
-              }
-            }
-          },
-          "content_transfer_encoding": {
-            "Text": "quoted-printable"
+      "headers_rfc": {
+        "subject": {
+          "Text": "Die Hasen und die Frösche"
+        },
+        "from": {
+          "Address": {
+            "name": "Doug Sauder",
+            "address": "dwsauder@example.com"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 565,
-              "end": 599
+        "to": {
+          "Address": {
+            "name": "Heinz Müller",
+            "address": "mueller@example.com"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2000,
+            "month": 5,
+            "day": 19,
+            "hour": 0,
+            "minute": 37,
+            "second": 39,
+            "tz_before_gmt": true,
+            "tz_hour": 4,
+            "tz_minute": 0
+          }
+        },
+        "message_id": {
+          "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com"
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "related",
+            "attributes": {
+              "type": "text/html",
+              "boundary": "=====================_715429112==_.REL"
             }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 625,
-              "end": 644
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "message_id"
+          },
+          {
+            "start": 11,
+            "end": 64
+          }
         ],
-        "is_encoding_problem": false,
-        "body": "<html>\n<img src=\"cid:4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2\" width=27 height=27 alt=\"2aa48eb6.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3\" width=27 height=27 alt=\"2aa48ec0.png\"></font></html>\n",
-        "offset_header": 552,
-        "offset_body": 646,
-        "offset_end": 1885
-      }
+        [
+          {
+            "Other": "X-Sender"
+          },
+          {
+            "start": 73,
+            "end": 113
+          }
+        ],
+        [
+          {
+            "Other": "X-Mailer"
+          },
+          {
+            "start": 122,
+            "end": 170
+          }
+        ],
+        [
+          {
+            "Other": "X-Priority"
+          },
+          {
+            "start": 181,
+            "end": 192
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 197,
+            "end": 231
+          }
+        ],
+        [
+          {
+            "Rfc": "to"
+          },
+          {
+            "start": 234,
+            "end": 288
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 293,
+            "end": 330
+          }
+        ],
+        [
+          {
+            "Rfc": "subject"
+          },
+          {
+            "start": 338,
+            "end": 383
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 396,
+            "end": 402
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 415,
+            "end": 508
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 510,
+      "offset_end": 6229
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_id": {
-            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2"
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "2aa48eb6.png"
-              }
+      "headers_rfc": {
+        "content_transfer_encoding": {
+          "Text": "quoted-printable"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "html",
+            "attributes": {
+              "charset": "iso-8859-1"
             }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
           },
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa48eb6.png"
-              }
+          {
+            "start": 565,
+            "end": 599
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 625,
+            "end": 644
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html>\n<img src=\"cid:4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2\" width=27 height=27 alt=\"2aa48eb6.png\"><br>\n<br>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n<img src=\"cid:4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3\" width=27 height=27 alt=\"2aa48ec0.png\"></font></html>\n"
+      },
+      "offset_header": 552,
+      "offset_body": 646,
+      "offset_end": 1887
+    },
+    {
+      "headers_rfc": {
+        "content_id": {
+          "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.2"
+        },
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "2aa48eb6.png"
             }
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 1942,
-              "end": 1975
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "2aa48eb6.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 1986,
-              "end": 2041
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 2067,
-              "end": 2076
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 2096,
-              "end": 2130
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 1942,
+            "end": 1975
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 1986,
+            "end": 2041
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 2067,
+            "end": 2076
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 2096,
+            "end": 2130
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -1694,80 +1707,80 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 1929,
-        "offset_body": 2132,
-        "offset_end": 3946
-      }
+        ]
+      },
+      "offset_header": 1929,
+      "offset_body": 2132,
+      "offset_end": 3948
     },
     {
-      "Binary": {
-        "headers_rfc": {
-          "content_disposition": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": {
-                "filename": "2aa48ec0.png"
-              }
+      "headers_rfc": {
+        "content_id": {
+          "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3"
+        },
+        "content_transfer_encoding": {
+          "Text": "base64"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "image",
+            "c_subtype": "png",
+            "attributes": {
+              "name": "2aa48ec0.png"
             }
-          },
-          "content_type": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": {
-                "name": "2aa48ec0.png"
-              }
-            }
-          },
-          "content_id": {
-            "Text": "4.2.0.58.20000519003735.00a8d7e0@pop.example.com.3"
-          },
-          "content_transfer_encoding": {
-            "Text": "base64"
           }
         },
-        "headers_raw": [
-          [
-            {
-              "Rfc": "content_type"
-            },
-            {
-              "start": 4003,
-              "end": 4036
+        "content_disposition": {
+          "ContentType": {
+            "c_type": "inline",
+            "c_subtype": null,
+            "attributes": {
+              "filename": "2aa48ec0.png"
             }
-          ],
-          [
-            {
-              "Rfc": "content_id"
-            },
-            {
-              "start": 4047,
-              "end": 4102
-            }
-          ],
-          [
-            {
-              "Rfc": "content_transfer_encoding"
-            },
-            {
-              "start": 4128,
-              "end": 4137
-            }
-          ],
-          [
-            {
-              "Rfc": "content_disposition"
-            },
-            {
-              "start": 4157,
-              "end": 4191
-            }
-          ]
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 4003,
+            "end": 4036
+          }
         ],
-        "is_encoding_problem": false,
-        "body": [
+        [
+          {
+            "Rfc": "content_id"
+          },
+          {
+            "start": 4047,
+            "end": 4102
+          }
+        ],
+        [
+          {
+            "Rfc": "content_transfer_encoding"
+          },
+          {
+            "start": 4128,
+            "end": 4137
+          }
+        ],
+        [
+          {
+            "Rfc": "content_disposition"
+          },
+          {
+            "start": 4157,
+            "end": 4191
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
           137,
           80,
           78,
@@ -3221,27 +3234,11 @@ IFl2ZXMgUGlndWV0NnM7vAAAAABJRU5ErkJggg==
           66,
           96,
           130
-        ],
-        "offset_header": 3990,
-        "offset_body": 4193,
-        "offset_end": 6183
-      }
+        ]
+      },
+      "offset_header": 3990,
+      "offset_body": 4193,
+      "offset_end": 6185
     }
-  ],
-  "structure": {
-    "List": [
-      {
-        "Part": 0
-      },
-      {
-        "Part": 1
-      },
-      {
-        "Part": 2
-      }
-    ]
-  },
-  "offset_header": 0,
-  "offset_body": 510,
-  "offset_end": 6227
+  ]
 }
