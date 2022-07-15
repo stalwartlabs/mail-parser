@@ -446,6 +446,14 @@ impl<'x> HeaderName<'x> {
             HeaderName::Other(name) => name.into_owned(),
         }
     }
+
+    /// Returns true if it is a MIME header.
+    pub fn is_mime_header(&self) -> bool {
+        match self {
+            HeaderName::Rfc(header) => header.is_mime_header(),
+            HeaderName::Other(_) => false,
+        }
+    }
 }
 
 /// A header field
@@ -534,6 +542,20 @@ impl RfcHeader {
             RfcHeader::ListSubscribe => "List-Subscribe",
             RfcHeader::ListUnsubscribe => "List-Unsubscribe",
         }
+    }
+
+    /// Returns true if it is a MIME header.
+    pub fn is_mime_header(&self) -> bool {
+        matches!(
+            self,
+            RfcHeader::ContentDescription
+                | RfcHeader::ContentId
+                | RfcHeader::ContentLanguage
+                | RfcHeader::ContentLocation
+                | RfcHeader::ContentTransferEncoding
+                | RfcHeader::ContentType
+                | RfcHeader::ContentDisposition
+        )
     }
 }
 

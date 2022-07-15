@@ -1,3 +1,11 @@
+mail-parser 0.5.0
+================================
+- `Message` headers are now stored as a `MessagePart` with index 0.
+- Improved `MessagePart` API.
+- Nested base64/quoted-printable encoded message/rfc822 parts are automatically parsed when calling `get_message`.
+- Better handling of malformed MIME messages.
+- Added raw offsets to MIME parts.
+
 mail-parser 0.4.8
 ================================
 - get_bytes_to_boundary fix (#21)

@@ -604,6 +604,7 @@ impl<'x> Message<'x> {
         }
     }
 }
+
 #[cfg(test)]
 mod tests {
     use std::{collections::BTreeMap, fs, path::PathBuf};
