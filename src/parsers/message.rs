@@ -1,6 +1,6 @@
 /*
  * Copyright Stalwart Labs Ltd. See the COPYING
- * file at the top-level directory of this distribution.
+ * file at the top-level dir&ectory of this distribution.
  *
  * Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
  * https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
@@ -16,27 +16,14 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, HeaderName, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
-    MessageStructure, MultiPart, Part, RawHeaders, RfcHeader, RfcHeaders,
+    ContentType, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId, PartType,
+    RawHeaders, RfcHeader, RfcHeaders,
 };
 
 use super::{
     header::parse_headers,
-    mime::{
-        get_bytes_to_boundary, seek_crlf, seek_next_part, seek_part_end, skip_crlf,
-        skip_multipart_end,
-    },
+    mime::{get_bytes_to_boundary, seek_crlf, seek_next_part, skip_crlf, skip_multipart_end},
 };
-
-const MIME_HEADERS: &[RfcHeader] = &[
-    RfcHeader::ContentType,
-    RfcHeader::ContentDisposition,
-    RfcHeader::ContentId,
-    RfcHeader::ContentLanguage,
-    RfcHeader::ContentLocation,
-    RfcHeader::ContentTransferEncoding,
-    RfcHeader::ContentDescription,
-];
 
 #[derive(Debug, PartialEq)]
 enum MimeType {
@@ -115,7 +102,7 @@ fn get_mime_type(
                 _ => (false, false, true, MimeType::TextOther),
             },
             "image" | "audio" | "video" => (false, true, false, MimeType::Inline),
-            "message" if content_type.get_subtype() == Some("rfc822") => {
+            "message" if [Some("rfc822"), Some("global")].contains(&content_type.get_subtype()) => {
                 (false, false, false, MimeType::Message)
             }
             _ => (false, false, false, MimeType::Other),
@@ -155,8 +142,8 @@ struct MessageParserState {
     text_parts: usize,
     need_html_body: bool,
     need_text_body: bool,
-    part_id: Option<MessagePartId>,
-    structure: Vec<MessageStructure>,
+    part_id: MessagePartId,
+    sub_part_ids: Vec<MessagePartId>,
     offset_header: usize,
     offset_body: usize,
     offset_end: usize,
@@ -174,18 +161,6 @@ impl MessageParserState {
             need_text_body: true,
             need_html_body: true,
             ..Default::default()
-        }
-    }
-
-    pub fn get_structure(&mut self) -> MessageStructure {
-        if let Some(part_id) = self.part_id {
-            MessageStructure::MultiPart((part_id, std::mem::take(&mut self.structure)))
-        } else if self.structure.len() > 1 {
-            MessageStructure::List(std::mem::take(&mut self.structure))
-        } else if self.structure.len() == 1 {
-            self.structure.pop().unwrap()
-        } else {
-            MessageStructure::List(vec![])
         }
     }
 }
@@ -210,7 +185,7 @@ impl<'x> Message<'x> {
 
     /// Returns `false` if at least one header field was successfully parsed.
     pub fn is_empty(&self) -> bool {
-        self.headers_rfc.is_empty() && self.headers_raw.is_empty()
+        self.parts.is_empty()
     }
 
     /// Parses a byte slice containing the RFC5322 raw message and returns a
@@ -227,35 +202,20 @@ impl<'x> Message<'x> {
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::with_capacity(4);
 
-        let mut mime_part_header = RfcHeaders::new();
-        let mut mime_part_header_raw = RawHeaders::new();
+        let mut part_header = RfcHeaders::new();
+        let mut part_header_raw = RawHeaders::new();
 
         'outer: loop {
             // Parse headers
             state.offset_header = stream.pos;
-            let (is_message, header) = if let MimeType::Message = state.mime_type {
-                if !parse_headers(
-                    &mut message.headers_rfc,
-                    &mut message.headers_raw,
-                    &mut stream,
-                ) {
-                    break;
-                }
-                (true, &mut message.headers_rfc)
-            } else {
-                if !parse_headers(
-                    &mut mime_part_header,
-                    &mut mime_part_header_raw,
-                    &mut stream,
-                ) {
-                    break;
-                }
-                (false, &mut mime_part_header)
-            };
+            if !parse_headers(&mut part_header, &mut part_header_raw, &mut stream) {
+                break;
+            }
 
             state.parts += 1;
+            state.sub_part_ids.push(message.parts.len());
 
-            let content_type = header
+            let content_type = part_header
                 .get(&RfcHeader::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
@@ -270,6 +230,7 @@ impl<'x> Message<'x> {
                     state.offset_body = seek_crlf(&stream, stream.pos);
 
                     if seek_next_part(&mut stream, mime_boundary.as_ref()) {
+                        let part_id = message.parts.len();
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
                                 || mime_type == MimeType::MultipartAlernative,
@@ -279,23 +240,19 @@ impl<'x> Message<'x> {
                             text_parts: message.text_body.len(),
                             need_html_body: state.need_html_body,
                             need_text_body: state.need_text_body,
-                            part_id: if !is_message {
-                                Some(message.parts.len())
-                            } else {
-                                None
-                            },
+                            part_id,
                             ..Default::default()
                         };
-                        if !is_message {
-                            add_missing_type(&mut mime_part_header, "text".into(), "plain".into());
-                            message.parts.push(MessagePart::Multipart(MultiPart {
-                                headers_rfc: std::mem::take(&mut mime_part_header),
-                                headers_raw: std::mem::take(&mut mime_part_header_raw),
-                                offset_header: state.offset_header,
-                                offset_body: state.offset_body,
-                                offset_end: 0,
-                            }));
-                        }
+                        add_missing_type(&mut part_header, "text".into(), "plain".into());
+                        message.parts.push(MessagePart {
+                            headers_rfc: std::mem::take(&mut part_header),
+                            headers_raw: std::mem::take(&mut part_header_raw),
+                            offset_header: state.offset_header,
+                            offset_body: state.offset_body,
+                            offset_end: 0,
+                            is_encoding_problem: false,
+                            body: PartType::default(),
+                        });
                         state_stack.push((state, None));
                         state = new_state;
                         skip_crlf(&mut stream);
@@ -310,7 +267,7 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
             state.offset_body = stream.pos;
 
-            let (is_binary, decode_fnc): (bool, DecodeFnc) = match header
+            let (is_binary, decode_fnc): (bool, DecodeFnc) = match part_header
                 .get(&RfcHeader::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
@@ -324,28 +281,27 @@ impl<'x> Message<'x> {
                 _ => (true, get_bytes_to_boundary),
             };
 
-            state
-                .structure
-                .push(MessageStructure::Part(message.parts.len()));
-
             if is_binary && mime_type == MimeType::Message {
                 let new_state = MessageParserState {
                     mime_type: MimeType::Message,
                     mime_boundary: state.mime_boundary.take(),
                     need_html_body: true,
                     need_text_body: true,
+                    part_id: message.parts.len(),
                     ..Default::default()
                 };
-                add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
-                state_stack.push((
-                    state,
-                    (
-                        message,
-                        std::mem::take(&mut mime_part_header),
-                        std::mem::take(&mut mime_part_header_raw),
-                    )
-                        .into(),
-                ));
+                add_missing_type(&mut part_header, "message".into(), "rfc822".into());
+                message.attachments.push(message.parts.len());
+                message.parts.push(MessagePart {
+                    headers_rfc: std::mem::take(&mut part_header),
+                    headers_raw: std::mem::take(&mut part_header_raw),
+                    is_encoding_problem: false,
+                    offset_header: state.offset_header,
+                    offset_body: state.offset_body,
+                    offset_end: 0,
+                    body: PartType::default(), // Temp value, will be replaced later.
+                });
+                state_stack.push((state, message.into()));
                 message = Message::new();
                 state = new_state;
                 continue;
@@ -364,57 +320,77 @@ impl<'x> Message<'x> {
             // Attempt to recover contents of an invalid message
             let is_encoding_problem = bytes_read == 0;
             if is_encoding_problem {
-                if stream.pos >= stream.data.len() || (is_binary && state.mime_boundary.is_none()) {
-                    state.structure.pop();
-                    break;
-                }
+                let did_recover = if !(stream.pos >= stream.data.len()
+                    || (is_binary && state.mime_boundary.is_none()))
+                {
+                    // Get raw MIME part
+                    let (bytes_read, r_bytes) = if !is_binary {
+                        get_bytes_to_boundary(
+                            &stream,
+                            stream.pos,
+                            state
+                                .mime_boundary
+                                .as_ref()
+                                .map_or_else(|| &[][..], |b| &b[..]),
+                            false,
+                        )
+                    } else {
+                        (0, DecodeResult::Empty)
+                    };
 
-                // Get raw MIME part
-                let (bytes_read, r_bytes) = if !is_binary {
-                    get_bytes_to_boundary(
-                        &stream,
-                        stream.pos,
-                        state
-                            .mime_boundary
-                            .as_ref()
-                            .map_or_else(|| &[][..], |b| &b[..]),
-                        false,
-                    )
-                } else {
-                    (0, DecodeResult::Empty)
-                };
-
-                if bytes_read == 0 {
-                    // If there is a MIME boundary, ignore it and get raw message
-                    if state.mime_boundary.is_some() {
-                        let (bytes_read, r_bytes) =
-                            get_bytes_to_boundary(&stream, stream.pos, &[][..], false);
-                        if bytes_read > 0 {
-                            bytes = r_bytes;
-                            stream.pos += bytes_read;
+                    if bytes_read == 0 {
+                        // If there is a MIME boundary, ignore it and get raw message
+                        if state.mime_boundary.is_some() {
+                            let (bytes_read, r_bytes) =
+                                get_bytes_to_boundary(&stream, stream.pos, &[][..], false);
+                            if bytes_read > 0 {
+                                bytes = r_bytes;
+                                stream.pos += bytes_read;
+                                true
+                            } else {
+                                false
+                            }
                         } else {
-                            state.structure.pop();
-                            break;
+                            false
                         }
                     } else {
-                        state.structure.pop();
-                        break;
+                        bytes = r_bytes;
+                        stream.pos += bytes_read;
+                        true
                     }
                 } else {
-                    bytes = r_bytes;
-                    stream.pos += bytes_read;
+                    false
+                };
+
+                if did_recover {
+                    mime_type = MimeType::TextOther;
+                    is_inline = false;
+                    is_text = true;
+                } else {
+                    // Could not recover error, add part and abort
+                    message.parts.push(MessagePart {
+                        headers_rfc: std::mem::take(&mut part_header),
+                        headers_raw: std::mem::take(&mut part_header_raw),
+                        is_encoding_problem: true,
+                        body: PartType::Binary((&[][..]).into()),
+                        offset_header: state.offset_header,
+                        offset_body: state.offset_body,
+                        offset_end: stream.pos,
+                    });
+                    break;
                 }
-                mime_type = MimeType::TextOther;
-                is_inline = false;
-                is_text = true;
             } else {
                 stream.pos += bytes_read;
             }
-            state.offset_end = seek_part_end(&stream, stream.pos, state.mime_boundary.as_deref());
+            state.offset_end = state
+                .mime_boundary
+                .as_ref()
+                .map(|b| stream.pos.saturating_sub(b.len() - 1))
+                .unwrap_or(stream.pos);
 
-            if mime_type != MimeType::Message {
+            let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
-                    && header
+                    && part_header
                         .get(&RfcHeader::ContentDisposition)
                         .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
                     && (state.parts == 1
@@ -448,40 +424,10 @@ impl<'x> Message<'x> {
                     };
 
                 if is_text {
+                    let text = result_to_string(bytes, stream.data, content_type);
                     let is_html = mime_type == MimeType::TextHtml;
-                    let mut text_part = Part {
-                        body: result_to_string(bytes, stream.data, content_type),
-                        headers_rfc: std::mem::take(&mut mime_part_header),
-                        headers_raw: std::mem::take(&mut mime_part_header_raw),
-                        is_encoding_problem,
-                        offset_header: state.offset_header,
-                        offset_body: state.offset_body,
-                        offset_end: state.offset_end,
-                    };
 
-                    // If there is a single part in the message, move MIME headers
-                    // to the part
-                    if is_message {
-                        for header_name in MIME_HEADERS {
-                            if let Some(value) = message.headers_rfc.remove(header_name) {
-                                text_part.headers_rfc.insert(*header_name, value);
-                            }
-                        }
-
-                        for (header_name, offset) in &message.headers_raw {
-                            match header_name {
-                                HeaderName::Rfc(header_name)
-                                    if MIME_HEADERS.contains(header_name) =>
-                                {
-                                    text_part
-                                        .headers_raw
-                                        .push((HeaderName::Rfc(*header_name), offset.clone()));
-                                }
-                                _ => (),
-                            }
-                        }
-                    }
-                    add_missing_type(&mut text_part.headers_rfc, "text".into(), "plain".into());
+                    add_missing_type(&mut part_header, "text".into(), "plain".into());
 
                     if add_to_html && !is_html {
                         message.html_body.push(message.parts.len());
@@ -497,11 +443,11 @@ impl<'x> Message<'x> {
                         message.attachments.push(message.parts.len());
                     }
 
-                    message.parts.push(if is_html {
-                        MessagePart::Html(text_part)
+                    if is_html {
+                        PartType::Html(text)
                     } else {
-                        MessagePart::Text(text_part)
-                    });
+                        PartType::Text(text)
+                    }
                 } else {
                     if add_to_html {
                         message.html_body.push(message.parts.len());
@@ -512,86 +458,52 @@ impl<'x> Message<'x> {
 
                     message.attachments.push(message.parts.len());
 
-                    let mut binary_part = Part {
-                        headers_rfc: std::mem::take(&mut mime_part_header),
-                        headers_raw: std::mem::take(&mut mime_part_header_raw),
-                        is_encoding_problem,
-                        body: result_to_bytes(bytes, stream.data),
-                        offset_header: state.offset_header,
-                        offset_body: state.offset_body,
-                        offset_end: state.offset_end,
-                    };
-
-                    // If there is a single part in the message, move MIME headers
-                    // to the part
-                    if is_message {
-                        for header_name in MIME_HEADERS {
-                            if let Some(value) = message.headers_rfc.remove(header_name) {
-                                binary_part.headers_rfc.insert(*header_name, value);
-                            }
-                        }
-
-                        for (header_name, offset) in &message.headers_raw {
-                            match header_name {
-                                HeaderName::Rfc(header_name)
-                                    if MIME_HEADERS.contains(header_name) =>
-                                {
-                                    binary_part
-                                        .headers_raw
-                                        .push((HeaderName::Rfc(*header_name), offset.clone()));
-                                }
-                                _ => (),
-                            }
-                        }
-                    }
-
-                    message.parts.push(if !is_inline {
-                        MessagePart::Binary(binary_part)
+                    let bytes = result_to_bytes(bytes, stream.data);
+                    if !is_inline {
+                        PartType::Binary(bytes)
                     } else {
-                        MessagePart::InlineBinary(binary_part)
-                    });
-                };
+                        PartType::InlineBinary(bytes)
+                    }
+                }
             } else {
-                add_missing_type(&mut mime_part_header, "message".into(), "rfc822".into());
+                add_missing_type(&mut part_header, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
-                message.parts.push(MessagePart::Message(Part {
-                    headers_rfc: std::mem::take(&mut mime_part_header),
-                    headers_raw: std::mem::take(&mut mime_part_header_raw),
-                    is_encoding_problem,
-                    body: MessageAttachment::Raw(result_to_bytes(bytes, stream.data)),
-                    offset_header: state.offset_header,
-                    offset_body: state.offset_body,
-                    offset_end: state.offset_end,
-                }));
-            }
+                PartType::Message(MessageAttachment::Raw(result_to_bytes(bytes, stream.data)))
+            };
+
+            // Add part
+            message.parts.push(MessagePart {
+                headers_rfc: std::mem::take(&mut part_header),
+                headers_raw: std::mem::take(&mut part_header_raw),
+                is_encoding_problem,
+                body: body_part,
+                offset_header: state.offset_header,
+                offset_body: state.offset_body,
+                offset_end: state.offset_end,
+            });
 
             if state.mime_boundary.is_some() {
                 // Currently processing a MIME part
                 'inner: loop {
                     if let MimeType::Message = state.mime_type {
                         // Finished processing a nested message, restore parent message from stack
-                        if let Some((
-                            mut prev_state,
-                            Some((mut prev_message, headers, headers_raw)),
-                        )) = state_stack.pop()
-                        {
-                            message.structure = state.get_structure();
-                            message.offset_header = state.offset_header;
-                            message.offset_body = state.offset_body;
-                            message.offset_end =
-                                seek_part_end(&stream, stream.pos, state.mime_boundary.as_deref());
+                        if let Some((mut prev_state, Some(mut prev_message))) = state_stack.pop() {
+                            let offset_end = state
+                                .mime_boundary
+                                .as_ref()
+                                .map(|b| stream.pos.saturating_sub(b.len() - 1))
+                                .unwrap_or(stream.pos);
                             message.raw_message =
-                                raw_message[message.offset_header..message.offset_end].into();
-                            prev_message.attachments.push(prev_message.parts.len());
-                            prev_message.parts.push(MessagePart::Message(Part {
-                                headers_rfc: headers,
-                                headers_raw,
-                                is_encoding_problem: false,
-                                offset_header: prev_state.offset_header,
-                                offset_body: prev_state.offset_body,
-                                offset_end: message.offset_end,
-                                body: MessageAttachment::Parsed(Box::new(message)),
-                            }));
+                                raw_message[state.offset_header..offset_end].as_ref().into();
+
+                            if let Some(part) = prev_message.parts.get_mut(state.part_id) {
+                                part.body =
+                                    PartType::Message(MessageAttachment::Parsed(Box::new(message)));
+                                part.offset_end = offset_end;
+                            } else {
+                                debug_assert!(false, "Invalid part ID, could not find message.");
+                            }
+
                             message = prev_message;
                             prev_state.mime_boundary = state.mime_boundary;
                             state = prev_state;
@@ -627,21 +539,17 @@ impl<'x> Message<'x> {
                             }
                         }
 
-                        // Update end offset
-                        if let Some(part_id) = state.part_id {
-                            if let Some(part) = message.parts.get_mut(part_id) {
-                                if let MessagePart::Multipart(ref mut part) = part {
-                                    part.offset_end = seek_crlf(&stream, stream.pos);
-                                }
-                            } else {
-                                debug_assert!(false, "This should not have happened.");
-                            }
+                        if let Some(part) = message.parts.get_mut(state.part_id) {
+                            // Update end offset
+                            part.offset_end = seek_crlf(&stream, stream.pos);
+                            // Add headers and substructure to parent part
+                            part.body =
+                                PartType::Multipart(std::mem::take(&mut state.sub_part_ids));
+                        } else {
+                            debug_assert!(false, "Invalid part ID, could not find multipart.");
                         }
 
-                        if let Some((mut prev_state, _)) = state_stack.pop() {
-                            // Add headers and substructure to parent part
-                            prev_state.structure.push(state.get_structure());
-
+                        if let Some((prev_state, _)) = state_stack.pop() {
                             // Restore ancestor's state
                             state = prev_state;
 
@@ -666,48 +574,28 @@ impl<'x> Message<'x> {
         }
 
         // Corrupted MIME message, try to recover whatever is possible.
-        while let Some((mut prev_state, prev_message)) = state_stack.pop() {
-            if let Some((mut prev_message, headers, headers_raw)) = prev_message {
-                if !message.is_empty() {
-                    message.offset_header = state.offset_header;
-                    message.offset_body = state.offset_body;
-                    message.offset_end = stream.pos;
-                    message.structure = state.get_structure();
-                    message.raw_message =
-                        raw_message[message.offset_header..message.offset_end].into();
-                    prev_message.attachments.push(prev_message.parts.len());
-                    prev_message.parts.push(MessagePart::Message(Part {
-                        headers_rfc: headers,
-                        headers_raw,
-                        is_encoding_problem: false,
-                        offset_header: prev_state.offset_header,
-                        offset_body: prev_state.offset_body,
-                        offset_end: message.offset_end,
-                        body: MessageAttachment::Parsed(Box::new(message)),
-                    }));
-                    message = prev_message;
+        while let Some((prev_state, prev_message)) = state_stack.pop() {
+            if let Some(mut prev_message) = prev_message {
+                message.raw_message = raw_message[state.offset_header..stream.pos].as_ref().into();
+
+                if let Some(part) = prev_message.parts.get_mut(state.part_id) {
+                    part.body = PartType::Message(MessageAttachment::Parsed(Box::new(message)));
+                    part.offset_end = stream.pos;
+                } else {
+                    debug_assert!(false, "Invalid part ID, could not find message.");
                 }
+
+                message = prev_message;
+            } else if let Some(part) = message.parts.get_mut(state.part_id) {
+                part.offset_end = stream.pos;
+                part.body = PartType::Multipart(state.sub_part_ids);
             } else {
-                if let Some(part_id) = state.part_id {
-                    if let Some(part) = message.parts.get_mut(part_id) {
-                        if let MessagePart::Multipart(ref mut part) = part {
-                            part.offset_end = stream.pos;
-                        }
-                    } else {
-                        debug_assert!(false, "This should not have happened.");
-                    }
-                }
-                // Add headers and substructure to parent part
-                prev_state.structure.push(state.get_structure());
+                debug_assert!(false, "This should not have happened.");
             }
             state = prev_state;
         }
 
         message.raw_message = raw_message.into();
-        message.structure = state.get_structure();
-        message.offset_header = state.offset_header;
-        message.offset_body = state.offset_body;
-        message.offset_end = stream.pos;
 
         if !message.is_empty() {
             Some(message)
@@ -718,13 +606,61 @@ impl<'x> Message<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use std::{fs, path::PathBuf};
+    use std::{collections::BTreeMap, fs, path::PathBuf};
 
+    use serde::Serialize;
     use serde_json::Value;
 
-    use crate::parsers::message::Message;
+    use crate::{
+        parsers::message::Message, HeaderValue, MessagePart, MessagePartId, PartType, RawHeaders,
+        RfcHeader, RfcHeaders,
+    };
 
     const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
+
+    #[derive(Serialize)]
+    pub struct SortedMessage<'x> {
+        pub html_body: Vec<MessagePartId>,
+        pub text_body: Vec<MessagePartId>,
+        pub attachments: Vec<MessagePartId>,
+        pub parts: Vec<SortedMessagePart<'x>>,
+    }
+
+    #[derive(Serialize)]
+    pub struct SortedMessagePart<'x> {
+        pub headers_rfc: BTreeMap<RfcHeader, HeaderValue<'x>>,
+        pub headers_raw: RawHeaders<'x>,
+        pub is_encoding_problem: bool,
+        pub body: PartType<'x>,
+        pub offset_header: usize,
+        pub offset_body: usize,
+        pub offset_end: usize,
+    }
+
+    impl<'x> From<Message<'x>> for SortedMessage<'x> {
+        fn from(message: Message<'x>) -> Self {
+            SortedMessage {
+                html_body: message.html_body,
+                text_body: message.text_body,
+                attachments: message.attachments,
+                parts: message.parts.into_iter().map(|p| p.into()).collect(),
+            }
+        }
+    }
+
+    impl<'x> From<MessagePart<'x>> for SortedMessagePart<'x> {
+        fn from(part: MessagePart<'x>) -> Self {
+            SortedMessagePart {
+                headers_rfc: part.headers_rfc.into_iter().collect(),
+                headers_raw: part.headers_raw,
+                is_encoding_problem: part.is_encoding_problem,
+                body: part.body,
+                offset_header: part.offset_header,
+                offset_body: part.offset_body,
+                offset_end: part.offset_end,
+            }
+        }
+    }
 
     #[test]
     fn parse_full_messages() {
@@ -756,14 +692,14 @@ mod tests {
 
                     tests_run += 1;
 
-                    let input = input.split_at_mut(pos);
-                    let message = Message::parse(input.0).unwrap();
+                    let (raw_message, expected_result) = input.split_at_mut(pos);
+                    let message = SortedMessage::from(Message::parse(raw_message).unwrap());
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     assert_eq!(
                         serde_json::from_str::<Value>(&json_message).unwrap(),
                         serde_json::from_str::<Value>(
-                            std::str::from_utf8(&input.1[SEPARATOR.len()..]).unwrap()
+                            std::str::from_utf8(&expected_result[SEPARATOR.len()..]).unwrap()
                         )
                         .unwrap(),
                         "Test failed for '{}', result was:\n{}",

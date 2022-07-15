@@ -60,30 +60,14 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
 fn write_attachments(message: &Message) {
     for attachment in message.get_attachments() {
-        match attachment {
-            MessagePart::Text(text) | MessagePart::Html(text) => write_part(text),
-            MessagePart::Binary(blob) | MessagePart::InlineBinary(blob) => write_part(blob),
-            MessagePart::Message(attached_message) => {
-                // Write attachments of nested messages
-                match &attached_message.body {
-                    MessageAttachment::Parsed(message) => write_attachments(message.as_ref()),
-                    MessageAttachment::Raw(_) => {
-                        write_attachments(&attached_message.parse_raw().unwrap())
-                    }
-                }
-
-                // Write raw message
-                write_part(attached_message);
-            }
-            _ => (),
+        if !attachment.is_message() {
+            std::fs::write(
+                attachment.get_attachment_name().unwrap_or("Untitled"),
+                attachment.get_contents(),
+            )
+            .unwrap();
+        } else {
+            write_attachments(&attachment.get_message().unwrap());
         }
     }
-}
-
-fn write_part<'x>(part: &'x impl BodyPart<'x>) {
-    std::fs::write(
-        part.get_attachment_name().unwrap_or("Untitled"),
-        part.get_contents(),
-    )
-    .unwrap();
 }
