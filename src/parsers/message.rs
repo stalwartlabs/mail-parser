@@ -226,7 +226,8 @@ impl<'x> Message<'x> {
                 if let Some(mime_boundary) =
                     content_type.map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    let mime_boundary = format!("\n--{}", mime_boundary).into_bytes();
+                    //let mime_boundary = format!("\n--{}", mime_boundary).into_bytes();
+                    let mime_boundary = format!("--{}", mime_boundary).into_bytes();
                     state.offset_body = seek_crlf(&stream, stream.pos);
 
                     if seek_next_part(&mut stream, mime_boundary.as_ref()) {
@@ -385,7 +386,7 @@ impl<'x> Message<'x> {
             state.offset_end = state
                 .mime_boundary
                 .as_ref()
-                .map(|b| stream.pos.saturating_sub(b.len() - 1))
+                .map(|b| stream.pos.saturating_sub(b.len()))
                 .unwrap_or(stream.pos);
 
             let body_part = if mime_type != MimeType::Message {
@@ -491,7 +492,7 @@ impl<'x> Message<'x> {
                             let offset_end = state
                                 .mime_boundary
                                 .as_ref()
-                                .map(|b| stream.pos.saturating_sub(b.len() - 1))
+                                .map(|b| stream.pos.saturating_sub(b.len()))
                                 .unwrap_or(stream.pos);
                             message.raw_message =
                                 raw_message[state.offset_header..offset_end].as_ref().into();
@@ -665,7 +666,7 @@ mod tests {
 
     #[test]
     fn parse_full_messages() {
-        for test_suite in ["malformed", "rfc", "legacy", "thirdparty", "malformed"] {
+        for test_suite in ["rfc", "legacy", "thirdparty", "malformed"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
@@ -754,7 +755,7 @@ mod tests {
     fn generate_test_samples() {
         const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
 
-        for test_suite in ["legacy", "malformed", "rfc", "thirdparty"] {
+        for test_suite in [/*"legacy", "malformed", "rfc",*/ "thirdparty"] {
             let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
             test_dir.push("tests");
             test_dir.push(test_suite);
@@ -770,6 +771,17 @@ mod tests {
                 {
                     continue;
                 }
+
+                /*if !file_name
+                    .as_ref()
+                    .unwrap()
+                    .path()
+                    .to_str()
+                    .unwrap()
+                    .contains("011")
+                {
+                    continue;
+                }*/
 
                 println!("{:}", file_name.as_ref().unwrap().path().display());
                 let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();

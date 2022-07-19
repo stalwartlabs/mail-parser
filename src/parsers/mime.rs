@@ -54,6 +54,8 @@ pub fn get_bytes_to_boundary<'x>(
 
     if !boundary.is_empty() {
         let mut match_count = 0;
+        let mut cr_pos = 0;
+        let mut lf_pos = 0;
 
         for ch in &stream.data[read_pos..] {
             read_pos += 1;
@@ -64,8 +66,12 @@ pub fn get_bytes_to_boundary<'x>(
                     if is_boundary_end(stream, read_pos) {
                         let mut match_pos = read_pos - match_count;
 
-                        if let Some(b'\r') = stream.data.get(match_pos.saturating_sub(1)) {
-                            match_pos -= 1;
+                        if match_pos > 0 && match_pos == lf_pos {
+                            if lf_pos == cr_pos + 1 {
+                                match_pos -= 2;
+                            } else {
+                                match_pos -= 1;
+                            }
                         }
 
                         return (
@@ -88,6 +94,12 @@ pub fn get_bytes_to_boundary<'x>(
                 } else {
                     match_count = 0;
                 }
+            }
+
+            if ch == &b'\r' {
+                cr_pos = read_pos;
+            } else if ch == &b'\n' {
+                lf_pos = read_pos;
             }
         }
 

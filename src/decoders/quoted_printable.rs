@@ -35,6 +35,7 @@ pub fn decode_quoted_printable<'x>(
     let mut state = QuotedPrintableState::None;
     let mut match_count = 0;
     let mut hex1 = 0;
+    let mut lf_pos = 0;
 
     debug_assert!(boundary.is_empty() || boundary.len() >= 2);
 
@@ -53,6 +54,9 @@ pub fn decode_quoted_printable<'x>(
                     } else {
                         is_boundary_end =
                             crate::parsers::mime::is_boundary_end(stream, start_pos + bytes_read);
+                        if is_boundary_end && bytes_read - boundary.len() == lf_pos {
+                            buf.pop();
+                        }
                         is_boundary_end
                     };
 
@@ -66,8 +70,8 @@ pub fn decode_quoted_printable<'x>(
             }
 
             if match_count > 0 {
-                for ch in boundary[..match_count].iter() {
-                    if *ch != b'\n' || QuotedPrintableState::Eq != state {
+                if QuotedPrintableState::Eq != state {
+                    for ch in boundary[..match_count].iter() {
                         buf.push(*ch);
                     }
                 }
@@ -110,6 +114,7 @@ pub fn decode_quoted_printable<'x>(
                     state = QuotedPrintableState::None;
                 } else {
                     buf.push(b'\n');
+                    lf_pos = bytes_read;
                 }
             }
             b'_' if is_word => {
@@ -191,19 +196,19 @@ mod tests {
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry\n--boundary",
                 "— Antoine de Saint-Exupéry",
-                "\n--boundary",
+                "--boundary",
                 false,
             ),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry\n--\n--boundary",
                 "— Antoine de Saint-Exupéry\n--",
-                "\n--boundary",
+                "--boundary",
                 false,
             ),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry=\n--\n--boundary",
                 "— Antoine de Saint-Exupéry--",
-                "\n--boundary",
+                "--boundary",
                 false,
             ),
             (
