@@ -1,0 +1,291 @@
+From user@domain  Fri Feb 22 17:06:23 2008
+From: user@domain.org
+Date: Sat, 24 Mar 2007 23:00:00 +0200
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="foo
+ bar"
+
+Root MIME prologue
+
+--foo bar
+Content-Type: text/x-myown; charset=us-ascii
+
+hello
+
+--foo bar
+Content-Type: message/rfc822
+
+From: sub@domain.org
+Date: Sun, 12 Aug 2012 12:34:56 +0300
+Subject: submsg
+Content-Type: multipart/alternative; boundary="sub1"
+
+Sub MIME prologue
+--sub1
+Content-Type: text/html
+
+<p>Hello world</p>
+
+--sub1
+Content-Type: text/plain
+
+Hello another world
+
+--sub1--
+Sub MIME epilogue
+
+--foo bar--
+Root MIME epilogue
+---- EXPECTED STRUCTURE ----{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    1,
+    2
+  ],
+  "parts": [
+    {
+      "headers_rfc": {
+        "from": {
+          "Address": {
+            "name": null,
+            "address": "user@domain.org"
+          }
+        },
+        "date": {
+          "DateTime": {
+            "year": 2007,
+            "month": 3,
+            "day": 24,
+            "hour": 23,
+            "minute": 0,
+            "second": 0,
+            "tz_before_gmt": false,
+            "tz_hour": 2,
+            "tz_minute": 0
+          }
+        },
+        "mime_version": {
+          "Text": "1.0"
+        },
+        "content_type": {
+          "ContentType": {
+            "c_type": "multipart",
+            "c_subtype": "mixed",
+            "attributes": {
+              "boundary": "foo bar"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Other": "From user@domain  Fri Feb 22 17"
+          },
+          {
+            "start": 32,
+            "end": 43
+          }
+        ],
+        [
+          {
+            "Rfc": "from"
+          },
+          {
+            "start": 48,
+            "end": 65
+          }
+        ],
+        [
+          {
+            "Rfc": "date"
+          },
+          {
+            "start": 70,
+            "end": 103
+          }
+        ],
+        [
+          {
+            "Rfc": "mime_version"
+          },
+          {
+            "start": 116,
+            "end": 121
+          }
+        ],
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 134,
+            "end": 172
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 173,
+      "offset_end": 589
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "text",
+            "c_subtype": "x-myown",
+            "attributes": {
+              "charset": "us-ascii"
+            }
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 216,
+            "end": 248
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello\n"
+      },
+      "offset_header": 203,
+      "offset_body": 249,
+      "offset_end": 256
+    },
+    {
+      "headers_rfc": {
+        "content_type": {
+          "ContentType": {
+            "c_type": "message",
+            "c_subtype": "rfc822",
+            "attributes": null
+          }
+        }
+      },
+      "headers_raw": [
+        [
+          {
+            "Rfc": "content_type"
+          },
+          {
+            "start": 279,
+            "end": 295
+          }
+        ]
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            1
+          ],
+          "text_body": [
+            2
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers_rfc": {
+                "date": {
+                  "DateTime": {
+                    "year": 2012,
+                    "month": 8,
+                    "day": 12,
+                    "hour": 12,
+                    "minute": 34,
+                    "second": 56,
+                    "tz_before_gmt": false,
+                    "tz_hour": 3,
+                    "tz_minute": 0
+                  }
+                },
+                "from": {
+                  "Address": {
+                    "name": null,
+                    "address": "sub@domain.org"
+                  }
+                },
+                "subject": {
+                  "Text": "submsg"
+                },
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "multipart",
+                    "c_subtype": "alternative",
+                    "attributes": {
+                      "boundary": "sub1"
+                    }
+                  }
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Multipart": [
+                  1,
+                  2
+                ]
+              },
+              "offset_header": 296,
+              "offset_body": 425,
+              "offset_end": 558
+            },
+            {
+              "headers_rfc": {
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "html",
+                    "attributes": null
+                  }
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Html": "<p>Hello world</p>\n"
+              },
+              "offset_header": 450,
+              "offset_body": 475,
+              "offset_end": 495
+            },
+            {
+              "headers_rfc": {
+                "content_type": {
+                  "ContentType": {
+                    "c_type": "text",
+                    "c_subtype": "plain",
+                    "attributes": null
+                  }
+                }
+              },
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "Hello another world\n"
+              },
+              "offset_header": 502,
+              "offset_body": 528,
+              "offset_end": 549
+            }
+          ]
+        }
+      },
+      "offset_header": 266,
+      "offset_body": 296,
+      "offset_end": 577
+    }
+  ]
+}

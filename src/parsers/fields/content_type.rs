@@ -53,6 +53,7 @@ struct ContentTypeParser<'x> {
     is_continuation: bool,
     is_encoded_attribute: bool,
     is_escaped: bool,
+    remove_crlf: bool,
     is_lower_case: bool,
     is_token_start: bool,
 }
@@ -143,9 +144,22 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
     let has_values = !parser.values.is_empty();
     let value = if parser.token_start > 0 {
-        Some(String::from_utf8_lossy(
-            &stream.data[parser.token_start - 1..parser.token_end],
-        ))
+        let value = &stream.data[parser.token_start - 1..parser.token_end];
+        Some(if !parser.remove_crlf {
+            String::from_utf8_lossy(value)
+        } else {
+            parser.remove_crlf = false;
+            match String::from_utf8(
+                value
+                    .iter()
+                    .filter(|&&ch| ch != b'\r' && ch != b'\n')
+                    .copied()
+                    .collect::<Vec<_>>(),
+            ) {
+                Ok(value) => value.into(),
+                Err(err) => String::from_utf8_lossy(err.as_bytes()).into_owned().into(),
+            }
+        })
     } else {
         if !has_values {
             return;
@@ -265,6 +279,7 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
         is_lower_case: true,
         is_token_start: true,
         is_escaped: false,
+        remove_crlf: false,
 
         token_start: 0,
         token_end: 0,
@@ -300,46 +315,52 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
                 }
             }
             b'\n' => {
+                let next_is_space = matches!(stream.data.get(stream.pos), Some(b' ' | b'\t'));
                 match parser.state {
                     ContentState::Type | ContentState::AttributeName | ContentState::SubType => {
                         add_attribute(&mut parser, stream);
                     }
-                    ContentState::AttributeValue | ContentState::AttributeQuotedValue => {
+                    ContentState::AttributeValue => {
                         add_value(&mut parser, stream);
+                    }
+                    ContentState::AttributeQuotedValue => {
+                        if next_is_space {
+                            parser.remove_crlf = true;
+                            continue;
+                        } else {
+                            add_value(&mut parser, stream);
+                        }
                     }
                     _ => (),
                 }
 
-                match stream.data.get(stream.pos) {
-                    Some(b' ' | b'\t') => {
-                        parser.state = ContentState::AttributeName;
-                        stream.pos += 1;
-                        iter.next();
+                if next_is_space {
+                    parser.state = ContentState::AttributeName;
+                    stream.pos += 1;
+                    iter.next();
 
-                        if !parser.is_token_start {
-                            parser.is_token_start = true;
-                        }
-                        continue;
+                    if !parser.is_token_start {
+                        parser.is_token_start = true;
                     }
-                    _ => {
-                        if parser.continuations.is_some() {
-                            merge_continuations(&mut parser);
-                        }
+                    continue;
+                } else {
+                    if parser.continuations.is_some() {
+                        merge_continuations(&mut parser);
+                    }
 
-                        return if let Some(content_type) = parser.c_type {
-                            HeaderValue::ContentType(ContentType {
-                                c_type: content_type,
-                                c_subtype: parser.c_subtype.take(),
-                                attributes: if !parser.attributes.is_empty() {
-                                    Some(parser.attributes)
-                                } else {
-                                    None
-                                },
-                            })
-                        } else {
-                            HeaderValue::Empty
-                        };
-                    }
+                    return if let Some(content_type) = parser.c_type {
+                        HeaderValue::ContentType(ContentType {
+                            c_type: content_type,
+                            c_subtype: parser.c_subtype.take(),
+                            attributes: if !parser.attributes.is_empty() {
+                                Some(parser.attributes)
+                            } else {
+                                None
+                            },
+                        })
+                    } else {
+                        HeaderValue::Empty
+                    };
                 }
             }
             b'/' if parser.state == ContentState::Type => {
@@ -659,6 +680,17 @@ mod tests {
                         "  c_subtype: mixed\n",
                         "  attributes:\n",
                         "    boundary: simple boundary\n"
+                    ),
+                ),
+                (
+                    "multipart/mixed; boundary=\"foo\n bar\"\n",
+                    concat!(
+                        "---\n",
+                        "ContentType:\n",
+                        "  c_type: multipart\n",
+                        "  c_subtype: mixed\n",
+                        "  attributes:\n",
+                        "    boundary: \"foo bar\"\n"
                     ),
                 ),
                 (
@@ -1103,7 +1135,7 @@ mod tests {
                         "  c_type: inva\n",
                         "  c_subtype: lid\n",
                         "  attributes:\n",
-                        "    name: \"   \"\n"
+                        "    name: \"       \"\n"
                     ),
                 ),
                 (
@@ -1115,7 +1147,7 @@ mod tests {
                         "  c_subtype: lid\n",
                         "  attributes:\n",
                         "    test: test\n",
-                        "    name: \"   \"\n"
+                        "    name: \"       \"\n"
                     ),
                 ),
                 (

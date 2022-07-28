@@ -772,16 +772,16 @@ mod tests {
                     continue;
                 }
 
-                /*if !file_name
+                if !file_name
                     .as_ref()
                     .unwrap()
                     .path()
                     .to_str()
                     .unwrap()
-                    .contains("011")
+                    .contains("012")
                 {
                     continue;
-                }*/
+                }
 
                 println!("{:}", file_name.as_ref().unwrap().path().display());
                 let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
