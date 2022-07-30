@@ -1,0 +1,102 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    0
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 29
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [],
+          "text_body": [],
+          "attachments": [
+            0
+          ],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "message",
+                      "c_subtype": "rfc822",
+                      "attributes": null
+                    }
+                  },
+                  "raw_start": 43,
+                  "raw_end": 59
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Message": {
+                  "html_body": [
+                    0
+                  ],
+                  "text_body": [
+                    0
+                  ],
+                  "attachments": [],
+                  "parts": [
+                    {
+                      "headers": [
+                        {
+                          "name": {
+                            "Rfc": "content_type"
+                          },
+                          "value": {
+                            "ContentType": {
+                              "c_type": "text",
+                              "c_subtype": "plain",
+                              "attributes": null
+                            }
+                          },
+                          "raw_start": 73,
+                          "raw_end": 85
+                        }
+                      ],
+                      "is_encoding_problem": false,
+                      "body": {
+                        "Text": "1\n"
+                      },
+                      "offset_header": 60,
+                      "offset_body": 86,
+                      "offset_end": 88
+                    }
+                  ]
+                }
+              },
+              "offset_header": 30,
+              "offset_body": 60,
+              "offset_end": 88
+            }
+          ]
+        }
+      },
+      "offset_header": 0,
+      "offset_body": 30,
+      "offset_end": 88
+    }
+  ]
+}

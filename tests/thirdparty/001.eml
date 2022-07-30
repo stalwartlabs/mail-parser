@@ -1,0 +1,24 @@
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="bound"
+
+mime header
+
+--bound
+Content-Transfer-Encoding: binary
+Content-Type: text/plain
+
+d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz
+aWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk
+Z2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE=
+--bound
+Content-Type: text/plain
+Content-Transfer-Encoding: binary
+
+ZWg=
+--bound
+Content-Type: text/plain
+
+hello world
+
+--bound--

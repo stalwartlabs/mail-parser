@@ -17,16 +17,22 @@ pub fn preview_html<'x, 'y>(html: Cow<'y, str>, max_len: usize) -> Cow<'x, str> 
     preview_text(html_to_text(html.as_ref()).into(), max_len)
 }
 
-pub fn preview_text<'x, 'y>(text: Cow<'y, str>, max_len: usize) -> Cow<'x, str> {
+pub fn preview_text<'x, 'y>(text: Cow<'y, str>, mut max_len: usize) -> Cow<'x, str> {
     if text.len() > max_len {
+        let add_dots = max_len > 6;
+        if add_dots {
+            max_len -= 3;
+        }
         let mut result = String::with_capacity(max_len);
         for ch in text.chars() {
-            if ch.len_utf8() + result.len() + 3 > max_len {
+            if ch.len_utf8() + result.len() > max_len {
                 break;
             }
             result.push(ch);
         }
-        result.push_str("...");
+        if add_dots {
+            result.push_str("...");
+        }
         result.into()
     } else {
         text.into_owned().into()
@@ -37,8 +43,13 @@ pub fn truncate_text<'x, 'y>(text: Cow<'y, str>, max_len: usize) -> Cow<'x, str>
     preview_text(text, max_len)
 }
 
-pub fn truncate_html<'x, 'y>(html: Cow<'y, str>, max_len: usize) -> Cow<'x, str> {
+pub fn truncate_html<'x, 'y>(html: Cow<'y, str>, mut max_len: usize) -> Cow<'x, str> {
     if html.len() > max_len {
+        let add_dots = max_len > 6;
+        if add_dots {
+            max_len -= 3;
+        }
+
         let mut result = String::with_capacity(max_len);
         let mut in_tag = false;
         let mut in_comment = false;
@@ -67,7 +78,7 @@ pub fn truncate_html<'x, 'y>(html: Cow<'y, str>, max_len: usize) -> Cow<'x, str>
                 }
                 _ => (),
             }
-            if ch.len_utf8() + pos + 3 > max_len {
+            if ch.len_utf8() + pos > max_len {
                 result.push_str(
                     &html[0..if (in_tag || set_last_tag > 0) && last_tag_end_pos > 0 {
                         last_tag_end_pos
@@ -75,7 +86,9 @@ pub fn truncate_html<'x, 'y>(html: Cow<'y, str>, max_len: usize) -> Cow<'x, str>
                         pos
                     }],
                 );
-                result.push_str("...");
+                if add_dots {
+                    result.push_str("...");
+                }
                 break;
             } else if set_last_tag > 0 {
                 last_tag_end_pos = set_last_tag;

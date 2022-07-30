@@ -1,0 +1,147 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "39236497.12FA2A89@example.com"
+          },
+          "raw_start": 11,
+          "raw_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 23,
+              "minute": 33,
+              "second": 43,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 50,
+          "raw_end": 84
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "raw_start": 89,
+          "raw_end": 126
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
+          },
+          "raw_start": 135,
+          "raw_end": 165
+        },
+        {
+          "name": {
+            "Other": "X-Accept-Language"
+          },
+          "value": {
+            "Text": " en\r\n"
+          },
+          "raw_start": 183,
+          "raw_end": 188
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 201,
+          "raw_end": 207
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Heinz M+APw-ller",
+              "address": "mueller@example.com"
+            }
+          },
+          "raw_start": 210,
+          "raw_end": 253
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Fr+APY-sche"
+          },
+          "raw_start": 261,
+          "raw_end": 293
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-7"
+                ]
+              ]
+            }
+          },
+          "raw_start": 306,
+          "raw_end": 334
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "raw_start": 360,
+          "raw_end": 367
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Fr岣he\r\n\r\nDie Hasen klagten einst 롥r ihre miެiche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist 㱧er als der\r\nTod selbst. Auf, la޴ uns ein f밠allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers㴦en; sie eilten ihm zu;\r\nallein das auޥrordentliche Get岥 und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr岣he, die am Ufer saޥn, so sehr, daݠsie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers㴦en noch ein\r\nwenig aufschieben, denn auch uns f뱣hten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl뢫licher sein m벳en als wir.\"\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 369,
+      "offset_end": 1158
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "392367BC.3D075C95@example.com"
+          },
+          "raw_start": 11,
+          "raw_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 23,
+              "minute": 47,
+              "second": 8,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 50,
+          "raw_end": 84
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "raw_start": 89,
+          "raw_end": 126
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
+          },
+          "raw_start": 135,
+          "raw_end": 165
+        },
+        {
+          "name": {
+            "Other": "X-Accept-Language"
+          },
+          "value": {
+            "Text": " en\r\n"
+          },
+          "raw_start": 183,
+          "raw_end": 188
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 201,
+          "raw_end": 207
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Joe Blow",
+              "address": "blow@example.com"
+            }
+          },
+          "raw_start": 210,
+          "raw_end": 240
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Test message from Netscape Communicator 4.7"
+          },
+          "raw_start": 248,
+          "raw_end": 294
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "------------CA611088711119FBDB3473B4"
+                ]
+              ]
+            }
+          },
+          "raw_start": 307,
+          "raw_end": 376
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 378,
+      "offset_end": 2436
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "raw_start": 477,
+          "raw_end": 508
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "raw_start": 534,
+          "raw_end": 541
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race."
+      },
+      "offset_header": 464,
+      "offset_body": 543,
+      "offset_end": 1312
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ],
+                [
+                  "name",
+                  "HasenundFrösche.txt"
+                ]
+              ]
+            }
+          },
+          "raw_start": 1365,
+          "raw_end": 1449
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "raw_start": 1475,
+          "raw_end": 1494
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": [
+                [
+                  "filename",
+                  "HasenundFrösche.txt"
+                ]
+              ]
+            }
+          },
+          "raw_start": 1514,
+          "raw_end": 1578
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
+      },
+      "offset_header": 1352,
+      "offset_body": 1580,
+      "offset_end": 2394
+    }
+  ]
+}

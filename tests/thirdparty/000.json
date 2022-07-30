@@ -1,0 +1,126 @@
+{
+  "html_body": [
+    1,
+    2
+  ],
+  "text_body": [
+    1,
+    2
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 13,
+          "raw_end": 19
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "bound"
+                ]
+              ]
+            }
+          },
+          "raw_start": 32,
+          "raw_end": 76
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 78,
+      "offset_end": 480
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 128,
+          "raw_end": 137
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 150,
+          "raw_end": 163
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "we have\ra lot \nof \u0000binary stuff in here\nb adjig sadjg jasidgjiaehga3wht8a3w8ghxjc dsgad hasdghsd gasd dsjdsoga sjdga0w3tjhawjgsertniq3n5oqerjqw2r89q23h awhrqh835r8a"
+      },
+      "offset_header": 102,
+      "offset_body": 165,
+      "offset_end": 391
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 413,
+          "raw_end": 426
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 452,
+          "raw_end": 461
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "eh"
+      },
+      "offset_header": 400,
+      "offset_body": 463,
+      "offset_end": 469
+    }
+  ]
+}

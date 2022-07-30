@@ -1,0 +1,25 @@
+Return-Path: <test@example.org>
+Subject: Hello world
+From: Test User <test@example.org>
+To: Another User <test2@example.org>
+Message-Id: <1.2.3.4@example>
+Mime-Version: 1.0
+Date: Sun, 23 May 2007 04:58:08 +0300
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="=-GNQXLhuj24Pl1aCkk4/d"
+
+--=-GNQXLhuj24Pl1aCkk4/d
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+There was a day=20
+a happy=20day
+
+--=-GNQXLhuj24Pl1aCkk4/d
+Content-Type: application/pgp-signature; name=signature.asc
+
+invalid
+
+--=-GNQXLhuj24Pl1aCkk4/d--
+

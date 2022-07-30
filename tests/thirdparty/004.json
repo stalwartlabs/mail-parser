@@ -1,0 +1,306 @@
+{
+  "html_body": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "text_body": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 44
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 57,
+          "raw_end": 62
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 63,
+      "offset_end": 704
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "6bit"
+          },
+          "raw_start": 93,
+          "raw_end": 99
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 112,
+          "raw_end": 139
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move black king to queen's bishop\n"
+      },
+      "offset_header": 67,
+      "offset_body": 140,
+      "offset_end": 175
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bits"
+          },
+          "raw_start": 205,
+          "raw_end": 218
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 231,
+          "raw_end": 258
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 179,
+      "offset_body": 259,
+      "offset_end": 282
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "8 bit"
+          },
+          "raw_start": 312,
+          "raw_end": 319
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 332,
+          "raw_end": 359
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 286,
+      "offset_body": 360,
+      "offset_end": 383
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7-bit"
+          },
+          "raw_start": 413,
+          "raw_end": 420
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 433,
+          "raw_end": 460
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 387,
+      "offset_body": 461,
+      "offset_end": 484
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "8-bit"
+          },
+          "raw_start": 514,
+          "raw_end": 521
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 534,
+          "raw_end": 561
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 488,
+      "offset_body": 562,
+      "offset_end": 585
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": "Empty",
+          "raw_start": 615,
+          "raw_end": 616
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 629,
+          "raw_end": 656
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n"
+      },
+      "offset_header": 589,
+      "offset_body": 657,
+      "offset_end": 698
+    }
+  ]
+}

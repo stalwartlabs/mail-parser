@@ -1,0 +1,157 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
+          },
+          "raw_start": 11,
+          "raw_end": 64
+        },
+        {
+          "name": {
+            "Other": "X-Sender"
+          },
+          "value": {
+            "Text": " dwsauder@pop.example.com (Unverified)\r\n"
+          },
+          "raw_start": 73,
+          "raw_end": 113
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
+          },
+          "raw_start": 122,
+          "raw_end": 170
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 1 (Highest)\r\n"
+          },
+          "raw_start": 181,
+          "raw_end": 195
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 19,
+              "hour": 1,
+              "minute": 10,
+              "second": 27,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 200,
+          "raw_end": 234
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Heinz M�ller",
+              "address": "mueller@example.com"
+            }
+          },
+          "raw_start": 237,
+          "raw_end": 274
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "raw_start": 279,
+          "raw_end": 316
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Fr�sche"
+          },
+          "raw_start": 324,
+          "raw_end": 352
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 365,
+          "raw_end": 371
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 384,
+          "raw_end": 419
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "8bit"
+          },
+          "raw_start": 445,
+          "raw_end": 452
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n\r\n\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 454,
+      "offset_end": 1203
+    }
+  ]
+}

@@ -1,0 +1,575 @@
+{
+  "html_body": [
+    1,
+    9,
+    14
+  ],
+  "text_body": [
+    1,
+    5,
+    6,
+    7,
+    14
+  ],
+  "attachments": [
+    6,
+    10,
+    11,
+    12,
+    13
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "RFC 8621 Section 4.1.4 test"
+          },
+          "raw_start": 8,
+          "raw_end": 37
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 50,
+          "raw_end": 81
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          14
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 82,
+      "offset_end": 870
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 99,
+          "raw_end": 111
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 131,
+          "raw_end": 139
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "A"
+      },
+      "offset_header": 86,
+      "offset_body": 140,
+      "offset_end": 142
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "2"
+                ]
+              ]
+            }
+          },
+          "raw_start": 161,
+          "raw_end": 192
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          11,
+          12,
+          13
+        ]
+      },
+      "offset_header": 148,
+      "offset_body": 193,
+      "offset_end": 801
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "3"
+                ]
+              ]
+            }
+          },
+          "raw_start": 210,
+          "raw_end": 247
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          4,
+          8
+        ]
+      },
+      "offset_header": 197,
+      "offset_body": 248,
+      "offset_end": 634
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "4"
+                ]
+              ]
+            }
+          },
+          "raw_start": 265,
+          "raw_end": 296
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          5,
+          6,
+          7
+        ]
+      },
+      "offset_header": 252,
+      "offset_body": 297,
+      "offset_end": 487
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 314,
+          "raw_end": 326
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 346,
+          "raw_end": 354
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "B"
+      },
+      "offset_header": 301,
+      "offset_body": 355,
+      "offset_end": 357
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "raw_start": 376,
+          "raw_end": 388
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 408,
+          "raw_end": 416
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
+          67
+        ]
+      },
+      "offset_header": 363,
+      "offset_body": 417,
+      "offset_end": 419
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 438,
+          "raw_end": 450
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 470,
+          "raw_end": 478
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "D"
+      },
+      "offset_header": 425,
+      "offset_body": 479,
+      "offset_end": 481
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": [
+                [
+                  "boundary",
+                  "5"
+                ]
+              ]
+            }
+          },
+          "raw_start": 506,
+          "raw_end": 539
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          9,
+          10
+        ]
+      },
+      "offset_header": 493,
+      "offset_body": 540,
+      "offset_end": 626
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": null
+            }
+          },
+          "raw_start": 557,
+          "raw_end": 568
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html>E</html>"
+      },
+      "offset_header": 544,
+      "offset_body": 569,
+      "offset_end": 584
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "raw_start": 603,
+          "raw_end": 615
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          70
+        ]
+      },
+      "offset_header": 590,
+      "offset_body": 616,
+      "offset_end": 618
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "raw_start": 655,
+          "raw_end": 667
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 687,
+          "raw_end": 699
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          71
+        ]
+      },
+      "offset_header": 642,
+      "offset_body": 700,
+      "offset_end": 702
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "x-excel",
+              "attributes": null
+            }
+          },
+          "raw_start": 721,
+          "raw_end": 742
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          72
+        ]
+      },
+      "offset_header": 708,
+      "offset_body": 743,
+      "offset_end": 745
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "raw_start": 764,
+          "raw_end": 780
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "J"
+                  },
+                  "raw_start": 789,
+                  "raw_end": 792
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "J"
+              },
+              "offset_header": 781,
+              "offset_body": 793,
+              "offset_end": 795
+            }
+          ]
+        }
+      },
+      "offset_header": 751,
+      "offset_body": 781,
+      "offset_end": 795
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 821,
+          "raw_end": 833
+        },
+        {
+          "name": {
+            "Rfc": "content_disposition"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": null
+            }
+          },
+          "raw_start": 853,
+          "raw_end": 861
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "K"
+      },
+      "offset_header": 808,
+      "offset_body": 862,
+      "offset_end": 864
+    }
+  ]
+}

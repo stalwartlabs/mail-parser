@@ -1,0 +1,20 @@
+Subject: In parts
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=1
+
+--1
+Content-Type: text/plain
+Content-Transfer-Encoding: binary
+
+Hi, this is the fancy thing I was talking about!
+--1
+Content-Type: Message/Partial; number=1; total=5; id="heks68ewe@example.org"
+
+X-Weird-Header-1: Bar
+X-Weird-Header-2: Hello
+Message-ID: <c6cceebc-1dcf-11eb-be8c-f7ca132cbfea@example.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: base64
+
+dGhpcyBpcyB0aGUgZmlyc3QgcGFydCBvZiB0aGUgbWVzc2FnZQo=
+--1--

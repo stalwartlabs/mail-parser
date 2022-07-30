@@ -1,0 +1,13 @@
+Content-Type: multipart/mixed; boundary="ab"
+
+--ab
+Content-Type: multipart/mixed; boundary="a"
+
+--a
+Content-Type: text/plain
+
+body
+--ab
+Content-Type: text/html
+
+body2

@@ -1,0 +1,32 @@
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 1.0
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 2.0
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: abc
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version:
+
+--1
+Content-Type: text/plain
+
+hello, world
+--1

@@ -1,0 +1,246 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Nathaniel Borenstein",
+              "address": "nsb@bellcore.com"
+            }
+          },
+          "raw_start": 5,
+          "raw_end": 46
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Ned Freed",
+              "address": "ned@innosoft.com"
+            }
+          },
+          "raw_start": 49,
+          "raw_end": 79
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 1993,
+              "month": 3,
+              "day": 22,
+              "hour": 9,
+              "minute": 41,
+              "second": 9,
+              "tz_before_gmt": true,
+              "tz_hour": 8,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 84,
+          "raw_end": 123
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Formatted text mail"
+          },
+          "raw_start": 131,
+          "raw_end": 152
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 165,
+          "raw_end": 170
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "boundary42"
+                ]
+              ]
+            }
+          },
+          "raw_start": 183,
+          "raw_end": 227
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 228,
+      "offset_end": 564
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "raw_start": 254,
+          "raw_end": 284
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "... plain text version of message goes here ...\n"
+      },
+      "offset_header": 241,
+      "offset_body": 285,
+      "offset_end": 334
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched",
+              "attributes": null
+            }
+          },
+          "raw_start": 360,
+          "raw_end": 375
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "... RFC 1896 text/enriched version of same message\n    goes here ...\n"
+      },
+      "offset_header": 347,
+      "offset_body": 376,
+      "offset_end": 446
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "x-whatever",
+              "attributes": null
+            }
+          },
+          "raw_start": 472,
+          "raw_end": 496
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          46,
+          46,
+          46,
+          32,
+          102,
+          97,
+          110,
+          99,
+          105,
+          101,
+          115,
+          116,
+          32,
+          118,
+          101,
+          114,
+          115,
+          105,
+          111,
+          110,
+          32,
+          111,
+          102,
+          32,
+          115,
+          97,
+          109,
+          101,
+          32,
+          109,
+          101,
+          115,
+          115,
+          97,
+          103,
+          101,
+          32,
+          103,
+          111,
+          101,
+          115,
+          32,
+          104,
+          101,
+          114,
+          101,
+          32,
+          46,
+          46,
+          46,
+          10
+        ]
+      },
+      "offset_header": 459,
+      "offset_body": 497,
+      "offset_end": 549
+    }
+  ]
+}

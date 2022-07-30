@@ -1,0 +1,30 @@
+Subject: Hide and seek
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=1
+
+--1
+Content-Type: multipart/signed; protocol="signature/plain"; migalc="pen+paper"; boundary=2
+X-Signature-Type: penmanship
+
+--2
+Content-Type: multipart/alternative; boundary=3
+
+--3
+Content-Type: text/html; charset=us-ascii
+
+<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>
+
+--3
+Content-Type: text/plain
+Content-Transfer-Encoding: binary
+
+Search me, and Find me here
+--3--
+
+--2
+Content-Type: signature/plain; charset=us-ascii
+
+Signed by undersigned
+--2--
+
+--1--

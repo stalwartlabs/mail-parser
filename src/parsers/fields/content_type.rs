@@ -9,10 +9,7 @@
  * except according to those terms.
  */
 
-use std::{
-    borrow::Cow,
-    collections::{hash_map::Entry, HashMap},
-};
+use std::borrow::Cow;
 
 use crate::{
     decoders::{charsets::map::get_charset_decoder, encoded_word::decode_rfc2047, hex::decode_hex},
@@ -44,7 +41,7 @@ struct ContentTypeParser<'x> {
     attr_position: u32,
 
     values: Vec<Cow<'x, str>>,
-    attributes: HashMap<Cow<'x, str>, Cow<'x, str>>,
+    attributes: Vec<(Cow<'x, str>, Cow<'x, str>)>,
     continuations: Option<Vec<Continuation<'x>>>,
 
     token_start: usize,
@@ -96,18 +93,20 @@ fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &Mess
 
         if parser.attr_charset.is_none() {
             parser.attr_charset = attr_part.into();
-        } else if let Entry::Vacant(e) = parser.attributes.entry(
-            parser
+        } else {
+            let attr_name = parser
                 .attr_name
                 .as_ref()
                 .unwrap_or(&"unknown".into())
                 .clone()
-                + "-language",
-        ) {
-            e.insert(attr_part);
-        } else {
-            parser.values.push("'".into());
-            parser.values.push(attr_part);
+                + "-language";
+
+            if !parser.attributes.iter().any(|(name, _)| name == &attr_name) {
+                parser.attributes.push((attr_name, attr_part));
+            } else {
+                parser.values.push("'".into());
+                parser.values.push(attr_part);
+            }
         }
 
         reset_parser(parser);
@@ -168,7 +167,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
     };
 
     if !parser.is_continuation {
-        parser.attributes.insert(
+        parser.attributes.push((
             parser.attr_name.take().unwrap(),
             if !has_values {
                 value.unwrap()
@@ -178,7 +177,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
                 }
                 parser.values.concat().into()
             },
-        );
+        ));
     } else {
         let attr_name = parser.attr_name.take().unwrap();
         let mut value = if let Some(value) = value {
@@ -218,7 +217,7 @@ fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>)
 
             parser.attr_position = 0;
         } else {
-            parser.attributes.insert(attr_name, value);
+            parser.attributes.push((attr_name, value));
         }
         parser.is_continuation = false;
         parser.attr_charset = None;
@@ -249,12 +248,11 @@ fn merge_continuations(parser: &mut ContentTypeParser) {
     let continuations = parser.continuations.as_mut().unwrap();
     continuations.sort();
     for (key, _, value) in continuations.drain(..) {
-        let value = if let Some(old_value) = parser.attributes.get(&key) {
-            old_value.to_owned() + value
+        if let Some((_, old_value)) = parser.attributes.iter_mut().find(|(name, _)| name == &key) {
+            *old_value = format!("{}{}", old_value.to_owned(), value).into();
         } else {
-            value
-        };
-        parser.attributes.insert(key, value);
+            parser.attributes.push((key, value));
+        }
     }
 }
 
@@ -270,7 +268,7 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
         attr_charset: None,
         attr_position: 0,
 
-        attributes: HashMap::new(),
+        attributes: Vec::new(),
         values: Vec::new(),
         continuations: None,
 
@@ -522,7 +520,24 @@ pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
 
 #[cfg(test)]
 mod tests {
+    use std::{borrow::Cow, collections::HashMap};
+
+    use serde::{Deserialize, Serialize};
+
     use crate::{parsers::message::MessageStream, HeaderValue};
+
+    #[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
+    pub struct ContentTypeMap<'x> {
+        pub c_type: Cow<'x, str>,
+        pub c_subtype: Option<Cow<'x, str>>,
+        pub attributes: Option<HashMap<Cow<'x, str>, Cow<'x, str>>>,
+    }
+
+    #[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
+    pub enum HeaderValueMap<'x> {
+        ContentType(ContentTypeMap<'x>),
+        Empty,
+    }
 
     #[test]
     fn parse_content_fields() {
@@ -1555,8 +1570,18 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
 
-            let result = parse_content_type(&mut MessageStream::new(str.as_bytes()));
-            let expected: HeaderValue = serde_yaml::from_str(input.1).unwrap_or(HeaderValue::Empty);
+            // TODO: Redo tests without using hashmaps.
+            let result = match parse_content_type(&mut MessageStream::new(str.as_bytes())) {
+                HeaderValue::ContentType(ct) => HeaderValueMap::ContentType(ContentTypeMap {
+                    c_type: ct.c_type,
+                    c_subtype: ct.c_subtype,
+                    attributes: ct.attributes.map(|a| a.into_iter().collect()),
+                }),
+                HeaderValue::Empty => HeaderValueMap::Empty,
+                _ => unreachable!(),
+            };
+            let expected: HeaderValueMap =
+                serde_yaml::from_str(input.1).unwrap_or(HeaderValueMap::Empty);
 
             /*
             if input.0.len() >= 70 {

@@ -1,0 +1,177 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "doug@example.com"
+            }
+          },
+          "raw_start": 5,
+          "raw_end": 40
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Jürgen Schmürgen",
+              "address": "schmuergen@example.com"
+            }
+          },
+          "raw_start": 43,
+          "raw_end": 112
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+          },
+          "raw_start": 120,
+          "raw_end": 194
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 19,
+              "minute": 13,
+              "second": 51,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 199,
+          "raw_end": 233
+        },
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
+          },
+          "raw_start": 244,
+          "raw_end": 294
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 307,
+          "raw_end": 313
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 326,
+          "raw_end": 363
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "8bit"
+          },
+          "raw_start": 389,
+          "raw_end": 396
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 3 (Normal)\r\n"
+          },
+          "raw_start": 407,
+          "raw_end": 420
+        },
+        {
+          "name": {
+            "Other": "X-MSMail-Priority"
+          },
+          "value": {
+            "Text": " Normal\r\n"
+          },
+          "raw_start": 438,
+          "raw_end": 447
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
+          },
+          "raw_start": 456,
+          "raw_end": 509
+        },
+        {
+          "name": {
+            "Other": "Importance"
+          },
+          "value": {
+            "Text": " Normal\r\n"
+          },
+          "raw_start": 520,
+          "raw_end": 529
+        },
+        {
+          "name": {
+            "Other": "X-MimeOLE"
+          },
+          "value": {
+            "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
+          },
+          "raw_start": 539,
+          "raw_end": 587
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod\r\nselbst. Auf, laßt uns ein für allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\r\nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte\r\neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\r\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch unglücklicher sein müssen als wir.\"\r\n\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 589,
+      "offset_end": 1341
+    }
+  ]
+}

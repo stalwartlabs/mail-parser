@@ -1,0 +1,34 @@
+Content-Type: multipart/mixed; boundary="1"
+MIME-Version: 1.0
+
+--1
+Content-Transfer-Encoding:      7bit
+Content-Type: text/plain; charset=us-ascii
+
+Move black king to queen's bishop
+
+--1
+Content-Transfer-Encoding:				binary
+Content-Type: text/plain; charset=UTF-8
+
+Move ♚ to ♛'s ♝
+
+--1
+Content-Transfer-Encoding: 8bit			
+Content-Type: text/plain; charset=UTF-8
+
+Move ♚ to ♛'s ♝
+
+--1
+Content-Transfer-Encoding: quoted-printable              
+Content-Type: text/plain; charset=UTF-8
+
+Move =E2=99=9A to =E2=99=9B's =E2=99=9D
+
+--1
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+
+TW92ZSDimZogdG8g4pmbJ3Mg4pmdCg==
+
+--1--

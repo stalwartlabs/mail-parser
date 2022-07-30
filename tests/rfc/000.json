@@ -1,0 +1,399 @@
+{
+  "html_body": [
+    1,
+    2
+  ],
+  "text_body": [
+    1,
+    2
+  ],
+  "attachments": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 13,
+          "raw_end": 18
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Nathaniel Borenstein",
+              "address": "nsb@nsb.fv.com"
+            }
+          },
+          "raw_start": 23,
+          "raw_end": 62
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Ned Freed",
+              "address": "ned@innosoft.com"
+            }
+          },
+          "raw_start": 65,
+          "raw_end": 95
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 1994,
+              "month": 10,
+              "day": 7,
+              "hour": 16,
+              "minute": 15,
+              "second": 5,
+              "tz_before_gmt": true,
+              "tz_hour": 7,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 100,
+          "raw_end": 139
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "A multipart example"
+          },
+          "raw_start": 147,
+          "raw_end": 168
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "unique-boundary-1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 181,
+          "raw_end": 238
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3,
+          6,
+          7
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 239,
+      "offset_end": 1853
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "... Some text appears here ...\n\n[Note that the blank between the boundary and the start\nof the text in this part means no header fields were\ngiven and this is text in the US-ASCII character set.\nIt could have been done with explicit typing as in the\nnext part.]\n"
+      },
+      "offset_header": 530,
+      "offset_body": 531,
+      "offset_end": 794
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "US-ASCII"
+                ]
+              ]
+            }
+          },
+          "raw_start": 827,
+          "raw_end": 857
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "This could have been part of the previous part, but\nillustrates explicit versus implicit typing of body\nparts.\n"
+      },
+      "offset_header": 814,
+      "offset_body": 858,
+      "offset_end": 970
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "parallel",
+              "attributes": [
+                [
+                  "boundary",
+                  "unique-boundary-2"
+                ]
+              ]
+            }
+          },
+          "raw_start": 1003,
+          "raw_end": 1051
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          4,
+          5
+        ]
+      },
+      "offset_header": 990,
+      "offset_body": 1052,
+      "offset_end": 1366
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "audio",
+              "c_subtype": "basic",
+              "attributes": null
+            }
+          },
+          "raw_start": 1085,
+          "raw_end": 1098
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 1124,
+          "raw_end": 1132
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "... base64-encoded 8000 Hz single-channel\n    mu-law-format audio data goes here ...\n"
+      },
+      "offset_header": 1072,
+      "offset_body": 1133,
+      "offset_end": 1219
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "raw_start": 1252,
+          "raw_end": 1264
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 1290,
+          "raw_end": 1298
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "... base64-encoded image data goes here ...\n"
+      },
+      "offset_header": 1239,
+      "offset_body": 1299,
+      "offset_end": 1344
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched",
+              "attributes": null
+            }
+          },
+          "raw_start": 1400,
+          "raw_end": 1415
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "This is <bold><italic>enriched.</italic></bold>\n<smaller>as defined in RFC 1896</smaller>\n\nIsn't it\n<bigger><bigger>cool?</bigger></bigger>\n"
+      },
+      "offset_header": 1387,
+      "offset_body": 1416,
+      "offset_end": 1557
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "raw_start": 1590,
+          "raw_end": 1606
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "mailbox in US-ASCII",
+                      "address": null
+                    }
+                  },
+                  "raw_start": 1612,
+                  "raw_end": 1635
+                },
+                {
+                  "name": {
+                    "Rfc": "to"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "address in US-ASCII",
+                      "address": null
+                    }
+                  },
+                  "raw_start": 1638,
+                  "raw_end": 1661
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "(subject in US-ASCII)"
+                  },
+                  "raw_start": 1669,
+                  "raw_end": 1692
+                },
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": [
+                        [
+                          "charset",
+                          "ISO-8859-1"
+                        ]
+                      ]
+                    }
+                  },
+                  "raw_start": 1705,
+                  "raw_end": 1737
+                },
+                {
+                  "name": {
+                    "Rfc": "content_transfer_encoding"
+                  },
+                  "value": {
+                    "Text": "Quoted-printable"
+                  },
+                  "raw_start": 1763,
+                  "raw_end": 1781
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "... Additional text in ISO-8859-1 goes here ...\n"
+              },
+              "offset_header": 1607,
+              "offset_body": 1782,
+              "offset_end": 1831
+            }
+          ]
+        }
+      },
+      "offset_header": 1577,
+      "offset_body": 1607,
+      "offset_end": 1831
+    }
+  ]
+}

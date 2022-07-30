@@ -1,0 +1,23 @@
+Content-Type: multipart/mixed; boundary="1"
+
+--1
+Content-Type: multipart/mixed; boundary="2"
+
+--2
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+1
+--2
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+22
+--1
+Content-Type: message/rfc822
+
+Content-Type: text/plain
+
+333

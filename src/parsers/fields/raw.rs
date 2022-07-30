@@ -73,7 +73,7 @@ pub fn parse_and_ignore(stream: &mut MessageStream) {
 mod tests {
     use crate::parsers::fields::raw::parse_raw;
     use crate::parsers::message::MessageStream;
-    use crate::{HeaderName, Message, RfcHeader};
+    use crate::Message;
 
     #[test]
     fn parse_raw_text() {
@@ -116,41 +116,26 @@ Content-Type: multipart/mixed; boundary="festivus";
 Here's a message body.
 "#;
         let message = Message::parse(input).unwrap();
-        let mut iter = message.get_raw_headers();
+        let mut iter = message.get_headers_raw();
         assert_eq!(
             iter.next().unwrap(),
-            (
-                &HeaderName::Rfc(RfcHeader::From),
-                " Art Vandelay <art@vandelay.com>\n".into()
-            )
+            ("From", " Art Vandelay <art@vandelay.com>\n")
+        );
+        assert_eq!(iter.next().unwrap(), ("To", " jane@example.com\n"));
+        assert_eq!(
+            iter.next().unwrap(),
+            ("Date", " Sat, 20 Nov 2021 14:22:01 -0800\n")
         );
         assert_eq!(
             iter.next().unwrap(),
             (
-                &HeaderName::Rfc(RfcHeader::To),
-                " jane@example.com\n".into()
+                "Subject",
+                " Why not both importing AND exporting? =?utf-8?b?4pi6?=\n"
             )
         );
         assert_eq!(
             iter.next().unwrap(),
-            (
-                &HeaderName::Rfc(RfcHeader::Date),
-                " Sat, 20 Nov 2021 14:22:01 -0800\n".into()
-            )
-        );
-        assert_eq!(
-            iter.next().unwrap(),
-            (
-                &HeaderName::Rfc(RfcHeader::Subject),
-                " Why not both importing AND exporting? =?utf-8?b?4pi6?=\n".into()
-            )
-        );
-        assert_eq!(
-            iter.next().unwrap(),
-            (
-                &HeaderName::Rfc(RfcHeader::ContentType),
-                " multipart/mixed; boundary=\"festivus\";\n".into()
-            )
+            ("Content-Type", " multipart/mixed; boundary=\"festivus\";\n")
         );
     }
 }

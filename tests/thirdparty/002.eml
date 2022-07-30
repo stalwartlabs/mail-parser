@@ -1,0 +1,19 @@
+Content-Type: multipart/mixed; boundary=foo
+
+--foo
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+
+p=C3=A4iv=C3=A4=C3=A4
+
+--foo
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+
+ecO2dMOkIHZhYW4uCg== ignored
+--foo
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+
+?garbage
+--foo--

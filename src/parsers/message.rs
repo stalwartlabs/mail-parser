@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId, PartType,
-    RawHeaders, RfcHeader, RfcHeaders,
+    ContentType, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
+    PartType, RfcHeader,
 };
 
 use super::{
@@ -114,9 +114,9 @@ fn get_mime_type(
     }
 }
 
-#[inline(always)]
+/*#[inline(always)]
 fn add_missing_type<'x>(
-    headers: &mut RfcHeaders<'x>,
+    headers: &mut Vec<Header<'x>>,
     c_type: Cow<'x, str>,
     c_subtype: Cow<'x, str>,
 ) {
@@ -130,7 +130,7 @@ fn add_missing_type<'x>(
             }),
         );
     }
-}
+}*/
 
 #[derive(Default, Debug)]
 struct MessageParserState {
@@ -202,21 +202,20 @@ impl<'x> Message<'x> {
         let mut state = MessageParserState::new();
         let mut state_stack = Vec::with_capacity(4);
 
-        let mut part_header = RfcHeaders::new();
-        let mut part_header_raw = RawHeaders::new();
+        let mut part_headers = Vec::new();
 
         'outer: loop {
             // Parse headers
             state.offset_header = stream.pos;
-            if !parse_headers(&mut part_header, &mut part_header_raw, &mut stream) {
+            if !parse_headers(&mut part_headers, &mut stream) {
                 break;
             }
 
             state.parts += 1;
             state.sub_part_ids.push(message.parts.len());
 
-            let content_type = part_header
-                .get(&RfcHeader::ContentType)
+            let content_type = part_headers
+                .get_rfc(&RfcHeader::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
@@ -244,10 +243,9 @@ impl<'x> Message<'x> {
                             part_id,
                             ..Default::default()
                         };
-                        add_missing_type(&mut part_header, "text".into(), "plain".into());
+                        //add_missing_type(&mut part_header, "text".into(), "plain".into());
                         message.parts.push(MessagePart {
-                            headers_rfc: std::mem::take(&mut part_header),
-                            headers_raw: std::mem::take(&mut part_header_raw),
+                            headers: std::mem::take(&mut part_headers),
                             offset_header: state.offset_header,
                             offset_body: state.offset_body,
                             offset_end: 0,
@@ -268,8 +266,8 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
             state.offset_body = stream.pos;
 
-            let (is_binary, decode_fnc): (bool, DecodeFnc) = match part_header
-                .get(&RfcHeader::ContentTransferEncoding)
+            let (is_binary, decode_fnc): (bool, DecodeFnc) = match part_headers
+                .get_rfc(&RfcHeader::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
                     (false, decode_base64)
@@ -291,11 +289,11 @@ impl<'x> Message<'x> {
                     part_id: message.parts.len(),
                     ..Default::default()
                 };
-                add_missing_type(&mut part_header, "message".into(), "rfc822".into());
+                //add_missing_type(&mut part_header, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
                 message.parts.push(MessagePart {
-                    headers_rfc: std::mem::take(&mut part_header),
-                    headers_raw: std::mem::take(&mut part_header_raw),
+                    headers: std::mem::take(&mut part_headers),
+
                     is_encoding_problem: false,
                     offset_header: state.offset_header,
                     offset_body: state.offset_body,
@@ -370,8 +368,8 @@ impl<'x> Message<'x> {
                 } else {
                     // Could not recover error, add part and abort
                     message.parts.push(MessagePart {
-                        headers_rfc: std::mem::take(&mut part_header),
-                        headers_raw: std::mem::take(&mut part_header_raw),
+                        headers: std::mem::take(&mut part_headers),
+
                         is_encoding_problem: true,
                         body: PartType::Binary((&[][..]).into()),
                         offset_header: state.offset_header,
@@ -391,8 +389,8 @@ impl<'x> Message<'x> {
 
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
-                    && part_header
-                        .get(&RfcHeader::ContentDisposition)
+                    && part_headers
+                        .get_rfc(&RfcHeader::ContentDisposition)
                         .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
                     && (state.parts == 1
                         || (state.mime_type != MimeType::MultipartRelated
@@ -428,7 +426,7 @@ impl<'x> Message<'x> {
                     let text = result_to_string(bytes, stream.data, content_type);
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    add_missing_type(&mut part_header, "text".into(), "plain".into());
+                    //add_missing_type(&mut part_headers, "text".into(), "plain".into());
 
                     if add_to_html && !is_html {
                         message.html_body.push(message.parts.len());
@@ -467,15 +465,15 @@ impl<'x> Message<'x> {
                     }
                 }
             } else {
-                add_missing_type(&mut part_header, "message".into(), "rfc822".into());
+                //add_missing_type(&mut part_headers, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
                 PartType::Message(MessageAttachment::Raw(result_to_bytes(bytes, stream.data)))
             };
 
             // Add part
             message.parts.push(MessagePart {
-                headers_rfc: std::mem::take(&mut part_header),
-                headers_raw: std::mem::take(&mut part_header_raw),
+                headers: std::mem::take(&mut part_headers),
+
                 is_encoding_problem,
                 body: body_part,
                 offset_header: state.offset_header,
@@ -608,61 +606,9 @@ impl<'x> Message<'x> {
 
 #[cfg(test)]
 mod tests {
-    use std::{collections::BTreeMap, fs, path::PathBuf};
+    use std::{fs, path::PathBuf};
 
-    use serde::Serialize;
-    use serde_json::Value;
-
-    use crate::{
-        parsers::message::Message, HeaderValue, MessagePart, MessagePartId, PartType, RawHeaders,
-        RfcHeader,
-    };
-
-    const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
-
-    #[derive(Serialize)]
-    pub struct SortedMessage<'x> {
-        pub html_body: Vec<MessagePartId>,
-        pub text_body: Vec<MessagePartId>,
-        pub attachments: Vec<MessagePartId>,
-        pub parts: Vec<SortedMessagePart<'x>>,
-    }
-
-    #[derive(Serialize)]
-    pub struct SortedMessagePart<'x> {
-        pub headers_rfc: BTreeMap<RfcHeader, HeaderValue<'x>>,
-        pub headers_raw: RawHeaders<'x>,
-        pub is_encoding_problem: bool,
-        pub body: PartType<'x>,
-        pub offset_header: usize,
-        pub offset_body: usize,
-        pub offset_end: usize,
-    }
-
-    impl<'x> From<Message<'x>> for SortedMessage<'x> {
-        fn from(message: Message<'x>) -> Self {
-            SortedMessage {
-                html_body: message.html_body,
-                text_body: message.text_body,
-                attachments: message.attachments,
-                parts: message.parts.into_iter().map(|p| p.into()).collect(),
-            }
-        }
-    }
-
-    impl<'x> From<MessagePart<'x>> for SortedMessagePart<'x> {
-        fn from(part: MessagePart<'x>) -> Self {
-            SortedMessagePart {
-                headers_rfc: part.headers_rfc.into_iter().collect(),
-                headers_raw: part.headers_raw,
-                is_encoding_problem: part.is_encoding_problem,
-                body: part.body,
-                offset_header: part.offset_header,
-                offset_body: part.offset_body,
-                offset_end: part.offset_end,
-            }
-        }
-    }
+    use crate::parsers::message::Message;
 
     #[test]
     fn parse_full_messages() {
@@ -674,40 +620,25 @@ mod tests {
             let mut tests_run = 0;
 
             for file_name in fs::read_dir(&test_dir).unwrap() {
-                let file_name = file_name.as_ref().unwrap().path();
-                if file_name.extension().map_or(false, |e| e == "txt") {
-                    let mut input = fs::read(&file_name).unwrap();
-                    let mut pos = 0;
-
-                    for sep_pos in 0..input.len() {
-                        if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
-                            pos = sep_pos;
-                            break;
-                        }
-                    }
-
-                    assert!(
-                        pos > 0,
-                        "Failed to find separator in test file '{}'.",
-                        file_name.display()
-                    );
+                let mut file_name = file_name.unwrap().path();
+                if file_name.extension().map_or(false, |e| e == "eml") {
+                    let raw_message = fs::read(&file_name).unwrap();
+                    file_name.set_extension("json");
+                    let expected_result = fs::read(&file_name).unwrap();
 
                     tests_run += 1;
 
-                    let (raw_message, expected_result) = input.split_at_mut(pos);
-                    let message = SortedMessage::from(Message::parse(raw_message).unwrap());
+                    let message = Message::parse(&raw_message).unwrap();
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
-                    assert_eq!(
-                        serde_json::from_str::<Value>(&json_message).unwrap(),
-                        serde_json::from_str::<Value>(
-                            std::str::from_utf8(&expected_result[SEPARATOR.len()..]).unwrap()
-                        )
-                        .unwrap(),
-                        "Test failed for '{}', result was:\n{}",
-                        file_name.display(),
-                        json_message
-                    );
+                    if json_message.as_bytes() != expected_result {
+                        file_name.set_extension("failed");
+                        fs::write(&file_name, json_message.as_bytes()).unwrap();
+                        panic!(
+                            "Test failed, parsed message saved to {}",
+                            file_name.display()
+                        );
+                    }
                 }
             }
 
@@ -718,100 +649,4 @@ mod tests {
             );
         }
     }
-
-    /*#[test]
-    fn message_to_yaml() {
-        let mut file_name = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        file_name.push("tests");
-        file_name.push("rfc");
-        file_name.push("003.txt");
-
-        let mut input = fs::read(&file_name).unwrap();
-        let mut pos = 0;
-
-        for sep_pos in 0..input.len() {
-            if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
-                pos = sep_pos;
-                break;
-            }
-        }
-
-        assert!(
-            pos > 0,
-            "Failed to find separator in test file '{}'.",
-            file_name.display()
-        );
-
-        let input = input.split_at_mut(pos).0;
-        let message = Message::parse(input).unwrap();
-        let result = serde_yaml::to_string(&message).unwrap();
-
-        fs::write("test.yaml", &result).unwrap();
-
-        println!("{:}", result);
-    }
-
-    #[test]
-    fn generate_test_samples() {
-        const SEPARATOR: &[u8] = "\n---- EXPECTED STRUCTURE ----".as_bytes();
-
-        for test_suite in [/*"legacy", "malformed", "rfc",*/ "thirdparty"] {
-            let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-            test_dir.push("tests");
-            test_dir.push(test_suite);
-
-            for file_name in fs::read_dir(test_dir).unwrap() {
-                if file_name
-                    .as_ref()
-                    .unwrap()
-                    .path()
-                    .to_str()
-                    .unwrap()
-                    .contains("COPYING")
-                {
-                    continue;
-                }
-
-                if !file_name
-                    .as_ref()
-                    .unwrap()
-                    .path()
-                    .to_str()
-                    .unwrap()
-                    .contains("012")
-                {
-                    continue;
-                }
-
-                println!("{:}", file_name.as_ref().unwrap().path().display());
-                let mut input = fs::read(file_name.as_ref().unwrap().path()).unwrap();
-                let mut pos = 0;
-                for sep_pos in 0..input.len() {
-                    if input[sep_pos..sep_pos + SEPARATOR.len()].eq(SEPARATOR) {
-                        pos = sep_pos;
-                        break;
-                    }
-                }
-                assert!(pos > 0, "Failed to find separator.");
-                let input = input.split_at_mut(pos);
-
-                /*println!(
-                    "{}",
-                    serde_json::to_string_pretty(&Message::parse(input.0)).unwrap()
-                );*/
-
-                let mut output = Vec::new();
-                output.extend_from_slice(input.0);
-                output.extend_from_slice(SEPARATOR);
-                output.extend_from_slice(
-                    serde_json::to_string_pretty(&SortedMessage::from(
-                        Message::parse(input.0).unwrap(),
-                    ))
-                    .unwrap()
-                    .as_bytes(),
-                );
-                fs::write(file_name.as_ref().unwrap().path(), &output).unwrap();
-            }
-        }
-    }*/
 }

@@ -1,0 +1,169 @@
+{
+  "html_body": [
+    1,
+    2
+  ],
+  "text_body": [
+    1,
+    2
+  ],
+  "attachments": [
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "foo"
+                ]
+              ]
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 44
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 45,
+      "offset_end": 367
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "raw_start": 77,
+          "raw_end": 95
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 108,
+          "raw_end": 135
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "päivää\n"
+      },
+      "offset_header": 51,
+      "offset_body": 136,
+      "offset_end": 159
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 191,
+          "raw_end": 199
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 212,
+          "raw_end": 239
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "yötä vaan.\n�\t�"
+      },
+      "offset_header": 165,
+      "offset_body": 240,
+      "offset_end": 269
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "raw_start": 301,
+          "raw_end": 309
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "raw_start": 322,
+          "raw_end": 349
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "?garbage"
+      },
+      "offset_header": 275,
+      "offset_body": 350,
+      "offset_end": 359
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "html_body": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "text_body": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 44
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 57,
+          "raw_end": 62
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 63,
+      "offset_end": 436
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 80,
+          "raw_end": 92
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 67,
+      "offset_body": 93,
+      "offset_end": 106
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 123,
+          "raw_end": 154
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "2.0"
+          },
+          "raw_start": 167,
+          "raw_end": 172
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 110,
+      "offset_body": 173,
+      "offset_end": 436
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 190,
+          "raw_end": 202
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 177,
+      "offset_body": 203,
+      "offset_end": 216
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 233,
+          "raw_end": 264
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "abc"
+          },
+          "raw_start": 277,
+          "raw_end": 282
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          5,
+          6
+        ]
+      },
+      "offset_header": 220,
+      "offset_body": 283,
+      "offset_end": 436
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 300,
+          "raw_end": 312
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 287,
+      "offset_body": 313,
+      "offset_end": 326
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 343,
+          "raw_end": 374
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": "Empty",
+          "raw_start": 387,
+          "raw_end": 388
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          7
+        ]
+      },
+      "offset_header": 330,
+      "offset_body": 389,
+      "offset_end": 436
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "raw_start": 406,
+          "raw_end": 418
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 393,
+      "offset_body": 419,
+      "offset_end": 432
+    }
+  ]
+}

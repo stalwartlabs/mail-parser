@@ -1,0 +1,330 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    1,
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Moderator-Address",
+              "address": "moderator"
+            }
+          },
+          "raw_start": 5,
+          "raw_end": 36
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "digest",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "raw_start": 49,
+          "raw_end": 80
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 81,
+      "offset_end": 570
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "someone-else",
+                      "address": "someone@else"
+                    }
+                  },
+                  "raw_start": 92,
+                  "raw_end": 121
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "my opinion"
+                  },
+                  "raw_start": 129,
+                  "raw_end": 141
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "This is my opinion"
+              },
+              "offset_header": 87,
+              "offset_body": 142,
+              "offset_end": 161
+            }
+          ]
+        }
+      },
+      "offset_header": 86,
+      "offset_body": 87,
+      "offset_end": 161
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "another one",
+                      "address": "another@one"
+                    }
+                  },
+                  "raw_start": 171,
+                  "raw_end": 198
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "i disagree"
+                  },
+                  "raw_start": 206,
+                  "raw_end": 218
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "Not agreeing one bit!"
+              },
+              "offset_header": 166,
+              "offset_body": 219,
+              "offset_end": 241
+            }
+          ]
+        }
+      },
+      "offset_header": 165,
+      "offset_body": 166,
+      "offset_end": 241
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            1
+          ],
+          "text_body": [
+            1
+          ],
+          "attachments": [
+            2
+          ],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "attachment",
+                      "address": "attachment@user"
+                    }
+                  },
+                  "raw_start": 251,
+                  "raw_end": 281
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "funny hat"
+                  },
+                  "raw_start": 289,
+                  "raw_end": 300
+                },
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "multipart",
+                      "c_subtype": "mixed",
+                      "attributes": [
+                        [
+                          "boundary",
+                          "2"
+                        ]
+                      ]
+                    }
+                  },
+                  "raw_start": 313,
+                  "raw_end": 342
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Multipart": [
+                  1,
+                  2
+                ]
+              },
+              "offset_header": 246,
+              "offset_body": 343,
+              "offset_end": 565
+            },
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  },
+                  "raw_start": 360,
+                  "raw_end": 372
+                },
+                {
+                  "name": {
+                    "Rfc": "content_transfer_encoding"
+                  },
+                  "value": {
+                    "Text": "binary"
+                  },
+                  "raw_start": 398,
+                  "raw_end": 406
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "Lovely attachment for you"
+              },
+              "offset_header": 347,
+              "offset_body": 407,
+              "offset_end": 433
+            },
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "application",
+                      "c_subtype": "octet-stream",
+                      "attributes": [
+                        [
+                          "disposition",
+                          "attachment"
+                        ],
+                        [
+                          "name",
+                          "test.txt"
+                        ]
+                      ]
+                    }
+                  },
+                  "raw_start": 450,
+                  "raw_end": 517
+                },
+                {
+                  "name": {
+                    "Rfc": "content_transfer_encoding"
+                  },
+                  "value": {
+                    "Text": "binary"
+                  },
+                  "raw_start": 543,
+                  "raw_end": 551
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Binary": [
+                  70,
+                  111,
+                  111,
+                  98,
+                  97,
+                  114
+                ]
+              },
+              "offset_header": 437,
+              "offset_body": 552,
+              "offset_end": 559
+            }
+          ]
+        }
+      },
+      "offset_header": 245,
+      "offset_body": 246,
+      "offset_end": 565
+    }
+  ]
+}

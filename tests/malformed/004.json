@@ -1,0 +1,51 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    1
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "a"
+                ]
+              ]
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 44
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 45,
+      "offset_end": 131
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "Content-Type: multipart/mixed; boundary=\"a\"\n\n--ac\nContent-Type: text/plain\n\nbody\n"
+      },
+      "offset_header": 48,
+      "offset_body": 50,
+      "offset_end": 128
+    }
+  ]
+}

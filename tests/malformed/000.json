@@ -1,0 +1,37 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  ":foo"
+                ]
+              ]
+            }
+          },
+          "raw_start": 13,
+          "raw_end": 47
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": []
+      },
+      "offset_header": 0,
+      "offset_body": 48,
+      "offset_end": 160
+    }
+  ]
+}

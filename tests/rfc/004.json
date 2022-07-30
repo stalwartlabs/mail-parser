@@ -1,0 +1,304 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    3,
+    4
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Moderator-Address",
+              "address": null
+            }
+          },
+          "raw_start": 5,
+          "raw_end": 24
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Recipient-List",
+              "address": null
+            }
+          },
+          "raw_start": 27,
+          "raw_end": 43
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 1994,
+              "month": 3,
+              "day": 22,
+              "hour": 13,
+              "minute": 34,
+              "second": 51,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 48,
+          "raw_end": 81
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Internet Digest, volume 42"
+          },
+          "raw_start": 89,
+          "raw_end": 117
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 130,
+          "raw_end": 135
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "---- main boundary ----"
+                ]
+              ]
+            }
+          },
+          "raw_start": 148,
+          "raw_end": 213
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 214,
+      "offset_end": 727
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "...Introductory text or table of contents...\n"
+      },
+      "offset_header": 240,
+      "offset_body": 241,
+      "offset_end": 287
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "digest",
+              "attributes": [
+                [
+                  "boundary",
+                  "---- next message ----"
+                ]
+              ]
+            }
+          },
+          "raw_start": 326,
+          "raw_end": 391
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 313,
+      "offset_body": 392,
+      "offset_end": 698
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "someone-else",
+                      "address": null
+                    }
+                  },
+                  "raw_start": 423,
+                  "raw_end": 437
+                },
+                {
+                  "name": {
+                    "Rfc": "date"
+                  },
+                  "value": {
+                    "DateTime": {
+                      "year": 1993,
+                      "month": 3,
+                      "day": 26,
+                      "hour": 11,
+                      "minute": 13,
+                      "second": 32,
+                      "tz_before_gmt": false,
+                      "tz_hour": 2,
+                      "tz_minute": 0
+                    }
+                  },
+                  "raw_start": 442,
+                  "raw_end": 475
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "my opinion"
+                  },
+                  "raw_start": 483,
+                  "raw_end": 495
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "...body goes here ...\n"
+              },
+              "offset_header": 418,
+              "offset_body": 496,
+              "offset_end": 519
+            }
+          ]
+        }
+      },
+      "offset_header": 417,
+      "offset_body": 418,
+      "offset_end": 519
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "someone-else-again",
+                      "address": null
+                    }
+                  },
+                  "raw_start": 550,
+                  "raw_end": 570
+                },
+                {
+                  "name": {
+                    "Rfc": "date"
+                  },
+                  "value": {
+                    "DateTime": {
+                      "year": 1993,
+                      "month": 3,
+                      "day": 26,
+                      "hour": 10,
+                      "minute": 7,
+                      "second": 13,
+                      "tz_before_gmt": true,
+                      "tz_hour": 5,
+                      "tz_minute": 0
+                    }
+                  },
+                  "raw_start": 575,
+                  "raw_end": 608
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "my different opinion"
+                  },
+                  "raw_start": 616,
+                  "raw_end": 638
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "... another body goes here ...\n"
+              },
+              "offset_header": 545,
+              "offset_body": 639,
+              "offset_end": 671
+            }
+          ]
+        }
+      },
+      "offset_header": 544,
+      "offset_body": 545,
+      "offset_end": 671
+    }
+  ]
+}

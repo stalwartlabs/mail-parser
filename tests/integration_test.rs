@@ -57,11 +57,11 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     let message = Message::parse(input).unwrap();
 
     assert_eq!(
-        bincode::deserialize::<RfcHeaders>(
-            &bincode::serialize(&message.parts[0].headers_rfc).unwrap()
+        bincode::deserialize::<Vec<Header>>(
+            &bincode::serialize(&message.parts[0].headers).unwrap()
         )
         .unwrap(),
-        message.parts[0].headers_rfc
+        message.parts[0].headers
     );
 
     assert_eq!(

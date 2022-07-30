@@ -1,0 +1,152 @@
+{
+  "html_body": [
+    1,
+    2
+  ],
+  "text_body": [
+    1,
+    2
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Nathaniel Borenstein",
+              "address": "nsb@bellcore.com"
+            }
+          },
+          "raw_start": 5,
+          "raw_end": 46
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Ned Freed",
+              "address": "ned@innosoft.com"
+            }
+          },
+          "raw_start": 49,
+          "raw_end": 79
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 1993,
+              "month": 3,
+              "day": 21,
+              "hour": 23,
+              "minute": 56,
+              "second": 48,
+              "tz_before_gmt": true,
+              "tz_hour": 8,
+              "tz_minute": 0
+            }
+          },
+          "raw_start": 84,
+          "raw_end": 123
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Sample message"
+          },
+          "raw_start": 131,
+          "raw_end": 147
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "raw_start": 160,
+          "raw_end": 165
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "simple boundary"
+                ]
+              ]
+            }
+          },
+          "raw_start": 178,
+          "raw_end": 223
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 224,
+      "offset_end": 640
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "This is implicitly typed plain US-ASCII text.\nIt does NOT end with a linebreak."
+      },
+      "offset_header": 400,
+      "offset_body": 401,
+      "offset_end": 481
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "raw_start": 512,
+          "raw_end": 542
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "This is explicitly typed plain US-ASCII text.\nIt DOES end with a linebreak.\n"
+      },
+      "offset_header": 499,
+      "offset_body": 543,
+      "offset_end": 620
+    }
+  ]
+}

@@ -9,9 +9,9 @@
  * except according to those terms.
  */
 
-use std::{borrow::Cow, collections::hash_map::Entry};
+use std::borrow::Cow;
 
-use crate::{HeaderName, HeaderOffset, HeaderValue, RawHeaders, RfcHeader, RfcHeaders};
+use crate::{Header, HeaderName, HeaderValue, RfcHeader};
 
 use super::{
     fields::{
@@ -34,11 +34,7 @@ pub enum HeaderParserResult<'x> {
     Eof,
 }
 
-pub fn parse_headers<'x>(
-    headers_rfc: &mut RfcHeaders<'x>,
-    headers_raw: &mut RawHeaders<'x>,
-    stream: &mut MessageStream<'x>,
-) -> bool {
+pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStream<'x>) -> bool {
     loop {
         let (bytes_read, result) = parse_header_name(&stream.data[stream.pos..]);
         stream.pos += bytes_read;
@@ -46,44 +42,27 @@ pub fn parse_headers<'x>(
         match result {
             HeaderParserResult::Rfc(name) => {
                 let (_, parser) = HDR_PARSER[name as usize];
-
                 let from_offset = stream.pos;
-                let value = parser(stream);
-                headers_raw.push((
-                    HeaderName::Rfc(name),
-                    HeaderOffset {
-                        start: from_offset,
-                        end: stream.pos,
-                    },
-                ));
 
-                if !value.is_empty() {
-                    match headers_rfc.entry(name) {
-                        Entry::Occupied(mut e) => {
-                            if let HeaderValue::Collection(col) = e.get_mut() {
-                                col.push(value);
-                            } else {
-                                let old_value = e.remove();
-                                headers_rfc
-                                    .insert(name, HeaderValue::Collection(vec![old_value, value]));
-                            }
-                        }
-                        Entry::Vacant(e) => {
-                            e.insert(value);
-                        }
-                    }
-                }
+                headers.push(Header {
+                    name: HeaderName::Rfc(name),
+                    value: parser(stream),
+                    raw_start: from_offset,
+                    raw_end: stream.pos,
+                });
             }
             HeaderParserResult::Other(name) => {
                 let from_offset = stream.pos;
                 parse_and_ignore(stream);
-                headers_raw.push((
-                    HeaderName::Other(name),
-                    HeaderOffset {
-                        start: from_offset,
-                        end: stream.pos,
-                    },
-                ));
+
+                headers.push(Header {
+                    name: HeaderName::Other(name),
+                    value: HeaderValue::Text(String::from_utf8_lossy(
+                        &stream.data[from_offset..stream.pos],
+                    )),
+                    raw_start: from_offset,
+                    raw_end: stream.pos,
+                });
             }
             HeaderParserResult::Lf => return true,
             HeaderParserResult::Eof => return false,
