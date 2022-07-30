@@ -403,8 +403,8 @@ impl<'x> Group<'x> {
 pub struct Header<'x> {
     pub name: HeaderName<'x>,
     pub value: HeaderValue<'x>,
-    pub raw_start: usize,
-    pub raw_end: usize,
+    pub offset_start: usize,
+    pub offset_end: usize,
 }
 
 impl<'x> Header<'x> {
@@ -420,12 +420,12 @@ impl<'x> Header<'x> {
 
     /// Returns the raw offset start
     pub fn offset_start(&self) -> usize {
-        self.raw_start
+        self.offset_start
     }
 
     /// Returns the raw offset end
     pub fn offset_end(&self) -> usize {
-        self.raw_end
+        self.offset_end
     }
 }
 
@@ -765,7 +765,7 @@ impl<'x> Message<'x> {
         self.parts[0]
             .headers
             .get_header(header)
-            .and_then(|h| std::str::from_utf8(&self.raw_message[h.raw_start..h.raw_end]).ok())
+            .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
     }
 
     /// Returns an iterator over the RFC headers of this message.
@@ -778,7 +778,8 @@ impl<'x> Message<'x> {
         self.parts[0].headers.iter().filter_map(move |header| {
             Some((
                 header.name.as_str(),
-                std::str::from_utf8(&self.raw_message[header.raw_start..header.raw_end]).ok()?,
+                std::str::from_utf8(&self.raw_message[header.offset_start..header.offset_end])
+                    .ok()?,
             ))
         })
     }
@@ -1310,7 +1311,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Get the raw body end offset of this part
-    pub fn raw_end_offset(&self) -> usize {
+    pub fn offset_end_offset(&self) -> usize {
         self.offset_header
     }
 }

@@ -47,8 +47,8 @@ pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStre
                 headers.push(Header {
                     name: HeaderName::Rfc(name),
                     value: parser(stream),
-                    raw_start: from_offset,
-                    raw_end: stream.pos,
+                    offset_start: from_offset,
+                    offset_end: stream.pos,
                 });
             }
             HeaderParserResult::Other(name) => {
@@ -60,8 +60,8 @@ pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStre
                     value: HeaderValue::Text(String::from_utf8_lossy(
                         &stream.data[from_offset..stream.pos],
                     )),
-                    raw_start: from_offset,
-                    raw_end: stream.pos,
+                    offset_start: from_offset,
+                    offset_end: stream.pos,
                 });
             }
             HeaderParserResult::Lf => return true,
