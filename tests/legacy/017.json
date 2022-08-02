@@ -19,8 +19,8 @@
           "value": {
             "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -29,8 +29,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -39,8 +39,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 122,
-          "raw_end": 170
+          "offset_start": 122,
+          "offset_end": 170
         },
         {
           "name": {
@@ -59,8 +59,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 175,
-          "raw_end": 209
+          "offset_start": 175,
+          "offset_end": 209
         },
         {
           "name": {
@@ -72,8 +72,8 @@
               "address": "jschmuergen@example.com"
             }
           },
-          "raw_start": 212,
-          "raw_end": 257
+          "offset_start": 212,
+          "offset_end": 257
         },
         {
           "name": {
@@ -85,8 +85,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 262,
-          "raw_end": 299
+          "offset_start": 262,
+          "offset_end": 299
         },
         {
           "name": {
@@ -95,8 +95,8 @@
           "value": {
             "Text": "The Hare and the Tortoise"
           },
-          "raw_start": 307,
-          "raw_end": 335
+          "offset_start": 307,
+          "offset_end": 335
         },
         {
           "name": {
@@ -105,8 +105,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 348,
-          "raw_end": 354
+          "offset_start": 348,
+          "offset_end": 354
         },
         {
           "name": {
@@ -124,8 +124,8 @@
               ]
             }
           },
-          "raw_start": 367,
-          "raw_end": 434
+          "offset_start": 367,
+          "offset_end": 434
         }
       ],
       "is_encoding_problem": false,
@@ -158,8 +158,8 @@
               ]
             }
           },
-          "raw_start": 487,
-          "raw_end": 520
+          "offset_start": 487,
+          "offset_end": 520
         }
       ],
       "is_encoding_problem": false,
@@ -168,7 +168,7 @@
       },
       "offset_header": 474,
       "offset_body": 522,
-      "offset_end": 1288
+      "offset_end": 1286
     },
     {
       "headers": [
@@ -188,8 +188,8 @@
               ]
             }
           },
-          "raw_start": 1339,
-          "raw_end": 1373
+          "offset_start": 1339,
+          "offset_end": 1373
         },
         {
           "name": {
@@ -198,8 +198,8 @@
           "value": {
             "Text": "x-uuencode"
           },
-          "raw_start": 1399,
-          "raw_end": 1412
+          "offset_start": 1399,
+          "offset_end": 1412
         },
         {
           "name": {
@@ -217,8 +217,8 @@
               ]
             }
           },
-          "raw_start": 1432,
-          "raw_end": 1471
+          "offset_start": 1432,
+          "offset_end": 1471
         }
       ],
       "is_encoding_problem": false,
@@ -2082,7 +2082,7 @@
       },
       "offset_header": 1326,
       "offset_body": 1473,
-      "offset_end": 3329
+      "offset_end": 3327
     },
     {
       "headers": [
@@ -2102,8 +2102,8 @@
               ]
             }
           },
-          "raw_start": 3380,
-          "raw_end": 3413
+          "offset_start": 3380,
+          "offset_end": 3413
         },
         {
           "name": {
@@ -2112,8 +2112,8 @@
           "value": {
             "Text": "x-uuencode"
           },
-          "raw_start": 3439,
-          "raw_end": 3452
+          "offset_start": 3439,
+          "offset_end": 3452
         },
         {
           "name": {
@@ -2131,8 +2131,8 @@
               ]
             }
           },
-          "raw_start": 3472,
-          "raw_end": 3510
+          "offset_start": 3472,
+          "offset_end": 3510
         }
       ],
       "is_encoding_problem": false,
@@ -4034,7 +4034,7 @@
       },
       "offset_header": 3367,
       "offset_body": 3512,
-      "offset_end": 5406
+      "offset_end": 5404
     }
   ]
 }

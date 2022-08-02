@@ -33,8 +33,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         },
         {
           "name": {
@@ -43,8 +43,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 57,
-          "raw_end": 62
+          "offset_start": 57,
+          "offset_end": 62
         }
       ],
       "is_encoding_problem": false,
@@ -70,8 +70,8 @@
           "value": {
             "Text": "binary"
           },
-          "raw_start": 93,
-          "raw_end": 101
+          "offset_start": 93,
+          "offset_end": 101
         },
         {
           "name": {
@@ -89,8 +89,8 @@
               ]
             }
           },
-          "raw_start": 114,
-          "raw_end": 144
+          "offset_start": 114,
+          "offset_end": 144
         }
       ],
       "is_encoding_problem": false,
@@ -99,7 +99,7 @@
       },
       "offset_header": 67,
       "offset_body": 145,
-      "offset_end": 172
+      "offset_end": 171
     },
     {
       "headers": [
@@ -110,8 +110,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 202,
-          "raw_end": 210
+          "offset_start": 202,
+          "offset_end": 210
         },
         {
           "name": {
@@ -129,8 +129,8 @@
               ]
             }
           },
-          "raw_start": 223,
-          "raw_end": 253
+          "offset_start": 223,
+          "offset_end": 253
         }
       ],
       "is_encoding_problem": false,
@@ -139,7 +139,7 @@
       },
       "offset_header": 176,
       "offset_body": 254,
-      "offset_end": 292
+      "offset_end": 291
     },
     {
       "headers": [
@@ -150,8 +150,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 322,
-          "raw_end": 330
+          "offset_start": 322,
+          "offset_end": 330
         },
         {
           "name": {
@@ -169,8 +169,8 @@
               ]
             }
           },
-          "raw_start": 343,
-          "raw_end": 373
+          "offset_start": 343,
+          "offset_end": 373
         }
       ],
       "is_encoding_problem": false,
@@ -179,7 +179,7 @@
       },
       "offset_header": 296,
       "offset_body": 374,
-      "offset_end": 412
+      "offset_end": 411
     },
     {
       "headers": [
@@ -190,8 +190,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 442,
-          "raw_end": 450
+          "offset_start": 442,
+          "offset_end": 450
         },
         {
           "name": {
@@ -209,8 +209,8 @@
               ]
             }
           },
-          "raw_start": 463,
-          "raw_end": 491
+          "offset_start": 463,
+          "offset_end": 491
         }
       ],
       "is_encoding_problem": false,
@@ -219,7 +219,7 @@
       },
       "offset_header": 416,
       "offset_body": 492,
-      "offset_end": 518
+      "offset_end": 517
     },
     {
       "headers": [
@@ -230,8 +230,8 @@
           "value": {
             "Text": "binary"
           },
-          "raw_start": 548,
-          "raw_end": 556
+          "offset_start": 548,
+          "offset_end": 556
         },
         {
           "name": {
@@ -249,8 +249,8 @@
               ]
             }
           },
-          "raw_start": 569,
-          "raw_end": 596
+          "offset_start": 569,
+          "offset_end": 596
         }
       ],
       "is_encoding_problem": false,
@@ -259,7 +259,7 @@
       },
       "offset_header": 522,
       "offset_body": 597,
-      "offset_end": 604
+      "offset_end": 603
     }
   ]
 }

@@ -19,8 +19,8 @@
               "address": "doug@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 40
+          "offset_start": 5,
+          "offset_end": 40
         },
         {
           "name": {
@@ -32,8 +32,8 @@
               "address": "jblow@example.com"
             }
           },
-          "raw_start": 43,
-          "raw_end": 76
+          "offset_start": 43,
+          "offset_end": 76
         },
         {
           "name": {
@@ -42,8 +42,8 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
-          "raw_start": 84,
-          "raw_end": 125
+          "offset_start": 84,
+          "offset_end": 125
         },
         {
           "name": {
@@ -62,8 +62,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 130,
-          "raw_end": 164
+          "offset_start": 130,
+          "offset_end": 164
         },
         {
           "name": {
@@ -72,8 +72,8 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
           },
-          "raw_start": 175,
-          "raw_end": 225
+          "offset_start": 175,
+          "offset_end": 225
         },
         {
           "name": {
@@ -82,8 +82,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 238,
-          "raw_end": 244
+          "offset_start": 238,
+          "offset_end": 244
         },
         {
           "name": {
@@ -101,8 +101,8 @@
               ]
             }
           },
-          "raw_start": 257,
-          "raw_end": 337
+          "offset_start": 257,
+          "offset_end": 337
         },
         {
           "name": {
@@ -111,8 +111,8 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
-          "raw_start": 348,
-          "raw_end": 361
+          "offset_start": 348,
+          "offset_end": 361
         },
         {
           "name": {
@@ -121,8 +121,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 379,
-          "raw_end": 388
+          "offset_start": 379,
+          "offset_end": 388
         },
         {
           "name": {
@@ -131,8 +131,8 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
-          "raw_start": 397,
-          "raw_end": 450
+          "offset_start": 397,
+          "offset_end": 450
         },
         {
           "name": {
@@ -141,8 +141,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 461,
-          "raw_end": 470
+          "offset_start": 461,
+          "offset_end": 470
         },
         {
           "name": {
@@ -151,8 +151,8 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
-          "raw_start": 480,
-          "raw_end": 528
+          "offset_start": 480,
+          "offset_end": 528
         }
       ],
       "is_encoding_problem": false,
@@ -184,8 +184,8 @@
               ]
             }
           },
-          "raw_start": 636,
-          "raw_end": 673
+          "offset_start": 636,
+          "offset_end": 673
         },
         {
           "name": {
@@ -194,8 +194,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 699,
-          "raw_end": 718
+          "offset_start": 699,
+          "offset_end": 718
         }
       ],
       "is_encoding_problem": false,
@@ -204,7 +204,7 @@
       },
       "offset_header": 623,
       "offset_body": 720,
-      "offset_end": 1523
+      "offset_end": 1521
     },
     {
       "headers": [
@@ -224,8 +224,8 @@
               ]
             }
           },
-          "raw_start": 1581,
-          "raw_end": 1617
+          "offset_start": 1581,
+          "offset_end": 1617
         },
         {
           "name": {
@@ -234,8 +234,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 1643,
-          "raw_end": 1662
+          "offset_start": 1643,
+          "offset_end": 1662
         }
       ],
       "is_encoding_problem": false,
@@ -244,7 +244,7 @@
       },
       "offset_header": 1568,
       "offset_body": 1664,
-      "offset_end": 2856
+      "offset_end": 2854
     }
   ]
 }

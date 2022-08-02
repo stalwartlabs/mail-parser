@@ -25,8 +25,8 @@
           "value": {
             "Text": "39235FC5.276CCE00@example.com"
           },
-          "raw_start": 11,
-          "raw_end": 45
+          "offset_start": 11,
+          "offset_end": 45
         },
         {
           "name": {
@@ -45,8 +45,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 50,
-          "raw_end": 84
+          "offset_start": 50,
+          "offset_end": 84
         },
         {
           "name": {
@@ -58,8 +58,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 89,
-          "raw_end": 126
+          "offset_start": 89,
+          "offset_end": 126
         },
         {
           "name": {
@@ -68,8 +68,8 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
-          "raw_start": 135,
-          "raw_end": 165
+          "offset_start": 135,
+          "offset_end": 165
         },
         {
           "name": {
@@ -78,8 +78,8 @@
           "value": {
             "Text": " en\r\n"
           },
-          "raw_start": 183,
-          "raw_end": 188
+          "offset_start": 183,
+          "offset_end": 188
         },
         {
           "name": {
@@ -88,8 +88,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 201,
-          "raw_end": 207
+          "offset_start": 201,
+          "offset_end": 207
         },
         {
           "name": {
@@ -101,8 +101,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 210,
-          "raw_end": 266
+          "offset_start": 210,
+          "offset_end": 266
         },
         {
           "name": {
@@ -111,8 +111,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Netscape Messenger 4.7)"
           },
-          "raw_start": 274,
-          "raw_end": 346
+          "offset_start": 274,
+          "offset_end": 346
         },
         {
           "name": {
@@ -130,8 +130,8 @@
               ]
             }
           },
-          "raw_start": 359,
-          "raw_end": 428
+          "offset_start": 359,
+          "offset_end": 428
         }
       ],
       "is_encoding_problem": false,
@@ -164,8 +164,8 @@
               ]
             }
           },
-          "raw_start": 529,
-          "raw_end": 604
+          "offset_start": 529,
+          "offset_end": 604
         }
       ],
       "is_encoding_problem": false,
@@ -197,8 +197,8 @@
               ]
             }
           },
-          "raw_start": 661,
-          "raw_end": 694
+          "offset_start": 661,
+          "offset_end": 694
         },
         {
           "name": {
@@ -207,8 +207,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 720,
-          "raw_end": 739
+          "offset_start": 720,
+          "offset_end": 739
         }
       ],
       "is_encoding_problem": false,
@@ -217,7 +217,7 @@
       },
       "offset_header": 648,
       "offset_body": 741,
-      "offset_end": 1567
+      "offset_end": 1565
     },
     {
       "headers": [
@@ -237,8 +237,8 @@
               ]
             }
           },
-          "raw_start": 1620,
-          "raw_end": 1691
+          "offset_start": 1620,
+          "offset_end": 1691
         }
       ],
       "is_encoding_problem": false,
@@ -271,8 +271,8 @@
               ]
             }
           },
-          "raw_start": 1748,
-          "raw_end": 1778
+          "offset_start": 1748,
+          "offset_end": 1778
         },
         {
           "name": {
@@ -281,8 +281,8 @@
           "value": {
             "Text": "7bit"
           },
-          "raw_start": 1804,
-          "raw_end": 1811
+          "offset_start": 1804,
+          "offset_end": 1811
         }
       ],
       "is_encoding_problem": false,
@@ -291,7 +291,7 @@
       },
       "offset_header": 1735,
       "offset_body": 1813,
-      "offset_end": 2937
+      "offset_end": 2935
     },
     {
       "headers": [
@@ -306,8 +306,8 @@
               "attributes": null
             }
           },
-          "raw_start": 2990,
-          "raw_end": 3002
+          "offset_start": 2990,
+          "offset_end": 3002
         },
         {
           "name": {
@@ -316,8 +316,8 @@
           "value": {
             "Text": "part1.39235FC5.E71D8178@example.com"
           },
-          "raw_start": 3013,
-          "raw_end": 3053
+          "offset_start": 3013,
+          "offset_end": 3053
         },
         {
           "name": {
@@ -326,8 +326,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 3079,
-          "raw_end": 3088
+          "offset_start": 3079,
+          "offset_end": 3088
         },
         {
           "name": {
@@ -345,8 +345,8 @@
               ]
             }
           },
-          "raw_start": 3108,
-          "raw_end": 3150
+          "offset_start": 3108,
+          "offset_end": 3150
         }
       ],
       "is_encoding_problem": false,
@@ -1681,7 +1681,7 @@
       },
       "offset_header": 2977,
       "offset_body": 3152,
-      "offset_end": 4970
+      "offset_end": 4968
     },
     {
       "headers": [
@@ -1696,8 +1696,8 @@
               "attributes": null
             }
           },
-          "raw_start": 5023,
-          "raw_end": 5035
+          "offset_start": 5023,
+          "offset_end": 5035
         },
         {
           "name": {
@@ -1706,8 +1706,8 @@
           "value": {
             "Text": "part2.39235FC5.E71D8178@example.com"
           },
-          "raw_start": 5046,
-          "raw_end": 5086
+          "offset_start": 5046,
+          "offset_end": 5086
         },
         {
           "name": {
@@ -1716,8 +1716,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 5112,
-          "raw_end": 5121
+          "offset_start": 5112,
+          "offset_end": 5121
         },
         {
           "name": {
@@ -1735,8 +1735,8 @@
               ]
             }
           },
-          "raw_start": 5141,
-          "raw_end": 5183
+          "offset_start": 5141,
+          "offset_end": 5183
         }
       ],
       "is_encoding_problem": false,
@@ -3199,7 +3199,7 @@
       },
       "offset_header": 5010,
       "offset_body": 5185,
-      "offset_end": 7179
+      "offset_end": 7177
     },
     {
       "headers": [
@@ -3219,8 +3219,8 @@
               ]
             }
           },
-          "raw_start": 7320,
-          "raw_end": 7354
+          "offset_start": 7320,
+          "offset_end": 7354
         },
         {
           "name": {
@@ -3229,8 +3229,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 7380,
-          "raw_end": 7389
+          "offset_start": 7380,
+          "offset_end": 7389
         },
         {
           "name": {
@@ -3248,8 +3248,8 @@
               ]
             }
           },
-          "raw_start": 7409,
-          "raw_end": 7444
+          "offset_start": 7409,
+          "offset_end": 7444
         }
       ],
       "is_encoding_problem": false,
@@ -4712,7 +4712,7 @@
       },
       "offset_header": 7307,
       "offset_body": 7446,
-      "offset_end": 9440
+      "offset_end": 9438
     },
     {
       "headers": [
@@ -4732,8 +4732,8 @@
               ]
             }
           },
-          "raw_start": 9493,
-          "raw_end": 9529
+          "offset_start": 9493,
+          "offset_end": 9529
         },
         {
           "name": {
@@ -4742,8 +4742,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 9555,
-          "raw_end": 9564
+          "offset_start": 9555,
+          "offset_end": 9564
         },
         {
           "name": {
@@ -4761,8 +4761,8 @@
               ]
             }
           },
-          "raw_start": 9584,
-          "raw_end": 9621
+          "offset_start": 9584,
+          "offset_end": 9621
         }
       ],
       "is_encoding_problem": false,
@@ -6070,7 +6070,7 @@
       },
       "offset_header": 9480,
       "offset_body": 9623,
-      "offset_end": 11405
+      "offset_end": 11403
     }
   ]
 }

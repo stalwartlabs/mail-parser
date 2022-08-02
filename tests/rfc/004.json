@@ -22,8 +22,8 @@
               "address": null
             }
           },
-          "raw_start": 5,
-          "raw_end": 24
+          "offset_start": 5,
+          "offset_end": 24
         },
         {
           "name": {
@@ -35,8 +35,8 @@
               "address": null
             }
           },
-          "raw_start": 27,
-          "raw_end": 43
+          "offset_start": 27,
+          "offset_end": 43
         },
         {
           "name": {
@@ -55,8 +55,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 48,
-          "raw_end": 81
+          "offset_start": 48,
+          "offset_end": 81
         },
         {
           "name": {
@@ -65,8 +65,8 @@
           "value": {
             "Text": "Internet Digest, volume 42"
           },
-          "raw_start": 89,
-          "raw_end": 117
+          "offset_start": 89,
+          "offset_end": 117
         },
         {
           "name": {
@@ -75,8 +75,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 130,
-          "raw_end": 135
+          "offset_start": 130,
+          "offset_end": 135
         },
         {
           "name": {
@@ -94,8 +94,8 @@
               ]
             }
           },
-          "raw_start": 148,
-          "raw_end": 213
+          "offset_start": 148,
+          "offset_end": 213
         }
       ],
       "is_encoding_problem": false,
@@ -117,7 +117,7 @@
       },
       "offset_header": 240,
       "offset_body": 241,
-      "offset_end": 287
+      "offset_end": 286
     },
     {
       "headers": [
@@ -137,8 +137,8 @@
               ]
             }
           },
-          "raw_start": 326,
-          "raw_end": 391
+          "offset_start": 326,
+          "offset_end": 391
         }
       ],
       "is_encoding_problem": false,
@@ -177,8 +177,8 @@
                       "address": null
                     }
                   },
-                  "raw_start": 423,
-                  "raw_end": 437
+                  "offset_start": 423,
+                  "offset_end": 437
                 },
                 {
                   "name": {
@@ -197,8 +197,8 @@
                       "tz_minute": 0
                     }
                   },
-                  "raw_start": 442,
-                  "raw_end": 475
+                  "offset_start": 442,
+                  "offset_end": 475
                 },
                 {
                   "name": {
@@ -207,8 +207,8 @@
                   "value": {
                     "Text": "my opinion"
                   },
-                  "raw_start": 483,
-                  "raw_end": 495
+                  "offset_start": 483,
+                  "offset_end": 495
                 }
               ],
               "is_encoding_problem": false,
@@ -217,7 +217,7 @@
               },
               "offset_header": 418,
               "offset_body": 496,
-              "offset_end": 519
+              "offset_end": 518
             }
           ]
         }
@@ -251,8 +251,8 @@
                       "address": null
                     }
                   },
-                  "raw_start": 550,
-                  "raw_end": 570
+                  "offset_start": 550,
+                  "offset_end": 570
                 },
                 {
                   "name": {
@@ -271,8 +271,8 @@
                       "tz_minute": 0
                     }
                   },
-                  "raw_start": 575,
-                  "raw_end": 608
+                  "offset_start": 575,
+                  "offset_end": 608
                 },
                 {
                   "name": {
@@ -281,8 +281,8 @@
                   "value": {
                     "Text": "my different opinion"
                   },
-                  "raw_start": 616,
-                  "raw_end": 638
+                  "offset_start": 616,
+                  "offset_end": 638
                 }
               ],
               "is_encoding_problem": false,
@@ -291,7 +291,7 @@
               },
               "offset_header": 545,
               "offset_body": 639,
-              "offset_end": 671
+              "offset_end": 670
             }
           ]
         }

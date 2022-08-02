@@ -23,8 +23,8 @@
               "address": "doug@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 40
+          "offset_start": 5,
+          "offset_end": 40
         },
         {
           "name": {
@@ -36,8 +36,8 @@
               "address": "jblow@example.com"
             }
           },
-          "raw_start": 43,
-          "raw_end": 76
+          "offset_start": 43,
+          "offset_end": 76
         },
         {
           "name": {
@@ -46,8 +46,8 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
-          "raw_start": 84,
-          "raw_end": 125
+          "offset_start": 84,
+          "offset_end": 125
         },
         {
           "name": {
@@ -66,8 +66,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 130,
-          "raw_end": 164
+          "offset_start": 130,
+          "offset_end": 164
         },
         {
           "name": {
@@ -76,8 +76,8 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGOEKFCHAA.doug@example.com"
           },
-          "raw_start": 175,
-          "raw_end": 225
+          "offset_start": 175,
+          "offset_end": 225
         },
         {
           "name": {
@@ -86,8 +86,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 238,
-          "raw_end": 244
+          "offset_start": 238,
+          "offset_end": 244
         },
         {
           "name": {
@@ -105,8 +105,8 @@
               ]
             }
           },
-          "raw_start": 257,
-          "raw_end": 331
+          "offset_start": 257,
+          "offset_end": 331
         },
         {
           "name": {
@@ -115,8 +115,8 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
-          "raw_start": 342,
-          "raw_end": 355
+          "offset_start": 342,
+          "offset_end": 355
         },
         {
           "name": {
@@ -125,8 +125,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 373,
-          "raw_end": 382
+          "offset_start": 373,
+          "offset_end": 382
         },
         {
           "name": {
@@ -135,8 +135,8 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
-          "raw_start": 391,
-          "raw_end": 444
+          "offset_start": 391,
+          "offset_end": 444
         },
         {
           "name": {
@@ -145,8 +145,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 455,
-          "raw_end": 464
+          "offset_start": 455,
+          "offset_end": 464
         },
         {
           "name": {
@@ -155,8 +155,8 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
-          "raw_start": 474,
-          "raw_end": 522
+          "offset_start": 474,
+          "offset_end": 522
         }
       ],
       "is_encoding_problem": false,
@@ -189,8 +189,8 @@
               ]
             }
           },
-          "raw_start": 630,
-          "raw_end": 706
+          "offset_start": 630,
+          "offset_end": 706
         }
       ],
       "is_encoding_problem": false,
@@ -222,8 +222,8 @@
               ]
             }
           },
-          "raw_start": 768,
-          "raw_end": 848
+          "offset_start": 768,
+          "offset_end": 848
         }
       ],
       "is_encoding_problem": false,
@@ -255,8 +255,8 @@
               ]
             }
           },
-          "raw_start": 910,
-          "raw_end": 947
+          "offset_start": 910,
+          "offset_end": 947
         },
         {
           "name": {
@@ -265,8 +265,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 973,
-          "raw_end": 992
+          "offset_start": 973,
+          "offset_end": 992
         }
       ],
       "is_encoding_problem": false,
@@ -275,7 +275,7 @@
       },
       "offset_header": 897,
       "offset_body": 994,
-      "offset_end": 1801
+      "offset_end": 1799
     },
     {
       "headers": [
@@ -295,8 +295,8 @@
               ]
             }
           },
-          "raw_start": 1859,
-          "raw_end": 1895
+          "offset_start": 1859,
+          "offset_end": 1895
         },
         {
           "name": {
@@ -305,8 +305,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 1921,
-          "raw_end": 1940
+          "offset_start": 1921,
+          "offset_end": 1940
         }
       ],
       "is_encoding_problem": false,
@@ -315,7 +315,7 @@
       },
       "offset_header": 1846,
       "offset_body": 1942,
-      "offset_end": 3341
+      "offset_end": 3339
     },
     {
       "headers": [
@@ -335,8 +335,8 @@
               ]
             }
           },
-          "raw_start": 3448,
-          "raw_end": 3483
+          "offset_start": 3448,
+          "offset_end": 3483
         },
         {
           "name": {
@@ -345,8 +345,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 3509,
-          "raw_end": 3518
+          "offset_start": 3509,
+          "offset_end": 3518
         },
         {
           "name": {
@@ -355,8 +355,8 @@
           "value": {
             "Text": "938014623@17052000-0f9b"
           },
-          "raw_start": 3529,
-          "raw_end": 3557
+          "offset_start": 3529,
+          "offset_end": 3557
         }
       ],
       "is_encoding_problem": false,
@@ -1691,7 +1691,7 @@
       },
       "offset_header": 3435,
       "offset_body": 3559,
-      "offset_end": 5377
+      "offset_end": 5375
     },
     {
       "headers": [
@@ -1711,8 +1711,8 @@
               ]
             }
           },
-          "raw_start": 5484,
-          "raw_end": 5520
+          "offset_start": 5484,
+          "offset_end": 5520
         },
         {
           "name": {
@@ -1721,8 +1721,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 5546,
-          "raw_end": 5555
+          "offset_start": 5546,
+          "offset_end": 5555
         },
         {
           "name": {
@@ -1740,8 +1740,8 @@
               ]
             }
           },
-          "raw_start": 5575,
-          "raw_end": 5616
+          "offset_start": 5575,
+          "offset_end": 5616
         }
       ],
       "is_encoding_problem": false,
@@ -3049,7 +3049,7 @@
       },
       "offset_header": 5471,
       "offset_body": 5618,
-      "offset_end": 7398
+      "offset_end": 7396
     },
     {
       "headers": [
@@ -3069,8 +3069,8 @@
               ]
             }
           },
-          "raw_start": 7456,
-          "raw_end": 7490
+          "offset_start": 7456,
+          "offset_end": 7490
         },
         {
           "name": {
@@ -3079,8 +3079,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 7516,
-          "raw_end": 7525
+          "offset_start": 7516,
+          "offset_end": 7525
         },
         {
           "name": {
@@ -3098,8 +3098,8 @@
               ]
             }
           },
-          "raw_start": 7545,
-          "raw_end": 7584
+          "offset_start": 7545,
+          "offset_end": 7584
         }
       ],
       "is_encoding_problem": false,
@@ -4562,7 +4562,7 @@
       },
       "offset_header": 7443,
       "offset_body": 7586,
-      "offset_end": 9580
+      "offset_end": 9578
     }
   ]
 }

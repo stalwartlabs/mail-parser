@@ -19,8 +19,8 @@
           "value": {
             "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -29,8 +29,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -39,8 +39,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 122,
-          "raw_end": 170
+          "offset_start": 122,
+          "offset_end": 170
         },
         {
           "name": {
@@ -59,8 +59,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 175,
-          "raw_end": 209
+          "offset_start": 175,
+          "offset_end": 209
         },
         {
           "name": {
@@ -72,8 +72,8 @@
               "address": "jschmuergen@example.com"
             }
           },
-          "raw_start": 212,
-          "raw_end": 295
+          "offset_start": 212,
+          "offset_end": 295
         },
         {
           "name": {
@@ -85,8 +85,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 300,
-          "raw_end": 337
+          "offset_start": 300,
+          "offset_end": 337
         },
         {
           "name": {
@@ -95,8 +95,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 345,
-          "raw_end": 390
+          "offset_start": 345,
+          "offset_end": 390
         },
         {
           "name": {
@@ -105,8 +105,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 403,
-          "raw_end": 409
+          "offset_start": 403,
+          "offset_end": 409
         },
         {
           "name": {
@@ -124,8 +124,8 @@
               ]
             }
           },
-          "raw_start": 422,
-          "raw_end": 489
+          "offset_start": 422,
+          "offset_end": 489
         }
       ],
       "is_encoding_problem": false,
@@ -158,8 +158,8 @@
               ]
             }
           },
-          "raw_start": 542,
-          "raw_end": 577
+          "offset_start": 542,
+          "offset_end": 577
         },
         {
           "name": {
@@ -168,8 +168,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 603,
-          "raw_end": 622
+          "offset_start": 603,
+          "offset_end": 622
         }
       ],
       "is_encoding_problem": false,
@@ -178,7 +178,7 @@
       },
       "offset_header": 529,
       "offset_body": 624,
-      "offset_end": 1435
+      "offset_end": 1433
     },
     {
       "headers": [
@@ -198,8 +198,8 @@
               ]
             }
           },
-          "raw_start": 1486,
-          "raw_end": 1534
+          "offset_start": 1486,
+          "offset_end": 1534
         },
         {
           "name": {
@@ -217,8 +217,8 @@
               ]
             }
           },
-          "raw_start": 1554,
-          "raw_end": 1592
+          "offset_start": 1554,
+          "offset_end": 1592
         }
       ],
       "is_encoding_problem": false,
@@ -2157,7 +2157,7 @@
       },
       "offset_header": 1473,
       "offset_body": 1594,
-      "offset_end": 3525
+      "offset_end": 3523
     },
     {
       "headers": [
@@ -2177,8 +2177,8 @@
               ]
             }
           },
-          "raw_start": 3576,
-          "raw_end": 3631
+          "offset_start": 3576,
+          "offset_end": 3631
         },
         {
           "name": {
@@ -2196,8 +2196,8 @@
               ]
             }
           },
-          "raw_start": 3651,
-          "raw_end": 3696
+          "offset_start": 3651,
+          "offset_end": 3696
         }
       ],
       "is_encoding_problem": false,
@@ -3338,7 +3338,7 @@
       },
       "offset_header": 3563,
       "offset_body": 3698,
-      "offset_end": 4831
+      "offset_end": 4829
     }
   ]
 }

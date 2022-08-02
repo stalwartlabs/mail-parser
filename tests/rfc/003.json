@@ -22,8 +22,8 @@
               "address": "nsb@bellcore.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 46
+          "offset_start": 5,
+          "offset_end": 46
         },
         {
           "name": {
@@ -35,8 +35,8 @@
               "address": "ned@innosoft.com"
             }
           },
-          "raw_start": 49,
-          "raw_end": 79
+          "offset_start": 49,
+          "offset_end": 79
         },
         {
           "name": {
@@ -55,8 +55,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 84,
-          "raw_end": 123
+          "offset_start": 84,
+          "offset_end": 123
         },
         {
           "name": {
@@ -65,8 +65,8 @@
           "value": {
             "Text": "Formatted text mail"
           },
-          "raw_start": 131,
-          "raw_end": 152
+          "offset_start": 131,
+          "offset_end": 152
         },
         {
           "name": {
@@ -75,8 +75,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 165,
-          "raw_end": 170
+          "offset_start": 165,
+          "offset_end": 170
         },
         {
           "name": {
@@ -94,8 +94,8 @@
               ]
             }
           },
-          "raw_start": 183,
-          "raw_end": 227
+          "offset_start": 183,
+          "offset_end": 227
         }
       ],
       "is_encoding_problem": false,
@@ -128,8 +128,8 @@
               ]
             }
           },
-          "raw_start": 254,
-          "raw_end": 284
+          "offset_start": 254,
+          "offset_end": 284
         }
       ],
       "is_encoding_problem": false,
@@ -138,7 +138,7 @@
       },
       "offset_header": 241,
       "offset_body": 285,
-      "offset_end": 334
+      "offset_end": 333
     },
     {
       "headers": [
@@ -153,8 +153,8 @@
               "attributes": null
             }
           },
-          "raw_start": 360,
-          "raw_end": 375
+          "offset_start": 360,
+          "offset_end": 375
         }
       ],
       "is_encoding_problem": false,
@@ -163,7 +163,7 @@
       },
       "offset_header": 347,
       "offset_body": 376,
-      "offset_end": 446
+      "offset_end": 445
     },
     {
       "headers": [
@@ -178,8 +178,8 @@
               "attributes": null
             }
           },
-          "raw_start": 472,
-          "raw_end": 496
+          "offset_start": 472,
+          "offset_end": 496
         }
       ],
       "is_encoding_problem": false,
@@ -240,7 +240,7 @@
       },
       "offset_header": 459,
       "offset_body": 497,
-      "offset_end": 549
+      "offset_end": 548
     }
   ]
 }

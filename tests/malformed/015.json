@@ -18,8 +18,8 @@
           "value": {
             "Text": "test@example.org"
           },
-          "raw_start": 12,
-          "raw_end": 32
+          "offset_start": 12,
+          "offset_end": 32
         },
         {
           "name": {
@@ -28,8 +28,8 @@
           "value": {
             "Text": "Hello world"
           },
-          "raw_start": 40,
-          "raw_end": 53
+          "offset_start": 40,
+          "offset_end": 53
         },
         {
           "name": {
@@ -41,8 +41,8 @@
               "address": "test@example.org"
             }
           },
-          "raw_start": 58,
-          "raw_end": 88
+          "offset_start": 58,
+          "offset_end": 88
         },
         {
           "name": {
@@ -54,8 +54,8 @@
               "address": "test2@example.org"
             }
           },
-          "raw_start": 91,
-          "raw_end": 125
+          "offset_start": 91,
+          "offset_end": 125
         },
         {
           "name": {
@@ -64,8 +64,8 @@
           "value": {
             "Text": "1.2.3.4@example"
           },
-          "raw_start": 136,
-          "raw_end": 155
+          "offset_start": 136,
+          "offset_end": 155
         },
         {
           "name": {
@@ -74,8 +74,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 168,
-          "raw_end": 173
+          "offset_start": 168,
+          "offset_end": 173
         },
         {
           "name": {
@@ -94,8 +94,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 178,
-          "raw_end": 211
+          "offset_start": 178,
+          "offset_end": 211
         },
         {
           "name": {
@@ -121,8 +121,8 @@
               ]
             }
           },
-          "raw_start": 224,
-          "raw_end": 334
+          "offset_start": 224,
+          "offset_end": 334
         }
       ],
       "is_encoding_problem": false,
@@ -149,8 +149,8 @@
               "attributes": null
             }
           },
-          "raw_start": 373,
-          "raw_end": 385
+          "offset_start": 373,
+          "offset_end": 385
         },
         {
           "name": {
@@ -159,8 +159,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 411,
-          "raw_end": 429
+          "offset_start": 411,
+          "offset_end": 429
         }
       ],
       "is_encoding_problem": false,
@@ -169,7 +169,7 @@
       },
       "offset_header": 360,
       "offset_body": 430,
-      "offset_end": 464
+      "offset_end": 463
     },
     {
       "headers": [
@@ -189,8 +189,8 @@
               ]
             }
           },
-          "raw_start": 502,
-          "raw_end": 549
+          "offset_start": 502,
+          "offset_end": 549
         }
       ],
       "is_encoding_problem": false,
@@ -208,7 +208,7 @@
       },
       "offset_header": 489,
       "offset_body": 550,
-      "offset_end": 559
+      "offset_end": 558
     }
   ]
 }

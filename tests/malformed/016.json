@@ -27,8 +27,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 125
+          "offset_start": 13,
+          "offset_end": 125
         }
       ],
       "is_encoding_problem": false,
@@ -59,8 +59,8 @@
               ]
             }
           },
-          "raw_start": 224,
-          "raw_end": 335
+          "offset_start": 224,
+          "offset_end": 335
         }
       ],
       "is_encoding_problem": false,
@@ -91,8 +91,8 @@
               ]
             }
           },
-          "raw_start": 433,
-          "raw_end": 543
+          "offset_start": 433,
+          "offset_end": 543
         }
       ],
       "is_encoding_problem": false,
@@ -119,8 +119,8 @@
               "attributes": null
             }
           },
-          "raw_start": 640,
-          "raw_end": 652
+          "offset_start": 640,
+          "offset_end": 652
         }
       ],
       "is_encoding_problem": false,
@@ -129,7 +129,7 @@
       },
       "offset_header": 627,
       "offset_body": 653,
-      "offset_end": 883
+      "offset_end": 882
     },
     {
       "headers": [
@@ -144,8 +144,8 @@
               "attributes": null
             }
           },
-          "raw_start": 979,
-          "raw_end": 991
+          "offset_start": 979,
+          "offset_end": 991
         }
       ],
       "is_encoding_problem": true,
@@ -154,7 +154,7 @@
       },
       "offset_header": 966,
       "offset_body": 992,
-      "offset_end": 915
+      "offset_end": 997
     }
   ]
 }

@@ -21,8 +21,8 @@
               "address": "nsb@bellcore.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 46
+          "offset_start": 5,
+          "offset_end": 46
         },
         {
           "name": {
@@ -34,8 +34,8 @@
               "address": "ned@innosoft.com"
             }
           },
-          "raw_start": 49,
-          "raw_end": 79
+          "offset_start": 49,
+          "offset_end": 79
         },
         {
           "name": {
@@ -54,8 +54,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 84,
-          "raw_end": 123
+          "offset_start": 84,
+          "offset_end": 123
         },
         {
           "name": {
@@ -64,8 +64,8 @@
           "value": {
             "Text": "Sample message"
           },
-          "raw_start": 131,
-          "raw_end": 147
+          "offset_start": 131,
+          "offset_end": 147
         },
         {
           "name": {
@@ -74,8 +74,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 160,
-          "raw_end": 165
+          "offset_start": 160,
+          "offset_end": 165
         },
         {
           "name": {
@@ -93,8 +93,8 @@
               ]
             }
           },
-          "raw_start": 178,
-          "raw_end": 223
+          "offset_start": 178,
+          "offset_end": 223
         }
       ],
       "is_encoding_problem": false,
@@ -116,7 +116,7 @@
       },
       "offset_header": 400,
       "offset_body": 401,
-      "offset_end": 481
+      "offset_end": 480
     },
     {
       "headers": [
@@ -136,8 +136,8 @@
               ]
             }
           },
-          "raw_start": 512,
-          "raw_end": 542
+          "offset_start": 512,
+          "offset_end": 542
         }
       ],
       "is_encoding_problem": false,
@@ -146,7 +146,7 @@
       },
       "offset_header": 499,
       "offset_body": 543,
-      "offset_end": 620
+      "offset_end": 619
     }
   ]
 }

@@ -15,8 +15,8 @@
           "value": {
             "Text": "06:23 2008\n"
           },
-          "raw_start": 32,
-          "raw_end": 43
+          "offset_start": 32,
+          "offset_end": 43
         },
         {
           "name": {
@@ -28,8 +28,8 @@
               "address": "user@domain.org"
             }
           },
-          "raw_start": 48,
-          "raw_end": 65
+          "offset_start": 48,
+          "offset_end": 65
         },
         {
           "name": {
@@ -48,8 +48,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 70,
-          "raw_end": 103
+          "offset_start": 70,
+          "offset_end": 103
         },
         {
           "name": {
@@ -58,8 +58,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 116,
-          "raw_end": 121
+          "offset_start": 116,
+          "offset_end": 121
         },
         {
           "name": {
@@ -77,8 +77,8 @@
               ]
             }
           },
-          "raw_start": 134,
-          "raw_end": 172
+          "offset_start": 134,
+          "offset_end": 172
         }
       ],
       "is_encoding_problem": false,
@@ -110,8 +110,8 @@
               ]
             }
           },
-          "raw_start": 216,
-          "raw_end": 248
+          "offset_start": 216,
+          "offset_end": 248
         }
       ],
       "is_encoding_problem": false,
@@ -120,7 +120,7 @@
       },
       "offset_header": 203,
       "offset_body": 249,
-      "offset_end": 256
+      "offset_end": 255
     },
     {
       "headers": [
@@ -135,8 +135,8 @@
               "attributes": null
             }
           },
-          "raw_start": 279,
-          "raw_end": 295
+          "offset_start": 279,
+          "offset_end": 295
         }
       ],
       "is_encoding_problem": false,
@@ -162,8 +162,8 @@
                       "address": "sub@domain.org"
                     }
                   },
-                  "raw_start": 301,
-                  "raw_end": 317
+                  "offset_start": 301,
+                  "offset_end": 317
                 },
                 {
                   "name": {
@@ -182,8 +182,8 @@
                       "tz_minute": 0
                     }
                   },
-                  "raw_start": 322,
-                  "raw_end": 355
+                  "offset_start": 322,
+                  "offset_end": 355
                 },
                 {
                   "name": {
@@ -192,8 +192,8 @@
                   "value": {
                     "Text": "submsg"
                   },
-                  "raw_start": 363,
-                  "raw_end": 371
+                  "offset_start": 363,
+                  "offset_end": 371
                 },
                 {
                   "name": {
@@ -211,8 +211,8 @@
                       ]
                     }
                   },
-                  "raw_start": 384,
-                  "raw_end": 424
+                  "offset_start": 384,
+                  "offset_end": 424
                 }
               ],
               "is_encoding_problem": false,
@@ -239,8 +239,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 463,
-                  "raw_end": 474
+                  "offset_start": 463,
+                  "offset_end": 474
                 }
               ],
               "is_encoding_problem": false,
@@ -249,7 +249,7 @@
               },
               "offset_header": 450,
               "offset_body": 475,
-              "offset_end": 495
+              "offset_end": 494
             },
             {
               "headers": [
@@ -264,8 +264,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 515,
-                  "raw_end": 527
+                  "offset_start": 515,
+                  "offset_end": 527
                 }
               ],
               "is_encoding_problem": false,
@@ -274,7 +274,7 @@
               },
               "offset_header": 502,
               "offset_body": 528,
-              "offset_end": 549
+              "offset_end": 548
             }
           ]
         }

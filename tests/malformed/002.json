@@ -23,8 +23,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 45
+          "offset_start": 13,
+          "offset_end": 45
         }
       ],
       "is_encoding_problem": false,

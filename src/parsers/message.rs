@@ -16,8 +16,8 @@ use crate::{
         base64::decode_base64, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
     },
-    ContentType, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart, MessagePartId,
-    PartType, RfcHeader,
+    ContentType, Encoding, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart,
+    MessagePartId, PartType, RfcHeader,
 };
 
 use super::{
@@ -250,6 +250,7 @@ impl<'x> Message<'x> {
                             offset_body: state.offset_body,
                             offset_end: 0,
                             is_encoding_problem: false,
+                            encoding: Encoding::None,
                             body: PartType::default(),
                         });
                         state_stack.push((state, None));
@@ -266,19 +267,20 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
             state.offset_body = stream.pos;
 
-            let (is_binary, decode_fnc): (bool, DecodeFnc) = match part_headers
-                .get_rfc(&RfcHeader::ContentTransferEncoding)
-            {
-                Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
-                    (false, decode_base64)
-                }
-                Some(HeaderValue::Text(encoding))
-                    if encoding.eq_ignore_ascii_case("quoted-printable") =>
-                {
-                    (false, decode_quoted_printable)
-                }
-                _ => (true, get_bytes_to_boundary),
-            };
+            let (is_binary, mut encoding, decode_fnc): (bool, Encoding, DecodeFnc) =
+                match part_headers.get_rfc(&RfcHeader::ContentTransferEncoding) {
+                    Some(HeaderValue::Text(encoding))
+                        if encoding.eq_ignore_ascii_case("base64") =>
+                    {
+                        (false, Encoding::Base64, decode_base64)
+                    }
+                    Some(HeaderValue::Text(encoding))
+                        if encoding.eq_ignore_ascii_case("quoted-printable") =>
+                    {
+                        (false, Encoding::QuotedPrintable, decode_quoted_printable)
+                    }
+                    _ => (true, Encoding::None, get_bytes_to_boundary),
+                };
 
             if is_binary && mime_type == MimeType::Message {
                 let new_state = MessageParserState {
@@ -289,11 +291,10 @@ impl<'x> Message<'x> {
                     part_id: message.parts.len(),
                     ..Default::default()
                 };
-                //add_missing_type(&mut part_header, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
                 message.parts.push(MessagePart {
                     headers: std::mem::take(&mut part_headers),
-
+                    encoding,
                     is_encoding_problem: false,
                     offset_header: state.offset_header,
                     offset_body: state.offset_body,
@@ -319,6 +320,8 @@ impl<'x> Message<'x> {
             // Attempt to recover contents of an invalid message
             let is_encoding_problem = bytes_read == 0;
             if is_encoding_problem {
+                encoding = Encoding::None;
+
                 let did_recover = if !(stream.pos >= stream.data.len()
                     || (is_binary && state.mime_boundary.is_none()))
                 {
@@ -345,6 +348,7 @@ impl<'x> Message<'x> {
                             if bytes_read > 0 {
                                 bytes = r_bytes;
                                 stream.pos += bytes_read;
+                                state.mime_boundary = None;
                                 true
                             } else {
                                 false
@@ -369,7 +373,7 @@ impl<'x> Message<'x> {
                     // Could not recover error, add part and abort
                     message.parts.push(MessagePart {
                         headers: std::mem::take(&mut part_headers),
-
+                        encoding: Encoding::None,
                         is_encoding_problem: true,
                         body: PartType::Binary((&[][..]).into()),
                         offset_header: state.offset_header,
@@ -381,11 +385,23 @@ impl<'x> Message<'x> {
             } else {
                 stream.pos += bytes_read;
             }
-            state.offset_end = state
-                .mime_boundary
-                .as_ref()
-                .map(|b| stream.pos.saturating_sub(b.len()))
-                .unwrap_or(stream.pos);
+
+            // Obtain offset end
+            state.offset_end = if let Some(mime_boundary) = &state.mime_boundary {
+                let pos = stream.pos.saturating_sub(mime_boundary.len());
+                std::cmp::max(
+                    stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
+                        if ch == b'\r' {
+                            pos - 2
+                        } else {
+                            pos - 1
+                        }
+                    }),
+                    state.offset_body,
+                )
+            } else {
+                stream.pos
+            };
 
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
@@ -426,8 +442,6 @@ impl<'x> Message<'x> {
                     let text = result_to_string(bytes, stream.data, content_type);
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    //add_missing_type(&mut part_headers, "text".into(), "plain".into());
-
                     if add_to_html && !is_html {
                         message.html_body.push(message.parts.len());
                     } else if add_to_text && is_html {
@@ -465,7 +479,6 @@ impl<'x> Message<'x> {
                     }
                 }
             } else {
-                //add_missing_type(&mut part_headers, "message".into(), "rfc822".into());
                 message.attachments.push(message.parts.len());
                 PartType::Message(MessageAttachment::Raw(result_to_bytes(bytes, stream.data)))
             };
@@ -473,7 +486,7 @@ impl<'x> Message<'x> {
             // Add part
             message.parts.push(MessagePart {
                 headers: std::mem::take(&mut part_headers),
-
+                encoding,
                 is_encoding_problem,
                 body: body_part,
                 offset_header: state.offset_header,

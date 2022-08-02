@@ -16,8 +16,8 @@
           "value": {
             "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -26,8 +26,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -36,8 +36,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 122,
-          "raw_end": 170
+          "offset_start": 122,
+          "offset_end": 170
         },
         {
           "name": {
@@ -56,8 +56,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 175,
-          "raw_end": 209
+          "offset_start": 175,
+          "offset_end": 209
         },
         {
           "name": {
@@ -69,8 +69,8 @@
               "address": "jschmuergen@example.com"
             }
           },
-          "raw_start": 212,
-          "raw_end": 299
+          "offset_start": 212,
+          "offset_end": 299
         },
         {
           "name": {
@@ -82,8 +82,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 304,
-          "raw_end": 341
+          "offset_start": 304,
+          "offset_end": 341
         },
         {
           "name": {
@@ -92,8 +92,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 349,
-          "raw_end": 396
+          "offset_start": 349,
+          "offset_end": 396
         },
         {
           "name": {
@@ -102,8 +102,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 409,
-          "raw_end": 415
+          "offset_start": 409,
+          "offset_end": 415
         },
         {
           "name": {
@@ -121,8 +121,8 @@
               ]
             }
           },
-          "raw_start": 428,
-          "raw_end": 463
+          "offset_start": 428,
+          "offset_end": 463
         },
         {
           "name": {
@@ -131,8 +131,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 489,
-          "raw_end": 508
+          "offset_start": 489,
+          "offset_end": 508
         }
       ],
       "is_encoding_problem": false,

@@ -24,8 +24,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         }
       ],
       "is_encoding_problem": false,
@@ -56,8 +56,8 @@
               ]
             }
           },
-          "raw_start": 62,
-          "raw_end": 93
+          "offset_start": 62,
+          "offset_end": 93
         }
       ],
       "is_encoding_problem": false,
@@ -84,8 +84,8 @@
               "attributes": null
             }
           },
-          "raw_start": 111,
-          "raw_end": 127
+          "offset_start": 111,
+          "offset_end": 127
         }
       ],
       "is_encoding_problem": false,
@@ -112,8 +112,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 141,
-                  "raw_end": 153
+                  "offset_start": 141,
+                  "offset_end": 153
                 }
               ],
               "is_encoding_problem": false,
@@ -122,7 +122,7 @@
               },
               "offset_header": 128,
               "offset_body": 154,
-              "offset_end": 156
+              "offset_end": 155
             }
           ]
         }
@@ -144,8 +144,8 @@
               "attributes": null
             }
           },
-          "raw_start": 173,
-          "raw_end": 189
+          "offset_start": 173,
+          "offset_end": 189
         }
       ],
       "is_encoding_problem": false,
@@ -170,8 +170,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 203,
-                  "raw_end": 215
+                  "offset_start": 203,
+                  "offset_end": 215
                 }
               ],
               "is_encoding_problem": true,
@@ -180,14 +180,14 @@
               },
               "offset_header": 190,
               "offset_body": 216,
-              "offset_end": 280
+              "offset_end": 283
             }
           ]
         }
       },
       "offset_header": 160,
       "offset_body": 190,
-      "offset_end": 280
+      "offset_end": 283
     }
   ]
 }

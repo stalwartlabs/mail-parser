@@ -19,8 +19,8 @@
               "address": null
             }
           },
-          "raw_start": 5,
-          "raw_end": 15
+          "offset_start": 5,
+          "offset_end": 15
         },
         {
           "name": {
@@ -32,16 +32,16 @@
               "address": null
             }
           },
-          "raw_start": 18,
-          "raw_end": 27
+          "offset_start": 18,
+          "offset_end": 27
         },
         {
           "name": {
             "Rfc": "date"
           },
           "value": "Empty",
-          "raw_start": 32,
-          "raw_end": 42
+          "offset_start": 32,
+          "offset_end": 42
         },
         {
           "name": {
@@ -50,8 +50,8 @@
           "value": {
             "Text": "whatever"
           },
-          "raw_start": 50,
-          "raw_end": 60
+          "offset_start": 50,
+          "offset_end": 60
         },
         {
           "name": {
@@ -60,8 +60,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 73,
-          "raw_end": 78
+          "offset_start": 73,
+          "offset_end": 78
         },
         {
           "name": {
@@ -70,8 +70,8 @@
           "value": {
             "Text": "id1@host.com"
           },
-          "raw_start": 89,
-          "raw_end": 105
+          "offset_start": 89,
+          "offset_end": 105
         },
         {
           "name": {
@@ -89,8 +89,8 @@
               ]
             }
           },
-          "raw_start": 118,
-          "raw_end": 154
+          "offset_start": 118,
+          "offset_end": 154
         },
         {
           "name": {
@@ -99,8 +99,8 @@
           "value": {
             "Text": "id001@guppylake.bellcore.com"
           },
-          "raw_start": 165,
-          "raw_end": 197
+          "offset_start": 165,
+          "offset_end": 197
         }
       ],
       "is_encoding_problem": false,
@@ -153,8 +153,8 @@
               ]
             }
           },
-          "raw_start": 216,
-          "raw_end": 432
+          "offset_start": 216,
+          "offset_end": 432
         }
       ],
       "is_encoding_problem": false,
@@ -243,7 +243,7 @@
       },
       "offset_header": 203,
       "offset_body": 433,
-      "offset_end": 513
+      "offset_end": 512
     },
     {
       "headers": [
@@ -275,8 +275,8 @@
               ]
             }
           },
-          "raw_start": 531,
-          "raw_end": 735
+          "offset_start": 531,
+          "offset_end": 735
         }
       ],
       "is_encoding_problem": false,
@@ -365,7 +365,7 @@
       },
       "offset_header": 518,
       "offset_body": 736,
-      "offset_end": 816
+      "offset_end": 815
     },
     {
       "headers": [
@@ -393,8 +393,8 @@
               ]
             }
           },
-          "raw_start": 834,
-          "raw_end": 1001
+          "offset_start": 834,
+          "offset_end": 1001
         }
       ],
       "is_encoding_problem": false,
@@ -501,7 +501,7 @@
       },
       "offset_header": 821,
       "offset_body": 1002,
-      "offset_end": 1100
+      "offset_end": 1099
     }
   ]
 }

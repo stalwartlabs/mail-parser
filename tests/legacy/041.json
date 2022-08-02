@@ -28,8 +28,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 5,
-          "raw_end": 45
+          "offset_start": 5,
+          "offset_end": 45
         },
         {
           "name": {
@@ -41,8 +41,8 @@
               "address": "doug@penguin.example.com"
             }
           },
-          "raw_start": 50,
-          "raw_end": 91
+          "offset_start": 50,
+          "offset_end": 91
         },
         {
           "name": {
@@ -54,8 +54,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 94,
-          "raw_end": 150
+          "offset_start": 94,
+          "offset_end": 150
         },
         {
           "name": {
@@ -64,8 +64,8 @@
           "value": {
             "Text": "PNG graphic"
           },
-          "raw_start": 158,
-          "raw_end": 172
+          "offset_start": 158,
+          "offset_end": 172
         },
         {
           "name": {
@@ -74,8 +74,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
           },
-          "raw_start": 183,
-          "raw_end": 247
+          "offset_start": 183,
+          "offset_end": 247
         },
         {
           "name": {
@@ -84,8 +84,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 260,
-          "raw_end": 266
+          "offset_start": 260,
+          "offset_end": 266
         },
         {
           "name": {
@@ -103,8 +103,8 @@
               ]
             }
           },
-          "raw_start": 279,
-          "raw_end": 347
+          "offset_start": 279,
+          "offset_end": 347
         }
       ],
       "is_encoding_problem": false,
@@ -136,8 +136,8 @@
               ]
             }
           },
-          "raw_start": 623,
-          "raw_end": 654
+          "offset_start": 623,
+          "offset_end": 654
         }
       ],
       "is_encoding_problem": false,
@@ -146,7 +146,7 @@
       },
       "offset_header": 610,
       "offset_body": 656,
-      "offset_end": 658
+      "offset_end": 656
     },
     {
       "headers": [
@@ -166,8 +166,8 @@
               ]
             }
           },
-          "raw_start": 712,
-          "raw_end": 759
+          "offset_start": 712,
+          "offset_end": 759
         },
         {
           "name": {
@@ -176,8 +176,8 @@
           "value": {
             "Text": "BASE64"
           },
-          "raw_start": 785,
-          "raw_end": 794
+          "offset_start": 785,
+          "offset_end": 794
         },
         {
           "name": {
@@ -186,8 +186,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
           },
-          "raw_start": 805,
-          "raw_end": 862
+          "offset_start": 805,
+          "offset_end": 862
         },
         {
           "name": {
@@ -196,8 +196,8 @@
           "value": {
             "Text": "red ball"
           },
-          "raw_start": 882,
-          "raw_end": 893
+          "offset_start": 882,
+          "offset_end": 893
         },
         {
           "name": {
@@ -215,8 +215,8 @@
               ]
             }
           },
-          "raw_start": 913,
-          "raw_end": 950
+          "offset_start": 913,
+          "offset_end": 950
         }
       ],
       "is_encoding_problem": false,
@@ -1679,7 +1679,7 @@
       },
       "offset_header": 699,
       "offset_body": 952,
-      "offset_end": 2958
+      "offset_end": 2956
     }
   ]
 }

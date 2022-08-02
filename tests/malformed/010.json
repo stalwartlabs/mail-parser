@@ -18,8 +18,8 @@
               "attributes": null
             }
           },
-          "raw_start": 13,
-          "raw_end": 29
+          "offset_start": 13,
+          "offset_end": 29
         }
       ],
       "is_encoding_problem": false,
@@ -44,8 +44,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 43,
-                  "raw_end": 59
+                  "offset_start": 43,
+                  "offset_end": 59
                 }
               ],
               "is_encoding_problem": false,
@@ -72,8 +72,8 @@
                               "attributes": null
                             }
                           },
-                          "raw_start": 73,
-                          "raw_end": 85
+                          "offset_start": 73,
+                          "offset_end": 85
                         }
                       ],
                       "is_encoding_problem": false,

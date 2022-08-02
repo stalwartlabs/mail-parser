@@ -294,9 +294,37 @@ pub struct MessagePart<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     #[cfg_attr(feature = "serde_support", serde(borrow))]
     pub body: PartType<'x>,
+    #[cfg_attr(feature = "serde_support", serde(skip))]
+    pub encoding: Encoding,
     pub offset_header: usize,
     pub offset_body: usize,
     pub offset_end: usize,
+}
+
+/// MIME Part encoding type
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[repr(u8)]
+pub enum Encoding {
+    None = 0,
+    QuotedPrintable = 1,
+    Base64 = 2,
+}
+
+impl From<u8> for Encoding {
+    fn from(v: u8) -> Self {
+        match v {
+            1 => Encoding::QuotedPrintable,
+            2 => Encoding::Base64,
+            _ => Encoding::None,
+        }
+    }
+}
+
+impl Default for Encoding {
+    fn default() -> Self {
+        Encoding::None
+    }
 }
 
 /// Unique ID representing a MIME part within a message.
@@ -760,6 +788,24 @@ impl<'x> Message<'x> {
         self.parts[0].headers.get_header(header).map(|h| &h.value)
     }
 
+    /// Removed a parsed header and returns its value.
+    pub fn remove_header(&mut self, header: &str) -> Option<HeaderValue> {
+        let headers = &mut self.parts[0].headers;
+        headers
+            .iter()
+            .position(|h| h.name.as_str() == header)
+            .map(|pos| headers.swap_remove(pos).value)
+    }
+
+    /// Removed a parsed RFC heade and returns its value.
+    pub fn remove_header_rfc(&mut self, header: RfcHeader) -> Option<HeaderValue> {
+        let headers = &mut self.parts[0].headers;
+        headers
+            .iter()
+            .position(|h| matches!(&h.name, HeaderName::Rfc(header_name) if header_name == &header))
+            .map(|pos| headers.swap_remove(pos).value)
+    }
+
     /// Returns the raw header.
     pub fn get_header_raw(&self, header: &str) -> Option<&str> {
         self.parts[0]
@@ -771,6 +817,20 @@ impl<'x> Message<'x> {
     /// Returns an iterator over the RFC headers of this message.
     pub fn get_headers(&self) -> &[Header] {
         &self.parts[0].headers
+    }
+
+    /// Returns an iterator over the matching RFC headers of this message.
+    pub fn get_header_values<'y: 'x>(
+        &'y self,
+        name: RfcHeader,
+    ) -> impl Iterator<Item = &HeaderValue<'x>> {
+        self.parts[0].headers.iter().filter_map(move |header| {
+            if matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == &name) {
+                Some(&header.value)
+            } else {
+                None
+            }
+        })
     }
 
     /// Returns all headers in raw format
@@ -1270,6 +1330,11 @@ impl<'x> MessagePart<'x> {
         matches!(self.body, PartType::Text(_) | PartType::Html(_))
     }
 
+    /// Returns `true` when the body part MIME type is text/tml
+    pub fn is_text_html(&self) -> bool {
+        matches!(self.body, PartType::Html(_))
+    }
+
     /// Returns `true` when the part is binary
     pub fn is_binary(&self) -> bool {
         matches!(self.body, PartType::Binary(_) | PartType::InlineBinary(_))
@@ -1454,6 +1519,16 @@ impl<'x> ContentType<'x> {
             .1
             .as_ref()
             .into()
+    }
+
+    /// Removes an attribute by name
+    pub fn remove_attribute(&mut self, name: &str) -> Option<Cow<str>> {
+        let attributes = self.attributes.as_mut()?;
+
+        attributes
+            .iter()
+            .position(|(key, _)| key == name)
+            .map(|pos| attributes.swap_remove(pos).1)
     }
 
     /// Returns all attributes

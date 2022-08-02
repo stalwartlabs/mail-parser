@@ -19,8 +19,8 @@
               "address": "sender@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 25
+          "offset_start": 5,
+          "offset_end": 25
         },
         {
           "name": {
@@ -32,8 +32,8 @@
               "address": "recipient@example.com"
             }
           },
-          "raw_start": 28,
-          "raw_end": 51
+          "offset_start": 28,
+          "offset_end": 51
         },
         {
           "name": {
@@ -42,8 +42,8 @@
           "value": {
             "Text": "Multipart Email Example"
           },
-          "raw_start": 59,
-          "raw_end": 84
+          "offset_start": 59,
+          "offset_end": 84
         },
         {
           "name": {
@@ -61,8 +61,8 @@
               ]
             }
           },
-          "raw_start": 97,
-          "raw_end": 148
+          "offset_start": 97,
+          "offset_end": 148
         }
       ],
       "is_encoding_problem": false,
@@ -94,8 +94,8 @@
               ]
             }
           },
-          "raw_start": 180,
-          "raw_end": 209
+          "offset_start": 180,
+          "offset_end": 209
         },
         {
           "name": {
@@ -104,8 +104,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 235,
-          "raw_end": 253
+          "offset_start": 235,
+          "offset_end": 253
         },
         {
           "name": {
@@ -118,8 +118,8 @@
               "attributes": null
             }
           },
-          "raw_start": 273,
-          "raw_end": 281
+          "offset_start": 273,
+          "offset_end": 281
         }
       ],
       "is_encoding_problem": false,
@@ -128,7 +128,7 @@
       },
       "offset_header": 167,
       "offset_body": 282,
-      "offset_end": 370
+      "offset_end": 369
     },
     {
       "headers": [
@@ -148,8 +148,8 @@
               ]
             }
           },
-          "raw_start": 401,
-          "raw_end": 429
+          "offset_start": 401,
+          "offset_end": 429
         },
         {
           "name": {
@@ -158,8 +158,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 455,
-          "raw_end": 473
+          "offset_start": 455,
+          "offset_end": 473
         },
         {
           "name": {
@@ -172,8 +172,8 @@
               "attributes": null
             }
           },
-          "raw_start": 493,
-          "raw_end": 501
+          "offset_start": 493,
+          "offset_end": 501
         }
       ],
       "is_encoding_problem": false,
@@ -182,7 +182,7 @@
       },
       "offset_header": 388,
       "offset_body": 502,
-      "offset_end": 596
+      "offset_end": 595
     }
   ]
 }

@@ -17,8 +17,8 @@
               "address": "doug@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 40
+          "offset_start": 5,
+          "offset_end": 40
         },
         {
           "name": {
@@ -30,8 +30,8 @@
               "address": "jblow@example.com"
             }
           },
-          "raw_start": 43,
-          "raw_end": 76
+          "offset_start": 43,
+          "offset_end": 76
         },
         {
           "name": {
@@ -40,8 +40,8 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
-          "raw_start": 84,
-          "raw_end": 125
+          "offset_start": 84,
+          "offset_end": 125
         },
         {
           "name": {
@@ -60,8 +60,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 130,
-          "raw_end": 164
+          "offset_start": 130,
+          "offset_end": 164
         },
         {
           "name": {
@@ -70,8 +70,8 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGKEKECHAA.doug@example.com"
           },
-          "raw_start": 175,
-          "raw_end": 225
+          "offset_start": 175,
+          "offset_end": 225
         },
         {
           "name": {
@@ -80,8 +80,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 238,
-          "raw_end": 244
+          "offset_start": 238,
+          "offset_end": 244
         },
         {
           "name": {
@@ -99,8 +99,8 @@
               ]
             }
           },
-          "raw_start": 257,
-          "raw_end": 291
+          "offset_start": 257,
+          "offset_end": 291
         },
         {
           "name": {
@@ -109,8 +109,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 317,
-          "raw_end": 326
+          "offset_start": 317,
+          "offset_end": 326
         },
         {
           "name": {
@@ -128,8 +128,8 @@
               ]
             }
           },
-          "raw_start": 346,
-          "raw_end": 385
+          "offset_start": 346,
+          "offset_end": 385
         },
         {
           "name": {
@@ -138,8 +138,8 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
-          "raw_start": 396,
-          "raw_end": 409
+          "offset_start": 396,
+          "offset_end": 409
         },
         {
           "name": {
@@ -148,8 +148,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 427,
-          "raw_end": 436
+          "offset_start": 427,
+          "offset_end": 436
         },
         {
           "name": {
@@ -158,8 +158,8 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
-          "raw_start": 445,
-          "raw_end": 498
+          "offset_start": 445,
+          "offset_end": 498
         },
         {
           "name": {
@@ -168,8 +168,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 509,
-          "raw_end": 518
+          "offset_start": 509,
+          "offset_end": 518
         },
         {
           "name": {
@@ -178,8 +178,8 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
-          "raw_start": 528,
-          "raw_end": 576
+          "offset_start": 528,
+          "offset_end": 576
         }
       ],
       "is_encoding_problem": false,

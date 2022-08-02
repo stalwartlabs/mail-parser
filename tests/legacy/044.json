@@ -26,8 +26,8 @@
           "value": {
             "Text": "39235E1C.1DC7EA90@example.com"
           },
-          "raw_start": 11,
-          "raw_end": 45
+          "offset_start": 11,
+          "offset_end": 45
         },
         {
           "name": {
@@ -46,8 +46,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 50,
-          "raw_end": 84
+          "offset_start": 50,
+          "offset_end": 84
         },
         {
           "name": {
@@ -59,8 +59,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 89,
-          "raw_end": 126
+          "offset_start": 89,
+          "offset_end": 126
         },
         {
           "name": {
@@ -69,8 +69,8 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
-          "raw_start": 135,
-          "raw_end": 165
+          "offset_start": 135,
+          "offset_end": 165
         },
         {
           "name": {
@@ -79,8 +79,8 @@
           "value": {
             "Text": " en\r\n"
           },
-          "raw_start": 183,
-          "raw_end": 188
+          "offset_start": 183,
+          "offset_end": 188
         },
         {
           "name": {
@@ -89,8 +89,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 201,
-          "raw_end": 207
+          "offset_start": 201,
+          "offset_end": 207
         },
         {
           "name": {
@@ -102,8 +102,8 @@
               "address": "blow@example.com"
             }
           },
-          "raw_start": 210,
-          "raw_end": 240
+          "offset_start": 210,
+          "offset_end": 240
         },
         {
           "name": {
@@ -112,8 +112,8 @@
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
-          "raw_start": 248,
-          "raw_end": 294
+          "offset_start": 248,
+          "offset_end": 294
         },
         {
           "name": {
@@ -131,8 +131,8 @@
               ]
             }
           },
-          "raw_start": 307,
-          "raw_end": 376
+          "offset_start": 307,
+          "offset_end": 376
         }
       ],
       "is_encoding_problem": false,
@@ -166,8 +166,8 @@
               ]
             }
           },
-          "raw_start": 477,
-          "raw_end": 510
+          "offset_start": 477,
+          "offset_end": 510
         },
         {
           "name": {
@@ -176,8 +176,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 536,
-          "raw_end": 555
+          "offset_start": 536,
+          "offset_end": 555
         }
       ],
       "is_encoding_problem": false,
@@ -186,7 +186,7 @@
       },
       "offset_header": 464,
       "offset_body": 557,
-      "offset_end": 1357
+      "offset_end": 1355
     },
     {
       "headers": [
@@ -206,8 +206,8 @@
               ]
             }
           },
-          "raw_start": 1410,
-          "raw_end": 1444
+          "offset_start": 1410,
+          "offset_end": 1444
         },
         {
           "name": {
@@ -216,8 +216,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 1470,
-          "raw_end": 1479
+          "offset_start": 1470,
+          "offset_end": 1479
         },
         {
           "name": {
@@ -235,8 +235,8 @@
               ]
             }
           },
-          "raw_start": 1499,
-          "raw_end": 1534
+          "offset_start": 1499,
+          "offset_end": 1534
         }
       ],
       "is_encoding_problem": false,
@@ -1699,7 +1699,7 @@
       },
       "offset_header": 1397,
       "offset_body": 1536,
-      "offset_end": 3530
+      "offset_end": 3528
     },
     {
       "headers": [
@@ -1719,8 +1719,8 @@
               ]
             }
           },
-          "raw_start": 3583,
-          "raw_end": 3619
+          "offset_start": 3583,
+          "offset_end": 3619
         },
         {
           "name": {
@@ -1729,8 +1729,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 3645,
-          "raw_end": 3654
+          "offset_start": 3645,
+          "offset_end": 3654
         },
         {
           "name": {
@@ -1748,8 +1748,8 @@
               ]
             }
           },
-          "raw_start": 3674,
-          "raw_end": 3711
+          "offset_start": 3674,
+          "offset_end": 3711
         }
       ],
       "is_encoding_problem": false,
@@ -3057,7 +3057,7 @@
       },
       "offset_header": 3570,
       "offset_body": 3713,
-      "offset_end": 5495
+      "offset_end": 5493
     },
     {
       "headers": [
@@ -3077,8 +3077,8 @@
               ]
             }
           },
-          "raw_start": 5548,
-          "raw_end": 5583
+          "offset_start": 5548,
+          "offset_end": 5583
         },
         {
           "name": {
@@ -3087,8 +3087,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 5609,
-          "raw_end": 5618
+          "offset_start": 5609,
+          "offset_end": 5618
         },
         {
           "name": {
@@ -3106,8 +3106,8 @@
               ]
             }
           },
-          "raw_start": 5638,
-          "raw_end": 5674
+          "offset_start": 5638,
+          "offset_end": 5674
         }
       ],
       "is_encoding_problem": false,
@@ -4442,7 +4442,7 @@
       },
       "offset_header": 5535,
       "offset_body": 5676,
-      "offset_end": 7494
+      "offset_end": 7492
     }
   ]
 }

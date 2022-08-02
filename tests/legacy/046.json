@@ -16,8 +16,8 @@
           "value": {
             "Text": "3923561C.B7078DEF@example.com"
           },
-          "raw_start": 11,
-          "raw_end": 45
+          "offset_start": 11,
+          "offset_end": 45
         },
         {
           "name": {
@@ -36,8 +36,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 50,
-          "raw_end": 84
+          "offset_start": 50,
+          "offset_end": 84
         },
         {
           "name": {
@@ -49,8 +49,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 89,
-          "raw_end": 126
+          "offset_start": 89,
+          "offset_end": 126
         },
         {
           "name": {
@@ -59,8 +59,8 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
-          "raw_start": 135,
-          "raw_end": 165
+          "offset_start": 135,
+          "offset_end": 165
         },
         {
           "name": {
@@ -69,8 +69,8 @@
           "value": {
             "Text": " en\r\n"
           },
-          "raw_start": 183,
-          "raw_end": 188
+          "offset_start": 183,
+          "offset_end": 188
         },
         {
           "name": {
@@ -79,8 +79,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 201,
-          "raw_end": 207
+          "offset_start": 201,
+          "offset_end": 207
         },
         {
           "name": {
@@ -92,8 +92,8 @@
               "address": "schmuergen@example.com"
             }
           },
-          "raw_start": 210,
-          "raw_end": 277
+          "offset_start": 210,
+          "offset_end": 277
         },
         {
           "name": {
@@ -102,8 +102,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
           },
-          "raw_start": 285,
-          "raw_end": 360
+          "offset_start": 285,
+          "offset_end": 360
         },
         {
           "name": {
@@ -121,8 +121,8 @@
               ]
             }
           },
-          "raw_start": 373,
-          "raw_end": 406
+          "offset_start": 373,
+          "offset_end": 406
         },
         {
           "name": {
@@ -131,8 +131,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 432,
-          "raw_end": 451
+          "offset_start": 432,
+          "offset_end": 451
         }
       ],
       "is_encoding_problem": false,

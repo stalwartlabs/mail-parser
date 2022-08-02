@@ -29,8 +29,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 5,
-          "raw_end": 45
+          "offset_start": 5,
+          "offset_end": 45
         },
         {
           "name": {
@@ -42,8 +42,8 @@
               "address": "doug@penguin.example.com"
             }
           },
-          "raw_start": 50,
-          "raw_end": 91
+          "offset_start": 50,
+          "offset_end": 91
         },
         {
           "name": {
@@ -55,8 +55,8 @@
               "address": "blow@example.com"
             }
           },
-          "raw_start": 94,
-          "raw_end": 124
+          "offset_start": 94,
+          "offset_end": 124
         },
         {
           "name": {
@@ -65,8 +65,8 @@
           "value": {
             "Text": "Test message from PINE"
           },
-          "raw_start": 132,
-          "raw_end": 157
+          "offset_start": 132,
+          "offset_end": 157
         },
         {
           "name": {
@@ -75,8 +75,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
           },
-          "raw_start": 168,
-          "raw_end": 232
+          "offset_start": 168,
+          "offset_end": 232
         },
         {
           "name": {
@@ -85,8 +85,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 245,
-          "raw_end": 251
+          "offset_start": 245,
+          "offset_end": 251
         },
         {
           "name": {
@@ -104,8 +104,8 @@
               ]
             }
           },
-          "raw_start": 264,
-          "raw_end": 332
+          "offset_start": 264,
+          "offset_end": 332
         }
       ],
       "is_encoding_problem": false,
@@ -138,8 +138,8 @@
               ]
             }
           },
-          "raw_start": 608,
-          "raw_end": 639
+          "offset_start": 608,
+          "offset_end": 639
         }
       ],
       "is_encoding_problem": false,
@@ -148,7 +148,7 @@
       },
       "offset_header": 595,
       "offset_body": 641,
-      "offset_end": 684
+      "offset_end": 682
     },
     {
       "headers": [
@@ -168,8 +168,8 @@
               ]
             }
           },
-          "raw_start": 738,
-          "raw_end": 785
+          "offset_start": 738,
+          "offset_end": 785
         },
         {
           "name": {
@@ -178,8 +178,8 @@
           "value": {
             "Text": "BASE64"
           },
-          "raw_start": 811,
-          "raw_end": 820
+          "offset_start": 811,
+          "offset_end": 820
         },
         {
           "name": {
@@ -188,8 +188,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           },
-          "raw_start": 831,
-          "raw_end": 888
+          "offset_start": 831,
+          "offset_end": 888
         },
         {
           "name": {
@@ -198,8 +198,8 @@
           "value": {
             "Text": "A PNG graphic file"
           },
-          "raw_start": 908,
-          "raw_end": 929
+          "offset_start": 908,
+          "offset_end": 929
         },
         {
           "name": {
@@ -217,8 +217,8 @@
               ]
             }
           },
-          "raw_start": 949,
-          "raw_end": 986
+          "offset_start": 949,
+          "offset_end": 986
         }
       ],
       "is_encoding_problem": false,
@@ -1681,7 +1681,7 @@
       },
       "offset_header": 725,
       "offset_body": 988,
-      "offset_end": 2994
+      "offset_end": 2992
     },
     {
       "headers": [
@@ -1701,8 +1701,8 @@
               ]
             }
           },
-          "raw_start": 3048,
-          "raw_end": 3096
+          "offset_start": 3048,
+          "offset_end": 3096
         },
         {
           "name": {
@@ -1711,8 +1711,8 @@
           "value": {
             "Text": "BASE64"
           },
-          "raw_start": 3122,
-          "raw_end": 3131
+          "offset_start": 3122,
+          "offset_end": 3131
         },
         {
           "name": {
@@ -1721,8 +1721,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
           },
-          "raw_start": 3142,
-          "raw_end": 3199
+          "offset_start": 3142,
+          "offset_end": 3199
         },
         {
           "name": {
@@ -1731,8 +1731,8 @@
           "value": {
             "Text": "A PNG graphic file"
           },
-          "raw_start": 3219,
-          "raw_end": 3240
+          "offset_start": 3219,
+          "offset_end": 3240
         },
         {
           "name": {
@@ -1750,8 +1750,8 @@
               ]
             }
           },
-          "raw_start": 3260,
-          "raw_end": 3298
+          "offset_start": 3260,
+          "offset_end": 3298
         }
       ],
       "is_encoding_problem": false,
@@ -3086,7 +3086,7 @@
       },
       "offset_header": 3035,
       "offset_body": 3300,
-      "offset_end": 5128
+      "offset_end": 5126
     }
   ]
 }

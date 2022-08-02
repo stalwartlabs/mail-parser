@@ -16,8 +16,8 @@
           "value": {
             "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -26,8 +26,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -36,8 +36,8 @@
           "value": {
             "Text": " <dwsauder@example.com>\r\n"
           },
-          "raw_start": 141,
-          "raw_end": 166
+          "offset_start": 141,
+          "offset_end": 166
         },
         {
           "name": {
@@ -46,8 +46,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 175,
-          "raw_end": 223
+          "offset_start": 175,
+          "offset_end": 223
         },
         {
           "name": {
@@ -56,8 +56,8 @@
           "value": {
             "Text": " 1 (Highest)\r\n"
           },
-          "raw_start": 234,
-          "raw_end": 248
+          "offset_start": 234,
+          "offset_end": 248
         },
         {
           "name": {
@@ -76,8 +76,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 253,
-          "raw_end": 287
+          "offset_start": 253,
+          "offset_end": 287
         },
         {
           "name": {
@@ -89,8 +89,8 @@
               "address": "jschmuergen@example.com"
             }
           },
-          "raw_start": 290,
-          "raw_end": 373
+          "offset_start": 290,
+          "offset_end": 373
         },
         {
           "name": {
@@ -102,8 +102,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 378,
-          "raw_end": 415
+          "offset_start": 378,
+          "offset_end": 415
         },
         {
           "name": {
@@ -112,8 +112,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 423,
-          "raw_end": 468
+          "offset_start": 423,
+          "offset_end": 468
         },
         {
           "name": {
@@ -122,8 +122,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 481,
-          "raw_end": 487
+          "offset_start": 481,
+          "offset_end": 487
         },
         {
           "name": {
@@ -145,8 +145,8 @@
               ]
             }
           },
-          "raw_start": 500,
-          "raw_end": 550
+          "offset_start": 500,
+          "offset_end": 550
         },
         {
           "name": {
@@ -155,8 +155,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 576,
-          "raw_end": 595
+          "offset_start": 576,
+          "offset_end": 595
         }
       ],
       "is_encoding_problem": false,

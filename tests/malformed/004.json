@@ -23,8 +23,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         }
       ],
       "is_encoding_problem": false,
@@ -45,7 +45,7 @@
       },
       "offset_header": 48,
       "offset_body": 50,
-      "offset_end": 128
+      "offset_end": 131
     }
   ]
 }

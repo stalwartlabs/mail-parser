@@ -19,8 +19,8 @@
               "address": "moderator"
             }
           },
-          "raw_start": 5,
-          "raw_end": 36
+          "offset_start": 5,
+          "offset_end": 36
         },
         {
           "name": {
@@ -38,8 +38,8 @@
               ]
             }
           },
-          "raw_start": 49,
-          "raw_end": 80
+          "offset_start": 49,
+          "offset_end": 80
         }
       ],
       "is_encoding_problem": false,
@@ -79,8 +79,8 @@
                       "address": "someone@else"
                     }
                   },
-                  "raw_start": 92,
-                  "raw_end": 121
+                  "offset_start": 92,
+                  "offset_end": 121
                 },
                 {
                   "name": {
@@ -89,8 +89,8 @@
                   "value": {
                     "Text": "my opinion"
                   },
-                  "raw_start": 129,
-                  "raw_end": 141
+                  "offset_start": 129,
+                  "offset_end": 141
                 }
               ],
               "is_encoding_problem": false,
@@ -99,7 +99,7 @@
               },
               "offset_header": 87,
               "offset_body": 142,
-              "offset_end": 161
+              "offset_end": 160
             }
           ]
         }
@@ -133,8 +133,8 @@
                       "address": "another@one"
                     }
                   },
-                  "raw_start": 171,
-                  "raw_end": 198
+                  "offset_start": 171,
+                  "offset_end": 198
                 },
                 {
                   "name": {
@@ -143,8 +143,8 @@
                   "value": {
                     "Text": "i disagree"
                   },
-                  "raw_start": 206,
-                  "raw_end": 218
+                  "offset_start": 206,
+                  "offset_end": 218
                 }
               ],
               "is_encoding_problem": false,
@@ -153,7 +153,7 @@
               },
               "offset_header": 166,
               "offset_body": 219,
-              "offset_end": 241
+              "offset_end": 240
             }
           ]
         }
@@ -189,8 +189,8 @@
                       "address": "attachment@user"
                     }
                   },
-                  "raw_start": 251,
-                  "raw_end": 281
+                  "offset_start": 251,
+                  "offset_end": 281
                 },
                 {
                   "name": {
@@ -199,8 +199,8 @@
                   "value": {
                     "Text": "funny hat"
                   },
-                  "raw_start": 289,
-                  "raw_end": 300
+                  "offset_start": 289,
+                  "offset_end": 300
                 },
                 {
                   "name": {
@@ -218,8 +218,8 @@
                       ]
                     }
                   },
-                  "raw_start": 313,
-                  "raw_end": 342
+                  "offset_start": 313,
+                  "offset_end": 342
                 }
               ],
               "is_encoding_problem": false,
@@ -246,8 +246,8 @@
                       "attributes": null
                     }
                   },
-                  "raw_start": 360,
-                  "raw_end": 372
+                  "offset_start": 360,
+                  "offset_end": 372
                 },
                 {
                   "name": {
@@ -256,8 +256,8 @@
                   "value": {
                     "Text": "binary"
                   },
-                  "raw_start": 398,
-                  "raw_end": 406
+                  "offset_start": 398,
+                  "offset_end": 406
                 }
               ],
               "is_encoding_problem": false,
@@ -266,7 +266,7 @@
               },
               "offset_header": 347,
               "offset_body": 407,
-              "offset_end": 433
+              "offset_end": 432
             },
             {
               "headers": [
@@ -290,8 +290,8 @@
                       ]
                     }
                   },
-                  "raw_start": 450,
-                  "raw_end": 517
+                  "offset_start": 450,
+                  "offset_end": 517
                 },
                 {
                   "name": {
@@ -300,8 +300,8 @@
                   "value": {
                     "Text": "binary"
                   },
-                  "raw_start": 543,
-                  "raw_end": 551
+                  "offset_start": 543,
+                  "offset_end": 551
                 }
               ],
               "is_encoding_problem": false,
@@ -317,7 +317,7 @@
               },
               "offset_header": 437,
               "offset_body": 552,
-              "offset_end": 559
+              "offset_end": 558
             }
           ]
         }

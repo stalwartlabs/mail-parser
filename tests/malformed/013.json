@@ -31,8 +31,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         },
         {
           "name": {
@@ -41,8 +41,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 57,
-          "raw_end": 62
+          "offset_start": 57,
+          "offset_end": 62
         }
       ],
       "is_encoding_problem": false,
@@ -69,8 +69,8 @@
               "attributes": null
             }
           },
-          "raw_start": 80,
-          "raw_end": 92
+          "offset_start": 80,
+          "offset_end": 92
         }
       ],
       "is_encoding_problem": false,
@@ -79,7 +79,7 @@
       },
       "offset_header": 67,
       "offset_body": 93,
-      "offset_end": 106
+      "offset_end": 105
     },
     {
       "headers": [
@@ -99,8 +99,8 @@
               ]
             }
           },
-          "raw_start": 123,
-          "raw_end": 154
+          "offset_start": 123,
+          "offset_end": 154
         },
         {
           "name": {
@@ -109,8 +109,8 @@
           "value": {
             "Text": "2.0"
           },
-          "raw_start": 167,
-          "raw_end": 172
+          "offset_start": 167,
+          "offset_end": 172
         }
       ],
       "is_encoding_problem": false,
@@ -137,8 +137,8 @@
               "attributes": null
             }
           },
-          "raw_start": 190,
-          "raw_end": 202
+          "offset_start": 190,
+          "offset_end": 202
         }
       ],
       "is_encoding_problem": false,
@@ -147,7 +147,7 @@
       },
       "offset_header": 177,
       "offset_body": 203,
-      "offset_end": 216
+      "offset_end": 215
     },
     {
       "headers": [
@@ -167,8 +167,8 @@
               ]
             }
           },
-          "raw_start": 233,
-          "raw_end": 264
+          "offset_start": 233,
+          "offset_end": 264
         },
         {
           "name": {
@@ -177,8 +177,8 @@
           "value": {
             "Text": "abc"
           },
-          "raw_start": 277,
-          "raw_end": 282
+          "offset_start": 277,
+          "offset_end": 282
         }
       ],
       "is_encoding_problem": false,
@@ -205,8 +205,8 @@
               "attributes": null
             }
           },
-          "raw_start": 300,
-          "raw_end": 312
+          "offset_start": 300,
+          "offset_end": 312
         }
       ],
       "is_encoding_problem": false,
@@ -215,7 +215,7 @@
       },
       "offset_header": 287,
       "offset_body": 313,
-      "offset_end": 326
+      "offset_end": 325
     },
     {
       "headers": [
@@ -235,16 +235,16 @@
               ]
             }
           },
-          "raw_start": 343,
-          "raw_end": 374
+          "offset_start": 343,
+          "offset_end": 374
         },
         {
           "name": {
             "Rfc": "mime_version"
           },
           "value": "Empty",
-          "raw_start": 387,
-          "raw_end": 388
+          "offset_start": 387,
+          "offset_end": 388
         }
       ],
       "is_encoding_problem": false,
@@ -270,8 +270,8 @@
               "attributes": null
             }
           },
-          "raw_start": 406,
-          "raw_end": 418
+          "offset_start": 406,
+          "offset_end": 418
         }
       ],
       "is_encoding_problem": false,
@@ -280,7 +280,7 @@
       },
       "offset_header": 393,
       "offset_body": 419,
-      "offset_end": 432
+      "offset_end": 431
     }
   ]
 }

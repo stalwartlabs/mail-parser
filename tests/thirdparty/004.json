@@ -35,8 +35,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         },
         {
           "name": {
@@ -45,8 +45,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 57,
-          "raw_end": 62
+          "offset_start": 57,
+          "offset_end": 62
         }
       ],
       "is_encoding_problem": false,
@@ -73,8 +73,8 @@
           "value": {
             "Text": "6bit"
           },
-          "raw_start": 93,
-          "raw_end": 99
+          "offset_start": 93,
+          "offset_end": 99
         },
         {
           "name": {
@@ -92,8 +92,8 @@
               ]
             }
           },
-          "raw_start": 112,
-          "raw_end": 139
+          "offset_start": 112,
+          "offset_end": 139
         }
       ],
       "is_encoding_problem": false,
@@ -102,7 +102,7 @@
       },
       "offset_header": 67,
       "offset_body": 140,
-      "offset_end": 175
+      "offset_end": 174
     },
     {
       "headers": [
@@ -113,8 +113,8 @@
           "value": {
             "Text": "7bits"
           },
-          "raw_start": 205,
-          "raw_end": 218
+          "offset_start": 205,
+          "offset_end": 218
         },
         {
           "name": {
@@ -132,8 +132,8 @@
               ]
             }
           },
-          "raw_start": 231,
-          "raw_end": 258
+          "offset_start": 231,
+          "offset_end": 258
         }
       ],
       "is_encoding_problem": false,
@@ -142,7 +142,7 @@
       },
       "offset_header": 179,
       "offset_body": 259,
-      "offset_end": 282
+      "offset_end": 281
     },
     {
       "headers": [
@@ -153,8 +153,8 @@
           "value": {
             "Text": "8 bit"
           },
-          "raw_start": 312,
-          "raw_end": 319
+          "offset_start": 312,
+          "offset_end": 319
         },
         {
           "name": {
@@ -172,8 +172,8 @@
               ]
             }
           },
-          "raw_start": 332,
-          "raw_end": 359
+          "offset_start": 332,
+          "offset_end": 359
         }
       ],
       "is_encoding_problem": false,
@@ -182,7 +182,7 @@
       },
       "offset_header": 286,
       "offset_body": 360,
-      "offset_end": 383
+      "offset_end": 382
     },
     {
       "headers": [
@@ -193,8 +193,8 @@
           "value": {
             "Text": "7-bit"
           },
-          "raw_start": 413,
-          "raw_end": 420
+          "offset_start": 413,
+          "offset_end": 420
         },
         {
           "name": {
@@ -212,8 +212,8 @@
               ]
             }
           },
-          "raw_start": 433,
-          "raw_end": 460
+          "offset_start": 433,
+          "offset_end": 460
         }
       ],
       "is_encoding_problem": false,
@@ -222,7 +222,7 @@
       },
       "offset_header": 387,
       "offset_body": 461,
-      "offset_end": 484
+      "offset_end": 483
     },
     {
       "headers": [
@@ -233,8 +233,8 @@
           "value": {
             "Text": "8-bit"
           },
-          "raw_start": 514,
-          "raw_end": 521
+          "offset_start": 514,
+          "offset_end": 521
         },
         {
           "name": {
@@ -252,8 +252,8 @@
               ]
             }
           },
-          "raw_start": 534,
-          "raw_end": 561
+          "offset_start": 534,
+          "offset_end": 561
         }
       ],
       "is_encoding_problem": false,
@@ -262,7 +262,7 @@
       },
       "offset_header": 488,
       "offset_body": 562,
-      "offset_end": 585
+      "offset_end": 584
     },
     {
       "headers": [
@@ -271,8 +271,8 @@
             "Rfc": "content_transfer_encoding"
           },
           "value": "Empty",
-          "raw_start": 615,
-          "raw_end": 616
+          "offset_start": 615,
+          "offset_end": 616
         },
         {
           "name": {
@@ -290,8 +290,8 @@
               ]
             }
           },
-          "raw_start": 629,
-          "raw_end": 656
+          "offset_start": 629,
+          "offset_end": 656
         }
       ],
       "is_encoding_problem": false,
@@ -300,7 +300,7 @@
       },
       "offset_header": 589,
       "offset_body": 657,
-      "offset_end": 698
+      "offset_end": 697
     }
   ]
 }

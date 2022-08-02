@@ -23,8 +23,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 13,
-          "raw_end": 18
+          "offset_start": 13,
+          "offset_end": 18
         },
         {
           "name": {
@@ -36,8 +36,8 @@
               "address": "nsb@nsb.fv.com"
             }
           },
-          "raw_start": 23,
-          "raw_end": 62
+          "offset_start": 23,
+          "offset_end": 62
         },
         {
           "name": {
@@ -49,8 +49,8 @@
               "address": "ned@innosoft.com"
             }
           },
-          "raw_start": 65,
-          "raw_end": 95
+          "offset_start": 65,
+          "offset_end": 95
         },
         {
           "name": {
@@ -69,8 +69,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 100,
-          "raw_end": 139
+          "offset_start": 100,
+          "offset_end": 139
         },
         {
           "name": {
@@ -79,8 +79,8 @@
           "value": {
             "Text": "A multipart example"
           },
-          "raw_start": 147,
-          "raw_end": 168
+          "offset_start": 147,
+          "offset_end": 168
         },
         {
           "name": {
@@ -98,8 +98,8 @@
               ]
             }
           },
-          "raw_start": 181,
-          "raw_end": 238
+          "offset_start": 181,
+          "offset_end": 238
         }
       ],
       "is_encoding_problem": false,
@@ -124,7 +124,7 @@
       },
       "offset_header": 530,
       "offset_body": 531,
-      "offset_end": 794
+      "offset_end": 793
     },
     {
       "headers": [
@@ -144,8 +144,8 @@
               ]
             }
           },
-          "raw_start": 827,
-          "raw_end": 857
+          "offset_start": 827,
+          "offset_end": 857
         }
       ],
       "is_encoding_problem": false,
@@ -154,7 +154,7 @@
       },
       "offset_header": 814,
       "offset_body": 858,
-      "offset_end": 970
+      "offset_end": 969
     },
     {
       "headers": [
@@ -174,8 +174,8 @@
               ]
             }
           },
-          "raw_start": 1003,
-          "raw_end": 1051
+          "offset_start": 1003,
+          "offset_end": 1051
         }
       ],
       "is_encoding_problem": false,
@@ -202,8 +202,8 @@
               "attributes": null
             }
           },
-          "raw_start": 1085,
-          "raw_end": 1098
+          "offset_start": 1085,
+          "offset_end": 1098
         },
         {
           "name": {
@@ -212,8 +212,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 1124,
-          "raw_end": 1132
+          "offset_start": 1124,
+          "offset_end": 1132
         }
       ],
       "is_encoding_problem": true,
@@ -222,7 +222,7 @@
       },
       "offset_header": 1072,
       "offset_body": 1133,
-      "offset_end": 1219
+      "offset_end": 1218
     },
     {
       "headers": [
@@ -237,8 +237,8 @@
               "attributes": null
             }
           },
-          "raw_start": 1252,
-          "raw_end": 1264
+          "offset_start": 1252,
+          "offset_end": 1264
         },
         {
           "name": {
@@ -247,8 +247,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 1290,
-          "raw_end": 1298
+          "offset_start": 1290,
+          "offset_end": 1298
         }
       ],
       "is_encoding_problem": true,
@@ -257,7 +257,7 @@
       },
       "offset_header": 1239,
       "offset_body": 1299,
-      "offset_end": 1344
+      "offset_end": 1343
     },
     {
       "headers": [
@@ -272,8 +272,8 @@
               "attributes": null
             }
           },
-          "raw_start": 1400,
-          "raw_end": 1415
+          "offset_start": 1400,
+          "offset_end": 1415
         }
       ],
       "is_encoding_problem": false,
@@ -282,7 +282,7 @@
       },
       "offset_header": 1387,
       "offset_body": 1416,
-      "offset_end": 1557
+      "offset_end": 1556
     },
     {
       "headers": [
@@ -297,8 +297,8 @@
               "attributes": null
             }
           },
-          "raw_start": 1590,
-          "raw_end": 1606
+          "offset_start": 1590,
+          "offset_end": 1606
         }
       ],
       "is_encoding_problem": false,
@@ -324,8 +324,8 @@
                       "address": null
                     }
                   },
-                  "raw_start": 1612,
-                  "raw_end": 1635
+                  "offset_start": 1612,
+                  "offset_end": 1635
                 },
                 {
                   "name": {
@@ -337,8 +337,8 @@
                       "address": null
                     }
                   },
-                  "raw_start": 1638,
-                  "raw_end": 1661
+                  "offset_start": 1638,
+                  "offset_end": 1661
                 },
                 {
                   "name": {
@@ -347,8 +347,8 @@
                   "value": {
                     "Text": "(subject in US-ASCII)"
                   },
-                  "raw_start": 1669,
-                  "raw_end": 1692
+                  "offset_start": 1669,
+                  "offset_end": 1692
                 },
                 {
                   "name": {
@@ -366,8 +366,8 @@
                       ]
                     }
                   },
-                  "raw_start": 1705,
-                  "raw_end": 1737
+                  "offset_start": 1705,
+                  "offset_end": 1737
                 },
                 {
                   "name": {
@@ -376,8 +376,8 @@
                   "value": {
                     "Text": "Quoted-printable"
                   },
-                  "raw_start": 1763,
-                  "raw_end": 1781
+                  "offset_start": 1763,
+                  "offset_end": 1781
                 }
               ],
               "is_encoding_problem": false,
@@ -386,7 +386,7 @@
               },
               "offset_header": 1607,
               "offset_body": 1782,
-              "offset_end": 1831
+              "offset_end": 1830
             }
           ]
         }

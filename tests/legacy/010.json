@@ -16,8 +16,8 @@
           "value": {
             "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -26,8 +26,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -36,8 +36,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 122,
-          "raw_end": 170
+          "offset_start": 122,
+          "offset_end": 170
         },
         {
           "name": {
@@ -46,8 +46,8 @@
           "value": {
             "Text": " 1 (Highest)\r\n"
           },
-          "raw_start": 181,
-          "raw_end": 195
+          "offset_start": 181,
+          "offset_end": 195
         },
         {
           "name": {
@@ -66,8 +66,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 200,
-          "raw_end": 234
+          "offset_start": 200,
+          "offset_end": 234
         },
         {
           "name": {
@@ -79,8 +79,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 237,
-          "raw_end": 274
+          "offset_start": 237,
+          "offset_end": 274
         },
         {
           "name": {
@@ -92,8 +92,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 279,
-          "raw_end": 316
+          "offset_start": 279,
+          "offset_end": 316
         },
         {
           "name": {
@@ -102,8 +102,8 @@
           "value": {
             "Text": "Die Hasen und die Fr�sche"
           },
-          "raw_start": 324,
-          "raw_end": 352
+          "offset_start": 324,
+          "offset_end": 352
         },
         {
           "name": {
@@ -112,8 +112,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 365,
-          "raw_end": 371
+          "offset_start": 365,
+          "offset_end": 371
         },
         {
           "name": {
@@ -131,8 +131,8 @@
               ]
             }
           },
-          "raw_start": 384,
-          "raw_end": 419
+          "offset_start": 384,
+          "offset_end": 419
         },
         {
           "name": {
@@ -141,8 +141,8 @@
           "value": {
             "Text": "8bit"
           },
-          "raw_start": 445,
-          "raw_end": 452
+          "offset_start": 445,
+          "offset_end": 452
         }
       ],
       "is_encoding_problem": false,

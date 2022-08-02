@@ -28,8 +28,8 @@
           "value": {
             "Text": "RFC 8621 Section 4.1.4 test"
           },
-          "raw_start": 8,
-          "raw_end": 37
+          "offset_start": 8,
+          "offset_end": 37
         },
         {
           "name": {
@@ -47,8 +47,8 @@
               ]
             }
           },
-          "raw_start": 50,
-          "raw_end": 81
+          "offset_start": 50,
+          "offset_end": 81
         }
       ],
       "is_encoding_problem": false,
@@ -76,8 +76,8 @@
               "attributes": null
             }
           },
-          "raw_start": 99,
-          "raw_end": 111
+          "offset_start": 99,
+          "offset_end": 111
         },
         {
           "name": {
@@ -90,8 +90,8 @@
               "attributes": null
             }
           },
-          "raw_start": 131,
-          "raw_end": 139
+          "offset_start": 131,
+          "offset_end": 139
         }
       ],
       "is_encoding_problem": false,
@@ -100,7 +100,7 @@
       },
       "offset_header": 86,
       "offset_body": 140,
-      "offset_end": 142
+      "offset_end": 141
     },
     {
       "headers": [
@@ -120,8 +120,8 @@
               ]
             }
           },
-          "raw_start": 161,
-          "raw_end": 192
+          "offset_start": 161,
+          "offset_end": 192
         }
       ],
       "is_encoding_problem": false,
@@ -155,8 +155,8 @@
               ]
             }
           },
-          "raw_start": 210,
-          "raw_end": 247
+          "offset_start": 210,
+          "offset_end": 247
         }
       ],
       "is_encoding_problem": false,
@@ -188,8 +188,8 @@
               ]
             }
           },
-          "raw_start": 265,
-          "raw_end": 296
+          "offset_start": 265,
+          "offset_end": 296
         }
       ],
       "is_encoding_problem": false,
@@ -217,8 +217,8 @@
               "attributes": null
             }
           },
-          "raw_start": 314,
-          "raw_end": 326
+          "offset_start": 314,
+          "offset_end": 326
         },
         {
           "name": {
@@ -231,8 +231,8 @@
               "attributes": null
             }
           },
-          "raw_start": 346,
-          "raw_end": 354
+          "offset_start": 346,
+          "offset_end": 354
         }
       ],
       "is_encoding_problem": false,
@@ -241,7 +241,7 @@
       },
       "offset_header": 301,
       "offset_body": 355,
-      "offset_end": 357
+      "offset_end": 356
     },
     {
       "headers": [
@@ -256,8 +256,8 @@
               "attributes": null
             }
           },
-          "raw_start": 376,
-          "raw_end": 388
+          "offset_start": 376,
+          "offset_end": 388
         },
         {
           "name": {
@@ -270,8 +270,8 @@
               "attributes": null
             }
           },
-          "raw_start": 408,
-          "raw_end": 416
+          "offset_start": 408,
+          "offset_end": 416
         }
       ],
       "is_encoding_problem": false,
@@ -282,7 +282,7 @@
       },
       "offset_header": 363,
       "offset_body": 417,
-      "offset_end": 419
+      "offset_end": 418
     },
     {
       "headers": [
@@ -297,8 +297,8 @@
               "attributes": null
             }
           },
-          "raw_start": 438,
-          "raw_end": 450
+          "offset_start": 438,
+          "offset_end": 450
         },
         {
           "name": {
@@ -311,8 +311,8 @@
               "attributes": null
             }
           },
-          "raw_start": 470,
-          "raw_end": 478
+          "offset_start": 470,
+          "offset_end": 478
         }
       ],
       "is_encoding_problem": false,
@@ -321,7 +321,7 @@
       },
       "offset_header": 425,
       "offset_body": 479,
-      "offset_end": 481
+      "offset_end": 480
     },
     {
       "headers": [
@@ -341,8 +341,8 @@
               ]
             }
           },
-          "raw_start": 506,
-          "raw_end": 539
+          "offset_start": 506,
+          "offset_end": 539
         }
       ],
       "is_encoding_problem": false,
@@ -369,8 +369,8 @@
               "attributes": null
             }
           },
-          "raw_start": 557,
-          "raw_end": 568
+          "offset_start": 557,
+          "offset_end": 568
         }
       ],
       "is_encoding_problem": false,
@@ -379,7 +379,7 @@
       },
       "offset_header": 544,
       "offset_body": 569,
-      "offset_end": 584
+      "offset_end": 583
     },
     {
       "headers": [
@@ -394,8 +394,8 @@
               "attributes": null
             }
           },
-          "raw_start": 603,
-          "raw_end": 615
+          "offset_start": 603,
+          "offset_end": 615
         }
       ],
       "is_encoding_problem": false,
@@ -406,7 +406,7 @@
       },
       "offset_header": 590,
       "offset_body": 616,
-      "offset_end": 618
+      "offset_end": 617
     },
     {
       "headers": [
@@ -421,8 +421,8 @@
               "attributes": null
             }
           },
-          "raw_start": 655,
-          "raw_end": 667
+          "offset_start": 655,
+          "offset_end": 667
         },
         {
           "name": {
@@ -435,8 +435,8 @@
               "attributes": null
             }
           },
-          "raw_start": 687,
-          "raw_end": 699
+          "offset_start": 687,
+          "offset_end": 699
         }
       ],
       "is_encoding_problem": false,
@@ -447,7 +447,7 @@
       },
       "offset_header": 642,
       "offset_body": 700,
-      "offset_end": 702
+      "offset_end": 701
     },
     {
       "headers": [
@@ -462,8 +462,8 @@
               "attributes": null
             }
           },
-          "raw_start": 721,
-          "raw_end": 742
+          "offset_start": 721,
+          "offset_end": 742
         }
       ],
       "is_encoding_problem": false,
@@ -474,7 +474,7 @@
       },
       "offset_header": 708,
       "offset_body": 743,
-      "offset_end": 745
+      "offset_end": 744
     },
     {
       "headers": [
@@ -489,8 +489,8 @@
               "attributes": null
             }
           },
-          "raw_start": 764,
-          "raw_end": 780
+          "offset_start": 764,
+          "offset_end": 780
         }
       ],
       "is_encoding_problem": false,
@@ -513,8 +513,8 @@
                   "value": {
                     "Text": "J"
                   },
-                  "raw_start": 789,
-                  "raw_end": 792
+                  "offset_start": 789,
+                  "offset_end": 792
                 }
               ],
               "is_encoding_problem": false,
@@ -523,7 +523,7 @@
               },
               "offset_header": 781,
               "offset_body": 793,
-              "offset_end": 795
+              "offset_end": 794
             }
           ]
         }
@@ -545,8 +545,8 @@
               "attributes": null
             }
           },
-          "raw_start": 821,
-          "raw_end": 833
+          "offset_start": 821,
+          "offset_end": 833
         },
         {
           "name": {
@@ -559,8 +559,8 @@
               "attributes": null
             }
           },
-          "raw_start": 853,
-          "raw_end": 861
+          "offset_start": 853,
+          "offset_end": 861
         }
       ],
       "is_encoding_problem": false,
@@ -569,7 +569,7 @@
       },
       "offset_header": 808,
       "offset_body": 862,
-      "offset_end": 864
+      "offset_end": 863
     }
   ]
 }

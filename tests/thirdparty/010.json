@@ -16,8 +16,8 @@
           "value": {
             "Text": "こんにちは"
           },
-          "raw_start": 8,
-          "raw_end": 42
+          "offset_start": 8,
+          "offset_end": 42
         },
         {
           "name": {
@@ -26,8 +26,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 55,
-          "raw_end": 60
+          "offset_start": 55,
+          "offset_end": 60
         },
         {
           "name": {
@@ -49,8 +49,8 @@
               ]
             }
           },
-          "raw_start": 73,
-          "raw_end": 145
+          "offset_start": 73,
+          "offset_end": 145
         }
       ],
       "is_encoding_problem": false,
@@ -76,8 +76,8 @@
               "attributes": null
             }
           },
-          "raw_start": 163,
-          "raw_end": 175
+          "offset_start": 163,
+          "offset_end": 175
         },
         {
           "name": {
@@ -86,8 +86,8 @@
           "value": {
             "Text": "binary"
           },
-          "raw_start": 201,
-          "raw_end": 209
+          "offset_start": 201,
+          "offset_end": 209
         },
         {
           "name": {
@@ -96,8 +96,8 @@
           "value": {
             "Text": "ja"
           },
-          "raw_start": 226,
-          "raw_end": 230
+          "offset_start": 226,
+          "offset_end": 230
         }
       ],
       "is_encoding_problem": false,
@@ -106,7 +106,7 @@
       },
       "offset_header": 150,
       "offset_body": 231,
-      "offset_end": 250
+      "offset_end": 249
     }
   ]
 }

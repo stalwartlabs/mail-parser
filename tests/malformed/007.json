@@ -23,8 +23,8 @@
               ]
             }
           },
-          "raw_start": 13,
-          "raw_end": 44
+          "offset_start": 13,
+          "offset_end": 44
         }
       ],
       "is_encoding_problem": false,
@@ -55,8 +55,8 @@
               ]
             }
           },
-          "raw_start": 62,
-          "raw_end": 94
+          "offset_start": 62,
+          "offset_end": 94
         },
         {
           "name": {
@@ -65,8 +65,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 107,
-          "raw_end": 112
+          "offset_start": 107,
+          "offset_end": 112
         }
       ],
       "is_encoding_problem": false,
@@ -87,7 +87,7 @@
       },
       "offset_header": 147,
       "offset_body": 150,
-      "offset_end": 153
+      "offset_end": 157
     }
   ]
 }

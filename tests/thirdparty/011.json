@@ -18,8 +18,8 @@
           "value": {
             "Text": "dummy@xyz-webserver.abcd-gestion.local"
           },
-          "raw_start": 12,
-          "raw_end": 52
+          "offset_start": 12,
+          "offset_end": 52
         },
         {
           "name": {
@@ -28,8 +28,8 @@
           "value": {
             "Text": " admin@xyz-webserver.abcd-gestion.local\n"
           },
-          "raw_start": 65,
-          "raw_end": 105
+          "offset_start": 65,
+          "offset_end": 105
         },
         {
           "name": {
@@ -38,8 +38,8 @@
           "value": {
             "Text": "from [10.1.1.1] (Unknown [10.1.1.1])\n\tby xyz-webserver.abcd-gestion.com with ESMTPA\n\t; Mon, 18 Jul 2022 08:19:52 -0700"
           },
-          "raw_start": 114,
-          "raw_end": 234
+          "offset_start": 114,
+          "offset_end": 234
         },
         {
           "name": {
@@ -57,8 +57,8 @@
               ]
             }
           },
-          "raw_start": 247,
-          "raw_end": 320
+          "offset_start": 247,
+          "offset_end": 320
         },
         {
           "name": {
@@ -67,8 +67,8 @@
           "value": {
             "Text": "ca2236fb-9819-82dd-c501-d3bcf737a768@xyz-webserver.abcd-gestion.local"
           },
-          "raw_start": 331,
-          "raw_end": 404
+          "offset_start": 331,
+          "offset_end": 404
         },
         {
           "name": {
@@ -87,8 +87,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 409,
-          "raw_end": 442
+          "offset_start": 409,
+          "offset_end": 442
         },
         {
           "name": {
@@ -97,8 +97,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 455,
-          "raw_end": 460
+          "offset_start": 455,
+          "offset_end": 460
         },
         {
           "name": {
@@ -107,8 +107,8 @@
           "value": {
             "Text": " Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101\n Thunderbird/91.11.0\n"
           },
-          "raw_start": 471,
-          "raw_end": 559
+          "offset_start": 471,
+          "offset_end": 559
         },
         {
           "name": {
@@ -117,8 +117,8 @@
           "value": {
             "Text": "fr"
           },
-          "raw_start": 576,
-          "raw_end": 580
+          "offset_start": 576,
+          "offset_end": 580
         },
         {
           "name": {
@@ -130,8 +130,8 @@
               "address": "admin@xyz-webserver.abcd-gestion.local"
             }
           },
-          "raw_start": 583,
-          "raw_end": 635
+          "offset_start": 583,
+          "offset_end": 635
         },
         {
           "name": {
@@ -143,8 +143,8 @@
               "address": "dummy@xyz-webserver.abcd-gestion.local"
             }
           },
-          "raw_start": 640,
-          "raw_end": 688
+          "offset_start": 640,
+          "offset_end": 688
         },
         {
           "name": {
@@ -153,8 +153,8 @@
           "value": {
             "Text": "small image"
           },
-          "raw_start": 696,
-          "raw_end": 709
+          "offset_start": 696,
+          "offset_end": 709
         }
       ],
       "is_encoding_problem": false,
@@ -190,8 +190,8 @@
               ]
             }
           },
-          "raw_start": 807,
-          "raw_end": 849
+          "offset_start": 807,
+          "offset_end": 849
         },
         {
           "name": {
@@ -200,8 +200,8 @@
           "value": {
             "Text": "7bit"
           },
-          "raw_start": 875,
-          "raw_end": 881
+          "offset_start": 875,
+          "offset_end": 881
         }
       ],
       "is_encoding_problem": false,
@@ -230,8 +230,8 @@
               ]
             }
           },
-          "raw_start": 934,
-          "raw_end": 1003
+          "offset_start": 934,
+          "offset_end": 1003
         }
       ],
       "is_encoding_problem": false,
@@ -263,8 +263,8 @@
               ]
             }
           },
-          "raw_start": 1056,
-          "raw_end": 1082
+          "offset_start": 1056,
+          "offset_end": 1082
         },
         {
           "name": {
@@ -273,8 +273,8 @@
           "value": {
             "Text": "7bit"
           },
-          "raw_start": 1108,
-          "raw_end": 1114
+          "offset_start": 1108,
+          "offset_end": 1114
         }
       ],
       "is_encoding_problem": false,
@@ -283,7 +283,7 @@
       },
       "offset_header": 1043,
       "offset_body": 1115,
-      "offset_end": 1348
+      "offset_end": 1347
     },
     {
       "headers": [
@@ -303,8 +303,8 @@
               ]
             }
           },
-          "raw_start": 1400,
-          "raw_end": 1440
+          "offset_start": 1400,
+          "offset_end": 1440
         },
         {
           "name": {
@@ -322,8 +322,8 @@
               ]
             }
           },
-          "raw_start": 1460,
-          "raw_end": 1501
+          "offset_start": 1460,
+          "offset_end": 1501
         },
         {
           "name": {
@@ -332,8 +332,8 @@
           "value": {
             "Text": "part1.9UVUk3pv.Sy4hPOBH@xyz-webserver.abcd-gestion.local"
           },
-          "raw_start": 1512,
-          "raw_end": 1572
+          "offset_start": 1512,
+          "offset_end": 1572
         },
         {
           "name": {
@@ -342,8 +342,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 1598,
-          "raw_end": 1606
+          "offset_start": 1598,
+          "offset_end": 1606
         }
       ],
       "is_encoding_problem": false,
@@ -3609,7 +3609,7 @@
       },
       "offset_header": 1387,
       "offset_body": 1607,
-      "offset_end": 6013
+      "offset_end": 6012
     }
   ]
 }

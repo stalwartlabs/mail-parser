@@ -19,8 +19,8 @@
               "address": "doug@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 40
+          "offset_start": 5,
+          "offset_end": 40
         },
         {
           "name": {
@@ -32,8 +32,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 43,
-          "raw_end": 96
+          "offset_start": 43,
+          "offset_end": 96
         },
         {
           "name": {
@@ -42,8 +42,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
           },
-          "raw_start": 104,
-          "raw_end": 175
+          "offset_start": 104,
+          "offset_end": 175
         },
         {
           "name": {
@@ -62,8 +62,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 180,
-          "raw_end": 214
+          "offset_start": 180,
+          "offset_end": 214
         },
         {
           "name": {
@@ -72,8 +72,8 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGCEKDCHAA.doug@example.com"
           },
-          "raw_start": 225,
-          "raw_end": 275
+          "offset_start": 225,
+          "offset_end": 275
         },
         {
           "name": {
@@ -82,8 +82,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 288,
-          "raw_end": 294
+          "offset_start": 288,
+          "offset_end": 294
         },
         {
           "name": {
@@ -101,8 +101,8 @@
               ]
             }
           },
-          "raw_start": 307,
-          "raw_end": 339
+          "offset_start": 307,
+          "offset_end": 339
         },
         {
           "name": {
@@ -111,8 +111,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 365,
-          "raw_end": 384
+          "offset_start": 365,
+          "offset_end": 384
         },
         {
           "name": {
@@ -121,8 +121,8 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
-          "raw_start": 395,
-          "raw_end": 408
+          "offset_start": 395,
+          "offset_end": 408
         },
         {
           "name": {
@@ -131,8 +131,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 426,
-          "raw_end": 435
+          "offset_start": 426,
+          "offset_end": 435
         },
         {
           "name": {
@@ -141,8 +141,8 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
-          "raw_start": 444,
-          "raw_end": 497
+          "offset_start": 444,
+          "offset_end": 497
         },
         {
           "name": {
@@ -151,8 +151,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 508,
-          "raw_end": 517
+          "offset_start": 508,
+          "offset_end": 517
         },
         {
           "name": {
@@ -161,8 +161,8 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
-          "raw_start": 527,
-          "raw_end": 575
+          "offset_start": 527,
+          "offset_end": 575
         }
       ],
       "is_encoding_problem": false,

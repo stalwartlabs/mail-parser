@@ -28,8 +28,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 5,
-          "raw_end": 45
+          "offset_start": 5,
+          "offset_end": 45
         },
         {
           "name": {
@@ -41,8 +41,8 @@
               "address": "doug@penguin.example.com"
             }
           },
-          "raw_start": 50,
-          "raw_end": 91
+          "offset_start": 50,
+          "offset_end": 91
         },
         {
           "name": {
@@ -60,8 +60,8 @@
               }
             ]
           },
-          "raw_start": 94,
-          "raw_end": 185
+          "offset_start": 94,
+          "offset_end": 185
         },
         {
           "name": {
@@ -70,8 +70,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 193,
-          "raw_end": 240
+          "offset_start": 193,
+          "offset_end": 240
         },
         {
           "name": {
@@ -80,8 +80,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
           },
-          "raw_start": 251,
-          "raw_end": 315
+          "offset_start": 251,
+          "offset_end": 315
         },
         {
           "name": {
@@ -90,8 +90,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 328,
-          "raw_end": 334
+          "offset_start": 328,
+          "offset_end": 334
         },
         {
           "name": {
@@ -109,8 +109,8 @@
               ]
             }
           },
-          "raw_start": 347,
-          "raw_end": 415
+          "offset_start": 347,
+          "offset_end": 415
         }
       ],
       "is_encoding_problem": false,
@@ -142,8 +142,8 @@
               ]
             }
           },
-          "raw_start": 691,
-          "raw_end": 722
+          "offset_start": 691,
+          "offset_end": 722
         }
       ],
       "is_encoding_problem": false,
@@ -152,7 +152,7 @@
       },
       "offset_header": 678,
       "offset_body": 724,
-      "offset_end": 726
+      "offset_end": 724
     },
     {
       "headers": [
@@ -176,8 +176,8 @@
               ]
             }
           },
-          "raw_start": 780,
-          "raw_end": 856
+          "offset_start": 780,
+          "offset_end": 856
         },
         {
           "name": {
@@ -186,8 +186,8 @@
           "value": {
             "Text": "BASE64"
           },
-          "raw_start": 882,
-          "raw_end": 891
+          "offset_start": 882,
+          "offset_end": 891
         },
         {
           "name": {
@@ -196,8 +196,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           },
-          "raw_start": 902,
-          "raw_end": 959
+          "offset_start": 902,
+          "offset_end": 959
         },
         {
           "name": {
@@ -206,8 +206,8 @@
           "value": {
             "Text": "Short story in German"
           },
-          "raw_start": 979,
-          "raw_end": 1003
+          "offset_start": 979,
+          "offset_end": 1003
         },
         {
           "name": {
@@ -225,8 +225,8 @@
               ]
             }
           },
-          "raw_start": 1023,
-          "raw_end": 1083
+          "offset_start": 1023,
+          "offset_end": 1083
         }
       ],
       "is_encoding_problem": false,
@@ -235,7 +235,7 @@
       },
       "offset_header": 767,
       "offset_body": 1085,
-      "offset_end": 2127
+      "offset_end": 2125
     }
   ]
 }

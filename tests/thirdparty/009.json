@@ -18,8 +18,8 @@
           "value": {
             "Text": "In parts"
           },
-          "raw_start": 8,
-          "raw_end": 18
+          "offset_start": 8,
+          "offset_end": 18
         },
         {
           "name": {
@@ -28,8 +28,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 31,
-          "raw_end": 36
+          "offset_start": 31,
+          "offset_end": 36
         },
         {
           "name": {
@@ -47,8 +47,8 @@
               ]
             }
           },
-          "raw_start": 49,
-          "raw_end": 78
+          "offset_start": 49,
+          "offset_end": 78
         }
       ],
       "is_encoding_problem": false,
@@ -75,8 +75,8 @@
               "attributes": null
             }
           },
-          "raw_start": 96,
-          "raw_end": 108
+          "offset_start": 96,
+          "offset_end": 108
         },
         {
           "name": {
@@ -85,8 +85,8 @@
           "value": {
             "Text": "binary"
           },
-          "raw_start": 134,
-          "raw_end": 142
+          "offset_start": 134,
+          "offset_end": 142
         }
       ],
       "is_encoding_problem": false,
@@ -95,7 +95,7 @@
       },
       "offset_header": 83,
       "offset_body": 143,
-      "offset_end": 192
+      "offset_end": 191
     },
     {
       "headers": [
@@ -123,8 +123,8 @@
               ]
             }
           },
-          "raw_start": 209,
-          "raw_end": 273
+          "offset_start": 209,
+          "offset_end": 273
         }
       ],
       "is_encoding_problem": false,
@@ -375,7 +375,7 @@
       },
       "offset_header": 196,
       "offset_body": 274,
-      "offset_end": 516
+      "offset_end": 515
     }
   ]
 }

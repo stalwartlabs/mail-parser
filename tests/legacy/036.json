@@ -26,8 +26,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 5,
-          "raw_end": 45
+          "offset_start": 5,
+          "offset_end": 45
         },
         {
           "name": {
@@ -39,8 +39,8 @@
               "address": "doug@penguin.example.com"
             }
           },
-          "raw_start": 50,
-          "raw_end": 91
+          "offset_start": 50,
+          "offset_end": 91
         },
         {
           "name": {
@@ -52,8 +52,8 @@
               "address": "schmuergen@example.com"
             }
           },
-          "raw_start": 94,
-          "raw_end": 159
+          "offset_start": 94,
+          "offset_end": 159
         },
         {
           "name": {
@@ -62,8 +62,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 167,
-          "raw_end": 214
+          "offset_start": 167,
+          "offset_end": 214
         },
         {
           "name": {
@@ -72,8 +72,8 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
           },
-          "raw_start": 225,
-          "raw_end": 289
+          "offset_start": 225,
+          "offset_end": 289
         },
         {
           "name": {
@@ -82,8 +82,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 302,
-          "raw_end": 308
+          "offset_start": 302,
+          "offset_end": 308
         },
         {
           "name": {
@@ -101,8 +101,8 @@
               ]
             }
           },
-          "raw_start": 321,
-          "raw_end": 354
+          "offset_start": 321,
+          "offset_end": 354
         },
         {
           "name": {
@@ -111,8 +111,8 @@
           "value": {
             "Text": "QUOTED-PRINTABLE"
           },
-          "raw_start": 380,
-          "raw_end": 399
+          "offset_start": 380,
+          "offset_end": 399
         }
       ],
       "is_encoding_problem": false,

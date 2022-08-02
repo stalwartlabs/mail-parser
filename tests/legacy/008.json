@@ -23,8 +23,8 @@
               "address": "doug@example.com"
             }
           },
-          "raw_start": 5,
-          "raw_end": 40
+          "offset_start": 5,
+          "offset_end": 40
         },
         {
           "name": {
@@ -36,8 +36,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 43,
-          "raw_end": 99
+          "offset_start": 43,
+          "offset_end": 99
         },
         {
           "name": {
@@ -46,8 +46,8 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
-          "raw_start": 107,
-          "raw_end": 148
+          "offset_start": 107,
+          "offset_end": 148
         },
         {
           "name": {
@@ -66,8 +66,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 153,
-          "raw_end": 187
+          "offset_start": 153,
+          "offset_end": 187
         },
         {
           "name": {
@@ -76,8 +76,8 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
           },
-          "raw_start": 198,
-          "raw_end": 248
+          "offset_start": 198,
+          "offset_end": 248
         },
         {
           "name": {
@@ -86,8 +86,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 261,
-          "raw_end": 267
+          "offset_start": 261,
+          "offset_end": 267
         },
         {
           "name": {
@@ -105,8 +105,8 @@
               ]
             }
           },
-          "raw_start": 280,
-          "raw_end": 354
+          "offset_start": 280,
+          "offset_end": 354
         },
         {
           "name": {
@@ -115,8 +115,8 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
-          "raw_start": 365,
-          "raw_end": 378
+          "offset_start": 365,
+          "offset_end": 378
         },
         {
           "name": {
@@ -125,8 +125,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 396,
-          "raw_end": 405
+          "offset_start": 396,
+          "offset_end": 405
         },
         {
           "name": {
@@ -135,8 +135,8 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
-          "raw_start": 414,
-          "raw_end": 467
+          "offset_start": 414,
+          "offset_end": 467
         },
         {
           "name": {
@@ -145,8 +145,8 @@
           "value": {
             "Text": " Normal\r\n"
           },
-          "raw_start": 478,
-          "raw_end": 487
+          "offset_start": 478,
+          "offset_end": 487
         },
         {
           "name": {
@@ -155,8 +155,8 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
-          "raw_start": 497,
-          "raw_end": 545
+          "offset_start": 497,
+          "offset_end": 545
         }
       ],
       "is_encoding_problem": false,
@@ -190,8 +190,8 @@
               ]
             }
           },
-          "raw_start": 653,
-          "raw_end": 690
+          "offset_start": 653,
+          "offset_end": 690
         },
         {
           "name": {
@@ -200,8 +200,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 716,
-          "raw_end": 735
+          "offset_start": 716,
+          "offset_end": 735
         }
       ],
       "is_encoding_problem": false,
@@ -210,7 +210,7 @@
       },
       "offset_header": 640,
       "offset_body": 737,
-      "offset_end": 1538
+      "offset_end": 1536
     },
     {
       "headers": [
@@ -230,8 +230,8 @@
               ]
             }
           },
-          "raw_start": 1596,
-          "raw_end": 1631
+          "offset_start": 1596,
+          "offset_end": 1631
         },
         {
           "name": {
@@ -240,8 +240,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 1657,
-          "raw_end": 1666
+          "offset_start": 1657,
+          "offset_end": 1666
         },
         {
           "name": {
@@ -259,8 +259,8 @@
               ]
             }
           },
-          "raw_start": 1686,
-          "raw_end": 1726
+          "offset_start": 1686,
+          "offset_end": 1726
         }
       ],
       "is_encoding_problem": false,
@@ -1595,7 +1595,7 @@
       },
       "offset_header": 1583,
       "offset_body": 1728,
-      "offset_end": 3546
+      "offset_end": 3544
     },
     {
       "headers": [
@@ -1615,8 +1615,8 @@
               ]
             }
           },
-          "raw_start": 3604,
-          "raw_end": 3640
+          "offset_start": 3604,
+          "offset_end": 3640
         },
         {
           "name": {
@@ -1625,8 +1625,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 3666,
-          "raw_end": 3675
+          "offset_start": 3666,
+          "offset_end": 3675
         },
         {
           "name": {
@@ -1644,8 +1644,8 @@
               ]
             }
           },
-          "raw_start": 3695,
-          "raw_end": 3736
+          "offset_start": 3695,
+          "offset_end": 3736
         }
       ],
       "is_encoding_problem": false,
@@ -2953,7 +2953,7 @@
       },
       "offset_header": 3591,
       "offset_body": 3738,
-      "offset_end": 5518
+      "offset_end": 5516
     },
     {
       "headers": [
@@ -2973,8 +2973,8 @@
               ]
             }
           },
-          "raw_start": 5576,
-          "raw_end": 5610
+          "offset_start": 5576,
+          "offset_end": 5610
         },
         {
           "name": {
@@ -2983,8 +2983,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 5636,
-          "raw_end": 5645
+          "offset_start": 5636,
+          "offset_end": 5645
         },
         {
           "name": {
@@ -3002,8 +3002,8 @@
               ]
             }
           },
-          "raw_start": 5665,
-          "raw_end": 5704
+          "offset_start": 5665,
+          "offset_end": 5704
         }
       ],
       "is_encoding_problem": false,
@@ -4466,7 +4466,7 @@
       },
       "offset_header": 5563,
       "offset_body": 5706,
-      "offset_end": 7700
+      "offset_end": 7698
     }
   ]
 }

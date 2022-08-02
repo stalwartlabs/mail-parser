@@ -21,8 +21,8 @@
           "value": {
             "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com"
           },
-          "raw_start": 11,
-          "raw_end": 64
+          "offset_start": 11,
+          "offset_end": 64
         },
         {
           "name": {
@@ -31,8 +31,8 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
-          "raw_start": 73,
-          "raw_end": 113
+          "offset_start": 73,
+          "offset_end": 113
         },
         {
           "name": {
@@ -41,8 +41,8 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
-          "raw_start": 122,
-          "raw_end": 170
+          "offset_start": 122,
+          "offset_end": 170
         },
         {
           "name": {
@@ -51,8 +51,8 @@
           "value": {
             "Text": " 2 (High)\r\n"
           },
-          "raw_start": 181,
-          "raw_end": 192
+          "offset_start": 181,
+          "offset_end": 192
         },
         {
           "name": {
@@ -71,8 +71,8 @@
               "tz_minute": 0
             }
           },
-          "raw_start": 197,
-          "raw_end": 231
+          "offset_start": 197,
+          "offset_end": 231
         },
         {
           "name": {
@@ -84,8 +84,8 @@
               "address": "mueller@example.com"
             }
           },
-          "raw_start": 234,
-          "raw_end": 288
+          "offset_start": 234,
+          "offset_end": 288
         },
         {
           "name": {
@@ -97,8 +97,8 @@
               "address": "dwsauder@example.com"
             }
           },
-          "raw_start": 293,
-          "raw_end": 330
+          "offset_start": 293,
+          "offset_end": 330
         },
         {
           "name": {
@@ -107,8 +107,8 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
-          "raw_start": 338,
-          "raw_end": 383
+          "offset_start": 338,
+          "offset_end": 383
         },
         {
           "name": {
@@ -117,8 +117,8 @@
           "value": {
             "Text": "1.0"
           },
-          "raw_start": 396,
-          "raw_end": 402
+          "offset_start": 396,
+          "offset_end": 402
         },
         {
           "name": {
@@ -136,8 +136,8 @@
               ]
             }
           },
-          "raw_start": 415,
-          "raw_end": 482
+          "offset_start": 415,
+          "offset_end": 482
         }
       ],
       "is_encoding_problem": false,
@@ -174,8 +174,8 @@
               ]
             }
           },
-          "raw_start": 535,
-          "raw_end": 628
+          "offset_start": 535,
+          "offset_end": 628
         }
       ],
       "is_encoding_problem": false,
@@ -208,8 +208,8 @@
               ]
             }
           },
-          "raw_start": 685,
-          "raw_end": 719
+          "offset_start": 685,
+          "offset_end": 719
         },
         {
           "name": {
@@ -218,8 +218,8 @@
           "value": {
             "Text": "quoted-printable"
           },
-          "raw_start": 745,
-          "raw_end": 764
+          "offset_start": 745,
+          "offset_end": 764
         }
       ],
       "is_encoding_problem": false,
@@ -228,7 +228,7 @@
       },
       "offset_header": 672,
       "offset_body": 766,
-      "offset_end": 1998
+      "offset_end": 1996
     },
     {
       "headers": [
@@ -248,8 +248,8 @@
               ]
             }
           },
-          "raw_start": 2053,
-          "raw_end": 2086
+          "offset_start": 2053,
+          "offset_end": 2086
         },
         {
           "name": {
@@ -258,8 +258,8 @@
           "value": {
             "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.2"
           },
-          "raw_start": 2097,
-          "raw_end": 2152
+          "offset_start": 2097,
+          "offset_end": 2152
         },
         {
           "name": {
@@ -268,8 +268,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 2178,
-          "raw_end": 2187
+          "offset_start": 2178,
+          "offset_end": 2187
         },
         {
           "name": {
@@ -287,8 +287,8 @@
               ]
             }
           },
-          "raw_start": 2207,
-          "raw_end": 2241
+          "offset_start": 2207,
+          "offset_end": 2241
         }
       ],
       "is_encoding_problem": false,
@@ -1623,7 +1623,7 @@
       },
       "offset_header": 2040,
       "offset_body": 2243,
-      "offset_end": 4059
+      "offset_end": 4057
     },
     {
       "headers": [
@@ -1643,8 +1643,8 @@
               ]
             }
           },
-          "raw_start": 4114,
-          "raw_end": 4147
+          "offset_start": 4114,
+          "offset_end": 4147
         },
         {
           "name": {
@@ -1653,8 +1653,8 @@
           "value": {
             "Text": "4.2.0.58.20000519003809.00a85140@pop.example.com.3"
           },
-          "raw_start": 4158,
-          "raw_end": 4213
+          "offset_start": 4158,
+          "offset_end": 4213
         },
         {
           "name": {
@@ -1663,8 +1663,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 4239,
-          "raw_end": 4248
+          "offset_start": 4239,
+          "offset_end": 4248
         },
         {
           "name": {
@@ -1682,8 +1682,8 @@
               ]
             }
           },
-          "raw_start": 4268,
-          "raw_end": 4302
+          "offset_start": 4268,
+          "offset_end": 4302
         }
       ],
       "is_encoding_problem": false,
@@ -3146,7 +3146,7 @@
       },
       "offset_header": 4101,
       "offset_body": 4304,
-      "offset_end": 6296
+      "offset_end": 6294
     },
     {
       "headers": [
@@ -3166,8 +3166,8 @@
               ]
             }
           },
-          "raw_start": 6393,
-          "raw_end": 6426
+          "offset_start": 6393,
+          "offset_end": 6426
         },
         {
           "name": {
@@ -3176,8 +3176,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 6452,
-          "raw_end": 6461
+          "offset_start": 6452,
+          "offset_end": 6461
         },
         {
           "name": {
@@ -3195,8 +3195,8 @@
               ]
             }
           },
-          "raw_start": 6481,
-          "raw_end": 6519
+          "offset_start": 6481,
+          "offset_end": 6519
         }
       ],
       "is_encoding_problem": false,
@@ -4531,7 +4531,7 @@
       },
       "offset_header": 6380,
       "offset_body": 6521,
-      "offset_end": 8337
+      "offset_end": 8335
     },
     {
       "headers": [
@@ -4551,8 +4551,8 @@
               ]
             }
           },
-          "raw_start": 8388,
-          "raw_end": 8422
+          "offset_start": 8388,
+          "offset_end": 8422
         },
         {
           "name": {
@@ -4561,8 +4561,8 @@
           "value": {
             "Text": "base64"
           },
-          "raw_start": 8448,
-          "raw_end": 8457
+          "offset_start": 8448,
+          "offset_end": 8457
         },
         {
           "name": {
@@ -4580,8 +4580,8 @@
               ]
             }
           },
-          "raw_start": 8477,
-          "raw_end": 8516
+          "offset_start": 8477,
+          "offset_end": 8516
         }
       ],
       "is_encoding_problem": false,
@@ -5889,7 +5889,7 @@
       },
       "offset_header": 8375,
       "offset_body": 8518,
-      "offset_end": 10296
+      "offset_end": 10294
     }
   ]
 }
