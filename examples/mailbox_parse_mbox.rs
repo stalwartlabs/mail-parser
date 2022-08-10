@@ -9,11 +9,11 @@
  * except according to those terms.
  */
 
-use mail_parser::{mailbox::mbox::MboxIterator, Message};
+use mail_parser::{mailbox::mbox::MessageIterator, Message};
 
 fn main() {
     // Reads an MBox mailbox from stdin and prints each message as YAML.
-    for raw_message in MboxIterator::new(std::io::stdin()) {
+    for raw_message in MessageIterator::new(std::io::stdin()) {
         let raw_message = raw_message.unwrap();
         let message = Message::parse(&raw_message).unwrap();
 

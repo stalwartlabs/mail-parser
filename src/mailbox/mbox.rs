@@ -14,7 +14,7 @@ use std::io::{BufRead, BufReader, Read};
 /// Parses an Mbox mailbox from a `Read` stream, returning each message as a
 /// `Vec<u8>`.
 /// supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
-pub struct MboxIterator<T: Read> {
+pub struct MessageIterator<T: Read> {
     reader: BufReader<T>,
     found_from: bool,
 }
@@ -22,19 +22,19 @@ pub struct MboxIterator<T: Read> {
 #[derive(Debug)]
 pub struct ParseError {}
 
-impl<T> MboxIterator<T>
+impl<T> MessageIterator<T>
 where
     T: Read,
 {
-    pub fn new(reader: T) -> MboxIterator<T> {
-        MboxIterator {
+    pub fn new(reader: T) -> MessageIterator<T> {
+        MessageIterator {
             reader: BufReader::new(reader),
             found_from: false,
         }
     }
 }
 
-impl<T> Iterator for MboxIterator<T>
+impl<T> Iterator for MessageIterator<T>
 where
     T: Read,
 {
@@ -99,7 +99,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::MboxIterator;
+    use super::MessageIterator;
 
     #[test]
     fn parse_mbox() {
@@ -121,7 +121,7 @@ Message 4
 >F
 "#;
 
-        let mut parser = MboxIterator::new(&message[..]);
+        let mut parser = MessageIterator::new(&message[..]);
 
         assert_eq!(parser.next().unwrap().unwrap(), b"Message 1\n\n");
         assert_eq!(parser.next().unwrap().unwrap(), b"Message 2\n\n");
