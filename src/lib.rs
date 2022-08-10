@@ -250,6 +250,7 @@
 //!```
 #[forbid(unsafe_code)]
 pub mod decoders;
+pub mod mailbox;
 pub mod parsers;
 
 use std::{

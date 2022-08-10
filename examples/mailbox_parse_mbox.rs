@@ -9,13 +9,14 @@
  * except according to those terms.
  */
 
-use mail_parser::{parsers::mbox::MBoxParser, Message};
+use mail_parser::{mailbox::mbox::MboxIterator, Message};
 
 fn main() {
-    // Read an MBox mailbox from stdin and prints each message as YAML.
-
-    for raw_message in MBoxParser::new(std::io::stdin()) {
+    // Reads an MBox mailbox from stdin and prints each message as YAML.
+    for raw_message in MboxIterator::new(std::io::stdin()) {
+        let raw_message = raw_message.unwrap();
         let message = Message::parse(&raw_message).unwrap();
+
         println!("{}", serde_yaml::to_string(&message).unwrap());
     }
 }

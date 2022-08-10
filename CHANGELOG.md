@@ -1,3 +1,11 @@
+mail-parser 0.6.0
+================================
+- Maildir parsing support.
+- Headers and attributes are now stored in a `Vec` instead of a `HashMap` for tiny performance enhancement.
+- Support for Content-Type attributes spanning multiple lines.
+- Support for malformed Thunderbird messages (#27). 
+- Fixed raw offset range for body parts.
+
 mail-parser 0.5.0
 ================================
 - `Message` headers are now stored as a `MessagePart` with index 0.

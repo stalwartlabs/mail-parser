@@ -11,42 +11,51 @@
 
 use std::io::{BufRead, BufReader, Read};
 
-/// Parses an MBox mailbox from a `Read` stream, returning each message as a
+/// Parses an Mbox mailbox from a `Read` stream, returning each message as a
 /// `Vec<u8>`.
 /// supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
-pub struct MBoxParser<T: Read> {
+pub struct MboxIterator<T: Read> {
     reader: BufReader<T>,
     found_from: bool,
 }
 
-impl<T> MBoxParser<T>
+#[derive(Debug)]
+pub struct ParseError {}
+
+impl<T> MboxIterator<T>
 where
     T: Read,
 {
-    pub fn new(reader: T) -> MBoxParser<T> {
-        MBoxParser {
+    pub fn new(reader: T) -> MboxIterator<T> {
+        MboxIterator {
             reader: BufReader::new(reader),
             found_from: false,
         }
     }
 }
 
-impl<T> Iterator for MBoxParser<T>
+impl<T> Iterator for MboxIterator<T>
 where
     T: Read,
 {
-    type Item = Vec<u8>;
+    type Item = Result<Vec<u8>, ParseError>;
 
-    fn next(&mut self) -> Option<Vec<u8>> {
+    fn next(&mut self) -> Option<Self::Item> {
         let mut message = Vec::with_capacity(1024);
         let mut message_line = Vec::with_capacity(80);
 
-        while self
-            .reader
-            .read_until(b'\n', &mut message_line)
-            .expect("Error while reading Mbox")
-            > 0
-        {
+        loop {
+            match self.reader.read_until(b'\n', &mut message_line) {
+                Ok(bytes_read) => {
+                    if bytes_read == 0 {
+                        break;
+                    }
+                }
+                Err(_) => {
+                    return Some(Err(ParseError {}));
+                }
+            }
+
             let is_from = message_line
                 .get(..5)
                 .map(|line| line == b"From ")
@@ -81,7 +90,7 @@ where
         }
 
         if !message.is_empty() {
-            Some(message)
+            Some(Ok(message))
         } else {
             None
         }
@@ -90,7 +99,7 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::MBoxParser;
+    use super::MboxIterator;
 
     #[test]
     fn parse_mbox() {
@@ -112,15 +121,15 @@ Message 4
 >F
 "#;
 
-        let mut parser = MBoxParser::new(&message[..]);
+        let mut parser = MboxIterator::new(&message[..]);
 
-        assert_eq!(parser.next().unwrap(), b"Message 1\n\n");
-        assert_eq!(parser.next().unwrap(), b"Message 2\n\n");
+        assert_eq!(parser.next().unwrap().unwrap(), b"Message 1\n\n");
+        assert_eq!(parser.next().unwrap().unwrap(), b"Message 2\n\n");
         assert_eq!(
-            parser.next().unwrap(),
+            parser.next().unwrap().unwrap(),
             b"Message 3\nFrom hello\n>From world\n>>From test\n\n"
         );
-        assert_eq!(parser.next().unwrap(), b"Message 4\n> From\n>F\n");
+        assert_eq!(parser.next().unwrap().unwrap(), b"Message 4\n> From\n>F\n");
         assert!(parser.next().is_none());
     }
 }
