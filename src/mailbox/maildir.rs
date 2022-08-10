@@ -289,49 +289,49 @@ mod tests {
             (
                 "INBOX".to_string(),
                 Message {
-                    internal_date: 1660133582,
-                    flags: vec![Flag::Seen, Flag::Trashed],
-                    contents: vec![97, 10],
-                },
-            ),
-            (
-                "INBOX".to_string(),
-                Message {
-                    internal_date: 1660133743,
+                    internal_date: 0,
                     flags: vec![Flag::Seen],
                     contents: vec![98, 10],
                 },
             ),
             (
-                "My Folder".to_string(),
+                "INBOX".to_string(),
                 Message {
-                    internal_date: 1660133871,
-                    flags: vec![Flag::Trashed, Flag::Draft, Flag::Replied],
-                    contents: vec![99, 10],
+                    internal_date: 0,
+                    flags: vec![Flag::Seen, Flag::Trashed],
+                    contents: vec![97, 10],
                 },
             ),
             (
                 "My Folder".to_string(),
                 Message {
-                    internal_date: 1660133903,
+                    internal_date: 0,
                     flags: vec![],
                     contents: vec![100, 10],
                 },
             ),
             (
-                "My Folder.Nested Folder".to_string(),
+                "My Folder".to_string(),
                 Message {
-                    internal_date: 1660133935,
-                    flags: vec![Flag::Flagged, Flag::Passed],
-                    contents: vec![101, 10],
+                    internal_date: 0,
+                    flags: vec![Flag::Trashed, Flag::Draft, Flag::Replied],
+                    contents: vec![99, 10],
                 },
             ),
             (
                 "My Folder.Nested Folder".to_string(),
                 Message {
-                    internal_date: 1660133987,
+                    internal_date: 0,
                     flags: vec![Flag::Replied, Flag::Draft, Flag::Flagged],
                     contents: vec![102, 10],
+                },
+            ),
+            (
+                "My Folder.Nested Folder".to_string(),
+                Message {
+                    internal_date: 0,
+                    flags: vec![Flag::Flagged, Flag::Passed],
+                    contents: vec![101, 10],
                 },
             ),
         ];
@@ -341,7 +341,10 @@ mod tests {
             let name = folder.name().unwrap_or("INBOX").to_string();
 
             for message in folder {
-                messages.push((name.clone(), message.unwrap()));
+                let mut message = message.unwrap();
+                assert_ne!(message.internal_date(), 0);
+                message.internal_date = 0;
+                messages.push((name.clone(), message));
             }
         }
 
