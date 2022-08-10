@@ -15,9 +15,11 @@ use std::{
 };
 
 /// Maildir folder iterator
-pub struct FolderIterator {
+pub struct FolderIterator<'x> {
     inbox: Option<MessageIterator>,
-    it: fs::ReadDir,
+    it_stack: Vec<fs::ReadDir>,
+    name_stack: Vec<String>,
+    prefix: Option<&'x str>,
 }
 
 /// Maildir message iterator
@@ -46,14 +48,30 @@ pub enum Flag {
     Flagged,
 }
 
-impl FolderIterator {
-    /// Creates a new Maildir folder iterator
-    pub fn new(path: impl Into<PathBuf>) -> io::Result<FolderIterator> {
+impl FolderIterator<'_> {
+    /// Creates a new Maildir folder iterator.
+    /// For Maildir++ mailboxes use `Some(".")` as the prefix.
+    /// For Dovecot Maildir mailboxes using LAYOUT=fs, use `None` as the prefix.
+    pub fn new(
+        path: impl Into<PathBuf>,
+        sub_folder_prefix: Option<&str>,
+    ) -> io::Result<FolderIterator> {
         let path = path.into();
 
         Ok(FolderIterator {
-            it: fs::read_dir(&path)?,
-            inbox: MessageIterator::new_(&path, None)?.into(),
+            it_stack: vec![fs::read_dir(&path)?],
+            name_stack: Vec::new(),
+            inbox: match MessageIterator::new_(&path, None) {
+                Ok(inbox) => inbox.into(),
+                Err(err) => {
+                    if err.kind() == io::ErrorKind::NotFound {
+                        None
+                    } else {
+                        return Err(err);
+                    }
+                }
+            },
+            prefix: sub_folder_prefix,
         })
     }
 }
@@ -95,7 +113,7 @@ impl MessageIterator {
     }
 }
 
-impl Iterator for FolderIterator {
+impl Iterator for FolderIterator<'_> {
     type Item = io::Result<MessageIterator>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -104,20 +122,52 @@ impl Iterator for FolderIterator {
         }
 
         loop {
-            let entry = match self.it.next() {
+            let entry = match self.it_stack.last_mut().unwrap().next() {
                 Some(Ok(entry)) => entry,
                 Some(Err(err)) => return Some(Err(err)),
-                None => return None,
+                None => {
+                    self.it_stack.pop();
+                    self.name_stack.pop();
+
+                    if !self.it_stack.is_empty() {
+                        continue;
+                    } else {
+                        return None;
+                    }
+                }
             };
 
             let path = entry.path();
             if path.is_dir() {
-                if let Some(name) = path
-                    .file_name()
-                    .and_then(|name| name.to_str())
-                    .and_then(|name| name.strip_prefix('.'))
+                if let Some(name) =
+                    path.file_name()
+                        .and_then(|name| name.to_str())
+                        .and_then(|name| {
+                            if !["cur", "new", "tmp"].contains(&name) {
+                                if let Some(prefix) = self.prefix {
+                                    name.strip_prefix(prefix)
+                                } else {
+                                    name.into()
+                                }
+                            } else {
+                                None
+                            }
+                        })
                 {
-                    match MessageIterator::new_(&path, Some(name.to_string())) {
+                    match fs::read_dir(&path) {
+                        Ok(next_it) => {
+                            self.it_stack.push(next_it);
+                            self.name_stack.push(name.to_string());
+                        }
+                        Err(err) => {
+                            return Some(Err(err));
+                        }
+                    }
+
+                    match MessageIterator::new_(
+                        &path,
+                        self.name_stack.join(self.prefix.unwrap_or("/")).into(),
+                    ) {
                         Ok(folder) => return Some(Ok(folder)),
                         Err(err) => {
                             if err.kind() != io::ErrorKind::NotFound {
@@ -286,7 +336,7 @@ mod tests {
             ),
         ];
 
-        for folder in FolderIterator::new(test_dir).unwrap() {
+        for folder in FolderIterator::new(test_dir, ".".into()).unwrap() {
             let folder = folder.unwrap();
             let name = folder.name().unwrap_or("INBOX").to_string();
 

@@ -19,7 +19,7 @@ fn main() {
     test_dir.push("tests");
     test_dir.push("maildir");
 
-    for folder in FolderIterator::new(test_dir).unwrap() {
+    for folder in FolderIterator::new(test_dir, ".".into()).unwrap() {
         let folder = folder.unwrap();
         println!("------\nMailbox: {:?}", folder.name().unwrap_or("INBOX"));
 
