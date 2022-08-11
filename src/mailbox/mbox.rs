@@ -9,6 +9,7 @@
  * except according to those terms.
  */
 
+use crate::DateTime;
 use std::io::{BufRead, BufReader, Read};
 
 /// Parses an Mbox mailbox from a `Read` stream, returning each message as a
@@ -16,7 +17,15 @@ use std::io::{BufRead, BufReader, Read};
 /// supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
 pub struct MessageIterator<T: Read> {
     reader: BufReader<T>,
-    found_from: bool,
+    message: Option<Message>,
+}
+
+/// Mbox message contents and metadata
+#[derive(Debug, PartialEq, Eq, Clone, PartialOrd, Ord)]
+pub struct Message {
+    internal_date: u64,
+    from: String,
+    contents: Vec<u8>,
 }
 
 #[derive(Debug)]
@@ -29,7 +38,7 @@ where
     pub fn new(reader: T) -> MessageIterator<T> {
         MessageIterator {
             reader: BufReader::new(reader),
-            found_from: false,
+            message: None,
         }
     }
 }
@@ -38,10 +47,9 @@ impl<T> Iterator for MessageIterator<T>
 where
     T: Read,
 {
-    type Item = Result<Vec<u8>, ParseError>;
+    type Item = Result<Message, ParseError>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let mut message = Vec::with_capacity(1024);
         let mut message_line = Vec::with_capacity(80);
 
         loop {
@@ -61,10 +69,10 @@ where
                 .map(|line| line == b"From ")
                 .unwrap_or(false);
 
-            if self.found_from {
+            if let Some(message) = &mut self.message {
                 if !is_from {
                     if message_line[0] != b'>' {
-                        message.append(&mut message_line);
+                        message.contents.append(&mut message_line);
                     } else if message_line
                         .iter()
                         .skip_while(|&&ch| ch == b'>')
@@ -73,63 +81,199 @@ where
                         .collect::<Vec<u8>>()
                         == b"From "
                     {
-                        message.extend_from_slice(&message_line[1..]);
+                        message.contents.extend_from_slice(&message_line[1..]);
                         message_line.clear();
                     } else {
-                        message.append(&mut message_line);
+                        message.contents.append(&mut message_line);
                     }
                 } else {
-                    break;
+                    let message = self.message.take().map(Ok);
+                    self.message =
+                        Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
+                    return message;
                 }
             } else {
                 if is_from {
-                    self.found_from = true;
+                    self.message =
+                        Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
                 }
                 message_line.clear();
             }
         }
 
-        if !message.is_empty() {
-            Some(Ok(message))
+        self.message.take().map(Ok)
+    }
+}
+
+impl Message {
+    fn new(hdr: &str) -> Self {
+        let (internal_date, from) = if let Some((from, date)) = hdr
+            .strip_prefix("From ")
+            .and_then(|hdr| hdr.split_once(' '))
+        {
+            let mut dt = DateTime {
+                year: u32::MAX,
+                month: u32::MAX,
+                day: u32::MAX,
+                hour: u32::MAX,
+                minute: u32::MAX,
+                second: u32::MAX,
+                tz_before_gmt: false,
+                tz_hour: 0,
+                tz_minute: 0,
+            };
+
+            for (pos, part) in date.split_whitespace().enumerate() {
+                match pos {
+                    1 => {
+                        dt.month = if part.eq_ignore_ascii_case("jan") {
+                            1
+                        } else if part.eq_ignore_ascii_case("feb") {
+                            2
+                        } else if part.eq_ignore_ascii_case("mar") {
+                            3
+                        } else if part.eq_ignore_ascii_case("apr") {
+                            4
+                        } else if part.eq_ignore_ascii_case("may") {
+                            5
+                        } else if part.eq_ignore_ascii_case("jun") {
+                            6
+                        } else if part.eq_ignore_ascii_case("jul") {
+                            7
+                        } else if part.eq_ignore_ascii_case("aug") {
+                            8
+                        } else if part.eq_ignore_ascii_case("sep") {
+                            9
+                        } else if part.eq_ignore_ascii_case("oct") {
+                            10
+                        } else if part.eq_ignore_ascii_case("nov") {
+                            11
+                        } else if part.eq_ignore_ascii_case("dec") {
+                            12
+                        } else {
+                            u32::MAX
+                        };
+                    }
+                    2 => {
+                        dt.day = part.parse().unwrap_or(u32::MAX);
+                    }
+                    3 => {
+                        for (pos, part) in part.split(':').enumerate() {
+                            match pos {
+                                0 => {
+                                    dt.hour = part.parse().unwrap_or(u32::MAX);
+                                }
+                                1 => {
+                                    dt.minute = part.parse().unwrap_or(u32::MAX);
+                                }
+                                2 => {
+                                    dt.second = part.parse().unwrap_or(u32::MAX);
+                                }
+                                _ => {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    4 => {
+                        dt.year = part.parse().unwrap_or(u32::MAX);
+                    }
+                    _ => (),
+                }
+            }
+
+            (
+                if dt.is_valid() {
+                    dt.to_timestamp() as u64
+                } else {
+                    0
+                },
+                from.trim().to_string(),
+            )
         } else {
-            None
+            (0, "".to_string())
+        };
+
+        Self {
+            internal_date,
+            from,
+            contents: Vec::with_capacity(1024),
         }
+    }
+
+    /// Returns the message creation date in UTC seconds since UNIX epoch
+    pub fn internal_date(&self) -> u64 {
+        self.internal_date
+    }
+
+    /// Returns the message sender address
+    pub fn from(&self) -> &str {
+        &self.from
+    }
+
+    /// Returns the message contents
+    pub fn contents(&self) -> &[u8] {
+        &self.contents
+    }
+
+    /// Unwraps the message contents
+    pub fn unwrap_contents(self) -> Vec<u8> {
+        self.contents
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::mailbox::mbox::Message;
+
     use super::MessageIterator;
 
     #[test]
     fn parse_mbox() {
-        let message = br#"From Mon, 15 Jan 2018 15:30:00 +0100
+        let message = br#"From god@heaven.af.mil Sat Jan  3 01:05:34 1996
 Message 1
 
-From Mon, 15 Jan 2018 15:30:00 +0100
+From cras@irccrew.org  Tue Jul 23 19:39:23 2002
 Message 2
 
-From Mon, 15 Jan 2018 15:30:00 +0100
+From test@test.com Tue Aug  6 13:34:34 2002
 Message 3
 >From hello
 >>From world
 >>>From test
 
-From Mon, 15 Jan 2018 15:30:00 +0100
+From other@domain.com Mon Jan 15  15:30:00  2018
 Message 4
 > From
 >F
 "#;
 
-        let mut parser = MessageIterator::new(&message[..]);
+        let parser = MessageIterator::new(&message[..]);
+        let expected_messages = vec![
+            Message {
+                internal_date: 820631134,
+                from: "god@heaven.af.mil".to_string(),
+                contents: b"Message 1\n\n".to_vec(),
+            },
+            Message {
+                internal_date: 1027453163,
+                from: "cras@irccrew.org".to_string(),
+                contents: b"Message 2\n\n".to_vec(),
+            },
+            Message {
+                internal_date: 1028640874,
+                from: "test@test.com".to_string(),
+                contents: b"Message 3\nFrom hello\n>From world\n>>From test\n\n".to_vec(),
+            },
+            Message {
+                internal_date: 1516030200,
+                from: "other@domain.com".to_string(),
+                contents: b"Message 4\n> From\n>F\n".to_vec(),
+            },
+        ];
 
-        assert_eq!(parser.next().unwrap().unwrap(), b"Message 1\n\n");
-        assert_eq!(parser.next().unwrap().unwrap(), b"Message 2\n\n");
-        assert_eq!(
-            parser.next().unwrap().unwrap(),
-            b"Message 3\nFrom hello\n>From world\n>>From test\n\n"
-        );
-        assert_eq!(parser.next().unwrap().unwrap(), b"Message 4\n> From\n>F\n");
-        assert!(parser.next().is_none());
+        for (message, expected_messages) in parser.zip(expected_messages) {
+            assert_eq!(message.unwrap(), expected_messages);
+        }
     }
 }
