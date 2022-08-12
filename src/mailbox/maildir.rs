@@ -35,6 +35,7 @@ pub struct Message {
     internal_date: u64,
     flags: Vec<Flag>,
     contents: Vec<u8>,
+    path: PathBuf,
 }
 
 /// Flags of Maildir message
@@ -232,6 +233,7 @@ impl Iterator for MessageIterator {
                             contents,
                             internal_date,
                             flags,
+                            path: path.to_path_buf(),
                         }));
                     }
                 }
@@ -241,14 +243,6 @@ impl Iterator for MessageIterator {
 }
 
 impl Message {
-    pub fn new(internal_date: u64, flags: Vec<Flag>, contents: Vec<u8>) -> Message {
-        Message {
-            internal_date,
-            flags,
-            contents,
-        }
-    }
-
     /// Returns the message creation date in seconds since UNIX epoch
     pub fn internal_date(&self) -> u64 {
         self.internal_date
@@ -257,6 +251,11 @@ impl Message {
     /// Returns the message flags
     pub fn flags(&self) -> &[Flag] {
         &self.flags
+    }
+
+    /// Returns the path to the message file
+    pub fn path(&self) -> &Path {
+        &self.path
     }
 
     /// Returns the message contents
@@ -292,6 +291,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![Flag::Seen],
                     contents: vec![98, 10],
+                    path: "unknown".into(),
                 },
             ),
             (
@@ -300,6 +300,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![Flag::Seen, Flag::Trashed],
                     contents: vec![97, 10],
+                    path: "unknown".into(),
                 },
             ),
             (
@@ -308,6 +309,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![],
                     contents: vec![100, 10],
+                    path: "unknown".into(),
                 },
             ),
             (
@@ -316,6 +318,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![Flag::Trashed, Flag::Draft, Flag::Replied],
                     contents: vec![99, 10],
+                    path: "unknown".into(),
                 },
             ),
             (
@@ -324,6 +327,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![Flag::Replied, Flag::Draft, Flag::Flagged],
                     contents: vec![102, 10],
+                    path: "unknown".into(),
                 },
             ),
             (
@@ -332,6 +336,7 @@ mod tests {
                     internal_date: 0,
                     flags: vec![Flag::Flagged, Flag::Passed],
                     contents: vec![101, 10],
+                    path: "unknown".into(),
                 },
             ),
         ];
@@ -343,7 +348,9 @@ mod tests {
             for message in folder {
                 let mut message = message.unwrap();
                 assert_ne!(message.internal_date(), 0);
+                assert!(message.path.exists());
                 message.internal_date = 0;
+                message.path = PathBuf::from("unknown");
                 messages.push((name.clone(), message));
             }
         }

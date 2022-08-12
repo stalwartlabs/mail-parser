@@ -82,7 +82,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_date().unwrap().to_iso8601(),
+        message.get_date().unwrap().to_rfc3339(),
         "2021-11-20T14:22:01-08:00"
     );
 

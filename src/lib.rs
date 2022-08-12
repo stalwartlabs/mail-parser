@@ -183,7 +183,7 @@
 //!    );
 //!
 //!    assert_eq!(
-//!        message.get_date().unwrap().to_iso8601(),
+//!        message.get_date().unwrap().to_rfc3339(),
 //!        "2021-11-20T14:22:01-08:00"
 //!    );
 //!
@@ -767,15 +767,15 @@ pub struct ContentType<'x> {
 #[derive(Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct DateTime {
-    pub year: u32,
-    pub month: u32,
-    pub day: u32,
-    pub hour: u32,
-    pub minute: u32,
-    pub second: u32,
+    pub year: u16,
+    pub month: u8,
+    pub day: u8,
+    pub hour: u8,
+    pub minute: u8,
+    pub second: u8,
     pub tz_before_gmt: bool,
-    pub tz_hour: u32,
-    pub tz_minute: u32,
+    pub tz_hour: u8,
+    pub tz_minute: u8,
 }
 
 impl<'x> Message<'x> {

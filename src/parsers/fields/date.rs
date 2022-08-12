@@ -14,24 +14,42 @@ use std::fmt;
 use crate::{parsers::message::MessageStream, DateTime, HeaderValue};
 
 impl DateTime {
-    /// Returns an ISO-8601 representation of the parsed RFC5322 datetime field
-    pub fn to_iso8601(&self) -> String {
-        format!(
-            "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}{}{:02}:{:02}",
-            self.year,
-            self.month,
-            self.day,
-            self.hour,
-            self.minute,
-            self.second,
-            if self.tz_before_gmt && (self.tz_hour > 0 || self.tz_minute > 0) {
-                "-"
-            } else {
-                "+"
-            },
-            self.tz_hour,
-            self.tz_minute
-        )
+    /// Parses an RFC822 date
+    pub fn parse_rfc822(&self, value: &str) -> Option<Self> {
+        match parse_date(&mut MessageStream {
+            data: value.as_bytes(),
+            pos: 0,
+        }) {
+            HeaderValue::DateTime(dt) => dt.into(),
+            _ => None,
+        }
+    }
+
+    /// Returns an RFC3339 representation of the parsed RFC5322 datetime field
+    pub fn to_rfc3339(&self) -> String {
+        if self.tz_hour != 0 || self.tz_minute != 0 {
+            format!(
+                "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}{}{:02}:{:02}",
+                self.year,
+                self.month,
+                self.day,
+                self.hour,
+                self.minute,
+                self.second,
+                if self.tz_before_gmt && (self.tz_hour > 0 || self.tz_minute > 0) {
+                    "-"
+                } else {
+                    "+"
+                },
+                self.tz_hour,
+                self.tz_minute
+            )
+        } else {
+            format!(
+                "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z",
+                self.year, self.month, self.day, self.hour, self.minute, self.second,
+            )
+        }
     }
 
     /// Returns true if the date is valid
@@ -50,9 +68,10 @@ impl DateTime {
     /// or None if the date is invalid.
     pub fn to_timestamp(&self) -> i64 {
         // Ported from https://github.com/protocolbuffers/upb/blob/22182e6e/upb/json_decode.c#L982-L992
+        let month = self.month as u32;
         let year_base = 4800; /* Before min year, multiple of 400. */
-        let m_adj = self.month.wrapping_sub(3); /* March-based month. */
-        let carry = if m_adj > self.month { 1 } else { 0 };
+        let m_adj = month.wrapping_sub(3); /* March-based month. */
+        let carry = if m_adj > month { 1 } else { 0 };
         let adjust = if carry > 0 { 12 } else { 0 };
         let y_adj = self.year as i64 + year_base - carry;
         let month_days = ((m_adj.wrapping_add(adjust)) * 62719 + 769) / 2048;
@@ -84,7 +103,7 @@ impl Ord for DateTime {
 
 impl fmt::Display for DateTime {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(&self.to_iso8601())
+        fmt.write_str(&self.to_rfc3339())
     }
 }
 
@@ -207,18 +226,18 @@ pub fn parse_date<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
                 parts[2] + 1900
             } else {
                 parts[2]
-            },
+            } as u16,
             month: if month_pos == 3 && month_hash <= 30 {
-                MONTH_MAP[month_hash] as u32
+                MONTH_MAP[month_hash] as u8
             } else {
-                parts[1]
+                parts[1] as u8
             },
-            day: parts[0],
-            hour: parts[3],
-            minute: parts[4],
-            second: parts[5],
-            tz_hour: parts[6] / 100,
-            tz_minute: parts[6] % 100,
+            day: parts[0] as u8,
+            hour: parts[3] as u8,
+            minute: parts[4] as u8,
+            second: parts[5] as u8,
+            tz_hour: (parts[6] / 100) as u8,
+            tz_minute: (parts[6] % 100) as u8,
             tz_before_gmt: !is_plus,
         })
     } else {
@@ -288,7 +307,7 @@ mod tests {
                 "Tue, 1 Jul 2003 ((tricky)\n comment) 10:52:37 +0200",
                 "2003-07-01T10:52:37+02:00",
             ),
-            ("21 Nov 97 09:55:06 GMT", "1997-11-21T09:55:06+00:00"),
+            ("21 Nov 97 09:55:06 GMT", "1997-11-21T09:55:06Z"),
             (
                 "20 11 (some \n 44 comments(more comments\n )) 79 05:34:27 -0300",
                 "1979-11-20T05:34:27-03:00",
@@ -315,11 +334,10 @@ mod tests {
             ("13 zzz 2021 09:55:06 +0200", "2021-00-13T09:55:06+02:00"),
         ];
 
-        for input in inputs {
-            let str = input.0.to_string();
-            match parse_date(&mut MessageStream::new(str.as_bytes())) {
+        for (input, expected_result) in inputs {
+            match parse_date(&mut MessageStream::new(input.as_bytes())) {
                 HeaderValue::DateTime(datetime) => {
-                    assert_eq!(input.1, datetime.to_iso8601());
+                    assert_eq!(expected_result, datetime.to_rfc3339());
 
                     if datetime.is_valid() {
                         if let LocalResult::Single(chrono_datetime)
@@ -328,14 +346,21 @@ mod tests {
                                 * if datetime.tz_before_gmt { 1i32 } else { -1i32 },
                         )
                         .unwrap_or_else(|| FixedOffset::east(0))
-                        .ymd_opt(datetime.year as i32, datetime.month, datetime.day)
-                        .and_hms_opt(datetime.hour, datetime.minute, datetime.second)
-                        {
+                        .ymd_opt(
+                            datetime.year as i32,
+                            datetime.month as u32,
+                            datetime.day as u32,
+                        )
+                        .and_hms_opt(
+                            datetime.hour as u32,
+                            datetime.minute as u32,
+                            datetime.second as u32,
+                        ) {
                             assert_eq!(
                                 chrono_datetime.timestamp(),
                                 datetime.to_timestamp(),
                                 "{} -> {} ({}) -> {} ({})",
-                                input.0.escape_debug(),
+                                input.escape_debug(),
                                 datetime.to_timestamp(),
                                 Utc.timestamp_opt(datetime.to_timestamp(), 0)
                                     .unwrap()
@@ -350,7 +375,7 @@ mod tests {
                 }
                 HeaderValue::Empty => {
                     //println!("{} -> None", input.0.escape_debug());
-                    assert!(input.1.is_empty());
+                    assert!(expected_result.is_empty());
                 }
                 _ => panic!("Unexpected result"),
             }

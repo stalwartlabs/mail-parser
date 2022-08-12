@@ -112,12 +112,12 @@ impl Message {
             .and_then(|hdr| hdr.split_once(' '))
         {
             let mut dt = DateTime {
-                year: u32::MAX,
-                month: u32::MAX,
-                day: u32::MAX,
-                hour: u32::MAX,
-                minute: u32::MAX,
-                second: u32::MAX,
+                year: u16::MAX,
+                month: u8::MAX,
+                day: u8::MAX,
+                hour: u8::MAX,
+                minute: u8::MAX,
+                second: u8::MAX,
                 tz_before_gmt: false,
                 tz_hour: 0,
                 tz_minute: 0,
@@ -151,23 +151,23 @@ impl Message {
                         } else if part.eq_ignore_ascii_case("dec") {
                             12
                         } else {
-                            u32::MAX
+                            u8::MAX
                         };
                     }
                     2 => {
-                        dt.day = part.parse().unwrap_or(u32::MAX);
+                        dt.day = part.parse().unwrap_or(u8::MAX);
                     }
                     3 => {
                         for (pos, part) in part.split(':').enumerate() {
                             match pos {
                                 0 => {
-                                    dt.hour = part.parse().unwrap_or(u32::MAX);
+                                    dt.hour = part.parse().unwrap_or(u8::MAX);
                                 }
                                 1 => {
-                                    dt.minute = part.parse().unwrap_or(u32::MAX);
+                                    dt.minute = part.parse().unwrap_or(u8::MAX);
                                 }
                                 2 => {
-                                    dt.second = part.parse().unwrap_or(u32::MAX);
+                                    dt.second = part.parse().unwrap_or(u8::MAX);
                                 }
                                 _ => {
                                     break;
@@ -176,7 +176,7 @@ impl Message {
                         }
                     }
                     4 => {
-                        dt.year = part.parse().unwrap_or(u32::MAX);
+                        dt.year = part.parse().unwrap_or(u16::MAX);
                     }
                     _ => (),
                 }
