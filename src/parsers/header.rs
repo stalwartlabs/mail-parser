@@ -26,7 +26,7 @@ use super::{
     message::MessageStream,
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum HeaderParserResult<'x> {
     Rfc(RfcHeader),
     Other(Cow<'x, str>),

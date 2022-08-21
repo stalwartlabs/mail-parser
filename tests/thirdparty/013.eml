@@ -1,0 +1,46 @@
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=166091464015.94FEC6.541095
+Content-Transfer-Encoding: 7bit
+
+
+--166091464015.94FEC6.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=166091464014.8cee04D8.541095
+Content-Transfer-Encoding: 7bit
+
+
+--166091464014.8cee04D8.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: text/plain
+
+a
+--166091464014.8cee04D8.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: text/html
+
+b
+--166091464014.8cee04D8.541095--
+
+--166091464015.94FEC6.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: image/jpeg
+
+c
+--166091464015.94FEC6.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: audio/mp3
+
+d
+--166091464015.94FEC6.541095
+Date: Fri, 19 Aug 2022 13:10:40 +0000
+MIME-Version: 1.0
+Content-Type: video/avi
+
+e
+--166091464015.94FEC6.541095--

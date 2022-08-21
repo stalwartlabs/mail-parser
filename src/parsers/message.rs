@@ -503,7 +503,16 @@ impl<'x> Message<'x> {
                             let offset_end = state
                                 .mime_boundary
                                 .as_ref()
-                                .map(|b| stream.pos.saturating_sub(b.len()))
+                                .map(|b| {
+                                    let pos = stream.pos.saturating_sub(b.len());
+                                    stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
+                                        if ch == b'\r' {
+                                            pos - 2
+                                        } else {
+                                            pos - 1
+                                        }
+                                    })
+                                })
                                 .unwrap_or(stream.pos);
                             message.raw_message =
                                 raw_message[state.offset_header..offset_end].as_ref().into();
@@ -610,6 +619,7 @@ impl<'x> Message<'x> {
         message.raw_message = raw_message.into();
 
         if !message.is_empty() {
+            message.parts[0].offset_end = message.raw_message.len();
             Some(message)
         } else {
             None

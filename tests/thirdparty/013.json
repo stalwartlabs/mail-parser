@@ -1,0 +1,450 @@
+{
+  "html_body": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "text_body": [
+    2,
+    4,
+    5,
+    6
+  ],
+  "attachments": [
+    4,
+    5,
+    6
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 5,
+          "offset_end": 38
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 51,
+          "offset_end": 56
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "166091464015.94FEC6.541095"
+                ]
+              ]
+            }
+          },
+          "offset_start": 69,
+          "offset_end": 123
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "offset_start": 149,
+          "offset_end": 155
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          4,
+          5,
+          6
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 156,
+      "offset_end": 982
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 191,
+          "offset_end": 224
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 237,
+          "offset_end": 242
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "166091464014.8cee04D8.541095"
+                ]
+              ]
+            }
+          },
+          "offset_start": 255,
+          "offset_end": 317
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "offset_start": 343,
+          "offset_end": 349
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3
+        ]
+      },
+      "offset_header": 186,
+      "offset_body": 350,
+      "offset_end": 613
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 387,
+          "offset_end": 420
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 433,
+          "offset_end": 438
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_start": 451,
+          "offset_end": 463
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "a"
+      },
+      "offset_header": 382,
+      "offset_body": 464,
+      "offset_end": 465
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 502,
+          "offset_end": 535
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 548,
+          "offset_end": 553
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": null
+            }
+          },
+          "offset_start": 566,
+          "offset_end": 577
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "b"
+      },
+      "offset_header": 497,
+      "offset_body": 578,
+      "offset_end": 579
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 648,
+          "offset_end": 681
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 694,
+          "offset_end": 699
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "jpeg",
+              "attributes": null
+            }
+          },
+          "offset_start": 712,
+          "offset_end": 724
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
+          99
+        ]
+      },
+      "offset_header": 643,
+      "offset_body": 725,
+      "offset_end": 726
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 761,
+          "offset_end": 794
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 807,
+          "offset_end": 812
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "audio",
+              "c_subtype": "mp3",
+              "attributes": null
+            }
+          },
+          "offset_start": 825,
+          "offset_end": 836
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
+          100
+        ]
+      },
+      "offset_header": 756,
+      "offset_body": 837,
+      "offset_end": 838
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2022,
+              "month": 8,
+              "day": 19,
+              "hour": 13,
+              "minute": 10,
+              "second": 40,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_start": 873,
+          "offset_end": 906
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_start": 919,
+          "offset_end": 924
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "video",
+              "c_subtype": "avi",
+              "attributes": null
+            }
+          },
+          "offset_start": 937,
+          "offset_end": 948
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
+          101
+        ]
+      },
+      "offset_header": 868,
+      "offset_body": 949,
+      "offset_end": 950
+    }
+  ]
+}

@@ -13,7 +13,7 @@ use crate::decoders::DecodeResult;
 
 use super::message::MessageStream;
 
-pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
+pub(crate) fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
     if !boundary.is_empty() {
         let mut pos = stream.pos;
 
@@ -44,7 +44,7 @@ pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
     false
 }
 
-pub fn get_bytes_to_boundary<'x>(
+pub(crate) fn get_bytes_to_boundary<'x>(
     stream: &MessageStream<'x>,
     start_pos: usize,
     boundary: &[u8],
@@ -115,14 +115,14 @@ pub fn get_bytes_to_boundary<'x>(
 }
 
 #[inline(always)]
-pub fn is_boundary_end(stream: &MessageStream, pos: usize) -> bool {
+pub(crate) fn is_boundary_end(stream: &MessageStream, pos: usize) -> bool {
     matches!(
         stream.data.get(pos..),
         Some([b'\n' | b'\r' | b' ' | b'\t', ..]) | Some([b'-', b'-', ..]) | Some([]) | None
     )
 }
 
-pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
+pub(crate) fn skip_multipart_end(stream: &mut MessageStream) -> bool {
     match stream.data.get(stream.pos..stream.pos + 2) {
         Some(b"--") => {
             if let Some(byte) = stream.data.get(stream.pos + 2) {
@@ -138,7 +138,7 @@ pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
 }
 
 #[inline(always)]
-pub fn skip_crlf(stream: &mut MessageStream) {
+pub(crate) fn skip_crlf(stream: &mut MessageStream) {
     for ch in &stream.data[stream.pos..] {
         match ch {
             b'\r' | b' ' | b'\t' => stream.pos += 1,
@@ -152,19 +152,7 @@ pub fn skip_crlf(stream: &mut MessageStream) {
 }
 
 #[inline(always)]
-pub fn seek_crlf_end(stream: &MessageStream, mut start_pos: usize) -> usize {
-    for ch in &stream.data[start_pos..] {
-        if ch.is_ascii_whitespace() {
-            start_pos += 1;
-        } else {
-            break;
-        }
-    }
-    start_pos
-}
-
-#[inline(always)]
-pub fn seek_crlf(stream: &MessageStream, mut start_pos: usize) -> usize {
+pub(crate) fn seek_crlf(stream: &MessageStream, mut start_pos: usize) -> usize {
     for ch in &stream.data[start_pos..] {
         match ch {
             b'\r' | b' ' | b'\t' => start_pos += 1,
