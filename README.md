@@ -279,7 +279,3 @@ at your option.
 ## Copyright
 
 Copyright (C) 2020-2022, Stalwart Labs Ltd.
-
-See [COPYING] for the license.
-
-[COPYING]: https://github.com/stalwartlabs/mail-parser/blob/main/COPYING
