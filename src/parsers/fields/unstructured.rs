@@ -15,7 +15,6 @@ use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStr
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
-    is_token_start: bool,
     tokens: Vec<Cow<'x, str>>,
 }
 
@@ -33,7 +32,6 @@ fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>
         }
 
         parser.token_start = 0;
-        parser.is_token_start = true;
     }
 }
 
@@ -41,7 +39,6 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
     let mut parser = UnstructuredParser {
         token_start: 0,
         token_end: 0,
-        is_token_start: true,
         tokens: Vec::new(),
     };
 
@@ -55,9 +52,6 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
 
                 match stream.data.get(stream.pos) {
                     Some(b' ' | b'\t') => {
-                        if !parser.is_token_start {
-                            parser.is_token_start = true;
-                        }
                         iter.next();
                         stream.pos += 1;
                         continue;
@@ -71,13 +65,10 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
                     }
                 }
             }
-            b' ' | b'\t' => {
-                if !parser.is_token_start {
-                    parser.is_token_start = true;
-                }
+            b' ' | b'\t' | b'\r' => {
                 continue;
             }
-            b'=' if parser.is_token_start => {
+            b'=' => {
                 if let (bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
                     add_token(&mut parser, stream, true);
                     parser.tokens.push(token.into());
@@ -86,12 +77,7 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
                     continue;
                 }
             }
-            b'\r' => continue,
             _ => (),
-        }
-
-        if parser.is_token_start {
-            parser.is_token_start = false;
         }
 
         if parser.token_start == 0 {
@@ -178,15 +164,25 @@ mod tests {
                 false,
             ),
             ("ハロー・ワールド \n", "ハロー・ワールド", true),
+            (
+                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb3JpZ2luYWwgc3ViamVjdA==?=\n",
+                "[SUSPECTED SPAM] This is the original subject",
+                true,
+            ),
+            ("Some text =?utf-8?Q??=here\n", "Some text  here", true),
+            (
+                "=?ISO-8859-1?Q?a?==?ISO-8859-1?Q?b?==?ISO-8859-1?Q?c?= =?ISO-8859-1?Q?d?=\n",
+                "abcd",
+                true,
+            ),
         ];
 
-        for input in inputs {
-            let str = input.0.to_string();
+        for (input, expected_result, _) in inputs {
             assert_eq!(
-                parse_unstructured(&mut MessageStream::new(str.as_bytes()),).unwrap_text(),
-                input.1,
+                parse_unstructured(&mut MessageStream::new(input.as_bytes()),).unwrap_text(),
+                expected_result,
                 "Failed to parse '{:?}'",
-                input.0
+                input
             );
         }
     }

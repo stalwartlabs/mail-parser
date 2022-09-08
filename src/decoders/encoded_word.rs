@@ -97,6 +97,8 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
                         .into()
                 },
             );
+        } else if let Some(b"?=") = stream.data.get(read_pos..read_pos + 2) {
+            return ((read_pos - start_pos) + 2, Some(String::new()));
         }
     }
 

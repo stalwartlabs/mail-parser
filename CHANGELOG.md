@@ -1,3 +1,7 @@
+mail-parser 0.6.1
+================================
+-  Support for malformed unstructured fields containing encoded words (#29).
+
 mail-parser 0.6.0
 ================================
 - Maildir parsing support.

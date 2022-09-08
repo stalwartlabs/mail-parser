@@ -20,6 +20,7 @@ pub mod quoted_printable;
 
 pub type DecodeFnc<'x> = fn(&MessageStream<'x>, usize, &[u8], bool) -> (usize, DecodeResult);
 
+#[derive(Debug)]
 pub enum DecodeResult {
     Owned(Vec<u8>),
     Borrowed((usize, usize)),
