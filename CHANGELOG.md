@@ -1,6 +1,7 @@
 mail-parser 0.6.1
 ================================
--  Support for malformed unstructured fields containing encoded words (#29).
+- Support for malformed unstructured fields containing encoded words (#29).
+- Add support for gb2312 charsets (#30).
 
 mail-parser 0.6.0
 ================================
