@@ -108,8 +108,11 @@ pub fn decode_quoted_printable<'x>(
             }
             b'\n' => {
                 if is_word {
-                    success = false;
-                    break;
+                    if !matches!(stream.data.get(start_pos + bytes_read), Some(ch) if [b' ', b'\t'].contains(ch))
+                    {
+                        success = false;
+                        break;
+                    }
                 } else if QuotedPrintableState::Eq == state {
                     state = QuotedPrintableState::None;
                 } else {

@@ -175,6 +175,18 @@ mod tests {
                 "abcd",
                 true,
             ),
+            ("=?utf-8?Q?Hello\n _there!?=\n", "Hello  there!", true),
+            ("=?utf-8?Q?Hello\r\n _there!?=\r\n", "Hello  there!", true),
+            (
+                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\n 3JpZ2luYWwgc3ViamVjdA==?=\n",
+                "[SUSPECTED SPAM] This is the original subject",
+                true,
+            ),
+            (
+                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\r\n 3JpZ2luYWwgc3ViamVjdA==?=\r\n",
+                "[SUSPECTED SPAM] This is the original subject",
+                true,
+            ),
         ];
 
         for (input, expected_result, _) in inputs {

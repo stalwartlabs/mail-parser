@@ -71,7 +71,11 @@ pub fn decode_base64<'x>(
                         break;
                     }
                 }
-            } else if !ch.is_ascii_whitespace() || is_word {
+            } else if !ch.is_ascii_whitespace()
+                || (is_word
+                    && ch == &b'\n'
+                    && !matches!(stream.data.get(start_pos + bytes_read), Some(ch) if [b' ', b'\t'].contains(ch)))
+            {
                 success = false;
                 break;
             }
@@ -143,7 +147,7 @@ mod tests {
             ("w6HDqcOtw7PDug==", "áéíóú", "", true),
             ("====", "", "\n--boundary", true),
             ("w6HDq!cOtw7PDug=", "", "", true),
-            ("w6 HD", "", "", true),
+            ("w6 HD qcOt", "áéí", "", true),
             ("cmáé", "", "", true),
             ("áé", "", "", true),
             ("w6HDqcOtw7PDug==?=", "áéíóú", "?=", true),
