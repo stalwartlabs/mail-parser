@@ -38,8 +38,9 @@ pub fn decode_quoted_printable<'x>(
     let mut lf_pos = 0;
 
     debug_assert!(boundary.is_empty() || boundary.len() >= 2);
+    let mut iter = stream.data[start_pos..].iter().peekable();
 
-    for ch in stream.data[start_pos..].iter() {
+    while let Some(ch) = iter.next() {
         bytes_read += 1;
 
         // if success is false, a boundary was provided
@@ -108,10 +109,17 @@ pub fn decode_quoted_printable<'x>(
             }
             b'\n' => {
                 if is_word {
-                    if !matches!(stream.data.get(start_pos + bytes_read), Some(ch) if [b' ', b'\t'].contains(ch))
-                    {
+                    if !matches!(iter.peek(), Some(ch) if [b' ', b'\t'].contains(ch)) {
                         success = false;
                         break;
+                    } else {
+                        loop {
+                            iter.next();
+                            bytes_read += 1;
+                            if !matches!(iter.peek(), Some(ch) if [b' ', b'\t'].contains(ch)) {
+                                break;
+                            }
+                        }
                     }
                 } else if QuotedPrintableState::Eq == state {
                     state = QuotedPrintableState::None;
