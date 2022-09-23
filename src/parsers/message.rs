@@ -13,8 +13,8 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{
-        base64::decode_base64, charsets::map::get_charset_decoder,
-        quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
+        base64::decode_base64_mime, charsets::map::get_charset_decoder,
+        quoted_printable::decode_quoted_printable_mime, DecodeFnc,
     },
     ContentType, Encoding, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart,
     MessagePartId, PartType, RfcHeader,
@@ -22,7 +22,9 @@ use crate::{
 
 use super::{
     header::parse_headers,
-    mime::{get_bytes_to_boundary, seek_crlf, seek_next_part, skip_crlf, skip_multipart_end},
+    mime::{
+        get_mime_part, seek_crlf, seek_next_part, seek_part_end, skip_crlf, skip_multipart_end,
+    },
 };
 
 #[derive(Debug, PartialEq)]
@@ -42,38 +44,6 @@ enum MimeType {
 impl Default for MimeType {
     fn default() -> Self {
         MimeType::Message
-    }
-}
-
-fn result_to_string<'x>(
-    result: DecodeResult,
-    data: &'x [u8],
-    content_type: Option<&ContentType>,
-) -> Cow<'x, str> {
-    match (
-        result,
-        content_type.and_then(|ct| {
-            ct.get_attribute("charset")
-                .and_then(|c| get_charset_decoder(c.as_bytes()))
-        }),
-    ) {
-        (DecodeResult::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),
-        (DecodeResult::Owned(vec), None) => String::from_utf8(vec)
-            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-            .into(),
-        (DecodeResult::Borrowed((from, to)), Some(charset_decoder)) => {
-            charset_decoder(&data[from..to]).into()
-        }
-        (DecodeResult::Borrowed((from, to)), None) => String::from_utf8_lossy(&data[from..to]),
-        (DecodeResult::Empty, _) => "\n".to_string().into(),
-    }
-}
-
-fn result_to_bytes(result: DecodeResult, data: &[u8]) -> Cow<[u8]> {
-    match result {
-        DecodeResult::Owned(vec) => Cow::Owned(vec),
-        DecodeResult::Borrowed((from, to)) => Cow::Borrowed(&data[from..to]),
-        DecodeResult::Empty => Cow::from(vec![b'?']),
     }
 }
 
@@ -113,24 +83,6 @@ fn get_mime_type(
         (false, true, true, MimeType::TextPlain)
     }
 }
-
-/*#[inline(always)]
-fn add_missing_type<'x>(
-    headers: &mut Vec<Header<'x>>,
-    c_type: Cow<'x, str>,
-    c_subtype: Cow<'x, str>,
-) {
-    if headers.is_empty() {
-        headers.insert(
-            RfcHeader::ContentType,
-            HeaderValue::ContentType(ContentType {
-                c_type,
-                c_subtype: Some(c_subtype),
-                attributes: None,
-            }),
-        );
-    }
-}*/
 
 #[derive(Default, Debug)]
 struct MessageParserState {
@@ -225,17 +177,15 @@ impl<'x> Message<'x> {
                 if let Some(mime_boundary) =
                     content_type.map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    //let mime_boundary = format!("\n--{}", mime_boundary).into_bytes();
-                    let mime_boundary = format!("--{}", mime_boundary).into_bytes();
                     state.offset_body = seek_crlf(&stream, stream.pos);
 
-                    if seek_next_part(&mut stream, mime_boundary.as_ref()) {
+                    if seek_next_part(&mut stream, mime_boundary.as_bytes()) {
                         let part_id = message.parts.len();
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
                                 || mime_type == MimeType::MultipartAlernative,
                             mime_type,
-                            mime_boundary: mime_boundary.into(),
+                            mime_boundary: mime_boundary.as_bytes().to_vec().into(),
                             html_parts: message.html_body.len(),
                             text_parts: message.text_body.len(),
                             need_html_body: state.need_html_body,
@@ -267,22 +217,21 @@ impl<'x> Message<'x> {
             skip_crlf(&mut stream);
             state.offset_body = stream.pos;
 
-            let (is_binary, mut encoding, decode_fnc): (bool, Encoding, DecodeFnc) =
-                match part_headers.get_rfc(&RfcHeader::ContentTransferEncoding) {
-                    Some(HeaderValue::Text(encoding))
-                        if encoding.eq_ignore_ascii_case("base64") =>
-                    {
-                        (false, Encoding::Base64, decode_base64)
-                    }
-                    Some(HeaderValue::Text(encoding))
-                        if encoding.eq_ignore_ascii_case("quoted-printable") =>
-                    {
-                        (false, Encoding::QuotedPrintable, decode_quoted_printable)
-                    }
-                    _ => (true, Encoding::None, get_bytes_to_boundary),
-                };
+            let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
+                .get_rfc(&RfcHeader::ContentTransferEncoding)
+            {
+                Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
+                    (Encoding::Base64, decode_base64_mime)
+                }
+                Some(HeaderValue::Text(encoding))
+                    if encoding.eq_ignore_ascii_case("quoted-printable") =>
+                {
+                    (Encoding::QuotedPrintable, decode_quoted_printable_mime)
+                }
+                _ => (Encoding::None, get_mime_part),
+            };
 
-            if is_binary && mime_type == MimeType::Message {
+            if mime_type == MimeType::Message && encoding == Encoding::None {
                 let new_state = MessageParserState {
                     mime_type: MimeType::Message,
                     mime_boundary: state.mime_boundary.take(),
@@ -307,101 +256,30 @@ impl<'x> Message<'x> {
                 continue;
             }
 
-            let (bytes_read, mut bytes) = decode_fnc(
-                &stream,
-                stream.pos,
-                state
-                    .mime_boundary
-                    .as_ref()
-                    .map_or_else(|| &[][..], |b| &b[..]),
-                false,
+            let (offset_end, mut bytes) = decode_fnc(
+                &mut stream,
+                state.mime_boundary.as_deref().unwrap_or(&b""[..]),
             );
 
             // Attempt to recover contents of an invalid message
-            let is_encoding_problem = bytes_read == 0;
+            let is_encoding_problem = offset_end == usize::MAX;
             if is_encoding_problem {
                 encoding = Encoding::None;
+                mime_type = MimeType::TextOther;
+                is_inline = false;
+                is_text = true;
 
-                let did_recover = if !(stream.pos >= stream.data.len()
-                    || (is_binary && state.mime_boundary.is_none()))
-                {
-                    // Get raw MIME part
-                    let (bytes_read, r_bytes) = if !is_binary {
-                        get_bytes_to_boundary(
-                            &stream,
-                            stream.pos,
-                            state
-                                .mime_boundary
-                                .as_ref()
-                                .map_or_else(|| &[][..], |b| &b[..]),
-                            false,
-                        )
-                    } else {
-                        (0, DecodeResult::Empty)
-                    };
+                let (offset_end, boundary_found) =
+                    seek_part_end(&mut stream, state.mime_boundary.as_deref());
+                state.offset_end = offset_end;
+                bytes = stream.data[state.offset_body..state.offset_end].into();
 
-                    if bytes_read == 0 {
-                        // If there is a MIME boundary, ignore it and get raw message
-                        if state.mime_boundary.is_some() {
-                            let (bytes_read, r_bytes) =
-                                get_bytes_to_boundary(&stream, stream.pos, &[][..], false);
-                            if bytes_read > 0 {
-                                bytes = r_bytes;
-                                stream.pos += bytes_read;
-                                state.mime_boundary = None;
-                                true
-                            } else {
-                                false
-                            }
-                        } else {
-                            false
-                        }
-                    } else {
-                        bytes = r_bytes;
-                        stream.pos += bytes_read;
-                        true
-                    }
-                } else {
-                    false
-                };
-
-                if did_recover {
-                    mime_type = MimeType::TextOther;
-                    is_inline = false;
-                    is_text = true;
-                } else {
-                    // Could not recover error, add part and abort
-                    message.parts.push(MessagePart {
-                        headers: std::mem::take(&mut part_headers),
-                        encoding: Encoding::None,
-                        is_encoding_problem: true,
-                        body: PartType::Binary((&[][..]).into()),
-                        offset_header: state.offset_header,
-                        offset_body: state.offset_body,
-                        offset_end: stream.pos,
-                    });
-                    break;
+                if !boundary_found {
+                    state.mime_boundary = None;
                 }
             } else {
-                stream.pos += bytes_read;
+                state.offset_end = offset_end;
             }
-
-            // Obtain offset end
-            state.offset_end = if let Some(mime_boundary) = &state.mime_boundary {
-                let pos = stream.pos.saturating_sub(mime_boundary.len());
-                std::cmp::max(
-                    stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
-                        if ch == b'\r' {
-                            pos - 2
-                        } else {
-                            pos - 1
-                        }
-                    }),
-                    state.offset_body,
-                )
-            } else {
-                stream.pos
-            };
 
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
@@ -439,7 +317,23 @@ impl<'x> Message<'x> {
                     };
 
                 if is_text {
-                    let text = result_to_string(bytes, stream.data, content_type);
+                    let text = match (
+                        bytes,
+                        content_type.and_then(|ct| {
+                            ct.get_attribute("charset")
+                                .and_then(|c| get_charset_decoder(c.as_bytes()))
+                        }),
+                    ) {
+                        (Cow::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),
+                        (Cow::Owned(vec), None) => String::from_utf8(vec)
+                            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+                            .into(),
+                        (Cow::Borrowed(bytes), Some(charset_decoder)) => {
+                            charset_decoder(bytes).into()
+                        }
+                        (Cow::Borrowed(bytes), None) => String::from_utf8_lossy(bytes),
+                    };
+
                     let is_html = mime_type == MimeType::TextHtml;
 
                     if add_to_html && !is_html {
@@ -471,7 +365,6 @@ impl<'x> Message<'x> {
 
                     message.attachments.push(message.parts.len());
 
-                    let bytes = result_to_bytes(bytes, stream.data);
                     if !is_inline {
                         PartType::Binary(bytes)
                     } else {
@@ -480,7 +373,7 @@ impl<'x> Message<'x> {
                 }
             } else {
                 message.attachments.push(message.parts.len());
-                PartType::Message(MessageAttachment::Raw(result_to_bytes(bytes, stream.data)))
+                PartType::Message(MessageAttachment::Raw(bytes))
             };
 
             // Add part
@@ -504,7 +397,7 @@ impl<'x> Message<'x> {
                                 .mime_boundary
                                 .as_ref()
                                 .map(|b| {
-                                    let pos = stream.pos.saturating_sub(b.len());
+                                    let pos = stream.pos.saturating_sub(b.len() + 2);
                                     stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
                                         if ch == b'\r' {
                                             pos - 2

@@ -9,34 +9,24 @@
  * except according to those terms.
  */
 
-use crate::decoders::DecodeResult;
+use std::borrow::Cow;
 
 use super::message::MessageStream;
 
-pub(crate) fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
+pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
     if !boundary.is_empty() {
         let mut pos = stream.pos;
 
-        let mut match_count = 0;
-
-        for ch in &stream.data[pos..] {
+        let mut iter = stream.data[stream.pos..].iter().peekable();
+        while let Some(&ch) = iter.next() {
             pos += 1;
 
-            if ch == &boundary[match_count] {
-                match_count += 1;
-                if match_count == boundary.len() {
-                    stream.pos = pos;
-                    return true;
-                } else {
-                    continue;
-                }
-            } else if match_count > 0 {
-                if ch == &boundary[0] {
-                    match_count = 1;
-                    continue;
-                } else {
-                    match_count = 0;
-                }
+            if ch == b'-'
+                && matches!(iter.peek(), Some(b'-'))
+                && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
+            {
+                stream.pos = pos + boundary.len() + 1;
+                return true;
             }
         }
     }
@@ -44,85 +34,98 @@ pub(crate) fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> boo
     false
 }
 
-pub(crate) fn get_bytes_to_boundary<'x>(
-    stream: &MessageStream<'x>,
-    start_pos: usize,
+pub fn get_mime_part<'x>(
+    stream: &mut MessageStream<'x>,
     boundary: &[u8],
-    _is_word: bool,
-) -> (usize, DecodeResult) {
-    let mut read_pos = start_pos;
+) -> (usize, Cow<'x, [u8]>) {
+    let mut last_ch = b'\n';
+    let start_pos = stream.pos;
+    let mut end_pos = stream.pos;
+    let mut pos = stream.pos;
 
-    if !boundary.is_empty() {
-        let mut match_count = 0;
-        let mut cr_pos = 0;
-        let mut lf_pos = 0;
+    let mut iter = stream.data[stream.pos..].iter().peekable();
+    while let Some(&ch) = iter.next() {
+        pos += 1;
 
-        for ch in &stream.data[read_pos..] {
-            read_pos += 1;
-
-            if ch == &boundary[match_count] {
-                match_count += 1;
-                if match_count == boundary.len() {
-                    if is_boundary_end(stream, read_pos) {
-                        let mut match_pos = read_pos - match_count;
-
-                        if match_pos > 0 && match_pos == lf_pos {
-                            if lf_pos == cr_pos + 1 {
-                                match_pos -= 2;
-                            } else {
-                                match_pos -= 1;
-                            }
-                        }
-
-                        return (
-                            read_pos - start_pos,
-                            if start_pos < match_pos {
-                                DecodeResult::Borrowed((start_pos, match_pos))
-                            } else {
-                                DecodeResult::Empty
-                            },
-                        );
-                    } else {
-                        match_count = 0;
-                    }
-                }
-                continue;
-            } else if match_count > 0 {
-                if ch == &boundary[0] {
-                    match_count = 1;
-                    continue;
-                } else {
-                    match_count = 0;
-                }
+        if ch == b'\n' {
+            end_pos = if last_ch == b'\r' { pos - 2 } else { pos - 1 };
+        } else if ch == b'-'
+            && !boundary.is_empty()
+            && matches!(iter.peek(), Some(b'-'))
+            && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
+            && matches!(
+                stream.data.get(pos + 1 + boundary.len()..),
+                Some([b'\n' | b'\r' | b' ' | b'\t', ..]) | Some([b'-', b'-', ..]) | Some([]) | None
+            )
+        {
+            stream.pos = pos + boundary.len() + 1;
+            if last_ch != b'\n' {
+                end_pos = pos - 1;
             }
-
-            if ch == &b'\r' {
-                cr_pos = read_pos;
-            } else if ch == &b'\n' {
-                lf_pos = read_pos;
-            }
+            return (end_pos, stream.data[start_pos..end_pos].into());
         }
 
-        (0, DecodeResult::Empty)
-    } else if start_pos < stream.data.len() {
-        (
-            stream.data.len() - start_pos,
-            DecodeResult::Borrowed((start_pos, stream.data.len())),
-        )
-    } else {
-        (0, DecodeResult::Empty)
+        last_ch = ch;
     }
-}
 
-#[inline(always)]
-pub(crate) fn is_boundary_end(stream: &MessageStream, pos: usize) -> bool {
-    matches!(
-        stream.data.get(pos..),
-        Some([b'\n' | b'\r' | b' ' | b'\t', ..]) | Some([b'-', b'-', ..]) | Some([]) | None
+    (
+        if boundary.is_empty() {
+            stream.pos = pos;
+            stream.pos
+        } else {
+            usize::MAX
+        },
+        stream.data[start_pos..pos].into(),
     )
 }
 
-pub(crate) fn skip_multipart_end(stream: &mut MessageStream) -> bool {
+pub fn seek_part_end<'x>(stream: &mut MessageStream<'x>, boundary: Option<&[u8]>) -> (usize, bool) {
+    let mut last_ch = b'\n';
+    let mut end_pos = stream.pos;
+
+    if let Some(boundary) = boundary {
+        let mut iter = stream.data[stream.pos..].iter().peekable();
+        while let Some(&ch) = iter.next() {
+            stream.pos += 1;
+
+            if ch == b'\n' {
+                end_pos = if last_ch == b'\r' {
+                    stream.pos - 2
+                } else {
+                    stream.pos - 1
+                };
+            } else if ch == b'-'
+                && matches!(iter.peek(), Some(b'-'))
+                && stream
+                    .data
+                    .get(stream.pos + 1..stream.pos + 1 + boundary.len())
+                    == Some(boundary)
+                && matches!(
+                    stream.data.get(stream.pos + 1 + boundary.len()..),
+                    Some([b'\n' | b'\r' | b' ' | b'\t', ..])
+                        | Some([b'-', b'-', ..])
+                        | Some([])
+                        | None
+                )
+            {
+                if last_ch != b'\n' {
+                    end_pos = stream.pos - 1;
+                }
+                stream.pos += boundary.len() + 1;
+                return (end_pos, true);
+            }
+
+            last_ch = ch;
+        }
+
+        (stream.pos, false)
+    } else {
+        stream.pos = stream.data.len();
+        (stream.pos, true)
+    }
+}
+
+pub fn skip_multipart_end(stream: &mut MessageStream) -> bool {
     match stream.data.get(stream.pos..stream.pos + 2) {
         Some(b"--") => {
             if let Some(byte) = stream.data.get(stream.pos + 2) {
@@ -138,7 +141,7 @@ pub(crate) fn skip_multipart_end(stream: &mut MessageStream) -> bool {
 }
 
 #[inline(always)]
-pub(crate) fn skip_crlf(stream: &mut MessageStream) {
+pub fn skip_crlf(stream: &mut MessageStream) {
     for ch in &stream.data[stream.pos..] {
         match ch {
             b'\r' | b' ' | b'\t' => stream.pos += 1,
@@ -152,7 +155,7 @@ pub(crate) fn skip_crlf(stream: &mut MessageStream) {
 }
 
 #[inline(always)]
-pub(crate) fn seek_crlf(stream: &MessageStream, mut start_pos: usize) -> usize {
+pub fn seek_crlf(stream: &MessageStream, mut start_pos: usize) -> usize {
     for ch in &stream.data[start_pos..] {
         match ch {
             b'\r' | b' ' | b'\t' => start_pos += 1,

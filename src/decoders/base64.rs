@@ -9,56 +9,89 @@
  * except according to those terms.
  */
 
+use std::borrow::Cow;
+
 use crate::parsers::message::MessageStream;
 
-use super::DecodeResult;
-
-pub fn decode_base64<'x>(
-    stream: &MessageStream<'x>,
-    start_pos: usize,
-    boundary: &[u8],
-    is_word: bool,
-) -> (usize, DecodeResult) {
-    let mut success = boundary.is_empty();
-
+pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
     let mut chunk: u32 = 0;
     let mut byte_count: u8 = 0;
-    let mut match_count: usize = 0;
 
-    let mut bytes_read = 0;
+    let mut buf = Vec::with_capacity(bytes.len() / 4 * 3);
 
-    let mut buf = Vec::with_capacity(stream.data.len() - start_pos);
+    for &ch in bytes {
+        let val = BASE64_MAP[byte_count as usize][ch as usize];
 
-    for ch in stream.data[start_pos..].iter() {
-        bytes_read += 1;
+        if val < 0x01ffffff {
+            byte_count = (byte_count + 1) & 3;
 
-        if !success {
-            if *ch == boundary[match_count] {
-                match_count += 1;
-                if match_count == boundary.len() {
-                    success = true;
-                    break;
-                } else {
-                    continue;
-                }
-            } else if match_count > 0 {
-                if *ch == boundary[0] {
-                    match_count = 1;
-                    continue;
-                } else {
-                    match_count = 0;
+            if byte_count == 1 {
+                chunk = val;
+            } else {
+                chunk |= val;
+
+                if byte_count == 0 {
+                    buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
             }
+        } else if ch == b'=' {
+            match byte_count {
+                1 | 2 => {
+                    buf.push(chunk.to_le_bytes()[0]);
+                    byte_count = 0;
+                }
+                3 => {
+                    buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                    byte_count = 0;
+                }
+                0 => (),
+                _ => {
+                    return None;
+                }
+            }
+        } else if !ch.is_ascii_whitespace() {
+            return None;
         }
+    }
 
-        let val = BASE64_MAP[byte_count as usize][*ch as usize];
+    buf.into()
+}
 
-        if val >= 0x01ffffff {
-            if *ch == b'=' {
-                match byte_count {
+pub fn decode_base64_mime<'x>(
+    stream: &mut MessageStream<'x>,
+    boundary: &[u8],
+) -> (usize, Cow<'x, [u8]>) {
+    let mut chunk: u32 = 0;
+    let mut byte_count: u8 = 0;
+
+    let mut buf = Vec::with_capacity((stream.data.len() - stream.pos) / 4 * 3);
+    let mut pos = stream.pos;
+
+    let mut last_ch = b'\n';
+    let mut end_pos = stream.pos;
+    let mut iter = stream.data[stream.pos..].iter();
+
+    while let Some(&ch) = iter.next() {
+        pos += 1;
+
+        let val = BASE64_MAP[byte_count as usize][ch as usize];
+        if val < 0x01ffffff {
+            byte_count = (byte_count + 1) & 3;
+
+            if byte_count == 1 {
+                chunk = val;
+            } else {
+                chunk |= val;
+
+                if byte_count == 0 {
+                    buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+                }
+            }
+        } else {
+            match ch {
+                b'=' => match byte_count {
                     1 | 2 => {
                         buf.push(chunk.to_le_bytes()[0]);
-
                         byte_count = 0;
                     }
                     3 => {
@@ -67,131 +100,210 @@ pub fn decode_base64<'x>(
                     }
                     0 => (),
                     _ => {
-                        success = false;
+                        return (usize::MAX, b""[..].into());
+                    }
+                },
+                b'\n' => end_pos = if last_ch == b'\r' { pos - 2 } else { pos - 1 },
+                b' ' | b'\t' | b'\r' => (),
+                b'-' => {
+                    return if !boundary.is_empty()
+                        && matches!(iter.next(), Some(b'-'))
+                        && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
+                        && matches!(
+                            stream.data.get(pos + 1 + boundary.len()..),
+                            Some([b'\n' | b'\r' | b' ' | b'\t', ..])
+                                | Some([b'-', b'-', ..])
+                                | Some([])
+                                | None
+                        ) {
+                        stream.pos = pos + boundary.len() + 1;
+                        buf.shrink_to_fit();
+                        (if last_ch == b'\n' { end_pos } else { pos - 1 }, buf.into())
+                    } else {
+                        (usize::MAX, b""[..].into())
+                    };
+                }
+                _ => {
+                    return (usize::MAX, b""[..].into());
+                }
+            }
+        }
+
+        last_ch = ch;
+    }
+
+    buf.shrink_to_fit();
+    (
+        if boundary.is_empty() {
+            stream.pos = pos;
+            pos
+        } else {
+            usize::MAX
+        },
+        buf.into(),
+    )
+}
+
+pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
+    let mut chunk: u32 = 0;
+    let mut byte_count: u8 = 0;
+
+    let mut bytes_read = 0;
+
+    let mut buf = Vec::with_capacity(64);
+    let mut iter = bytes.iter();
+
+    while let Some(&ch) = iter.next() {
+        bytes_read += 1;
+
+        match ch {
+            b'=' => {
+                match byte_count {
+                    1 | 2 => {
+                        buf.push(chunk.to_le_bytes()[0]);
+                        byte_count = 0;
+                    }
+                    3 => {
+                        buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                        byte_count = 0;
+                    }
+                    0 => (),
+                    _ => {
+                        // Invalid
                         break;
                     }
                 }
-            } else if !ch.is_ascii_whitespace()
-                || (is_word
-                    && ch == &b'\n'
-                    && !matches!(stream.data.get(start_pos + bytes_read), Some(ch) if [b' ', b'\t'].contains(ch)))
-            {
-                success = false;
-                break;
             }
-            continue;
-        }
+            b'?' => {
+                if let Some(b'=') = iter.next() {
+                    return (bytes_read + 1, buf);
+                } else {
+                    break;
+                }
+            }
+            b'\n' => {
+                if let Some(b' ' | b'\t') = iter.next() {
+                    bytes_read += 1;
+                } else {
+                    break;
+                }
+            }
+            b' ' | b'\t' | b'\r' => (),
+            _ => {
+                let val = BASE64_MAP[byte_count as usize][ch as usize];
 
-        byte_count = (byte_count + 1) & 3;
+                if val < 0x01ffffff {
+                    byte_count = (byte_count + 1) & 3;
 
-        if byte_count == 1 {
-            chunk = val;
-        } else {
-            chunk |= val;
+                    if byte_count == 1 {
+                        chunk = val;
+                    } else {
+                        chunk |= val;
 
-            if byte_count == 0 {
-                buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+                        if byte_count == 0 {
+                            buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+                        }
+                    }
+                } else {
+                    break;
+                }
             }
         }
     }
 
-    (
-        if success { bytes_read } else { 0 },
-        if !buf.is_empty() {
-            buf.shrink_to_fit();
-            DecodeResult::Owned(buf)
-        } else {
-            DecodeResult::Empty
-        },
-    )
+    (usize::MAX, buf)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        decoders::{base64::decode_base64, DecodeResult},
-        parsers::message::MessageStream,
-    };
+    use crate::parsers::message::MessageStream;
 
     #[test]
-    fn decode_base64_strings() {
-        let inputs = [
-            ("VGVzdA==", "Test", "", true),
-            ("WWU=", "Ye", "", true),
-            ("QQ==", "A", "", true),
-            ("cm8=", "ro", "", true),
+    fn decode_base64() {
+        for (encoded_str, expected_result) in [
+            ("VGVzdA==", "Test"),
+            ("WWU=", "Ye"),
+            ("QQ==", "A"),
+            ("cm8=", "ro"),
             (
                 "QXJlIHlvdSBhIFNoaW1hbm8gb3IgQ2FtcGFnbm9sbyBwZXJzb24/",
                 "Are you a Shimano or Campagnolo person?",
-                "",
-                true,
             ),
             (
                 "PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8Ym9keT4KPC9ib2R5Pgo8L2h0bWw+Cg==",
                 "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
-                "",
-                true,
             ),
             (
                 "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
                 "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
-                "",
-                false,
             ),
+            ("w6HDqcOtw7PDug==", "áéíóú"),
+            ("====", ""),
+            ("w6HDq!cOtw7PDug=", ""),
+            ("w6 HD qcOt", "áéí"),
+            ("cmáé", ""),
+            ("áé", ""),
+            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==", "áéíóú"),
+            ("w6HDqcOtw7PDug==", "áéíóú"),
+        ] {
+            assert_eq!(
+                super::decode_base64(encoded_str.as_bytes()).unwrap_or_default(),
+                expected_result.as_bytes(),
+                "Failed for {:?}",
+                encoded_str
+            );
+        }
+    }
+
+    #[test]
+    fn decode_base64_mime() {
+        for (encoded_str, expected_result) in [
+            ("VGVzdA==\r\n--boundary\n", "Test"),
             (
-                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
-                "",
-                "",
-                true,
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==\r\n--boundary--\r\n",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
             ),
-            ("w6HDqcOtw7PDug==", "áéíóú", "", true),
-            ("====", "", "\n--boundary", true),
-            ("w6HDq!cOtw7PDug=", "", "", true),
-            ("w6 HD qcOt", "áéí", "", true),
-            ("cmáé", "", "", true),
-            ("áé", "", "", true),
-            ("w6HDqcOtw7PDug==?=", "áéíóú", "?=", true),
+            ("w6HDqcOtw7PDug==\r\n--boundary \n", "áéíóú"),
+            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n", "áéíóú"),
+            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
+            (
+                "w6HDqcOtw7PDug==\n--boundary--",
+                "áéíóú",
+            ),
             (
                 "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",
                 "áéíóú",
-                "\n--boundary",
-                false,
             ),
-            ("w6HDqcOtw7PDug================?=", "áéíóú", "?=", false),
-            (
-                "w6HDqcOtw7PDug==\n--\n--boundary",
-                "áéíóú",
-                "\n--boundary",
-                false,
-            ),
-        ];
+        ] {
+            let mut s = MessageStream::new(encoded_str.as_bytes());
+            let (_, result) = super::decode_base64_mime(&mut s, b"boundary");
 
-        for input in inputs {
-            let str = input.0.to_string();
-            let stream = MessageStream::new(str.as_bytes());
-
-            let (bytes_read, result) = decode_base64(&stream, 0, input.2.as_bytes(), input.3);
             assert_eq!(
-                bytes_read > 0,
-                !input.1.is_empty(),
-                "Failed for '{:?}'",
-                input.0
+                result,
+                expected_result.as_bytes(),
+                "Failed for {:?}",
+                encoded_str
             );
+        }
+    }
 
-            if !input.1.is_empty() {
-                let bytes = match result {
-                    DecodeResult::Owned(v) => v,
-                    _ => unreachable!(),
-                };
-                let result_str = std::str::from_utf8(&bytes).unwrap();
-                //println!("'{}' -> '{}'", input.0.escape_debug(), result_str.escape_debug());
-                assert_eq!(
-                    result_str,
-                    input.1,
-                    "Failed for '{}'",
-                    input.0.escape_debug()
-                );
-            }
+    #[test]
+    fn decode_base64_word() {
+        for (encoded_str, expected_result) in [
+            ("w 6 H D q c O t w 7 P D u g==  ?=", "áéíóú"),
+            ("w6HDqcOtw7PDug==?=", "áéíóú"),
+            ("w6HDqc\n  Otw7PDug==?=", "áéíóú"),
+            ("w6HDqcOtw7PDug================?=", "áéíóú"),
+            ("?=", ""),
+        ] {
+            let (bytes, result) = super::decode_base64_word(encoded_str.as_bytes());
+            assert!(bytes != usize::MAX);
+            assert_eq!(
+                result,
+                expected_result.as_bytes(),
+                "Failed for {:?}",
+                encoded_str
+            );
         }
     }
 }

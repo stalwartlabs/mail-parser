@@ -9,6 +9,8 @@
  * except according to those terms.
  */
 
+use std::borrow::Cow;
+
 use crate::parsers::message::MessageStream;
 
 pub mod base64;
@@ -18,11 +20,5 @@ pub mod hex;
 pub mod html;
 pub mod quoted_printable;
 
-pub type DecodeFnc<'x> = fn(&MessageStream<'x>, usize, &[u8], bool) -> (usize, DecodeResult);
-
-#[derive(Debug)]
-pub enum DecodeResult {
-    Owned(Vec<u8>),
-    Borrowed((usize, usize)),
-    Empty,
-}
+pub type DecodeFnc<'x> = fn(&mut MessageStream<'x>, &[u8]) -> (usize, Cow<'x, [u8]>);
+pub type DecodeWordFnc<'x> = fn(&[u8]) -> (usize, Vec<u8>);

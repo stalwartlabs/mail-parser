@@ -1377,8 +1377,8 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Get the raw body end offset of this part
-    pub fn offset_end_offset(&self) -> usize {
-        self.offset_header
+    pub fn raw_end_offset(&self) -> usize {
+        self.offset_end
     }
 }
 

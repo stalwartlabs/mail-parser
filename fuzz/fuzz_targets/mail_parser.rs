@@ -3,7 +3,7 @@ use libfuzzer_sys::fuzz_target;
 
 use mail_parser::{
     decoders::{
-        base64::decode_base64,
+        base64::{decode_base64, decode_base64_mime, decode_base64_word},
         charsets::{
             map::get_charset_decoder,
             single_byte::decoder_iso_8859_1,
@@ -12,7 +12,9 @@ use mail_parser::{
         encoded_word::decode_rfc2047,
         hex::decode_hex,
         html::{add_html_token, html_to_text, text_to_html},
-        quoted_printable::decode_quoted_printable,
+        quoted_printable::{
+            decode_quoted_printable, decode_quoted_printable_mime, decode_quoted_printable_word,
+        },
     },
     parsers::{
         fields::{
@@ -32,112 +34,71 @@ use mail_parser::{
     Message,
 };
 
+static RFC822_ALPHABET: &[u8] = b"0123456789abcdefghijklm:=- \r\n";
+
 fuzz_target!(|data: &[u8]| {
-    // Fuzz every parsing function
-    for n_fuzz in 1..=24 {
-        let mut stream = MessageStream::new(&data);
+    for data_ in [
+        std::borrow::Cow::from(data),
+        std::borrow::Cow::from(into_alphabet(data, RFC822_ALPHABET)),
+    ] {
+        let data = data_.as_ref();
 
-        match n_fuzz {
-            1 => {
-                parse_date(&mut stream);
-            }
-            2 => {
-                parse_address(&mut stream);
-            }
-            3 => {
-                parse_id(&mut stream);
-            }
-            4 => {
-                parse_comma_separared(&mut stream);
-            }
-            5 => {
-                parse_and_ignore(&mut stream);
-            }
-            6 => {
-                parse_raw(&mut stream);
-            }
-            7 => {
-                parse_unstructured(&mut stream);
-            }
-            8 => {
-                parse_content_type(&mut stream);
-            }
-            9 => {
-                parse_header_name(&data);
-            }
-            10 => {
-                decode_rfc2047(&mut stream, 0);
-            }
-            11 => {
-                seek_next_part(&mut stream, b"\n");
-            }
-            12 => {
-                get_bytes_to_boundary(&mut stream, 0, b"\n", false);
-            }
-            13 => {
-                get_bytes_to_boundary(&mut stream, 0, &[], false);
-            }
-            14 => {
-                skip_crlf(&mut stream);
-            }
-            15 => {
-                is_boundary_end(&mut stream, 0);
-            }
-            16 => {
-                skip_multipart_end(&mut stream);
-            }
-            17 => {
-                decode_base64(&mut stream, 0, b"\n", true);
-            }
-            18 => {
-                decode_base64(&mut stream, 0, b"\n", false);
-            }
-            19 => {
-                decode_base64(&mut stream, 0, &[], true);
-            }
-            20 => {
-                decode_base64(&mut stream, 0, &[], false);
-            }
-            21 => {
-                decode_quoted_printable(&mut stream, 0, b"\n\n", true); // QP Boundaries have to be at least 2 bytes long
-            }
-            22 => {
-                decode_quoted_printable(&mut stream, 0, b"\n\n", false); // QP Boundaries have to be at least 2 bytes long
-            }
-            23 => {
-                decode_quoted_printable(&mut stream, 0, &[], true);
-            }
-            24 => {
-                decode_quoted_printable(&mut stream, 0, &[], false);
-            }
-            0 | 25..=u32::MAX => unreachable!(),
+        // Fuzz every parsing function
+        parse_date(&mut MessageStream::new(&data));
+        parse_address(&mut MessageStream::new(&data));
+        parse_id(&mut MessageStream::new(&data));
+        parse_comma_separared(&mut MessageStream::new(&data));
+        parse_and_ignore(&mut MessageStream::new(&data));
+        parse_raw(&mut MessageStream::new(&data));
+        parse_unstructured(&mut MessageStream::new(&data));
+        parse_content_type(&mut MessageStream::new(&data));
+        parse_header_name(&data);
+        decode_rfc2047(&mut MessageStream::new(&data), 0);
+
+        seek_next_part(&mut MessageStream::new(&data), b"\n");
+        get_mime_part(&mut MessageStream::new(&data), b"\n");
+        seek_part_end(&mut MessageStream::new(&data), b"\n"[..].into());
+        skip_crlf(&mut MessageStream::new(&data));
+        skip_multipart_end(&mut MessageStream::new(&data));
+
+        decode_base64(&data);
+        decode_base64_word(&data);
+        decode_base64_mime(&mut MessageStream::new(&data), b"\n");
+        decode_quoted_printable(&data);
+        decode_quoted_printable_word(&data);
+        decode_quoted_printable_mime(&mut MessageStream::new(&data), b"\n");
+
+        // Fuzz text functions
+        let mut html_str = String::with_capacity(data.len());
+        let str_data = String::from_utf8_lossy(data);
+        add_html_token(&mut html_str, str_data.as_ref().as_bytes(), false);
+        html_to_text(&str_data);
+        text_to_html(&str_data);
+        thread_name(&str_data);
+        trim_trailing_fwd(&str_data);
+
+        // Fuzz decoding functions
+        decode_hex(data);
+        get_charset_decoder(data);
+
+        for decoder in &[
+            decoder_utf7,
+            decoder_utf16_le,
+            decoder_utf16_be,
+            decoder_utf16,
+            decoder_iso_8859_1,
+        ] as &[for<'x> fn(&'x [u8]) -> String]
+        {
+            decoder(data);
         }
+
+        // Fuzz the entire library
+        Message::parse(&data[..]);
     }
-
-    // Fuzz text functions
-    let mut html_str = String::with_capacity(data.len());
-    let str_data = String::from_utf8_lossy(data);
-    add_html_token(&mut html_str, str_data.as_ref().as_bytes(), false);
-    html_to_text(&str_data);
-    text_to_html(&str_data);
-    thread_name(&str_data);
-    trim_trailing_fwd(&str_data);
-
-    // Fuzz decoding functions
-    decode_hex(data);
-    get_charset_decoder(data);
-
-    for decoder in &[
-        decoder_utf7,
-        decoder_utf16_le,
-        decoder_utf16_be,
-        decoder_utf16,
-        decoder_iso_8859_1,
-    ] as &[for<'x> fn(&'x [u8]) -> String]
-    {
-        decoder(data);
-    }
-
-    // Fuzz the entire library
-    Message::parse(&data[..]);
 });
+
+fn into_alphabet(data: &[u8], alphabet: &[u8]) -> Vec<u8> {
+    data.iter()
+        .map(|&byte| alphabet[byte as usize % alphabet.len()])
+        .collect()
+}

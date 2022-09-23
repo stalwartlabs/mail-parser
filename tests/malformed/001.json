@@ -5,7 +5,9 @@
   "text_body": [
     2
   ],
-  "attachments": [],
+  "attachments": [
+    3
+  ],
   "parts": [
     {
       "headers": [
@@ -86,7 +88,7 @@
       "headers": [],
       "is_encoding_problem": true,
       "body": {
-        "Binary": []
+        "Text": ""
       },
       "offset_header": 131,
       "offset_body": 132,

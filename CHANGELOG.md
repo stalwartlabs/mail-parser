@@ -1,3 +1,7 @@
+mail-parser 0.6.2
+================================
+- Base64/QuotedPrintable decoding optimizations.
+  
 mail-parser 0.6.1
 ================================
 - Support for malformed unstructured fields containing encoded words (#29).

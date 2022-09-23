@@ -12,7 +12,7 @@
 use crate::{decoders::charsets::map::get_charset_decoder, parsers::message::MessageStream};
 
 use super::{
-    base64::decode_base64, quoted_printable::decode_quoted_printable, DecodeFnc, DecodeResult,
+    base64::decode_base64_word, quoted_printable::decode_quoted_printable_word, DecodeWordFnc,
 };
 
 enum Rfc2047State {
@@ -28,7 +28,7 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
 
     let mut charset_start = 0;
     let mut charset_end = 0;
-    let mut decode_fnc: Option<DecodeFnc> = None;
+    let mut decode_fnc: Option<DecodeWordFnc> = None;
 
     for ch in stream.data[start_pos..].iter() {
         read_pos += 1;
@@ -64,8 +64,8 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
             },
             Rfc2047State::Encoding => {
                 match ch {
-                    b'q' | b'Q' => decode_fnc = Some(decode_quoted_printable),
-                    b'b' | b'B' => decode_fnc = Some(decode_base64),
+                    b'q' | b'Q' => decode_fnc = Some(decode_quoted_printable_word),
+                    b'b' | b'B' => decode_fnc = Some(decode_base64_word),
                     _ => {
                         return (0, None);
                     }
@@ -82,10 +82,9 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
         }
     }
 
-    if let Some(decode_fnc) = decode_fnc {
-        if let (bytes_read @ 1..=usize::MAX, DecodeResult::Owned(bytes)) =
-            decode_fnc(stream, read_pos, b"?=", true)
-        {
+    if let (Some(decode_fnc), Some(enc_bytes)) = (decode_fnc, stream.data.get(read_pos..)) {
+        let (bytes_read, bytes) = decode_fnc(enc_bytes);
+        if bytes_read != usize::MAX {
             return (
                 (read_pos - start_pos) + bytes_read,
                 if let Some(decoder) = get_charset_decoder(&stream.data[charset_start..charset_end])
@@ -97,8 +96,6 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
                         .into()
                 },
             );
-        } else if let Some(b"?=") = stream.data.get(read_pos..read_pos + 2) {
-            return ((read_pos - start_pos) + 2, Some(String::new()));
         }
     }
 
@@ -107,96 +104,84 @@ pub fn decode_rfc2047(stream: &MessageStream, start_pos: usize) -> (usize, Optio
 
 #[cfg(test)]
 mod tests {
-    use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream};
+    use crate::parsers::message::MessageStream;
 
     #[test]
-    fn decode_rfc2047_string() {
-        let inputs = [
+    fn decode_rfc2047() {
+        for (input, expected_result, _) in [
             (
-                "?iso-8859-1?q?this=20is=20some=20text?=".to_string(),
+                "?iso-8859-1?q?this=20is=20some=20text?=",
                 "this is some text",
                 true,
             ),
             (
-                "?iso-8859-1?q?this is some text?=".to_string(),
+                "?iso-8859-1?q?this is some text?=",
                 "this is some text",
                 true,
             ),
+            ("?US-ASCII?Q?Keith_Moore?=", "Keith Moore", false),
             (
-                "?US-ASCII?Q?Keith_Moore?=".to_string(),
-                "Keith Moore",
-                false,
-            ),
-            (
-                "?iso_8859-1:1987?Q?Keld_J=F8rn_Simonsen?=".to_string(),
+                "?iso_8859-1:1987?Q?Keld_J=F8rn_Simonsen?=",
                 "Keld Jørn Simonsen",
                 true,
             ),
             (
-                "?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=".to_string(),
+                "?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=",
                 "If you can read this yo",
                 true,
             ),
             (
-                "?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=".to_string(),
+                "?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=",
                 "u understand the example.",
                 true,
             ),
+            ("?ISO-8859-1?Q?Olle_J=E4rnefors?=", "Olle Järnefors", true),
             (
-                "?ISO-8859-1?Q?Olle_J=E4rnefors?=".to_string(),
-                "Olle Järnefors",
-                true,
-            ),
-            (
-                "?ISO-8859-1?Q?Patrik_F=E4ltstr=F6m?=".to_string(),
+                "?ISO-8859-1?Q?Patrik_F=E4ltstr=F6m?=",
                 "Patrik Fältström",
                 true,
             ),
-            ("?ISO-8859-1*?Q?a?=".to_string(), "a", true),
-            ("?ISO-8859-1**?Q?a_b?=".to_string(), "a b", true),
+            ("?ISO-8859-1*?Q?a?=", "a", true),
+            ("?ISO-8859-1**?Q?a_b?=", "a b", true),
             (
-                "?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=".to_string(),
+                "?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=",
                 "Thís ís válíd ÚTF8",
                 false,
             ),
             (
-                "?utf-8*unknown?q?Th=C3=ADs_=C3=ADs_v=C3=A1l=C3=ADd_=C3=9ATF8?=".to_string(),
+                "?utf-8*unknown?q?Th=C3=ADs_=C3=ADs_v=C3=A1l=C3=ADd_=C3=9ATF8?=",
                 "Thís ís válíd ÚTF8",
                 false,
             ),
             (
-                "?Iso-8859-6?Q?=E5=D1=CD=C8=C7 =C8=C7=E4=D9=C7=E4=E5?=".to_string(),
+                "?Iso-8859-6?Q?=E5=D1=CD=C8=C7 =C8=C7=E4=D9=C7=E4=E5?=",
                 "مرحبا بالعالم",
                 true,
             ),
             (
-                "?Iso-8859-6*arabic?b?5dHNyMcgyMfk2cfk5Q==?=".to_string(),
+                "?Iso-8859-6*arabic?b?5dHNyMcgyMfk2cfk5Q==?=",
                 "مرحبا بالعالم",
                 true,
             ),
             #[cfg(feature = "full_encoding")]
             (
-                "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=".to_string(),
+                "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=",
                 "ハロー・ワールド",
                 true,
             ),
             #[cfg(feature = "full_encoding")]
             (
-                "?iso-2022-jp?q?=1B$B%O%m!<!&%o!<%k%I=1B(B?=".to_string(),
+                "?iso-2022-jp?q?=1B$B%O%m!<!&%o!<%k%I=1B(B?=",
                 "ハロー・ワールド",
                 true,
             ),
-        ];
-
-        for input in inputs {
-            let str = input.0.to_string();
-
-            match decode_rfc2047(&MessageStream::new(str.as_bytes()), 0) {
-                (_, Some(string)) => {
+        ] {
+            match super::decode_rfc2047(&MessageStream::new(input.as_bytes()), 0) {
+                (_, Some(result)) => {
                     //println!("Decoded '{}'", string);
-                    assert_eq!(string, input.1);
+                    assert_eq!(result, expected_result);
                 }
-                _ => panic!("Failed to decode '{}'", input.0),
+                _ => panic!("Failed to decode '{}'", input),
             }
         }
     }

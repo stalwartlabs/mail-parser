@@ -93,8 +93,7 @@ pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x>
 #[cfg(test)]
 mod tests {
     #[test]
-    fn parse_unstructured_text() {
-        use crate::parsers::fields::unstructured::parse_unstructured;
+    fn parse_unstructured() {
         use crate::parsers::message::MessageStream;
 
         let inputs = [
@@ -196,7 +195,7 @@ mod tests {
 
         for (input, expected_result, _) in inputs {
             assert_eq!(
-                parse_unstructured(&mut MessageStream::new(input.as_bytes()),).unwrap_text(),
+                super::parse_unstructured(&mut MessageStream::new(input.as_bytes()),).unwrap_text(),
                 expected_result,
                 "Failed to parse '{:?}'",
                 input
