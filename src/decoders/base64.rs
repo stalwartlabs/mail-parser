@@ -20,6 +20,13 @@ pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
     let mut buf = Vec::with_capacity(bytes.len() / 4 * 3);
 
     for &ch in bytes {
+        #[cfg(feature = "ludicrous_mode")]
+        let val = unsafe {
+            *BASE64_MAP
+                .get_unchecked(byte_count as usize)
+                .get_unchecked(ch as usize)
+        };
+        #[cfg(not(feature = "ludicrous_mode"))]
         let val = BASE64_MAP[byte_count as usize][ch as usize];
 
         if val < 0x01ffffff {
@@ -31,16 +38,31 @@ pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
                 chunk |= val;
 
                 if byte_count == 0 {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
                     buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
             }
         } else if ch == b'=' {
             match byte_count {
                 1 | 2 => {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
                     buf.push(chunk.to_le_bytes()[0]);
                     byte_count = 0;
                 }
                 3 => {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
                     buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                     byte_count = 0;
                 }
@@ -74,7 +96,15 @@ pub fn decode_base64_mime<'x>(
     while let Some(&ch) = iter.next() {
         pos += 1;
 
+        #[cfg(feature = "ludicrous_mode")]
+        let val = unsafe {
+            *BASE64_MAP
+                .get_unchecked(byte_count as usize)
+                .get_unchecked(ch as usize)
+        };
+        #[cfg(not(feature = "ludicrous_mode"))]
         let val = BASE64_MAP[byte_count as usize][ch as usize];
+
         if val < 0x01ffffff {
             byte_count = (byte_count + 1) & 3;
 
@@ -84,6 +114,11 @@ pub fn decode_base64_mime<'x>(
                 chunk |= val;
 
                 if byte_count == 0 {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
                     buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
             }
@@ -91,10 +126,20 @@ pub fn decode_base64_mime<'x>(
             match ch {
                 b'=' => match byte_count {
                     1 | 2 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.push(chunk.to_le_bytes()[0]);
                         byte_count = 0;
                     }
                     3 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                         byte_count = 0;
                     }
@@ -160,10 +205,20 @@ pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
             b'=' => {
                 match byte_count {
                     1 | 2 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.push(chunk.to_le_bytes()[0]);
                         byte_count = 0;
                     }
                     3 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                         byte_count = 0;
                     }
@@ -190,6 +245,13 @@ pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
             }
             b' ' | b'\t' | b'\r' => (),
             _ => {
+                #[cfg(feature = "ludicrous_mode")]
+                let val = unsafe {
+                    *BASE64_MAP
+                        .get_unchecked(byte_count as usize)
+                        .get_unchecked(ch as usize)
+                };
+                #[cfg(not(feature = "ludicrous_mode"))]
                 let val = BASE64_MAP[byte_count as usize][ch as usize];
 
                 if val < 0x01ffffff {
@@ -201,6 +263,11 @@ pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
                         chunk |= val;
 
                         if byte_count == 0 {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
                             buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                         }
                     }

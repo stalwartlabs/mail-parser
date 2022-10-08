@@ -33,29 +33,71 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
             debug_assert_eq!(ENTITY_HASH.len(), u8::MAX as usize + 5);
             debug_assert_eq!(ENTITY_MAP.len(), 18079 - 64 + 1);
 
-            for (pos, ch) in entity.iter().enumerate() {
+            for (pos, &ch) in entity.iter().enumerate() {
                 match pos {
                     0 | 5 | 6 | 9 | 11 => {
-                        hash += ENTITY_HASH[*ch as usize];
+                        hash += {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *ENTITY_HASH.get_unchecked(ch as usize)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            ENTITY_HASH[ch as usize]
+                        };
                     }
                     1 => {
-                        hash += ENTITY_HASH[*ch as usize + 4];
+                        hash += {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *ENTITY_HASH.get_unchecked(ch as usize + 4)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            ENTITY_HASH[ch as usize + 4]
+                        };
                     }
                     2 | 4 => {
-                        hash += ENTITY_HASH[*ch as usize + 1];
+                        hash += {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *ENTITY_HASH.get_unchecked(ch as usize + 1)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            ENTITY_HASH[ch as usize + 1]
+                        };
                     }
                     3 => {
-                        hash += ENTITY_HASH[*ch as usize + 3];
+                        hash += {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *ENTITY_HASH.get_unchecked(ch as usize + 3)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            ENTITY_HASH[ch as usize + 3]
+                        };
                     }
                     _ => (),
                 }
                 if pos == entity.len() - 1 {
-                    hash += ENTITY_HASH[*ch as usize];
+                    hash += {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            *ENTITY_HASH.get_unchecked(ch as usize)
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        ENTITY_HASH[ch as usize]
+                    };
                 }
             }
 
             if (64..=18079).contains(&hash) {
-                entity_code = ENTITY_MAP[(hash - 64) as usize];
+                entity_code = {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        *ENTITY_MAP.get_unchecked((hash - 64) as usize)
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    ENTITY_MAP[(hash - 64) as usize]
+                };
             }
         }
 
@@ -221,12 +263,12 @@ pub fn text_to_html(input: &str) -> String {
 
     result.extend_from_slice(b"<html><body>");
 
-    for ch in input {
+    for &ch in input {
         match ch {
             b'\n' => result.extend_from_slice(b"<br/>"),
             b'<' => result.extend_from_slice(b"&lt;"),
             b'\r' => (),
-            _ => result.push(*ch),
+            _ => result.push(ch),
         }
     }
     result.extend_from_slice(b"</body></html>");

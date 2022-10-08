@@ -25,6 +25,7 @@ chrono = "0.4"
 default = ["serde_support", "full_encoding"]
 full_encoding = ["encoding_rs"]
 serde_support = ["serde"]
+ludicrous_mode = []
 
 [profile.bench]
 debug = true

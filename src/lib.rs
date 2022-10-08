@@ -248,14 +248,15 @@
 //!    println!("{}", serde_json::to_string_pretty(&message).unwrap());
 //!    println!("{}", serde_yaml::to_string(&message).unwrap());
 //!```
-#[forbid(unsafe_code)]
 pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
 use std::{
     borrow::Cow,
+    convert::TryInto,
     fmt::{self, Display},
+    slice::Iter,
 };
 
 use decoders::html::{html_to_text, text_to_html};
@@ -551,7 +552,7 @@ pub enum RfcHeader {
     ListPost = 34,
     ListSubscribe = 35,
     ListUnsubscribe = 36,
-}
+} // Note: Do not add new entries without updating HDR* tables
 
 impl RfcHeader {
     pub fn as_str(&self) -> &'static str {
@@ -1187,6 +1188,53 @@ impl<'x> Message<'x> {
     pub fn get_attachments(&'x self) -> AttachmentIterator<'x> {
         AttachmentIterator::new(self)
     }
+
+    /// Returns am iterator that yields children message parts recursively
+    pub fn get_subparts_recursive<'z: 'x>(
+        &'z self,
+        from_part_id: MessagePartId,
+    ) -> Option<SubpartIterator<'x>> {
+        if let Some(PartType::Multipart(subparts)) = self.parts.get(from_part_id).map(|p| &p.body) {
+            Some(SubpartIterator::new(self, subparts.iter()))
+        } else {
+            None
+        }
+    }
+}
+
+pub struct SubpartIterator<'x> {
+    message: &'x Message<'x>,
+    iter: Iter<'x, usize>,
+    iter_stack: Vec<Iter<'x, usize>>,
+}
+
+impl<'x> SubpartIterator<'x> {
+    pub(crate) fn new(message: &'x Message<'x>, iter: Iter<'x, usize>) -> Self {
+        SubpartIterator {
+            message,
+            iter,
+            iter_stack: Vec::new(),
+        }
+    }
+
+    #[allow(clippy::should_implement_trait)]
+    pub fn next(&mut self) -> Option<&MessagePart<'x>> {
+        loop {
+            if let Some(part_id) = self.iter.next() {
+                let subpart = self.message.parts.get(*part_id)?;
+                if let PartType::Multipart(subparts) = &subpart.body {
+                    self.iter_stack
+                        .push(std::mem::replace(&mut self.iter, subparts.iter()));
+                }
+                return Some(subpart);
+            }
+            if let Some(prev_iter) = self.iter_stack.pop() {
+                self.iter = prev_iter;
+            } else {
+                return None;
+            }
+        }
+    }
 }
 
 /// MIME Header field access trait
@@ -1618,5 +1666,13 @@ impl From<RfcHeader> for String {
 impl From<RfcHeader> for Cow<'_, str> {
     fn from(header: RfcHeader) -> Self {
         Cow::Borrowed(header.as_str())
+    }
+}
+
+impl<'x> TryInto<Message<'x>> for &'x [u8] {
+    type Error = ();
+
+    fn try_into(self) -> Result<Message<'x>, Self::Error> {
+        Message::parse(self).ok_or(())
     }
 }

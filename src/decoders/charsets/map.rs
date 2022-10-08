@@ -29,19 +29,47 @@ pub fn get_charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
             };
             l_charset[pos] = ch;
             if let 0 | 3 | 6 | 7 | 8 | 9 = pos {
-                hash += CH_HASH[ch as usize];
+                hash += {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        *CH_HASH.get_unchecked(ch as usize)
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    CH_HASH[ch as usize]
+                };
             }
             if pos == charset.len() - 1 {
-                hash += CH_HASH[ch as usize];
+                hash += {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        *CH_HASH.get_unchecked(ch as usize)
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    CH_HASH[ch as usize]
+                };
             }
         }
 
         if (7..=764).contains(&hash) {
             let hash = (hash - 7) as usize;
-            let ch_map = CH_MAP[hash];
+            let ch_map = {
+                #[cfg(feature = "ludicrous_mode")]
+                unsafe {
+                    *CH_MAP.get_unchecked(hash)
+                }
+                #[cfg(not(feature = "ludicrous_mode"))]
+                CH_MAP[hash]
+            };
 
             if l_charset[..charset.len()].eq(ch_map) {
-                return Some(FNC_MAP[hash]);
+                return Some({
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        *FNC_MAP.get_unchecked(hash)
+                    }
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    FNC_MAP[hash]
+                });
             }
         }
     }

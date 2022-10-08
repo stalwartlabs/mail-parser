@@ -41,7 +41,15 @@ pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStre
 
         match result {
             HeaderParserResult::Rfc(name) => {
-                let (_, parser) = HDR_PARSER[name as usize];
+                let (_, parser) = {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        HDR_PARSER.get_unchecked(name as usize)
+                    }
+
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    HDR_PARSER[name as usize]
+                };
                 let from_offset = stream.pos;
 
                 headers.push(Header {
@@ -78,7 +86,7 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
     let mut last_ch: u8 = 0;
     let mut bytes_read: usize = 0;
 
-    for ch in data.iter() {
+    for &ch in data.iter() {
         bytes_read += 1;
 
         match ch {
@@ -91,17 +99,25 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
                 return (bytes_read - 1, HeaderParserResult::Lf);
             }
             _ => {
-                if !(*ch).is_ascii_whitespace() {
+                if !ch.is_ascii_whitespace() {
                     if token_start == 0 {
                         token_start = bytes_read;
                         token_end = token_start;
                     } else {
                         token_end = bytes_read;
-                        last_ch = *ch;
+                        last_ch = ch;
                     }
 
                     if let 0 | 9 = token_len {
-                        token_hash += HDR_HASH[(*ch).to_ascii_lowercase() as usize] as usize;
+                        token_hash += {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
+                            }
+
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            HDR_HASH[ch.to_ascii_lowercase() as usize]
+                        } as usize;
                     }
                     token_len += 1;
                 }
@@ -113,7 +129,15 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
         let field = &data[token_start - 1..token_end];
 
         if (2..=25).contains(&token_len) {
-            token_hash += token_len + HDR_HASH[last_ch.to_ascii_lowercase() as usize] as usize;
+            token_hash += token_len + {
+                #[cfg(feature = "ludicrous_mode")]
+                unsafe {
+                    *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
+                }
+
+                #[cfg(not(feature = "ludicrous_mode"))]
+                HDR_HASH[last_ch.to_ascii_lowercase() as usize]
+            } as usize;
 
             if (4..=72).contains(&token_hash) {
                 let token_hash = token_hash - 4;
@@ -132,9 +156,64 @@ pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
     }
 }
 
+impl RfcHeader {
+    pub fn parse(data: &str) -> Option<RfcHeader> {
+        let mut token_hash: usize = 0;
+        let mut last_ch: u8 = 0;
+        let data_ = data.as_bytes();
+
+        for (pos, &ch) in data_.iter().enumerate() {
+            if let 0 | 9 = pos {
+                token_hash += {
+                    #[cfg(feature = "ludicrous_mode")]
+                    unsafe {
+                        *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
+                    }
+
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    HDR_HASH[ch.to_ascii_lowercase() as usize]
+                } as usize;
+            }
+            last_ch = ch;
+        }
+
+        if (2..=25).contains(&data.len()) {
+            token_hash += data.len() + {
+                #[cfg(feature = "ludicrous_mode")]
+                unsafe {
+                    *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
+                }
+
+                #[cfg(not(feature = "ludicrous_mode"))]
+                HDR_HASH[last_ch.to_ascii_lowercase() as usize]
+            } as usize;
+
+            if (4..=72).contains(&token_hash) {
+                let token_hash = token_hash - 4;
+
+                if data_.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
+                    return HDR_MAP[token_hash].into();
+                }
+            }
+        }
+
+        None
+    }
+}
+
 impl From<RfcHeader> for u8 {
     fn from(name: RfcHeader) -> Self {
         name as u8
+    }
+}
+
+impl<'x> From<HeaderParserResult<'x>> for HeaderName<'x> {
+    fn from(result: HeaderParserResult<'x>) -> Self {
+        match result {
+            HeaderParserResult::Rfc(header) => HeaderName::Rfc(header),
+            HeaderParserResult::Other(header) => HeaderName::Other(header),
+            _ => HeaderName::Other("".into()),
+        }
     }
 }
 
