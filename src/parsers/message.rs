@@ -514,6 +514,18 @@ impl<'x> Message<'x> {
         if !message.is_empty() {
             message.parts[0].offset_end = message.raw_message.len();
             Some(message)
+        } else if !part_headers.is_empty() {
+            // Message without a body
+            message.parts.push(MessagePart {
+                headers: part_headers,
+                encoding: Encoding::None,
+                is_encoding_problem: true,
+                body: PartType::Text("".into()),
+                offset_header: 0,
+                offset_body: message.raw_message.len(),
+                offset_end: message.raw_message.len(),
+            });
+            Some(message)
         } else {
             None
         }
