@@ -398,6 +398,91 @@ pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
     }
 }
 
+pub fn parse_address_local_part(addr: &str) -> Option<&str> {
+    let addr = addr.as_bytes();
+    let mut iter = addr.iter().enumerate();
+    while let Some((pos, &ch)) = iter.next() {
+        if ch == b'@' {
+            return if pos > 0 && iter.next().is_some() {
+                std::str::from_utf8(addr.get(..pos)?).ok()
+            } else {
+                None
+            };
+        } else if !ch.is_ascii() {
+            return None;
+        }
+    }
+
+    None
+}
+
+pub fn parse_address_domain(addr: &str) -> Option<&str> {
+    let addr = addr.as_bytes();
+    for (pos, &ch) in addr.iter().enumerate() {
+        if ch == b'@' {
+            return if pos > 0 && pos + 1 < addr.len() {
+                std::str::from_utf8(addr.get(pos + 1..)?).ok()
+            } else {
+                None
+            };
+        } else if !ch.is_ascii() {
+            return None;
+        }
+    }
+
+    None
+}
+
+pub fn parse_address_user_part(addr: &str) -> Option<&str> {
+    let addr = addr.as_bytes();
+
+    let mut iter = addr.iter().enumerate();
+    while let Some((pos, &ch)) = iter.next() {
+        if ch == b'+' {
+            if pos > 0 {
+                while let Some((_, &ch)) = iter.next() {
+                    if ch == b'@' && iter.next().is_some() {
+                        return std::str::from_utf8(addr.get(..pos)?).ok();
+                    }
+                }
+            }
+            return None;
+        } else if ch == b'@' {
+            return if pos > 0 && iter.next().is_some() {
+                std::str::from_utf8(addr.get(..pos)?).ok()
+            } else {
+                None
+            };
+        } else if !ch.is_ascii() {
+            return None;
+        }
+    }
+
+    None
+}
+
+pub fn parse_address_detail_part(addr: &str) -> Option<&str> {
+    let addr = addr.as_bytes();
+    let mut plus_pos = usize::MAX;
+
+    let mut iter = addr.iter().enumerate();
+    while let Some((pos, &ch)) = iter.next() {
+        if ch == b'+' {
+            plus_pos = pos + 1;
+        } else if ch == b'@' {
+            if plus_pos != usize::MAX && iter.next().is_some() {
+                return std::str::from_utf8(addr.get(plus_pos..pos)?).ok();
+            } else {
+                return None;
+            }
+        } else if !ch.is_ascii() {
+            return None;
+        }
+    }
+
+    None
+}
+
 mod tests {
     #[test]
     fn parse_addresses() {
