@@ -3,6 +3,7 @@ mail-parser 0.6.2
 - Base64/QuotedPrintable decoding optimizations.
 - Added "ludicrous mode" Cargo option to use some unsafe code for additional performance.
 - Fixed support for empty messages.
+- Fixed raw offsets of multipart/* parts to include MIME epilogue.
   
 mail-parser 0.6.1
 ================================

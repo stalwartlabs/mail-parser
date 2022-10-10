@@ -34,6 +34,31 @@ pub fn seek_next_part(stream: &mut MessageStream, boundary: &[u8]) -> bool {
     false
 }
 
+pub fn seek_next_part_offset(stream: &mut MessageStream, boundary: &[u8]) -> Option<usize> {
+    let mut pos = stream.pos;
+    let mut last_ch = b'\n';
+    let mut iter = stream.data[stream.pos..].iter().peekable();
+    let mut offset_pos = stream.pos;
+
+    while let Some(&ch) = iter.next() {
+        pos += 1;
+
+        if ch == b'\n' {
+            offset_pos = if last_ch == b'\r' { pos - 2 } else { pos - 1 };
+        } else if ch == b'-'
+            && matches!(iter.peek(), Some(b'-'))
+            && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
+        {
+            stream.pos = pos + boundary.len() + 1;
+            return offset_pos.into();
+        }
+
+        last_ch = ch;
+    }
+
+    None
+}
+
 pub fn get_mime_part<'x>(
     stream: &mut MessageStream<'x>,
     boundary: &[u8],

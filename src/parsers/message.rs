@@ -16,6 +16,7 @@ use crate::{
         base64::decode_base64_mime, charsets::map::get_charset_decoder,
         quoted_printable::decode_quoted_printable_mime, DecodeFnc,
     },
+    parsers::mime::seek_next_part_offset,
     ContentType, Encoding, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart,
     MessagePartId, PartType, RfcHeader,
 };
@@ -454,25 +455,29 @@ impl<'x> Message<'x> {
                         }
 
                         if let Some(part) = message.parts.get_mut(state.part_id) {
-                            // Update end offset
-                            part.offset_end = seek_crlf(&stream, stream.pos);
                             // Add headers and substructure to parent part
                             part.body =
                                 PartType::Multipart(std::mem::take(&mut state.sub_part_ids));
-                        } else {
-                            debug_assert!(false, "Invalid part ID, could not find multipart.");
-                        }
 
-                        if let Some((prev_state, _)) = state_stack.pop() {
                             // Restore ancestor's state
-                            state = prev_state;
+                            if let Some((prev_state, _)) = state_stack.pop() {
+                                state = prev_state;
 
-                            if let Some(ref mime_boundary) = state.mime_boundary {
-                                // Ancestor has a MIME boundary, seek it.
-                                if seek_next_part(&mut stream, mime_boundary) {
-                                    continue 'inner;
+                                if let Some(ref mime_boundary) = state.mime_boundary {
+                                    // Ancestor has a MIME boundary, seek it.
+                                    if let Some(offset) =
+                                        seek_next_part_offset(&mut stream, mime_boundary)
+                                    {
+                                        part.offset_end = offset;
+                                        continue 'inner;
+                                    }
                                 }
                             }
+
+                            // This part has no boundary, update end offset
+                            part.offset_end = seek_crlf(&stream, stream.pos);
+                        } else {
+                            debug_assert!(false, "Invalid part ID, could not find multipart.");
                         }
 
                         break 'outer;
