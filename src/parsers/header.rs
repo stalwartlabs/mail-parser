@@ -36,6 +36,7 @@ pub enum HeaderParserResult<'x> {
 
 pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStream<'x>) -> bool {
     loop {
+        let offset_field = stream.pos;
         let (bytes_read, result) = parse_header_name(&stream.data[stream.pos..]);
         stream.pos += bytes_read;
 
@@ -55,6 +56,7 @@ pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStre
                 headers.push(Header {
                     name: HeaderName::Rfc(name),
                     value: parser(stream),
+                    offset_field,
                     offset_start: from_offset,
                     offset_end: stream.pos,
                 });
@@ -68,6 +70,7 @@ pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStre
                     value: HeaderValue::Text(String::from_utf8_lossy(
                         &stream.data[from_offset..stream.pos],
                     )),
+                    offset_field,
                     offset_start: from_offset,
                     offset_end: stream.pos,
                 });

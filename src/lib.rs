@@ -256,6 +256,7 @@ use std::{
     borrow::Cow,
     convert::TryInto,
     fmt::{self, Display},
+    hash::Hash,
 };
 
 use decoders::html::{html_to_text, text_to_html};
@@ -432,6 +433,7 @@ impl<'x> Group<'x> {
 pub struct Header<'x> {
     pub name: HeaderName<'x>,
     pub value: HeaderValue<'x>,
+    pub offset_field: usize,
     pub offset_start: usize,
     pub offset_end: usize,
 }
@@ -456,9 +458,14 @@ impl<'x> Header<'x> {
     pub fn offset_end(&self) -> usize {
         self.offset_end
     }
+
+    /// Returns the raw offset of the header name
+    pub fn offset_field(&self) -> usize {
+        self.offset_field
+    }
 }
 
-#[derive(Debug, Hash, Clone)]
+#[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum HeaderName<'x> {
     Rfc(RfcHeader),
@@ -475,9 +482,32 @@ impl PartialEq for HeaderName<'_> {
     }
 }
 
+impl<'x> Hash for HeaderName<'x> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        match self {
+            HeaderName::Rfc(rfc) => rfc.hash(state),
+            HeaderName::Other(value) => {
+                for ch in value.as_bytes() {
+                    ch.to_ascii_lowercase().hash(state)
+                }
+            }
+        }
+    }
+}
+
 impl Eq for HeaderName<'_> {}
 
 impl<'x> HeaderName<'x> {
+    /// Parse a header name
+    pub fn parse(header_name: impl Into<Cow<'x, str>>) -> Self {
+        let header_name = header_name.into();
+        if let Some(rfc_header) = RfcHeader::parse(header_name.as_ref()) {
+            HeaderName::Rfc(rfc_header)
+        } else {
+            HeaderName::Other(header_name)
+        }
+    }
+
     pub fn as_str(&self) -> &str {
         match self {
             HeaderName::Rfc(header) => header.as_str(),
@@ -504,6 +534,14 @@ impl<'x> HeaderName<'x> {
         match self {
             HeaderName::Rfc(header) => header.is_mime_header(),
             HeaderName::Other(_) => false,
+        }
+    }
+
+    /// Returns the lenght of the header
+    pub fn len(&self) -> usize {
+        match self {
+            HeaderName::Rfc(name) => name.len(),
+            HeaderName::Other(name) => name.len(),
         }
     }
 }
@@ -593,6 +631,48 @@ impl RfcHeader {
             RfcHeader::ListPost => "List-Post",
             RfcHeader::ListSubscribe => "List-Subscribe",
             RfcHeader::ListUnsubscribe => "List-Unsubscribe",
+        }
+    }
+
+    pub fn len(&self) -> usize {
+        match self {
+            RfcHeader::Subject => "Subject".len(),
+            RfcHeader::From => "From".len(),
+            RfcHeader::To => "To".len(),
+            RfcHeader::Cc => "Cc".len(),
+            RfcHeader::Date => "Date".len(),
+            RfcHeader::Bcc => "Bcc".len(),
+            RfcHeader::ReplyTo => "Reply-To".len(),
+            RfcHeader::Sender => "Sender".len(),
+            RfcHeader::Comments => "Comments".len(),
+            RfcHeader::InReplyTo => "In-Reply-To".len(),
+            RfcHeader::Keywords => "Keywords".len(),
+            RfcHeader::Received => "Received".len(),
+            RfcHeader::MessageId => "Message-ID".len(),
+            RfcHeader::References => "References".len(),
+            RfcHeader::ReturnPath => "Return-Path".len(),
+            RfcHeader::MimeVersion => "MIME-Version".len(),
+            RfcHeader::ContentDescription => "Content-Description".len(),
+            RfcHeader::ContentId => "Content-ID".len(),
+            RfcHeader::ContentLanguage => "Content-Language".len(),
+            RfcHeader::ContentLocation => "Content-Location".len(),
+            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding".len(),
+            RfcHeader::ContentType => "Content-Type".len(),
+            RfcHeader::ContentDisposition => "Content-Disposition".len(),
+            RfcHeader::ResentTo => "Resent-To".len(),
+            RfcHeader::ResentFrom => "Resent-From".len(),
+            RfcHeader::ResentBcc => "Resent-Bcc".len(),
+            RfcHeader::ResentCc => "Resent-Cc".len(),
+            RfcHeader::ResentSender => "Resent-Sender".len(),
+            RfcHeader::ResentDate => "Resent-Date".len(),
+            RfcHeader::ResentMessageId => "Resent-Message-ID".len(),
+            RfcHeader::ListArchive => "List-Archive".len(),
+            RfcHeader::ListHelp => "List-Help".len(),
+            RfcHeader::ListId => "List-ID".len(),
+            RfcHeader::ListOwner => "List-Owner".len(),
+            RfcHeader::ListPost => "List-Post".len(),
+            RfcHeader::ListSubscribe => "List-Subscribe".len(),
+            RfcHeader::ListUnsubscribe => "List-Unsubscribe".len(),
         }
     }
 
@@ -748,6 +828,48 @@ impl<'x> HeaderValue<'x> {
                 }),
             }),
             HeaderValue::Empty => HeaderValue::Empty,
+        }
+    }
+
+    pub fn len(&self) -> usize {
+        match self {
+            HeaderValue::Text(text) => text.len(),
+            HeaderValue::TextList(list) => list.iter().map(|t| t.len()).sum(),
+            HeaderValue::Address(a) => {
+                a.name.as_ref().map_or(0, |a| a.len()) + a.address.as_ref().map_or(0, |a| a.len())
+            }
+            HeaderValue::AddressList(list) => list
+                .iter()
+                .map(|a| {
+                    a.name.as_ref().map_or(0, |a| a.len())
+                        + a.address.as_ref().map_or(0, |a| a.len())
+                })
+                .sum(),
+            HeaderValue::Group(group) => group
+                .addresses
+                .iter()
+                .map(|a| {
+                    a.name.as_ref().map_or(0, |a| a.len())
+                        + a.address.as_ref().map_or(0, |a| a.len())
+                })
+                .sum(),
+            HeaderValue::GroupList(grouplist) => grouplist
+                .iter()
+                .flat_map(|g| g.addresses.iter())
+                .map(|a| {
+                    a.name.as_ref().map_or(0, |a| a.len())
+                        + a.address.as_ref().map_or(0, |a| a.len())
+                })
+                .sum(),
+            HeaderValue::DateTime(_) => 24,
+            HeaderValue::ContentType(ct) => {
+                ct.c_type.len()
+                    + ct.c_subtype.as_ref().map_or(0, |s| s.len())
+                    + ct.attributes
+                        .as_ref()
+                        .map_or(0, |at| at.iter().map(|(a, b)| a.len() + b.len()).sum())
+            }
+            HeaderValue::Empty => 0,
         }
     }
 }
