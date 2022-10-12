@@ -36,6 +36,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 38
         },
@@ -46,6 +47,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 38,
           "offset_start": 51,
           "offset_end": 56
         },
@@ -65,6 +67,7 @@
               ]
             }
           },
+          "offset_field": 56,
           "offset_start": 69,
           "offset_end": 123
         },
@@ -75,6 +78,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 123,
           "offset_start": 149,
           "offset_end": 155
         }
@@ -111,6 +115,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 186,
           "offset_start": 191,
           "offset_end": 224
         },
@@ -121,6 +126,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 224,
           "offset_start": 237,
           "offset_end": 242
         },
@@ -140,6 +146,7 @@
               ]
             }
           },
+          "offset_field": 242,
           "offset_start": 255,
           "offset_end": 317
         },
@@ -150,6 +157,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 317,
           "offset_start": 343,
           "offset_end": 349
         }
@@ -184,6 +192,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 382,
           "offset_start": 387,
           "offset_end": 420
         },
@@ -194,6 +203,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 420,
           "offset_start": 433,
           "offset_end": 438
         },
@@ -208,6 +218,7 @@
               "attributes": null
             }
           },
+          "offset_field": 438,
           "offset_start": 451,
           "offset_end": 463
         }
@@ -239,6 +250,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 497,
           "offset_start": 502,
           "offset_end": 535
         },
@@ -249,6 +261,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 535,
           "offset_start": 548,
           "offset_end": 553
         },
@@ -263,6 +276,7 @@
               "attributes": null
             }
           },
+          "offset_field": 553,
           "offset_start": 566,
           "offset_end": 577
         }
@@ -294,6 +308,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 643,
           "offset_start": 648,
           "offset_end": 681
         },
@@ -304,6 +319,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 681,
           "offset_start": 694,
           "offset_end": 699
         },
@@ -318,6 +334,7 @@
               "attributes": null
             }
           },
+          "offset_field": 699,
           "offset_start": 712,
           "offset_end": 724
         }
@@ -351,6 +368,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 756,
           "offset_start": 761,
           "offset_end": 794
         },
@@ -361,6 +379,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 794,
           "offset_start": 807,
           "offset_end": 812
         },
@@ -375,6 +394,7 @@
               "attributes": null
             }
           },
+          "offset_field": 812,
           "offset_start": 825,
           "offset_end": 836
         }
@@ -408,6 +428,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 868,
           "offset_start": 873,
           "offset_end": 906
         },
@@ -418,6 +439,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 906,
           "offset_start": 919,
           "offset_end": 924
         },
@@ -432,6 +454,7 @@
               "attributes": null
             }
           },
+          "offset_field": 924,
           "offset_start": 937,
           "offset_end": 948
         }

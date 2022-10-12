@@ -26,6 +26,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 45
         },
@@ -39,6 +40,7 @@
               "address": "doug@penguin.example.com"
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 91
         },
@@ -52,6 +54,7 @@
               "address": "schmuergen@example.com"
             }
           },
+          "offset_field": 91,
           "offset_start": 94,
           "offset_end": 159
         },
@@ -62,6 +65,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
+          "offset_field": 159,
           "offset_start": 167,
           "offset_end": 214
         },
@@ -72,6 +76,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191014500.8452-100000@penguin.example.com"
           },
+          "offset_field": 214,
           "offset_start": 225,
           "offset_end": 289
         },
@@ -82,6 +87,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 289,
           "offset_start": 302,
           "offset_end": 308
         },
@@ -101,6 +107,7 @@
               ]
             }
           },
+          "offset_field": 308,
           "offset_start": 321,
           "offset_end": 354
         },
@@ -111,6 +118,7 @@
           "value": {
             "Text": "QUOTED-PRINTABLE"
           },
+          "offset_field": 354,
           "offset_start": 380,
           "offset_end": 399
         }

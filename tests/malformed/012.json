@@ -24,6 +24,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 44
         }
@@ -56,6 +57,7 @@
               ]
             }
           },
+          "offset_field": 49,
           "offset_start": 62,
           "offset_end": 93
         }
@@ -84,6 +86,7 @@
               "attributes": null
             }
           },
+          "offset_field": 98,
           "offset_start": 111,
           "offset_end": 127
         }
@@ -112,6 +115,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 128,
                   "offset_start": 141,
                   "offset_end": 153
                 }
@@ -144,6 +148,7 @@
               "attributes": null
             }
           },
+          "offset_field": 160,
           "offset_start": 173,
           "offset_end": 189
         }
@@ -170,6 +175,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 190,
                   "offset_start": 203,
                   "offset_end": 215
                 }

@@ -16,6 +16,7 @@
           "value": {
             "Text": "4.2.0.58.20000519001217.00a85b60@pop.example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 64
         },
@@ -26,6 +27,7 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
+          "offset_field": 64,
           "offset_start": 73,
           "offset_end": 113
         },
@@ -36,6 +38,7 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
+          "offset_field": 113,
           "offset_start": 122,
           "offset_end": 170
         },
@@ -56,6 +59,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 170,
           "offset_start": 175,
           "offset_end": 209
         },
@@ -69,6 +73,7 @@
               "address": "jschmuergen@example.com"
             }
           },
+          "offset_field": 209,
           "offset_start": 212,
           "offset_end": 299
         },
@@ -82,6 +87,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 299,
           "offset_start": 304,
           "offset_end": 341
         },
@@ -92,6 +98,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
+          "offset_field": 341,
           "offset_start": 349,
           "offset_end": 396
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 396,
           "offset_start": 409,
           "offset_end": 415
         },
@@ -121,6 +129,7 @@
               ]
             }
           },
+          "offset_field": 415,
           "offset_start": 428,
           "offset_end": 463
         },
@@ -131,6 +140,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 463,
           "offset_start": 489,
           "offset_end": 508
         }

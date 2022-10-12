@@ -25,6 +25,7 @@
           "value": {
             "Text": "39236103.FFE674FC@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
@@ -45,6 +46,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 84
         },
@@ -58,6 +60,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
@@ -68,6 +71,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
@@ -78,6 +82,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
@@ -88,6 +93,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
@@ -101,6 +107,7 @@
               "address": "schmuergen@example.com"
             }
           },
+          "offset_field": 207,
           "offset_start": 210,
           "offset_end": 277
         },
@@ -111,6 +118,7 @@
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
+          "offset_field": 277,
           "offset_start": 285,
           "offset_end": 331
         },
@@ -130,6 +138,7 @@
               ]
             }
           },
+          "offset_field": 331,
           "offset_start": 344,
           "offset_end": 413
         }
@@ -164,6 +173,7 @@
               ]
             }
           },
+          "offset_field": 501,
           "offset_start": 514,
           "offset_end": 585
         }
@@ -198,6 +208,7 @@
               ]
             }
           },
+          "offset_field": 629,
           "offset_start": 642,
           "offset_end": 672
         },
@@ -208,6 +219,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 672,
           "offset_start": 698,
           "offset_end": 705
         }
@@ -233,6 +245,7 @@
               "attributes": null
             }
           },
+          "offset_field": 1883,
           "offset_start": 1896,
           "offset_end": 1908
         },
@@ -243,6 +256,7 @@
           "value": {
             "Text": "part1.39236103.1B697A54@example.com"
           },
+          "offset_field": 1908,
           "offset_start": 1919,
           "offset_end": 1959
         },
@@ -253,6 +267,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 1959,
           "offset_start": 1985,
           "offset_end": 1994
         },
@@ -272,6 +287,7 @@
               ]
             }
           },
+          "offset_field": 1994,
           "offset_start": 2014,
           "offset_end": 2056
         }
@@ -1623,6 +1639,7 @@
               "attributes": null
             }
           },
+          "offset_field": 3916,
           "offset_start": 3929,
           "offset_end": 3941
         },
@@ -1633,6 +1650,7 @@
           "value": {
             "Text": "part2.39236103.1B697A54@example.com"
           },
+          "offset_field": 3941,
           "offset_start": 3952,
           "offset_end": 3992
         },
@@ -1643,6 +1661,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 3992,
           "offset_start": 4018,
           "offset_end": 4027
         },
@@ -1662,6 +1681,7 @@
               ]
             }
           },
+          "offset_field": 4027,
           "offset_start": 4047,
           "offset_end": 4089
         }
@@ -3146,6 +3166,7 @@
               ]
             }
           },
+          "offset_field": 6169,
           "offset_start": 6182,
           "offset_end": 6218
         },
@@ -3156,6 +3177,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 6218,
           "offset_start": 6244,
           "offset_end": 6253
         },
@@ -3175,6 +3197,7 @@
               ]
             }
           },
+          "offset_field": 6253,
           "offset_start": 6273,
           "offset_end": 6310
         }
@@ -4504,6 +4527,7 @@
               ]
             }
           },
+          "offset_field": 8134,
           "offset_start": 8147,
           "offset_end": 8182
         },
@@ -4514,6 +4538,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 8182,
           "offset_start": 8208,
           "offset_end": 8217
         },
@@ -4533,6 +4558,7 @@
               ]
             }
           },
+          "offset_field": 8217,
           "offset_start": 8237,
           "offset_end": 8273
         }

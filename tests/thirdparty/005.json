@@ -33,6 +33,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 44
         },
@@ -43,6 +44,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 44,
           "offset_start": 57,
           "offset_end": 62
         }
@@ -70,6 +72,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 67,
           "offset_start": 93,
           "offset_end": 101
         },
@@ -89,6 +92,7 @@
               ]
             }
           },
+          "offset_field": 101,
           "offset_start": 114,
           "offset_end": 144
         }
@@ -110,6 +114,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 176,
           "offset_start": 202,
           "offset_end": 210
         },
@@ -129,6 +134,7 @@
               ]
             }
           },
+          "offset_field": 210,
           "offset_start": 223,
           "offset_end": 253
         }
@@ -150,6 +156,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 296,
           "offset_start": 322,
           "offset_end": 330
         },
@@ -169,6 +176,7 @@
               ]
             }
           },
+          "offset_field": 330,
           "offset_start": 343,
           "offset_end": 373
         }
@@ -190,6 +198,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 416,
           "offset_start": 442,
           "offset_end": 450
         },
@@ -209,6 +218,7 @@
               ]
             }
           },
+          "offset_field": 450,
           "offset_start": 463,
           "offset_end": 491
         }
@@ -230,6 +240,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 522,
           "offset_start": 548,
           "offset_end": 556
         },
@@ -249,6 +260,7 @@
               ]
             }
           },
+          "offset_field": 556,
           "offset_start": 569,
           "offset_end": 596
         }

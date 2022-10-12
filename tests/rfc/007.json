@@ -28,6 +28,7 @@
           "value": {
             "Text": "RFC 8621 Section 4.1.4 test"
           },
+          "offset_field": 0,
           "offset_start": 8,
           "offset_end": 37
         },
@@ -47,6 +48,7 @@
               ]
             }
           },
+          "offset_field": 37,
           "offset_start": 50,
           "offset_end": 81
         }
@@ -76,6 +78,7 @@
               "attributes": null
             }
           },
+          "offset_field": 86,
           "offset_start": 99,
           "offset_end": 111
         },
@@ -90,6 +93,7 @@
               "attributes": null
             }
           },
+          "offset_field": 111,
           "offset_start": 131,
           "offset_end": 139
         }
@@ -120,6 +124,7 @@
               ]
             }
           },
+          "offset_field": 148,
           "offset_start": 161,
           "offset_end": 192
         }
@@ -155,6 +160,7 @@
               ]
             }
           },
+          "offset_field": 197,
           "offset_start": 210,
           "offset_end": 247
         }
@@ -188,6 +194,7 @@
               ]
             }
           },
+          "offset_field": 252,
           "offset_start": 265,
           "offset_end": 296
         }
@@ -217,6 +224,7 @@
               "attributes": null
             }
           },
+          "offset_field": 301,
           "offset_start": 314,
           "offset_end": 326
         },
@@ -231,6 +239,7 @@
               "attributes": null
             }
           },
+          "offset_field": 326,
           "offset_start": 346,
           "offset_end": 354
         }
@@ -256,6 +265,7 @@
               "attributes": null
             }
           },
+          "offset_field": 363,
           "offset_start": 376,
           "offset_end": 388
         },
@@ -270,6 +280,7 @@
               "attributes": null
             }
           },
+          "offset_field": 388,
           "offset_start": 408,
           "offset_end": 416
         }
@@ -297,6 +308,7 @@
               "attributes": null
             }
           },
+          "offset_field": 425,
           "offset_start": 438,
           "offset_end": 450
         },
@@ -311,6 +323,7 @@
               "attributes": null
             }
           },
+          "offset_field": 450,
           "offset_start": 470,
           "offset_end": 478
         }
@@ -341,6 +354,7 @@
               ]
             }
           },
+          "offset_field": 493,
           "offset_start": 506,
           "offset_end": 539
         }
@@ -369,6 +383,7 @@
               "attributes": null
             }
           },
+          "offset_field": 544,
           "offset_start": 557,
           "offset_end": 568
         }
@@ -394,6 +409,7 @@
               "attributes": null
             }
           },
+          "offset_field": 590,
           "offset_start": 603,
           "offset_end": 615
         }
@@ -421,6 +437,7 @@
               "attributes": null
             }
           },
+          "offset_field": 642,
           "offset_start": 655,
           "offset_end": 667
         },
@@ -435,6 +452,7 @@
               "attributes": null
             }
           },
+          "offset_field": 667,
           "offset_start": 687,
           "offset_end": 699
         }
@@ -462,6 +480,7 @@
               "attributes": null
             }
           },
+          "offset_field": 708,
           "offset_start": 721,
           "offset_end": 742
         }
@@ -489,6 +508,7 @@
               "attributes": null
             }
           },
+          "offset_field": 751,
           "offset_start": 764,
           "offset_end": 780
         }
@@ -513,6 +533,7 @@
                   "value": {
                     "Text": "J"
                   },
+                  "offset_field": 781,
                   "offset_start": 789,
                   "offset_end": 792
                 }
@@ -545,6 +566,7 @@
               "attributes": null
             }
           },
+          "offset_field": 808,
           "offset_start": 821,
           "offset_end": 833
         },
@@ -559,6 +581,7 @@
               "attributes": null
             }
           },
+          "offset_field": 833,
           "offset_start": 853,
           "offset_end": 861
         }

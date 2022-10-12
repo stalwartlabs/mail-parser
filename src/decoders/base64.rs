@@ -79,6 +79,8 @@ pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
     buf.into()
 }
 
+//impl<'x> MessageStream<'x> {
+
 pub fn decode_base64_mime<'x>(
     stream: &mut MessageStream<'x>,
     boundary: &[u8],
@@ -280,6 +282,7 @@ pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
 
     (usize::MAX, buf)
 }
+//}
 
 #[cfg(test)]
 mod tests {

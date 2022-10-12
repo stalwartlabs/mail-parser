@@ -16,6 +16,7 @@
           "value": {
             "Text": "こんにちは"
           },
+          "offset_field": 0,
           "offset_start": 8,
           "offset_end": 42
         },
@@ -26,6 +27,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 42,
           "offset_start": 55,
           "offset_end": 60
         },
@@ -49,6 +51,7 @@
               ]
             }
           },
+          "offset_field": 60,
           "offset_start": 73,
           "offset_end": 145
         }
@@ -76,6 +79,7 @@
               "attributes": null
             }
           },
+          "offset_field": 150,
           "offset_start": 163,
           "offset_end": 175
         },
@@ -86,6 +90,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 175,
           "offset_start": 201,
           "offset_end": 209
         },
@@ -96,6 +101,7 @@
           "value": {
             "Text": "ja"
           },
+          "offset_field": 209,
           "offset_start": 226,
           "offset_end": 230
         }

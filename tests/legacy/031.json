@@ -29,6 +29,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 45
         },
@@ -42,6 +43,7 @@
               "address": "doug@penguin.example.com"
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 91
         },
@@ -55,6 +57,7 @@
               "address": "blow@example.com"
             }
           },
+          "offset_field": 91,
           "offset_start": 94,
           "offset_end": 124
         },
@@ -65,6 +68,7 @@
           "value": {
             "Text": "Test message from PINE"
           },
+          "offset_field": 124,
           "offset_start": 132,
           "offset_end": 157
         },
@@ -75,6 +79,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
           },
+          "offset_field": 157,
           "offset_start": 168,
           "offset_end": 232
         },
@@ -85,6 +90,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 232,
           "offset_start": 245,
           "offset_end": 251
         },
@@ -104,6 +110,7 @@
               ]
             }
           },
+          "offset_field": 251,
           "offset_start": 264,
           "offset_end": 332
         }
@@ -138,6 +145,7 @@
               ]
             }
           },
+          "offset_field": 595,
           "offset_start": 608,
           "offset_end": 639
         }
@@ -168,6 +176,7 @@
               ]
             }
           },
+          "offset_field": 725,
           "offset_start": 738,
           "offset_end": 785
         },
@@ -178,6 +187,7 @@
           "value": {
             "Text": "BASE64"
           },
+          "offset_field": 785,
           "offset_start": 811,
           "offset_end": 820
         },
@@ -188,6 +198,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           },
+          "offset_field": 820,
           "offset_start": 831,
           "offset_end": 888
         },
@@ -198,6 +209,7 @@
           "value": {
             "Text": "A PNG graphic file"
           },
+          "offset_field": 888,
           "offset_start": 908,
           "offset_end": 929
         },
@@ -217,6 +229,7 @@
               ]
             }
           },
+          "offset_field": 929,
           "offset_start": 949,
           "offset_end": 986
         }
@@ -1701,6 +1714,7 @@
               ]
             }
           },
+          "offset_field": 3035,
           "offset_start": 3048,
           "offset_end": 3096
         },
@@ -1711,6 +1725,7 @@
           "value": {
             "Text": "BASE64"
           },
+          "offset_field": 3096,
           "offset_start": 3122,
           "offset_end": 3131
         },
@@ -1721,6 +1736,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
           },
+          "offset_field": 3131,
           "offset_start": 3142,
           "offset_end": 3199
         },
@@ -1731,6 +1747,7 @@
           "value": {
             "Text": "A PNG graphic file"
           },
+          "offset_field": 3199,
           "offset_start": 3219,
           "offset_end": 3240
         },
@@ -1750,6 +1767,7 @@
               ]
             }
           },
+          "offset_field": 3240,
           "offset_start": 3260,
           "offset_end": 3298
         }

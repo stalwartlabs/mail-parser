@@ -28,6 +28,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 45
         },
@@ -41,6 +42,7 @@
               "address": "doug@penguin.example.com"
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 91
         },
@@ -54,6 +56,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 91,
           "offset_start": 94,
           "offset_end": 150
         },
@@ -64,6 +67,7 @@
           "value": {
             "Text": "PNG graphic"
           },
+          "offset_field": 150,
           "offset_start": 158,
           "offset_end": 172
         },
@@ -74,6 +78,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191019440.8452-101000@penguin.example.com"
           },
+          "offset_field": 172,
           "offset_start": 183,
           "offset_end": 247
         },
@@ -84,6 +89,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 247,
           "offset_start": 260,
           "offset_end": 266
         },
@@ -103,6 +109,7 @@
               ]
             }
           },
+          "offset_field": 266,
           "offset_start": 279,
           "offset_end": 347
         }
@@ -136,6 +143,7 @@
               ]
             }
           },
+          "offset_field": 610,
           "offset_start": 623,
           "offset_end": 654
         }
@@ -166,6 +174,7 @@
               ]
             }
           },
+          "offset_field": 699,
           "offset_start": 712,
           "offset_end": 759
         },
@@ -176,6 +185,7 @@
           "value": {
             "Text": "BASE64"
           },
+          "offset_field": 759,
           "offset_start": 785,
           "offset_end": 794
         },
@@ -186,6 +196,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191023160.8452@penguin.example.com"
           },
+          "offset_field": 794,
           "offset_start": 805,
           "offset_end": 862
         },
@@ -196,6 +207,7 @@
           "value": {
             "Text": "red ball"
           },
+          "offset_field": 862,
           "offset_start": 882,
           "offset_end": 893
         },
@@ -215,6 +227,7 @@
               ]
             }
           },
+          "offset_field": 893,
           "offset_start": 913,
           "offset_end": 950
         }

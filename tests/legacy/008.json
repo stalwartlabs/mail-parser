@@ -23,6 +23,7 @@
               "address": "doug@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
@@ -36,6 +37,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 40,
           "offset_start": 43,
           "offset_end": 99
         },
@@ -46,6 +48,7 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
+          "offset_field": 99,
           "offset_start": 107,
           "offset_end": 148
         },
@@ -66,6 +69,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 148,
           "offset_start": 153,
           "offset_end": 187
         },
@@ -76,6 +80,7 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGGEKECHAA.doug@example.com"
           },
+          "offset_field": 187,
           "offset_start": 198,
           "offset_end": 248
         },
@@ -86,6 +91,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 248,
           "offset_start": 261,
           "offset_end": 267
         },
@@ -105,6 +111,7 @@
               ]
             }
           },
+          "offset_field": 267,
           "offset_start": 280,
           "offset_end": 354
         },
@@ -115,6 +122,7 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
+          "offset_field": 354,
           "offset_start": 365,
           "offset_end": 378
         },
@@ -125,6 +133,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 378,
           "offset_start": 396,
           "offset_end": 405
         },
@@ -135,6 +144,7 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
+          "offset_field": 405,
           "offset_start": 414,
           "offset_end": 467
         },
@@ -145,6 +155,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 467,
           "offset_start": 478,
           "offset_end": 487
         },
@@ -155,6 +166,7 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
+          "offset_field": 487,
           "offset_start": 497,
           "offset_end": 545
         }
@@ -190,6 +202,7 @@
               ]
             }
           },
+          "offset_field": 640,
           "offset_start": 653,
           "offset_end": 690
         },
@@ -200,6 +213,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 690,
           "offset_start": 716,
           "offset_end": 735
         }
@@ -230,6 +244,7 @@
               ]
             }
           },
+          "offset_field": 1583,
           "offset_start": 1596,
           "offset_end": 1631
         },
@@ -240,6 +255,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 1631,
           "offset_start": 1657,
           "offset_end": 1666
         },
@@ -259,6 +275,7 @@
               ]
             }
           },
+          "offset_field": 1666,
           "offset_start": 1686,
           "offset_end": 1726
         }
@@ -1615,6 +1632,7 @@
               ]
             }
           },
+          "offset_field": 3591,
           "offset_start": 3604,
           "offset_end": 3640
         },
@@ -1625,6 +1643,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 3640,
           "offset_start": 3666,
           "offset_end": 3675
         },
@@ -1644,6 +1663,7 @@
               ]
             }
           },
+          "offset_field": 3675,
           "offset_start": 3695,
           "offset_end": 3736
         }
@@ -2973,6 +2993,7 @@
               ]
             }
           },
+          "offset_field": 5563,
           "offset_start": 5576,
           "offset_end": 5610
         },
@@ -2983,6 +3004,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 5610,
           "offset_start": 5636,
           "offset_end": 5645
         },
@@ -3002,6 +3024,7 @@
               ]
             }
           },
+          "offset_field": 5645,
           "offset_start": 5665,
           "offset_end": 5704
         }

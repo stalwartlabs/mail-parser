@@ -357,7 +357,7 @@ pub enum PartType<'x> {
     InlineBinary(Cow<'x, [u8]>),
 
     /// Nested RFC5322 message.
-    Message(MessageAttachment<'x>),
+    Message(Message<'x>),
 
     /// Multipart part
     Multipart(Vec<MessagePartId>),
@@ -463,6 +463,17 @@ impl<'x> Header<'x> {
     pub fn offset_field(&self) -> usize {
         self.offset_field
     }
+
+    /// Returns an owned version of the header
+    pub fn into_owned<'y>(self) -> Header<'y> {
+        Header {
+            name: self.name.into_owned(),
+            value: self.value.into_owned(),
+            offset_field: self.offset_field,
+            offset_start: self.offset_start,
+            offset_end: self.offset_end,
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -515,10 +526,17 @@ impl<'x> HeaderName<'x> {
         }
     }
 
-    pub fn into_owned<'y>(&self) -> HeaderName<'y> {
+    pub fn as_owned<'y>(&self) -> HeaderName<'y> {
         match self {
             HeaderName::Rfc(header) => HeaderName::Rfc(*header),
             HeaderName::Other(name) => HeaderName::Other(name.clone().into_owned().into()),
+        }
+    }
+
+    pub fn into_owned<'y>(self) -> HeaderName<'y> {
+        match self {
+            HeaderName::Rfc(header) => HeaderName::Rfc(header),
+            HeaderName::Other(name) => HeaderName::Other(name.into_owned().into()),
         }
     }
 
@@ -543,6 +561,10 @@ impl<'x> HeaderName<'x> {
             HeaderName::Rfc(name) => name.len(),
             HeaderName::Other(name) => name.len(),
         }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        false
     }
 }
 
@@ -688,6 +710,10 @@ impl RfcHeader {
                 | RfcHeader::ContentType
                 | RfcHeader::ContentDisposition
         )
+    }
+
+    pub fn is_empty(&self) -> bool {
+        false
     }
 }
 
@@ -1309,6 +1335,17 @@ impl<'x> Message<'x> {
     pub fn get_attachments(&'x self) -> AttachmentIterator<'x> {
         AttachmentIterator::new(self)
     }
+
+    /// Returns an owned version of the message
+    pub fn into_owned<'y>(self) -> Message<'y> {
+        Message {
+            html_body: self.html_body,
+            text_body: self.text_body,
+            attachments: self.attachments,
+            parts: self.parts.into_iter().map(|p| p.into_owned()).collect(),
+            raw_message: self.raw_message.into_owned().into(),
+        }
+    }
 }
 
 /// MIME Header field access trait
@@ -1394,10 +1431,8 @@ impl<'x> MessagePart<'x> {
     pub fn get_contents(&'x self) -> &'x [u8] {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
-            PartType::Binary(bin)
-            | PartType::InlineBinary(bin)
-            | PartType::Message(MessageAttachment::Raw(bin)) => bin.as_ref(),
-            PartType::Message(MessageAttachment::Parsed(message)) => message.raw_message.as_ref(),
+            PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
+            PartType::Message(message) => message.raw_message.as_ref(),
             PartType::Multipart(_) => b"",
         }
     }
@@ -1406,22 +1441,18 @@ impl<'x> MessagePart<'x> {
     pub fn get_text_contents(&'x self) -> Option<&'x str> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
-            PartType::Binary(bin)
-            | PartType::InlineBinary(bin)
-            | PartType::Message(MessageAttachment::Raw(bin)) => {
+            PartType::Binary(bin) | PartType::InlineBinary(bin) => {
                 std::str::from_utf8(bin.as_ref()).ok()
             }
-            PartType::Message(MessageAttachment::Parsed(message)) => {
-                std::str::from_utf8(message.raw_message.as_ref()).ok()
-            }
+            PartType::Message(message) => std::str::from_utf8(message.raw_message.as_ref()).ok(),
             PartType::Multipart(_) => None,
         }
     }
 
     /// Returns the nested message
-    pub fn get_message(&'x self) -> Option<Cow<'x, Message<'x>>> {
+    pub fn get_message(&'x self) -> Option<&Message<'x>> {
         if let PartType::Message(message) = &self.body {
-            message.get_message()
+            Some(message)
         } else {
             None
         }
@@ -1440,10 +1471,8 @@ impl<'x> MessagePart<'x> {
     pub fn len(&self) -> usize {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.len(),
-            PartType::Binary(bin)
-            | PartType::InlineBinary(bin)
-            | PartType::Message(MessageAttachment::Raw(bin)) => bin.len(),
-            PartType::Message(MessageAttachment::Parsed(message)) => message.raw_message.len(),
+            PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.len(),
+            PartType::Message(message) => message.raw_message.len(),
             PartType::Multipart(_) => 0,
         }
     }
@@ -1501,6 +1530,26 @@ impl<'x> MessagePart<'x> {
     /// Get the raw body end offset of this part
     pub fn raw_end_offset(&self) -> usize {
         self.offset_end
+    }
+
+    /// Returns an owned version of the this part
+    pub fn into_owned<'y>(self) -> MessagePart<'y> {
+        MessagePart {
+            headers: self.headers.into_iter().map(|h| h.into_owned()).collect(),
+            is_encoding_problem: self.is_encoding_problem,
+            body: match self.body {
+                PartType::Text(v) => PartType::Text(v.into_owned().into()),
+                PartType::Html(v) => PartType::Html(v.into_owned().into()),
+                PartType::Binary(v) => PartType::Binary(v.into_owned().into()),
+                PartType::InlineBinary(v) => PartType::InlineBinary(v.into_owned().into()),
+                PartType::Message(v) => PartType::Message(v.into_owned()),
+                PartType::Multipart(v) => PartType::Multipart(v),
+            },
+            encoding: self.encoding,
+            offset_header: self.offset_header,
+            offset_body: self.offset_body,
+            offset_end: self.offset_end,
+        }
     }
 }
 
@@ -1674,54 +1723,6 @@ impl<'x> ContentType<'x> {
     /// Returns ```true``` if the Content-Disposition type is "inline"
     pub fn is_inline(&self) -> bool {
         self.c_type.eq_ignore_ascii_case("inline")
-    }
-}
-
-/// Contents of an e-mail message attachment.
-#[derive(Debug, PartialEq, Clone)]
-pub enum MessageAttachment<'x> {
-    Parsed(Box<Message<'x>>),
-    Raw(Cow<'x, [u8]>),
-}
-
-impl<'x> Default for MessageAttachment<'x> {
-    fn default() -> Self {
-        MessageAttachment::Raw((&[] as &[u8]).into())
-    }
-}
-
-impl<'x> MessageAttachment<'x> {
-    /// Get nested message
-    pub fn get_message(&'x self) -> Option<Cow<'x, Message<'x>>> {
-        match self {
-            MessageAttachment::Parsed(message) => Some(Cow::Borrowed(message.as_ref())),
-            MessageAttachment::Raw(raw_message) => Some(Cow::Owned(Message::parse(raw_message)?)),
-        }
-    }
-}
-
-#[cfg(feature = "serde_support")]
-impl<'x> Serialize for MessageAttachment<'x> {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        match self {
-            MessageAttachment::Parsed(message) => message.serialize(serializer),
-            MessageAttachment::Raw(raw) => Message::parse(raw.as_ref())
-                .ok_or_else(|| serde::ser::Error::custom("Failed to parse message attachment."))?
-                .serialize(serializer),
-        }
-    }
-}
-
-#[cfg(feature = "serde_support")]
-impl<'x, 'de> Deserialize<'de> for MessageAttachment<'x> {
-    fn deserialize<D>(_deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        panic!("Deserializing message attachments is not supported at this time.")
     }
 }
 

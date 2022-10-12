@@ -19,6 +19,7 @@
               "address": "doug@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
@@ -32,6 +33,7 @@
               "address": "schmuergen@example.com"
             }
           },
+          "offset_field": 40,
           "offset_start": 43,
           "offset_end": 112
         },
@@ -42,6 +44,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
           },
+          "offset_field": 112,
           "offset_start": 120,
           "offset_end": 194
         },
@@ -62,6 +65,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 194,
           "offset_start": 199,
           "offset_end": 233
         },
@@ -72,6 +76,7 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGEEKCCHAA.doug@example.com"
           },
+          "offset_field": 233,
           "offset_start": 244,
           "offset_end": 294
         },
@@ -82,6 +87,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 294,
           "offset_start": 307,
           "offset_end": 313
         },
@@ -101,6 +107,7 @@
               ]
             }
           },
+          "offset_field": 313,
           "offset_start": 326,
           "offset_end": 363
         },
@@ -111,6 +118,7 @@
           "value": {
             "Text": "8bit"
           },
+          "offset_field": 363,
           "offset_start": 389,
           "offset_end": 396
         },
@@ -121,6 +129,7 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
+          "offset_field": 396,
           "offset_start": 407,
           "offset_end": 420
         },
@@ -131,6 +140,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 420,
           "offset_start": 438,
           "offset_end": 447
         },
@@ -141,6 +151,7 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
+          "offset_field": 447,
           "offset_start": 456,
           "offset_end": 509
         },
@@ -151,6 +162,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 509,
           "offset_start": 520,
           "offset_end": 529
         },
@@ -161,6 +173,7 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
+          "offset_field": 529,
           "offset_start": 539,
           "offset_end": 587
         }

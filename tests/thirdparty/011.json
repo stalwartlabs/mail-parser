@@ -18,6 +18,7 @@
           "value": {
             "Text": "dummy@xyz-webserver.abcd-gestion.local"
           },
+          "offset_field": 0,
           "offset_start": 12,
           "offset_end": 52
         },
@@ -28,6 +29,7 @@
           "value": {
             "Text": " admin@xyz-webserver.abcd-gestion.local\n"
           },
+          "offset_field": 52,
           "offset_start": 65,
           "offset_end": 105
         },
@@ -38,6 +40,7 @@
           "value": {
             "Text": "from [10.1.1.1] (Unknown [10.1.1.1])\n\tby xyz-webserver.abcd-gestion.com with ESMTPA\n\t; Mon, 18 Jul 2022 08:19:52 -0700"
           },
+          "offset_field": 105,
           "offset_start": 114,
           "offset_end": 234
         },
@@ -57,6 +60,7 @@
               ]
             }
           },
+          "offset_field": 234,
           "offset_start": 247,
           "offset_end": 320
         },
@@ -67,6 +71,7 @@
           "value": {
             "Text": "ca2236fb-9819-82dd-c501-d3bcf737a768@xyz-webserver.abcd-gestion.local"
           },
+          "offset_field": 320,
           "offset_start": 331,
           "offset_end": 404
         },
@@ -87,6 +92,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 404,
           "offset_start": 409,
           "offset_end": 442
         },
@@ -97,6 +103,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 442,
           "offset_start": 455,
           "offset_end": 460
         },
@@ -107,6 +114,7 @@
           "value": {
             "Text": " Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101\n Thunderbird/91.11.0\n"
           },
+          "offset_field": 460,
           "offset_start": 471,
           "offset_end": 559
         },
@@ -117,6 +125,7 @@
           "value": {
             "Text": "fr"
           },
+          "offset_field": 559,
           "offset_start": 576,
           "offset_end": 580
         },
@@ -130,6 +139,7 @@
               "address": "admin@xyz-webserver.abcd-gestion.local"
             }
           },
+          "offset_field": 580,
           "offset_start": 583,
           "offset_end": 635
         },
@@ -143,6 +153,7 @@
               "address": "dummy@xyz-webserver.abcd-gestion.local"
             }
           },
+          "offset_field": 635,
           "offset_start": 640,
           "offset_end": 688
         },
@@ -153,6 +164,7 @@
           "value": {
             "Text": "small image"
           },
+          "offset_field": 688,
           "offset_start": 696,
           "offset_end": 709
         }
@@ -190,6 +202,7 @@
               ]
             }
           },
+          "offset_field": 794,
           "offset_start": 807,
           "offset_end": 849
         },
@@ -200,6 +213,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 849,
           "offset_start": 875,
           "offset_end": 881
         }
@@ -230,6 +244,7 @@
               ]
             }
           },
+          "offset_field": 921,
           "offset_start": 934,
           "offset_end": 1003
         }
@@ -263,6 +278,7 @@
               ]
             }
           },
+          "offset_field": 1043,
           "offset_start": 1056,
           "offset_end": 1082
         },
@@ -273,6 +289,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 1082,
           "offset_start": 1108,
           "offset_end": 1114
         }
@@ -303,6 +320,7 @@
               ]
             }
           },
+          "offset_field": 1387,
           "offset_start": 1400,
           "offset_end": 1440
         },
@@ -322,6 +340,7 @@
               ]
             }
           },
+          "offset_field": 1440,
           "offset_start": 1460,
           "offset_end": 1501
         },
@@ -332,6 +351,7 @@
           "value": {
             "Text": "part1.9UVUk3pv.Sy4hPOBH@xyz-webserver.abcd-gestion.local"
           },
+          "offset_field": 1501,
           "offset_start": 1512,
           "offset_end": 1572
         },
@@ -342,6 +362,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 1572,
           "offset_start": 1598,
           "offset_end": 1606
         }

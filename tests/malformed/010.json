@@ -18,6 +18,7 @@
               "attributes": null
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 29
         }
@@ -44,6 +45,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 30,
                   "offset_start": 43,
                   "offset_end": 59
                 }
@@ -72,6 +74,7 @@
                               "attributes": null
                             }
                           },
+                          "offset_field": 60,
                           "offset_start": 73,
                           "offset_end": 85
                         }

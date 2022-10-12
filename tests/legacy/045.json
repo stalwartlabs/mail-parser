@@ -28,6 +28,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 45
         },
@@ -41,6 +42,7 @@
               "address": "doug@penguin.example.com"
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 91
         },
@@ -60,6 +62,7 @@
               }
             ]
           },
+          "offset_field": 91,
           "offset_start": 94,
           "offset_end": 185
         },
@@ -70,6 +73,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
+          "offset_field": 185,
           "offset_start": 193,
           "offset_end": 240
         },
@@ -80,6 +84,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
           },
+          "offset_field": 240,
           "offset_start": 251,
           "offset_end": 315
         },
@@ -90,6 +95,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 315,
           "offset_start": 328,
           "offset_end": 334
         },
@@ -109,6 +115,7 @@
               ]
             }
           },
+          "offset_field": 334,
           "offset_start": 347,
           "offset_end": 415
         }
@@ -142,6 +149,7 @@
               ]
             }
           },
+          "offset_field": 678,
           "offset_start": 691,
           "offset_end": 722
         }
@@ -176,6 +184,7 @@
               ]
             }
           },
+          "offset_field": 767,
           "offset_start": 780,
           "offset_end": 856
         },
@@ -186,6 +195,7 @@
           "value": {
             "Text": "BASE64"
           },
+          "offset_field": 856,
           "offset_start": 882,
           "offset_end": 891
         },
@@ -196,6 +206,7 @@
           "value": {
             "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           },
+          "offset_field": 891,
           "offset_start": 902,
           "offset_end": 959
         },
@@ -206,6 +217,7 @@
           "value": {
             "Text": "Short story in German"
           },
+          "offset_field": 959,
           "offset_start": 979,
           "offset_end": 1003
         },
@@ -225,6 +237,7 @@
               ]
             }
           },
+          "offset_field": 1003,
           "offset_start": 1023,
           "offset_end": 1083
         }

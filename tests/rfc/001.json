@@ -19,6 +19,7 @@
               "address": null
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 15
         },
@@ -32,6 +33,7 @@
               "address": null
             }
           },
+          "offset_field": 15,
           "offset_start": 18,
           "offset_end": 27
         },
@@ -40,6 +42,7 @@
             "Rfc": "date"
           },
           "value": "Empty",
+          "offset_field": 27,
           "offset_start": 32,
           "offset_end": 42
         },
@@ -50,6 +53,7 @@
           "value": {
             "Text": "whatever"
           },
+          "offset_field": 42,
           "offset_start": 50,
           "offset_end": 60
         },
@@ -60,6 +64,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 60,
           "offset_start": 73,
           "offset_end": 78
         },
@@ -70,6 +75,7 @@
           "value": {
             "Text": "id1@host.com"
           },
+          "offset_field": 78,
           "offset_start": 89,
           "offset_end": 105
         },
@@ -89,6 +95,7 @@
               ]
             }
           },
+          "offset_field": 105,
           "offset_start": 118,
           "offset_end": 154
         },
@@ -99,6 +106,7 @@
           "value": {
             "Text": "id001@guppylake.bellcore.com"
           },
+          "offset_field": 154,
           "offset_start": 165,
           "offset_end": 197
         }
@@ -153,6 +161,7 @@
               ]
             }
           },
+          "offset_field": 203,
           "offset_start": 216,
           "offset_end": 432
         }
@@ -275,6 +284,7 @@
               ]
             }
           },
+          "offset_field": 518,
           "offset_start": 531,
           "offset_end": 735
         }
@@ -393,6 +403,7 @@
               ]
             }
           },
+          "offset_field": 821,
           "offset_start": 834,
           "offset_end": 1001
         }

@@ -26,6 +26,7 @@
           "value": {
             "Text": "3923670C.67D83A99@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
@@ -46,6 +47,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 84
         },
@@ -59,6 +61,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
@@ -69,6 +72,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
@@ -79,6 +83,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
@@ -89,6 +94,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
@@ -102,6 +108,7 @@
               "address": "blow@example.com"
             }
           },
+          "offset_field": 207,
           "offset_start": 210,
           "offset_end": 240
         },
@@ -112,6 +119,7 @@
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
+          "offset_field": 240,
           "offset_start": 248,
           "offset_end": 294
         },
@@ -131,6 +139,7 @@
               ]
             }
           },
+          "offset_field": 294,
           "offset_start": 307,
           "offset_end": 376
         }
@@ -166,6 +175,7 @@
               ]
             }
           },
+          "offset_field": 464,
           "offset_start": 477,
           "offset_end": 508
         },
@@ -176,6 +186,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 508,
           "offset_start": 534,
           "offset_end": 541
         }
@@ -206,6 +217,7 @@
               ]
             }
           },
+          "offset_field": 1352,
           "offset_start": 1365,
           "offset_end": 1399
         },
@@ -216,6 +228,7 @@
           "value": {
             "Text": "x-uuencode"
           },
+          "offset_field": 1399,
           "offset_start": 1425,
           "offset_end": 1438
         },
@@ -235,6 +248,7 @@
               ]
             }
           },
+          "offset_field": 1438,
           "offset_start": 1458,
           "offset_end": 1493
         }
@@ -2333,6 +2347,7 @@
               ]
             }
           },
+          "offset_field": 3604,
           "offset_start": 3617,
           "offset_end": 3653
         },
@@ -2343,6 +2358,7 @@
           "value": {
             "Text": "x-uuencode"
           },
+          "offset_field": 3653,
           "offset_start": 3679,
           "offset_end": 3692
         },
@@ -2362,6 +2378,7 @@
               ]
             }
           },
+          "offset_field": 3692,
           "offset_start": 3712,
           "offset_end": 3749
         }
@@ -4242,6 +4259,7 @@
               ]
             }
           },
+          "offset_field": 5642,
           "offset_start": 5655,
           "offset_end": 5690
         },
@@ -4252,6 +4270,7 @@
           "value": {
             "Text": "x-uuencode"
           },
+          "offset_field": 5690,
           "offset_start": 5716,
           "offset_end": 5729
         },
@@ -4271,6 +4290,7 @@
               ]
             }
           },
+          "offset_field": 5729,
           "offset_start": 5749,
           "offset_end": 5785
         }

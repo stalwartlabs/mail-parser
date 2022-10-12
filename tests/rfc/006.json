@@ -19,6 +19,7 @@
               "address": "sender@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 25
         },
@@ -32,6 +33,7 @@
               "address": "recipient@example.com"
             }
           },
+          "offset_field": 25,
           "offset_start": 28,
           "offset_end": 51
         },
@@ -42,6 +44,7 @@
           "value": {
             "Text": "Multipart Email Example"
           },
+          "offset_field": 51,
           "offset_start": 59,
           "offset_end": 84
         },
@@ -61,6 +64,7 @@
               ]
             }
           },
+          "offset_field": 84,
           "offset_start": 97,
           "offset_end": 148
         }
@@ -94,6 +98,7 @@
               ]
             }
           },
+          "offset_field": 167,
           "offset_start": 180,
           "offset_end": 209
         },
@@ -104,6 +109,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 209,
           "offset_start": 235,
           "offset_end": 253
         },
@@ -118,6 +124,7 @@
               "attributes": null
             }
           },
+          "offset_field": 253,
           "offset_start": 273,
           "offset_end": 281
         }
@@ -148,6 +155,7 @@
               ]
             }
           },
+          "offset_field": 388,
           "offset_start": 401,
           "offset_end": 429
         },
@@ -158,6 +166,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 429,
           "offset_start": 455,
           "offset_end": 473
         },
@@ -172,6 +181,7 @@
               "attributes": null
             }
           },
+          "offset_field": 473,
           "offset_start": 493,
           "offset_end": 501
         }

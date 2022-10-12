@@ -19,6 +19,7 @@
               "address": "doug@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
@@ -32,6 +33,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 40,
           "offset_start": 43,
           "offset_end": 82
         },
@@ -42,6 +44,7 @@
           "value": {
             "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
           },
+          "offset_field": 82,
           "offset_start": 90,
           "offset_end": 141
         },
@@ -62,6 +65,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 141,
           "offset_start": 146,
           "offset_end": 180
         },
@@ -72,6 +76,7 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
           },
+          "offset_field": 180,
           "offset_start": 191,
           "offset_end": 241
         },
@@ -82,6 +87,7 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
+          "offset_field": 241,
           "offset_start": 252,
           "offset_end": 265
         },
@@ -92,6 +98,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 265,
           "offset_start": 283,
           "offset_end": 292
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
+          "offset_field": 292,
           "offset_start": 301,
           "offset_end": 354
         },
@@ -112,6 +120,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 354,
           "offset_start": 365,
           "offset_end": 374
         },
@@ -122,6 +131,7 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
+          "offset_field": 374,
           "offset_start": 384,
           "offset_end": 432
         }

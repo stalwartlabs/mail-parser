@@ -25,6 +25,7 @@
           "value": {
             "Text": "39235FC5.276CCE00@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
@@ -45,6 +46,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 84
         },
@@ -58,6 +60,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
@@ -68,6 +71,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
@@ -78,6 +82,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
@@ -88,6 +93,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
@@ -101,6 +107,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 207,
           "offset_start": 210,
           "offset_end": 266
         },
@@ -111,6 +118,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Netscape Messenger 4.7)"
           },
+          "offset_field": 266,
           "offset_start": 274,
           "offset_end": 346
         },
@@ -130,6 +138,7 @@
               ]
             }
           },
+          "offset_field": 346,
           "offset_start": 359,
           "offset_end": 428
         }
@@ -164,6 +173,7 @@
               ]
             }
           },
+          "offset_field": 516,
           "offset_start": 529,
           "offset_end": 604
         }
@@ -197,6 +207,7 @@
               ]
             }
           },
+          "offset_field": 648,
           "offset_start": 661,
           "offset_end": 694
         },
@@ -207,6 +218,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 694,
           "offset_start": 720,
           "offset_end": 739
         }
@@ -237,6 +249,7 @@
               ]
             }
           },
+          "offset_field": 1607,
           "offset_start": 1620,
           "offset_end": 1691
         }
@@ -271,6 +284,7 @@
               ]
             }
           },
+          "offset_field": 1735,
           "offset_start": 1748,
           "offset_end": 1778
         },
@@ -281,6 +295,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 1778,
           "offset_start": 1804,
           "offset_end": 1811
         }
@@ -306,6 +321,7 @@
               "attributes": null
             }
           },
+          "offset_field": 2977,
           "offset_start": 2990,
           "offset_end": 3002
         },
@@ -316,6 +332,7 @@
           "value": {
             "Text": "part1.39235FC5.E71D8178@example.com"
           },
+          "offset_field": 3002,
           "offset_start": 3013,
           "offset_end": 3053
         },
@@ -326,6 +343,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 3053,
           "offset_start": 3079,
           "offset_end": 3088
         },
@@ -345,6 +363,7 @@
               ]
             }
           },
+          "offset_field": 3088,
           "offset_start": 3108,
           "offset_end": 3150
         }
@@ -1696,6 +1715,7 @@
               "attributes": null
             }
           },
+          "offset_field": 5010,
           "offset_start": 5023,
           "offset_end": 5035
         },
@@ -1706,6 +1726,7 @@
           "value": {
             "Text": "part2.39235FC5.E71D8178@example.com"
           },
+          "offset_field": 5035,
           "offset_start": 5046,
           "offset_end": 5086
         },
@@ -1716,6 +1737,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 5086,
           "offset_start": 5112,
           "offset_end": 5121
         },
@@ -1735,6 +1757,7 @@
               ]
             }
           },
+          "offset_field": 5121,
           "offset_start": 5141,
           "offset_end": 5183
         }
@@ -3219,6 +3242,7 @@
               ]
             }
           },
+          "offset_field": 7307,
           "offset_start": 7320,
           "offset_end": 7354
         },
@@ -3229,6 +3253,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 7354,
           "offset_start": 7380,
           "offset_end": 7389
         },
@@ -3248,6 +3273,7 @@
               ]
             }
           },
+          "offset_field": 7389,
           "offset_start": 7409,
           "offset_end": 7444
         }
@@ -4732,6 +4758,7 @@
               ]
             }
           },
+          "offset_field": 9480,
           "offset_start": 9493,
           "offset_end": 9529
         },
@@ -4742,6 +4769,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 9529,
           "offset_start": 9555,
           "offset_end": 9564
         },
@@ -4761,6 +4789,7 @@
               ]
             }
           },
+          "offset_field": 9564,
           "offset_start": 9584,
           "offset_end": 9621
         }

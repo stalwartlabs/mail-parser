@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
+use std::{borrow::Cow, iter::Peekable, slice::Iter};
 
 use crate::{
     decoders::{
@@ -17,8 +17,8 @@ use crate::{
         quoted_printable::decode_quoted_printable_mime, DecodeFnc,
     },
     parsers::mime::seek_next_part_offset,
-    ContentType, Encoding, GetHeader, HeaderValue, Message, MessageAttachment, MessagePart,
-    MessagePartId, PartType, RfcHeader,
+    ContentType, Encoding, GetHeader, HeaderValue, Message, MessagePart, MessagePartId, PartType,
+    RfcHeader,
 };
 
 use super::{
@@ -27,6 +27,8 @@ use super::{
         get_mime_part, seek_crlf, seek_next_part, seek_part_end, skip_crlf, skip_multipart_end,
     },
 };
+
+const MAX_NESTED_ENCODED: usize = 3;
 
 #[derive(Debug, PartialEq)]
 enum MimeType {
@@ -120,12 +122,19 @@ impl MessageParserState {
 
 pub struct MessageStream<'x> {
     pub data: &'x [u8],
+    //pub iter: Peekable<Iter<'x, u8>>,
     pub pos: usize,
+    //pub restore_pos: usize,
 }
 
 impl<'x> MessageStream<'x> {
     pub fn new(data: &'x [u8]) -> MessageStream<'x> {
-        MessageStream { data, pos: 0 }
+        MessageStream {
+            data,
+            //iter: data.iter().peekable(),
+            pos: 0,
+            //restore_pos: 0,
+        }
     }
 }
 
@@ -148,6 +157,10 @@ impl<'x> Message<'x> {
     /// if no headers are found None is returned.
     ///
     pub fn parse(raw_message: &'x [u8]) -> Option<Message<'x>> {
+        Message::parse_(raw_message, MAX_NESTED_ENCODED)
+    }
+
+    fn parse_(raw_message: &'x [u8], depth: usize) -> Option<Message<'x>> {
         let mut stream = MessageStream::new(raw_message);
 
         let mut message = Message::new();
@@ -263,7 +276,7 @@ impl<'x> Message<'x> {
             );
 
             // Attempt to recover contents of an invalid message
-            let is_encoding_problem = offset_end == usize::MAX;
+            let mut is_encoding_problem = offset_end == usize::MAX;
             if is_encoding_problem {
                 encoding = Encoding::None;
                 mime_type = MimeType::TextOther;
@@ -374,7 +387,28 @@ impl<'x> Message<'x> {
                 }
             } else {
                 message.attachments.push(message.parts.len());
-                PartType::Message(MessageAttachment::Raw(bytes))
+
+                if depth != 0 {
+                    if let Some(nested_message) = Message::parse_(bytes.as_ref(), depth - 1) {
+                        PartType::Message(Message {
+                            html_body: nested_message.html_body,
+                            text_body: nested_message.text_body,
+                            attachments: nested_message.attachments,
+                            parts: nested_message
+                                .parts
+                                .into_iter()
+                                .map(|p| p.into_owned())
+                                .collect(),
+                            raw_message: bytes.into_owned().into(),
+                        })
+                    } else {
+                        is_encoding_problem = true;
+                        PartType::Binary(bytes)
+                    }
+                } else {
+                    is_encoding_problem = true;
+                    PartType::Binary(bytes)
+                }
             };
 
             // Add part
@@ -408,12 +442,11 @@ impl<'x> Message<'x> {
                                     })
                                 })
                                 .unwrap_or(stream.pos);
-                            message.raw_message =
-                                raw_message[state.offset_header..offset_end].as_ref().into();
+                            message.raw_message = raw_message.into();
+                            //raw_message[state.offset_header..offset_end].as_ref().into();
 
                             if let Some(part) = prev_message.parts.get_mut(state.part_id) {
-                                part.body =
-                                    PartType::Message(MessageAttachment::Parsed(Box::new(message)));
+                                part.body = PartType::Message(message);
                                 part.offset_end = offset_end;
                             } else {
                                 debug_assert!(false, "Invalid part ID, could not find message.");
@@ -498,7 +531,7 @@ impl<'x> Message<'x> {
                 message.raw_message = raw_message[state.offset_header..stream.pos].as_ref().into();
 
                 if let Some(part) = prev_message.parts.get_mut(state.part_id) {
-                    part.body = PartType::Message(MessageAttachment::Parsed(Box::new(message)));
+                    part.body = PartType::Message(message);
                     part.offset_end = stream.pos;
                 } else {
                     debug_assert!(false, "Invalid part ID, could not find message.");

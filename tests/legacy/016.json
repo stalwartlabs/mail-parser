@@ -19,6 +19,7 @@
           "value": {
             "Text": "4.2.0.58.20000519005150.00a85230@pop.example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 64
         },
@@ -29,6 +30,7 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
+          "offset_field": 64,
           "offset_start": 73,
           "offset_end": 113
         },
@@ -39,6 +41,7 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
+          "offset_field": 113,
           "offset_start": 122,
           "offset_end": 170
         },
@@ -59,6 +62,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 170,
           "offset_start": 175,
           "offset_end": 209
         },
@@ -72,6 +76,7 @@
               "address": "jschmuergen@example.com"
             }
           },
+          "offset_field": 209,
           "offset_start": 212,
           "offset_end": 295
         },
@@ -85,6 +90,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 295,
           "offset_start": 300,
           "offset_end": 337
         },
@@ -95,6 +101,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
+          "offset_field": 337,
           "offset_start": 345,
           "offset_end": 390
         },
@@ -105,6 +112,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 390,
           "offset_start": 403,
           "offset_end": 409
         },
@@ -124,6 +132,7 @@
               ]
             }
           },
+          "offset_field": 409,
           "offset_start": 422,
           "offset_end": 489
         }
@@ -158,6 +167,7 @@
               ]
             }
           },
+          "offset_field": 529,
           "offset_start": 542,
           "offset_end": 577
         },
@@ -168,6 +178,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 577,
           "offset_start": 603,
           "offset_end": 622
         }
@@ -198,6 +209,7 @@
               ]
             }
           },
+          "offset_field": 1473,
           "offset_start": 1486,
           "offset_end": 1534
         },
@@ -217,6 +229,7 @@
               ]
             }
           },
+          "offset_field": 1534,
           "offset_start": 1554,
           "offset_end": 1592
         }
@@ -2177,6 +2190,7 @@
               ]
             }
           },
+          "offset_field": 3563,
           "offset_start": 3576,
           "offset_end": 3631
         },
@@ -2196,6 +2210,7 @@
               ]
             }
           },
+          "offset_field": 3631,
           "offset_start": 3651,
           "offset_end": 3696
         }

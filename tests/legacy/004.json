@@ -16,6 +16,7 @@
           "value": {
             "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 64
         },
@@ -26,6 +27,7 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
+          "offset_field": 64,
           "offset_start": 73,
           "offset_end": 113
         },
@@ -36,6 +38,7 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
+          "offset_field": 113,
           "offset_start": 122,
           "offset_end": 170
         },
@@ -46,6 +49,7 @@
           "value": {
             "Text": " 5 (Lowest)\r\n"
           },
+          "offset_field": 170,
           "offset_start": 181,
           "offset_end": 194
         },
@@ -66,6 +70,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 194,
           "offset_start": 199,
           "offset_end": 233
         },
@@ -79,6 +84,7 @@
               "address": "blow@example.com"
             }
           },
+          "offset_field": 233,
           "offset_start": 236,
           "offset_end": 266
         },
@@ -92,6 +98,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 266,
           "offset_start": 271,
           "offset_end": 308
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "The Hare and the Tortoise"
           },
+          "offset_field": 308,
           "offset_start": 316,
           "offset_end": 344
         },
@@ -112,6 +120,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 344,
           "offset_start": 357,
           "offset_end": 363
         },
@@ -131,6 +140,7 @@
               ]
             }
           },
+          "offset_field": 363,
           "offset_start": 376,
           "offset_end": 409
         }

@@ -19,6 +19,7 @@
               "address": "doug@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
@@ -32,6 +33,7 @@
               "address": "jblow@example.com"
             }
           },
+          "offset_field": 40,
           "offset_start": 43,
           "offset_end": 76
         },
@@ -42,6 +44,7 @@
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
+          "offset_field": 76,
           "offset_start": 84,
           "offset_end": 125
         },
@@ -62,6 +65,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 125,
           "offset_start": 130,
           "offset_end": 164
         },
@@ -72,6 +76,7 @@
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
           },
+          "offset_field": 164,
           "offset_start": 175,
           "offset_end": 225
         },
@@ -82,6 +87,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 225,
           "offset_start": 238,
           "offset_end": 244
         },
@@ -101,6 +107,7 @@
               ]
             }
           },
+          "offset_field": 244,
           "offset_start": 257,
           "offset_end": 337
         },
@@ -111,6 +118,7 @@
           "value": {
             "Text": " 3 (Normal)\r\n"
           },
+          "offset_field": 337,
           "offset_start": 348,
           "offset_end": 361
         },
@@ -121,6 +129,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 361,
           "offset_start": 379,
           "offset_end": 388
         },
@@ -131,6 +140,7 @@
           "value": {
             "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
           },
+          "offset_field": 388,
           "offset_start": 397,
           "offset_end": 450
         },
@@ -141,6 +151,7 @@
           "value": {
             "Text": " Normal\r\n"
           },
+          "offset_field": 450,
           "offset_start": 461,
           "offset_end": 470
         },
@@ -151,6 +162,7 @@
           "value": {
             "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
           },
+          "offset_field": 470,
           "offset_start": 480,
           "offset_end": 528
         }
@@ -184,6 +196,7 @@
               ]
             }
           },
+          "offset_field": 623,
           "offset_start": 636,
           "offset_end": 673
         },
@@ -194,6 +207,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 673,
           "offset_start": 699,
           "offset_end": 718
         }
@@ -224,6 +238,7 @@
               ]
             }
           },
+          "offset_field": 1568,
           "offset_start": 1581,
           "offset_end": 1617
         },
@@ -234,6 +249,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 1617,
           "offset_start": 1643,
           "offset_end": 1662
         }

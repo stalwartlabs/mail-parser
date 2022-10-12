@@ -18,6 +18,7 @@
           "value": {
             "Text": "test@example.org"
           },
+          "offset_field": 0,
           "offset_start": 12,
           "offset_end": 32
         },
@@ -28,6 +29,7 @@
           "value": {
             "Text": "Hello world"
           },
+          "offset_field": 32,
           "offset_start": 40,
           "offset_end": 53
         },
@@ -41,6 +43,7 @@
               "address": "test@example.org"
             }
           },
+          "offset_field": 53,
           "offset_start": 58,
           "offset_end": 88
         },
@@ -54,6 +57,7 @@
               "address": "test2@example.org"
             }
           },
+          "offset_field": 88,
           "offset_start": 91,
           "offset_end": 125
         },
@@ -64,6 +68,7 @@
           "value": {
             "Text": "1.2.3.4@example"
           },
+          "offset_field": 125,
           "offset_start": 136,
           "offset_end": 155
         },
@@ -74,6 +79,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 155,
           "offset_start": 168,
           "offset_end": 173
         },
@@ -94,6 +100,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 173,
           "offset_start": 178,
           "offset_end": 211
         },
@@ -121,6 +128,7 @@
               ]
             }
           },
+          "offset_field": 211,
           "offset_start": 224,
           "offset_end": 334
         }
@@ -149,6 +157,7 @@
               "attributes": null
             }
           },
+          "offset_field": 360,
           "offset_start": 373,
           "offset_end": 385
         },
@@ -159,6 +168,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 385,
           "offset_start": 411,
           "offset_end": 429
         }
@@ -189,6 +199,7 @@
               ]
             }
           },
+          "offset_field": 489,
           "offset_start": 502,
           "offset_end": 549
         }

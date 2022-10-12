@@ -19,6 +19,7 @@
               "address": "moderator"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 36
         },
@@ -38,6 +39,7 @@
               ]
             }
           },
+          "offset_field": 36,
           "offset_start": 49,
           "offset_end": 80
         }
@@ -79,6 +81,7 @@
                       "address": "someone@else"
                     }
                   },
+                  "offset_field": 87,
                   "offset_start": 92,
                   "offset_end": 121
                 },
@@ -89,6 +92,7 @@
                   "value": {
                     "Text": "my opinion"
                   },
+                  "offset_field": 121,
                   "offset_start": 129,
                   "offset_end": 141
                 }
@@ -133,6 +137,7 @@
                       "address": "another@one"
                     }
                   },
+                  "offset_field": 166,
                   "offset_start": 171,
                   "offset_end": 198
                 },
@@ -143,6 +148,7 @@
                   "value": {
                     "Text": "i disagree"
                   },
+                  "offset_field": 198,
                   "offset_start": 206,
                   "offset_end": 218
                 }
@@ -189,6 +195,7 @@
                       "address": "attachment@user"
                     }
                   },
+                  "offset_field": 246,
                   "offset_start": 251,
                   "offset_end": 281
                 },
@@ -199,6 +206,7 @@
                   "value": {
                     "Text": "funny hat"
                   },
+                  "offset_field": 281,
                   "offset_start": 289,
                   "offset_end": 300
                 },
@@ -218,6 +226,7 @@
                       ]
                     }
                   },
+                  "offset_field": 300,
                   "offset_start": 313,
                   "offset_end": 342
                 }
@@ -246,6 +255,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 347,
                   "offset_start": 360,
                   "offset_end": 372
                 },
@@ -256,6 +266,7 @@
                   "value": {
                     "Text": "binary"
                   },
+                  "offset_field": 372,
                   "offset_start": 398,
                   "offset_end": 406
                 }
@@ -290,6 +301,7 @@
                       ]
                     }
                   },
+                  "offset_field": 437,
                   "offset_start": 450,
                   "offset_end": 517
                 },
@@ -300,6 +312,7 @@
                   "value": {
                     "Text": "binary"
                   },
+                  "offset_field": 517,
                   "offset_start": 543,
                   "offset_end": 551
                 }

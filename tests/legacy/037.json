@@ -20,6 +20,7 @@
           "value": {
             "Text": "392366A7.21929EA7@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
@@ -40,6 +41,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 84
         },
@@ -53,6 +55,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
@@ -63,6 +66,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
@@ -73,6 +77,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
@@ -83,6 +88,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
@@ -96,6 +102,7 @@
               "address": "blow@example.com"
             }
           },
+          "offset_field": 207,
           "offset_start": 210,
           "offset_end": 240
         },
@@ -106,6 +113,7 @@
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
+          "offset_field": 240,
           "offset_start": 248,
           "offset_end": 294
         },
@@ -125,6 +133,7 @@
               ]
             }
           },
+          "offset_field": 294,
           "offset_start": 307,
           "offset_end": 376
         }
@@ -158,6 +167,7 @@
               ]
             }
           },
+          "offset_field": 464,
           "offset_start": 477,
           "offset_end": 508
         },
@@ -168,6 +178,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 508,
           "offset_start": 534,
           "offset_end": 541
         }
@@ -198,6 +209,7 @@
               ]
             }
           },
+          "offset_field": 586,
           "offset_start": 599,
           "offset_end": 634
         },
@@ -208,6 +220,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 634,
           "offset_start": 660,
           "offset_end": 669
         },
@@ -227,6 +240,7 @@
               ]
             }
           },
+          "offset_field": 669,
           "offset_start": 689,
           "offset_end": 725
         }

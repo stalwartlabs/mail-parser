@@ -21,6 +21,7 @@
               "address": "vice-president@whitehouse.gov"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 47
         },
@@ -34,6 +35,7 @@
               "address": "transport@whitehouse.gov"
             }
           },
+          "offset_field": 47,
           "offset_start": 50,
           "offset_end": 123
         },
@@ -44,6 +46,7 @@
           "value": {
             "Text": "[Fwd: Map of Argentina with Description]"
           },
+          "offset_field": 123,
           "offset_start": 131,
           "offset_end": 173
         },
@@ -63,6 +66,7 @@
               ]
             }
           },
+          "offset_field": 173,
           "offset_start": 186,
           "offset_end": 269
         }
@@ -96,6 +100,7 @@
               ]
             }
           },
+          "offset_field": 357,
           "offset_start": 370,
           "offset_end": 400
         },
@@ -106,6 +111,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 400,
           "offset_start": 426,
           "offset_end": 432
         }
@@ -131,6 +137,7 @@
               "attributes": null
             }
           },
+          "offset_field": 537,
           "offset_start": 550,
           "offset_end": 566
         },
@@ -141,6 +148,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 566,
           "offset_start": 592,
           "offset_end": 598
         },
@@ -155,6 +163,7 @@
               "attributes": null
             }
           },
+          "offset_field": 598,
           "offset_start": 618,
           "offset_end": 626
         }
@@ -183,6 +192,7 @@
                   "value": {
                     "Text": "president@whitehouse.gov"
                   },
+                  "offset_field": 627,
                   "offset_start": 639,
                   "offset_end": 667
                 },
@@ -193,6 +203,7 @@
                   "value": {
                     "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\n        for <vice-president@heartbeat.whitehouse.gov>;\n        Mon, 13 Aug 1998 l8:14:23 +1000"
                   },
+                  "offset_field": 667,
                   "offset_start": 676,
                   "offset_end": 893
                 },
@@ -203,6 +214,7 @@
                   "value": {
                     "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
                   },
+                  "offset_field": 893,
                   "offset_start": 902,
                   "offset_end": 1100
                 },
@@ -223,6 +235,7 @@
                       "tz_minute": 0
                     }
                   },
+                  "offset_field": 1100,
                   "offset_start": 1105,
                   "offset_end": 1138
                 },
@@ -233,6 +246,7 @@
                   "value": {
                     "Text": "199804130742.RAA20366@mai1host.whitehouse.gov"
                   },
+                  "offset_field": 1138,
                   "offset_start": 1149,
                   "offset_end": 1198
                 },
@@ -246,6 +260,7 @@
                       "address": "president@whitehouse.gov"
                     }
                   },
+                  "offset_field": 1198,
                   "offset_start": 1203,
                   "offset_end": 1244
                 },
@@ -259,6 +274,7 @@
                       "address": "vice-president@whitehouse.gov"
                     }
                   },
+                  "offset_field": 1244,
                   "offset_start": 1247,
                   "offset_end": 1303
                 },
@@ -269,6 +285,7 @@
                   "value": {
                     "Text": "Map of Argentina with Description"
                   },
+                  "offset_field": 1303,
                   "offset_start": 1311,
                   "offset_end": 1347
                 },
@@ -279,6 +296,7 @@
                   "value": {
                     "Text": "1.0"
                   },
+                  "offset_field": 1347,
                   "offset_start": 1360,
                   "offset_end": 1365
                 },
@@ -298,6 +316,7 @@
                       ]
                     }
                   },
+                  "offset_field": 1365,
                   "offset_start": 1378,
                   "offset_end": 1461
                 }
@@ -331,6 +350,7 @@
                       ]
                     }
                   },
+                  "offset_field": 1549,
                   "offset_start": 1562,
                   "offset_end": 1592
                 },
@@ -341,6 +361,7 @@
                   "value": {
                     "Text": "7bit"
                   },
+                  "offset_field": 1592,
                   "offset_start": 1618,
                   "offset_end": 1624
                 }
@@ -371,6 +392,7 @@
                       ]
                     }
                   },
+                  "offset_field": 2023,
                   "offset_start": 2036,
                   "offset_end": 2076
                 },
@@ -381,6 +403,7 @@
                   "value": {
                     "Text": "base64"
                   },
+                  "offset_field": 2076,
                   "offset_start": 2102,
                   "offset_end": 2110
                 },
@@ -400,6 +423,7 @@
                       ]
                     }
                   },
+                  "offset_field": 2110,
                   "offset_start": 2130,
                   "offset_end": 2171
                 }

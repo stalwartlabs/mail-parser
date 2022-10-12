@@ -31,6 +31,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 44
         },
@@ -41,6 +42,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 44,
           "offset_start": 57,
           "offset_end": 62
         }
@@ -69,6 +71,7 @@
               "attributes": null
             }
           },
+          "offset_field": 67,
           "offset_start": 80,
           "offset_end": 92
         }
@@ -99,6 +102,7 @@
               ]
             }
           },
+          "offset_field": 110,
           "offset_start": 123,
           "offset_end": 154
         },
@@ -109,6 +113,7 @@
           "value": {
             "Text": "2.0"
           },
+          "offset_field": 154,
           "offset_start": 167,
           "offset_end": 172
         }
@@ -137,6 +142,7 @@
               "attributes": null
             }
           },
+          "offset_field": 177,
           "offset_start": 190,
           "offset_end": 202
         }
@@ -167,6 +173,7 @@
               ]
             }
           },
+          "offset_field": 220,
           "offset_start": 233,
           "offset_end": 264
         },
@@ -177,6 +184,7 @@
           "value": {
             "Text": "abc"
           },
+          "offset_field": 264,
           "offset_start": 277,
           "offset_end": 282
         }
@@ -205,6 +213,7 @@
               "attributes": null
             }
           },
+          "offset_field": 287,
           "offset_start": 300,
           "offset_end": 312
         }
@@ -235,6 +244,7 @@
               ]
             }
           },
+          "offset_field": 330,
           "offset_start": 343,
           "offset_end": 374
         },
@@ -243,6 +253,7 @@
             "Rfc": "mime_version"
           },
           "value": "Empty",
+          "offset_field": 374,
           "offset_start": 387,
           "offset_end": 388
         }
@@ -270,6 +281,7 @@
               "attributes": null
             }
           },
+          "offset_field": 393,
           "offset_start": 406,
           "offset_end": 418
         }

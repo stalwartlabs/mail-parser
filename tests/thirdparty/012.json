@@ -15,6 +15,7 @@
           "value": {
             "Text": "06:23 2008\n"
           },
+          "offset_field": 0,
           "offset_start": 32,
           "offset_end": 43
         },
@@ -28,6 +29,7 @@
               "address": "user@domain.org"
             }
           },
+          "offset_field": 43,
           "offset_start": 48,
           "offset_end": 65
         },
@@ -48,6 +50,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 65,
           "offset_start": 70,
           "offset_end": 103
         },
@@ -58,6 +61,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 103,
           "offset_start": 116,
           "offset_end": 121
         },
@@ -77,6 +81,7 @@
               ]
             }
           },
+          "offset_field": 121,
           "offset_start": 134,
           "offset_end": 172
         }
@@ -110,6 +115,7 @@
               ]
             }
           },
+          "offset_field": 203,
           "offset_start": 216,
           "offset_end": 248
         }
@@ -135,6 +141,7 @@
               "attributes": null
             }
           },
+          "offset_field": 266,
           "offset_start": 279,
           "offset_end": 295
         }
@@ -162,6 +169,7 @@
                       "address": "sub@domain.org"
                     }
                   },
+                  "offset_field": 296,
                   "offset_start": 301,
                   "offset_end": 317
                 },
@@ -182,6 +190,7 @@
                       "tz_minute": 0
                     }
                   },
+                  "offset_field": 317,
                   "offset_start": 322,
                   "offset_end": 355
                 },
@@ -192,6 +201,7 @@
                   "value": {
                     "Text": "submsg"
                   },
+                  "offset_field": 355,
                   "offset_start": 363,
                   "offset_end": 371
                 },
@@ -211,6 +221,7 @@
                       ]
                     }
                   },
+                  "offset_field": 371,
                   "offset_start": 384,
                   "offset_end": 424
                 }
@@ -239,6 +250,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 450,
                   "offset_start": 463,
                   "offset_end": 474
                 }
@@ -264,6 +276,7 @@
                       "attributes": null
                     }
                   },
+                  "offset_field": 502,
                   "offset_start": 515,
                   "offset_end": 527
                 }

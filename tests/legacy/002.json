@@ -16,6 +16,7 @@
           "value": {
             "Text": "4.2.0.58.20000519003052.00a89c40@pop.example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 64
         },
@@ -26,6 +27,7 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
+          "offset_field": 64,
           "offset_start": 73,
           "offset_end": 113
         },
@@ -36,6 +38,7 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
+          "offset_field": 113,
           "offset_start": 122,
           "offset_end": 170
         },
@@ -46,6 +49,7 @@
           "value": {
             "Text": " 2 (High)\r\n"
           },
+          "offset_field": 170,
           "offset_start": 181,
           "offset_end": 192
         },
@@ -66,6 +70,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 192,
           "offset_start": 197,
           "offset_end": 231
         },
@@ -79,6 +84,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 231,
           "offset_start": 234,
           "offset_end": 290
         },
@@ -92,6 +98,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 290,
           "offset_start": 295,
           "offset_end": 332
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
+          "offset_field": 332,
           "offset_start": 340,
           "offset_end": 387
         },
@@ -112,6 +120,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 387,
           "offset_start": 400,
           "offset_end": 406
         },
@@ -131,6 +140,7 @@
               ]
             }
           },
+          "offset_field": 406,
           "offset_start": 419,
           "offset_end": 453
         },
@@ -141,6 +151,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 453,
           "offset_start": 479,
           "offset_end": 498
         }

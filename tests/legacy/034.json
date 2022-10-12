@@ -16,6 +16,7 @@
           "value": {
             "Text": "39236497.12FA2A89@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
@@ -36,6 +37,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 45,
           "offset_start": 50,
           "offset_end": 84
         },
@@ -49,6 +51,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
@@ -59,6 +62,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
@@ -69,6 +73,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
@@ -79,6 +84,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
@@ -92,6 +98,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 207,
           "offset_start": 210,
           "offset_end": 253
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "Die Hasen und die Fr+APY-sche"
           },
+          "offset_field": 253,
           "offset_start": 261,
           "offset_end": 293
         },
@@ -121,6 +129,7 @@
               ]
             }
           },
+          "offset_field": 293,
           "offset_start": 306,
           "offset_end": 334
         },
@@ -131,6 +140,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 334,
           "offset_start": 360,
           "offset_end": 367
         }

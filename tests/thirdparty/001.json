@@ -20,6 +20,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 19
         },
@@ -39,6 +40,7 @@
               ]
             }
           },
+          "offset_field": 19,
           "offset_start": 32,
           "offset_end": 76
         }
@@ -64,6 +66,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 102,
           "offset_start": 128,
           "offset_end": 137
         },
@@ -78,6 +81,7 @@
               "attributes": null
             }
           },
+          "offset_field": 137,
           "offset_start": 150,
           "offset_end": 163
         }
@@ -103,6 +107,7 @@
               "attributes": null
             }
           },
+          "offset_field": 400,
           "offset_start": 413,
           "offset_end": 426
         },
@@ -113,6 +118,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 426,
           "offset_start": 452,
           "offset_end": 461
         }
@@ -138,6 +144,7 @@
               "attributes": null
             }
           },
+          "offset_field": 477,
           "offset_start": 490,
           "offset_end": 503
         }

@@ -29,6 +29,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 44
         }
@@ -54,6 +55,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 51,
           "offset_start": 77,
           "offset_end": 95
         },
@@ -73,6 +75,7 @@
               ]
             }
           },
+          "offset_field": 95,
           "offset_start": 108,
           "offset_end": 135
         }
@@ -94,6 +97,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 165,
           "offset_start": 191,
           "offset_end": 199
         },
@@ -113,6 +117,7 @@
               ]
             }
           },
+          "offset_field": 199,
           "offset_start": 212,
           "offset_end": 239
         }
@@ -134,6 +139,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 275,
           "offset_start": 301,
           "offset_end": 309
         },
@@ -153,6 +159,7 @@
               ]
             }
           },
+          "offset_field": 309,
           "offset_start": 322,
           "offset_end": 349
         }

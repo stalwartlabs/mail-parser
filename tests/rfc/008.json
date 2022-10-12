@@ -27,6 +27,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 82
         }
@@ -60,6 +61,7 @@
               ]
             }
           },
+          "offset_field": 126,
           "offset_start": 139,
           "offset_end": 166
         },
@@ -70,6 +72,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 166,
           "offset_start": 192,
           "offset_end": 198
         }
@@ -100,6 +103,7 @@
               ]
             }
           },
+          "offset_field": 297,
           "offset_start": 317,
           "offset_end": 360
         },
@@ -114,6 +118,7 @@
               "attributes": null
             }
           },
+          "offset_field": 360,
           "offset_start": 373,
           "offset_end": 389
         },
@@ -124,6 +129,7 @@
           "value": {
             "Text": "base64"
           },
+          "offset_field": 389,
           "offset_start": 415,
           "offset_end": 423
         }
@@ -151,6 +157,7 @@
                       "address": "email@example.com"
                     }
                   },
+                  "offset_field": 0,
                   "offset_start": 3,
                   "offset_end": 45
                 },
@@ -164,6 +171,7 @@
                       "address": "email@example.com"
                     }
                   },
+                  "offset_field": 45,
                   "offset_start": 50,
                   "offset_end": 77
                 },
@@ -174,6 +182,7 @@
                   "value": {
                     "Text": "HTML test"
                   },
+                  "offset_field": 77,
                   "offset_start": 85,
                   "offset_end": 97
                 },
@@ -184,6 +193,7 @@
                   "value": {
                     "Text": "random-message-id@example.com"
                   },
+                  "offset_field": 97,
                   "offset_start": 108,
                   "offset_end": 142
                 },
@@ -204,6 +214,7 @@
                       "tz_minute": 0
                     }
                   },
+                  "offset_field": 142,
                   "offset_start": 147,
                   "offset_end": 181
                 },
@@ -214,6 +225,7 @@
                   "value": {
                     "Text": "1.0"
                   },
+                  "offset_field": 181,
                   "offset_start": 194,
                   "offset_end": 200
                 },
@@ -233,6 +245,7 @@
                       ]
                     }
                   },
+                  "offset_field": 200,
                   "offset_start": 213,
                   "offset_end": 292
                 },
@@ -243,6 +256,7 @@
                   "value": {
                     "Text": "en-US"
                   },
+                  "offset_field": 292,
                   "offset_start": 309,
                   "offset_end": 317
                 }
@@ -280,6 +294,7 @@
                       ]
                     }
                   },
+                  "offset_field": 409,
                   "offset_start": 422,
                   "offset_end": 465
                 },
@@ -290,6 +305,7 @@
                   "value": {
                     "Text": "7bit"
                   },
+                  "offset_field": 465,
                   "offset_start": 491,
                   "offset_end": 498
                 }
@@ -320,6 +336,7 @@
                       ]
                     }
                   },
+                  "offset_field": 576,
                   "offset_start": 589,
                   "offset_end": 616
                 },
@@ -330,6 +347,7 @@
                   "value": {
                     "Text": "7bit"
                   },
+                  "offset_field": 616,
                   "offset_start": 642,
                   "offset_end": 649
                 }

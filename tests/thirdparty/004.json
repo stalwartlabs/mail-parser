@@ -35,6 +35,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 44
         },
@@ -45,6 +46,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 44,
           "offset_start": 57,
           "offset_end": 62
         }
@@ -73,6 +75,7 @@
           "value": {
             "Text": "6bit"
           },
+          "offset_field": 67,
           "offset_start": 93,
           "offset_end": 99
         },
@@ -92,6 +95,7 @@
               ]
             }
           },
+          "offset_field": 99,
           "offset_start": 112,
           "offset_end": 139
         }
@@ -113,6 +117,7 @@
           "value": {
             "Text": "7bits"
           },
+          "offset_field": 179,
           "offset_start": 205,
           "offset_end": 218
         },
@@ -132,6 +137,7 @@
               ]
             }
           },
+          "offset_field": 218,
           "offset_start": 231,
           "offset_end": 258
         }
@@ -153,6 +159,7 @@
           "value": {
             "Text": "8 bit"
           },
+          "offset_field": 286,
           "offset_start": 312,
           "offset_end": 319
         },
@@ -172,6 +179,7 @@
               ]
             }
           },
+          "offset_field": 319,
           "offset_start": 332,
           "offset_end": 359
         }
@@ -193,6 +201,7 @@
           "value": {
             "Text": "7-bit"
           },
+          "offset_field": 387,
           "offset_start": 413,
           "offset_end": 420
         },
@@ -212,6 +221,7 @@
               ]
             }
           },
+          "offset_field": 420,
           "offset_start": 433,
           "offset_end": 460
         }
@@ -233,6 +243,7 @@
           "value": {
             "Text": "8-bit"
           },
+          "offset_field": 488,
           "offset_start": 514,
           "offset_end": 521
         },
@@ -252,6 +263,7 @@
               ]
             }
           },
+          "offset_field": 521,
           "offset_start": 534,
           "offset_end": 561
         }
@@ -271,6 +283,7 @@
             "Rfc": "content_transfer_encoding"
           },
           "value": "Empty",
+          "offset_field": 589,
           "offset_start": 615,
           "offset_end": 616
         },
@@ -290,6 +303,7 @@
               ]
             }
           },
+          "offset_field": 616,
           "offset_start": 629,
           "offset_end": 656
         }

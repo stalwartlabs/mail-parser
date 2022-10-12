@@ -18,6 +18,7 @@
           "value": {
             "Text": "Hide and seek"
           },
+          "offset_field": 0,
           "offset_start": 8,
           "offset_end": 23
         },
@@ -28,6 +29,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 23,
           "offset_start": 36,
           "offset_end": 41
         },
@@ -47,6 +49,7 @@
               ]
             }
           },
+          "offset_field": 41,
           "offset_start": 54,
           "offset_end": 83
         }
@@ -87,6 +90,7 @@
               ]
             }
           },
+          "offset_field": 88,
           "offset_start": 101,
           "offset_end": 179
         },
@@ -97,6 +101,7 @@
           "value": {
             "Text": " penmanship\n"
           },
+          "offset_field": 179,
           "offset_start": 196,
           "offset_end": 208
         }
@@ -130,6 +135,7 @@
               ]
             }
           },
+          "offset_field": 213,
           "offset_start": 226,
           "offset_end": 261
         }
@@ -163,6 +169,7 @@
               ]
             }
           },
+          "offset_field": 266,
           "offset_start": 279,
           "offset_end": 308
         }
@@ -188,6 +195,7 @@
               "attributes": null
             }
           },
+          "offset_field": 403,
           "offset_start": 416,
           "offset_end": 428
         },
@@ -198,6 +206,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 428,
           "offset_start": 454,
           "offset_end": 462
         }
@@ -228,6 +237,7 @@
               ]
             }
           },
+          "offset_field": 502,
           "offset_start": 515,
           "offset_end": 550
         }

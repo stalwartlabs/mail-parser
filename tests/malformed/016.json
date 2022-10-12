@@ -27,6 +27,7 @@
               ]
             }
           },
+          "offset_field": 0,
           "offset_start": 13,
           "offset_end": 125
         }
@@ -59,6 +60,7 @@
               ]
             }
           },
+          "offset_field": 211,
           "offset_start": 224,
           "offset_end": 335
         }
@@ -91,6 +93,7 @@
               ]
             }
           },
+          "offset_field": 420,
           "offset_start": 433,
           "offset_end": 543
         }
@@ -119,6 +122,7 @@
               "attributes": null
             }
           },
+          "offset_field": 627,
           "offset_start": 640,
           "offset_end": 652
         }
@@ -144,6 +148,7 @@
               "attributes": null
             }
           },
+          "offset_field": 966,
           "offset_start": 979,
           "offset_end": 991
         }

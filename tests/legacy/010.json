@@ -16,6 +16,7 @@
           "value": {
             "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 64
         },
@@ -26,6 +27,7 @@
           "value": {
             "Text": " dwsauder@pop.example.com (Unverified)\r\n"
           },
+          "offset_field": 64,
           "offset_start": 73,
           "offset_end": 113
         },
@@ -36,6 +38,7 @@
           "value": {
             "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
           },
+          "offset_field": 113,
           "offset_start": 122,
           "offset_end": 170
         },
@@ -46,6 +49,7 @@
           "value": {
             "Text": " 1 (Highest)\r\n"
           },
+          "offset_field": 170,
           "offset_start": 181,
           "offset_end": 195
         },
@@ -66,6 +70,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 195,
           "offset_start": 200,
           "offset_end": 234
         },
@@ -79,6 +84,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 234,
           "offset_start": 237,
           "offset_end": 274
         },
@@ -92,6 +98,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 274,
           "offset_start": 279,
           "offset_end": 316
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "Die Hasen und die Fr�sche"
           },
+          "offset_field": 316,
           "offset_start": 324,
           "offset_end": 352
         },
@@ -112,6 +120,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 352,
           "offset_start": 365,
           "offset_end": 371
         },
@@ -131,6 +140,7 @@
               ]
             }
           },
+          "offset_field": 371,
           "offset_start": 384,
           "offset_end": 419
         },
@@ -141,6 +151,7 @@
           "value": {
             "Text": "8bit"
           },
+          "offset_field": 419,
           "offset_start": 445,
           "offset_end": 452
         }

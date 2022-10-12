@@ -16,6 +16,7 @@
           "value": {
             "Text": "392359CF.DFF4527@example.com"
           },
+          "offset_field": 0,
           "offset_start": 11,
           "offset_end": 44
         },
@@ -36,6 +37,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 44,
           "offset_start": 49,
           "offset_end": 83
         },
@@ -49,6 +51,7 @@
               "address": "dwsauder@example.com"
             }
           },
+          "offset_field": 83,
           "offset_start": 88,
           "offset_end": 125
         },
@@ -59,6 +62,7 @@
           "value": {
             "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
           },
+          "offset_field": 125,
           "offset_start": 134,
           "offset_end": 164
         },
@@ -69,6 +73,7 @@
           "value": {
             "Text": " en\r\n"
           },
+          "offset_field": 164,
           "offset_start": 182,
           "offset_end": 187
         },
@@ -79,6 +84,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 187,
           "offset_start": 200,
           "offset_end": 206
         },
@@ -92,6 +98,7 @@
               "address": "mueller@example.com"
             }
           },
+          "offset_field": 206,
           "offset_start": 209,
           "offset_end": 265
         },
@@ -102,6 +109,7 @@
           "value": {
             "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
           },
+          "offset_field": 265,
           "offset_start": 273,
           "offset_end": 348
         },
@@ -121,6 +129,7 @@
               ]
             }
           },
+          "offset_field": 348,
           "offset_start": 361,
           "offset_end": 436
         }
@@ -154,6 +163,7 @@
               ]
             }
           },
+          "offset_field": 480,
           "offset_start": 493,
           "offset_end": 526
         },
@@ -164,6 +174,7 @@
           "value": {
             "Text": "quoted-printable"
           },
+          "offset_field": 526,
           "offset_start": 552,
           "offset_end": 571
         }
@@ -194,6 +205,7 @@
               ]
             }
           },
+          "offset_field": 1413,
           "offset_start": 1426,
           "offset_end": 1456
         },
@@ -204,6 +216,7 @@
           "value": {
             "Text": "7bit"
           },
+          "offset_field": 1456,
           "offset_start": 1482,
           "offset_end": 1489
         }

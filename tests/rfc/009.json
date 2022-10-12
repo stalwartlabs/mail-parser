@@ -21,6 +21,7 @@
               "address": "whoever@example.com"
             }
           },
+          "offset_field": 0,
           "offset_start": 5,
           "offset_end": 37
         },
@@ -34,6 +35,7 @@
               "address": "someone@example.com"
             }
           },
+          "offset_field": 37,
           "offset_start": 40,
           "offset_end": 71
         },
@@ -54,6 +56,7 @@
               "tz_minute": 0
             }
           },
+          "offset_field": 71,
           "offset_start": 76,
           "offset_end": 109
         },
@@ -64,6 +67,7 @@
           "value": {
             "Text": "whatever"
           },
+          "offset_field": 109,
           "offset_start": 117,
           "offset_end": 127
         },
@@ -83,6 +87,7 @@
               ]
             }
           },
+          "offset_field": 127,
           "offset_start": 140,
           "offset_end": 173
         }
@@ -116,6 +121,7 @@
               ]
             }
           },
+          "offset_field": 228,
           "offset_start": 241,
           "offset_end": 280
         }
@@ -149,6 +155,7 @@
               ]
             }
           },
+          "offset_field": 342,
           "offset_start": 355,
           "offset_end": 387
         }
@@ -179,6 +186,7 @@
               ]
             }
           },
+          "offset_field": 403,
           "offset_start": 416,
           "offset_end": 447
         }
@@ -204,6 +212,7 @@
               "attributes": null
             }
           },
+          "offset_field": 546,
           "offset_start": 559,
           "offset_end": 575
         }
@@ -231,6 +240,7 @@
                       "address": null
                     }
                   },
+                  "offset_field": 576,
                   "offset_start": 581,
                   "offset_end": 595
                 },
@@ -241,6 +251,7 @@
                   "value": {
                     "Text": "Hello, this is an elaborate request for you to finally say hello already!"
                   },
+                  "offset_field": 595,
                   "offset_start": 603,
                   "offset_end": 679
                 }

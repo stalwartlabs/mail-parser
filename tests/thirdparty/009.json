@@ -18,6 +18,7 @@
           "value": {
             "Text": "In parts"
           },
+          "offset_field": 0,
           "offset_start": 8,
           "offset_end": 18
         },
@@ -28,6 +29,7 @@
           "value": {
             "Text": "1.0"
           },
+          "offset_field": 18,
           "offset_start": 31,
           "offset_end": 36
         },
@@ -47,6 +49,7 @@
               ]
             }
           },
+          "offset_field": 36,
           "offset_start": 49,
           "offset_end": 78
         }
@@ -75,6 +78,7 @@
               "attributes": null
             }
           },
+          "offset_field": 83,
           "offset_start": 96,
           "offset_end": 108
         },
@@ -85,6 +89,7 @@
           "value": {
             "Text": "binary"
           },
+          "offset_field": 108,
           "offset_start": 134,
           "offset_end": 142
         }
@@ -123,6 +128,7 @@
               ]
             }
           },
+          "offset_field": 196,
           "offset_start": 209,
           "offset_end": 273
         }

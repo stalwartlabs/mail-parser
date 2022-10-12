@@ -67,7 +67,7 @@ fn write_attachments(message: &Message) {
             )
             .unwrap();
         } else {
-            write_attachments(&attachment.get_message().unwrap());
+            write_attachments(attachment.get_message().unwrap());
         }
     }
 }
