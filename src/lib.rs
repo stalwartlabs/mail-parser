@@ -1726,6 +1726,17 @@ impl<'x> ContentType<'x> {
     }
 }
 
+impl<'x> PartType<'x> {
+    pub fn len(&self) -> usize {
+        match self {
+            PartType::Text(v) | PartType::Html(v) => v.len(),
+            PartType::Binary(v) | PartType::InlineBinary(v) => v.len(),
+            PartType::Message(v) => v.raw_message.len(),
+            PartType::Multipart(_) => 0,
+        }
+    }
+}
+
 impl From<DateTime> for i64 {
     fn from(value: DateTime) -> Self {
         value.to_timestamp()
