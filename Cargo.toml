@@ -10,19 +10,22 @@ homepage = "https://github.com/stalwartlabs/mail-parser"
 keywords = ["email", "mime", "mail", "parser", "e-mail"]
 categories = ["email", "parser-implementations"]
 readme = "README.md"
+resolver = "2"
 
 [dependencies]
-encoding_rs = {version="0.8", optional=true}
-serde = { version = "1.0", features = ["derive"], optional=true}
+encoding_rs = { version="0.8", optional=true }
+serde = { version = "1.0", features = ["derive"], optional=true }
 
 [dev-dependencies]
+mail-parser = { path = ".", features = ["serde_support", "full_encoding"] }
+serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"  # Version 0.9 fails to parse certain inputs
 serde_json = "1.0"
 bincode = "1.3.3"
 chrono = "0.4"
 
 [features]
-default = ["serde_support", "full_encoding"]
+default = ["full_encoding"]
 full_encoding = ["encoding_rs"]
 serde_support = ["serde"]
 ludicrous_mode = []

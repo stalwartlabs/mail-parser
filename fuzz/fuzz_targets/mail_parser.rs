@@ -3,33 +3,19 @@ use libfuzzer_sys::fuzz_target;
 
 use mail_parser::{
     decoders::{
-        base64::{decode_base64, decode_base64_mime, decode_base64_word},
+        base64::decode_base64,
         charsets::{
             map::get_charset_decoder,
             single_byte::decoder_iso_8859_1,
             utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
         },
-        encoded_word::decode_rfc2047,
         hex::decode_hex,
         html::{add_html_token, html_to_text, text_to_html},
-        quoted_printable::{
-            decode_quoted_printable, decode_quoted_printable_mime, decode_quoted_printable_word,
-        },
+        quoted_printable::decode_quoted_printable,
     },
     parsers::{
-        fields::{
-            address::parse_address,
-            content_type::parse_content_type,
-            date::parse_date,
-            id::parse_id,
-            list::parse_comma_separared,
-            raw::{parse_and_ignore, parse_raw},
-            thread::{thread_name, trim_trailing_fwd},
-            unstructured::parse_unstructured,
-        },
-        header::parse_header_name,
-        message::MessageStream,
-        mime::*,
+        fields::thread::{thread_name, trim_trailing_fwd},
+        MessageStream,
     },
     Message,
 };
@@ -44,29 +30,30 @@ fuzz_target!(|data: &[u8]| {
         let data = data_.as_ref();
 
         // Fuzz every parsing function
-        parse_date(&mut MessageStream::new(&data));
-        parse_address(&mut MessageStream::new(&data));
-        parse_id(&mut MessageStream::new(&data));
-        parse_comma_separared(&mut MessageStream::new(&data));
-        parse_and_ignore(&mut MessageStream::new(&data));
-        parse_raw(&mut MessageStream::new(&data));
-        parse_unstructured(&mut MessageStream::new(&data));
-        parse_content_type(&mut MessageStream::new(&data));
-        parse_header_name(&data);
-        decode_rfc2047(&mut MessageStream::new(&data), 0);
+        MessageStream::new(data).parse_date();
+        MessageStream::new(data).parse_address();
+        MessageStream::new(data).parse_id();
+        MessageStream::new(data).parse_comma_separared();
+        MessageStream::new(data).parse_and_ignore();
+        MessageStream::new(data).parse_raw();
+        MessageStream::new(data).parse_unstructured();
+        MessageStream::new(data).parse_content_type();
+        MessageStream::new(data).parse_headers(&mut Vec::new());
+        MessageStream::new(data).parse_header_name();
+        MessageStream::new(data).decode_rfc2047();
 
-        seek_next_part(&mut MessageStream::new(&data), b"\n");
-        get_mime_part(&mut MessageStream::new(&data), b"\n");
-        seek_part_end(&mut MessageStream::new(&data), b"\n"[..].into());
-        skip_crlf(&mut MessageStream::new(&data));
-        skip_multipart_end(&mut MessageStream::new(&data));
+        MessageStream::new(data).seek_next_part(b"\n");
+        MessageStream::new(data).get_mime_part(b"\n");
+        MessageStream::new(data).seek_part_end(b"\n"[..].into());
+        MessageStream::new(data).skip_crlf();
+        MessageStream::new(data).is_multipart_end();
 
-        decode_base64(&data);
-        decode_base64_word(&data);
-        decode_base64_mime(&mut MessageStream::new(&data), b"\n");
-        decode_quoted_printable(&data);
-        decode_quoted_printable_word(&data);
-        decode_quoted_printable_mime(&mut MessageStream::new(&data), b"\n");
+        decode_base64(data);
+        MessageStream::new(data).decode_base64_word();
+        MessageStream::new(data).decode_base64_mime(b"\n");
+        decode_quoted_printable(data);
+        MessageStream::new(data).decode_quoted_printable_word();
+        MessageStream::new(data).decode_quoted_printable_mime(b"\n");
 
         // Fuzz text functions
         let mut html_str = String::with_capacity(data.len());
@@ -93,7 +80,7 @@ fuzz_target!(|data: &[u8]| {
         }
 
         // Fuzz the entire library
-        Message::parse(&data[..]);
+        Message::parse(data);
     }
 });
 
