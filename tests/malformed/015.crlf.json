@@ -1,0 +1,226 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "return_path"
+          },
+          "value": {
+            "Text": "test@example.org"
+          },
+          "offset_field": 0,
+          "offset_start": 12,
+          "offset_end": 33
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Hello world"
+          },
+          "offset_field": 33,
+          "offset_start": 41,
+          "offset_end": 55
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Test User",
+              "address": "test@example.org"
+            }
+          },
+          "offset_field": 55,
+          "offset_start": 60,
+          "offset_end": 91
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Another User",
+              "address": "test2@example.org"
+            }
+          },
+          "offset_field": 91,
+          "offset_start": 94,
+          "offset_end": 129
+        },
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "1.2.3.4@example"
+          },
+          "offset_field": 129,
+          "offset_start": 140,
+          "offset_end": 160
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 160,
+          "offset_start": 173,
+          "offset_end": 179
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2007,
+              "month": 5,
+              "day": 23,
+              "hour": 4,
+              "minute": 58,
+              "second": 8,
+              "tz_before_gmt": false,
+              "tz_hour": 3,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 179,
+          "offset_start": 184,
+          "offset_end": 218
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "signed",
+              "attributes": [
+                [
+                  "micalg",
+                  "pgp-sha1"
+                ],
+                [
+                  "protocol",
+                  "application/pgp-signature"
+                ],
+                [
+                  "boundary",
+                  "=-GNQXLhuj24Pl1aCkk4/d"
+                ]
+              ]
+            }
+          },
+          "offset_field": 218,
+          "offset_start": 231,
+          "offset_end": 344
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 346,
+      "offset_end": 612
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 372,
+          "offset_start": 385,
+          "offset_end": 398
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 398,
+          "offset_start": 424,
+          "offset_end": 443
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "There was a day \na happy day\n"
+      },
+      "offset_header": 372,
+      "offset_body": 445,
+      "offset_end": 480
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "pgp-signature",
+              "attributes": [
+                [
+                  "name",
+                  "signature.asc"
+                ]
+              ]
+            }
+          },
+          "offset_field": 508,
+          "offset_start": 521,
+          "offset_end": 569
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          105,
+          110,
+          118,
+          97,
+          108,
+          105,
+          100,
+          13,
+          10
+        ]
+      },
+      "offset_header": 508,
+      "offset_body": 571,
+      "offset_end": 580
+    }
+  ]
+}

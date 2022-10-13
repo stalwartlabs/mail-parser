@@ -1,0 +1,118 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "こんにちは"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 43
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 43,
+          "offset_start": 56,
+          "offset_end": 62
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ],
+                [
+                  "comment",
+                  "人権の無視及"
+                ]
+              ]
+            }
+          },
+          "offset_field": 62,
+          "offset_start": 75,
+          "offset_end": 149
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 151,
+      "offset_end": 266
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 156,
+          "offset_start": 169,
+          "offset_end": 182
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 182,
+          "offset_start": 208,
+          "offset_end": 217
+        },
+        {
+          "name": {
+            "Rfc": "content_language"
+          },
+          "value": {
+            "Text": "ja"
+          },
+          "offset_field": 217,
+          "offset_start": 234,
+          "offset_end": 239
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "人権の無視及"
+      },
+      "offset_header": 156,
+      "offset_body": 241,
+      "offset_end": 259
+    }
+  ]
+}

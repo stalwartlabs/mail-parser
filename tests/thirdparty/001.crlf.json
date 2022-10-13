@@ -1,0 +1,161 @@
+{
+  "html_body": [
+    1,
+    2,
+    3
+  ],
+  "text_body": [
+    1,
+    2,
+    3
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 19
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "bound"
+                ]
+              ]
+            }
+          },
+          "offset_field": 19,
+          "offset_start": 32,
+          "offset_end": 76
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 78,
+      "offset_end": 532
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 102,
+          "offset_start": 128,
+          "offset_end": 137
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 137,
+          "offset_start": 150,
+          "offset_end": 163
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "d2UgaGF2ZQ1hIGxvdCAKb2YgAGJpbmFyeSBzdHVmZiBpbiBoZXJlCmIgYWRqaWcgc2FkamcgamFz\r\naWRnamlhZWhnYTN3aHQ4YTN3OGdoeGpjIGRzZ2FkIGhhc2RnaHNkIGdhc2QgZHNqZHNvZ2Egc2pk\r\nZ2EwdzN0amhhd2pnc2VydG5pcTNuNW9xZXJqcXcycjg5cTIzaCBhd2hycWg4MzVyOGE="
+      },
+      "offset_header": 102,
+      "offset_body": 165,
+      "offset_end": 389
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 400,
+          "offset_start": 413,
+          "offset_end": 426
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 426,
+          "offset_start": 452,
+          "offset_end": 461
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "ZWg="
+      },
+      "offset_header": 400,
+      "offset_body": 463,
+      "offset_end": 467
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 478,
+          "offset_start": 491,
+          "offset_end": 504
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello world\r\n"
+      },
+      "offset_header": 478,
+      "offset_body": 506,
+      "offset_end": 519
+    }
+  ]
+}

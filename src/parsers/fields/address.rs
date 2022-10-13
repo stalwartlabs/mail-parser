@@ -11,10 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{
-    decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, Addr, Group,
-    HeaderValue,
-};
+use crate::{parsers::MessageStream, Addr, Group, HeaderValue};
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -45,45 +42,336 @@ pub struct AddressParser<'x> {
     result: Vec<Group<'x>>,
 }
 
-pub fn add_token<'x>(
-    parser: &mut AddressParser<'x>,
-    stream: &MessageStream<'x>,
-    add_trail_space: bool,
-) {
-    if parser.token_start > 0 {
-        let token = String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end]);
-        let mut add_space = false;
-        let list = match parser.state {
-            AddressState::Address => &mut parser.mail_tokens,
-            AddressState::Name => {
-                if parser.is_token_email {
-                    &mut parser.mail_tokens
-                } else {
-                    add_space = true;
-                    &mut parser.name_tokens
+impl<'x> AddressParser<'x> {
+    pub fn add_token(&mut self, stream: &MessageStream<'x>, add_trail_space: bool) {
+        if self.token_start > 0 {
+            let token = String::from_utf8_lossy(&stream.data[self.token_start - 1..self.token_end]);
+            let mut add_space = false;
+            let list = match self.state {
+                AddressState::Address => &mut self.mail_tokens,
+                AddressState::Name => {
+                    if self.is_token_email {
+                        &mut self.mail_tokens
+                    } else {
+                        add_space = true;
+                        &mut self.name_tokens
+                    }
                 }
+                AddressState::Quote => &mut self.name_tokens,
+                AddressState::Comment => {
+                    add_space = true;
+                    &mut self.comment_tokens
+                }
+            };
+
+            if add_space && !list.is_empty() {
+                list.push(" ".into());
             }
-            AddressState::Quote => &mut parser.name_tokens,
-            AddressState::Comment => {
-                add_space = true;
-                &mut parser.comment_tokens
+
+            list.push(token);
+
+            if add_trail_space {
+                list.push(" ".into());
             }
+
+            self.token_start = 0;
+            self.is_token_email = false;
+            self.is_token_start = true;
+            self.is_escaped = false;
+        }
+    }
+
+    pub fn add_address(&mut self) {
+        let has_mail = !self.mail_tokens.is_empty();
+        let has_name = !self.name_tokens.is_empty();
+        let has_comment = !self.comment_tokens.is_empty();
+
+        self.addresses.push(if has_mail && has_name && has_comment {
+            Addr {
+                name: Some(
+                    format!(
+                        "{} ({})",
+                        concat_tokens(&mut self.name_tokens),
+                        concat_tokens(&mut self.comment_tokens)
+                    )
+                    .into(),
+                ),
+                address: concat_tokens(&mut self.mail_tokens).into(),
+            }
+        } else if has_name && has_mail {
+            Addr {
+                name: concat_tokens(&mut self.name_tokens).into(),
+                address: concat_tokens(&mut self.mail_tokens).into(),
+            }
+        } else if has_mail && has_comment {
+            Addr {
+                name: concat_tokens(&mut self.comment_tokens).into(),
+                address: concat_tokens(&mut self.mail_tokens).into(),
+            }
+        } else if has_mail {
+            Addr {
+                name: None,
+                address: concat_tokens(&mut self.mail_tokens).into(),
+            }
+        } else if has_name && has_comment {
+            Addr {
+                name: concat_tokens(&mut self.comment_tokens).into(),
+                address: concat_tokens(&mut self.name_tokens).into(),
+            }
+        } else if has_name {
+            Addr {
+                name: concat_tokens(&mut self.name_tokens).into(),
+                address: None,
+            }
+        } else if has_comment {
+            Addr {
+                name: concat_tokens(&mut self.comment_tokens).into(),
+                address: None,
+            }
+        } else {
+            return;
+        });
+    }
+
+    pub fn add_group_details(&mut self) {
+        if !self.name_tokens.is_empty() {
+            self.group_name = concat_tokens(&mut self.name_tokens).into();
+        }
+
+        if !self.comment_tokens.is_empty() {
+            self.group_comment = concat_tokens(&mut self.comment_tokens).into();
+        }
+
+        if !self.mail_tokens.is_empty() {
+            if self.group_name.is_none() {
+                self.group_name = concat_tokens(&mut self.mail_tokens).into();
+            } else {
+                self.group_name = Some(
+                    (self.group_name.as_ref().unwrap().as_ref().to_owned()
+                        + " "
+                        + concat_tokens(&mut self.mail_tokens).as_ref())
+                    .into(),
+                );
+            }
+        }
+    }
+
+    pub fn add_group(&mut self) {
+        let has_name = self.group_name.is_some();
+        let has_comment = self.group_comment.is_some();
+        let has_addresses = !self.addresses.is_empty();
+
+        self.result
+            .push(if has_name && has_addresses && has_comment {
+                Group {
+                    name: Some(
+                        format!(
+                            "{} ({})",
+                            self.group_name.take().unwrap(),
+                            self.group_comment.take().unwrap()
+                        )
+                        .into(),
+                    ),
+                    addresses: std::mem::take(&mut self.addresses),
+                }
+            } else if has_addresses && has_name {
+                Group {
+                    name: self.group_name.take(),
+                    addresses: std::mem::take(&mut self.addresses),
+                }
+            } else if has_addresses {
+                Group {
+                    name: self.group_comment.take(),
+                    addresses: std::mem::take(&mut self.addresses),
+                }
+            } else if has_name {
+                Group {
+                    name: self.group_name.take(),
+                    addresses: Vec::new(),
+                }
+            } else {
+                return;
+            });
+    }
+}
+
+impl<'x> MessageStream<'x> {
+    pub fn parse_address(&mut self) -> HeaderValue<'x> {
+        let mut parser = AddressParser {
+            token_start: 0,
+            token_end: 0,
+
+            is_token_email: false,
+            is_token_start: true,
+            is_escaped: false,
+
+            name_tokens: Vec::with_capacity(3),
+            mail_tokens: Vec::with_capacity(3),
+            comment_tokens: Vec::with_capacity(3),
+
+            state: AddressState::Name,
+            state_stack: Vec::with_capacity(5),
+
+            addresses: Vec::new(),
+            group_name: None,
+            group_comment: None,
+            result: Vec::new(),
         };
 
-        if add_space && !list.is_empty() {
-            list.push(" ".into());
+        while let Some(ch) = self.next() {
+            match ch {
+                b'\n' => {
+                    parser.add_token(self, false);
+                    if self.try_next_is_space() {
+                        if !parser.is_token_start {
+                            parser.is_token_start = true;
+                        }
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+                b'\\' if parser.state != AddressState::Name => {
+                    if parser.token_start > 0 {
+                        if parser.state == AddressState::Quote {
+                            parser.token_end = self.offset() - 1;
+                        }
+                        parser.add_token(self, false);
+                    }
+                    parser.is_escaped = true;
+                    continue;
+                }
+                b',' if parser.state == AddressState::Name => {
+                    parser.add_token(self, false);
+                    parser.add_address();
+                    continue;
+                }
+                b'<' if parser.state == AddressState::Name => {
+                    parser.add_token(self, false);
+                    parser.state_stack.push(AddressState::Name);
+                    parser.state = AddressState::Address;
+                    continue;
+                }
+                b'>' if parser.state == AddressState::Address => {
+                    parser.add_token(self, false);
+                    parser.state = parser.state_stack.pop().unwrap();
+                    continue;
+                }
+                b'"' if !parser.is_escaped => match parser.state {
+                    AddressState::Name => {
+                        parser.state_stack.push(AddressState::Name);
+                        parser.state = AddressState::Quote;
+                        parser.add_token(self, false);
+                        continue;
+                    }
+                    AddressState::Quote => {
+                        parser.add_token(self, false);
+                        parser.state = parser.state_stack.pop().unwrap();
+                        continue;
+                    }
+                    _ => (),
+                },
+                b'@' if parser.state == AddressState::Name => {
+                    parser.is_token_email = true;
+                }
+                b'=' if parser.is_token_start && !parser.is_escaped && self.peek_char(b'?') => {
+                    self.checkpoint();
+                    if let Some(token) = self.decode_rfc2047() {
+                        let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
+                        parser.add_token(self, add_space);
+                        (if parser.state != AddressState::Comment {
+                            &mut parser.name_tokens
+                        } else {
+                            &mut parser.comment_tokens
+                        })
+                        .push(token.into());
+                        continue;
+                    }
+                    self.restore();
+                }
+                b' ' | b'\t' => {
+                    if !parser.is_token_start {
+                        parser.is_token_start = true;
+                    }
+                    if parser.is_escaped {
+                        parser.is_escaped = false;
+                    }
+                    if parser.state == AddressState::Quote {
+                        if parser.token_start == 0 {
+                            parser.token_start = self.offset();
+                            parser.token_end = parser.token_start;
+                        } else {
+                            parser.token_end = self.offset();
+                        }
+                    }
+                    continue;
+                }
+                b'\r' => continue,
+                b'(' if parser.state != AddressState::Quote && !parser.is_escaped => {
+                    parser.state_stack.push(parser.state);
+                    if parser.state != AddressState::Comment {
+                        parser.add_token(self, false);
+                        parser.state = AddressState::Comment;
+                        continue;
+                    }
+                }
+                b')' if parser.state == AddressState::Comment && !parser.is_escaped => {
+                    let new_state = parser.state_stack.pop().unwrap();
+                    if parser.state != new_state {
+                        parser.add_token(self, false);
+                        parser.state = new_state;
+                        continue;
+                    }
+                }
+                b':' if parser.state == AddressState::Name && !parser.is_escaped => {
+                    parser.add_group();
+                    parser.add_token(self, false);
+                    parser.add_group_details();
+                    continue;
+                }
+                b';' if parser.state == AddressState::Name => {
+                    parser.add_token(self, false);
+                    parser.add_address();
+                    parser.add_group();
+                    continue;
+                }
+                _ => (),
+            }
+
+            if parser.is_escaped {
+                parser.is_escaped = false;
+            }
+
+            if parser.is_token_start {
+                parser.is_token_start = false;
+            }
+
+            if parser.token_start == 0 {
+                parser.token_start = self.offset();
+                parser.token_end = parser.token_start;
+            } else {
+                parser.token_end = self.offset();
+            }
         }
 
-        list.push(token);
+        parser.add_address();
 
-        if add_trail_space {
-            list.push(" ".into());
+        if parser.group_name.is_some() || !parser.result.is_empty() {
+            parser.add_group();
+            if parser.result.len() > 1 {
+                HeaderValue::GroupList(parser.result)
+            } else {
+                HeaderValue::Group(parser.result.pop().unwrap())
+            }
+        } else if !parser.addresses.is_empty() {
+            if parser.addresses.len() > 1 {
+                HeaderValue::AddressList(parser.addresses)
+            } else {
+                HeaderValue::Address(parser.addresses.pop().unwrap())
+            }
+        } else {
+            HeaderValue::Empty
         }
-
-        parser.token_start = 0;
-        parser.is_token_email = false;
-        parser.is_token_start = true;
-        parser.is_escaped = false;
     }
 }
 
@@ -94,307 +382,6 @@ fn concat_tokens<'x>(tokens: &mut Vec<Cow<'x, str>>) -> Cow<'x, str> {
         let result = tokens.concat();
         tokens.clear();
         result.into()
-    }
-}
-
-pub fn add_address(parser: &mut AddressParser) {
-    let has_mail = !parser.mail_tokens.is_empty();
-    let has_name = !parser.name_tokens.is_empty();
-    let has_comment = !parser.comment_tokens.is_empty();
-
-    parser
-        .addresses
-        .push(if has_mail && has_name && has_comment {
-            Addr {
-                name: Some(
-                    format!(
-                        "{} ({})",
-                        concat_tokens(&mut parser.name_tokens),
-                        concat_tokens(&mut parser.comment_tokens)
-                    )
-                    .into(),
-                ),
-                address: concat_tokens(&mut parser.mail_tokens).into(),
-            }
-        } else if has_name && has_mail {
-            Addr {
-                name: concat_tokens(&mut parser.name_tokens).into(),
-                address: concat_tokens(&mut parser.mail_tokens).into(),
-            }
-        } else if has_mail && has_comment {
-            Addr {
-                name: concat_tokens(&mut parser.comment_tokens).into(),
-                address: concat_tokens(&mut parser.mail_tokens).into(),
-            }
-        } else if has_mail {
-            Addr {
-                name: None,
-                address: concat_tokens(&mut parser.mail_tokens).into(),
-            }
-        } else if has_name && has_comment {
-            Addr {
-                name: concat_tokens(&mut parser.comment_tokens).into(),
-                address: concat_tokens(&mut parser.name_tokens).into(),
-            }
-        } else if has_name {
-            Addr {
-                name: concat_tokens(&mut parser.name_tokens).into(),
-                address: None,
-            }
-        } else if has_comment {
-            Addr {
-                name: concat_tokens(&mut parser.comment_tokens).into(),
-                address: None,
-            }
-        } else {
-            return;
-        });
-}
-
-pub fn add_group_details(parser: &mut AddressParser) {
-    if !parser.name_tokens.is_empty() {
-        parser.group_name = concat_tokens(&mut parser.name_tokens).into();
-    }
-
-    if !parser.comment_tokens.is_empty() {
-        parser.group_comment = concat_tokens(&mut parser.comment_tokens).into();
-    }
-
-    if !parser.mail_tokens.is_empty() {
-        if parser.group_name.is_none() {
-            parser.group_name = concat_tokens(&mut parser.mail_tokens).into();
-        } else {
-            parser.group_name = Some(
-                (parser.group_name.as_ref().unwrap().as_ref().to_owned()
-                    + " "
-                    + concat_tokens(&mut parser.mail_tokens).as_ref())
-                .into(),
-            );
-        }
-    }
-}
-
-pub fn add_group(parser: &mut AddressParser) {
-    let has_name = parser.group_name.is_some();
-    let has_comment = parser.group_comment.is_some();
-    let has_addresses = !parser.addresses.is_empty();
-
-    parser
-        .result
-        .push(if has_name && has_addresses && has_comment {
-            Group {
-                name: Some(
-                    format!(
-                        "{} ({})",
-                        parser.group_name.take().unwrap(),
-                        parser.group_comment.take().unwrap()
-                    )
-                    .into(),
-                ),
-                addresses: std::mem::take(&mut parser.addresses),
-            }
-        } else if has_addresses && has_name {
-            Group {
-                name: parser.group_name.take(),
-                addresses: std::mem::take(&mut parser.addresses),
-            }
-        } else if has_addresses {
-            Group {
-                name: parser.group_comment.take(),
-                addresses: std::mem::take(&mut parser.addresses),
-            }
-        } else if has_name {
-            Group {
-                name: parser.group_name.take(),
-                addresses: Vec::new(),
-            }
-        } else {
-            return;
-        });
-}
-
-pub fn parse_address<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut parser = AddressParser {
-        token_start: 0,
-        token_end: 0,
-
-        is_token_email: false,
-        is_token_start: true,
-        is_escaped: false,
-
-        name_tokens: Vec::with_capacity(3),
-        mail_tokens: Vec::with_capacity(3),
-        comment_tokens: Vec::with_capacity(3),
-
-        state: AddressState::Name,
-        state_stack: Vec::with_capacity(5),
-
-        addresses: Vec::new(),
-        group_name: None,
-        group_comment: None,
-        result: Vec::new(),
-    };
-
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-
-        match ch {
-            b'\n' => {
-                add_token(&mut parser, stream, false);
-                match stream.data.get(stream.pos) {
-                    Some(b' ' | b'\t') => {
-                        iter.next();
-                        stream.pos += 1;
-                        if !parser.is_token_start {
-                            parser.is_token_start = true;
-                        }
-                        continue;
-                    }
-                    _ => break,
-                }
-            }
-            b'\\' if parser.state != AddressState::Name => {
-                if parser.token_start > 0 {
-                    if parser.state == AddressState::Quote {
-                        parser.token_end = stream.pos - 1;
-                    }
-                    add_token(&mut parser, stream, false);
-                }
-                parser.is_escaped = true;
-                continue;
-            }
-            b',' if parser.state == AddressState::Name => {
-                add_token(&mut parser, stream, false);
-                add_address(&mut parser);
-                continue;
-            }
-            b'<' if parser.state == AddressState::Name => {
-                add_token(&mut parser, stream, false);
-                parser.state_stack.push(AddressState::Name);
-                parser.state = AddressState::Address;
-                continue;
-            }
-            b'>' if parser.state == AddressState::Address => {
-                add_token(&mut parser, stream, false);
-                parser.state = parser.state_stack.pop().unwrap();
-                continue;
-            }
-            b'"' if !parser.is_escaped => match parser.state {
-                AddressState::Name => {
-                    parser.state_stack.push(AddressState::Name);
-                    parser.state = AddressState::Quote;
-                    add_token(&mut parser, stream, false);
-                    continue;
-                }
-                AddressState::Quote => {
-                    add_token(&mut parser, stream, false);
-                    parser.state = parser.state_stack.pop().unwrap();
-                    continue;
-                }
-                _ => (),
-            },
-            b'@' if parser.state == AddressState::Name => {
-                parser.is_token_email = true;
-            }
-            b'=' if parser.is_token_start && !parser.is_escaped => {
-                if let (d_bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
-                    let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
-                    add_token(&mut parser, stream, add_space);
-                    (if parser.state != AddressState::Comment {
-                        &mut parser.name_tokens
-                    } else {
-                        &mut parser.comment_tokens
-                    })
-                    .push(token.into());
-                    stream.pos += d_bytes_read;
-                    iter = stream.data[stream.pos..].iter();
-                    continue;
-                }
-            }
-            b' ' | b'\t' => {
-                if !parser.is_token_start {
-                    parser.is_token_start = true;
-                }
-                if parser.is_escaped {
-                    parser.is_escaped = false;
-                }
-                if parser.state == AddressState::Quote {
-                    if parser.token_start == 0 {
-                        parser.token_start = stream.pos;
-                        parser.token_end = parser.token_start;
-                    } else {
-                        parser.token_end = stream.pos;
-                    }
-                }
-                continue;
-            }
-            b'\r' => continue,
-            b'(' if parser.state != AddressState::Quote && !parser.is_escaped => {
-                parser.state_stack.push(parser.state);
-                if parser.state != AddressState::Comment {
-                    add_token(&mut parser, stream, false);
-                    parser.state = AddressState::Comment;
-                    continue;
-                }
-            }
-            b')' if parser.state == AddressState::Comment && !parser.is_escaped => {
-                let new_state = parser.state_stack.pop().unwrap();
-                if parser.state != new_state {
-                    add_token(&mut parser, stream, false);
-                    parser.state = new_state;
-                    continue;
-                }
-            }
-            b':' if parser.state == AddressState::Name && !parser.is_escaped => {
-                add_group(&mut parser);
-                add_token(&mut parser, stream, false);
-                add_group_details(&mut parser);
-                continue;
-            }
-            b';' if parser.state == AddressState::Name => {
-                add_token(&mut parser, stream, false);
-                add_address(&mut parser);
-                add_group(&mut parser);
-                continue;
-            }
-            _ => (),
-        }
-
-        if parser.is_escaped {
-            parser.is_escaped = false;
-        }
-
-        if parser.is_token_start {
-            parser.is_token_start = false;
-        }
-
-        if parser.token_start == 0 {
-            parser.token_start = stream.pos;
-            parser.token_end = parser.token_start;
-        } else {
-            parser.token_end = stream.pos;
-        }
-    }
-
-    add_address(&mut parser);
-
-    if parser.group_name.is_some() || !parser.result.is_empty() {
-        add_group(&mut parser);
-        if parser.result.len() > 1 {
-            HeaderValue::GroupList(parser.result)
-        } else {
-            HeaderValue::Group(parser.result.pop().unwrap())
-        }
-    } else if !parser.addresses.is_empty() {
-        if parser.addresses.len() > 1 {
-            HeaderValue::AddressList(parser.addresses)
-        } else {
-            HeaderValue::Address(parser.addresses.pop().unwrap())
-        }
-    } else {
-        HeaderValue::Empty
     }
 }
 
@@ -486,8 +473,6 @@ pub fn parse_address_detail_part(addr: &str) -> Option<&str> {
 mod tests {
     #[test]
     fn parse_addresses() {
-        use crate::parsers::fields::address::parse_address;
-
         use super::*;
 
         let inputs = [
@@ -1008,7 +993,7 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            let result = parse_address(&mut MessageStream::new(str.as_bytes()));
+            let result = MessageStream::new(str.as_bytes()).parse_address();
             let expected: HeaderValue = serde_yaml::from_str(input.1).unwrap_or(HeaderValue::Empty);
 
             /*if input.0.len() >= 70 {

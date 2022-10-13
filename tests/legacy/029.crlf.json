@@ -1,0 +1,168 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "392362D8.B650789F@example.com"
+          },
+          "offset_field": 0,
+          "offset_start": 11,
+          "offset_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 23,
+              "minute": 26,
+              "second": 16,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 45,
+          "offset_start": 50,
+          "offset_end": 84
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "offset_field": 84,
+          "offset_start": 89,
+          "offset_end": 126
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
+          },
+          "offset_field": 126,
+          "offset_start": 135,
+          "offset_end": 165
+        },
+        {
+          "name": {
+            "Other": "X-Accept-Language"
+          },
+          "value": {
+            "Text": " en\r\n"
+          },
+          "offset_field": 165,
+          "offset_start": 183,
+          "offset_end": 188
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 188,
+          "offset_start": 201,
+          "offset_end": 207
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Joe Blow",
+              "address": "blow@example.com"
+            }
+          },
+          "offset_field": 207,
+          "offset_start": 210,
+          "offset_end": 240
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Test message from Netscape Communicator 4.7"
+          },
+          "offset_field": 240,
+          "offset_start": 248,
+          "offset_end": 294
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 1 (Highest)\r\n"
+          },
+          "offset_field": 294,
+          "offset_start": 305,
+          "offset_end": 319
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 319,
+          "offset_start": 332,
+          "offset_end": 363
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "offset_field": 363,
+          "offset_start": 389,
+          "offset_end": 396
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "\r\nThe Hare and the Tortoise \r\n \r\nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\r\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\r\nyou in a race.\"  The Hare, believing her assertion to be simply\r\nimpossible, assented to the proposal; and they agreed that the Fox\r\nshould choose the course and fix the goal.  On the day appointed for the\r\nrace the two started together.  The Tortoise never for a moment stopped,\r\nbut went on with a slow but steady pace straight to the end of the\r\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\r\nwaking up, and moving as fast as he could, he saw the Tortoise had\r\nreached the goal, and was comfortably dozing after her fatigue.  \r\n \r\nSlow but steady wins the race.\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 398,
+      "offset_end": 1167
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "3923561C.B7078DEF@example.com"
+          },
+          "offset_field": 0,
+          "offset_start": 11,
+          "offset_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 22,
+              "minute": 31,
+              "second": 57,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 45,
+          "offset_start": 50,
+          "offset_end": 84
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "offset_field": 84,
+          "offset_start": 89,
+          "offset_end": 126
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
+          },
+          "offset_field": 126,
+          "offset_start": 135,
+          "offset_end": 165
+        },
+        {
+          "name": {
+            "Other": "X-Accept-Language"
+          },
+          "value": {
+            "Text": " en\r\n"
+          },
+          "offset_field": 165,
+          "offset_start": 183,
+          "offset_end": 188
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 188,
+          "offset_start": 201,
+          "offset_end": 207
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Jürgen Schmürgen",
+              "address": "schmuergen@example.com"
+            }
+          },
+          "offset_field": 207,
+          "offset_start": 210,
+          "offset_end": 277
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+          },
+          "offset_field": 277,
+          "offset_start": 285,
+          "offset_end": 360
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 360,
+          "offset_start": 373,
+          "offset_end": 406
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 406,
+          "offset_start": 432,
+          "offset_end": 451
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
+      },
+      "offset_header": 0,
+      "offset_body": 453,
+      "offset_end": 1251
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "4.2.0.58.20000519010441.00a8d140@pop.example.com"
+          },
+          "offset_field": 0,
+          "offset_start": 11,
+          "offset_end": 64
+        },
+        {
+          "name": {
+            "Other": "X-Sender"
+          },
+          "value": {
+            "Text": " dwsauder@pop.example.com (Unverified)\r\n"
+          },
+          "offset_field": 64,
+          "offset_start": 73,
+          "offset_end": 113
+        },
+        {
+          "name": {
+            "Other": "Disposition-Notification-To"
+          },
+          "value": {
+            "Text": " <dwsauder@example.com>\r\n"
+          },
+          "offset_field": 113,
+          "offset_start": 141,
+          "offset_end": 166
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
+          },
+          "offset_field": 166,
+          "offset_start": 175,
+          "offset_end": 223
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 1 (Highest)\r\n"
+          },
+          "offset_field": 223,
+          "offset_start": 234,
+          "offset_end": 248
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 19,
+              "hour": 1,
+              "minute": 6,
+              "second": 18,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 248,
+          "offset_start": 253,
+          "offset_end": 287
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Jürgen Schmürgen",
+              "address": "jschmuergen@example.com"
+            }
+          },
+          "offset_field": 287,
+          "offset_start": 290,
+          "offset_end": 373
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "offset_field": 373,
+          "offset_start": 378,
+          "offset_end": 415
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Frösche"
+          },
+          "offset_field": 415,
+          "offset_start": 423,
+          "offset_end": 468
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 468,
+          "offset_start": 481,
+          "offset_end": 487
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ],
+                [
+                  "format",
+                  "flowed"
+                ]
+              ]
+            }
+          },
+          "offset_field": 487,
+          "offset_start": 500,
+          "offset_end": 550
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 550,
+          "offset_start": 576,
+          "offset_end": 595
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein \nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, \nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der \nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; \nallein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte \neine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste \nuntertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein \nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, \nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
+      },
+      "offset_header": 0,
+      "offset_body": 597,
+      "offset_end": 1422
+    }
+  ]
+}

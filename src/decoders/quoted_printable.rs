@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message::MessageStream;
+use crate::parsers::MessageStream;
 
 #[derive(PartialEq, Debug)]
 enum QuotedPrintableState {
@@ -83,199 +83,186 @@ pub fn decode_quoted_printable(bytes: &[u8]) -> Option<Vec<u8>> {
     buf.into()
 }
 
-pub fn decode_quoted_printable_mime<'x>(
-    stream: &mut MessageStream<'x>,
-    boundary: &[u8],
-) -> (usize, Cow<'x, [u8]>) {
-    let mut buf = Vec::with_capacity(stream.data.len() - stream.pos);
+impl<'x> MessageStream<'x> {
+    pub fn decode_quoted_printable_mime(&mut self, boundary: &[u8]) -> (usize, Cow<'x, [u8]>) {
+        let mut buf = Vec::with_capacity(128);
 
-    let mut state = QuotedPrintableState::None;
-    let mut hex1 = 0;
+        let mut state = QuotedPrintableState::None;
+        let mut hex1 = 0;
+        let mut last_ch = 0;
+        let mut before_last_ch = 0;
+        let mut end_pos = self.offset();
 
-    let mut iter = stream.data[stream.pos..].iter().peekable();
-    let mut last_ch = 0;
-    let mut pos = stream.pos;
-    let mut end_pos = stream.pos;
+        self.checkpoint();
 
-    while let Some(&ch) = iter.next() {
-        pos += 1;
-
-        match ch {
-            b'=' => {
-                if let QuotedPrintableState::None = state {
-                    state = QuotedPrintableState::Eq
-                } else {
-                    return (usize::MAX, b""[..].into());
+        while let Some(&ch) = self.next() {
+            match ch {
+                b'=' => {
+                    if let QuotedPrintableState::None = state {
+                        state = QuotedPrintableState::Eq
+                    } else {
+                        self.restore();
+                        return (usize::MAX, b""[..].into());
+                    }
                 }
-            }
-            b'\n' => {
-                end_pos = if last_ch == b'\r' { pos - 2 } else { pos - 1 };
-                if QuotedPrintableState::Eq == state {
-                    state = QuotedPrintableState::None;
-                } else {
-                    buf.push(b'\n');
-                }
-            }
-            b'\r' => (),
-            b'-' if !boundary.is_empty()
-                && matches!(iter.peek(), Some(b'-'))
-                && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
-                && matches!(
-                    stream.data.get(pos + 1 + boundary.len()..),
-                    Some([b'\n' | b'\r' | b' ' | b'\t', ..])
-                        | Some([b'-', b'-', ..])
-                        | Some([])
-                        | None
-                ) =>
-            {
-                if last_ch == b'\n' {
-                    buf.pop();
-                } else {
-                    end_pos = pos - 1;
-                }
-                stream.pos = pos + boundary.len() + 1;
-                buf.shrink_to_fit();
-                return (end_pos, buf.into());
-            }
-            _ => match state {
-                QuotedPrintableState::None => {
-                    buf.push(ch);
-                }
-                QuotedPrintableState::Eq => {
-                    hex1 = {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            *HEX_MAP.get_unchecked(ch as usize)
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        HEX_MAP[ch as usize]
+                b'\n' => {
+                    end_pos = if last_ch == b'\r' {
+                        self.offset() - 2
+                    } else {
+                        self.offset() - 1
                     };
-                    if hex1 != -1 {
-                        state = QuotedPrintableState::Hex1;
+                    if QuotedPrintableState::Eq == state {
+                        state = QuotedPrintableState::None;
                     } else {
-                        return (usize::MAX, b""[..].into());
+                        buf.push(b'\n');
                     }
                 }
-                QuotedPrintableState::Hex1 => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    let hex2 = HEX_MAP[ch as usize];
+                b'\r' => (),
+                b'-' if !boundary.is_empty() && last_ch == b'-' && self.try_skip(boundary) => {
+                    if before_last_ch == b'\n' {
+                        buf.truncate(buf.len() - 2);
+                    } else {
+                        buf.truncate(buf.len() - 1);
+                        end_pos = self.offset() - boundary.len() - 2;
+                    }
 
-                    state = QuotedPrintableState::None;
-                    if hex2 != -1 {
-                        buf.push(((hex1 as u8) << 4) | hex2 as u8);
-                    } else {
-                        return (usize::MAX, b""[..].into());
-                    }
+                    return (end_pos, buf.into());
                 }
-            },
+                _ => match state {
+                    QuotedPrintableState::None => {
+                        buf.push(ch);
+                    }
+                    QuotedPrintableState::Eq => {
+                        hex1 = {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *HEX_MAP.get_unchecked(ch as usize)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            HEX_MAP[ch as usize]
+                        };
+                        if hex1 != -1 {
+                            state = QuotedPrintableState::Hex1;
+                        } else {
+                            self.restore();
+                            return (usize::MAX, b""[..].into());
+                        }
+                    }
+                    QuotedPrintableState::Hex1 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        let hex2 = HEX_MAP[ch as usize];
+
+                        state = QuotedPrintableState::None;
+                        if hex2 != -1 {
+                            buf.push(((hex1 as u8) << 4) | hex2 as u8);
+                        } else {
+                            self.restore();
+                            return (usize::MAX, b""[..].into());
+                        }
+                    }
+                },
+            }
+
+            before_last_ch = last_ch;
+            last_ch = ch;
         }
 
-        last_ch = ch;
+        (
+            if boundary.is_empty() {
+                self.offset()
+            } else {
+                self.restore();
+                usize::MAX
+            },
+            buf.into(),
+        )
     }
 
-    buf.shrink_to_fit();
-    (
-        if boundary.is_empty() {
-            stream.pos = pos;
-            pos
-        } else {
-            usize::MAX
-        },
-        buf.into(),
-    )
-}
+    pub fn decode_quoted_printable_word(&mut self) -> Option<Vec<u8>> {
+        let mut buf = Vec::with_capacity(64);
 
-pub fn decode_quoted_printable_word(bytes: &[u8]) -> (usize, Vec<u8>) {
-    let mut bytes_read = 0;
+        let mut state = QuotedPrintableState::None;
+        let mut hex1 = 0;
 
-    let mut buf = Vec::with_capacity(64);
-
-    let mut state = QuotedPrintableState::None;
-    let mut hex1 = 0;
-
-    let mut iter = bytes.iter().peekable();
-
-    while let Some(&ch) = iter.next() {
-        bytes_read += 1;
-
-        match ch {
-            b'=' => {
-                if let QuotedPrintableState::None = state {
-                    state = QuotedPrintableState::Eq
-                } else {
-                    break;
+        while let Some(&ch) = self.next() {
+            match ch {
+                b'=' => {
+                    if let QuotedPrintableState::None = state {
+                        state = QuotedPrintableState::Eq
+                    } else {
+                        break;
+                    }
                 }
-            }
-            b'?' => {
-                if let Some(b'=') = iter.peek() {
-                    return (bytes_read + 1, buf);
-                } else {
-                    buf.push(b'?');
+                b'?' => {
+                    if let Some(b'=') = self.peek() {
+                        self.next();
+                        return buf.into();
+                    } else {
+                        buf.push(b'?');
+                    }
                 }
-            }
-            b'\n' => {
-                if let Some(b' ' | b'\t') = iter.peek() {
-                    loop {
-                        iter.next();
-                        bytes_read += 1;
-                        if !matches!(iter.peek(), Some(b' ' | b'\t')) {
+                b'\n' => {
+                    if let Some(b' ' | b'\t') = self.peek() {
+                        loop {
+                            self.next();
+                            if !self.peek_next_is_space() {
+                                break;
+                            }
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                b'_' => {
+                    buf.push(b' ');
+                }
+                b'\r' => (),
+                _ => match state {
+                    QuotedPrintableState::None => {
+                        buf.push(ch);
+                    }
+                    QuotedPrintableState::Eq => {
+                        hex1 = {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                *HEX_MAP.get_unchecked(ch as usize)
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            HEX_MAP[ch as usize]
+                        };
+                        if hex1 != -1 {
+                            state = QuotedPrintableState::Hex1;
+                        } else {
+                            // Failed
                             break;
                         }
                     }
-                } else {
-                    break;
-                }
-            }
-            b'_' => {
-                buf.push(b' ');
-            }
-            b'\r' => (),
-            _ => match state {
-                QuotedPrintableState::None => {
-                    buf.push(ch);
-                }
-                QuotedPrintableState::Eq => {
-                    hex1 = {
+                    QuotedPrintableState::Hex1 => {
                         #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            *HEX_MAP.get_unchecked(ch as usize)
-                        }
+                        let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
                         #[cfg(not(feature = "ludicrous_mode"))]
-                        HEX_MAP[ch as usize]
-                    };
-                    if hex1 != -1 {
-                        state = QuotedPrintableState::Hex1;
-                    } else {
-                        // Failed
-                        break;
-                    }
-                }
-                QuotedPrintableState::Hex1 => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    let hex2 = HEX_MAP[ch as usize];
+                        let hex2 = HEX_MAP[ch as usize];
 
-                    state = QuotedPrintableState::None;
-                    if hex2 != -1 {
-                        buf.push(((hex1 as u8) << 4) | hex2 as u8);
-                    } else {
-                        // Failed
-                        break;
+                        state = QuotedPrintableState::None;
+                        if hex2 != -1 {
+                            buf.push(((hex1 as u8) << 4) | hex2 as u8);
+                        } else {
+                            // Failed
+                            break;
+                        }
                     }
-                }
-            },
+                },
+            }
         }
+
+        None
     }
-
-    (usize::MAX, buf)
 }
-
 #[cfg(test)]
 mod tests {
-    use crate::parsers::message::MessageStream;
+    use crate::parsers::MessageStream;
 
     #[test]
     fn decode_quoted_printable() {
@@ -378,7 +365,7 @@ mod tests {
             ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());
-            let (_, result) = super::decode_quoted_printable_mime(&mut s, b"boundary");
+            let (_, result) = s.decode_quoted_printable_mime(b"boundary");
 
             assert_eq!(
                 result,
@@ -407,13 +394,10 @@ mod tests {
             ("????????=", "???????"),
             ("\n\n", ""),
         ] {
-            let (bytes, mut result) = super::decode_quoted_printable_word(encoded_str.as_bytes());
-            if bytes == usize::MAX {
-                result.clear();
-            }
+            let mut s = MessageStream::new(encoded_str.as_bytes());
 
             assert_eq!(
-                result,
+                s.decode_quoted_printable_word().unwrap_or_default(),
                 expected_result.as_bytes(),
                 "Failed for {:?}",
                 encoded_str

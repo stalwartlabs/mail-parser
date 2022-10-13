@@ -1,0 +1,298 @@
+{
+  "html_body": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "text_body": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 45,
+          "offset_start": 58,
+          "offset_end": 64
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 66,
+      "offset_end": 468
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 71,
+          "offset_start": 84,
+          "offset_end": 97
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 71,
+      "offset_body": 99,
+      "offset_end": 111
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 118,
+          "offset_start": 131,
+          "offset_end": 163
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "2.0"
+          },
+          "offset_field": 163,
+          "offset_start": 176,
+          "offset_end": 182
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 118,
+      "offset_body": 184,
+      "offset_end": 468
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 189,
+          "offset_start": 202,
+          "offset_end": 215
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 189,
+      "offset_body": 217,
+      "offset_end": 229
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 236,
+          "offset_start": 249,
+          "offset_end": 281
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "abc"
+          },
+          "offset_field": 281,
+          "offset_start": 294,
+          "offset_end": 300
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          5,
+          6
+        ]
+      },
+      "offset_header": 236,
+      "offset_body": 302,
+      "offset_end": 468
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 307,
+          "offset_start": 320,
+          "offset_end": 333
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 307,
+      "offset_body": 335,
+      "offset_end": 347
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 354,
+          "offset_start": 367,
+          "offset_end": 399
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": "Empty",
+          "offset_field": 399,
+          "offset_start": 412,
+          "offset_end": 414
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          7
+        ]
+      },
+      "offset_header": 354,
+      "offset_body": 416,
+      "offset_end": 468
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 421,
+          "offset_start": 434,
+          "offset_end": 447
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello, world"
+      },
+      "offset_header": 421,
+      "offset_body": 449,
+      "offset_end": 461
+    }
+  ]
+}

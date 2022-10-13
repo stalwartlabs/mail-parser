@@ -1,0 +1,393 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "In parts"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 19
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 19,
+          "offset_start": 32,
+          "offset_end": 38
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 38,
+          "offset_start": 51,
+          "offset_end": 81
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 83,
+      "offset_end": 542
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 88,
+          "offset_start": 101,
+          "offset_end": 114
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 114,
+          "offset_start": 140,
+          "offset_end": 149
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Hi, this is the fancy thing I was talking about!"
+      },
+      "offset_header": 88,
+      "offset_body": 151,
+      "offset_end": 199
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "partial",
+              "attributes": [
+                [
+                  "number",
+                  "1"
+                ],
+                [
+                  "total",
+                  "5"
+                ],
+                [
+                  "id",
+                  "heks68ewe@example.org"
+                ]
+              ]
+            }
+          },
+          "offset_field": 206,
+          "offset_start": 219,
+          "offset_end": 284
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          88,
+          45,
+          87,
+          101,
+          105,
+          114,
+          100,
+          45,
+          72,
+          101,
+          97,
+          100,
+          101,
+          114,
+          45,
+          49,
+          58,
+          32,
+          66,
+          97,
+          114,
+          13,
+          10,
+          88,
+          45,
+          87,
+          101,
+          105,
+          114,
+          100,
+          45,
+          72,
+          101,
+          97,
+          100,
+          101,
+          114,
+          45,
+          50,
+          58,
+          32,
+          72,
+          101,
+          108,
+          108,
+          111,
+          13,
+          10,
+          77,
+          101,
+          115,
+          115,
+          97,
+          103,
+          101,
+          45,
+          73,
+          68,
+          58,
+          32,
+          60,
+          99,
+          54,
+          99,
+          99,
+          101,
+          101,
+          98,
+          99,
+          45,
+          49,
+          100,
+          99,
+          102,
+          45,
+          49,
+          49,
+          101,
+          98,
+          45,
+          98,
+          101,
+          56,
+          99,
+          45,
+          102,
+          55,
+          99,
+          97,
+          49,
+          51,
+          50,
+          99,
+          98,
+          102,
+          101,
+          97,
+          64,
+          101,
+          120,
+          97,
+          109,
+          112,
+          108,
+          101,
+          46,
+          111,
+          114,
+          103,
+          62,
+          13,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          84,
+          121,
+          112,
+          101,
+          58,
+          32,
+          116,
+          101,
+          120,
+          116,
+          47,
+          112,
+          108,
+          97,
+          105,
+          110,
+          59,
+          32,
+          99,
+          104,
+          97,
+          114,
+          115,
+          101,
+          116,
+          61,
+          34,
+          117,
+          115,
+          45,
+          97,
+          115,
+          99,
+          105,
+          105,
+          34,
+          13,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          84,
+          114,
+          97,
+          110,
+          115,
+          102,
+          101,
+          114,
+          45,
+          69,
+          110,
+          99,
+          111,
+          100,
+          105,
+          110,
+          103,
+          58,
+          32,
+          98,
+          97,
+          115,
+          101,
+          54,
+          52,
+          13,
+          10,
+          13,
+          10,
+          100,
+          71,
+          104,
+          112,
+          99,
+          121,
+          66,
+          112,
+          99,
+          121,
+          66,
+          48,
+          97,
+          71,
+          85,
+          103,
+          90,
+          109,
+          108,
+          121,
+          99,
+          51,
+          81,
+          103,
+          99,
+          71,
+          70,
+          121,
+          100,
+          67,
+          66,
+          118,
+          90,
+          105,
+          66,
+          48,
+          97,
+          71,
+          85,
+          103,
+          98,
+          87,
+          86,
+          122,
+          99,
+          50,
+          70,
+          110,
+          90,
+          81,
+          111,
+          61
+        ]
+      },
+      "offset_header": 206,
+      "offset_body": 286,
+      "offset_end": 533
+    }
+  ]
+}

@@ -9,82 +9,75 @@
  * except according to those terms.
  */
 
-use crate::{parsers::message::MessageStream, HeaderValue};
+use crate::{parsers::MessageStream, HeaderValue};
 
-pub fn parse_id<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut token_start: usize = 0;
-    let mut token_end: usize = 0;
-    let mut token_invalid_start: usize = 0; // Handle broken clients
-    let mut token_invalid_end: usize = 0; // Handle broken clients
-    let mut is_id_part = false;
-    let mut ids = Vec::new();
+impl<'x> MessageStream<'x> {
+    pub fn parse_id(&mut self) -> HeaderValue<'x> {
+        let mut token_start: usize = 0;
+        let mut token_end: usize = 0;
+        let mut token_invalid_start: usize = 0; // Handle broken clients
+        let mut token_invalid_end: usize = 0; // Handle broken clients
+        let mut is_id_part = false;
+        let mut ids = Vec::new();
 
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-        match ch {
-            b'\n' => match stream.data.get(stream.pos) {
-                Some(b' ' | b'\t') => {
-                    iter.next();
-                    stream.pos += 1;
-                    continue;
-                }
-                _ => {
-                    return match ids.len() {
-                        1 => HeaderValue::Text(ids.pop().unwrap()),
-                        0 => {
-                            if token_invalid_start > 0 {
-                                HeaderValue::Text(String::from_utf8_lossy(
-                                    &stream.data[token_invalid_start - 1..token_invalid_end],
-                                ))
-                            } else {
-                                HeaderValue::Empty
+        while let Some(&ch) = self.next() {
+            match ch {
+                b'\n' => {
+                    if !self.try_next_is_space() {
+                        return match ids.len() {
+                            1 => HeaderValue::Text(ids.pop().unwrap()),
+                            0 => {
+                                if token_invalid_start > 0 {
+                                    HeaderValue::Text(String::from_utf8_lossy(
+                                        self.get_bytes(token_invalid_start - 1..token_invalid_end),
+                                    ))
+                                } else {
+                                    HeaderValue::Empty
+                                }
                             }
-                        }
-                        _ => HeaderValue::TextList(ids),
-                    };
+                            _ => HeaderValue::TextList(ids),
+                        };
+                    } else {
+                        continue;
+                    }
                 }
-            },
-            b'<' => {
-                is_id_part = true;
-                continue;
-            }
-            b'>' => {
-                is_id_part = false;
-                if token_start > 0 {
-                    ids.push(String::from_utf8_lossy(
-                        &stream.data[token_start - 1..token_end],
-                    ));
-                    token_start = 0;
-                } else {
+                b'<' => {
+                    is_id_part = true;
                     continue;
                 }
+                b'>' => {
+                    is_id_part = false;
+                    if token_start > 0 {
+                        ids.push(String::from_utf8_lossy(
+                            self.get_bytes(token_start - 1..token_end),
+                        ));
+                        token_start = 0;
+                    } else {
+                        continue;
+                    }
+                }
+                b' ' | b'\t' | b'\r' => continue,
+                _ => {}
             }
-            b' ' | b'\t' | b'\r' => continue,
-            _ => {}
+            if is_id_part {
+                if token_start == 0 {
+                    token_start = self.offset();
+                }
+                token_end = self.offset();
+            } else {
+                if token_invalid_start == 0 {
+                    token_invalid_start = self.offset();
+                }
+                token_invalid_end = self.offset();
+            }
         }
-        if is_id_part {
-            if token_start == 0 {
-                token_start = stream.pos;
-            }
-            token_end = stream.pos;
-        } else {
-            if token_invalid_start == 0 {
-                token_invalid_start = stream.pos;
-            }
-            token_invalid_end = stream.pos;
-        }
+
+        HeaderValue::Empty
     }
-
-    HeaderValue::Empty
 }
-
 #[cfg(test)]
 mod tests {
-    use crate::parsers::fields::id::parse_id;
-    use crate::parsers::message::MessageStream;
-    use crate::HeaderValue;
+    use crate::{parsers::MessageStream, HeaderValue};
 
     #[test]
     fn parse_message_ids() {
@@ -132,7 +125,7 @@ mod tests {
 
         for input in inputs {
             let str = input.0.to_string();
-            match parse_id(&mut MessageStream::new(str.as_bytes())) {
+            match MessageStream::new(str.as_bytes()).parse_id() {
                 HeaderValue::TextList(ids) => {
                     assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
                 }

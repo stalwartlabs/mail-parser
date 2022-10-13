@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use std::{iter::Peekable, slice::Iter};
+use std::{iter::Peekable, ops::Range, slice::Iter};
 
 pub mod fields;
 pub mod header;
@@ -17,7 +17,7 @@ pub mod message;
 pub mod mime;
 pub mod preview;
 
-/*pub struct MessageStream<'x> {
+pub struct MessageStream<'x> {
     data: &'x [u8],
     iter: Peekable<Iter<'x, u8>>,
     pos: usize,
@@ -41,17 +41,17 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn offset(&self) -> usize {
-        self.pos
+        std::cmp::min(self.pos, self.data.len())
     }
 
     #[inline(always)]
     pub fn remaining(&self) -> usize {
-        self.data.len() - self.pos
+        self.data.len() - self.offset()
     }
 
     #[inline(always)]
     pub fn checkpoint(&mut self) {
-        self.restore_pos = self.pos;
+        self.restore_pos = self.offset();
     }
 
     #[inline(always)]
@@ -65,6 +65,85 @@ impl<'x> MessageStream<'x> {
     pub fn reset(&mut self) {
         self.restore_pos = 0;
     }
+
+    #[inline(always)]
+    pub fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
+        let pos = self.offset();
+        self.data.get(pos..pos + len)
+    }
+
+    #[inline(always)]
+    pub fn peek_char(&mut self, ch: u8) -> bool {
+        matches!(self.peek(), Some(&&ch_) if ch_ == ch)
+    }
+
+    #[inline(always)]
+    pub fn skip_bytes(&mut self, len: usize) {
+        self.pos += len;
+        self.iter = self.data[self.pos..].iter().peekable();
+    }
+
+    #[inline(always)]
+    pub fn try_skip(&mut self, bytes: &[u8]) -> bool {
+        if self.peek_bytes(bytes.len()) == Some(bytes) {
+            self.skip_bytes(bytes.len());
+            true
+        } else {
+            false
+        }
+    }
+
+    #[inline(always)]
+    pub fn try_skip_char(&mut self, ch: u8) -> bool {
+        if self.peek_char(ch) {
+            self.next();
+            true
+        } else {
+            false
+        }
+    }
+
+    #[inline(always)]
+    pub fn get_bytes(&self, range: Range<usize>) -> &'x [u8] {
+        &self.data[range]
+    }
+
+    #[inline(always)]
+    pub fn seek_end(&mut self) {
+        self.pos = self.data.len();
+        self.iter = [][..].iter().peekable();
+    }
+
+    #[inline(always)]
+    pub fn next_is_space(&mut self) -> bool {
+        matches!(self.next(), Some(b' ' | b'\t'))
+    }
+
+    #[inline(always)]
+    pub fn peek_next_is_space(&mut self) -> bool {
+        matches!(self.peek(), Some(b' ' | b'\t'))
+    }
+
+    #[inline(always)]
+    pub fn try_next_is_space(&mut self) -> bool {
+        if self.peek_next_is_space() {
+            self.next();
+            true
+        } else {
+            false
+        }
+    }
+
+    #[allow(clippy::len_without_is_empty)]
+    #[inline(always)]
+    pub fn len(&self) -> usize {
+        self.data.len()
+    }
+
+    #[inline(always)]
+    pub fn is_eof(&mut self) -> bool {
+        self.iter.peek().is_none()
+    }
 }
 
 impl<'x> Iterator for MessageStream<'x> {
@@ -76,4 +155,3 @@ impl<'x> Iterator for MessageStream<'x> {
         self.iter.next()
     }
 }
-*/

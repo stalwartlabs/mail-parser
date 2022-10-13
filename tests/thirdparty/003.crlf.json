@@ -1,0 +1,277 @@
+{
+  "html_body": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "text_body": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 45,
+          "offset_start": 58,
+          "offset_end": 64
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 66,
+      "offset_end": 688
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "7bit"
+          },
+          "offset_field": 71,
+          "offset_start": 97,
+          "offset_end": 109
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 109,
+          "offset_start": 122,
+          "offset_end": 153
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move black king to queen's bishop\r\n"
+      },
+      "offset_header": 71,
+      "offset_body": 155,
+      "offset_end": 190
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 197,
+          "offset_start": 223,
+          "offset_end": 235
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 235,
+          "offset_start": 248,
+          "offset_end": 276
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\r\n"
+      },
+      "offset_header": 197,
+      "offset_body": 278,
+      "offset_end": 301
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "8bit"
+          },
+          "offset_field": 308,
+          "offset_start": 334,
+          "offset_end": 344
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 344,
+          "offset_start": 357,
+          "offset_end": 385
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\r\n"
+      },
+      "offset_header": 308,
+      "offset_body": 387,
+      "offset_end": 410
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 417,
+          "offset_start": 443,
+          "offset_end": 476
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 476,
+          "offset_start": 489,
+          "offset_end": 517
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 417,
+      "offset_body": 519,
+      "offset_end": 560
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 567,
+          "offset_start": 593,
+          "offset_end": 602
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "UTF-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 602,
+          "offset_start": 615,
+          "offset_end": 643
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Move ♚ to ♛'s ♝\n"
+      },
+      "offset_header": 567,
+      "offset_body": 645,
+      "offset_end": 679
+    }
+  ]
+}

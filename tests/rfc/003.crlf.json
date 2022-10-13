@@ -1,0 +1,256 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Nathaniel Borenstein",
+              "address": "nsb@bellcore.com"
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 47
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Ned Freed",
+              "address": "ned@innosoft.com"
+            }
+          },
+          "offset_field": 47,
+          "offset_start": 50,
+          "offset_end": 81
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 1993,
+              "month": 3,
+              "day": 22,
+              "hour": 9,
+              "minute": 41,
+              "second": 9,
+              "tz_before_gmt": true,
+              "tz_hour": 8,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 81,
+          "offset_start": 86,
+          "offset_end": 126
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Formatted text mail"
+          },
+          "offset_field": 126,
+          "offset_start": 134,
+          "offset_end": 156
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 156,
+          "offset_start": 169,
+          "offset_end": 175
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "boundary42"
+                ]
+              ]
+            }
+          },
+          "offset_field": 175,
+          "offset_start": 188,
+          "offset_end": 233
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 235,
+      "offset_end": 588
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 249,
+          "offset_start": 262,
+          "offset_end": 293
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "... plain text version of message goes here ...\r\n"
+      },
+      "offset_header": 249,
+      "offset_body": 295,
+      "offset_end": 344
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "enriched",
+              "attributes": null
+            }
+          },
+          "offset_field": 360,
+          "offset_start": 373,
+          "offset_end": 389
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "... RFC 1896 text/enriched version of same message\r\n    goes here ...\r\n"
+      },
+      "offset_header": 360,
+      "offset_body": 391,
+      "offset_end": 462
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "application",
+              "c_subtype": "x-whatever",
+              "attributes": null
+            }
+          },
+          "offset_field": 478,
+          "offset_start": 491,
+          "offset_end": 516
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          46,
+          46,
+          46,
+          32,
+          102,
+          97,
+          110,
+          99,
+          105,
+          101,
+          115,
+          116,
+          32,
+          118,
+          101,
+          114,
+          115,
+          105,
+          111,
+          110,
+          32,
+          111,
+          102,
+          32,
+          115,
+          97,
+          109,
+          101,
+          32,
+          109,
+          101,
+          115,
+          115,
+          97,
+          103,
+          101,
+          32,
+          103,
+          111,
+          101,
+          115,
+          32,
+          104,
+          101,
+          114,
+          101,
+          32,
+          46,
+          46,
+          46,
+          13,
+          10
+        ]
+      },
+      "offset_header": 478,
+      "offset_body": 518,
+      "offset_end": 570
+    }
+  ]
+}

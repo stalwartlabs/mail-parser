@@ -9,153 +9,171 @@
  * except according to those terms.
  */
 
-use std::borrow::Cow;
-
 use crate::{Header, HeaderName, HeaderValue, RfcHeader};
 
-use super::{
-    fields::{
-        address::parse_address,
-        content_type::parse_content_type,
-        date::parse_date,
-        id::parse_id,
-        list::parse_comma_separared,
-        raw::{parse_and_ignore, parse_raw},
-        unstructured::parse_unstructured,
-    },
-    message::MessageStream,
-};
+use super::MessageStream;
 
-#[derive(Debug, PartialEq, Eq)]
-pub enum HeaderParserResult<'x> {
-    Rfc(RfcHeader),
-    Other(Cow<'x, str>),
-    Lf,
-    Eof,
-}
+impl<'x> MessageStream<'x> {
+    pub fn parse_headers(&mut self, headers: &mut Vec<Header<'x>>) -> bool {
+        loop {
+            loop {
+                match self.peek() {
+                    Some(b'\n') => {
+                        self.next();
+                        return true;
+                    }
+                    None => return false,
+                    Some(ch) if !ch.is_ascii_whitespace() => {
+                        break;
+                    }
+                    _ => {
+                        self.next();
+                    }
+                }
+            }
 
-pub fn parse_headers<'x>(headers: &mut Vec<Header<'x>>, stream: &mut MessageStream<'x>) -> bool {
-    loop {
-        let offset_field = stream.pos;
-        let (bytes_read, result) = parse_header_name(&stream.data[stream.pos..]);
-        stream.pos += bytes_read;
+            let offset_field = self.offset();
 
-        match result {
-            HeaderParserResult::Rfc(name) => {
-                let (_, parser) = {
+            if let Some(header_name) = self.parse_header_name() {
+                if let HeaderName::Rfc(rfc_name) = &header_name {
+                    let from_offset = self.offset();
+                    let value = match rfc_name {
+                        RfcHeader::Subject
+                        | RfcHeader::Comments
+                        | RfcHeader::ContentDescription
+                        | RfcHeader::ContentLocation
+                        | RfcHeader::ContentTransferEncoding => self.parse_unstructured(),
+                        RfcHeader::From
+                        | RfcHeader::To
+                        | RfcHeader::Cc
+                        | RfcHeader::Bcc
+                        | RfcHeader::ReplyTo
+                        | RfcHeader::Sender
+                        | RfcHeader::ResentTo
+                        | RfcHeader::ResentFrom
+                        | RfcHeader::ResentBcc
+                        | RfcHeader::ResentCc
+                        | RfcHeader::ResentSender
+                        | RfcHeader::ListArchive
+                        | RfcHeader::ListHelp
+                        | RfcHeader::ListId
+                        | RfcHeader::ListOwner
+                        | RfcHeader::ListPost
+                        | RfcHeader::ListSubscribe
+                        | RfcHeader::ListUnsubscribe => self.parse_address(),
+                        RfcHeader::Date | RfcHeader::ResentDate => self.parse_date(),
+                        RfcHeader::MessageId
+                        | RfcHeader::References
+                        | RfcHeader::InReplyTo
+                        | RfcHeader::ReturnPath
+                        | RfcHeader::ContentId
+                        | RfcHeader::ResentMessageId => self.parse_id(),
+                        RfcHeader::Keywords | RfcHeader::ContentLanguage => {
+                            self.parse_comma_separared()
+                        }
+                        RfcHeader::Received | RfcHeader::MimeVersion => self.parse_raw(),
+                        RfcHeader::ContentType | RfcHeader::ContentDisposition => {
+                            self.parse_content_type()
+                        }
+                    };
+
+                    headers.push(Header {
+                        name: header_name,
+                        value,
+                        offset_field,
+                        offset_start: from_offset,
+                        offset_end: self.offset(),
+                    });
+                } else {
+                    let from_offset = self.offset();
+                    self.parse_and_ignore();
+
+                    headers.push(Header {
+                        name: header_name,
+                        value: HeaderValue::Text(String::from_utf8_lossy(
+                            self.get_bytes(from_offset..self.offset()),
+                        )),
+                        offset_field,
+                        offset_start: from_offset,
+                        offset_end: self.offset(),
+                    });
+                }
+            } else if self.is_eof() {
+                return false;
+            }
+        }
+    }
+
+    pub fn parse_header_name(&mut self) -> Option<HeaderName<'x>> {
+        let mut token_start: usize = 0;
+        let mut token_end: usize = 0;
+        let mut token_len: usize = 0;
+        let mut token_hash: usize = 0;
+        let mut last_ch: u8 = 0;
+
+        while let Some(&ch) = self.next() {
+            match ch {
+                b':' => {
+                    if token_start != 0 {
+                        break;
+                    }
+                }
+                b'\n' => {
+                    return None;
+                }
+                _ => {
+                    if !ch.is_ascii_whitespace() {
+                        if token_start == 0 {
+                            token_start = self.offset();
+                            token_end = token_start;
+                        } else {
+                            token_end = self.offset();
+                            last_ch = ch;
+                        }
+
+                        if let 0 | 9 = token_len {
+                            token_hash += {
+                                #[cfg(feature = "ludicrous_mode")]
+                                unsafe {
+                                    *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
+                                }
+
+                                #[cfg(not(feature = "ludicrous_mode"))]
+                                HDR_HASH[ch.to_ascii_lowercase() as usize]
+                            } as usize;
+                        }
+                        token_len += 1;
+                    }
+                }
+            }
+        }
+
+        if token_start != 0 {
+            let field = self.get_bytes(token_start - 1..token_end);
+
+            if (2..=25).contains(&token_len) {
+                token_hash += token_len + {
                     #[cfg(feature = "ludicrous_mode")]
                     unsafe {
-                        HDR_PARSER.get_unchecked(name as usize)
+                        *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
                     }
 
                     #[cfg(not(feature = "ludicrous_mode"))]
-                    HDR_PARSER[name as usize]
-                };
-                let from_offset = stream.pos;
+                    HDR_HASH[last_ch.to_ascii_lowercase() as usize]
+                } as usize;
 
-                headers.push(Header {
-                    name: HeaderName::Rfc(name),
-                    value: parser(stream),
-                    offset_field,
-                    offset_start: from_offset,
-                    offset_end: stream.pos,
-                });
-            }
-            HeaderParserResult::Other(name) => {
-                let from_offset = stream.pos;
-                parse_and_ignore(stream);
+                if (4..=72).contains(&token_hash) {
+                    let token_hash = token_hash - 4;
 
-                headers.push(Header {
-                    name: HeaderName::Other(name),
-                    value: HeaderValue::Text(String::from_utf8_lossy(
-                        &stream.data[from_offset..stream.pos],
-                    )),
-                    offset_field,
-                    offset_start: from_offset,
-                    offset_end: stream.pos,
-                });
-            }
-            HeaderParserResult::Lf => return true,
-            HeaderParserResult::Eof => return false,
-        }
-    }
-}
-
-pub fn parse_header_name(data: &[u8]) -> (usize, HeaderParserResult) {
-    let mut token_start: usize = 0;
-    let mut token_end: usize = 0;
-    let mut token_len: usize = 0;
-    let mut token_hash: usize = 0;
-    let mut last_ch: u8 = 0;
-    let mut bytes_read: usize = 0;
-
-    for &ch in data.iter() {
-        bytes_read += 1;
-
-        match ch {
-            b':' => {
-                if token_start != 0 {
-                    break;
-                }
-            }
-            b'\n' => {
-                return (bytes_read - 1, HeaderParserResult::Lf);
-            }
-            _ => {
-                if !ch.is_ascii_whitespace() {
-                    if token_start == 0 {
-                        token_start = bytes_read;
-                        token_end = token_start;
-                    } else {
-                        token_end = bytes_read;
-                        last_ch = ch;
+                    if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
+                        return Some(HeaderName::Rfc(HDR_MAP[token_hash]));
                     }
-
-                    if let 0 | 9 = token_len {
-                        token_hash += {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
-                            }
-
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            HDR_HASH[ch.to_ascii_lowercase() as usize]
-                        } as usize;
-                    }
-                    token_len += 1;
                 }
             }
+            Some(HeaderName::Other(String::from_utf8_lossy(field)))
+        } else {
+            None
         }
-    }
-
-    if token_start != 0 {
-        let field = &data[token_start - 1..token_end];
-
-        if (2..=25).contains(&token_len) {
-            token_hash += token_len + {
-                #[cfg(feature = "ludicrous_mode")]
-                unsafe {
-                    *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
-                }
-
-                #[cfg(not(feature = "ludicrous_mode"))]
-                HDR_HASH[last_ch.to_ascii_lowercase() as usize]
-            } as usize;
-
-            if (4..=72).contains(&token_hash) {
-                let token_hash = token_hash - 4;
-
-                if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                    return (bytes_read, HeaderParserResult::Rfc(HDR_MAP[token_hash]));
-                }
-            }
-        }
-        return (
-            bytes_read,
-            HeaderParserResult::Other(String::from_utf8_lossy(field)),
-        );
-    } else {
-        (bytes_read, HeaderParserResult::Eof)
     }
 }
 
@@ -210,95 +228,81 @@ impl From<RfcHeader> for u8 {
     }
 }
 
-impl<'x> From<HeaderParserResult<'x>> for HeaderName<'x> {
-    fn from(result: HeaderParserResult<'x>) -> Self {
-        match result {
-            HeaderParserResult::Rfc(header) => HeaderName::Rfc(header),
-            HeaderParserResult::Other(header) => HeaderName::Other(header),
-            _ => HeaderName::Other("".into()),
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::header::parse_header_name, RfcHeader};
-
-    use super::HeaderParserResult;
+    use crate::{parsers::MessageStream, HeaderName, RfcHeader};
 
     #[test]
     fn header_name_parse() {
         let inputs = [
-            ("From: ", HeaderParserResult::Rfc(RfcHeader::From)),
-            ("receiVED: ", HeaderParserResult::Rfc(RfcHeader::Received)),
-            (" subject   : ", HeaderParserResult::Rfc(RfcHeader::Subject)),
+            ("From: ", HeaderName::Rfc(RfcHeader::From)),
+            ("receiVED: ", HeaderName::Rfc(RfcHeader::Received)),
+            (" subject   : ", HeaderName::Rfc(RfcHeader::Subject)),
             (
                 "X-Custom-Field : ",
-                HeaderParserResult::Other("X-Custom-Field".into()),
+                HeaderName::Other("X-Custom-Field".into()),
             ),
-            (" T : ", HeaderParserResult::Other("T".into())),
-            (
-                "mal formed: ",
-                HeaderParserResult::Other("mal formed".into()),
-            ),
-            (
-                "MIME-version : ",
-                HeaderParserResult::Rfc(RfcHeader::MimeVersion),
-            ),
+            (" T : ", HeaderName::Other("T".into())),
+            ("mal formed: ", HeaderName::Other("mal formed".into())),
+            ("MIME-version : ", HeaderName::Rfc(RfcHeader::MimeVersion)),
         ];
 
-        for input in inputs {
-            let str = input.0.to_string();
-            let (_, result) = parse_header_name(str.as_bytes());
-            assert_eq!(input.1, result, "Failed to parse '{:?}'", input.0);
+        for (input, expected_result) in inputs {
+            assert_eq!(
+                expected_result,
+                MessageStream::new(input.as_bytes())
+                    .parse_header_name()
+                    .unwrap(),
+                "Failed to parse '{:?}'",
+                input
+            );
         }
     }
 }
 
-#[allow(clippy::type_complexity)]
-static HDR_PARSER: &[(
-    bool,
-    for<'x, 'y> fn(&mut MessageStream<'x>) -> HeaderValue<'x>,
-)] = &[
-    (false, parse_unstructured),    // Subject = 0,
-    (false, parse_address),         // From = 1,
-    (false, parse_address),         // To = 2,
-    (false, parse_address),         // Cc = 3,
-    (false, parse_date),            // Date = 4,
-    (false, parse_address),         // Bcc = 5,
-    (false, parse_address),         // ReplyTo = 6,
-    (false, parse_address),         // Sender = 7,
-    (true, parse_unstructured),     // Comments = 8,
-    (false, parse_id),              // InReplyTo = 9,
-    (true, parse_comma_separared),  // Keywords = 10,
-    (true, parse_raw),              // Received = 11,
-    (false, parse_id),              // MessageId = 12,
-    (true, parse_id),               // References = 13, (RFC 5322 recommends One)
-    (false, parse_id),              // ReturnPath = 14,
-    (false, parse_raw),             // MimeVersion = 15,
-    (false, parse_unstructured),    // ContentDescription = 16,
-    (false, parse_id),              // ContentId = 17,
-    (false, parse_comma_separared), // ContentLanguage = 18
-    (false, parse_unstructured),    // ContentLocation = 19
-    (false, parse_unstructured),    // ContentTransferEncoding = 20,
-    (false, parse_content_type),    // ContentType = 21,
-    (false, parse_content_type),    // ContentDisposition = 22,
-    (true, parse_address),          // ResentTo = 23,
-    (true, parse_address),          // ResentFrom = 24,
-    (true, parse_address),          // ResentBcc = 25,
-    (true, parse_address),          // ResentCc = 26,
-    (true, parse_address),          // ResentSender = 27,
-    (true, parse_date),             // ResentDate = 28,
-    (true, parse_id),               // ResentMessageId = 29,
-    (false, parse_address),         // ListArchive = 30,
-    (false, parse_address),         // ListHelp = 31,
-    (false, parse_address),         // ListId = 32,
-    (false, parse_address),         // ListOwner = 33,
-    (false, parse_address),         // ListPost = 34,
-    (false, parse_address),         // ListSubscribe = 35,
-    (false, parse_address),         // ListUnsubscribe = 36,
-    (true, parse_raw),              // Other = 37,
-];
+/*
+type ParserFnc<'x> = fn(&mut MessageStream<'x>) -> HeaderValue<'x>;
+
+static HDR_PARSER: &[(bool, for<'x> fn(&mut MessageStream<'x>) -> HeaderValue<'x>] = &[
+    (false, MessageStream::parse_unstructured), // Subject = 0,
+    (false, MessageStream::parse_address),      // From = 1,
+    (false, MessageStream::parse_address),      // To = 2,
+    (false, MessageStream::parse_address),      // Cc = 3,
+    (false, MessageStream::parse_date),         // Date = 4,
+    (false, MessageStream::parse_address),      // Bcc = 5,
+    (false, MessageStream::parse_address),      // ReplyTo = 6,
+    (false, MessageStream::parse_address),      // Sender = 7,
+    (true, MessageStream::parse_unstructured),  // Comments = 8,
+    (false, MessageStream::parse_id),           // InReplyTo = 9,
+    (true, MessageStream::parse_comma_separared), // Keywords = 10,
+    (true, MessageStream::parse_raw),           // Received = 11,
+    (false, MessageStream::parse_id),           // MessageId = 12,
+    (true, MessageStream::parse_id),            // References = 13, (RFC 5322 recommends One)
+    (false, MessageStream::parse_id),           // ReturnPath = 14,
+    (false, MessageStream::parse_raw),          // MimeVersion = 15,
+    (false, MessageStream::parse_unstructured), // ContentDescription = 16,
+    (false, MessageStream::parse_id),           // ContentId = 17,
+    (false, MessageStream::parse_comma_separared), // ContentLanguage = 18
+    (false, MessageStream::parse_unstructured), // ContentLocation = 19
+    (false, MessageStream::parse_unstructured), // ContentTransferEncoding = 20,
+    (false, MessageStream::parse_content_type), // ContentType = 21,
+    (false, MessageStream::parse_content_type), // ContentDisposition = 22,
+    (true, MessageStream::parse_address),       // ResentTo = 23,
+    (true, MessageStream::parse_address),       // ResentFrom = 24,
+    (true, MessageStream::parse_address),       // ResentBcc = 25,
+    (true, MessageStream::parse_address),       // ResentCc = 26,
+    (true, MessageStream::parse_address),       // ResentSender = 27,
+    (true, MessageStream::parse_date),          // ResentDate = 28,
+    (true, MessageStream::parse_id),            // ResentMessageId = 29,
+    (false, MessageStream::parse_address),      // ListArchive = 30,
+    (false, MessageStream::parse_address),      // ListHelp = 31,
+    (false, MessageStream::parse_address),      // ListId = 32,
+    (false, MessageStream::parse_address),      // ListOwner = 33,
+    (false, MessageStream::parse_address),      // ListPost = 34,
+    (false, MessageStream::parse_address),      // ListSubscribe = 35,
+    (false, MessageStream::parse_address),      // ListUnsubscribe = 36,
+    (true, MessageStream::parse_raw),           // Other = 37,
+];*/
 
 static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,

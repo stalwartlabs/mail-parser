@@ -1,0 +1,168 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "4.2.0.58.20000519003052.00a89c40@pop.example.com"
+          },
+          "offset_field": 0,
+          "offset_start": 11,
+          "offset_end": 64
+        },
+        {
+          "name": {
+            "Other": "X-Sender"
+          },
+          "value": {
+            "Text": " dwsauder@pop.example.com (Unverified)\r\n"
+          },
+          "offset_field": 64,
+          "offset_start": 73,
+          "offset_end": 113
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
+          },
+          "offset_field": 113,
+          "offset_start": 122,
+          "offset_end": 170
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 2 (High)\r\n"
+          },
+          "offset_field": 170,
+          "offset_start": 181,
+          "offset_end": 192
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 19,
+              "hour": 0,
+              "minute": 31,
+              "second": 0,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 192,
+          "offset_start": 197,
+          "offset_end": 231
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Heinz Müller",
+              "address": "mueller@example.com"
+            }
+          },
+          "offset_field": 231,
+          "offset_start": 234,
+          "offset_end": 290
+        },
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "dwsauder@example.com"
+            }
+          },
+          "offset_field": 290,
+          "offset_start": 295,
+          "offset_end": 332
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Frösche"
+          },
+          "offset_field": 332,
+          "offset_start": 340,
+          "offset_end": 387
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 387,
+          "offset_start": 400,
+          "offset_end": 406
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 406,
+          "offset_start": 419,
+          "offset_end": 453
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 453,
+          "offset_start": 479,
+          "offset_end": 498
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html>\n<font face=\"Arial, Helvetica\" size=5 color=\"#0000FF\"><b>Die Hasen und die\nFrösche<br>\n<br>\n</font></b><font face=\"Arial, Helvetica\">Die Hasen klagten einst über\nihre mißliche Lage; &quot;wir leben&quot;, sprach ein Redner, &quot;in\nsteter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler,\nja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst.\nAuf, laßt uns ein für allemal sterben.&quot; <br>\n<br>\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten. <br>\n<br>\n&quot;Halt&quot;, rief nun eben dieser Sprecher, &quot;wir wollen das\nErsäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr\nseht, einige Tiere, welche also wohl noch unglücklicher sein müssen als\nwir.&quot; <br>\n<br>\n</font></html>\n\n"
+      },
+      "offset_header": 0,
+      "offset_body": 500,
+      "offset_end": 1499
+    }
+  ]
+}

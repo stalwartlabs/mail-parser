@@ -1,0 +1,132 @@
+{
+  "html_body": [
+    2
+  ],
+  "text_body": [
+    2
+  ],
+  "attachments": [
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "ab"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 46
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 48,
+      "offset_end": 180
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "a"
+                ]
+              ]
+            }
+          },
+          "offset_field": 54,
+          "offset_start": 67,
+          "offset_end": 99
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3
+        ]
+      },
+      "offset_header": 54,
+      "offset_body": 101,
+      "offset_end": 180
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 106,
+          "offset_start": 119,
+          "offset_end": 132
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "body"
+      },
+      "offset_header": 106,
+      "offset_body": 134,
+      "offset_end": 138
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": null
+            }
+          },
+          "offset_field": 146,
+          "offset_start": 159,
+          "offset_end": 171
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "body2\r\n"
+      },
+      "offset_header": 143,
+      "offset_body": 173,
+      "offset_end": 180
+    }
+  ]
+}

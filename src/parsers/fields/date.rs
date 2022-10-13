@@ -11,15 +11,12 @@
 
 use std::fmt;
 
-use crate::{parsers::message::MessageStream, DateTime, HeaderValue};
+use crate::{parsers::MessageStream, DateTime, HeaderValue};
 
 impl DateTime {
     /// Parses an RFC822 date
     pub fn parse_rfc822(&self, value: &str) -> Option<Self> {
-        match parse_date(&mut MessageStream {
-            data: value.as_bytes(),
-            pos: 0,
-        }) {
+        match MessageStream::new(value.as_bytes()).parse_date() {
             HeaderValue::DateTime(dt) => dt.into(),
             _ => None,
         }
@@ -107,141 +104,136 @@ impl fmt::Display for DateTime {
     }
 }
 
-pub fn parse_date<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut pos = 0;
-    let mut parts = [0u32; 7];
-    let mut parts_sizes = [
-        2u32, // Day (0)
-        2u32, // Month (1)
-        4u32, // Year (2)
-        2u32, // Hour (3)
-        2u32, // Minute (4)
-        2u32, // Second (5)
-        4u32, // TZ (6)
-    ];
-    let mut month_hash: usize = 0;
-    let mut month_pos: usize = 0;
+impl<'x> MessageStream<'x> {
+    pub fn parse_date(&mut self) -> HeaderValue<'x> {
+        let mut pos = 0;
+        let mut parts = [0u32; 7];
+        let mut parts_sizes = [
+            2u32, // Day (0)
+            2u32, // Month (1)
+            4u32, // Year (2)
+            2u32, // Hour (3)
+            2u32, // Minute (4)
+            2u32, // Second (5)
+            4u32, // TZ (6)
+        ];
+        let mut month_hash: usize = 0;
+        let mut month_pos: usize = 0;
 
-    let mut is_plus = true;
-    let mut is_new_token = true;
-    let mut ignore = true;
-    let mut comment_count = 0;
+        let mut is_plus = true;
+        let mut is_new_token = true;
+        let mut ignore = true;
+        let mut comment_count = 0;
 
-    let mut iter = stream.data[stream.pos..].iter();
+        while let Some(ch) = self.next() {
+            let mut next_part = false;
 
-    while let Some(ch) = iter.next() {
-        let mut next_part = false;
-        stream.pos += 1;
-
-        match ch {
-            b'\n' => match stream.data.get(stream.pos) {
-                Some(b' ' | b'\t') => {
-                    iter.next();
-                    stream.pos += 1;
-
-                    if !is_new_token && !ignore && comment_count == 0 {
-                        next_part = true;
+            match ch {
+                b'\n' => {
+                    if self.try_next_is_space() {
+                        if !is_new_token && !ignore && comment_count == 0 {
+                            next_part = true;
+                        } else {
+                            continue;
+                        }
                     } else {
-                        continue;
+                        break;
                     }
                 }
-                _ => break,
-            },
-            _ if comment_count > 0 => {
-                if *ch == b')' {
-                    comment_count -= 1;
-                } else if *ch == b'(' {
+                _ if comment_count > 0 => {
+                    if *ch == b')' {
+                        comment_count -= 1;
+                    } else if *ch == b'(' {
+                        comment_count += 1;
+                    } else if *ch == b'\\' {
+                        self.try_skip_char(b')');
+                    }
+                    continue;
+                }
+                b'0'..=b'9' => {
+                    if pos < 7 && parts_sizes[pos] > 0 {
+                        parts_sizes[pos] -= 1;
+                        parts[pos] += (*ch - b'0') as u32 * u32::pow(10, parts_sizes[pos]);
+
+                        if ignore {
+                            ignore = false;
+                        }
+                    }
+                    if is_new_token {
+                        is_new_token = false;
+                    }
+                }
+                b':' => {
+                    if !is_new_token && !ignore && (pos == 3 || pos == 4) {
+                        next_part = true;
+                    }
+                }
+                b'+' => {
+                    pos = 6;
+                }
+                b'-' => {
+                    is_plus = false;
+                    pos = 6;
+                }
+                b' ' | b'\t' => {
+                    if !is_new_token && !ignore {
+                        next_part = true;
+                    }
+                }
+                b'a'..=b'z' | b'A'..=b'Z' => {
+                    if pos == 1 {
+                        if (1..=2).contains(&month_pos) {
+                            month_hash += MONTH_HASH
+                                [(if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize]
+                                as usize;
+                        }
+                        month_pos += 1;
+                    }
+                    if is_new_token {
+                        is_new_token = false;
+                    }
+                }
+                b'(' => {
                     comment_count += 1;
-                } else if *ch == b'\\' {
-                    if let Some(b')') = stream.data.get(stream.pos) {
-                        stream.pos += 1;
-                    }
+                    is_new_token = true;
+                    continue;
                 }
-                continue;
+                b',' | b'\r' => (),
+                _ => (),
             }
-            b'0'..=b'9' => {
+
+            if next_part {
                 if pos < 7 && parts_sizes[pos] > 0 {
-                    parts_sizes[pos] -= 1;
-                    parts[pos] += (*ch - b'0') as u32 * u32::pow(10, parts_sizes[pos]);
-
-                    if ignore {
-                        ignore = false;
-                    }
+                    parts[pos] /= u32::pow(10, parts_sizes[pos]);
                 }
-                if is_new_token {
-                    is_new_token = false;
-                }
-            }
-            b':' => {
-                if !is_new_token && !ignore && (pos == 3 || pos == 4) {
-                    next_part = true;
-                }
-            }
-            b'+' => {
-                pos = 6;
-            }
-            b'-' => {
-                is_plus = false;
-                pos = 6;
-            }
-            b' ' | b'\t' => {
-                if !is_new_token && !ignore {
-                    next_part = true;
-                }
-            }
-            b'a'..=b'z' | b'A'..=b'Z' => {
-                if pos == 1 {
-                    if (1..=2).contains(&month_pos) {
-                        month_hash += MONTH_HASH
-                            [(if *ch <= b'Z' { *ch + 32 } else { *ch }) as usize]
-                            as usize;
-                    }
-                    month_pos += 1;
-                }
-                if is_new_token {
-                    is_new_token = false;
-                }
-            }
-            b'(' => {
-                comment_count += 1;
+                pos += 1;
                 is_new_token = true;
-                continue;
             }
-            b',' | b'\r' => (),
-            _ => (),
         }
 
-        if next_part {
-            if pos < 7 && parts_sizes[pos] > 0 {
-                parts[pos] /= u32::pow(10, parts_sizes[pos]);
-            }
-            pos += 1;
-            is_new_token = true;
+        if pos >= 6 {
+            HeaderValue::DateTime(DateTime {
+                year: if (1..=99).contains(&parts[2]) {
+                    parts[2] + 1900
+                } else {
+                    parts[2]
+                } as u16,
+                month: if month_pos == 3 && month_hash <= 30 {
+                    MONTH_MAP[month_hash] as u8
+                } else {
+                    parts[1] as u8
+                },
+                day: parts[0] as u8,
+                hour: parts[3] as u8,
+                minute: parts[4] as u8,
+                second: parts[5] as u8,
+                tz_hour: (parts[6] / 100) as u8,
+                tz_minute: (parts[6] % 100) as u8,
+                tz_before_gmt: !is_plus,
+            })
+        } else {
+            HeaderValue::Empty
         }
-    }
-
-    if pos >= 6 {
-        HeaderValue::DateTime(DateTime {
-            year: if (1..=99).contains(&parts[2]) {
-                parts[2] + 1900
-            } else {
-                parts[2]
-            } as u16,
-            month: if month_pos == 3 && month_hash <= 30 {
-                MONTH_MAP[month_hash] as u8
-            } else {
-                parts[1] as u8
-            },
-            day: parts[0] as u8,
-            hour: parts[3] as u8,
-            minute: parts[4] as u8,
-            second: parts[5] as u8,
-            tz_hour: (parts[6] / 100) as u8,
-            tz_minute: (parts[6] % 100) as u8,
-            tz_before_gmt: !is_plus,
-        })
-    } else {
-        HeaderValue::Empty
     }
 }
 
@@ -267,10 +259,7 @@ pub static MONTH_MAP: &[u8; 31] = &[
 mod tests {
     use chrono::{FixedOffset, LocalResult, SecondsFormat, TimeZone, Utc};
 
-    use crate::{
-        parsers::{fields::date::parse_date, message::MessageStream},
-        HeaderValue,
-    };
+    use crate::{parsers::MessageStream, HeaderValue};
 
     #[test]
     fn parse_dates() {
@@ -335,7 +324,7 @@ mod tests {
         ];
 
         for (input, expected_result) in inputs {
-            match parse_date(&mut MessageStream::new(input.as_bytes())) {
+            match MessageStream::new(input.as_bytes()).parse_date() {
                 HeaderValue::DateTime(datetime) => {
                     assert_eq!(expected_result, datetime.to_rfc3339());
 

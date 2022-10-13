@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, HeaderValue};
+use crate::{parsers::MessageStream, HeaderValue};
 
 struct ListParser<'x> {
     token_start: usize,
@@ -21,116 +21,105 @@ struct ListParser<'x> {
     list: Vec<Cow<'x, str>>,
 }
 
-fn add_token<'x>(parser: &mut ListParser<'x>, stream: &MessageStream<'x>, add_space: bool) {
-    if parser.token_start > 0 {
-        if !parser.tokens.is_empty() {
-            parser.tokens.push(" ".into());
-        }
-        parser.tokens.push(String::from_utf8_lossy(
-            &stream.data[parser.token_start - 1..parser.token_end],
-        ));
+impl<'x> ListParser<'x> {
+    fn add_token(&mut self, stream: &MessageStream<'x>, add_space: bool) {
+        if self.token_start > 0 {
+            if !self.tokens.is_empty() {
+                self.tokens.push(" ".into());
+            }
+            self.tokens.push(String::from_utf8_lossy(
+                &stream.data[self.token_start - 1..self.token_end],
+            ));
 
-        if add_space {
-            parser.tokens.push(" ".into());
-        }
+            if add_space {
+                self.tokens.push(" ".into());
+            }
 
-        parser.token_start = 0;
-        parser.is_token_start = true;
+            self.token_start = 0;
+            self.is_token_start = true;
+        }
+    }
+
+    fn add_tokens_to_list(&mut self) {
+        if !self.tokens.is_empty() {
+            self.list.push(if self.tokens.len() == 1 {
+                self.tokens.pop().unwrap()
+            } else {
+                let value = self.tokens.concat();
+                self.tokens.clear();
+                value.into()
+            });
+        }
     }
 }
 
-fn add_tokens_to_list(parser: &mut ListParser) {
-    if !parser.tokens.is_empty() {
-        parser.list.push(if parser.tokens.len() == 1 {
-            parser.tokens.pop().unwrap()
-        } else {
-            let value = parser.tokens.concat();
-            parser.tokens.clear();
-            value.into()
-        });
-    }
-}
+impl<'x> MessageStream<'x> {
+    pub fn parse_comma_separared(&mut self) -> HeaderValue<'x> {
+        let mut parser = ListParser {
+            token_start: 0,
+            token_end: 0,
+            is_token_start: true,
+            tokens: Vec::new(),
+            list: Vec::new(),
+        };
 
-pub fn parse_comma_separared<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut parser = ListParser {
-        token_start: 0,
-        token_end: 0,
-        is_token_start: true,
-        tokens: Vec::new(),
-        list: Vec::new(),
-    };
-
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-        match ch {
-            b'\n' => {
-                add_token(&mut parser, stream, false);
-
-                match stream.data.get(stream.pos) {
-                    Some(b' ' | b'\t') => {
-                        if !parser.is_token_start {
-                            parser.is_token_start = true;
-                        }
-                        iter.next();
-                        stream.pos += 1;
-                        continue;
-                    }
-                    _ => {
-                        add_tokens_to_list(&mut parser);
+        while let Some(ch) = self.next() {
+            match ch {
+                b'\n' => {
+                    parser.add_token(self, false);
+                    if !self.try_next_is_space() {
+                        parser.add_tokens_to_list();
 
                         return match parser.list.len() {
                             1 => HeaderValue::Text(parser.list.pop().unwrap()),
                             0 => HeaderValue::Empty,
                             _ => HeaderValue::TextList(parser.list),
                         };
+                    } else {
+                        continue;
                     }
                 }
-            }
-            b' ' | b'\t' => {
-                if !parser.is_token_start {
-                    parser.is_token_start = true;
-                }
-                continue;
-            }
-            b'=' if parser.is_token_start => {
-                if let (bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
-                    add_token(&mut parser, stream, true);
-                    parser.tokens.push(token.into());
-                    stream.pos += bytes_read;
-                    iter = stream.data[stream.pos..].iter();
+                b' ' | b'\t' => {
+                    if !parser.is_token_start {
+                        parser.is_token_start = true;
+                    }
                     continue;
                 }
+                b'=' if parser.is_token_start && self.peek_char(b'?') => {
+                    self.checkpoint();
+                    if let Some(token) = self.decode_rfc2047() {
+                        parser.add_token(self, true);
+                        parser.tokens.push(token.into());
+                        continue;
+                    }
+                    self.restore();
+                }
+                b',' => {
+                    parser.add_token(self, false);
+                    parser.add_tokens_to_list();
+                    continue;
+                }
+                b'\r' => continue,
+                _ => (),
             }
-            b',' => {
-                add_token(&mut parser, stream, false);
-                add_tokens_to_list(&mut parser);
-                continue;
+
+            if parser.is_token_start {
+                parser.is_token_start = false;
             }
-            b'\r' => continue,
-            _ => (),
+
+            if parser.token_start == 0 {
+                parser.token_start = self.offset();
+            }
+
+            parser.token_end = self.offset();
         }
 
-        if parser.is_token_start {
-            parser.is_token_start = false;
-        }
-
-        if parser.token_start == 0 {
-            parser.token_start = stream.pos;
-        }
-
-        parser.token_end = stream.pos;
+        HeaderValue::Empty
     }
-
-    HeaderValue::Empty
 }
-
 #[cfg(test)]
 mod tests {
-    use crate::parsers::fields::list::parse_comma_separared;
-    use crate::parsers::message::MessageStream;
-    use crate::HeaderValue;
+    use crate::{parsers::MessageStream, HeaderValue};
 
     #[test]
     fn parse_comma_separated_text() {
@@ -174,7 +163,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
 
-            match parse_comma_separared(&mut MessageStream::new(str.as_bytes())) {
+            match MessageStream::new(str.as_bytes()).parse_comma_separared() {
                 HeaderValue::TextList(ids) => {
                     assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
                 }

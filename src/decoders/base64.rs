@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::parsers::message::MessageStream;
+use crate::parsers::MessageStream;
 
 pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
     let mut chunk: u32 = 0;
@@ -79,214 +79,209 @@ pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
     buf.into()
 }
 
-//impl<'x> MessageStream<'x> {
+impl<'x> MessageStream<'x> {
+    pub fn decode_base64_mime(&mut self, boundary: &[u8]) -> (usize, Cow<'x, [u8]>) {
+        let mut chunk: u32 = 0;
+        let mut byte_count: u8 = 0;
 
-pub fn decode_base64_mime<'x>(
-    stream: &mut MessageStream<'x>,
-    boundary: &[u8],
-) -> (usize, Cow<'x, [u8]>) {
-    let mut chunk: u32 = 0;
-    let mut byte_count: u8 = 0;
+        let mut buf = Vec::with_capacity(self.remaining() / 4 * 3);
+        let mut last_ch = b'\n';
+        let mut before_last_ch = 0;
+        let mut end_pos = self.offset();
 
-    let mut buf = Vec::with_capacity((stream.data.len() - stream.pos) / 4 * 3);
-    let mut pos = stream.pos;
+        self.checkpoint();
 
-    let mut last_ch = b'\n';
-    let mut end_pos = stream.pos;
-    let mut iter = stream.data[stream.pos..].iter();
+        while let Some(&ch) = self.next() {
+            #[cfg(feature = "ludicrous_mode")]
+            let val = unsafe {
+                *BASE64_MAP
+                    .get_unchecked(byte_count as usize)
+                    .get_unchecked(ch as usize)
+            };
+            #[cfg(not(feature = "ludicrous_mode"))]
+            let val = BASE64_MAP[byte_count as usize][ch as usize];
 
-    while let Some(&ch) = iter.next() {
-        pos += 1;
+            if val < 0x01ffffff {
+                byte_count = (byte_count + 1) & 3;
 
-        #[cfg(feature = "ludicrous_mode")]
-        let val = unsafe {
-            *BASE64_MAP
-                .get_unchecked(byte_count as usize)
-                .get_unchecked(ch as usize)
-        };
-        #[cfg(not(feature = "ludicrous_mode"))]
-        let val = BASE64_MAP[byte_count as usize][ch as usize];
+                if byte_count == 1 {
+                    chunk = val;
+                } else {
+                    chunk |= val;
 
-        if val < 0x01ffffff {
-            byte_count = (byte_count + 1) & 3;
-
-            if byte_count == 1 {
-                chunk = val;
-            } else {
-                chunk |= val;
-
-                if byte_count == 0 {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                    if byte_count == 0 {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                     }
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
-            }
-        } else {
-            match ch {
-                b'=' => match byte_count {
-                    1 | 2 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
+            } else {
+                match ch {
+                    b'=' => match byte_count {
+                        1 | 2 => {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            buf.push(chunk.to_le_bytes()[0]);
+                            byte_count = 0;
                         }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        buf.push(chunk.to_le_bytes()[0]);
-                        byte_count = 0;
-                    }
-                    3 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                        3 => {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                            byte_count = 0;
                         }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
-                        byte_count = 0;
+                        0 => (),
+                        _ => {
+                            self.restore();
+                            return (usize::MAX, b""[..].into());
+                        }
+                    },
+                    b'\n' => {
+                        end_pos = if last_ch == b'\r' {
+                            self.offset() - 2
+                        } else {
+                            self.offset() - 1
+                        }
                     }
-                    0 => (),
+                    b' ' | b'\t' | b'\r' => (),
+                    b'-' => {
+                        if last_ch == b'-' {
+                            return if !boundary.is_empty() && self.try_skip(boundary) {
+                                buf.shrink_to_fit();
+                                (
+                                    if before_last_ch == b'\n' {
+                                        end_pos
+                                    } else {
+                                        self.offset() - boundary.len() - 2
+                                    },
+                                    buf.into(),
+                                )
+                            } else {
+                                self.restore();
+                                (usize::MAX, b""[..].into())
+                            };
+                        }
+                    }
                     _ => {
+                        self.restore();
                         return (usize::MAX, b""[..].into());
                     }
-                },
-                b'\n' => end_pos = if last_ch == b'\r' { pos - 2 } else { pos - 1 },
-                b' ' | b'\t' | b'\r' => (),
-                b'-' => {
-                    return if !boundary.is_empty()
-                        && matches!(iter.next(), Some(b'-'))
-                        && stream.data.get(pos + 1..pos + 1 + boundary.len()) == Some(boundary)
-                        && matches!(
-                            stream.data.get(pos + 1 + boundary.len()..),
-                            Some([b'\n' | b'\r' | b' ' | b'\t', ..])
-                                | Some([b'-', b'-', ..])
-                                | Some([])
-                                | None
-                        ) {
-                        stream.pos = pos + boundary.len() + 1;
-                        buf.shrink_to_fit();
-                        (if last_ch == b'\n' { end_pos } else { pos - 1 }, buf.into())
-                    } else {
-                        (usize::MAX, b""[..].into())
-                    };
-                }
-                _ => {
-                    return (usize::MAX, b""[..].into());
                 }
             }
+
+            before_last_ch = last_ch;
+            last_ch = ch;
         }
 
-        last_ch = ch;
+        buf.shrink_to_fit();
+        (
+            if boundary.is_empty() {
+                self.offset()
+            } else {
+                self.restore();
+                usize::MAX
+            },
+            buf.into(),
+        )
     }
 
-    buf.shrink_to_fit();
-    (
-        if boundary.is_empty() {
-            stream.pos = pos;
-            pos
-        } else {
-            usize::MAX
-        },
-        buf.into(),
-    )
-}
+    pub fn decode_base64_word(&mut self) -> Option<Vec<u8>> {
+        let mut chunk: u32 = 0;
+        let mut byte_count: u8 = 0;
+        let mut buf = Vec::with_capacity(64);
 
-pub fn decode_base64_word(bytes: &[u8]) -> (usize, Vec<u8>) {
-    let mut chunk: u32 = 0;
-    let mut byte_count: u8 = 0;
-
-    let mut bytes_read = 0;
-
-    let mut buf = Vec::with_capacity(64);
-    let mut iter = bytes.iter();
-
-    while let Some(&ch) = iter.next() {
-        bytes_read += 1;
-
-        match ch {
-            b'=' => {
-                match byte_count {
-                    1 | 2 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
+        while let Some(&ch) = self.next() {
+            match ch {
+                b'=' => {
+                    match byte_count {
+                        1 | 2 => {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            buf.push(chunk.to_le_bytes()[0]);
+                            byte_count = 0;
                         }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        buf.push(chunk.to_le_bytes()[0]);
-                        byte_count = 0;
-                    }
-                    3 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                        3 => {
+                            #[cfg(feature = "ludicrous_mode")]
+                            unsafe {
+                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                            }
+                            #[cfg(not(feature = "ludicrous_mode"))]
+                            buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                            byte_count = 0;
                         }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
-                        byte_count = 0;
+                        0 => (),
+                        _ => {
+                            // Invalid
+                            break;
+                        }
                     }
-                    0 => (),
-                    _ => {
-                        // Invalid
+                }
+                b'?' => {
+                    if let Some(b'=') = self.next() {
+                        return Some(buf);
+                    } else {
+                        break;
+                    }
+                }
+                b'\n' => {
+                    if !self.next_is_space() {
+                        break;
+                    }
+                }
+                b' ' | b'\t' | b'\r' => (),
+                _ => {
+                    #[cfg(feature = "ludicrous_mode")]
+                    let val = unsafe {
+                        *BASE64_MAP
+                            .get_unchecked(byte_count as usize)
+                            .get_unchecked(ch as usize)
+                    };
+                    #[cfg(not(feature = "ludicrous_mode"))]
+                    let val = BASE64_MAP[byte_count as usize][ch as usize];
+
+                    if val < 0x01ffffff {
+                        byte_count = (byte_count + 1) & 3;
+
+                        if byte_count == 1 {
+                            chunk = val;
+                        } else {
+                            chunk |= val;
+
+                            if byte_count == 0 {
+                                #[cfg(feature = "ludicrous_mode")]
+                                unsafe {
+                                    buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
+                                }
+                                #[cfg(not(feature = "ludicrous_mode"))]
+                                buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
+                            }
+                        }
+                    } else {
                         break;
                     }
                 }
             }
-            b'?' => {
-                if let Some(b'=') = iter.next() {
-                    return (bytes_read + 1, buf);
-                } else {
-                    break;
-                }
-            }
-            b'\n' => {
-                if let Some(b' ' | b'\t') = iter.next() {
-                    bytes_read += 1;
-                } else {
-                    break;
-                }
-            }
-            b' ' | b'\t' | b'\r' => (),
-            _ => {
-                #[cfg(feature = "ludicrous_mode")]
-                let val = unsafe {
-                    *BASE64_MAP
-                        .get_unchecked(byte_count as usize)
-                        .get_unchecked(ch as usize)
-                };
-                #[cfg(not(feature = "ludicrous_mode"))]
-                let val = BASE64_MAP[byte_count as usize][ch as usize];
-
-                if val < 0x01ffffff {
-                    byte_count = (byte_count + 1) & 3;
-
-                    if byte_count == 1 {
-                        chunk = val;
-                    } else {
-                        chunk |= val;
-
-                        if byte_count == 0 {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
-                        }
-                    }
-                } else {
-                    break;
-                }
-            }
         }
-    }
 
-    (usize::MAX, buf)
+        None
+    }
 }
-//}
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::message::MessageStream;
+    use crate::parsers::MessageStream;
 
     #[test]
     fn decode_base64() {
@@ -346,7 +341,7 @@ mod tests {
             ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());
-            let (_, result) = super::decode_base64_mime(&mut s, b"boundary");
+            let (_, result) = s.decode_base64_mime(b"boundary");
 
             assert_eq!(
                 result,
@@ -366,10 +361,9 @@ mod tests {
             ("w6HDqcOtw7PDug================?=", "áéíóú"),
             ("?=", ""),
         ] {
-            let (bytes, result) = super::decode_base64_word(encoded_str.as_bytes());
-            assert!(bytes != usize::MAX);
+            let mut s = MessageStream::new(encoded_str.as_bytes());
             assert_eq!(
-                result,
+                s.decode_base64_word().unwrap(),
                 expected_result.as_bytes(),
                 "Failed for {:?}",
                 encoded_str

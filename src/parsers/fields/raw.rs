@@ -9,61 +9,46 @@
  * except according to those terms.
  */
 
-use crate::{parsers::message::MessageStream, HeaderValue};
+use crate::{parsers::MessageStream, HeaderValue};
 
-pub fn parse_raw<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut token_start: usize = 0;
-    let mut token_end: usize = 0;
+impl<'x> MessageStream<'x> {
+    pub fn parse_raw(&mut self) -> HeaderValue<'x> {
+        let mut token_start: usize = 0;
+        let mut token_end: usize = 0;
 
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-        match ch {
-            b'\n' => match stream.data.get(stream.pos) {
-                Some(b' ' | b'\t') => {
-                    iter.next();
-                    stream.pos += 1;
-                    continue;
-                }
-                _ => {
-                    return if token_start > 0 {
-                        HeaderValue::Text(String::from_utf8_lossy(
-                            &stream.data[token_start - 1..token_end],
-                        ))
+        while let Some(ch) = self.next() {
+            match ch {
+                b'\n' => {
+                    if !self.try_next_is_space() {
+                        return if token_start > 0 {
+                            HeaderValue::Text(String::from_utf8_lossy(
+                                self.get_bytes(token_start - 1..token_end),
+                            ))
+                        } else {
+                            HeaderValue::Empty
+                        };
                     } else {
-                        HeaderValue::Empty
-                    };
+                        continue;
+                    }
                 }
-            },
-            b' ' | b'\t' | b'\r' => continue,
-            _ => (),
+                b' ' | b'\t' | b'\r' => continue,
+                _ => (),
+            }
+
+            if token_start == 0 {
+                token_start = self.offset();
+            }
+
+            token_end = self.offset();
         }
 
-        if token_start == 0 {
-            token_start = stream.pos;
-        }
-
-        token_end = stream.pos;
+        HeaderValue::Empty
     }
 
-    HeaderValue::Empty
-}
-
-pub fn parse_and_ignore(stream: &mut MessageStream) {
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-
-        if ch == &b'\n' {
-            match stream.data.get(stream.pos) {
-                Some(b' ' | b'\t') => {
-                    iter.next();
-                    stream.pos += 1;
-                    continue;
-                }
-                _ => break,
+    pub fn parse_and_ignore(&mut self) {
+        while let Some(&ch) = self.next() {
+            if ch == b'\n' && !self.try_next_is_space() {
+                break;
             }
         }
     }
@@ -71,9 +56,7 @@ pub fn parse_and_ignore(stream: &mut MessageStream) {
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::fields::raw::parse_raw;
-    use crate::parsers::message::MessageStream;
-    use crate::Message;
+    use crate::{parsers::MessageStream, Message};
 
     #[test]
     fn parse_raw_text() {
@@ -97,7 +80,7 @@ mod tests {
         for input in inputs {
             let str = input.0.to_string();
             assert_eq!(
-                parse_raw(&mut MessageStream::new(str.as_bytes())).unwrap_text(),
+                MessageStream::new(str.as_bytes()).parse_raw().unwrap_text(),
                 input.1,
                 "Failed for '{:?}'",
                 input.0

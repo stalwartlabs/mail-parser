@@ -9,24 +9,15 @@
  * except according to those terms.
  */
 
-use std::{borrow::Cow, iter::Peekable, slice::Iter};
+use std::borrow::Cow;
 
 use crate::{
-    decoders::{
-        base64::decode_base64_mime, charsets::map::get_charset_decoder,
-        quoted_printable::decode_quoted_printable_mime, DecodeFnc,
-    },
-    parsers::mime::seek_next_part_offset,
+    decoders::{charsets::map::get_charset_decoder, DecodeFnc},
     ContentType, Encoding, GetHeader, HeaderValue, Message, MessagePart, MessagePartId, PartType,
     RfcHeader,
 };
 
-use super::{
-    header::parse_headers,
-    mime::{
-        get_mime_part, seek_crlf, seek_next_part, seek_part_end, skip_crlf, skip_multipart_end,
-    },
-};
+use super::MessageStream;
 
 const MAX_NESTED_ENCODED: usize = 3;
 
@@ -120,24 +111,6 @@ impl MessageParserState {
     }
 }
 
-pub struct MessageStream<'x> {
-    pub data: &'x [u8],
-    //pub iter: Peekable<Iter<'x, u8>>,
-    pub pos: usize,
-    //pub restore_pos: usize,
-}
-
-impl<'x> MessageStream<'x> {
-    pub fn new(data: &'x [u8]) -> MessageStream<'x> {
-        MessageStream {
-            data,
-            //iter: data.iter().peekable(),
-            pos: 0,
-            //restore_pos: 0,
-        }
-    }
-}
-
 impl<'x> Message<'x> {
     fn new() -> Message<'x> {
         Message {
@@ -172,10 +145,11 @@ impl<'x> Message<'x> {
 
         'outer: loop {
             // Parse headers
-            state.offset_header = stream.pos;
-            if !parse_headers(&mut part_headers, &mut stream) {
+            state.offset_header = stream.offset();
+            if !stream.parse_headers(&mut part_headers) {
                 break;
             }
+            state.offset_body = stream.offset();
 
             state.parts += 1;
             state.sub_part_ids.push(message.parts.len());
@@ -191,9 +165,7 @@ impl<'x> Message<'x> {
                 if let Some(mime_boundary) =
                     content_type.map_or_else(|| None, |f| f.get_attribute("boundary"))
                 {
-                    state.offset_body = seek_crlf(&stream, stream.pos);
-
-                    if seek_next_part(&mut stream, mime_boundary.as_bytes()) {
+                    if stream.seek_next_part(mime_boundary.as_bytes()) {
                         let part_id = message.parts.len();
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
@@ -219,7 +191,7 @@ impl<'x> Message<'x> {
                         });
                         state_stack.push((state, None));
                         state = new_state;
-                        skip_crlf(&mut stream);
+                        stream.skip_crlf();
                         continue;
                     } else {
                         mime_type = MimeType::TextOther;
@@ -228,21 +200,21 @@ impl<'x> Message<'x> {
                 }
             }
 
-            skip_crlf(&mut stream);
-            state.offset_body = stream.pos;
-
             let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
                 .get_rfc(&RfcHeader::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
-                    (Encoding::Base64, decode_base64_mime)
+                    (Encoding::Base64, MessageStream::decode_base64_mime)
                 }
                 Some(HeaderValue::Text(encoding))
                     if encoding.eq_ignore_ascii_case("quoted-printable") =>
                 {
-                    (Encoding::QuotedPrintable, decode_quoted_printable_mime)
+                    (
+                        Encoding::QuotedPrintable,
+                        MessageStream::decode_quoted_printable_mime,
+                    )
                 }
-                _ => (Encoding::None, get_mime_part),
+                _ => (Encoding::None, MessageStream::get_mime_part),
             };
 
             if mime_type == MimeType::Message && encoding == Encoding::None {
@@ -284,7 +256,7 @@ impl<'x> Message<'x> {
                 is_text = true;
 
                 let (offset_end, boundary_found) =
-                    seek_part_end(&mut stream, state.mime_boundary.as_deref());
+                    stream.seek_part_end(state.mime_boundary.as_deref());
                 state.offset_end = offset_end;
                 bytes = stream.data[state.offset_body..state.offset_end].into();
 
@@ -432,7 +404,7 @@ impl<'x> Message<'x> {
                                 .mime_boundary
                                 .as_ref()
                                 .map(|b| {
-                                    let pos = stream.pos.saturating_sub(b.len() + 2);
+                                    let pos = stream.offset().saturating_sub(b.len() + 2);
                                     stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
                                         if ch == b'\r' {
                                             pos - 2
@@ -441,7 +413,7 @@ impl<'x> Message<'x> {
                                         }
                                     })
                                 })
-                                .unwrap_or(stream.pos);
+                                .unwrap_or_else(|| stream.offset());
                             message.raw_message = raw_message.into();
                             //raw_message[state.offset_header..offset_end].as_ref().into();
 
@@ -461,7 +433,7 @@ impl<'x> Message<'x> {
                         }
                     }
 
-                    if skip_multipart_end(&mut stream) {
+                    if stream.is_multipart_end() {
                         // End of MIME part reached
 
                         if MimeType::MultipartAlernative == state.mime_type
@@ -499,7 +471,7 @@ impl<'x> Message<'x> {
                                 if let Some(ref mime_boundary) = state.mime_boundary {
                                     // Ancestor has a MIME boundary, seek it.
                                     if let Some(offset) =
-                                        seek_next_part_offset(&mut stream, mime_boundary)
+                                        stream.seek_next_part_offset(mime_boundary)
                                     {
                                         part.offset_end = offset;
                                         continue 'inner;
@@ -508,19 +480,18 @@ impl<'x> Message<'x> {
                             }
 
                             // This part has no boundary, update end offset
-                            part.offset_end = seek_crlf(&stream, stream.pos);
+                            part.offset_end = stream.offset();
                         } else {
                             debug_assert!(false, "Invalid part ID, could not find multipart.");
                         }
 
                         break 'outer;
                     } else {
-                        skip_crlf(&mut stream);
                         // Headers of next part expected next, break inner look.
                         break 'inner;
                     }
                 }
-            } else if stream.pos >= stream.data.len() {
+            } else if stream.offset() >= stream.data.len() {
                 break 'outer;
             }
         }
@@ -528,18 +499,18 @@ impl<'x> Message<'x> {
         // Corrupted MIME message, try to recover whatever is possible.
         while let Some((prev_state, prev_message)) = state_stack.pop() {
             if let Some(mut prev_message) = prev_message {
-                message.raw_message = raw_message[state.offset_header..stream.pos].as_ref().into();
+                message.raw_message = raw_message.into(); //raw_message[state.offset_header..stream.offset()].as_ref().into();
 
                 if let Some(part) = prev_message.parts.get_mut(state.part_id) {
                     part.body = PartType::Message(message);
-                    part.offset_end = stream.pos;
+                    part.offset_end = stream.offset();
                 } else {
                     debug_assert!(false, "Invalid part ID, could not find message.");
                 }
 
                 message = prev_message;
             } else if let Some(part) = message.parts.get_mut(state.part_id) {
-                part.offset_end = stream.pos;
+                part.offset_end = stream.offset();
                 part.body = PartType::Multipart(state.sub_part_ids);
             } else {
                 debug_assert!(false, "This should not have happened.");
@@ -588,17 +559,36 @@ mod tests {
             for file_name in fs::read_dir(&test_dir).unwrap() {
                 let mut file_name = file_name.unwrap().path();
                 if file_name.extension().map_or(false, |e| e == "eml") {
-                    let raw_message = fs::read(&file_name).unwrap();
+                    let raw_original = fs::read(&file_name).unwrap();
+                    tests_run += 1;
+
+                    // Test without CRs
+                    let raw_message = strip_crlf(&raw_original);
                     file_name.set_extension("json");
                     let expected_result = fs::read(&file_name).unwrap();
-
-                    tests_run += 1;
 
                     let message = Message::parse(&raw_message).unwrap();
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     if json_message.as_bytes() != expected_result {
                         file_name.set_extension("failed");
+                        fs::write(&file_name, json_message.as_bytes()).unwrap();
+                        panic!(
+                            "Test failed, parsed message saved to {}",
+                            file_name.display()
+                        );
+                    }
+
+                    // Test with CRs
+                    let raw_message = add_crlf(&raw_original);
+                    file_name.set_extension("crlf.json");
+                    let expected_result = fs::read(&file_name).unwrap();
+
+                    let message = Message::parse(&raw_message).unwrap();
+                    let json_message = serde_json::to_string_pretty(&message).unwrap();
+
+                    if json_message.as_bytes() != expected_result {
+                        file_name.set_extension("crlf.failed");
                         fs::write(&file_name, json_message.as_bytes()).unwrap();
                         panic!(
                             "Test failed, parsed message saved to {}",
@@ -614,5 +604,30 @@ mod tests {
                 test_dir.display()
             );
         }
+    }
+
+    fn add_crlf(bytes: &[u8]) -> Vec<u8> {
+        let mut result = Vec::with_capacity(bytes.len());
+        let mut last_ch = 0;
+        for &ch in bytes {
+            if ch == b'\n' && last_ch != b'\r' {
+                result.push(b'\r');
+            }
+            result.push(ch);
+            last_ch = ch;
+        }
+
+        result
+    }
+
+    fn strip_crlf(bytes: &[u8]) -> Vec<u8> {
+        let mut result = Vec::with_capacity(bytes.len());
+        for &ch in bytes {
+            if !ch != b'\r' {
+                result.push(ch);
+            }
+        }
+
+        result
     }
 }

@@ -1,0 +1,148 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Doug Sauder",
+              "address": "doug@example.com"
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 40
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Heinz M�ller",
+              "address": "mueller@example.com"
+            }
+          },
+          "offset_field": 40,
+          "offset_start": 43,
+          "offset_end": 82
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+          },
+          "offset_field": 82,
+          "offset_start": 90,
+          "offset_end": 141
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": {
+            "DateTime": {
+              "year": 2000,
+              "month": 5,
+              "day": 17,
+              "hour": 19,
+              "minute": 28,
+              "second": 40,
+              "tz_before_gmt": true,
+              "tz_hour": 4,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 141,
+          "offset_start": 146,
+          "offset_end": 180
+        },
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
+          },
+          "offset_field": 180,
+          "offset_start": 191,
+          "offset_end": 241
+        },
+        {
+          "name": {
+            "Other": "X-Priority"
+          },
+          "value": {
+            "Text": " 3 (Normal)\r\n"
+          },
+          "offset_field": 241,
+          "offset_start": 252,
+          "offset_end": 265
+        },
+        {
+          "name": {
+            "Other": "X-MSMail-Priority"
+          },
+          "value": {
+            "Text": " Normal\r\n"
+          },
+          "offset_field": 265,
+          "offset_start": 283,
+          "offset_end": 292
+        },
+        {
+          "name": {
+            "Other": "X-Mailer"
+          },
+          "value": {
+            "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
+          },
+          "offset_field": 292,
+          "offset_start": 301,
+          "offset_end": 354
+        },
+        {
+          "name": {
+            "Other": "Importance"
+          },
+          "value": {
+            "Text": " Normal\r\n"
+          },
+          "offset_field": 354,
+          "offset_start": 365,
+          "offset_end": 374
+        },
+        {
+          "name": {
+            "Other": "X-MimeOLE"
+          },
+          "value": {
+            "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
+          },
+          "offset_field": 374,
+          "offset_start": 384,
+          "offset_end": 432
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Die Hasen und die Fr�sche\r\n\r\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der Tod\r\nselbst. Auf, la�t uns ein f�r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\r\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt erschreckte\r\neine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\r\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\r\n\r\n"
+      },
+      "offset_header": 0,
+      "offset_body": 434,
+      "offset_end": 1186
+    }
+  ]
+}

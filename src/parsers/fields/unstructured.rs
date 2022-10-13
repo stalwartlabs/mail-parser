@@ -11,91 +11,87 @@
 
 use std::borrow::Cow;
 
-use crate::{decoders::encoded_word::decode_rfc2047, parsers::message::MessageStream, HeaderValue};
+use crate::{parsers::MessageStream, HeaderValue};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
     tokens: Vec<Cow<'x, str>>,
 }
 
-fn add_token<'x>(parser: &mut UnstructuredParser<'x>, stream: &MessageStream<'x>, add_space: bool) {
-    if parser.token_start > 0 {
-        if !parser.tokens.is_empty() {
-            parser.tokens.push(" ".into());
-        }
-        parser.tokens.push(String::from_utf8_lossy(
-            &stream.data[parser.token_start - 1..parser.token_end],
-        ));
+impl<'x> UnstructuredParser<'x> {
+    fn add_token(&mut self, stream: &MessageStream<'x>, add_space: bool) {
+        if self.token_start > 0 {
+            if !self.tokens.is_empty() {
+                self.tokens.push(" ".into());
+            }
+            self.tokens.push(String::from_utf8_lossy(
+                stream.get_bytes(self.token_start - 1..self.token_end),
+            ));
 
-        if add_space {
-            parser.tokens.push(" ".into());
-        }
+            if add_space {
+                self.tokens.push(" ".into());
+            }
 
-        parser.token_start = 0;
+            self.token_start = 0;
+        }
     }
 }
 
-pub fn parse_unstructured<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut parser = UnstructuredParser {
-        token_start: 0,
-        token_end: 0,
-        tokens: Vec::new(),
-    };
+impl<'x> MessageStream<'x> {
+    pub fn parse_unstructured(&mut self) -> HeaderValue<'x> {
+        let mut parser = UnstructuredParser {
+            token_start: 0,
+            token_end: 0,
+            tokens: Vec::new(),
+        };
 
-    let mut iter = stream.data[stream.pos..].iter();
+        while let Some(ch) = self.next() {
+            match ch {
+                b'\n' => {
+                    parser.add_token(self, false);
 
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-        match ch {
-            b'\n' => {
-                add_token(&mut parser, stream, false);
-
-                match stream.data.get(stream.pos) {
-                    Some(b' ' | b'\t') => {
-                        iter.next();
-                        stream.pos += 1;
-                        continue;
-                    }
-                    _ => {
+                    if !self.try_next_is_space() {
                         return match parser.tokens.len() {
                             1 => HeaderValue::Text(parser.tokens.pop().unwrap()),
                             0 => HeaderValue::Empty,
                             _ => HeaderValue::Text(parser.tokens.concat().into()),
                         };
+                    } else {
+                        continue;
                     }
                 }
-            }
-            b' ' | b'\t' | b'\r' => {
-                continue;
-            }
-            b'=' => {
-                if let (bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
-                    add_token(&mut parser, stream, true);
-                    parser.tokens.push(token.into());
-                    stream.pos += bytes_read;
-                    iter = stream.data[stream.pos..].iter();
+                b' ' | b'\t' | b'\r' => {
                     continue;
                 }
+                b'=' if self.peek_char(b'?') => {
+                    self.checkpoint();
+                    if let Some(token) = self.decode_rfc2047() {
+                        parser.add_token(self, true);
+                        parser.tokens.push(token.into());
+                        continue;
+                    }
+                    self.restore();
+                }
+                _ => (),
             }
-            _ => (),
+
+            if parser.token_start == 0 {
+                parser.token_start = self.offset();
+            }
+
+            parser.token_end = self.offset();
         }
 
-        if parser.token_start == 0 {
-            parser.token_start = stream.pos;
-        }
-
-        parser.token_end = stream.pos;
+        HeaderValue::Empty
     }
-
-    HeaderValue::Empty
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::parsers::MessageStream;
+
     #[test]
     fn parse_unstructured() {
-        use crate::parsers::message::MessageStream;
-
         let inputs = [
             ("Saying Hello\n", "Saying Hello", true),
             ("Re: Saying Hello\r\n", "Re: Saying Hello", true),
@@ -195,7 +191,9 @@ mod tests {
 
         for (input, expected_result, _) in inputs {
             assert_eq!(
-                super::parse_unstructured(&mut MessageStream::new(input.as_bytes()),).unwrap_text(),
+                MessageStream::new(input.as_bytes())
+                    .parse_unstructured()
+                    .unwrap_text(),
                 expected_result,
                 "Failed to parse '{:?}'",
                 input

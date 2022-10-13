@@ -1,0 +1,343 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    1,
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Moderator-Address",
+              "address": "moderator"
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 37
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "digest",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 37,
+          "offset_start": 50,
+          "offset_end": 82
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 84,
+      "offset_end": 603
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "someone-else",
+                      "address": "someone@else"
+                    }
+                  },
+                  "offset_field": 93,
+                  "offset_start": 98,
+                  "offset_end": 128
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "my opinion"
+                  },
+                  "offset_field": 128,
+                  "offset_start": 136,
+                  "offset_end": 149
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "This is my opinion"
+              },
+              "offset_header": 93,
+              "offset_body": 151,
+              "offset_end": 169
+            }
+          ]
+        }
+      },
+      "offset_header": 91,
+      "offset_body": 93,
+      "offset_end": 169
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "another one",
+                      "address": "another@one"
+                    }
+                  },
+                  "offset_field": 178,
+                  "offset_start": 183,
+                  "offset_end": 211
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "i disagree"
+                  },
+                  "offset_field": 211,
+                  "offset_start": 219,
+                  "offset_end": 232
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "Not agreeing one bit!"
+              },
+              "offset_header": 178,
+              "offset_body": 234,
+              "offset_end": 255
+            }
+          ]
+        }
+      },
+      "offset_header": 176,
+      "offset_body": 178,
+      "offset_end": 255
+    },
+    {
+      "headers": [],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            1
+          ],
+          "text_body": [
+            1
+          ],
+          "attachments": [
+            2
+          ],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "from"
+                  },
+                  "value": {
+                    "Address": {
+                      "name": "attachment",
+                      "address": "attachment@user"
+                    }
+                  },
+                  "offset_field": 264,
+                  "offset_start": 269,
+                  "offset_end": 300
+                },
+                {
+                  "name": {
+                    "Rfc": "subject"
+                  },
+                  "value": {
+                    "Text": "funny hat"
+                  },
+                  "offset_field": 300,
+                  "offset_start": 308,
+                  "offset_end": 320
+                },
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "multipart",
+                      "c_subtype": "mixed",
+                      "attributes": [
+                        [
+                          "boundary",
+                          "2"
+                        ]
+                      ]
+                    }
+                  },
+                  "offset_field": 320,
+                  "offset_start": 333,
+                  "offset_end": 363
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Multipart": [
+                  1,
+                  2
+                ]
+              },
+              "offset_header": 264,
+              "offset_body": 365,
+              "offset_end": 596
+            },
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  },
+                  "offset_field": 370,
+                  "offset_start": 383,
+                  "offset_end": 396
+                },
+                {
+                  "name": {
+                    "Rfc": "content_transfer_encoding"
+                  },
+                  "value": {
+                    "Text": "binary"
+                  },
+                  "offset_field": 396,
+                  "offset_start": 422,
+                  "offset_end": 431
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "Lovely attachment for you"
+              },
+              "offset_header": 370,
+              "offset_body": 433,
+              "offset_end": 458
+            },
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "application",
+                      "c_subtype": "octet-stream",
+                      "attributes": [
+                        [
+                          "disposition",
+                          "attachment"
+                        ],
+                        [
+                          "name",
+                          "test.txt"
+                        ]
+                      ]
+                    }
+                  },
+                  "offset_field": 465,
+                  "offset_start": 478,
+                  "offset_end": 546
+                },
+                {
+                  "name": {
+                    "Rfc": "content_transfer_encoding"
+                  },
+                  "value": {
+                    "Text": "binary"
+                  },
+                  "offset_field": 546,
+                  "offset_start": 572,
+                  "offset_end": 581
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Binary": [
+                  70,
+                  111,
+                  111,
+                  98,
+                  97,
+                  114
+                ]
+              },
+              "offset_header": 465,
+              "offset_body": 583,
+              "offset_end": 589
+            }
+          ]
+        }
+      },
+      "offset_header": 262,
+      "offset_body": 264,
+      "offset_end": 596
+    }
+  ]
+}

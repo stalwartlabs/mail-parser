@@ -1,0 +1,199 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 306
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "2"
+                ]
+              ]
+            }
+          },
+          "offset_field": 52,
+          "offset_start": 65,
+          "offset_end": 97
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3
+        ]
+      },
+      "offset_header": 52,
+      "offset_body": 99,
+      "offset_end": 306
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "offset_field": 104,
+          "offset_start": 117,
+          "offset_end": 134
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [
+            0
+          ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  },
+                  "offset_field": 136,
+                  "offset_start": 149,
+                  "offset_end": 162
+                }
+              ],
+              "is_encoding_problem": false,
+              "body": {
+                "Text": "1"
+              },
+              "offset_header": 136,
+              "offset_body": 164,
+              "offset_end": 165
+            }
+          ]
+        }
+      },
+      "offset_header": 104,
+      "offset_body": 136,
+      "offset_end": 165
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "offset_field": 172,
+          "offset_start": 185,
+          "offset_end": 202
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [],
+          "text_body": [],
+          "attachments": [
+            0
+          ],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "Rfc": "content_type"
+                  },
+                  "value": {
+                    "ContentType": {
+                      "c_type": "text",
+                      "c_subtype": "plain",
+                      "attributes": null
+                    }
+                  },
+                  "offset_field": 204,
+                  "offset_start": 217,
+                  "offset_end": 230
+                }
+              ],
+              "is_encoding_problem": true,
+              "body": {
+                "Text": "22\r\n--1\r\nContent-Type: message/rfc822\r\n\r\nContent-Type: text/plain\r\n\r\n333\r\n"
+              },
+              "offset_header": 204,
+              "offset_body": 232,
+              "offset_end": 306
+            }
+          ]
+        }
+      },
+      "offset_header": 172,
+      "offset_body": 204,
+      "offset_end": 306
+    }
+  ]
+}

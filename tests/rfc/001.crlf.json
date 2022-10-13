@@ -1,0 +1,526 @@
+{
+  "html_body": [],
+  "text_body": [],
+  "attachments": [
+    1,
+    2,
+    3
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "from"
+          },
+          "value": {
+            "Address": {
+              "name": "Whomever",
+              "address": null
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 16
+        },
+        {
+          "name": {
+            "Rfc": "to"
+          },
+          "value": {
+            "Address": {
+              "name": "Someone",
+              "address": null
+            }
+          },
+          "offset_field": 16,
+          "offset_start": 19,
+          "offset_end": 29
+        },
+        {
+          "name": {
+            "Rfc": "date"
+          },
+          "value": "Empty",
+          "offset_field": 29,
+          "offset_start": 34,
+          "offset_end": 45
+        },
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "whatever"
+          },
+          "offset_field": 45,
+          "offset_start": 53,
+          "offset_end": 64
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 64,
+          "offset_start": 77,
+          "offset_end": 83
+        },
+        {
+          "name": {
+            "Rfc": "message_id"
+          },
+          "value": {
+            "Text": "id1@host.com"
+          },
+          "offset_field": 83,
+          "offset_start": 94,
+          "offset_end": 111
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "42"
+                ]
+              ]
+            }
+          },
+          "offset_field": 111,
+          "offset_start": 124,
+          "offset_end": 161
+        },
+        {
+          "name": {
+            "Rfc": "content_id"
+          },
+          "value": {
+            "Text": "id001@guppylake.bellcore.com"
+          },
+          "offset_field": 161,
+          "offset_start": 172,
+          "offset_end": 205
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2,
+          3
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 207,
+      "offset_end": 1148
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": [
+                [
+                  "name",
+                  "BodyFormats.ps"
+                ],
+                [
+                  "site",
+                  "thumper.bellcore.com"
+                ],
+                [
+                  "mode",
+                  "image"
+                ],
+                [
+                  "access-type",
+                  "ANON-FTP"
+                ],
+                [
+                  "directory",
+                  "pub"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
+              ]
+            }
+          },
+          "offset_field": 213,
+          "offset_start": 226,
+          "offset_end": 446
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          116,
+          121,
+          112,
+          101,
+          58,
+          32,
+          97,
+          112,
+          112,
+          108,
+          105,
+          99,
+          97,
+          116,
+          105,
+          111,
+          110,
+          47,
+          112,
+          111,
+          115,
+          116,
+          115,
+          99,
+          114,
+          105,
+          112,
+          116,
+          13,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          73,
+          68,
+          58,
+          32,
+          60,
+          105,
+          100,
+          52,
+          50,
+          64,
+          103,
+          117,
+          112,
+          112,
+          121,
+          108,
+          97,
+          107,
+          101,
+          46,
+          98,
+          101,
+          108,
+          108,
+          99,
+          111,
+          114,
+          101,
+          46,
+          99,
+          111,
+          109,
+          62,
+          13,
+          10
+        ]
+      },
+      "offset_header": 213,
+      "offset_body": 448,
+      "offset_end": 529
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": [
+                [
+                  "access-type",
+                  "local-file"
+                ],
+                [
+                  "name",
+                  "/u/nsb/writing/rfcs/RFC-MIME.ps"
+                ],
+                [
+                  "site",
+                  "thumper.bellcore.com"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
+              ]
+            }
+          },
+          "offset_field": 537,
+          "offset_start": 550,
+          "offset_end": 758
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          116,
+          121,
+          112,
+          101,
+          58,
+          32,
+          97,
+          112,
+          112,
+          108,
+          105,
+          99,
+          97,
+          116,
+          105,
+          111,
+          110,
+          47,
+          112,
+          111,
+          115,
+          116,
+          115,
+          99,
+          114,
+          105,
+          112,
+          116,
+          13,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          73,
+          68,
+          58,
+          32,
+          60,
+          105,
+          100,
+          52,
+          50,
+          64,
+          103,
+          117,
+          112,
+          112,
+          121,
+          108,
+          97,
+          107,
+          101,
+          46,
+          98,
+          101,
+          108,
+          108,
+          99,
+          111,
+          114,
+          101,
+          46,
+          99,
+          111,
+          109,
+          62,
+          13,
+          10
+        ]
+      },
+      "offset_header": 537,
+      "offset_body": 760,
+      "offset_end": 841
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "external-body",
+              "attributes": [
+                [
+                  "access-type",
+                  "mail-server"
+                ],
+                [
+                  "server",
+                  "listserv@bogus.bitnet"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
+              ]
+            }
+          },
+          "offset_field": 849,
+          "offset_start": 862,
+          "offset_end": 1033
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          116,
+          121,
+          112,
+          101,
+          58,
+          32,
+          97,
+          112,
+          112,
+          108,
+          105,
+          99,
+          97,
+          116,
+          105,
+          111,
+          110,
+          47,
+          112,
+          111,
+          115,
+          116,
+          115,
+          99,
+          114,
+          105,
+          112,
+          116,
+          13,
+          10,
+          67,
+          111,
+          110,
+          116,
+          101,
+          110,
+          116,
+          45,
+          73,
+          68,
+          58,
+          32,
+          60,
+          105,
+          100,
+          52,
+          50,
+          64,
+          103,
+          117,
+          112,
+          112,
+          121,
+          108,
+          97,
+          107,
+          101,
+          46,
+          98,
+          101,
+          108,
+          108,
+          99,
+          111,
+          114,
+          101,
+          46,
+          99,
+          111,
+          109,
+          62,
+          13,
+          10,
+          13,
+          10,
+          103,
+          101,
+          116,
+          32,
+          82,
+          70,
+          67,
+          45,
+          77,
+          73,
+          77,
+          69,
+          46,
+          68,
+          79,
+          67,
+          13,
+          10
+        ]
+      },
+      "offset_header": 849,
+      "offset_body": 1035,
+      "offset_end": 1136
+    }
+  ]
+}

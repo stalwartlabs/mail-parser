@@ -1,0 +1,276 @@
+{
+  "html_body": [
+    3
+  ],
+  "text_body": [
+    4
+  ],
+  "attachments": [
+    5
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "subject"
+          },
+          "value": {
+            "Text": "Hide and seek"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 24
+        },
+        {
+          "name": {
+            "Rfc": "mime_version"
+          },
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 24,
+          "offset_start": 37,
+          "offset_end": 43
+        },
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 43,
+          "offset_start": 56,
+          "offset_end": 86
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 88,
+      "offset_end": 614
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "signed",
+              "attributes": [
+                [
+                  "protocol",
+                  "signature/plain"
+                ],
+                [
+                  "migalc",
+                  "pen+paper"
+                ],
+                [
+                  "boundary",
+                  "2"
+                ]
+              ]
+            }
+          },
+          "offset_field": 93,
+          "offset_start": 106,
+          "offset_end": 185
+        },
+        {
+          "name": {
+            "Other": "X-Signature-Type"
+          },
+          "value": {
+            "Text": " penmanship\r\n"
+          },
+          "offset_field": 185,
+          "offset_start": 202,
+          "offset_end": 215
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          5
+        ]
+      },
+      "offset_header": 93,
+      "offset_body": 217,
+      "offset_end": 607
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "3"
+                ]
+              ]
+            }
+          },
+          "offset_field": 222,
+          "offset_start": 235,
+          "offset_end": 271
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          3,
+          4
+        ]
+      },
+      "offset_header": 222,
+      "offset_body": 273,
+      "offset_end": 519
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 278,
+          "offset_start": 291,
+          "offset_end": 321
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html><head><title>Search me</title></head><body><p>Don't find me here</p></body></html>\r\n"
+      },
+      "offset_header": 278,
+      "offset_body": 323,
+      "offset_end": 413
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 420,
+          "offset_start": 433,
+          "offset_end": 446
+        },
+        {
+          "name": {
+            "Rfc": "content_transfer_encoding"
+          },
+          "value": {
+            "Text": "binary"
+          },
+          "offset_field": 446,
+          "offset_start": 472,
+          "offset_end": 481
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Search me, and Find me here"
+      },
+      "offset_header": 420,
+      "offset_body": 483,
+      "offset_end": 510
+    },
+    {
+      "headers": [
+        {
+          "name": {
+            "Rfc": "content_type"
+          },
+          "value": {
+            "ContentType": {
+              "c_type": "signature",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 526,
+          "offset_start": 539,
+          "offset_end": 575
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          83,
+          105,
+          103,
+          110,
+          101,
+          100,
+          32,
+          98,
+          121,
+          32,
+          117,
+          110,
+          100,
+          101,
+          114,
+          115,
+          105,
+          103,
+          110,
+          101,
+          100
+        ]
+      },
+      "offset_header": 526,
+      "offset_body": 577,
+      "offset_end": 598
+    }
+  ]
+}

@@ -12,8 +12,8 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{charsets::map::get_charset_decoder, encoded_word::decode_rfc2047, hex::decode_hex},
-    parsers::message::MessageStream,
+    decoders::{charsets::map::get_charset_decoder, hex::decode_hex},
+    parsers::MessageStream,
     ContentType, HeaderValue,
 };
 
@@ -55,476 +55,470 @@ struct ContentTypeParser<'x> {
     is_token_start: bool,
 }
 
-#[inline(always)]
-fn reset_parser(parser: &mut ContentTypeParser) {
-    parser.token_start = 0;
-    parser.is_token_start = true;
-}
-
-fn add_attribute<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) -> bool {
-    if parser.token_start > 0 {
-        let mut attr = Some(String::from_utf8_lossy(
-            &stream.data[parser.token_start - 1..parser.token_end],
-        ));
-
-        if !parser.is_lower_case {
-            attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
-            parser.is_lower_case = true;
-        }
-
-        match parser.state {
-            ContentState::AttributeName => parser.attr_name = attr,
-            ContentState::Type => parser.c_type = attr,
-            ContentState::SubType => parser.c_subtype = attr,
-            _ => unreachable!(),
-        }
-
-        reset_parser(parser);
-        true
-    } else {
-        false
+impl<'x> ContentTypeParser<'x> {
+    #[inline(always)]
+    fn reset_parser(&mut self) {
+        self.token_start = 0;
+        self.is_token_start = true;
     }
-}
 
-fn add_attribute_parameter<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
-    if parser.token_start > 0 {
-        let attr_part =
-            String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end]);
+    fn add_attribute(&mut self, stream: &MessageStream<'x>) -> bool {
+        if self.token_start > 0 {
+            let mut attr = Some(String::from_utf8_lossy(
+                &stream.data[self.token_start - 1..self.token_end],
+            ));
 
-        if parser.attr_charset.is_none() {
-            parser.attr_charset = attr_part.into();
-        } else {
-            let attr_name = parser
-                .attr_name
-                .as_ref()
-                .unwrap_or(&"unknown".into())
-                .clone()
-                + "-language";
-
-            if !parser.attributes.iter().any(|(name, _)| name == &attr_name) {
-                parser.attributes.push((attr_name, attr_part));
-            } else {
-                parser.values.push("'".into());
-                parser.values.push(attr_part);
+            if !self.is_lower_case {
+                attr.as_mut().unwrap().to_mut().make_ascii_lowercase();
+                self.is_lower_case = true;
             }
-        }
 
-        reset_parser(parser);
-    }
-}
-
-fn add_partial_value<'x>(
-    parser: &mut ContentTypeParser<'x>,
-    stream: &MessageStream<'x>,
-    to_cur_pos: bool,
-) {
-    if parser.token_start > 0 {
-        let in_quote = parser.state == ContentState::AttributeQuotedValue;
-
-        parser.values.push(String::from_utf8_lossy(
-            &stream.data[parser.token_start - 1..if in_quote && to_cur_pos {
-                stream.pos - 1
-            } else {
-                parser.token_end
-            }],
-        ));
-        if !in_quote {
-            parser.values.push(" ".into());
-        }
-
-        reset_parser(parser);
-    }
-}
-
-fn add_value<'x>(parser: &mut ContentTypeParser<'x>, stream: &MessageStream<'x>) {
-    if parser.attr_name.is_none() {
-        return;
-    }
-
-    let has_values = !parser.values.is_empty();
-    let value = if parser.token_start > 0 {
-        let value = &stream.data[parser.token_start - 1..parser.token_end];
-        Some(if !parser.remove_crlf {
-            String::from_utf8_lossy(value)
-        } else {
-            parser.remove_crlf = false;
-            match String::from_utf8(
-                value
-                    .iter()
-                    .filter(|&&ch| ch != b'\r' && ch != b'\n')
-                    .copied()
-                    .collect::<Vec<_>>(),
-            ) {
-                Ok(value) => value.into(),
-                Err(err) => String::from_utf8_lossy(err.as_bytes()).into_owned().into(),
+            match self.state {
+                ContentState::AttributeName => self.attr_name = attr,
+                ContentState::Type => self.c_type = attr,
+                ContentState::SubType => self.c_subtype = attr,
+                _ => unreachable!(),
             }
-        })
-    } else {
-        if !has_values {
+
+            self.reset_parser();
+            true
+        } else {
+            false
+        }
+    }
+
+    fn add_attribute_parameter(&mut self, stream: &MessageStream<'x>) {
+        if self.token_start > 0 {
+            let attr_part =
+                String::from_utf8_lossy(&stream.data[self.token_start - 1..self.token_end]);
+
+            if self.attr_charset.is_none() {
+                self.attr_charset = attr_part.into();
+            } else {
+                let attr_name =
+                    self.attr_name.as_ref().unwrap_or(&"unknown".into()).clone() + "-language";
+
+                if !self.attributes.iter().any(|(name, _)| name == &attr_name) {
+                    self.attributes.push((attr_name, attr_part));
+                } else {
+                    self.values.push("'".into());
+                    self.values.push(attr_part);
+                }
+            }
+
+            self.reset_parser();
+        }
+    }
+
+    fn add_partial_value(&mut self, stream: &MessageStream<'x>, to_cur_pos: bool) {
+        if self.token_start > 0 {
+            let in_quote = self.state == ContentState::AttributeQuotedValue;
+
+            self.values.push(String::from_utf8_lossy(
+                &stream.data[self.token_start - 1..if in_quote && to_cur_pos {
+                    stream.offset() - 1
+                } else {
+                    self.token_end
+                }],
+            ));
+            if !in_quote {
+                self.values.push(" ".into());
+            }
+
+            self.reset_parser();
+        }
+    }
+
+    fn add_value(&mut self, stream: &MessageStream<'x>) {
+        if self.attr_name.is_none() {
             return;
         }
-        None
-    };
 
-    if !parser.is_continuation {
-        parser.attributes.push((
-            parser.attr_name.take().unwrap(),
-            if !has_values {
-                value.unwrap()
+        let has_values = !self.values.is_empty();
+        let value = if self.token_start > 0 {
+            let value = &stream.data[self.token_start - 1..self.token_end];
+            Some(if !self.remove_crlf {
+                String::from_utf8_lossy(value)
             } else {
-                if let Some(value) = value {
-                    parser.values.push(value);
+                self.remove_crlf = false;
+                match String::from_utf8(
+                    value
+                        .iter()
+                        .filter(|&&ch| ch != b'\r' && ch != b'\n')
+                        .copied()
+                        .collect::<Vec<_>>(),
+                ) {
+                    Ok(value) => value.into(),
+                    Err(err) => String::from_utf8_lossy(err.as_bytes()).into_owned().into(),
                 }
-                parser.values.concat().into()
-            },
-        ));
-    } else {
-        let attr_name = parser.attr_name.take().unwrap();
-        let mut value = if let Some(value) = value {
-            if has_values {
-                Cow::from(parser.values.concat()) + value
-            } else {
-                value
-            }
+            })
         } else {
-            parser.values.concat().into()
+            if !has_values {
+                return;
+            }
+            None
         };
 
-        if parser.is_encoded_attribute {
-            if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
-                value = if let Some(decoder) = parser
-                    .attr_charset
-                    .as_ref()
-                    .and_then(|c| get_charset_decoder(c.as_bytes()))
-                {
-                    decoder(&decoded_bytes).into()
+        if !self.is_continuation {
+            self.attributes.push((
+                self.attr_name.take().unwrap(),
+                if !has_values {
+                    value.unwrap()
                 } else {
-                    String::from_utf8(decoded_bytes)
-                        .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-                        .into()
+                    if let Some(value) = value {
+                        self.values.push(value);
+                    }
+                    self.values.concat().into()
+                },
+            ));
+        } else {
+            let attr_name = self.attr_name.take().unwrap();
+            let mut value = if let Some(value) = value {
+                if has_values {
+                    Cow::from(self.values.concat()) + value
+                } else {
+                    value
                 }
-            }
-            parser.is_encoded_attribute = false;
-        }
-
-        if parser.attr_position > 0 {
-            let continuation = (attr_name, parser.attr_position, value);
-            if let Some(continuations) = parser.continuations.as_mut() {
-                continuations.push(continuation);
             } else {
-                parser.continuations = Some(vec![continuation]);
-            }
+                self.values.concat().into()
+            };
 
-            parser.attr_position = 0;
-        } else {
-            parser.attributes.push((attr_name, value));
-        }
-        parser.is_continuation = false;
-        parser.attr_charset = None;
-    }
-
-    if has_values {
-        parser.values.clear();
-    }
-
-    reset_parser(parser);
-}
-
-fn add_attr_position(parser: &mut ContentTypeParser, stream: &MessageStream) -> bool {
-    if parser.token_start > 0 {
-        parser.attr_position =
-            String::from_utf8_lossy(&stream.data[parser.token_start - 1..parser.token_end])
-                .parse()
-                .unwrap_or(0);
-
-        reset_parser(parser);
-        true
-    } else {
-        false
-    }
-}
-
-fn merge_continuations(parser: &mut ContentTypeParser) {
-    let continuations = parser.continuations.as_mut().unwrap();
-    continuations.sort();
-    for (key, _, value) in continuations.drain(..) {
-        if let Some((_, old_value)) = parser.attributes.iter_mut().find(|(name, _)| name == &key) {
-            *old_value = format!("{}{}", old_value.to_owned(), value).into();
-        } else {
-            parser.attributes.push((key, value));
-        }
-    }
-}
-
-pub fn parse_content_type<'x>(stream: &mut MessageStream<'x>) -> HeaderValue<'x> {
-    let mut parser = ContentTypeParser {
-        state: ContentState::Type,
-        state_stack: Vec::new(),
-
-        c_type: None,
-        c_subtype: None,
-
-        attr_name: None,
-        attr_charset: None,
-        attr_position: 0,
-
-        attributes: Vec::new(),
-        values: Vec::new(),
-        continuations: None,
-
-        is_continuation: false,
-        is_encoded_attribute: false,
-        is_lower_case: true,
-        is_token_start: true,
-        is_escaped: false,
-        remove_crlf: false,
-
-        token_start: 0,
-        token_end: 0,
-    };
-
-    let mut iter = stream.data[stream.pos..].iter();
-
-    while let Some(ch) = iter.next() {
-        stream.pos += 1;
-        match ch {
-            b' ' | b'\t' => {
-                if !parser.is_token_start {
-                    parser.is_token_start = true;
-                }
-                if let ContentState::AttributeQuotedValue = parser.state {
-                    if parser.token_start == 0 {
-                        parser.token_start = stream.pos;
-                        parser.token_end = parser.token_start;
-                    } else {
-                        parser.token_end = stream.pos;
-                    }
-                }
-                continue;
-            }
-            b'A'..=b'Z' => {
-                if parser.is_lower_case {
-                    if let ContentState::Type
-                    | ContentState::SubType
-                    | ContentState::AttributeName = parser.state
+            if self.is_encoded_attribute {
+                if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
+                    value = if let Some(decoder) = self
+                        .attr_charset
+                        .as_ref()
+                        .and_then(|c| get_charset_decoder(c.as_bytes()))
                     {
-                        parser.is_lower_case = false;
+                        decoder(&decoded_bytes).into()
+                    } else {
+                        String::from_utf8(decoded_bytes)
+                            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
+                            .into()
                     }
                 }
+                self.is_encoded_attribute = false;
             }
-            b'\n' => {
-                let next_is_space = matches!(stream.data.get(stream.pos), Some(b' ' | b'\t'));
-                match parser.state {
-                    ContentState::Type | ContentState::AttributeName | ContentState::SubType => {
-                        add_attribute(&mut parser, stream);
-                    }
-                    ContentState::AttributeValue => {
-                        add_value(&mut parser, stream);
-                    }
-                    ContentState::AttributeQuotedValue => {
-                        if next_is_space {
-                            parser.remove_crlf = true;
-                            continue;
-                        } else {
-                            add_value(&mut parser, stream);
-                        }
-                    }
-                    _ => (),
-                }
 
-                if next_is_space {
-                    parser.state = ContentState::AttributeName;
-                    stream.pos += 1;
-                    iter.next();
-
-                    if !parser.is_token_start {
-                        parser.is_token_start = true;
-                    }
-                    continue;
+            if self.attr_position > 0 {
+                let continuation = (attr_name, self.attr_position, value);
+                if let Some(continuations) = self.continuations.as_mut() {
+                    continuations.push(continuation);
                 } else {
-                    if parser.continuations.is_some() {
-                        merge_continuations(&mut parser);
-                    }
+                    self.continuations = Some(vec![continuation]);
+                }
 
-                    return if let Some(content_type) = parser.c_type {
-                        HeaderValue::ContentType(ContentType {
-                            c_type: content_type,
-                            c_subtype: parser.c_subtype.take(),
-                            attributes: if !parser.attributes.is_empty() {
-                                Some(parser.attributes)
-                            } else {
-                                None
-                            },
-                        })
-                    } else {
-                        HeaderValue::Empty
-                    };
-                }
+                self.attr_position = 0;
+            } else {
+                self.attributes.push((attr_name, value));
             }
-            b'/' if parser.state == ContentState::Type => {
-                add_attribute(&mut parser, stream);
-                parser.state = ContentState::SubType;
-                continue;
-            }
-            b';' => match parser.state {
-                ContentState::Type | ContentState::SubType | ContentState::AttributeName => {
-                    add_attribute(&mut parser, stream);
-                    parser.state = ContentState::AttributeName;
-                    continue;
-                }
-                ContentState::AttributeValue => {
-                    if !parser.is_escaped {
-                        add_value(&mut parser, stream);
-                        parser.state = ContentState::AttributeName;
-                    } else {
-                        parser.is_escaped = false;
-                    }
-                    continue;
-                }
-                _ => (),
-            },
-            b'*' if parser.state == ContentState::AttributeName => {
-                if !parser.is_continuation {
-                    parser.is_continuation = add_attribute(&mut parser, stream);
-                } else if !parser.is_encoded_attribute {
-                    add_attr_position(&mut parser, stream);
-                    parser.is_encoded_attribute = true;
-                } else {
-                    // Malformed data, reset parser.
-                    reset_parser(&mut parser);
-                }
-                continue;
-            }
-            b'=' => match parser.state {
-                ContentState::AttributeName => {
-                    if !parser.is_continuation {
-                        if !add_attribute(&mut parser, stream) {
-                            continue;
-                        }
-                    } else if !parser.is_encoded_attribute {
-                        /* If is_continuation=true && is_encoded_attribute=false,
-                        the last character was a '*' which means encoding */
-                        parser.is_encoded_attribute = !add_attr_position(&mut parser, stream);
-                    } else {
-                        reset_parser(&mut parser);
-                    }
-                    parser.state = ContentState::AttributeValue;
-                    continue;
-                }
-                ContentState::AttributeValue | ContentState::AttributeQuotedValue
-                    if parser.is_token_start =>
-                {
-                    if let (d_bytes_read, Some(token)) = decode_rfc2047(stream, stream.pos) {
-                        add_partial_value(&mut parser, stream, false);
-                        parser.values.push(token.into());
-                        stream.pos += d_bytes_read;
-                        iter = stream.data[stream.pos..].iter();
-                        continue;
-                    }
-                }
-                _ => (),
-            },
-            b'\"' => match parser.state {
-                ContentState::AttributeValue => {
-                    if !parser.is_token_start {
-                        parser.is_token_start = true;
-                    }
-                    parser.state = ContentState::AttributeQuotedValue;
-                    continue;
-                }
-                ContentState::AttributeQuotedValue => {
-                    if !parser.is_escaped {
-                        add_value(&mut parser, stream);
-                        parser.state = ContentState::AttributeName;
-                        continue;
-                    } else {
-                        parser.is_escaped = false;
-                    }
-                }
-                _ => continue,
-            },
-            b'\\' => match parser.state {
-                ContentState::AttributeQuotedValue | ContentState::AttributeValue => {
-                    if !parser.is_escaped {
-                        add_partial_value(&mut parser, stream, true);
-                        parser.is_escaped = true;
-                        continue;
-                    } else {
-                        parser.is_escaped = false;
-                    }
-                }
-                ContentState::Comment => parser.is_escaped = !parser.is_escaped,
-                _ => continue,
-            },
-            b'\''
-                if parser.is_encoded_attribute
-                    && !parser.is_escaped
-                    && (parser.state == ContentState::AttributeValue
-                        || parser.state == ContentState::AttributeQuotedValue) =>
+            self.is_continuation = false;
+            self.attr_charset = None;
+        }
+
+        if has_values {
+            self.values.clear();
+        }
+
+        self.reset_parser();
+    }
+
+    fn add_attr_position(&mut self, stream: &MessageStream) -> bool {
+        if self.token_start > 0 {
+            self.attr_position =
+                String::from_utf8_lossy(&stream.data[self.token_start - 1..self.token_end])
+                    .parse()
+                    .unwrap_or(0);
+
+            self.reset_parser();
+            true
+        } else {
+            false
+        }
+    }
+
+    fn merge_continuations(&mut self) {
+        let continuations = self.continuations.as_mut().unwrap();
+        continuations.sort();
+        for (key, _, value) in continuations.drain(..) {
+            if let Some((_, old_value)) = self.attributes.iter_mut().find(|(name, _)| name == &key)
             {
-                add_attribute_parameter(&mut parser, stream);
-                continue;
+                *old_value = format!("{}{}", old_value.to_owned(), value).into();
+            } else {
+                self.attributes.push((key, value));
             }
-            b'(' if parser.state != ContentState::AttributeQuotedValue => {
-                if !parser.is_escaped {
+        }
+    }
+}
+
+impl<'x> MessageStream<'x> {
+    pub fn parse_content_type(&mut self) -> HeaderValue<'x> {
+        let mut parser = ContentTypeParser {
+            state: ContentState::Type,
+            state_stack: Vec::new(),
+
+            c_type: None,
+            c_subtype: None,
+
+            attr_name: None,
+            attr_charset: None,
+            attr_position: 0,
+
+            attributes: Vec::new(),
+            values: Vec::new(),
+            continuations: None,
+
+            is_continuation: false,
+            is_encoded_attribute: false,
+            is_lower_case: true,
+            is_token_start: true,
+            is_escaped: false,
+            remove_crlf: false,
+
+            token_start: 0,
+            token_end: 0,
+        };
+
+        while let Some(ch) = self.next() {
+            match ch {
+                b' ' | b'\t' => {
+                    if !parser.is_token_start {
+                        parser.is_token_start = true;
+                    }
+                    if let ContentState::AttributeQuotedValue = parser.state {
+                        if parser.token_start == 0 {
+                            parser.token_start = self.offset();
+                            parser.token_end = parser.token_start;
+                        } else {
+                            parser.token_end = self.offset();
+                        }
+                    }
+                    continue;
+                }
+                b'A'..=b'Z' => {
+                    if parser.is_lower_case {
+                        if let ContentState::Type
+                        | ContentState::SubType
+                        | ContentState::AttributeName = parser.state
+                        {
+                            parser.is_lower_case = false;
+                        }
+                    }
+                }
+                b'\n' => {
+                    let next_is_space = self.peek_next_is_space();
                     match parser.state {
                         ContentState::Type
                         | ContentState::AttributeName
                         | ContentState::SubType => {
-                            add_attribute(&mut parser, stream);
+                            parser.add_attribute(self);
                         }
                         ContentState::AttributeValue => {
-                            add_value(&mut parser, stream);
+                            parser.add_value(self);
+                        }
+                        ContentState::AttributeQuotedValue => {
+                            if next_is_space {
+                                parser.remove_crlf = true;
+                                continue;
+                            } else {
+                                parser.add_value(self);
+                            }
                         }
                         _ => (),
                     }
 
-                    parser.state_stack.push(parser.state);
-                    parser.state = ContentState::Comment;
-                } else {
-                    parser.is_escaped = false;
+                    if next_is_space {
+                        parser.state = ContentState::AttributeName;
+                        self.next();
+
+                        if !parser.is_token_start {
+                            parser.is_token_start = true;
+                        }
+                        continue;
+                    } else {
+                        if parser.continuations.is_some() {
+                            parser.merge_continuations();
+                        }
+
+                        return if let Some(content_type) = parser.c_type {
+                            HeaderValue::ContentType(ContentType {
+                                c_type: content_type,
+                                c_subtype: parser.c_subtype.take(),
+                                attributes: if !parser.attributes.is_empty() {
+                                    Some(parser.attributes)
+                                } else {
+                                    None
+                                },
+                            })
+                        } else {
+                            HeaderValue::Empty
+                        };
+                    }
                 }
-                continue;
-            }
-            b')' if parser.state == ContentState::Comment => {
-                if !parser.is_escaped {
-                    parser.state = parser.state_stack.pop().unwrap();
-                    reset_parser(&mut parser);
-                } else {
-                    parser.is_escaped = false;
+                b'/' if parser.state == ContentState::Type => {
+                    parser.add_attribute(self);
+                    parser.state = ContentState::SubType;
+                    continue;
                 }
-                continue;
+                b';' => match parser.state {
+                    ContentState::Type | ContentState::SubType | ContentState::AttributeName => {
+                        parser.add_attribute(self);
+                        parser.state = ContentState::AttributeName;
+                        continue;
+                    }
+                    ContentState::AttributeValue => {
+                        if !parser.is_escaped {
+                            parser.add_value(self);
+                            parser.state = ContentState::AttributeName;
+                        } else {
+                            parser.is_escaped = false;
+                        }
+                        continue;
+                    }
+                    _ => (),
+                },
+                b'*' if parser.state == ContentState::AttributeName => {
+                    if !parser.is_continuation {
+                        parser.is_continuation = parser.add_attribute(self);
+                    } else if !parser.is_encoded_attribute {
+                        parser.add_attr_position(self);
+                        parser.is_encoded_attribute = true;
+                    } else {
+                        // Malformed data, reset parser.
+                        parser.reset_parser();
+                    }
+                    continue;
+                }
+                b'=' => match parser.state {
+                    ContentState::AttributeName => {
+                        if !parser.is_continuation {
+                            if !parser.add_attribute(self) {
+                                continue;
+                            }
+                        } else if !parser.is_encoded_attribute {
+                            /* If is_continuation=true && is_encoded_attribute=false,
+                            the last character was a '*' which means encoding */
+                            parser.is_encoded_attribute = !parser.add_attr_position(self);
+                        } else {
+                            parser.reset_parser();
+                        }
+                        parser.state = ContentState::AttributeValue;
+                        continue;
+                    }
+                    ContentState::AttributeValue | ContentState::AttributeQuotedValue
+                        if parser.is_token_start && self.peek_char(b'?') =>
+                    {
+                        self.checkpoint();
+                        if let Some(token) = self.decode_rfc2047() {
+                            parser.add_partial_value(self, false);
+                            parser.values.push(token.into());
+                            continue;
+                        }
+                        self.restore();
+                    }
+                    _ => (),
+                },
+                b'\"' => match parser.state {
+                    ContentState::AttributeValue => {
+                        if !parser.is_token_start {
+                            parser.is_token_start = true;
+                        }
+                        parser.state = ContentState::AttributeQuotedValue;
+                        continue;
+                    }
+                    ContentState::AttributeQuotedValue => {
+                        if !parser.is_escaped {
+                            parser.add_value(self);
+                            parser.state = ContentState::AttributeName;
+                            continue;
+                        } else {
+                            parser.is_escaped = false;
+                        }
+                    }
+                    _ => continue,
+                },
+                b'\\' => match parser.state {
+                    ContentState::AttributeQuotedValue | ContentState::AttributeValue => {
+                        if !parser.is_escaped {
+                            parser.add_partial_value(self, true);
+                            parser.is_escaped = true;
+                            continue;
+                        } else {
+                            parser.is_escaped = false;
+                        }
+                    }
+                    ContentState::Comment => parser.is_escaped = !parser.is_escaped,
+                    _ => continue,
+                },
+                b'\''
+                    if parser.is_encoded_attribute
+                        && !parser.is_escaped
+                        && (parser.state == ContentState::AttributeValue
+                            || parser.state == ContentState::AttributeQuotedValue) =>
+                {
+                    parser.add_attribute_parameter(self);
+                    continue;
+                }
+                b'(' if parser.state != ContentState::AttributeQuotedValue => {
+                    if !parser.is_escaped {
+                        match parser.state {
+                            ContentState::Type
+                            | ContentState::AttributeName
+                            | ContentState::SubType => {
+                                parser.add_attribute(self);
+                            }
+                            ContentState::AttributeValue => {
+                                parser.add_value(self);
+                            }
+                            _ => (),
+                        }
+
+                        parser.state_stack.push(parser.state);
+                        parser.state = ContentState::Comment;
+                    } else {
+                        parser.is_escaped = false;
+                    }
+                    continue;
+                }
+                b')' if parser.state == ContentState::Comment => {
+                    if !parser.is_escaped {
+                        parser.state = parser.state_stack.pop().unwrap();
+                        parser.reset_parser();
+                    } else {
+                        parser.is_escaped = false;
+                    }
+                    continue;
+                }
+                b'\r' => continue,
+                _ => (),
             }
-            b'\r' => continue,
-            _ => (),
+
+            if parser.is_escaped {
+                parser.is_escaped = false;
+            }
+
+            if parser.is_token_start {
+                parser.is_token_start = false;
+            }
+
+            if parser.token_start == 0 {
+                parser.token_start = self.offset();
+                parser.token_end = parser.token_start;
+            } else {
+                parser.token_end = self.offset();
+            }
         }
 
-        if parser.is_escaped {
-            parser.is_escaped = false;
-        }
-
-        if parser.is_token_start {
-            parser.is_token_start = false;
-        }
-
-        if parser.token_start == 0 {
-            parser.token_start = stream.pos;
-            parser.token_end = parser.token_start;
-        } else {
-            parser.token_end = stream.pos;
-        }
+        HeaderValue::Empty
     }
-
-    HeaderValue::Empty
 }
-
 #[cfg(test)]
 mod tests {
     use std::{borrow::Cow, collections::HashMap};
 
     use serde::{Deserialize, Serialize};
 
-    use crate::{parsers::message::MessageStream, HeaderValue};
+    use crate::{parsers::MessageStream, HeaderValue};
 
     #[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
     pub struct ContentTypeMap<'x> {
@@ -541,8 +535,6 @@ mod tests {
 
     #[test]
     fn parse_content_fields() {
-        use super::parse_content_type;
-
         let inputs =
             [
                 (
@@ -1571,7 +1563,7 @@ mod tests {
             let str = input.0.to_string();
 
             // TODO: Redo tests without using hashmaps.
-            let result = match parse_content_type(&mut MessageStream::new(str.as_bytes())) {
+            let result = match MessageStream::new(str.as_bytes()).parse_content_type() {
                 HeaderValue::ContentType(ct) => HeaderValueMap::ContentType(ContentTypeMap {
                     c_type: ct.c_type,
                     c_subtype: ct.c_subtype,
