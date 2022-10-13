@@ -13,6 +13,11 @@ fn single_byte_decoder(table: &[char], bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 2);
 
     for byte in bytes {
+        #[cfg(feature = "ludicrous_mode")]
+        unsafe {
+            result.push(*table.get_unchecked(*byte as usize));
+        }
+        #[cfg(not(feature = "ludicrous_mode"))]
         result.push(table[*byte as usize]);
     }
 
