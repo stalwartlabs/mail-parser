@@ -30,7 +30,7 @@
             "Other": "X-Sender"
           },
           "value": {
-            "Text": " dwsauder@pop.example.com (Unverified)\r\n"
+            "Text": "dwsauder@pop.example.com (Unverified)"
           },
           "offset_field": 64,
           "offset_start": 73,
@@ -41,7 +41,7 @@
             "Other": "X-Mailer"
           },
           "value": {
-            "Text": " QUALCOMM Windows Eudora Pro Version 4.2.0.58 \r\n"
+            "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
           },
           "offset_field": 113,
           "offset_start": 122,
@@ -52,7 +52,7 @@
             "Other": "X-Priority"
           },
           "value": {
-            "Text": " 2 (High)\r\n"
+            "Text": "2 (High)"
           },
           "offset_field": 170,
           "offset_start": 181,

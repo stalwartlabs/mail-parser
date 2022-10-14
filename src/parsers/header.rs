@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use crate::{Header, HeaderName, HeaderValue, RfcHeader};
+use crate::{Header, HeaderName, RfcHeader};
 
 use super::MessageStream;
 
@@ -35,9 +35,9 @@ impl<'x> MessageStream<'x> {
             let offset_field = self.offset();
 
             if let Some(header_name) = self.parse_header_name() {
-                if let HeaderName::Rfc(rfc_name) = &header_name {
-                    let from_offset = self.offset();
-                    let value = match rfc_name {
+                let from_offset = self.offset();
+                let value = if let HeaderName::Rfc(rfc_name) = &header_name {
+                    match rfc_name {
                         RfcHeader::Subject
                         | RfcHeader::Comments
                         | RfcHeader::ContentDescription
@@ -75,29 +75,18 @@ impl<'x> MessageStream<'x> {
                         RfcHeader::ContentType | RfcHeader::ContentDisposition => {
                             self.parse_content_type()
                         }
-                    };
-
-                    headers.push(Header {
-                        name: header_name,
-                        value,
-                        offset_field,
-                        offset_start: from_offset,
-                        offset_end: self.offset(),
-                    });
+                    }
                 } else {
-                    let from_offset = self.offset();
-                    self.parse_and_ignore();
+                    self.parse_raw()
+                };
 
-                    headers.push(Header {
-                        name: header_name,
-                        value: HeaderValue::Text(String::from_utf8_lossy(
-                            self.get_bytes(from_offset..self.offset()),
-                        )),
-                        offset_field,
-                        offset_start: from_offset,
-                        offset_end: self.offset(),
-                    });
-                }
+                headers.push(Header {
+                    name: header_name,
+                    value,
+                    offset_field,
+                    offset_start: from_offset,
+                    offset_end: self.offset(),
+                });
             } else if self.is_eof() {
                 return false;
             }

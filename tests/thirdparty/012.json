@@ -10,17 +10,6 @@
       "headers": [
         {
           "name": {
-            "Other": "From user@domain  Fri Feb 22 17"
-          },
-          "value": {
-            "Text": "06:23 2008\n"
-          },
-          "offset_field": 0,
-          "offset_start": 32,
-          "offset_end": 43
-        },
-        {
-          "name": {
             "Rfc": "from"
           },
           "value": {
@@ -29,9 +18,9 @@
               "address": "user@domain.org"
             }
           },
-          "offset_field": 43,
-          "offset_start": 48,
-          "offset_end": 65
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 22
         },
         {
           "name": {
@@ -50,9 +39,9 @@
               "tz_minute": 0
             }
           },
-          "offset_field": 65,
-          "offset_start": 70,
-          "offset_end": 103
+          "offset_field": 22,
+          "offset_start": 27,
+          "offset_end": 60
         },
         {
           "name": {
@@ -61,9 +50,9 @@
           "value": {
             "Text": "1.0"
           },
-          "offset_field": 103,
-          "offset_start": 116,
-          "offset_end": 121
+          "offset_field": 60,
+          "offset_start": 73,
+          "offset_end": 78
         },
         {
           "name": {
@@ -81,9 +70,9 @@
               ]
             }
           },
-          "offset_field": 121,
-          "offset_start": 134,
-          "offset_end": 172
+          "offset_field": 78,
+          "offset_start": 91,
+          "offset_end": 129
         }
       ],
       "is_encoding_problem": false,
@@ -94,8 +83,8 @@
         ]
       },
       "offset_header": 0,
-      "offset_body": 173,
-      "offset_end": 607
+      "offset_body": 130,
+      "offset_end": 564
     },
     {
       "headers": [
@@ -115,18 +104,18 @@
               ]
             }
           },
-          "offset_field": 203,
-          "offset_start": 216,
-          "offset_end": 248
+          "offset_field": 160,
+          "offset_start": 173,
+          "offset_end": 205
         }
       ],
       "is_encoding_problem": false,
       "body": {
         "Text": "hello\n"
       },
-      "offset_header": 203,
-      "offset_body": 249,
-      "offset_end": 255
+      "offset_header": 160,
+      "offset_body": 206,
+      "offset_end": 212
     },
     {
       "headers": [
@@ -141,9 +130,9 @@
               "attributes": null
             }
           },
-          "offset_field": 266,
-          "offset_start": 279,
-          "offset_end": 295
+          "offset_field": 223,
+          "offset_start": 236,
+          "offset_end": 252
         }
       ],
       "is_encoding_problem": false,
@@ -169,9 +158,9 @@
                       "address": "sub@domain.org"
                     }
                   },
-                  "offset_field": 296,
-                  "offset_start": 301,
-                  "offset_end": 317
+                  "offset_field": 253,
+                  "offset_start": 258,
+                  "offset_end": 274
                 },
                 {
                   "name": {
@@ -190,9 +179,9 @@
                       "tz_minute": 0
                     }
                   },
-                  "offset_field": 317,
-                  "offset_start": 322,
-                  "offset_end": 355
+                  "offset_field": 274,
+                  "offset_start": 279,
+                  "offset_end": 312
                 },
                 {
                   "name": {
@@ -201,9 +190,9 @@
                   "value": {
                     "Text": "submsg"
                   },
-                  "offset_field": 355,
-                  "offset_start": 363,
-                  "offset_end": 371
+                  "offset_field": 312,
+                  "offset_start": 320,
+                  "offset_end": 328
                 },
                 {
                   "name": {
@@ -221,9 +210,9 @@
                       ]
                     }
                   },
-                  "offset_field": 371,
-                  "offset_start": 384,
-                  "offset_end": 424
+                  "offset_field": 328,
+                  "offset_start": 341,
+                  "offset_end": 381
                 }
               ],
               "is_encoding_problem": false,
@@ -233,9 +222,9 @@
                   2
                 ]
               },
-              "offset_header": 296,
-              "offset_body": 425,
-              "offset_end": 576
+              "offset_header": 253,
+              "offset_body": 382,
+              "offset_end": 533
             },
             {
               "headers": [
@@ -250,18 +239,18 @@
                       "attributes": null
                     }
                   },
-                  "offset_field": 450,
-                  "offset_start": 463,
-                  "offset_end": 474
+                  "offset_field": 407,
+                  "offset_start": 420,
+                  "offset_end": 431
                 }
               ],
               "is_encoding_problem": false,
               "body": {
                 "Html": "<p>Hello world</p>\n"
               },
-              "offset_header": 450,
-              "offset_body": 475,
-              "offset_end": 494
+              "offset_header": 407,
+              "offset_body": 432,
+              "offset_end": 451
             },
             {
               "headers": [
@@ -276,25 +265,25 @@
                       "attributes": null
                     }
                   },
-                  "offset_field": 502,
-                  "offset_start": 515,
-                  "offset_end": 527
+                  "offset_field": 459,
+                  "offset_start": 472,
+                  "offset_end": 484
                 }
               ],
               "is_encoding_problem": false,
               "body": {
                 "Text": "Hello another world\n"
               },
-              "offset_header": 502,
-              "offset_body": 528,
-              "offset_end": 548
+              "offset_header": 459,
+              "offset_body": 485,
+              "offset_end": 505
             }
           ]
         }
       },
-      "offset_header": 266,
-      "offset_body": 296,
-      "offset_end": 576
+      "offset_header": 223,
+      "offset_body": 253,
+      "offset_end": 533
     }
   ]
 }

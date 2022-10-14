@@ -27,7 +27,7 @@
             "Other": "Delivered-To"
           },
           "value": {
-            "Text": " admin@xyz-webserver.abcd-gestion.local\r\n"
+            "Text": "admin@xyz-webserver.abcd-gestion.local"
           },
           "offset_field": 53,
           "offset_start": 66,
@@ -112,7 +112,7 @@
             "Other": "User-Agent"
           },
           "value": {
-            "Text": " Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101\r\n Thunderbird/91.11.0\r\n"
+            "Text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101\r\n Thunderbird/91.11.0"
           },
           "offset_field": 470,
           "offset_start": 481,

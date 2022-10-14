@@ -1727,6 +1727,7 @@ impl<'x> ContentType<'x> {
 }
 
 impl<'x> PartType<'x> {
+    #[allow(clippy::len_without_is_empty)]
     pub fn len(&self) -> usize {
         match self {
             PartType::Text(v) | PartType::Html(v) => v.len(),

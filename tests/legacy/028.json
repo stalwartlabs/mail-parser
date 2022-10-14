@@ -119,7 +119,7 @@
             "Other": "X-Priority"
           },
           "value": {
-            "Text": " 3 (Normal)\r\n"
+            "Text": "3 (Normal)"
           },
           "offset_field": 333,
           "offset_start": 344,
@@ -130,7 +130,7 @@
             "Other": "X-MSMail-Priority"
           },
           "value": {
-            "Text": " Normal\r\n"
+            "Text": "Normal"
           },
           "offset_field": 357,
           "offset_start": 375,
@@ -141,7 +141,7 @@
             "Other": "X-Mailer"
           },
           "value": {
-            "Text": " Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\n"
+            "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
           },
           "offset_field": 384,
           "offset_start": 393,
@@ -152,7 +152,7 @@
             "Other": "Importance"
           },
           "value": {
-            "Text": " Normal\r\n"
+            "Text": "Normal"
           },
           "offset_field": 446,
           "offset_start": 457,
@@ -163,7 +163,7 @@
             "Other": "X-MimeOLE"
           },
           "value": {
-            "Text": " Produced By Microsoft MimeOLE V5.00.2314.1300\r\n"
+            "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
           },
           "offset_field": 466,
           "offset_start": 476,

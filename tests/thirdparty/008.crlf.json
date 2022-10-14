@@ -14,17 +14,6 @@
       "headers": [
         {
           "name": {
-            "Other": "From user@domain  Fri Feb 22 17"
-          },
-          "value": {
-            "Text": "06:23 2008\r\n"
-          },
-          "offset_field": 0,
-          "offset_start": 32,
-          "offset_end": 44
-        },
-        {
-          "name": {
             "Rfc": "from"
           },
           "value": {
@@ -33,9 +22,9 @@
               "address": "user@domain.org"
             }
           },
-          "offset_field": 44,
-          "offset_start": 49,
-          "offset_end": 67
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 23
         },
         {
           "name": {
@@ -54,9 +43,9 @@
               "tz_minute": 0
             }
           },
-          "offset_field": 67,
-          "offset_start": 72,
-          "offset_end": 106
+          "offset_field": 23,
+          "offset_start": 28,
+          "offset_end": 62
         },
         {
           "name": {
@@ -65,9 +54,9 @@
           "value": {
             "Text": "1.0"
           },
-          "offset_field": 106,
-          "offset_start": 119,
-          "offset_end": 125
+          "offset_field": 62,
+          "offset_start": 75,
+          "offset_end": 81
         },
         {
           "name": {
@@ -85,9 +74,9 @@
               ]
             }
           },
-          "offset_field": 125,
-          "offset_start": 138,
-          "offset_end": 176
+          "offset_field": 81,
+          "offset_start": 94,
+          "offset_end": 132
         }
       ],
       "is_encoding_problem": false,
@@ -99,8 +88,8 @@
         ]
       },
       "offset_header": 0,
-      "offset_body": 178,
-      "offset_end": 866
+      "offset_body": 134,
+      "offset_end": 822
     },
     {
       "headers": [
@@ -120,18 +109,18 @@
               ]
             }
           },
-          "offset_field": 211,
-          "offset_start": 224,
-          "offset_end": 257
+          "offset_field": 167,
+          "offset_start": 180,
+          "offset_end": 213
         }
       ],
       "is_encoding_problem": false,
       "body": {
         "Text": "hello\r\n"
       },
-      "offset_header": 211,
-      "offset_body": 259,
-      "offset_end": 266
+      "offset_header": 167,
+      "offset_body": 215,
+      "offset_end": 222
     },
     {
       "headers": [
@@ -146,9 +135,9 @@
               "attributes": null
             }
           },
-          "offset_field": 279,
-          "offset_start": 292,
-          "offset_end": 309
+          "offset_field": 235,
+          "offset_start": 248,
+          "offset_end": 265
         }
       ],
       "is_encoding_problem": false,
@@ -177,9 +166,9 @@
                       "address": "sub@domain.org"
                     }
                   },
-                  "offset_field": 311,
-                  "offset_start": 316,
-                  "offset_end": 333
+                  "offset_field": 267,
+                  "offset_start": 272,
+                  "offset_end": 289
                 },
                 {
                   "name": {
@@ -198,9 +187,9 @@
                       "tz_minute": 0
                     }
                   },
-                  "offset_field": 333,
-                  "offset_start": 338,
-                  "offset_end": 372
+                  "offset_field": 289,
+                  "offset_start": 294,
+                  "offset_end": 328
                 },
                 {
                   "name": {
@@ -209,9 +198,9 @@
                   "value": {
                     "Text": "submsg"
                   },
-                  "offset_field": 372,
-                  "offset_start": 380,
-                  "offset_end": 389
+                  "offset_field": 328,
+                  "offset_start": 336,
+                  "offset_end": 345
                 },
                 {
                   "name": {
@@ -229,9 +218,9 @@
                       ]
                     }
                   },
-                  "offset_field": 389,
-                  "offset_start": 402,
-                  "offset_end": 443
+                  "offset_field": 345,
+                  "offset_start": 358,
+                  "offset_end": 399
                 }
               ],
               "is_encoding_problem": false,
@@ -241,9 +230,9 @@
                   2
                 ]
               },
-              "offset_header": 311,
-              "offset_body": 445,
-              "offset_end": 776
+              "offset_header": 267,
+              "offset_body": 401,
+              "offset_end": 732
             },
             {
               "headers": [
@@ -258,18 +247,18 @@
                       "attributes": null
                     }
                   },
-                  "offset_field": 472,
-                  "offset_start": 485,
-                  "offset_end": 497
+                  "offset_field": 428,
+                  "offset_start": 441,
+                  "offset_end": 453
                 }
               ],
               "is_encoding_problem": false,
               "body": {
                 "Html": "<p>Hello world</p>\r\n"
               },
-              "offset_header": 472,
-              "offset_body": 499,
-              "offset_end": 519
+              "offset_header": 428,
+              "offset_body": 455,
+              "offset_end": 475
             },
             {
               "headers": [
@@ -289,9 +278,9 @@
                       ]
                     }
                   },
-                  "offset_field": 529,
-                  "offset_start": 542,
-                  "offset_end": 583
+                  "offset_field": 485,
+                  "offset_start": 498,
+                  "offset_end": 539
                 }
               ],
               "is_encoding_problem": false,
@@ -301,9 +290,9 @@
                   6
                 ]
               },
-              "offset_header": 529,
-              "offset_body": 585,
-              "offset_end": 745
+              "offset_header": 485,
+              "offset_body": 541,
+              "offset_end": 701
             },
             {
               "headers": [
@@ -323,9 +312,9 @@
                       ]
                     }
                   },
-                  "offset_field": 593,
-                  "offset_start": 606,
-                  "offset_end": 647
+                  "offset_field": 549,
+                  "offset_start": 562,
+                  "offset_end": 603
                 }
               ],
               "is_encoding_problem": false,
@@ -335,9 +324,9 @@
                   5
                 ]
               },
-              "offset_header": 593,
-              "offset_body": 649,
-              "offset_end": 713
+              "offset_header": 549,
+              "offset_body": 605,
+              "offset_end": 669
             },
             {
               "headers": [],
@@ -345,9 +334,9 @@
               "body": {
                 "Text": "sub3 text"
               },
-              "offset_header": 657,
-              "offset_body": 659,
-              "offset_end": 668
+              "offset_header": 613,
+              "offset_body": 615,
+              "offset_end": 624
             },
             {
               "headers": [],
@@ -355,9 +344,9 @@
               "body": {
                 "Text": "sub3 text2"
               },
-              "offset_header": 678,
-              "offset_body": 680,
-              "offset_end": 690
+              "offset_header": 634,
+              "offset_body": 636,
+              "offset_end": 646
             },
             {
               "headers": [],
@@ -365,16 +354,16 @@
               "body": {
                 "Text": "sub2 text2"
               },
-              "offset_header": 723,
-              "offset_body": 725,
-              "offset_end": 735
+              "offset_header": 679,
+              "offset_body": 681,
+              "offset_end": 691
             }
           ]
         }
       },
-      "offset_header": 279,
-      "offset_body": 311,
-      "offset_end": 776
+      "offset_header": 235,
+      "offset_body": 267,
+      "offset_end": 732
     },
     {
       "headers": [
@@ -389,18 +378,18 @@
               "attributes": null
             }
           },
-          "offset_field": 789,
-          "offset_start": 802,
-          "offset_end": 815
+          "offset_field": 745,
+          "offset_start": 758,
+          "offset_end": 771
         }
       ],
       "is_encoding_problem": false,
       "body": {
         "Text": "Another part"
       },
-      "offset_header": 789,
-      "offset_body": 817,
-      "offset_end": 829
+      "offset_header": 745,
+      "offset_body": 773,
+      "offset_end": 785
     }
   ]
 }

@@ -60,7 +60,7 @@
             "Other": "X-Mailer"
           },
           "value": {
-            "Text": " Mozilla 4.7 [en] (WinNT; I)\r\n"
+            "Text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 126,
           "offset_start": 135,
@@ -71,7 +71,7 @@
             "Other": "X-Accept-Language"
           },
           "value": {
-            "Text": " en\r\n"
+            "Text": "en"
           },
           "offset_field": 165,
           "offset_start": 183,
@@ -118,7 +118,7 @@
             "Other": "X-Priority"
           },
           "value": {
-            "Text": " 1 (Highest)\r\n"
+            "Text": "1 (Highest)"
           },
           "offset_field": 294,
           "offset_start": 305,
