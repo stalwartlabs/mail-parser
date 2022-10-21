@@ -509,16 +509,6 @@ impl<'x> Hash for HeaderName<'x> {
 impl Eq for HeaderName<'_> {}
 
 impl<'x> HeaderName<'x> {
-    /// Parse a header name
-    pub fn parse(header_name: impl Into<Cow<'x, str>>) -> Self {
-        let header_name = header_name.into();
-        if let Some(rfc_header) = RfcHeader::parse(header_name.as_ref()) {
-            HeaderName::Rfc(rfc_header)
-        } else {
-            HeaderName::Other(header_name)
-        }
-    }
-
     pub fn as_str(&self) -> &str {
         match self {
             HeaderName::Rfc(header) => header.as_str(),

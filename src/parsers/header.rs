@@ -9,6 +9,8 @@
  * except according to those terms.
  */
 
+use std::borrow::Cow;
+
 use crate::{Header, HeaderName, RfcHeader};
 
 use super::MessageStream;
@@ -166,25 +168,31 @@ impl<'x> MessageStream<'x> {
     }
 }
 
-impl RfcHeader {
-    pub fn parse(data: &str) -> Option<RfcHeader> {
+impl<'x> HeaderName<'x> {
+    /// Parse a header name
+    pub fn parse(data: impl Into<Cow<'x, str>>) -> Option<HeaderName<'x>> {
         let mut token_hash: usize = 0;
         let mut last_ch: u8 = 0;
+        let data = data.into();
         let data_ = data.as_bytes();
 
         for (pos, &ch) in data_.iter().enumerate() {
-            if let 0 | 9 = pos {
-                token_hash += {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
-                    }
+            if ch.is_ascii_alphanumeric() || [b'_', b'-'].contains(&ch) {
+                if let 0 | 9 = pos {
+                    token_hash += {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
+                        }
 
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    HDR_HASH[ch.to_ascii_lowercase() as usize]
-                } as usize;
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        HDR_HASH[ch.to_ascii_lowercase() as usize]
+                    } as usize;
+                }
+                last_ch = ch;
+            } else {
+                return None;
             }
-            last_ch = ch;
         }
 
         if (2..=25).contains(&data.len()) {
@@ -202,12 +210,16 @@ impl RfcHeader {
                 let token_hash = token_hash - 4;
 
                 if data_.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                    return HDR_MAP[token_hash].into();
+                    return HeaderName::Rfc(HDR_MAP[token_hash]).into();
                 }
             }
         }
 
-        None
+        if !data.is_empty() {
+            HeaderName::Other(data).into()
+        } else {
+            None
+        }
     }
 }
 
