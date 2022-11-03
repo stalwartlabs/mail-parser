@@ -13,13 +13,22 @@ use std::borrow::Cow;
 
 use crate::parsers::MessageStream;
 
-pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
+#[inline(always)]
+pub fn base64_decode(bytes: &[u8]) -> Option<Vec<u8>> {
+    base64_decode_stream(bytes.iter(), bytes.len(), u8::MAX)
+}
+
+pub fn base64_decode_stream<'x>(
+    stream: impl Iterator<Item = &'x u8>,
+    stream_len: usize,
+    stop_char: u8,
+) -> Option<Vec<u8>> {
     let mut chunk: u32 = 0;
     let mut byte_count: u8 = 0;
 
-    let mut buf = Vec::with_capacity(bytes.len() / 4 * 3);
+    let mut buf = Vec::with_capacity(stream_len / 4 * 3);
 
-    for &ch in bytes {
+    for &ch in stream {
         #[cfg(feature = "ludicrous_mode")]
         let val = unsafe {
             *BASE64_MAP
@@ -46,33 +55,35 @@ pub fn decode_base64(bytes: &[u8]) -> Option<Vec<u8>> {
                     buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
             }
-        } else if ch == b'=' {
-            match byte_count {
-                1 | 2 => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        buf.push(*chunk.to_le_bytes().get_unchecked(0));
+        } else {
+            match ch {
+                b'=' => match byte_count {
+                    1 | 2 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        buf.push(chunk.to_le_bytes()[0]);
+                        byte_count = 0;
                     }
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    buf.push(chunk.to_le_bytes()[0]);
-                    byte_count = 0;
-                }
-                3 => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                    3 => {
+                        #[cfg(feature = "ludicrous_mode")]
+                        unsafe {
+                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
+                        }
+                        #[cfg(not(feature = "ludicrous_mode"))]
+                        buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
+                        byte_count = 0;
                     }
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
-                    byte_count = 0;
-                }
-                0 => (),
-                _ => {
-                    return None;
-                }
+                    0 => (),
+                    _ => {
+                        return None;
+                    }
+                },
+                b' ' | b'\t' | b'\r' | b'\n' => (),
+                _ => return if ch == stop_char { buf.into() } else { None },
             }
-        } else if !ch.is_ascii_whitespace() {
-            return None;
         }
     }
 
@@ -312,7 +323,7 @@ mod tests {
             ("w6HDqcOtw7PDug==", "áéíóú"),
         ] {
             assert_eq!(
-                super::decode_base64(encoded_str.as_bytes()).unwrap_or_default(),
+                super::base64_decode(encoded_str.as_bytes()).unwrap_or_default(),
                 expected_result.as_bytes(),
                 "Failed for {:?}",
                 encoded_str

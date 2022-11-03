@@ -20,7 +20,7 @@ enum QuotedPrintableState {
     Hex1,
 }
 
-pub fn decode_quoted_printable(bytes: &[u8]) -> Option<Vec<u8>> {
+pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
     let mut buf = Vec::with_capacity(bytes.len());
 
     let mut state = QuotedPrintableState::None;
@@ -81,6 +81,30 @@ pub fn decode_quoted_printable(bytes: &[u8]) -> Option<Vec<u8>> {
     }
 
     buf.into()
+}
+
+#[inline(always)]
+pub fn quoted_printable_decode_char(hex1: u8, hex2: u8) -> Option<u8> {
+    #[cfg(feature = "ludicrous_mode")]
+    {
+        let hex1 = unsafe { *HEX_MAP.get_unchecked(hex1 as usize) };
+        let hex2 = unsafe { *HEX_MAP.get_unchecked(hex2 as usize) };
+        if hex1 != -1 && hex2 != -1 {
+            (((hex1 as u8) << 4) | hex2 as u8).into()
+        } else {
+            None
+        }
+    }
+    #[cfg(not(feature = "ludicrous_mode"))]
+    {
+        let hex1 = HEX_MAP[hex1 as usize];
+        let hex2 = HEX_MAP[hex2 as usize];
+        if hex1 != -1 && hex2 != -1 {
+            (((hex1 as u8) << 4) | hex2 as u8).into()
+        } else {
+            None
+        }
+    }
 }
 
 impl<'x> MessageStream<'x> {
@@ -305,7 +329,7 @@ mod tests {
             ("\n\n", "\n\n"),
         ] {
             assert_eq!(
-                super::decode_quoted_printable(encoded_str.as_bytes()).unwrap_or_default(),
+                super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default(),
                 expected_result.as_bytes(),
                 "Failed for {:?}",
                 encoded_str

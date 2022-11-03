@@ -3,7 +3,7 @@ use libfuzzer_sys::fuzz_target;
 
 use mail_parser::{
     decoders::{
-        base64::decode_base64,
+        base64::base64_decode,
         charsets::{
             map::get_charset_decoder,
             single_byte::decoder_iso_8859_1,
@@ -48,10 +48,10 @@ fuzz_target!(|data: &[u8]| {
         MessageStream::new(data).skip_crlf();
         MessageStream::new(data).is_multipart_end();
 
-        decode_base64(data);
+        base64_decode(data);
         MessageStream::new(data).decode_base64_word();
         MessageStream::new(data).decode_base64_mime(b"\n");
-        decode_quoted_printable(data);
+        quoted_printable_decode(data);
         MessageStream::new(data).decode_quoted_printable_word();
         MessageStream::new(data).decode_quoted_printable_mime(b"\n");
 
