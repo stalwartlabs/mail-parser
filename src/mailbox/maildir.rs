@@ -197,7 +197,7 @@ impl Iterator for MessageIterator {
                 if let Some(name) = path.file_name().and_then(|name| name.to_str()) {
                     if !name.starts_with('.') {
                         let internal_date =
-                            match fs::metadata(&path).and_then(|m| m.created()).and_then(|d| {
+                            match fs::metadata(&path).and_then(|m| m.modified()).and_then(|d| {
                                 d.duration_since(std::time::UNIX_EPOCH)
                                     .map(|d| d.as_secs())
                                     .map_err(|e| {
