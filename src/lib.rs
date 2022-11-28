@@ -158,7 +158,7 @@
 //!
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
-//!        message.get_from(),
+//!        message.from(),
 //!        &HeaderValue::Address(Addr::new(
 //!            "Art Vandelay (Vandelay Industries)".into(),
 //!            "art@vandelay.com"
@@ -166,7 +166,7 @@
 //!    );
 //!    
 //!    assert_eq!(
-//!        message.get_to(),
+//!        message.to(),
 //!        &HeaderValue::GroupList(vec![
 //!            Group::new(
 //!                "Colleagues",
@@ -183,19 +183,19 @@
 //!    );
 //!
 //!    assert_eq!(
-//!        message.get_date().unwrap().to_rfc3339(),
+//!        message.date().unwrap().to_rfc3339(),
 //!        "2021-11-20T14:22:01-08:00"
 //!    );
 //!
 //!    // RFC2047 support for encoded text in message readers
 //!    assert_eq!(
-//!        message.get_subject().unwrap(),
+//!        message.subject().unwrap(),
 //!        "Why not both importing AND exporting? ☺"
 //!    );
 //!
 //!    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
 //!    assert_eq!(
-//!        message.get_html_body(0).unwrap(),
+//!        message.html_body(0).unwrap(),
 //!        concat!(
 //!            "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
 //!            "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -205,7 +205,7 @@
 //!
 //!    // HTML parts are converted to plain text (and viceversa) when missing
 //!    assert_eq!(
-//!        message.get_text_body(0).unwrap(),
+//!        message.text_body(0).unwrap(),
 //!        concat!(
 //!            "I was thinking about quitting the “exporting” to focus just on the",
 //!            " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -214,33 +214,33 @@
 //!
 //!    // Supports nested messages as well as multipart/digest
 //!    let nested_message = message
-//!        .get_attachment(0)
+//!        .attachment(0)
 //!        .unwrap()
-//!        .get_message()
+//!        .message()
 //!        .unwrap();
 //!
 //!    assert_eq!(
-//!        nested_message.get_subject().unwrap(),
+//!        nested_message.subject().unwrap(),
 //!        "Exporting my book about coffee tables"
 //!    );
 //!
 //!    // Handles UTF-* as well as many legacy encodings
 //!    assert_eq!(
-//!        nested_message.get_text_body(0).unwrap(),
+//!        nested_message.text_body(0).unwrap(),
 //!        "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
 //!    );
 //!    assert_eq!(
-//!        nested_message.get_html_body(0).unwrap(),
+//!        nested_message.html_body(0).unwrap(),
 //!        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
 //!    );
 //!
-//!    let nested_attachment = nested_message.get_attachment(0).unwrap();
+//!    let nested_attachment = nested_message.attachment(0).unwrap();
 //!
 //!    assert_eq!(nested_attachment.len(), 42);
 //!
 //!    // Full RFC2231 support for continuations and character sets
 //!    assert_eq!(
-//!        nested_attachment.get_attachment_name().unwrap(),
+//!        nested_attachment.attachment_name().unwrap(),
 //!        "Book about ☕ tables.gif"
 //!    );
 //!
@@ -792,11 +792,11 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn get_content_type(&self) -> &ContentType<'x> {
+    pub fn content_type(&self) -> &ContentType<'x> {
         match *self {
             HeaderValue::ContentType(ref ct) => ct,
             _ => panic!(
-                "HeaderValue::get_content_type called on non-ContentType: {:?}",
+                "HeaderValue::content_type called on non-ContentType: {:?}",
                 self
             ),
         }
@@ -918,13 +918,13 @@ pub struct DateTime {
 
 impl<'x> Message<'x> {
     /// Returns the root message part
-    pub fn get_root_part(&self) -> &MessagePart<'x> {
+    pub fn root_part(&self) -> &MessagePart<'x> {
         &self.parts[0]
     }
 
     /// Returns a parsed header.
-    pub fn get_header(&self, header: &str) -> Option<&HeaderValue> {
-        self.parts[0].headers.get_header(header).map(|h| &h.value)
+    pub fn header(&self, header: &str) -> Option<&HeaderValue> {
+        self.parts[0].headers.header(header).map(|h| &h.value)
     }
 
     /// Removed a parsed header and returns its value.
@@ -946,20 +946,20 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the raw header.
-    pub fn get_header_raw(&self, header: &str) -> Option<&str> {
+    pub fn header_raw(&self, header: &str) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_header(header)
+            .header(header)
             .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
     }
 
     /// Returns an iterator over the RFC headers of this message.
-    pub fn get_headers(&self) -> &[Header] {
+    pub fn headers(&self) -> &[Header] {
         &self.parts[0].headers
     }
 
     /// Returns an iterator over the matching RFC headers of this message.
-    pub fn get_header_values<'y: 'x>(
+    pub fn header_values<'y: 'x>(
         &'y self,
         name: RfcHeader,
     ) -> impl Iterator<Item = &HeaderValue<'x>> {
@@ -973,7 +973,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all headers in raw format
-    pub fn get_headers_raw(&self) -> impl Iterator<Item = (&str, &str)> {
+    pub fn headers_raw(&self) -> impl Iterator<Item = (&str, &str)> {
         self.parts[0].headers.iter().filter_map(move |header| {
             Some((
                 header.name.as_str(),
@@ -984,228 +984,228 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the BCC header field
-    pub fn get_bcc(&self) -> &HeaderValue {
+    pub fn bcc(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Bcc)
+            .rfc(&RfcHeader::Bcc)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the CC header field
-    pub fn get_cc(&self) -> &HeaderValue {
+    pub fn cc(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Cc)
+            .rfc(&RfcHeader::Cc)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Comments header fields
-    pub fn get_comments(&self) -> &HeaderValue {
+    pub fn comments(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Comments)
+            .rfc(&RfcHeader::Comments)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Date header field
-    pub fn get_date(&self) -> Option<&DateTime> {
+    pub fn date(&self) -> Option<&DateTime> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Date)
+            .rfc(&RfcHeader::Date)
             .and_then(|header| header.as_datetime_ref())
     }
 
     /// Returns the From header field
-    pub fn get_from(&self) -> &HeaderValue {
+    pub fn from(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::From)
+            .rfc(&RfcHeader::From)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all In-Reply-To header fields
-    pub fn get_in_reply_to(&self) -> &HeaderValue {
+    pub fn in_reply_to(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::InReplyTo)
+            .rfc(&RfcHeader::InReplyTo)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Keywords header fields
-    pub fn get_keywords(&self) -> &HeaderValue {
+    pub fn keywords(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Keywords)
+            .rfc(&RfcHeader::Keywords)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Archive header field
-    pub fn get_list_archive(&self) -> &HeaderValue {
+    pub fn list_archive(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListArchive)
+            .rfc(&RfcHeader::ListArchive)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Help header field
-    pub fn get_list_help(&self) -> &HeaderValue {
+    pub fn list_help(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListHelp)
+            .rfc(&RfcHeader::ListHelp)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-ID header field
-    pub fn get_list_id(&self) -> &HeaderValue {
+    pub fn list_id(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListId)
+            .rfc(&RfcHeader::ListId)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Owner header field
-    pub fn get_list_owner(&self) -> &HeaderValue {
+    pub fn list_owner(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListOwner)
+            .rfc(&RfcHeader::ListOwner)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Post header field
-    pub fn get_list_post(&self) -> &HeaderValue {
+    pub fn list_post(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListPost)
+            .rfc(&RfcHeader::ListPost)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Subscribe header field
-    pub fn get_list_subscribe(&self) -> &HeaderValue {
+    pub fn list_subscribe(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListSubscribe)
+            .rfc(&RfcHeader::ListSubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the List-Unsubscribe header field
-    pub fn get_list_unsubscribe(&self) -> &HeaderValue {
+    pub fn list_unsubscribe(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ListUnsubscribe)
+            .rfc(&RfcHeader::ListUnsubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Message-ID header field
-    pub fn get_message_id(&self) -> Option<&str> {
+    pub fn message_id(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::MessageId)
+            .rfc(&RfcHeader::MessageId)
             .and_then(|header| header.as_text_ref())
     }
 
     /// Returns the MIME-Version header field
-    pub fn get_mime_version(&self) -> &HeaderValue {
+    pub fn mime_version(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::MimeVersion)
+            .rfc(&RfcHeader::MimeVersion)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Received header fields
-    pub fn get_received(&self) -> &HeaderValue {
+    pub fn received(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Received)
+            .rfc(&RfcHeader::Received)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all References header fields
-    pub fn get_references(&self) -> &HeaderValue {
+    pub fn references(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::References)
+            .rfc(&RfcHeader::References)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Reply-To header field
-    pub fn get_reply_to(&self) -> &HeaderValue {
+    pub fn reply_to(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ReplyTo)
+            .rfc(&RfcHeader::ReplyTo)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-BCC header field
-    pub fn get_resent_bcc(&self) -> &HeaderValue {
+    pub fn resent_bcc(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentBcc)
+            .rfc(&RfcHeader::ResentBcc)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-CC header field
-    pub fn get_resent_cc(&self) -> &HeaderValue {
+    pub fn resent_cc(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentTo)
+            .rfc(&RfcHeader::ResentTo)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Resent-Date header fields
-    pub fn get_resent_date(&self) -> &HeaderValue {
+    pub fn resent_date(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentDate)
+            .rfc(&RfcHeader::ResentDate)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-From header field
-    pub fn get_resent_from(&self) -> &HeaderValue {
+    pub fn resent_from(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentFrom)
+            .rfc(&RfcHeader::ResentFrom)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Resent-Message-ID header fields
-    pub fn get_resent_message_id(&self) -> &HeaderValue {
+    pub fn resent_message_id(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentMessageId)
+            .rfc(&RfcHeader::ResentMessageId)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Sender header field
-    pub fn get_resent_sender(&self) -> &HeaderValue {
+    pub fn resent_sender(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentSender)
+            .rfc(&RfcHeader::ResentSender)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Resent-To header field
-    pub fn get_resent_to(&self) -> &HeaderValue {
+    pub fn resent_to(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ResentTo)
+            .rfc(&RfcHeader::ResentTo)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns all Return-Path header fields
-    pub fn get_return_path(&self) -> &HeaderValue {
+    pub fn return_path(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ReturnPath)
+            .rfc(&RfcHeader::ReturnPath)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the return address from either the Return-Path
     /// or From header fields
-    pub fn get_return_address(&self) -> Option<&str> {
-        match self.parts[0].headers.get_rfc(&RfcHeader::ReturnPath) {
+    pub fn return_address(&self) -> Option<&str> {
+        match self.parts[0].headers.rfc(&RfcHeader::ReturnPath) {
             Some(HeaderValue::Text(text)) => Some(text.as_ref()),
             Some(HeaderValue::TextList(text_list)) => text_list.last().map(|t| t.as_ref()),
-            _ => match self.parts[0].headers.get_rfc(&RfcHeader::From) {
+            _ => match self.parts[0].headers.rfc(&RfcHeader::From) {
                 Some(HeaderValue::Address(addr)) => addr.address.as_deref(),
                 Some(HeaderValue::AddressList(addr_list)) => {
                     addr_list.last().and_then(|a| a.address.as_deref())
@@ -1216,48 +1216,48 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn get_sender(&self) -> &HeaderValue {
+    pub fn sender(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Sender)
+            .rfc(&RfcHeader::Sender)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the Subject header field
-    pub fn get_subject(&self) -> Option<&str> {
+    pub fn subject(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::Subject)
+            .rfc(&RfcHeader::Subject)
             .and_then(|header| header.as_text_ref())
     }
 
     /// Returns the message thread name or 'base subject' as defined in
     /// [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1)
-    pub fn get_thread_name(&self) -> Option<&str> {
-        thread_name(self.get_subject()?).into()
+    pub fn thread_name(&self) -> Option<&str> {
+        thread_name(self.subject()?).into()
     }
 
     /// Returns the To header field
-    pub fn get_to(&self) -> &HeaderValue {
+    pub fn to(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::To)
+            .rfc(&RfcHeader::To)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns a preview of the message body
-    pub fn get_body_preview(&self, preview_len: usize) -> Option<Cow<'x, str>> {
+    pub fn body_preview(&self, preview_len: usize) -> Option<Cow<'x, str>> {
         if !self.text_body.is_empty() {
-            preview_text(self.get_text_body(0)?, preview_len).into()
+            preview_text(self.text_body(0)?, preview_len).into()
         } else if !self.html_body.is_empty() {
-            preview_html(self.get_html_body(0)?, preview_len).into()
+            preview_html(self.html_body(0)?, preview_len).into()
         } else {
             None
         }
     }
 
     /// Returns the transformed contents an inline HTML body part by position
-    pub fn get_html_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
+    pub fn html_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
         let part = self.parts.get(*self.html_body.get(pos)?)?;
         match &part.body {
             PartType::Html(html) => Some(html.as_ref().into()),
@@ -1267,7 +1267,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the transformed contents an inline text body part by position
-    pub fn get_text_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
+    pub fn text_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
         let part = self.parts.get(*self.html_body.get(pos)?)?;
         match &part.body {
             PartType::Text(text) => Some(text.as_ref().into()),
@@ -1277,52 +1277,52 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a message part by position
-    pub fn get_part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn part(&self, pos: usize) -> Option<&MessagePart> {
         self.parts.get(pos)
     }
 
     /// Returns an inline HTML body part by position
-    pub fn get_html_part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn html_part(&self, pos: usize) -> Option<&MessagePart> {
         self.parts.get(*self.html_body.get(pos)?)
     }
 
     /// Returns an inline text body part by position
-    pub fn get_text_part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn text_part(&self, pos: usize) -> Option<&MessagePart> {
         self.parts.get(*self.text_body.get(pos)?)
     }
 
     /// Returns an attacment by position
-    pub fn get_attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
+    pub fn attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
         self.parts.get(*self.attachments.get(pos)?)
     }
 
     /// Returns the number of plain text body parts
-    pub fn get_text_body_count(&self) -> usize {
+    pub fn text_body_count(&self) -> usize {
         self.text_body.len()
     }
 
     /// Returns the number of HTML body parts
-    pub fn get_html_body_count(&self) -> usize {
+    pub fn html_body_count(&self) -> usize {
         self.html_body.len()
     }
 
     /// Returns the number of attachments
-    pub fn get_attachment_count(&self) -> usize {
+    pub fn attachment_count(&self) -> usize {
         self.attachments.len()
     }
 
     /// Returns an Interator over the text body parts
-    pub fn get_text_bodies(&'x self) -> BodyPartIterator<'x> {
+    pub fn text_bodies(&'x self) -> BodyPartIterator<'x> {
         BodyPartIterator::new(self, &self.text_body)
     }
 
     /// Returns an Interator over the HTML body parts
-    pub fn get_html_bodies(&'x self) -> BodyPartIterator<'x> {
+    pub fn html_bodies(&'x self) -> BodyPartIterator<'x> {
         BodyPartIterator::new(self, &self.html_body)
     }
 
     /// Returns an Interator over the attachments
-    pub fn get_attachments(&'x self) -> AttachmentIterator<'x> {
+    pub fn attachments(&'x self) -> AttachmentIterator<'x> {
         AttachmentIterator::new(self)
     }
 
@@ -1341,84 +1341,81 @@ impl<'x> Message<'x> {
 /// MIME Header field access trait
 pub trait MimeHeaders<'x> {
     /// Returns the Content-Description field
-    fn get_content_description(&self) -> Option<&str>;
+    fn content_description(&self) -> Option<&str>;
     /// Returns the Content-Disposition field
-    fn get_content_disposition(&self) -> Option<&ContentType>;
+    fn content_disposition(&self) -> Option<&ContentType>;
     /// Returns the Content-ID field
-    fn get_content_id(&self) -> Option<&str>;
+    fn content_id(&self) -> Option<&str>;
     /// Returns the Content-Encoding field
-    fn get_content_transfer_encoding(&self) -> Option<&str>;
+    fn content_transfer_encoding(&self) -> Option<&str>;
     /// Returns the Content-Type field
-    fn get_content_type(&self) -> Option<&ContentType>;
+    fn content_type(&self) -> Option<&ContentType>;
     /// Returns the Content-Language field
-    fn get_content_language(&self) -> &HeaderValue;
+    fn content_language(&self) -> &HeaderValue;
     /// Returns the Content-Location field
-    fn get_content_location(&self) -> Option<&str>;
+    fn content_location(&self) -> Option<&str>;
     /// Returns the attachment name, if any.
-    fn get_attachment_name(&self) -> Option<&str> {
-        self.get_content_disposition()
-            .and_then(|cd| cd.get_attribute("filename"))
-            .or_else(|| {
-                self.get_content_type()
-                    .and_then(|ct| ct.get_attribute("name"))
-            })
+    fn attachment_name(&self) -> Option<&str> {
+        self.content_disposition()
+            .and_then(|cd| cd.attribute("filename"))
+            .or_else(|| self.content_type().and_then(|ct| ct.attribute("name")))
     }
 }
 
 impl<'x> MimeHeaders<'x> for Message<'x> {
-    fn get_content_description(&self) -> Option<&str> {
+    fn content_description(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentDescription)
+            .rfc(&RfcHeader::ContentDescription)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_disposition(&self) -> Option<&ContentType> {
+    fn content_disposition(&self) -> Option<&ContentType> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentDisposition)
+            .rfc(&RfcHeader::ContentDisposition)
             .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_id(&self) -> Option<&str> {
+    fn content_id(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentId)
+            .rfc(&RfcHeader::ContentId)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_transfer_encoding(&self) -> Option<&str> {
+    fn content_transfer_encoding(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentTransferEncoding)
+            .rfc(&RfcHeader::ContentTransferEncoding)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_type(&self) -> Option<&ContentType> {
+    fn content_type(&self) -> Option<&ContentType> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentType)
+            .rfc(&RfcHeader::ContentType)
             .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_language(&self) -> &HeaderValue {
+    fn content_language(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentLanguage)
+            .rfc(&RfcHeader::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    fn get_content_location(&self) -> Option<&str> {
+    fn content_location(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .get_rfc(&RfcHeader::ContentLocation)
+            .rfc(&RfcHeader::ContentLocation)
             .and_then(|header| header.as_text_ref())
     }
 }
 
 impl<'x> MessagePart<'x> {
     /// Returns the body part's contents as a `u8` slice
-    pub fn get_contents(&'x self) -> &'x [u8] {
+    pub fn contents(&'x self) -> &'x [u8] {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
@@ -1428,7 +1425,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the body part's contents as a `str`
-    pub fn get_text_contents(&'x self) -> Option<&'x str> {
+    pub fn text_contents(&'x self) -> Option<&'x str> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => {
@@ -1440,7 +1437,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the nested message
-    pub fn get_message(&'x self) -> Option<&Message<'x>> {
+    pub fn message(&'x self) -> Option<&Message<'x>> {
         if let PartType::Message(message) = &self.body {
             Some(message)
         } else {
@@ -1449,7 +1446,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the sub parts ids of a MIME part
-    pub fn get_sub_parts(&'x self) -> Option<&[MessagePartId]> {
+    pub fn sub_parts(&'x self) -> Option<&[MessagePartId]> {
         if let PartType::Multipart(parts) = &self.body {
             Some(parts.as_ref())
         } else {
@@ -1545,68 +1542,68 @@ impl<'x> MessagePart<'x> {
 
 impl<'x> fmt::Display for MessagePart<'x> {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(self.get_text_contents().unwrap_or("[no contents]"))
+        fmt.write_str(self.text_contents().unwrap_or("[no contents]"))
     }
 }
 
 impl<'x> MimeHeaders<'x> for MessagePart<'x> {
-    fn get_content_description(&self) -> Option<&str> {
+    fn content_description(&self) -> Option<&str> {
         self.headers
-            .get_rfc(&RfcHeader::ContentDescription)
+            .rfc(&RfcHeader::ContentDescription)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_disposition(&self) -> Option<&ContentType> {
+    fn content_disposition(&self) -> Option<&ContentType> {
         self.headers
-            .get_rfc(&RfcHeader::ContentDisposition)
+            .rfc(&RfcHeader::ContentDisposition)
             .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_id(&self) -> Option<&str> {
+    fn content_id(&self) -> Option<&str> {
         self.headers
-            .get_rfc(&RfcHeader::ContentId)
+            .rfc(&RfcHeader::ContentId)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_transfer_encoding(&self) -> Option<&str> {
+    fn content_transfer_encoding(&self) -> Option<&str> {
         self.headers
-            .get_rfc(&RfcHeader::ContentTransferEncoding)
+            .rfc(&RfcHeader::ContentTransferEncoding)
             .and_then(|header| header.as_text_ref())
     }
 
-    fn get_content_type(&self) -> Option<&ContentType> {
+    fn content_type(&self) -> Option<&ContentType> {
         self.headers
-            .get_rfc(&RfcHeader::ContentType)
+            .rfc(&RfcHeader::ContentType)
             .and_then(|header| header.as_content_type_ref())
     }
 
-    fn get_content_language(&self) -> &HeaderValue {
+    fn content_language(&self) -> &HeaderValue {
         self.headers
-            .get_rfc(&RfcHeader::ContentLanguage)
+            .rfc(&RfcHeader::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    fn get_content_location(&self) -> Option<&str> {
+    fn content_location(&self) -> Option<&str> {
         self.headers
-            .get_rfc(&RfcHeader::ContentLocation)
+            .rfc(&RfcHeader::ContentLocation)
             .and_then(|header| header.as_text_ref())
     }
 }
 
 pub trait GetHeader {
-    fn get_rfc(&self, name: &RfcHeader) -> Option<&HeaderValue>;
-    fn get_header(&self, name: &str) -> Option<&Header>;
+    fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue>;
+    fn header(&self, name: &str) -> Option<&Header>;
 }
 
 impl<'x> GetHeader for Vec<Header<'x>> {
-    fn get_rfc(&self, name: &RfcHeader) -> Option<&HeaderValue<'x>> {
+    fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue<'x>> {
         self.iter()
             .rev()
             .find(|header| matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == name))
             .map(|header| &header.value)
     }
 
-    fn get_header(&self, name: &str) -> Option<&Header> {
+    fn header(&self, name: &str) -> Option<&Header> {
         self.iter()
             .rev()
             .find(|header| header.name.as_str().eq_ignore_ascii_case(name))
@@ -1656,24 +1653,24 @@ impl<'x> Iterator for AttachmentIterator<'x> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.pos += 1;
-        self.message.get_attachment(self.pos as usize)
+        self.message.attachment(self.pos as usize)
     }
 }
 
 /// An RFC2047 Content-Type or RFC2183 Content-Disposition MIME header field.
 impl<'x> ContentType<'x> {
     /// Returns the type
-    pub fn get_type(&self) -> &str {
+    pub fn ctype(&self) -> &str {
         &self.c_type
     }
 
     /// Returns the sub-type
-    pub fn get_subtype(&self) -> Option<&str> {
+    pub fn subtype(&self) -> Option<&str> {
         self.c_subtype.as_ref()?.as_ref().into()
     }
 
     /// Returns an attribute by name
-    pub fn get_attribute(&self, name: &str) -> Option<&str> {
+    pub fn attribute(&self, name: &str) -> Option<&str> {
         self.attributes
             .as_ref()?
             .iter()
@@ -1694,7 +1691,7 @@ impl<'x> ContentType<'x> {
     }
 
     /// Returns all attributes
-    pub fn get_attributes(&self) -> Option<&[(Cow<str>, Cow<str>)]> {
+    pub fn attributes(&self) -> Option<&[(Cow<str>, Cow<str>)]> {
         self.attributes.as_deref()
     }
 

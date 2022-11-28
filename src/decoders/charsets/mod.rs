@@ -18,7 +18,7 @@ pub type DecoderFnc = fn(&[u8]) -> String;
 
 #[cfg(test)]
 mod tests {
-    use super::map::get_charset_decoder;
+    use super::map::charset_decoder;
 
     #[test]
     fn decode_charset() {
@@ -65,7 +65,7 @@ mod tests {
             ];
 
         for input in inputs {
-            let decoder = get_charset_decoder(input.0.as_bytes())
+            let decoder = charset_decoder(input.0.as_bytes())
                 .expect(&("Failed to find decoder for ".to_owned() + input.0));
 
             assert_eq!(decoder(&input.1), input.2);

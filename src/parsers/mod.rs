@@ -104,7 +104,7 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
-    pub fn get_bytes(&self, range: Range<usize>) -> &'x [u8] {
+    pub fn bytes(&self, range: Range<usize>) -> &'x [u8] {
         &self.data[range]
     }
 

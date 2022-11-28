@@ -12,7 +12,7 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{charsets::map::get_charset_decoder, DecodeFnc},
+    decoders::{charsets::map::charset_decoder, DecodeFnc},
     ContentType, Encoding, GetHeader, HeaderValue, Message, MessagePart, MessagePartId, PartType,
     RfcHeader,
 };
@@ -42,17 +42,17 @@ impl Default for MimeType {
 }
 
 #[inline(always)]
-fn get_mime_type(
+fn mime_type(
     content_type: Option<&ContentType>,
     parent_content_type: &MimeType,
 ) -> (bool, bool, bool, MimeType) {
     if let Some(content_type) = content_type {
-        match content_type.get_type() {
+        match content_type.ctype() {
             "multipart" => (
                 true,
                 false,
                 false,
-                match content_type.get_subtype() {
+                match content_type.subtype() {
                     Some("mixed") => MimeType::MultipartMixed,
                     Some("alternative") => MimeType::MultipartAlernative,
                     Some("related") => MimeType::MultipartRelated,
@@ -60,13 +60,13 @@ fn get_mime_type(
                     _ => MimeType::Other,
                 },
             ),
-            "text" => match content_type.get_subtype() {
+            "text" => match content_type.subtype() {
                 Some("plain") => (false, true, true, MimeType::TextPlain),
                 Some("html") => (false, true, true, MimeType::TextHtml),
                 _ => (false, false, true, MimeType::TextOther),
             },
             "image" | "audio" | "video" => (false, true, false, MimeType::Inline),
-            "message" if [Some("rfc822"), Some("global")].contains(&content_type.get_subtype()) => {
+            "message" if [Some("rfc822"), Some("global")].contains(&content_type.subtype()) => {
                 (false, false, false, MimeType::Message)
             }
             _ => (false, false, false, MimeType::Other),
@@ -155,15 +155,15 @@ impl<'x> Message<'x> {
             state.sub_part_ids.push(message.parts.len());
 
             let content_type = part_headers
-                .get_rfc(&RfcHeader::ContentType)
+                .rfc(&RfcHeader::ContentType)
                 .and_then(|c| c.as_content_type_ref());
 
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
-                get_mime_type(content_type, &state.mime_type);
+                mime_type(content_type, &state.mime_type);
 
             if is_multipart {
                 if let Some(mime_boundary) =
-                    content_type.map_or_else(|| None, |f| f.get_attribute("boundary"))
+                    content_type.map_or_else(|| None, |f| f.attribute("boundary"))
                 {
                     if stream.seek_next_part(mime_boundary.as_bytes()) {
                         let part_id = message.parts.len();
@@ -201,7 +201,7 @@ impl<'x> Message<'x> {
             }
 
             let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
-                .get_rfc(&RfcHeader::ContentTransferEncoding)
+                .rfc(&RfcHeader::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
                     (Encoding::Base64, MessageStream::decode_base64_mime)
@@ -214,7 +214,7 @@ impl<'x> Message<'x> {
                         MessageStream::decode_quoted_printable_mime,
                     )
                 }
-                _ => (Encoding::None, MessageStream::get_mime_part),
+                _ => (Encoding::None, MessageStream::mime_part),
             };
 
             if mime_type == MimeType::Message && encoding == Encoding::None {
@@ -270,8 +270,8 @@ impl<'x> Message<'x> {
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
                     && part_headers
-                        .get_rfc(&RfcHeader::ContentDisposition)
-                        .map_or_else(|| true, |d| !d.get_content_type().is_attachment())
+                        .rfc(&RfcHeader::ContentDisposition)
+                        .map_or_else(|| true, |d| !d.content_type().is_attachment())
                     && (state.parts == 1
                         || (state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline
@@ -306,8 +306,8 @@ impl<'x> Message<'x> {
                     let text = match (
                         bytes,
                         content_type.and_then(|ct| {
-                            ct.get_attribute("charset")
-                                .and_then(|c| get_charset_decoder(c.as_bytes()))
+                            ct.attribute("charset")
+                                .and_then(|c| charset_decoder(c.as_bytes()))
                         }),
                     ) {
                         (Cow::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),

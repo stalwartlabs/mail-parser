@@ -22,7 +22,7 @@ impl<'x> MessageStream<'x> {
                     if !self.try_next_is_space() {
                         return if token_start > 0 {
                             HeaderValue::Text(String::from_utf8_lossy(
-                                self.get_bytes(token_start - 1..token_end),
+                                self.bytes(token_start - 1..token_end),
                             ))
                         } else {
                             HeaderValue::Empty
@@ -99,7 +99,7 @@ Content-Type: multipart/mixed; boundary="festivus";
 Here's a message body.
 "#;
         let message = Message::parse(input).unwrap();
-        let mut iter = message.get_headers_raw();
+        let mut iter = message.headers_raw();
         assert_eq!(
             iter.next().unwrap(),
             ("From", " Art Vandelay <art@vandelay.com>\n")

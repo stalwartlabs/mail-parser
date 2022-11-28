@@ -9,7 +9,7 @@
  * except according to those terms.
  */
 
-use crate::{decoders::charsets::map::get_charset_decoder, parsers::MessageStream};
+use crate::{decoders::charsets::map::charset_decoder, parsers::MessageStream};
 
 use super::DecodeWordFnc;
 
@@ -81,7 +81,7 @@ impl<'x> MessageStream<'x> {
         }
 
         if let Some(bytes) = decode_fnc.and_then(|fnc| fnc(self)) {
-            if let Some(decoder) = get_charset_decoder(self.get_bytes(charset_start..charset_end)) {
+            if let Some(decoder) = charset_decoder(self.bytes(charset_start..charset_end)) {
                 decoder(&bytes).into()
             } else {
                 String::from_utf8(bytes)

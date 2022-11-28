@@ -29,7 +29,7 @@ impl<'x> MessageStream<'x> {
                             0 => {
                                 if token_invalid_start > 0 {
                                     HeaderValue::Text(String::from_utf8_lossy(
-                                        self.get_bytes(token_invalid_start - 1..token_invalid_end),
+                                        self.bytes(token_invalid_start - 1..token_invalid_end),
                                     ))
                                 } else {
                                     HeaderValue::Empty
@@ -49,7 +49,7 @@ impl<'x> MessageStream<'x> {
                     is_id_part = false;
                     if token_start > 0 {
                         ids.push(String::from_utf8_lossy(
-                            self.get_bytes(token_start - 1..token_end),
+                            self.bytes(token_start - 1..token_end),
                         ));
                         token_start = 0;
                     } else {

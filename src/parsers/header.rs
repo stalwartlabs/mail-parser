@@ -140,7 +140,7 @@ impl<'x> MessageStream<'x> {
         }
 
         if token_start != 0 {
-            let field = self.get_bytes(token_start - 1..token_end);
+            let field = self.bytes(token_start - 1..token_end);
 
             if (2..=25).contains(&token_len) {
                 token_hash += token_len + {

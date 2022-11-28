@@ -5,13 +5,13 @@ use mail_parser::{
     decoders::{
         base64::base64_decode,
         charsets::{
-            map::get_charset_decoder,
+            map::charset_decoder,
             single_byte::decoder_iso_8859_1,
             utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
         },
         hex::decode_hex,
         html::{add_html_token, html_to_text, text_to_html},
-        quoted_printable::decode_quoted_printable,
+        quoted_printable::quoted_printable_decode,
     },
     parsers::{
         fields::thread::{thread_name, trim_trailing_fwd},
@@ -43,7 +43,7 @@ fuzz_target!(|data: &[u8]| {
         MessageStream::new(data).decode_rfc2047();
 
         MessageStream::new(data).seek_next_part(b"\n");
-        MessageStream::new(data).get_mime_part(b"\n");
+        MessageStream::new(data).mime_part(b"\n");
         MessageStream::new(data).seek_part_end(b"\n"[..].into());
         MessageStream::new(data).skip_crlf();
         MessageStream::new(data).is_multipart_end();
@@ -66,7 +66,7 @@ fuzz_target!(|data: &[u8]| {
 
         // Fuzz decoding functions
         decode_hex(data);
-        get_charset_decoder(data);
+        charset_decoder(data);
 
         for decoder in &[
             decoder_utf7,

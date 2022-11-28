@@ -58,7 +58,7 @@ impl<'x> MessageStream<'x> {
         None
     }
 
-    pub fn get_mime_part(&mut self, boundary: &[u8]) -> (usize, Cow<'x, [u8]>) {
+    pub fn mime_part(&mut self, boundary: &[u8]) -> (usize, Cow<'x, [u8]>) {
         let mut last_ch = b'\n';
         let mut before_last_ch = 0;
         let start_pos = self.offset();
@@ -81,7 +81,7 @@ impl<'x> MessageStream<'x> {
                 if before_last_ch != b'\n' {
                     end_pos = self.offset() - boundary.len() - 2;
                 }
-                return (end_pos, self.get_bytes(start_pos..end_pos).into());
+                return (end_pos, self.bytes(start_pos..end_pos).into());
             }
 
             before_last_ch = last_ch;
@@ -95,7 +95,7 @@ impl<'x> MessageStream<'x> {
                 self.restore();
                 usize::MAX
             },
-            self.get_bytes(start_pos..self.len()).into(),
+            self.bytes(start_pos..self.len()).into(),
         )
     }
 

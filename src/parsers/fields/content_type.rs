@@ -12,7 +12,7 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{charsets::map::get_charset_decoder, hex::decode_hex},
+    decoders::{charsets::map::charset_decoder, hex::decode_hex},
     parsers::MessageStream,
     ContentType, HeaderValue,
 };
@@ -188,7 +188,7 @@ impl<'x> ContentTypeParser<'x> {
                     value = if let Some(decoder) = self
                         .attr_charset
                         .as_ref()
-                        .and_then(|c| get_charset_decoder(c.as_bytes()))
+                        .and_then(|c| charset_decoder(c.as_bytes()))
                     {
                         decoder(&decoded_bytes).into()
                     } else {
@@ -243,7 +243,7 @@ impl<'x> ContentTypeParser<'x> {
         for (key, _, value) in continuations.drain(..) {
             if let Some((_, old_value)) = self.attributes.iter_mut().find(|(name, _)| name == &key)
             {
-                *old_value = format!("{}{}", old_value.to_owned(), value).into();
+                *old_value = format!("{}{}", old_value, value).into();
             } else {
                 self.attributes.push((key, value));
             }

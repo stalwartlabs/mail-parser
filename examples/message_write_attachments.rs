@@ -59,15 +59,15 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 }
 
 fn write_attachments(message: &Message) {
-    for attachment in message.get_attachments() {
+    for attachment in message.attachments() {
         if !attachment.is_message() {
             std::fs::write(
-                attachment.get_attachment_name().unwrap_or("Untitled"),
-                attachment.get_contents(),
+                attachment.attachment_name().unwrap_or("Untitled"),
+                attachment.contents(),
             )
             .unwrap();
         } else {
-            write_attachments(attachment.get_message().unwrap());
+            write_attachments(attachment.message().unwrap());
         }
     }
 }

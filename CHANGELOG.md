@@ -1,3 +1,8 @@
+mail-parser 0.8.0
+================================
+- Removed get_() prefixes (#31).
+- Maildir import: Use modified time instead of created time (#32)
+
 mail-parser 0.7.0
 ================================
 - Base64/QuotedPrintable decoding optimizations.

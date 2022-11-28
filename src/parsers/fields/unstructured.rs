@@ -25,7 +25,7 @@ impl<'x> UnstructuredParser<'x> {
                 self.tokens.push(" ".into());
             }
             self.tokens.push(String::from_utf8_lossy(
-                stream.get_bytes(self.token_start - 1..self.token_end),
+                stream.bytes(self.token_start - 1..self.token_end),
             ));
 
             if add_space {

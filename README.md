@@ -79,7 +79,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(
-        message.get_from(),
+        message.from(),
         &HeaderValue::Address(Addr::new(
             "Art Vandelay (Vandelay Industries)".into(),
             "art@vandelay.com"
@@ -87,7 +87,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_to(),
+        message.to(),
         &HeaderValue::GroupList(vec![
             Group::new(
                 "Colleagues",
@@ -104,19 +104,19 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_date().unwrap().to_rfc3339(),
+        message.date().unwrap().to_rfc3339(),
         "2021-11-20T14:22:01-08:00"
     );
 
     // RFC2047 support for encoded text in message readers
     assert_eq!(
-        message.get_subject().unwrap(),
+        message.subject().unwrap(),
         "Why not both importing AND exporting? ☺"
     );
 
     // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
     assert_eq!(
-        message.get_html_body(0).unwrap(),
+        message.html_body(0).unwrap(),
         concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -126,7 +126,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // HTML parts are converted to plain text (and viceversa) when missing
     assert_eq!(
-        message.get_text_body(0).unwrap(),
+        message.text_body(0).unwrap(),
         concat!(
             "I was thinking about quitting the “exporting” to focus just on the",
             " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -135,33 +135,33 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Supports nested messages as well as multipart/digest
     let nested_message = message
-        .get_attachment(0)
+        .attachment(0)
         .unwrap()
-        .get_message();
+        .message();
         .unwrap();
 
     assert_eq!(
-        nested_message.get_subject().unwrap(),
+        nested_message.subject().unwrap(),
         "Exporting my book about coffee tables"
     );
 
     // Handles UTF-* as well as many legacy encodings
     assert_eq!(
-        nested_message.get_text_body(0).unwrap(),
+        nested_message.text_body(0).unwrap(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
     assert_eq!(
-        nested_message.get_html_body(0).unwrap(),
+        nested_message.html_body(0).unwrap(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 
-    let nested_attachment = nested_message.get_attachment(0).unwrap();
+    let nested_attachment = nested_message.attachment(0).unwrap();
 
     assert_eq!(nested_attachment.len(), 42);
 
     // Full RFC2231 support for continuations and character sets
     assert_eq!(
-        nested_attachment.get_attachment_name().unwrap(),
+        nested_attachment.attachment_name().unwrap(),
         "Book about ☕ tables.gif"
     );
 

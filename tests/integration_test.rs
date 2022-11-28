@@ -65,7 +65,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_from(),
+        message.from(),
         &HeaderValue::Address(Addr::new(
             "Art Vandelay (Vandelay Industries)".into(),
             "art@vandelay.com"
@@ -73,7 +73,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_to(),
+        message.to(),
         &HeaderValue::GroupList(vec![
             Group::new(
                 "Colleagues",
@@ -90,17 +90,17 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_date().unwrap().to_rfc3339(),
+        message.date().unwrap().to_rfc3339(),
         "2021-11-20T14:22:01-08:00"
     );
 
     assert_eq!(
-        message.get_subject().unwrap(),
+        message.subject().unwrap(),
         "Why not both importing AND exporting? ☺"
     );
 
     assert_eq!(
-        message.get_html_body(0).unwrap(),
+        message.html_body(0).unwrap(),
         concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -109,36 +109,36 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.get_text_body(0).unwrap(),
+        message.text_body(0).unwrap(),
         concat!(
             "I was thinking about quitting the “exporting” to focus just on the",
             " “importing”,\nbut then I thought, why not do both? ☺\n"
         )
     );
 
-    let nested_message = message.get_attachment(0).unwrap().get_message().unwrap();
+    let nested_message = message.attachment(0).unwrap().message().unwrap();
 
     assert_eq!(
-        nested_message.get_subject().unwrap(),
+        nested_message.subject().unwrap(),
         "Exporting my book about coffee tables"
     );
 
     assert_eq!(
-        nested_message.get_text_body(0).unwrap(),
+        nested_message.text_body(0).unwrap(),
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
 
     assert_eq!(
-        nested_message.get_html_body(0).unwrap(),
+        nested_message.html_body(0).unwrap(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 
-    let nested_attachment = nested_message.get_attachment(0).unwrap();
+    let nested_attachment = nested_message.attachment(0).unwrap();
 
     assert_eq!(nested_attachment.len(), 42);
 
     assert_eq!(
-        nested_attachment.get_attachment_name().unwrap(),
+        nested_attachment.attachment_name().unwrap(),
         "Book about ☕ tables.gif"
     );
 }

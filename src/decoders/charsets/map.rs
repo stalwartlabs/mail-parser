@@ -16,7 +16,7 @@ use super::{
     DecoderFnc,
 };
 
-pub fn get_charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
+pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
     if (2..=45).contains(&charset.len()) {
         let mut l_charset = [0u8; 45];
         let mut hash: u32 = charset.len() as u32;
@@ -83,10 +83,10 @@ pub fn no_op(_bytes: &[u8]) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::get_charset_decoder;
+    use super::charset_decoder;
 
     #[test]
-    fn get_decoder_charset() {
+    fn decoder_charset() {
         let inputs = [
             "l8",
             //"utf-8",
@@ -99,7 +99,7 @@ mod tests {
 
         for input in inputs {
             assert!(
-                get_charset_decoder(input.as_bytes()).is_some(),
+                charset_decoder(input.as_bytes()).is_some(),
                 "Failed for '{}'",
                 input
             );
