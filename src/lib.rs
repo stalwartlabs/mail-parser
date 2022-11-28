@@ -195,7 +195,7 @@
 //!
 //!    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
 //!    assert_eq!(
-//!        message.html_body(0).unwrap(),
+//!        message.body_html(0).unwrap(),
 //!        concat!(
 //!            "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
 //!            "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -205,7 +205,7 @@
 //!
 //!    // HTML parts are converted to plain text (and viceversa) when missing
 //!    assert_eq!(
-//!        message.text_body(0).unwrap(),
+//!        message.body_text(0).unwrap(),
 //!        concat!(
 //!            "I was thinking about quitting the “exporting” to focus just on the",
 //!            " “importing”,\nbut then I thought, why not do both? ☺\n"
@@ -226,11 +226,11 @@
 //!
 //!    // Handles UTF-* as well as many legacy encodings
 //!    assert_eq!(
-//!        nested_message.text_body(0).unwrap(),
+//!        nested_message.body_text(0).unwrap(),
 //!        "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
 //!    );
 //!    assert_eq!(
-//!        nested_message.html_body(0).unwrap(),
+//!        nested_message.body_html(0).unwrap(),
 //!        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
 //!    );
 //!
@@ -1248,16 +1248,16 @@ impl<'x> Message<'x> {
     /// Returns a preview of the message body
     pub fn body_preview(&self, preview_len: usize) -> Option<Cow<'x, str>> {
         if !self.text_body.is_empty() {
-            preview_text(self.text_body(0)?, preview_len).into()
+            preview_text(self.body_text(0)?, preview_len).into()
         } else if !self.html_body.is_empty() {
-            preview_html(self.html_body(0)?, preview_len).into()
+            preview_html(self.body_html(0)?, preview_len).into()
         } else {
             None
         }
     }
 
-    /// Returns the transformed contents an inline HTML body part by position
-    pub fn html_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
+    /// Returns a message body part as text/plain
+    pub fn body_html(&'x self, pos: usize) -> Option<Cow<'x, str>> {
         let part = self.parts.get(*self.html_body.get(pos)?)?;
         match &part.body {
             PartType::Html(html) => Some(html.as_ref().into()),
@@ -1266,9 +1266,9 @@ impl<'x> Message<'x> {
         }
     }
 
-    /// Returns the transformed contents an inline text body part by position
-    pub fn text_body(&'x self, pos: usize) -> Option<Cow<'x, str>> {
-        let part = self.parts.get(*self.html_body.get(pos)?)?;
+    /// Returns a message body part as text/plain
+    pub fn body_text(&'x self, pos: usize) -> Option<Cow<'x, str>> {
+        let part = self.parts.get(*self.text_body.get(pos)?)?;
         match &part.body {
             PartType::Text(text) => Some(text.as_ref().into()),
             PartType::Html(html) => Some(html_to_text(html.as_ref()).into()),
