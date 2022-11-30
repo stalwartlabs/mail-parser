@@ -1360,6 +1360,16 @@ pub trait MimeHeaders<'x> {
             .and_then(|cd| cd.attribute("filename"))
             .or_else(|| self.content_type().and_then(|ct| ct.attribute("name")))
     }
+    // Returns true is the content type matches
+    fn is_content_type(&self, type_: &str, subtype: &str) -> bool {
+        self.content_type().map_or(false, |ct| {
+            ct.c_type.eq_ignore_ascii_case(type_)
+                && ct
+                    .c_subtype
+                    .as_ref()
+                    .map_or(false, |st| st.eq_ignore_ascii_case(subtype))
+        })
+    }
 }
 
 impl<'x> MimeHeaders<'x> for Message<'x> {

@@ -20,7 +20,7 @@ pub static MONTH: &[&str] = &[
 
 impl DateTime {
     /// Parses an RFC822 date
-    pub fn parse_rfc822(&self, value: &str) -> Option<Self> {
+    pub fn parse_rfc822(value: &str) -> Option<Self> {
         match MessageStream::new(value.as_bytes()).parse_date() {
             HeaderValue::DateTime(dt) => dt.into(),
             _ => None,
