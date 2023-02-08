@@ -254,8 +254,7 @@ mod tests {
                 MessageStream::new(input.as_bytes())
                     .parse_header_name()
                     .unwrap(),
-                "Failed to parse '{:?}'",
-                input
+                "Failed to parse '{input:?}'",
             );
         }
     }

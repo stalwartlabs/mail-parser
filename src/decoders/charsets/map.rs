@@ -86,6 +86,7 @@ mod tests {
     use super::charset_decoder;
 
     #[test]
+    #[allow(clippy::uninlined_format_args)]
     fn decoder_charset() {
         let inputs = [
             "l8",
@@ -100,7 +101,7 @@ mod tests {
         for input in inputs {
             assert!(
                 charset_decoder(input.as_bytes()).is_some(),
-                "Failed for '{}'",
+                "Failed for {}",
                 input
             );
         }

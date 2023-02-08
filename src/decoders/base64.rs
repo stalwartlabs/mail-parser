@@ -325,8 +325,7 @@ mod tests {
             assert_eq!(
                 super::base64_decode(encoded_str.as_bytes()).unwrap_or_default(),
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }
@@ -357,8 +356,7 @@ mod tests {
             assert_eq!(
                 result,
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }
@@ -376,8 +374,7 @@ mod tests {
             assert_eq!(
                 s.decode_base64_word().unwrap(),
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }

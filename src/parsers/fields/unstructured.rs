@@ -195,8 +195,7 @@ mod tests {
                     .parse_unstructured()
                     .unwrap_text(),
                 expected_result,
-                "Failed to parse '{:?}'",
-                input
+                "Failed to parse '{input:?}'",
             );
         }
     }

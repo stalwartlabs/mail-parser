@@ -331,8 +331,7 @@ mod tests {
             assert_eq!(
                 super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default(),
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }
@@ -394,8 +393,7 @@ mod tests {
             assert_eq!(
                 result,
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }
@@ -423,8 +421,7 @@ mod tests {
             assert_eq!(
                 s.decode_quoted_printable_word().unwrap_or_default(),
                 expected_result.as_bytes(),
-                "Failed for {:?}",
-                encoded_str
+                "Failed for {encoded_str:?}",
             );
         }
     }

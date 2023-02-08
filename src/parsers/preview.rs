@@ -13,11 +13,11 @@ use std::borrow::Cow;
 
 use crate::decoders::html::html_to_text;
 
-pub fn preview_html<'x, 'y>(html: Cow<'y, str>, max_len: usize) -> Cow<'x, str> {
+pub fn preview_html<'x>(html: Cow<'_, str>, max_len: usize) -> Cow<'x, str> {
     preview_text(html_to_text(html.as_ref()).into(), max_len)
 }
 
-pub fn preview_text<'x, 'y>(text: Cow<'y, str>, mut max_len: usize) -> Cow<'x, str> {
+pub fn preview_text<'x>(text: Cow<'_, str>, mut max_len: usize) -> Cow<'x, str> {
     if text.len() > max_len {
         let add_dots = max_len > 6;
         if add_dots {
@@ -39,11 +39,11 @@ pub fn preview_text<'x, 'y>(text: Cow<'y, str>, mut max_len: usize) -> Cow<'x, s
     }
 }
 
-pub fn truncate_text<'x, 'y>(text: Cow<'y, str>, max_len: usize) -> Cow<'x, str> {
+pub fn truncate_text<'x>(text: Cow<'_, str>, max_len: usize) -> Cow<'x, str> {
     preview_text(text, max_len)
 }
 
-pub fn truncate_html<'x, 'y>(html: Cow<'y, str>, mut max_len: usize) -> Cow<'x, str> {
+pub fn truncate_html<'x>(html: Cow<'_, str>, mut max_len: usize) -> Cow<'x, str> {
     if html.len() > max_len {
         let add_dots = max_len > 6;
         if add_dots {

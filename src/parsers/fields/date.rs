@@ -423,7 +423,7 @@ impl<'x> MessageStream<'x> {
                     parts[2]
                 } as u16,
                 month: if month_pos == 3 && month_hash <= 30 {
-                    MONTH_MAP[month_hash] as u8
+                    MONTH_MAP[month_hash]
                 } else {
                     parts[1] as u8
                 },

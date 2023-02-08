@@ -243,7 +243,7 @@ impl<'x> ContentTypeParser<'x> {
         for (key, _, value) in continuations.drain(..) {
             if let Some((_, old_value)) = self.attributes.iter_mut().find(|(name, _)| name == &key)
             {
-                *old_value = format!("{}{}", old_value, value).into();
+                *old_value = format!("{old_value}{value}").into();
             } else {
                 self.attributes.push((key, value));
             }

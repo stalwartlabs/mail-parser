@@ -275,7 +275,7 @@ mod tests {
         ];
 
         for (input, expected) in tests {
-            assert_eq!(thread_name(input), expected, "{:?}", input);
+            assert_eq!(thread_name(input), expected, "{input:?}");
         }
     }
 
@@ -302,7 +302,7 @@ mod tests {
         ];
 
         for (input, expected) in tests {
-            assert_eq!(trim_trailing_fwd(input), expected, "{:?}", input);
+            assert_eq!(trim_trailing_fwd(input), expected, "{input:?}");
         }
     }
 }
