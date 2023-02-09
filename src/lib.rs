@@ -983,6 +983,14 @@ impl<'x> Message<'x> {
         })
     }
 
+    /// Returns the raw message
+    pub fn raw_message(&self) -> &[u8] {
+        let part = &self.parts[0];
+        self.raw_message
+            .get(part.offset_header..part.offset_end)
+            .unwrap_or_default()
+    }
+
     /// Returns the BCC header field
     pub fn bcc(&self) -> &HeaderValue {
         self.parts[0]

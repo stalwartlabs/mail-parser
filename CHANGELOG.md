@@ -1,3 +1,7 @@
+mail-parser 0.8.1
+================================
+- Added `raw_message()` function.
+
 mail-parser 0.8.0
 ================================
 - Removed get_() prefixes (#31).
