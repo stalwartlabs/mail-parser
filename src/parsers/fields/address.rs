@@ -231,7 +231,7 @@ impl<'x> MessageStream<'x> {
                         break;
                     }
                 }
-                b'\\' if parser.state != AddressState::Name => {
+                b'\\' if parser.state != AddressState::Name && !parser.is_escaped => {
                     if parser.token_start > 0 {
                         if parser.state == AddressState::Quote {
                             parser.token_end = self.offset() - 1;
@@ -987,6 +987,15 @@ mod tests {
                     "Address:\n",
                     "  name: Contact Person for Help\n",
                     "  address: \"mailto:listmom@host.com\"\n"
+                ),
+            ),
+            (
+                r#""\\\\\\\\S. NIG\\\\\\\\" <first.last@host.com>"#,
+                concat!(
+                    "---\n",
+                    "Address:\n",
+                    "  name: \"\\\\\\\\\\\\\\\\S. NIG\\\\\\\\\\\\\\\\\"\n",
+                    "  address: first.last@host.com\n",
                 ),
             ),
         ];
