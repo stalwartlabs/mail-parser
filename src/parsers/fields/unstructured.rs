@@ -16,10 +16,11 @@ struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
     tokens: Vec<Cow<'x, str>>,
+    last_is_encoded: bool,
 }
 
 impl<'x> UnstructuredParser<'x> {
-    fn add_token(&mut self, stream: &MessageStream<'x>, add_space: bool) {
+    fn add_token(&mut self, stream: &MessageStream<'x>) {
         if self.token_start > 0 {
             if !self.tokens.is_empty() {
                 self.tokens.push(" ".into());
@@ -28,12 +29,17 @@ impl<'x> UnstructuredParser<'x> {
                 stream.bytes(self.token_start - 1..self.token_end),
             ));
 
-            if add_space {
-                self.tokens.push(" ".into());
-            }
-
             self.token_start = 0;
+            self.last_is_encoded = false;
         }
+    }
+
+    fn add_rfc2047(&mut self, token: String) {
+        if !self.last_is_encoded {
+            self.tokens.push(" ".into());
+        }
+        self.tokens.push(token.into());
+        self.last_is_encoded = true;
     }
 }
 
@@ -43,12 +49,13 @@ impl<'x> MessageStream<'x> {
             token_start: 0,
             token_end: 0,
             tokens: Vec::new(),
+            last_is_encoded: true,
         };
 
         while let Some(ch) = self.next() {
             match ch {
                 b'\n' => {
-                    parser.add_token(self, false);
+                    parser.add_token(self);
 
                     if !self.try_next_is_space() {
                         return match parser.tokens.len() {
@@ -66,8 +73,8 @@ impl<'x> MessageStream<'x> {
                 b'=' if self.peek_char(b'?') => {
                     self.checkpoint();
                     if let Some(token) = self.decode_rfc2047() {
-                        parser.add_token(self, true);
-                        parser.tokens.push(token.into());
+                        parser.add_token(self);
+                        parser.add_rfc2047(token);
                         continue;
                     }
                     self.restore();
@@ -185,6 +192,11 @@ mod tests {
             (
                 "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\r\n 3JpZ2luYWwgc3ViamVjdA==?=\r\n",
                 "[SUSPECTED SPAM] This is the original subject",
+                true,
+            ),
+            (
+                "Les Communs - =?utf-8?Q?R=C3=A9capitulatif?= de la\r\n =?utf-8?Q?r=C3=A9servation?= 13510164434879\r\n",
+                "Les Communs - Récapitulatif de la réservation 13510164434879",
                 true,
             ),
         ];
