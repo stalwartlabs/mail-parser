@@ -1,3 +1,8 @@
+mail-parser 0.8.2
+================================
+-  Fix: Parsing address name with \ characters (#41) 
+-  Fix: Missing space when folded header begins with RFC2047 word (#43) 
+
 mail-parser 0.8.1
 ================================
 - Added `raw_message()` function.
@@ -25,7 +30,7 @@ mail-parser 0.6.1
 mail-parser 0.6.0
 ================================
 - Maildir parsing support.
-- Headers and attributes are now stored in a `Vec` instead of a `HashMap` for tiny performance enhancement.
+- Headers and attributes are now stored in a `Vec` instead of a `HashMap` for a tiny performance enhancement.
 - Support for Content-Type attributes spanning multiple lines.
 - Support for malformed Thunderbird messages (#27). 
 - Fixed raw offset range for body parts.
