@@ -304,10 +304,11 @@ pub struct MessagePart<'x> {
 }
 
 /// MIME Part encoding type
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 #[repr(u8)]
 pub enum Encoding {
+    #[default]
     None = 0,
     QuotedPrintable = 1,
     Base64 = 2,
@@ -320,12 +321,6 @@ impl From<u8> for Encoding {
             2 => Encoding::Base64,
             _ => Encoding::None,
         }
-    }
-}
-
-impl Default for Encoding {
-    fn default() -> Self {
-        Encoding::None
     }
 }
 
@@ -714,7 +709,7 @@ impl Display for RfcHeader {
 }
 
 /// Parsed header value.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum HeaderValue<'x> {
     /// Single address
@@ -741,13 +736,8 @@ pub enum HeaderValue<'x> {
     /// Content-Type or Content-Disposition header
     ContentType(ContentType<'x>),
 
+    #[default]
     Empty,
-}
-
-impl<'x> Default for HeaderValue<'x> {
-    fn default() -> Self {
-        HeaderValue::Empty
-    }
 }
 
 impl<'x> HeaderValue<'x> {

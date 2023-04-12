@@ -22,7 +22,7 @@ pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
         let mut hash: u32 = charset.len() as u32;
 
         for (pos, ch) in charset.iter().enumerate() {
-            let ch = if (b'A'..=b'Z').contains(ch) {
+            let ch = if ch.is_ascii_uppercase() {
                 *ch + 32
             } else {
                 *ch

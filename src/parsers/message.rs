@@ -21,7 +21,7 @@ use super::MessageStream;
 
 const MAX_NESTED_ENCODED: usize = 3;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
 enum MimeType {
     MultipartMixed,
     MultipartAlernative,
@@ -31,14 +31,9 @@ enum MimeType {
     TextHtml,
     TextOther,
     Inline,
+    #[default]
     Message,
     Other,
-}
-
-impl Default for MimeType {
-    fn default() -> Self {
-        MimeType::Message
-    }
 }
 
 #[inline(always)]

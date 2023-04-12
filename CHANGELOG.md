@@ -1,7 +1,7 @@
 mail-parser 0.8.2
 ================================
--  Fix: Parsing address name with \ characters (#41) 
--  Fix: Missing space when folded header begins with RFC2047 word (#43) 
+- Fix: Parsing address name with \ characters (#41) 
+- Fix: Missing space when folded header begins with RFC2047 word (#43) 
 
 mail-parser 0.8.1
 ================================
