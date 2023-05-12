@@ -196,17 +196,18 @@ impl Iterator for MessageIterator {
             if path.is_file() {
                 if let Some(name) = path.file_name().and_then(|name| name.to_str()) {
                     if !name.starts_with('.') {
-                        let internal_date =
-                            match fs::metadata(&path).and_then(|m| m.modified()).and_then(|d| {
+                        let internal_date = match fs::metadata(&path)
+                            .and_then(|m| m.modified())
+                            .and_then(|d| {
                                 d.duration_since(std::time::UNIX_EPOCH)
                                     .map(|d| d.as_secs())
                                     .map_err(|e| {
                                         io::Error::new(io::ErrorKind::InvalidData, e.to_string())
                                     })
                             }) {
-                                Ok(metadata) => metadata,
-                                Err(err) => return Some(Err(err)),
-                            };
+                            Ok(metadata) => metadata,
+                            Err(err) => return Some(Err(err)),
+                        };
                         let contents = match fs::read(&path) {
                             Ok(contents) => contents,
                             Err(err) => return Some(Err(err)),
