@@ -553,13 +553,11 @@ mod tests {
                             ((datetime.tz_hour as i32 * 3600i32) + datetime.tz_minute as i32 * 60)
                                 * if datetime.tz_before_gmt { 1i32 } else { -1i32 },
                         )
-                        .unwrap_or_else(|| FixedOffset::east(0))
-                        .ymd_opt(
+                        .unwrap_or_else(|| FixedOffset::east_opt(0).unwrap())
+                        .with_ymd_and_hms(
                             datetime.year as i32,
                             datetime.month as u32,
                             datetime.day as u32,
-                        )
-                        .and_hms_opt(
                             datetime.hour as u32,
                             datetime.minute as u32,
                             datetime.second as u32,

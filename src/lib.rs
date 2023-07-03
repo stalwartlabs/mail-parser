@@ -263,6 +263,7 @@ use decoders::html::{html_to_text, text_to_html};
 use parsers::{
     fields::thread::thread_name,
     preview::{preview_html, preview_text},
+    MessageStream,
 };
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
@@ -740,6 +741,18 @@ pub enum HeaderValue<'x> {
     Empty,
 }
 
+/// Header form
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+pub enum HeaderForm {
+    Raw,
+    Text,
+    Addresses,
+    GroupedAddresses,
+    MessageIds,
+    Date,
+    URLs,
+}
+
 impl<'x> HeaderValue<'x> {
     pub fn is_empty(&self) -> bool {
         *self == HeaderValue::Empty
@@ -936,11 +949,39 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the raw header.
-    pub fn header_raw(&self, header: &str) -> Option<&str> {
+    pub fn header_raw(&self, header_name: &str) -> Option<&str> {
         self.parts[0]
             .headers
-            .header(header)
+            .header(header_name)
             .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
+    }
+
+    // Parse a header as a specific type.
+    pub fn header_as(&self, header_name: &str, form: HeaderForm) -> Vec<HeaderValue> {
+        let mut results = Vec::new();
+        for header in &self.parts[0].headers {
+            if header.name.as_str().eq_ignore_ascii_case(header_name) {
+                results.push(
+                    self.raw_message
+                        .get(header.offset_start..header.offset_end)
+                        .map_or(HeaderValue::Empty, |bytes| match form {
+                            HeaderForm::Raw => HeaderValue::Text(
+                                std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
+                            ),
+                            HeaderForm::Text => MessageStream::new(bytes).parse_unstructured(),
+                            HeaderForm::Addresses => MessageStream::new(bytes).parse_address(),
+                            HeaderForm::GroupedAddresses => {
+                                MessageStream::new(bytes).parse_address()
+                            }
+                            HeaderForm::MessageIds => MessageStream::new(bytes).parse_id(),
+                            HeaderForm::Date => MessageStream::new(bytes).parse_date(),
+                            HeaderForm::URLs => MessageStream::new(bytes).parse_address(),
+                        }),
+                );
+            }
+        }
+
+        results
     }
 
     /// Returns an iterator over the RFC headers of this message.
