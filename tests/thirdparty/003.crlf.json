@@ -225,7 +225,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Text": "Move ♚ to ♛'s ♝\n"
+        "Text": "Move ♚ to ♛'s ♝\r\n"
       },
       "offset_header": 417,
       "offset_body": 519,

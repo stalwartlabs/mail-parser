@@ -175,7 +175,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Text": "There was a day \na happy day\n"
+        "Text": "There was a day \r\na happy day\r\n"
       },
       "offset_header": 372,
       "offset_body": 445,

@@ -82,7 +82,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Text": "päivää\n"
+        "Text": "päivää\r\n"
       },
       "offset_header": 54,
       "offset_body": 142,

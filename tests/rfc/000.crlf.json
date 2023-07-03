@@ -401,7 +401,7 @@
               ],
               "is_encoding_problem": false,
               "body": {
-                "Text": "... Additional text in ISO-8859-1 goes here ...\n"
+                "Text": "... Additional text in ISO-8859-1 goes here ...\r\n"
               },
               "offset_header": 1670,
               "offset_body": 1851,

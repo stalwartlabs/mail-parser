@@ -117,6 +117,7 @@ impl<'x> MessageStream<'x> {
         let mut before_last_ch = 0;
         let mut ws_count = 0;
         let mut end_pos = self.offset();
+        let mut crlf = b"\n".as_ref();
 
         self.checkpoint();
 
@@ -142,14 +143,16 @@ impl<'x> MessageStream<'x> {
                         if ws_count > 0 {
                             buf.truncate(buf.len() - ws_count);
                         }
-                        buf.push(b'\n');
+                        buf.extend_from_slice(crlf);
                     }
                     ws_count = 0;
                 }
-                b'\r' => (),
+                b'\r' => {
+                    crlf = b"\r\n".as_ref();
+                }
                 b'-' if !boundary.is_empty() && last_ch == b'-' && self.try_skip(boundary) => {
                     if before_last_ch == b'\n' {
-                        buf.truncate(buf.len() - 2);
+                        buf.truncate(buf.len() - (crlf.len() + 1));
                     } else {
                         buf.truncate(buf.len() - 1);
                         end_pos = self.offset() - boundary.len() - 2;
@@ -389,20 +392,20 @@ mod tests {
                 concat!(
                     "Die Hasen klagten einst uber ihre Lage; \"wir ",
                     "leben\", sprach ein=\r\n Redner, \"in steter Furcht vor Menschen",
-                    " und Tieren, eine Beute der Hunde,=\r\n der\n\r\n--boundary \n"
+                    " und Tieren, eine Beute der Hunde,=\r\n der\r\n\r\n--boundary \n"
                 ),
                 concat!(
                     "Die Hasen klagten einst uber ihre Lage; \"wir leben\", ",
                     "sprach ein Redner, \"in steter Furcht vor Menschen und ",
-                    "Tieren, eine Beute der Hunde, der\n"
+                    "Tieren, eine Beute der Hunde, der\r\n"
                 ),
             ),
             (
                 concat!(
-                    "hello  \nbar=\n\nfoo\t=\nbar\nfoo\t \t= \n=62\nfoo = ",
-                    "\t\nbar\nfoo =\n=62\nfoo  \nbar=\n\nfoo_bar\n\n--boundary"
+                    "hello  \r\nbar=\r\n\r\nfoo\t=\r\nbar\r\nfoo\t \t= \r\n=62\r\nfoo = ",
+                    "\t\r\nbar\r\nfoo =\r\n=62\r\nfoo  \r\nbar=\r\n\r\nfoo_bar\r\n\r\n--boundary"
                 ),
-                "hello\nbar\nfoo\tbar\nfoo\t \tb\nfoo bar\nfoo b\nfoo\nbar\nfoo_bar\n",
+                "hello\r\nbar\r\nfoo\tbar\r\nfoo\t \tb\r\nfoo bar\r\nfoo b\r\nfoo\r\nbar\r\nfoo_bar\r\n",
             ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());
