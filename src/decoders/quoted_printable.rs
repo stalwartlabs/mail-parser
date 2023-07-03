@@ -167,7 +167,7 @@ impl<'x> MessageStream<'x> {
                         };
                         if hex1 != -1 {
                             state = QuotedPrintableState::Hex1;
-                        } else {
+                        } else if !ch.is_ascii_whitespace() {
                             self.restore();
                             return (usize::MAX, b""[..].into());
                         }
@@ -386,13 +386,20 @@ mod tests {
                     "Tieren, eine Beute der Hunde, der\n"
                 ),
             ),
+            (
+                concat!(
+                    "hello  \nbar=\n\nfoo\t=\nbar\nfoo\t \t= \n=62\nfoo = ",
+                    "\t\nbar\nfoo =\n=62\nfoo  \nbar=\n\nfoo_bar\n\n--boundary"
+                ),
+                "hello  \nbar\nfoo\tbar\nfoo\t \tb\nfoo bar\nfoo b\nfoo  \nbar\nfoo_bar\n",
+            ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());
-            let (_, result) = s.decode_quoted_printable_mime(b"boundary");
-
+            let (bytes_read, result) = s.decode_quoted_printable_mime(b"boundary");
+            assert_ne!(bytes_read, usize::MAX);
             assert_eq!(
-                result,
-                expected_result.as_bytes(),
+                std::str::from_utf8(result.as_ref()).unwrap(),
+                expected_result,
                 "Failed for {encoded_str:?}",
             );
         }
