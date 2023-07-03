@@ -115,6 +115,7 @@ impl<'x> MessageStream<'x> {
         let mut hex1 = 0;
         let mut last_ch = 0;
         let mut before_last_ch = 0;
+        let mut ws_count = 0;
         let mut end_pos = self.offset();
 
         self.checkpoint();
@@ -138,8 +139,12 @@ impl<'x> MessageStream<'x> {
                     if QuotedPrintableState::Eq == state {
                         state = QuotedPrintableState::None;
                     } else {
+                        if ws_count > 0 {
+                            buf.truncate(buf.len() - ws_count);
+                        }
                         buf.push(b'\n');
                     }
+                    ws_count = 0;
                 }
                 b'\r' => (),
                 b'-' if !boundary.is_empty() && last_ch == b'-' && self.try_skip(boundary) => {
@@ -154,6 +159,11 @@ impl<'x> MessageStream<'x> {
                 }
                 _ => match state {
                     QuotedPrintableState::None => {
+                        if ch.is_ascii_whitespace() {
+                            ws_count += 1;
+                        } else {
+                            ws_count = 0;
+                        }
                         buf.push(ch);
                     }
                     QuotedPrintableState::Eq => {
@@ -181,6 +191,7 @@ impl<'x> MessageStream<'x> {
                         state = QuotedPrintableState::None;
                         if hex2 != -1 {
                             buf.push(((hex1 as u8) << 4) | hex2 as u8);
+                            ws_count = 0;
                         } else {
                             self.restore();
                             return (usize::MAX, b""[..].into());
@@ -391,7 +402,7 @@ mod tests {
                     "hello  \nbar=\n\nfoo\t=\nbar\nfoo\t \t= \n=62\nfoo = ",
                     "\t\nbar\nfoo =\n=62\nfoo  \nbar=\n\nfoo_bar\n\n--boundary"
                 ),
-                "hello  \nbar\nfoo\tbar\nfoo\t \tb\nfoo bar\nfoo b\nfoo  \nbar\nfoo_bar\n",
+                "hello\nbar\nfoo\tbar\nfoo\t \tb\nfoo bar\nfoo b\nfoo\nbar\nfoo_bar\n",
             ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());
