@@ -386,7 +386,7 @@ impl<'x> Addr<'x> {
         }
     }
 
-    pub fn into_owned<'y>(self) -> Addr<'y> {
+    pub fn into_owned(self) -> Addr<'static> {
         Addr {
             name: self.name.map(|s| s.into_owned().into()),
             address: self.address.map(|s| s.into_owned().into()),
@@ -415,7 +415,7 @@ impl<'x> Group<'x> {
         }
     }
 
-    pub fn into_owned<'y>(self) -> Group<'y> {
+    pub fn into_owned(self) -> Group<'static> {
         Group {
             name: self.name.map(|s| s.into_owned().into()),
             addresses: self.addresses.into_iter().map(|a| a.into_owned()).collect(),
@@ -461,7 +461,7 @@ impl<'x> Header<'x> {
     }
 
     /// Returns an owned version of the header
-    pub fn into_owned<'y>(self) -> Header<'y> {
+    pub fn into_owned(self) -> Header<'static> {
         Header {
             name: self.name.into_owned(),
             value: self.value.into_owned(),
@@ -512,14 +512,14 @@ impl<'x> HeaderName<'x> {
         }
     }
 
-    pub fn as_owned<'y>(&self) -> HeaderName<'y> {
+    pub fn to_owned(&self) -> HeaderName<'static> {
         match self {
             HeaderName::Rfc(header) => HeaderName::Rfc(*header),
             HeaderName::Other(name) => HeaderName::Other(name.clone().into_owned().into()),
         }
     }
 
-    pub fn into_owned<'y>(self) -> HeaderName<'y> {
+    pub fn into_owned(self) -> HeaderName<'static> {
         match self {
             HeaderName::Rfc(header) => HeaderName::Rfc(header),
             HeaderName::Other(name) => HeaderName::Other(name.into_owned().into()),
@@ -819,7 +819,7 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn into_owned<'y>(self) -> HeaderValue<'y> {
+    pub fn into_owned(self) -> HeaderValue<'static> {
         match self {
             HeaderValue::Address(addr) => HeaderValue::Address(addr.into_owned()),
             HeaderValue::AddressList(list) => {
@@ -1366,7 +1366,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an owned version of the message
-    pub fn into_owned<'y>(self) -> Message<'y> {
+    pub fn into_owned(self) -> Message<'static> {
         Message {
             html_body: self.html_body,
             text_body: self.text_body,
@@ -1569,7 +1569,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns an owned version of the this part
-    pub fn into_owned<'y>(self) -> MessagePart<'y> {
+    pub fn into_owned(self) -> MessagePart<'static> {
         MessagePart {
             headers: self.headers.into_iter().map(|h| h.into_owned()).collect(),
             is_encoding_problem: self.is_encoding_problem,
