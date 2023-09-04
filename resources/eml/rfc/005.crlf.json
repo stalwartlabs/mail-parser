@@ -17,8 +17,12 @@
           },
           "value": {
             "Address": {
-              "name": "Nathaniel Borenstein",
-              "address": "nsb@bellcore.com"
+              "List": [
+                {
+                  "name": "Nathaniel Borenstein",
+                  "address": "nsb@bellcore.com"
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -31,8 +35,12 @@
           },
           "value": {
             "Address": {
-              "name": "Ned Freed",
-              "address": "ned@innosoft.com"
+              "List": [
+                {
+                  "name": "Ned Freed",
+                  "address": "ned@innosoft.com"
+                }
+              ]
             }
           },
           "offset_field": 47,

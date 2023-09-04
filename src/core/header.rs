@@ -14,8 +14,8 @@ use std::hash::Hash;
 use std::{borrow::Cow, fmt::Display};
 
 use crate::{
-    ContentType, DateTime, GetHeader, Header, HeaderName, HeaderValue, Host, Message, MessagePart,
-    MessagePartId, MimeHeaders, PartType, Received, RfcHeader,
+    Address, ContentType, DateTime, GetHeader, Header, HeaderName, HeaderValue, Host, Message,
+    MessagePart, MessagePartId, MimeHeaders, PartType, Received, RfcHeader,
 };
 
 impl<'x> Header<'x> {
@@ -68,10 +68,25 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
+    pub fn unwrap_text_list(self) -> Vec<Cow<'x, str>> {
+        match self {
+            HeaderValue::TextList(l) => l,
+            HeaderValue::Text(s) => vec![s],
+            _ => panic!("HeaderValue::unwrap_text_list called on non-TextList value"),
+        }
+    }
+
     pub fn unwrap_datetime(self) -> DateTime {
         match self {
             HeaderValue::DateTime(d) => d,
             _ => panic!("HeaderValue::unwrap_datetime called on non-DateTime value"),
+        }
+    }
+
+    pub fn unwrap_address(self) -> Address<'x> {
+        match self {
+            HeaderValue::Address(a) => a,
+            _ => panic!("HeaderValue::unwrap_address called on non-Address value"),
         }
     }
 
@@ -89,6 +104,49 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
+    pub fn into_text(self) -> Option<Cow<'x, str>> {
+        match self {
+            HeaderValue::Text(s) => Some(s),
+            _ => None,
+        }
+    }
+
+    pub fn into_text_list(self) -> Option<Vec<Cow<'x, str>>> {
+        match self {
+            HeaderValue::Text(s) => Some(vec![s]),
+            HeaderValue::TextList(l) => Some(l),
+            _ => None,
+        }
+    }
+
+    pub fn into_address(self) -> Option<Address<'x>> {
+        match self {
+            HeaderValue::Address(a) => Some(a),
+            _ => None,
+        }
+    }
+
+    pub fn into_datetime(self) -> Option<DateTime> {
+        match self {
+            HeaderValue::DateTime(d) => Some(d),
+            _ => None,
+        }
+    }
+
+    pub fn into_content_type(self) -> Option<ContentType<'x>> {
+        match self {
+            HeaderValue::ContentType(c) => Some(c),
+            _ => None,
+        }
+    }
+
+    pub fn into_received(self) -> Option<Received<'x>> {
+        match self {
+            HeaderValue::Received(r) => Some(*r),
+            _ => None,
+        }
+    }
+
     pub fn as_text(&self) -> Option<&str> {
         match *self {
             HeaderValue::Text(ref s) => Some(s),
@@ -101,6 +159,20 @@ impl<'x> HeaderValue<'x> {
         match *self {
             HeaderValue::Text(ref s) => Some(vec![s.as_ref()]),
             HeaderValue::TextList(ref l) => Some(l.iter().map(|l| l.as_ref()).collect()),
+            _ => None,
+        }
+    }
+
+    pub fn address(&self) -> &Address<'x> {
+        match *self {
+            HeaderValue::Address(ref a) => a,
+            _ => panic!("HeaderValue::address called on non-Address: {:?}", self),
+        }
+    }
+
+    pub fn as_address(&self) -> Option<&Address<'x>> {
+        match *self {
+            HeaderValue::Address(ref a) => Some(a),
             _ => None,
         }
     }
@@ -122,14 +194,14 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn as_content_type_ref(&self) -> Option<&ContentType> {
+    pub fn as_content_type(&self) -> Option<&ContentType> {
         match *self {
             HeaderValue::ContentType(ref c) => Some(c),
             _ => None,
         }
     }
 
-    pub fn as_datetime_ref(&self) -> Option<&DateTime> {
+    pub fn as_datetime(&self) -> Option<&DateTime> {
         match *self {
             HeaderValue::DateTime(ref d) => Some(d),
             _ => None,
@@ -139,13 +211,6 @@ impl<'x> HeaderValue<'x> {
     pub fn into_owned(self) -> HeaderValue<'static> {
         match self {
             HeaderValue::Address(addr) => HeaderValue::Address(addr.into_owned()),
-            HeaderValue::AddressList(list) => {
-                HeaderValue::AddressList(list.into_iter().map(|addr| addr.into_owned()).collect())
-            }
-            HeaderValue::Group(group) => HeaderValue::Group(group.into_owned()),
-            HeaderValue::GroupList(list) => {
-                HeaderValue::GroupList(list.into_iter().map(|group| group.into_owned()).collect())
-            }
             HeaderValue::Text(text) => HeaderValue::Text(text.into_owned().into()),
             HeaderValue::TextList(list) => HeaderValue::TextList(
                 list.into_iter()
@@ -172,25 +237,14 @@ impl<'x> HeaderValue<'x> {
         match self {
             HeaderValue::Text(text) => text.len(),
             HeaderValue::TextList(list) => list.iter().map(|t| t.len()).sum(),
-            HeaderValue::Address(a) => {
-                a.name.as_ref().map_or(0, |a| a.len()) + a.address.as_ref().map_or(0, |a| a.len())
-            }
-            HeaderValue::AddressList(list) => list
+            HeaderValue::Address(Address::List(list)) => list
                 .iter()
                 .map(|a| {
                     a.name.as_ref().map_or(0, |a| a.len())
                         + a.address.as_ref().map_or(0, |a| a.len())
                 })
                 .sum(),
-            HeaderValue::Group(group) => group
-                .addresses
-                .iter()
-                .map(|a| {
-                    a.name.as_ref().map_or(0, |a| a.len())
-                        + a.address.as_ref().map_or(0, |a| a.len())
-                })
-                .sum(),
-            HeaderValue::GroupList(grouplist) => grouplist
+            HeaderValue::Address(Address::Group(grouplist)) => grouplist
                 .iter()
                 .flat_map(|g| g.addresses.iter())
                 .map(|a| {
@@ -403,7 +457,7 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ContentDisposition)
-            .and_then(|header| header.as_content_type_ref())
+            .and_then(|header| header.as_content_type())
     }
 
     fn content_id(&self) -> Option<&str> {
@@ -424,7 +478,7 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ContentType)
-            .and_then(|header| header.as_content_type_ref())
+            .and_then(|header| header.as_content_type())
     }
 
     fn content_language(&self) -> &HeaderValue {
@@ -585,7 +639,7 @@ impl<'x> MimeHeaders<'x> for MessagePart<'x> {
     fn content_disposition(&self) -> Option<&ContentType> {
         self.headers
             .rfc(&RfcHeader::ContentDisposition)
-            .and_then(|header| header.as_content_type_ref())
+            .and_then(|header| header.as_content_type())
     }
 
     fn content_id(&self) -> Option<&str> {
@@ -603,7 +657,7 @@ impl<'x> MimeHeaders<'x> for MessagePart<'x> {
     fn content_type(&self) -> Option<&ContentType> {
         self.headers
             .rfc(&RfcHeader::ContentType)
-            .and_then(|header| header.as_content_type_ref())
+            .and_then(|header| header.as_content_type())
     }
 
     fn content_language(&self) -> &HeaderValue {

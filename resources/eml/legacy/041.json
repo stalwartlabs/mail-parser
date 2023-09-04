@@ -38,8 +38,12 @@
           },
           "value": {
             "Address": {
-              "name": "Doug Sauder",
-              "address": "doug@penguin.example.com"
+              "List": [
+                {
+                  "name": "Doug Sauder",
+                  "address": "doug@penguin.example.com"
+                }
+              ]
             }
           },
           "offset_field": 45,
@@ -52,8 +56,12 @@
           },
           "value": {
             "Address": {
-              "name": "Heinz Müller",
-              "address": "mueller@example.com"
+              "List": [
+                {
+                  "name": "Heinz Müller",
+                  "address": "mueller@example.com"
+                }
+              ]
             }
           },
           "offset_field": 91,

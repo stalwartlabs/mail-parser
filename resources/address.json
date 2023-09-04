@@ -2,34 +2,40 @@
   {
     "header": "John Doe <jdoe@machine.example>\n",
     "expected": {
-      "Address": {
-        "name": "John Doe",
-        "address": "jdoe@machine.example"
-      }
+      "List": [
+        {
+          "name": "John Doe",
+          "address": "jdoe@machine.example"
+        }
+      ]
     }
   },
   {
     "header": " Mary Smith <mary@example.net>\n",
     "expected": {
-      "Address": {
-        "name": "Mary Smith",
-        "address": "mary@example.net"
-      }
+      "List": [
+        {
+          "name": "Mary Smith",
+          "address": "mary@example.net"
+        }
+      ]
     }
   },
   {
     "header": "\"Joe Q. Public\" <john.q.public@example.com>\n",
     "expected": {
-      "Address": {
-        "name": "Joe Q. Public",
-        "address": "john.q.public@example.com"
-      }
+      "List": [
+        {
+          "name": "Joe Q. Public",
+          "address": "john.q.public@example.com"
+        }
+      ]
     }
   },
   {
     "header": "Mary Smith <mary@x.test>, jdoe@example.org, Who? <one@y.test>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": "Mary Smith",
           "address": "mary@x.test"
@@ -48,7 +54,7 @@
   {
     "header": "<boss@nil.test>, \"Giant; \\\"Big\\\" Box\" <sysservices@example.net>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": null,
           "address": "boss@nil.test"
@@ -63,65 +69,75 @@
   {
     "header": "A Group:Ed Jones <c@a.test>,joe@where.test,John <jdoe@one.test>;\n",
     "expected": {
-      "Group": {
-        "name": "A Group",
-        "addresses": [
-          {
-            "name": "Ed Jones",
-            "address": "c@a.test"
-          },
-          {
-            "name": null,
-            "address": "joe@where.test"
-          },
-          {
-            "name": "John",
-            "address": "jdoe@one.test"
-          }
-        ]
-      }
+      "Group": [
+        {
+          "name": "A Group",
+          "addresses": [
+            {
+              "name": "Ed Jones",
+              "address": "c@a.test"
+            },
+            {
+              "name": null,
+              "address": "joe@where.test"
+            },
+            {
+              "name": "John",
+              "address": "jdoe@one.test"
+            }
+          ]
+        }
+      ]
     }
   },
   {
     "header": "Undisclosed recipients:;\n",
     "expected": {
-      "Group": {
-        "name": "Undisclosed recipients",
-        "addresses": []
-      }
+      "Group": [
+        {
+          "name": "Undisclosed recipients",
+          "addresses": []
+        }
+      ]
     }
   },
   {
     "header": "\"Mary Smith: Personal Account\" <smith@home.example >\n",
     "expected": {
-      "Address": {
-        "name": "Mary Smith: Personal Account",
-        "address": "smith@home.example"
-      }
+      "List": [
+        {
+          "name": "Mary Smith: Personal Account",
+          "address": "smith@home.example"
+        }
+      ]
     }
   },
   {
     "header": "Pete(A nice \\) chap) <pete(his account)@silly.test(his host)>\n",
     "expected": {
-      "Address": {
-        "name": "Pete (A nice ) chap his account his host)",
-        "address": "pete@silly.test"
-      }
+      "List": [
+        {
+          "name": "Pete (A nice ) chap his account his host)",
+          "address": "pete@silly.test"
+        }
+      ]
     }
   },
   {
     "header": "Pete(A nice \n \\\n ) chap) <pete(his\n account)@silly\n .test(his host)>\n",
     "expected": {
-      "Address": {
-        "name": "Pete (A nice ) chap his account his host)",
-        "address": "pete@silly.test"
-      }
+      "List": [
+        {
+          "name": "Pete (A nice ) chap his account his host)",
+          "address": "pete@silly.test"
+        }
+      ]
     }
   },
   {
     "header": "A Group(Some people)\n        :Chris Jones <c@(Chris's host.)public.example>,\n            joe@example.org,\n     John <jdoe@one.test> (my dear friend); (the end of the group)\n",
     "expected": {
-      "GroupList": [
+      "Group": [
         {
           "name": "A Group (Some people)",
           "addresses": [
@@ -154,30 +170,34 @@
   {
     "header": "(Empty list)(start)Hidden recipients  :(nobody(that I know))  ;\n",
     "expected": {
-      "Group": {
-        "name": "Hidden recipients (Empty list start)",
-        "addresses": [
-          {
-            "name": "nobody(that I know)",
-            "address": null
-          }
-        ]
-      }
+      "Group": [
+        {
+          "name": "Hidden recipients (Empty list start)",
+          "addresses": [
+            {
+              "name": "nobody(that I know)",
+              "address": null
+            }
+          ]
+        }
+      ]
     }
   },
   {
     "header": "Joe Q. Public <john.q.public@example.com>\n",
     "expected": {
-      "Address": {
-        "name": "Joe Q. Public",
-        "address": "john.q.public@example.com"
-      }
+      "List": [
+        {
+          "name": "Joe Q. Public",
+          "address": "john.q.public@example.com"
+        }
+      ]
     }
   },
   {
     "header": "Mary Smith <@node.test:mary@example.net>, , jdoe@test  . example\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": "Mary Smith",
           "address": "@node.test:mary@example.net"
@@ -192,70 +212,84 @@
   {
     "header": "John Doe <jdoe@machine(comment).  example>\n",
     "expected": {
-      "Address": {
-        "name": "John Doe (comment)",
-        "address": "jdoe@machine.  example"
-      }
+      "List": [
+        {
+          "name": "John Doe (comment)",
+          "address": "jdoe@machine.  example"
+        }
+      ]
     }
   },
   {
     "header": "Mary Smith\n    \n\t<mary@example.net>\n",
     "expected": {
-      "Address": {
-        "name": "Mary Smith",
-        "address": "mary@example.net"
-      }
+      "List": [
+        {
+          "name": "Mary Smith",
+          "address": "mary@example.net"
+        }
+      ]
     }
   },
   {
     "header": "=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>\n",
     "expected": {
-      "Address": {
-        "name": "Keith Moore",
-        "address": "moore@cs.utk.edu"
-      }
+      "List": [
+        {
+          "name": "Keith Moore",
+          "address": "moore@cs.utk.edu"
+        }
+      ]
     }
   },
   {
     "header": "John =?US-ASCII*EN?Q?Doe?= <moore@cs.utk.edu>\n",
     "expected": {
-      "Address": {
-        "name": "John Doe",
-        "address": "moore@cs.utk.edu"
-      }
+      "List": [
+        {
+          "name": "John Doe",
+          "address": "moore@cs.utk.edu"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>\n",
     "expected": {
-      "Address": {
-        "name": "Keld Jørn Simonsen",
-        "address": "keld@dkuug.dk"
-      }
+      "List": [
+        {
+          "name": "Keld Jørn Simonsen",
+          "address": "keld@dkuug.dk"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?Andr=E9?= Pirard <PIRARD@vm1.ulg.ac.be>\n",
     "expected": {
-      "Address": {
-        "name": "André Pirard",
-        "address": "PIRARD@vm1.ulg.ac.be"
-      }
+      "List": [
+        {
+          "name": "André Pirard",
+          "address": "PIRARD@vm1.ulg.ac.be"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?Olle_J=E4rnefors?= <ojarnef@admin.kth.se>\n",
     "expected": {
-      "Address": {
-        "name": "Olle Järnefors",
-        "address": "ojarnef@admin.kth.se"
-      }
+      "List": [
+        {
+          "name": "Olle Järnefors",
+          "address": "ojarnef@admin.kth.se"
+        }
+      ]
     }
   },
   {
     "header": "ietf-822@dimacs.rutgers.edu, ojarnef@admin.kth.se\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": null,
           "address": "ietf-822@dimacs.rutgers.edu"
@@ -270,16 +304,18 @@
   {
     "header": "Nathaniel Borenstein <nsb@thumper.bellcore.com>\n    (=?iso-8859-8?b?7eXs+SDv4SDp7Oj08A==?=)\n",
     "expected": {
-      "Address": {
-        "name": "Nathaniel Borenstein (םולש ןב ילטפנ)",
-        "address": "nsb@thumper.bellcore.com"
-      }
+      "List": [
+        {
+          "name": "Nathaniel Borenstein (םולש ןב ילטפנ)",
+          "address": "nsb@thumper.bellcore.com"
+        }
+      ]
     }
   },
   {
     "header": "Greg Vaudreuil <gvaudre@NRI.Reston.VA.US>, Ned Freed\n      <ned@innosoft.com>, Keith Moore <moore@cs.utk.edu>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": "Greg Vaudreuil",
           "address": "gvaudre@NRI.Reston.VA.US"
@@ -298,88 +334,106 @@
   {
     "header": "=?ISO-8859-1?Q?a?= <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": "a",
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": "a",
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "\"=?ISO-8859-1?Q?a?= b\" <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": "a b",
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": "a b",
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?= <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": "ab",
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": "ab",
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?a?=\n   =?ISO-8859-1?Q?b?= <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": "ab",
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": "ab",
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "=?ISO-8859-1?Q?a?= \"=?ISO-8859-2?Q?_b?=\" <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": "a b",
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": "a b",
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": " <test@test.com>\n",
     "expected": {
-      "Address": {
-        "name": null,
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": null,
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "test@test.com\ninvalid@address.com\n",
     "expected": {
-      "Address": {
-        "name": null,
-        "address": "test@test.com"
-      }
+      "List": [
+        {
+          "name": null,
+          "address": "test@test.com"
+        }
+      ]
     }
   },
   {
     "header": "\"=?ISO-8859-1?Q =?ISO-8859-1?Q?a?= \\\" =?ISO-8859-1?Q?b?=\" <last@address.com>\n\nbody@content.com",
     "expected": {
-      "Address": {
-        "name": "=?ISO-8859-1?Q a \" b",
-        "address": "last@address.com"
-      }
+      "List": [
+        {
+          "name": "=?ISO-8859-1?Q a \" b",
+          "address": "last@address.com"
+        }
+      ]
     }
   },
   {
     "header": "=? <name@domain.com>\n",
     "expected": {
-      "Address": {
-        "name": "=?",
-        "address": "name@domain.com"
-      }
+      "List": [
+        {
+          "name": "=?",
+          "address": "name@domain.com"
+        }
+      ]
     }
   },
   {
     "header": "\"  James Smythe\" <james@example.com>, Friends:\n  jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?=\n   <john@example.com>;\n",
     "expected": {
-      "GroupList": [
+      "Group": [
         {
           "name": null,
           "addresses": [
@@ -408,7 +462,7 @@
   {
     "header": "List 1: addr1@test.com, addr2@test.com; List 2: addr3@test.com, addr4@test.com; addr5@test.com, addr6@test.com\n",
     "expected": {
-      "GroupList": [
+      "Group": [
         {
           "name": "List 1",
           "addresses": [
@@ -454,7 +508,7 @@
   {
     "header": "\"List 1\": addr1@test.com, addr2@test.com; \"List 2\": addr3@test.com, addr4@test.com; addr5@test.com, addr6@test.com\n",
     "expected": {
-      "GroupList": [
+      "Group": [
         {
           "name": "List 1",
           "addresses": [
@@ -500,7 +554,7 @@
   {
     "header": "\"=?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=\": addr1@test.com, addr2@test.com; =?utf-8?b?VGjDrXMgw61zIHbDoWzDrWQgw5pURjg=?=: addr3@test.com, addr4@test.com; addr5@test.com, addr6@test.com\n",
     "expected": {
-      "GroupList": [
+      "Group": [
         {
           "name": "Thís ís válíd ÚTF8",
           "addresses": [
@@ -546,43 +600,51 @@
   {
     "header": "<http://www.host.com/list/archive/> (Web Archive)\n",
     "expected": {
-      "Address": {
-        "name": "Web Archive",
-        "address": "http://www.host.com/list/archive/"
-      }
+      "List": [
+        {
+          "name": "Web Archive",
+          "address": "http://www.host.com/list/archive/"
+        }
+      ]
     }
   },
   {
     "header": "<mailto:archive@host.com?subject=index%20list>\n",
     "expected": {
-      "Address": {
-        "name": null,
-        "address": "mailto:archive@host.com?subject=index%20list"
-      }
+      "List": [
+        {
+          "name": null,
+          "address": "mailto:archive@host.com?subject=index%20list"
+        }
+      ]
     }
   },
   {
     "header": "<mailto:moderator@host.com> (Postings are Moderated)\n",
     "expected": {
-      "Address": {
-        "name": "Postings are Moderated",
-        "address": "mailto:moderator@host.com"
-      }
+      "List": [
+        {
+          "name": "Postings are Moderated",
+          "address": "mailto:moderator@host.com"
+        }
+      ]
     }
   },
   {
     "header": "(Use this command to join the list)\n   <mailto:list-manager@host.com?body=subscribe%20list>\n",
     "expected": {
-      "Address": {
-        "name": "Use this command to join the list",
-        "address": "mailto:list-manager@host.com?body=subscribe%20list"
-      }
+      "List": [
+        {
+          "name": "Use this command to join the list",
+          "address": "mailto:list-manager@host.com?body=subscribe%20list"
+        }
+      ]
     }
   },
   {
     "header": "<http://www.host.com/list.cgi?cmd=sub&lst=list>,\n   <mailto:list-manager@host.com?body=subscribe%20list>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": null,
           "address": "http://www.host.com/list.cgi?cmd=sub&lst=list"
@@ -597,16 +659,18 @@
   {
     "header": "NO (posting not allowed on this list)\n",
     "expected": {
-      "Address": {
-        "name": "posting not allowed on this list",
-        "address": "NO"
-      }
+      "List": [
+        {
+          "name": "posting not allowed on this list",
+          "address": "NO"
+        }
+      ]
     }
   },
   {
     "header": "<ftp://ftp.host.com/list.txt> (FTP),\n   <mailto:list@host.com?subject=help>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": "FTP",
           "address": "ftp://ftp.host.com/list.txt"
@@ -621,7 +685,7 @@
   {
     "header": "<http://www.host.com/list/>, <mailto:list-info@host.com>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": null,
           "address": "http://www.host.com/list/"
@@ -636,16 +700,18 @@
   {
     "header": "(Use this command to get off the list)\n     <mailto:list-manager@host.com?body=unsubscribe%20list>\n",
     "expected": {
-      "Address": {
-        "name": "Use this command to get off the list",
-        "address": "mailto:list-manager@host.com?body=unsubscribe%20list"
-      }
+      "List": [
+        {
+          "name": "Use this command to get off the list",
+          "address": "mailto:list-manager@host.com?body=unsubscribe%20list"
+        }
+      ]
     }
   },
   {
     "header": "<http://www.host.com/list.cgi?cmd=unsub&lst=list>,\n   <mailto:list-request@host.com?subject=unsubscribe>\n",
     "expected": {
-      "AddressList": [
+      "List": [
         {
           "name": null,
           "address": "http://www.host.com/list.cgi?cmd=unsub&lst=list"
@@ -660,19 +726,23 @@
   {
     "header": "<mailto:listmom@host.com> (Contact Person for Help)\n",
     "expected": {
-      "Address": {
-        "name": "Contact Person for Help",
-        "address": "mailto:listmom@host.com"
-      }
+      "List": [
+        {
+          "name": "Contact Person for Help",
+          "address": "mailto:listmom@host.com"
+        }
+      ]
     }
   },
   {
     "header": "\"\\\\\\\\\\\\\\\\S. NIG\\\\\\\\\\\\\\\\\" <first.last@host.com>",
     "expected": {
-      "Address": {
-        "name": "\\\\\\\\S. NIG\\\\\\\\",
-        "address": "first.last@host.com"
-      }
+      "List": [
+        {
+          "name": "\\\\\\\\S. NIG\\\\\\\\",
+          "address": "first.last@host.com"
+        }
+      ]
     }
   }
 ]

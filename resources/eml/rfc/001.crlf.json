@@ -15,8 +15,12 @@
           },
           "value": {
             "Address": {
-              "name": "Whomever",
-              "address": null
+              "List": [
+                {
+                  "name": "Whomever",
+                  "address": null
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -29,8 +33,12 @@
           },
           "value": {
             "Address": {
-              "name": "Someone",
-              "address": null
+              "List": [
+                {
+                  "name": "Someone",
+                  "address": null
+                }
+              ]
             }
           },
           "offset_field": 16,

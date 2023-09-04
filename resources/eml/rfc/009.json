@@ -17,8 +17,12 @@
           },
           "value": {
             "Address": {
-              "name": "Whomever",
-              "address": "whoever@example.com"
+              "List": [
+                {
+                  "name": "Whomever",
+                  "address": "whoever@example.com"
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -31,8 +35,12 @@
           },
           "value": {
             "Address": {
-              "name": "Someone",
-              "address": "someone@example.com"
+              "List": [
+                {
+                  "name": "Someone",
+                  "address": "someone@example.com"
+                }
+              ]
             }
           },
           "offset_field": 37,
@@ -236,8 +244,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "Someone Else",
-                      "address": null
+                      "List": [
+                        {
+                          "name": "Someone Else",
+                          "address": null
+                        }
+                      ]
                     }
                   },
                   "offset_field": 576,

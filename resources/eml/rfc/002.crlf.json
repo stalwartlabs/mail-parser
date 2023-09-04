@@ -17,8 +17,12 @@
           },
           "value": {
             "Address": {
-              "name": "Al Gore",
-              "address": "vice-president@whitehouse.gov"
+              "List": [
+                {
+                  "name": "Al Gore",
+                  "address": "vice-president@whitehouse.gov"
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -31,8 +35,12 @@
           },
           "value": {
             "Address": {
-              "name": "White House Transportation Coordinator",
-              "address": "transport@whitehouse.gov"
+              "List": [
+                {
+                  "name": "White House Transportation Coordinator",
+                  "address": "transport@whitehouse.gov"
+                }
+              ]
             }
           },
           "offset_field": 48,
@@ -201,7 +209,29 @@
                     "Rfc": "received"
                   },
                   "value": {
-                    "Text": "from mailhost.whitehouse.gov ([192.168.51.200])\r\n        by heartbeat.whitehouse.gov (8.8.8/8.8.8) with ESMTP id SAA22453\r\n        for <vice-president@heartbeat.whitehouse.gov>;\r\n        Mon, 13 Aug 1998 l8:14:23 +1000"
+                    "Received": {
+                      "from": {
+                        "Name": "mailhost.whitehouse.gov"
+                      },
+                      "from_ip": "192.168.51.200",
+                      "by": {
+                        "Name": "heartbeat.whitehouse.gov"
+                      },
+                      "for_": "vice-president@heartbeat.whitehouse.gov",
+                      "with": "ESMTP",
+                      "id": "SAA22453",
+                      "date": {
+                        "year": 1998,
+                        "month": 8,
+                        "day": 13,
+                        "hour": 14,
+                        "minute": 23,
+                        "second": 232,
+                        "tz_before_gmt": true,
+                        "tz_hour": 0,
+                        "tz_minute": 0
+                      }
+                    }
                   },
                   "offset_field": 691,
                   "offset_start": 700,
@@ -212,7 +242,29 @@
                     "Rfc": "received"
                   },
                   "value": {
-                    "Text": "from the_big_box.whitehouse.gov ([192.168.51.50])\r\n        by mailhost.whitehouse.gov (8.8.8/8.8.7) with ESMTP id RAA20366\r\n        for vice-president@whitehouse.gov; Mon, 13 Aug 1998 17:42:41 +1000"
+                    "Received": {
+                      "from": {
+                        "Name": "the_big_box.whitehouse.gov"
+                      },
+                      "from_ip": "192.168.51.50",
+                      "by": {
+                        "Name": "mailhost.whitehouse.gov"
+                      },
+                      "for_": "vice-president@whitehouse.gov",
+                      "with": "ESMTP",
+                      "id": "RAA20366",
+                      "date": {
+                        "year": 1998,
+                        "month": 8,
+                        "day": 13,
+                        "hour": 17,
+                        "minute": 42,
+                        "second": 41,
+                        "tz_before_gmt": false,
+                        "tz_hour": 10,
+                        "tz_minute": 0
+                      }
+                    }
                   },
                   "offset_field": 921,
                   "offset_start": 930,
@@ -256,8 +308,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "Bill Clinton",
-                      "address": "president@whitehouse.gov"
+                      "List": [
+                        {
+                          "name": "Bill Clinton",
+                          "address": "president@whitehouse.gov"
+                        }
+                      ]
                     }
                   },
                   "offset_field": 1231,
@@ -270,8 +326,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "A1 Gore (The Enforcer)",
-                      "address": "vice-president@whitehouse.gov"
+                      "List": [
+                        {
+                          "name": "A1 Gore (The Enforcer)",
+                          "address": "vice-president@whitehouse.gov"
+                        }
+                      ]
                     }
                   },
                   "offset_field": 1278,

@@ -18,8 +18,12 @@
           },
           "value": {
             "Address": {
-              "name": "Moderator-Address",
-              "address": null
+              "List": [
+                {
+                  "name": "Moderator-Address",
+                  "address": null
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -32,8 +36,12 @@
           },
           "value": {
             "Address": {
-              "name": "Recipient-List",
-              "address": null
+              "List": [
+                {
+                  "name": "Recipient-List",
+                  "address": null
+                }
+              ]
             }
           },
           "offset_field": 24,
@@ -180,8 +188,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "someone-else",
-                      "address": null
+                      "List": [
+                        {
+                          "name": "someone-else",
+                          "address": null
+                        }
+                      ]
                     }
                   },
                   "offset_field": 418,
@@ -257,8 +269,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "someone-else-again",
-                      "address": null
+                      "List": [
+                        {
+                          "name": "someone-else-again",
+                          "address": null
+                        }
+                      ]
                     }
                   },
                   "offset_field": 545,

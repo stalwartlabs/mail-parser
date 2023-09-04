@@ -18,8 +18,8 @@ use crate::{
         preview::{preview_html, preview_text},
         MessageStream,
     },
-    AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm, HeaderName,
-    HeaderValue, Message, MessagePart, PartType, RfcHeader,
+    Address, AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm,
+    HeaderName, HeaderValue, Message, MessagePart, PartType, RfcHeader,
 };
 
 impl<'x> Message<'x> {
@@ -126,19 +126,19 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the BCC header field
-    pub fn bcc(&self) -> &HeaderValue {
+    pub fn bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::Bcc)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns the CC header field
-    pub fn cc(&self) -> &HeaderValue {
+    pub fn cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::Cc)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns all Comments header fields
@@ -154,15 +154,15 @@ impl<'x> Message<'x> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::Date)
-            .and_then(|header| header.as_datetime_ref())
+            .and_then(|header| header.as_datetime())
     }
 
     /// Returns the From header field
-    pub fn from(&self) -> &HeaderValue {
+    pub fn from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::From)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns all In-Reply-To header fields
@@ -270,27 +270,27 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Reply-To header field
-    pub fn reply_to(&self) -> &HeaderValue {
+    pub fn reply_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ReplyTo)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns the Resent-BCC header field
-    pub fn resent_bcc(&self) -> &HeaderValue {
+    pub fn resent_bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ResentBcc)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns the Resent-CC header field
-    pub fn resent_cc(&self) -> &HeaderValue {
+    pub fn resent_cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ResentTo)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns all Resent-Date header fields
@@ -302,11 +302,11 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-From header field
-    pub fn resent_from(&self) -> &HeaderValue {
+    pub fn resent_from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ResentFrom)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns all Resent-Message-ID header fields
@@ -318,19 +318,19 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn resent_sender(&self) -> &HeaderValue {
+    pub fn resent_sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ResentSender)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns the Resent-To header field
-    pub fn resent_to(&self) -> &HeaderValue {
+    pub fn resent_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::ResentTo)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns all Return-Path header fields
@@ -348,21 +348,18 @@ impl<'x> Message<'x> {
             Some(HeaderValue::Text(text)) => Some(text.as_ref()),
             Some(HeaderValue::TextList(text_list)) => text_list.last().map(|t| t.as_ref()),
             _ => match self.parts[0].headers.rfc(&RfcHeader::From) {
-                Some(HeaderValue::Address(addr)) => addr.address.as_deref(),
-                Some(HeaderValue::AddressList(addr_list)) => {
-                    addr_list.last().and_then(|a| a.address.as_deref())
-                }
+                Some(HeaderValue::Address(addr)) => addr.first()?.address.as_deref(),
                 _ => None,
             },
         }
     }
 
     /// Returns the Sender header field
-    pub fn sender(&self) -> &HeaderValue {
+    pub fn sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::Sender)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns the Subject header field
@@ -380,11 +377,11 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the To header field
-    pub fn to(&self) -> &HeaderValue {
+    pub fn to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .rfc(&RfcHeader::To)
-            .unwrap_or(&HeaderValue::Empty)
+            .and_then(|a| a.as_address())
     }
 
     /// Returns a preview of the message body

@@ -153,8 +153,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "email@example.com",
-                      "address": "email@example.com"
+                      "List": [
+                        {
+                          "name": "email@example.com",
+                          "address": "email@example.com"
+                        }
+                      ]
                     }
                   },
                   "offset_field": 0,
@@ -167,8 +171,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "Name",
-                      "address": "email@example.com"
+                      "List": [
+                        {
+                          "name": "Name",
+                          "address": "email@example.com"
+                        }
+                      ]
                     }
                   },
                   "offset_field": 45,

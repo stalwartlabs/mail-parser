@@ -73,7 +73,8 @@ impl<'x> MessageStream<'x> {
                         RfcHeader::Keywords | RfcHeader::ContentLanguage => {
                             self.parse_comma_separared()
                         }
-                        RfcHeader::Received | RfcHeader::MimeVersion => self.parse_raw(),
+                        RfcHeader::Received => self.parse_received(),
+                        RfcHeader::MimeVersion => self.parse_raw(),
                         RfcHeader::ContentType | RfcHeader::ContentDisposition => {
                             self.parse_content_type()
                         }

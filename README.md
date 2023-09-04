@@ -79,16 +79,16 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(
-        message.from(),
-        &HeaderValue::Address(Addr::new(
+        message.from().unwrap().first().unwrap(),
+        &Addr::new(
             "Art Vandelay (Vandelay Industries)".into(),
             "art@vandelay.com"
-        ))
+        )
     );
 
     assert_eq!(
-        message.to(),
-        &HeaderValue::GroupList(vec![
+        message.to().unwrap().as_group().unwrap(),
+        &[
             Group::new(
                 "Colleagues",
                 vec![Addr::new("James Smythe".into(), "james@vandelay.com")]
@@ -100,7 +100,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
                     Addr::new("John Smîth".into(), "john@example.com"),
                 ]
             )
-        ])
+        ]
     );
 
     assert_eq!(

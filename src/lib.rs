@@ -158,16 +158,16 @@
 //!
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
-//!        message.from(),
-//!        &HeaderValue::Address(Addr::new(
+//!        message.from().unwrap().first().unwrap(),
+//!        &Addr::new(
 //!            "Art Vandelay (Vandelay Industries)".into(),
 //!            "art@vandelay.com"
-//!        ))
+//!        )
 //!    );
 //!    
 //!    assert_eq!(
-//!        message.to(),
-//!        &HeaderValue::GroupList(vec![
+//!        message.to().unwrap().as_group().unwrap(),
+//!        &[
 //!            Group::new(
 //!                "Colleagues",
 //!                vec![Addr::new("James Smythe".into(), "james@vandelay.com")]
@@ -179,7 +179,7 @@
 //!                    Addr::new("John Smîth".into(), "john@example.com"),
 //!                ]
 //!            )
-//!        ])
+//!        ]
 //!    );
 //!
 //!    assert_eq!(
@@ -376,7 +376,7 @@ pub struct Group<'x> {
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub name: Option<Cow<'x, str>>,
 
-    /// Addressess member of the group
+    /// Addresses member of the group
     #[cfg_attr(feature = "serde_support", serde(default))]
     pub addresses: Vec<Addr<'x>>,
 }
@@ -448,17 +448,8 @@ pub enum RfcHeader {
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum HeaderValue<'x> {
-    /// Single address
-    Address(Addr<'x>),
-
-    /// Address list
-    AddressList(Vec<Addr<'x>>),
-
-    /// Group of addresses
-    Group(Group<'x>),
-
-    /// List containing two or more address groups
-    GroupList(Vec<Group<'x>>),
+    /// Address list or group
+    Address(Address<'x>),
 
     /// String
     Text(Cow<'x, str>),
@@ -477,6 +468,15 @@ pub enum HeaderValue<'x> {
 
     #[default]
     Empty,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub enum Address<'x> {
+    /// Address list
+    List(Vec<Addr<'x>>),
+    /// Group of addresses
+    Group(Vec<Group<'x>>),
 }
 
 /// Header form

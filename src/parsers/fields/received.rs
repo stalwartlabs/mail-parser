@@ -856,34 +856,5 @@ mod tests {
                 test.header
             );
         }
-
-        /*let file = std::fs::File::open("/Users/me/code/mail-parser/test/headers.txt").unwrap();
-        //let file = std::fs::File::open("/Users/me/code/mail-parser/test/tokens.txt").unwrap();
-        let reader = std::io::BufReader::new(file);
-        let mut lines = String::new();
-
-        for line in reader.lines() {
-            lines += &line.unwrap();
-            lines += "\n";
-        }
-
-        let mut tests = vec![];
-
-        for line in lines.split_inclusive('\n') {
-            let expected = MessageStream::new(line.as_bytes())
-                .parse_received()
-                .unwrap_received();
-
-            tests.push(Test {
-                header: line,
-                expected,
-            });
-        }
-
-        std::fs::write(
-            "/Users/me/code/mail-parser/test/headers.json",
-            serde_json::to_string_pretty(&tests).unwrap(),
-        )
-        .unwrap();*/
     }
 }

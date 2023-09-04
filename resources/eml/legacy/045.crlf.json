@@ -38,8 +38,12 @@
           },
           "value": {
             "Address": {
-              "name": "Doug Sauder",
-              "address": "doug@penguin.example.com"
+              "List": [
+                {
+                  "name": "Doug Sauder",
+                  "address": "doug@penguin.example.com"
+                }
+              ]
             }
           },
           "offset_field": 45,
@@ -51,16 +55,18 @@
             "Rfc": "to"
           },
           "value": {
-            "AddressList": [
-              {
-                "name": "Joe Blow",
-                "address": "blow@example.com"
-              },
-              {
-                "name": "Heinz Müller",
-                "address": "mueller@example.com"
-              }
-            ]
+            "Address": {
+              "List": [
+                {
+                  "name": "Joe Blow",
+                  "address": "blow@example.com"
+                },
+                {
+                  "name": "Heinz Müller",
+                  "address": "mueller@example.com"
+                }
+              ]
+            }
           },
           "offset_field": 91,
           "offset_start": 94,

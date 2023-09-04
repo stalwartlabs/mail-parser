@@ -14,8 +14,12 @@
           },
           "value": {
             "Address": {
-              "name": null,
-              "address": "user@domain.org"
+              "List": [
+                {
+                  "name": null,
+                  "address": "user@domain.org"
+                }
+              ]
             }
           },
           "offset_field": 0,
@@ -154,8 +158,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": null,
-                      "address": "sub@domain.org"
+                      "List": [
+                        {
+                          "name": null,
+                          "address": "sub@domain.org"
+                        }
+                      ]
                     }
                   },
                   "offset_field": 253,

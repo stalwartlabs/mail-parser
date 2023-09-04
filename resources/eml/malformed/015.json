@@ -39,8 +39,12 @@
           },
           "value": {
             "Address": {
-              "name": "Test User",
-              "address": "test@example.org"
+              "List": [
+                {
+                  "name": "Test User",
+                  "address": "test@example.org"
+                }
+              ]
             }
           },
           "offset_field": 53,
@@ -53,8 +57,12 @@
           },
           "value": {
             "Address": {
-              "name": "Another User",
-              "address": "test2@example.org"
+              "List": [
+                {
+                  "name": "Another User",
+                  "address": "test2@example.org"
+                }
+              ]
             }
           },
           "offset_field": 88,

@@ -119,60 +119,19 @@ impl<'x> MessageStream<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, HeaderValue};
+    use crate::parsers::{fields::load_tests, MessageStream};
 
     #[test]
     fn parse_comma_separated_text() {
-        let inputs = [
-            (" one item  \n", vec!["one item"]),
-            ("simple, list\n", vec!["simple", "list"]),
-            (
-                "multi \r\n list, \r\n with, cr lf  \r\n",
-                vec!["multi list", "with", "cr lf"],
-            ),
-            (
-                "=?iso-8859-1?q?this is some text?=, in, a, list, \n",
-                vec!["this is some text", "in", "a", "list"],
-            ),
-            (
-                concat!(
-                    " =?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=\n     ",
-                    "=?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=\n",
-                    " , but, in a list, which, is, more, fun!\n"
-                ),
-                vec![
-                    "If you can read this you understand the example.",
-                    "but",
-                    "in a list",
-                    "which",
-                    "is",
-                    "more",
-                    "fun!",
-                ],
-            ),
-            (
-                "=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n , listed\n",
-                vec!["ab", "listed"],
-            ),
-            (
-                "ハロー・ワールド, and also, ascii terms\n",
-                vec!["ハロー・ワールド", "and also", "ascii terms"],
-            ),
-        ];
-
-        for input in inputs {
-            let str = input.0.to_string();
-
-            match MessageStream::new(str.as_bytes()).parse_comma_separared() {
-                HeaderValue::TextList(ids) => {
-                    assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
-                }
-                HeaderValue::Text(id) => {
-                    assert!(input.1.len() == 1, "Failed to parse '{:?}'", input.0);
-                    assert_eq!(id, input.1[0], "Failed to parse '{:?}'", input.0);
-                }
-                _ => panic!("Unexpected result"),
-            }
+        for test in load_tests::<Vec<String>>("list.json") {
+            assert_eq!(
+                MessageStream::new(test.header.as_bytes())
+                    .parse_comma_separared()
+                    .unwrap_text_list(),
+                test.expected,
+                "failed for {:?}",
+                test.header
+            );
         }
     }
 }

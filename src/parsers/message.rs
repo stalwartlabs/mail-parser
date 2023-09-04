@@ -151,7 +151,7 @@ impl<'x> Message<'x> {
 
             let content_type = part_headers
                 .rfc(&RfcHeader::ContentType)
-                .and_then(|c| c.as_content_type_ref());
+                .and_then(|c| c.as_content_type());
 
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
                 mime_type(content_type, &state.mime_type);

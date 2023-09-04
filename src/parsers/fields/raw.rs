@@ -77,13 +77,14 @@ mod tests {
             ),
         ];
 
-        for input in inputs {
-            let str = input.0.to_string();
+        for (input, expected) in inputs {
             assert_eq!(
-                MessageStream::new(str.as_bytes()).parse_raw().unwrap_text(),
-                input.1,
+                MessageStream::new(input.as_bytes())
+                    .parse_raw()
+                    .unwrap_text(),
+                expected,
                 "Failed for '{:?}'",
-                input.0
+                input
             );
         }
     }

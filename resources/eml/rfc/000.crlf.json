@@ -33,8 +33,12 @@
           },
           "value": {
             "Address": {
-              "name": "Nathaniel Borenstein",
-              "address": "nsb@nsb.fv.com"
+              "List": [
+                {
+                  "name": "Nathaniel Borenstein",
+                  "address": "nsb@nsb.fv.com"
+                }
+              ]
             }
           },
           "offset_field": 19,
@@ -47,8 +51,12 @@
           },
           "value": {
             "Address": {
-              "name": "Ned Freed",
-              "address": "ned@innosoft.com"
+              "List": [
+                {
+                  "name": "Ned Freed",
+                  "address": "ned@innosoft.com"
+                }
+              ]
             }
           },
           "offset_field": 64,
@@ -334,8 +342,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "mailbox in US-ASCII",
-                      "address": null
+                      "List": [
+                        {
+                          "name": "mailbox in US-ASCII",
+                          "address": null
+                        }
+                      ]
                     }
                   },
                   "offset_field": 1670,
@@ -348,8 +360,12 @@
                   },
                   "value": {
                     "Address": {
-                      "name": "address in US-ASCII",
-                      "address": null
+                      "List": [
+                        {
+                          "name": "address in US-ASCII",
+                          "address": null
+                        }
+                      ]
                     }
                   },
                   "offset_field": 1699,

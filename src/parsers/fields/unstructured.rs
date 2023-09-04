@@ -95,119 +95,18 @@ impl<'x> MessageStream<'x> {
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::MessageStream;
+    use crate::parsers::{fields::load_tests, MessageStream};
 
     #[test]
     fn parse_unstructured() {
-        let inputs = [
-            ("Saying Hello\n", "Saying Hello", true),
-            ("Re: Saying Hello\r\n", "Re: Saying Hello", true),
-            (" Fwd: \n\tSaying \n Hello\r\n", "Fwd: Saying Hello", false),
-            (
-                " FWD: \n Saying Hello \nX-Mailer: 123\r\n",
-                "FWD: Saying Hello",
-                false,
-            ),
-            (
-                concat!(
-                    " from x.y.test\n      by example.net\n      via TCP\n",
-                    "      with ESMTP\n      id ABC12345\n      ",
-                    "for <mary@example.net>;  21 Nov 1997 10:05:43 -0600\n"
-                ),
-                concat!(
-                    "from x.y.test by example.net via TCP with ESMTP id ABC12345",
-                    " for <mary@example.net>;  21 Nov 1997 10:05:43 -0600"
-                ),
-                false,
-            ),
-            (
-                "=?iso-8859-1?q?this is some text?=\n",
-                "this is some text",
-                false,
-            ),
-            (
-                "=?iso-8859-1?q?this=20is=20some=20text?=\r\n",
-                "this is some text",
-                false,
-            ),
-            (
-                concat!(
-                    " =?ISO-8859-1?B?SWYgeW91IGNhbiByZWFkIHRoaXMgeW8=?=\n     ",
-                    "=?ISO-8859-2?B?dSB1bmRlcnN0YW5kIHRoZSBleGFtcGxlLg==?=\n"
-                ),
-                "If you can read this you understand the example.",
-                false,
-            ),
-            (" =?ISO-8859-1?Q?a?=\n", "a", false),
-            ("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=\n", "ab", false),
-            ("=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?=\n", "ab", false),
-            (
-                "=?ISO-8859-1?Q?a?=\r\n    =?ISO-8859-1?Q?b?=\nFrom: unknown@domain.com\n",
-                "ab",
-                false,
-            ),
-            ("=?ISO-8859-1?Q?a_b?=\n", "a b", false),
-            ("=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=\r\n", "a b", false),
-            (
-                concat!(
-                    " this =?iso-8859-1?q?is?= some =?iso-8859-1?q?t?=\n =?iso-8859-1?q?e?=",
-                    " \n =?iso-8859-1?q?x?=\n =?iso-8859-1?q?t?=\n"
-                ),
-                "this is some text",
-                false,
-            ),
-            (" =\n", "=", true),
-            (" =? \n", "=?", true),
-            ("=?utf-8 \n", "=?utf-8", true),
-            ("=?utf-8? \n", "=?utf-8?", true),
-            (
-                " let's = try =?iso-8859-1? to break\n =? the \n parser\n",
-                "let's = try =?iso-8859-1? to break =? the parser",
-                false,
-            ),
-            ("ハロー・ワールド \n", "ハロー・ワールド", true),
-            (
-                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb3JpZ2luYWwgc3ViamVjdA==?=\n",
-                "[SUSPECTED SPAM] This is the original subject",
-                true,
-            ),
-            ("Some text =?utf-8?Q??=here\n", "Some text  here", true),
-            (
-                "=?ISO-8859-1?Q?a?==?ISO-8859-1?Q?b?==?ISO-8859-1?Q?c?= =?ISO-8859-1?Q?d?=\n",
-                "abcd",
-                true,
-            ),
-            ("=?utf-8?Q?Hello\n _there!?=\n", "Hello there!", true),
-            ("=?utf-8?Q?Hello\r\n _there!?=\r\n", "Hello there!", true),
-            (
-                "=?utf-8?Q?Hello\r\n   \t  _there!?=\r\n",
-                "Hello there!",
-                true,
-            ),
-            (
-                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\n 3JpZ2luYWwgc3ViamVjdA==?=\n",
-                "[SUSPECTED SPAM] This is the original subject",
-                true,
-            ),
-            (
-                "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\r\n 3JpZ2luYWwgc3ViamVjdA==?=\r\n",
-                "[SUSPECTED SPAM] This is the original subject",
-                true,
-            ),
-            (
-                "Les Communs - =?utf-8?Q?R=C3=A9capitulatif?= de la\r\n =?utf-8?Q?r=C3=A9servation?= 13510164434879\r\n",
-                "Les Communs - Récapitulatif de la réservation 13510164434879",
-                true,
-            ),
-        ];
-
-        for (input, expected_result, _) in inputs {
+        for test in load_tests::<String>("unstructured.json") {
             assert_eq!(
-                MessageStream::new(input.as_bytes())
+                MessageStream::new(test.header.as_bytes())
                     .parse_unstructured()
                     .unwrap_text(),
-                expected_result,
-                "Failed to parse '{input:?}'",
+                test.expected,
+                "failed for {:?}",
+                test.header
             );
         }
     }

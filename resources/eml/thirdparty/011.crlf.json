@@ -38,7 +38,27 @@
             "Rfc": "received"
           },
           "value": {
-            "Text": "from [10.1.1.1] (Unknown [10.1.1.1])\r\n\tby xyz-webserver.abcd-gestion.com with ESMTPA\r\n\t; Mon, 18 Jul 2022 08:19:52 -0700"
+            "Received": {
+              "from": {
+                "IpAddr": "10.1.1.1"
+              },
+              "from_ip": "10.1.1.1",
+              "by": {
+                "Name": "xyz-webserver.abcd-gestion.com"
+              },
+              "with": "ESMTPA",
+              "date": {
+                "year": 2022,
+                "month": 7,
+                "day": 18,
+                "hour": 8,
+                "minute": 19,
+                "second": 52,
+                "tz_before_gmt": true,
+                "tz_hour": 7,
+                "tz_minute": 0
+              }
+            }
           },
           "offset_field": 107,
           "offset_start": 116,
@@ -135,8 +155,12 @@
           },
           "value": {
             "Address": {
-              "name": "admin xyz",
-              "address": "admin@xyz-webserver.abcd-gestion.local"
+              "List": [
+                {
+                  "name": "admin xyz",
+                  "address": "admin@xyz-webserver.abcd-gestion.local"
+                }
+              ]
             }
           },
           "offset_field": 593,
@@ -149,8 +173,12 @@
           },
           "value": {
             "Address": {
-              "name": "Dummy",
-              "address": "dummy@xyz-webserver.abcd-gestion.local"
+              "List": [
+                {
+                  "name": "Dummy",
+                  "address": "dummy@xyz-webserver.abcd-gestion.local"
+                }
+              ]
             }
           },
           "offset_field": 649,

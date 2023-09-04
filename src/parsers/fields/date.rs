@@ -463,127 +463,49 @@ pub static MONTH_MAP: &[u8; 31] = &[
 mod tests {
     use chrono::{FixedOffset, LocalResult, SecondsFormat, TimeZone, Utc};
 
-    use crate::{parsers::MessageStream, HeaderValue};
+    use crate::parsers::{fields::load_tests, MessageStream};
 
     #[test]
     fn parse_dates() {
-        let inputs = [
-            (
-                "Tue, 1 Jul 2003 10:52:37 +0200",
-                "2003-07-01T10:52:37+02:00",
-            ),
-            (
-                "Tue, 1 Jul 2003 10:52:37 +0200",
-                "2003-07-01T10:52:37+02:00",
-            ),
-            (
-                "Fri, 21 Nov 1997 09:55:06 -0600",
-                "1997-11-21T09:55:06-06:00",
-            ),
-            (
-                "Mon, 24 Nov 1997 14:22:01 -0800",
-                "1997-11-24T14:22:01-08:00",
-            ),
-            (
-                "Tue, 30 Dec 1969 23:32:54 -0330",
-                "1969-12-30T23:32:54-03:30",
-            ),
-            (
-                "Thu, 13 Feb 1969 23:32:54 -0330",
-                "1969-02-13T23:32:54-03:30",
-            ),
-            (
-                "Thu,\n   13\n  Feb\n    1969\n  23:32\n  -0330 (Newfoundland Time)\n",
-                "1969-02-13T23:32:00-03:30",
-            ),
-            (
-                " 1 Jul 2003 (comment about date) 10:52:37 +0200",
-                "2003-07-01T10:52:37+02:00",
-            ),
-            (
-                "Tue, 1 Jul 2003 ((tricky)\n comment) 10:52:37 +0200",
-                "2003-07-01T10:52:37+02:00",
-            ),
-            ("21 Nov 97 09:55:06 GMT", "1997-11-21T09:55:06Z"),
-            (
-                "20 11 (some \n 44 comments(more comments\n )) 79 05:34:27 -0300",
-                "1979-11-20T05:34:27-03:00",
-            ),
-            (" Wed, 27 Jun 99 04:11 +0900 ", "1999-06-27T04:11:00+09:00"),
-            (
-                " 4 8 15 16 23 42, 4 8 15 16 23 42, 4 8 15 16 23 42, ",
-                "1915-08-04T16:23:42+00:04",
-            ),
-            (" some numbers 0 1 2 but invalid ", ""),
-            ("Tue, 1 Jul 2003 ((invalid)\ncomment) 10:52:37 +0200", ""),
-            ("1 jan 2021 09:55:06 +0200", "2021-01-01T09:55:06+02:00"),
-            ("2 feb 2021 09:55:06 +0200", "2021-02-02T09:55:06+02:00"),
-            ("3 mar 2021 09:55:06 +0200", "2021-03-03T09:55:06+02:00"),
-            ("4 apr 2021 09:55:06 +0200", "2021-04-04T09:55:06+02:00"),
-            ("5 may 2021 09:55:06 +0200", "2021-05-05T09:55:06+02:00"),
-            ("6 jun 2021 09:55:06 +0200", "2021-06-06T09:55:06+02:00"),
-            ("7 jul 2021 09:55:06 +0200", "2021-07-07T09:55:06+02:00"),
-            ("8 aug 2021 09:55:06 +0200", "2021-08-08T09:55:06+02:00"),
-            ("9 sep 2021 09:55:06 +0200", "2021-09-09T09:55:06+02:00"),
-            ("10 oct 2021 09:55:06 +0200", "2021-10-10T09:55:06+02:00"),
-            ("11 nov 2021 09:55:06 +0200", "2021-11-11T09:55:06+02:00"),
-            ("12 dec 2021 09:55:06 +0200", "2021-12-12T09:55:06+02:00"),
-            ("13 zzz 2021 09:55:06 +0200", "2021-00-13T09:55:06+02:00"),
-            (
-                concat!(
-                    "by 2002:aa7:cd10:0:b0:45c:2c83:1208 with SMTP id ",
-                    "b16-20020aa7cd10000000b0045c2c831208mr4220805edw.81.1665423075119;\n\t",
-                    "Mon, 10 Oct 2022 10:31:15 -0700 (PDT)"
-                ),
-                "2022-10-10T10:31:15-07:00",
-            ),
-        ];
+        for test in load_tests("date.json") {
+            let datetime = MessageStream::new(test.header.as_bytes())
+                .parse_date()
+                .into_datetime();
+            assert_eq!(datetime, test.expected, "failed for {:?}", test.header);
 
-        for (pos, (input, expected_result)) in inputs.iter().enumerate() {
-            match MessageStream::new(input.as_bytes()).parse_date() {
-                HeaderValue::DateTime(datetime) => {
-                    if pos < 6 {
-                        assert_eq!(*input, datetime.to_rfc822());
-                    }
-                    assert_eq!(*expected_result, datetime.to_rfc3339());
-
-                    if datetime.is_valid() {
-                        if let LocalResult::Single(chrono_datetime)
-                        | LocalResult::Ambiguous(chrono_datetime, _) = FixedOffset::west_opt(
-                            ((datetime.tz_hour as i32 * 3600i32) + datetime.tz_minute as i32 * 60)
-                                * if datetime.tz_before_gmt { 1i32 } else { -1i32 },
-                        )
-                        .unwrap_or_else(|| FixedOffset::east_opt(0).unwrap())
-                        .with_ymd_and_hms(
-                            datetime.year as i32,
-                            datetime.month as u32,
-                            datetime.day as u32,
-                            datetime.hour as u32,
-                            datetime.minute as u32,
-                            datetime.second as u32,
-                        ) {
-                            assert_eq!(
-                                chrono_datetime.timestamp(),
-                                datetime.to_timestamp(),
-                                "{} -> {} ({}) -> {} ({})",
-                                input.escape_debug(),
-                                datetime.to_timestamp(),
-                                Utc.timestamp_opt(datetime.to_timestamp(), 0)
-                                    .unwrap()
-                                    .to_rfc3339_opts(SecondsFormat::Secs, true),
-                                chrono_datetime.timestamp(),
-                                Utc.timestamp_opt(chrono_datetime.timestamp(), 0)
-                                    .unwrap()
-                                    .to_rfc3339_opts(SecondsFormat::Secs, true)
-                            );
-                        }
+            match datetime {
+                Some(datetime) if datetime.is_valid() => {
+                    if let LocalResult::Single(chrono_datetime)
+                    | LocalResult::Ambiguous(chrono_datetime, _) = FixedOffset::west_opt(
+                        ((datetime.tz_hour as i32 * 3600i32) + datetime.tz_minute as i32 * 60)
+                            * if datetime.tz_before_gmt { 1i32 } else { -1i32 },
+                    )
+                    .unwrap_or_else(|| FixedOffset::east_opt(0).unwrap())
+                    .with_ymd_and_hms(
+                        datetime.year as i32,
+                        datetime.month as u32,
+                        datetime.day as u32,
+                        datetime.hour as u32,
+                        datetime.minute as u32,
+                        datetime.second as u32,
+                    ) {
+                        assert_eq!(
+                            chrono_datetime.timestamp(),
+                            datetime.to_timestamp(),
+                            "{} -> {} ({}) -> {} ({})",
+                            test.header.escape_debug(),
+                            datetime.to_timestamp(),
+                            Utc.timestamp_opt(datetime.to_timestamp(), 0)
+                                .unwrap()
+                                .to_rfc3339_opts(SecondsFormat::Secs, true),
+                            chrono_datetime.timestamp(),
+                            Utc.timestamp_opt(chrono_datetime.timestamp(), 0)
+                                .unwrap()
+                                .to_rfc3339_opts(SecondsFormat::Secs, true)
+                        );
                     }
                 }
-                HeaderValue::Empty => {
-                    //println!("{} -> None", input.0.escape_debug());
-                    assert!(expected_result.is_empty());
-                }
-                _ => panic!("Unexpected result"),
+                _ => {}
             }
         }
     }

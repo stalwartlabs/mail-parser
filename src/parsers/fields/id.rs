@@ -77,65 +77,21 @@ impl<'x> MessageStream<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, HeaderValue};
+    use std::borrow::Cow;
+
+    use crate::parsers::{fields::load_tests, MessageStream};
 
     #[test]
     fn parse_message_ids() {
-        let inputs = [
-            (
-                "<1234@local.machine.example>\n",
-                vec!["1234@local.machine.example"],
-            ),
-            (
-                "<1234@local.machine.example> <3456@example.net>\n",
-                vec!["1234@local.machine.example", "3456@example.net"],
-            ),
-            (
-                "<1234@local.machine.example>\n <3456@example.net> \n",
-                vec!["1234@local.machine.example", "3456@example.net"],
-            ),
-            (
-                "<1234@local.machine.example>\n\n <3456@example.net>\n",
-                vec!["1234@local.machine.example"],
-            ),
-            (
-                "              <testabcd.1234@silly.test>  \n",
-                vec!["testabcd.1234@silly.test"],
-            ),
-            (
-                "<5678.21-Nov-1997@example.com>\n",
-                vec!["5678.21-Nov-1997@example.com"],
-            ),
-            (
-                "<1234   @   local(blah)  .machine .example>\n",
-                vec!["1234   @   local(blah)  .machine .example"],
-            ),
-            ("<>\n", vec![""]),
-            // Malformed Ids should be parsed anyway
-            (
-                "malformed@id.machine.example\n",
-                vec!["malformed@id.machine.example"],
-            ),
-            (
-                "   malformed2@id.machine.example \t  \n",
-                vec!["malformed2@id.machine.example"],
-            ),
-            ("   m \n", vec!["m"]),
-        ];
-
-        for input in inputs {
-            let str = input.0.to_string();
-            match MessageStream::new(str.as_bytes()).parse_id() {
-                HeaderValue::TextList(ids) => {
-                    assert_eq!(ids, input.1, "Failed to parse '{:?}'", input.0);
-                }
-                HeaderValue::Text(id) => {
-                    assert!(input.1.len() == 1, "Failed to parse '{:?}'", input.0);
-                    assert_eq!(id, input.1[0], "Failed to parse '{:?}'", input.0);
-                }
-                HeaderValue::Empty if input.1[0].is_empty() => {}
-                result => panic!("Unexpected result: {:?}", result),
-            }
+        for test in load_tests::<Option<Vec<Cow<'static, str>>>>("id.json") {
+            assert_eq!(
+                MessageStream::new(test.header.as_bytes())
+                    .parse_id()
+                    .into_text_list(),
+                test.expected,
+                "failed for {:?}",
+                test.header
+            );
         }
     }
 }
