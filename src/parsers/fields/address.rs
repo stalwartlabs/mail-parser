@@ -471,10 +471,10 @@ pub fn parse_address_detail_part(addr: &str) -> Option<&str> {
 }
 
 mod tests {
+    use super::*;
     #[test]
     fn parse_addresses() {
         use super::*;
-
         let inputs = [
             (
                 "John Doe <jdoe@machine.example>\n",
@@ -1000,6 +1000,8 @@ mod tests {
             ),
         ];
 
+        let mut builder = crate::parsers::fields::TestBuilder::new("address.json");
+
         for input in inputs {
             let str = input.0.to_string();
             let result = MessageStream::new(str.as_bytes()).parse_address();
@@ -1032,6 +1034,10 @@ mod tests {
             }*/
 
             assert_eq!(result, expected, "Failed for '{:?}'", input.0);
+
+            builder.add(str, expected);
         }
+
+        builder.write();
     }
 }

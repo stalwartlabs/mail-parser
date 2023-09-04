@@ -11,88 +11,9 @@
 
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
-use crate::{parsers::MessageStream, DateTime, HeaderValue};
-
-#[cfg(feature = "serde_support")]
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub struct Received<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    from: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    from_ip: Option<IpAddr>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    from_iprev: Option<&'x str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    by: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    for_: Option<&'x str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    with: Option<Protocol>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    tls_version: Option<TlsVersion>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    tls_cipher: Option<&'x str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    id: Option<&'x str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    ident: Option<&'x str>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    helo: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
-    helo_cmd: Option<Greeting>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(borrow, skip_serializing_if = "Option::is_none")
-    )]
-    via: Option<&'x str>,
-    date: Option<DateTime>,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub enum Host<'x> {
-    Name(&'x str),
-    IpAddr(IpAddr),
-}
+use crate::{
+    parsers::MessageStream, DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Token {
@@ -136,60 +57,6 @@ struct TokenData<'x> {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-enum TlsVersion {
-    SSLv2,
-    SSLv3,
-    TLSv1_0,
-    TLSv1_1,
-    TLSv1_2,
-    TLSv1_3,
-    DTLSv1_0,
-    DTLSv1_2,
-    DTLSv1_3,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-enum Greeting {
-    Helo,
-    Ehlo,
-    Lhlo,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-#[allow(clippy::upper_case_acronyms)]
-enum Protocol {
-    // IANA Mail Transmission Types
-    SMTP,
-    ESMTP,
-    ESMTPA,
-    ESMTPS,
-    ESMTPSA,
-    LMTP,
-    LMTPA,
-    LMTPS,
-    LMTPSA,
-    MMS,
-    UTF8SMTP,
-    UTF8SMTPA,
-    UTF8SMTPS,
-    UTF8SMTPSA,
-    UTF8LMTP,
-    UTF8LMTPA,
-    UTF8LMTPS,
-    UTF8LMTPSA,
-
-    // Non-Standard Mail Transmission Types
-    HTTP,
-    HTTPS,
-    IMAP,
-    POP3,
-    Local, // includes stdin, socket, etc.
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Month {
     Jan,
     Feb,
@@ -228,8 +95,8 @@ enum State {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_received(&mut self) -> Received<'x> {
-        let c = print!("-> {}", std::str::from_utf8(self.data).unwrap());
+    pub fn parse_received(&mut self) -> HeaderValue<'x> {
+        //let c = print!("-> {}", std::str::from_utf8(self.data).unwrap());
 
         let mut tokenizer = Tokenizer::new(self).peekable();
         let mut received = Received::default();
@@ -255,7 +122,7 @@ impl<'x> MessageStream<'x> {
                             _ => {
                                 if !token.token.is_separator() {
                                     received.from =
-                                        Some(Host::Name(tokenizer.next().unwrap().text));
+                                        Some(Host::Name(tokenizer.next().unwrap().text.into()));
                                 }
                                 break;
                             }
@@ -277,7 +144,8 @@ impl<'x> MessageStream<'x> {
                             }
                             _ => {
                                 if !token.token.is_separator() {
-                                    received.by = Some(Host::Name(tokenizer.next().unwrap().text));
+                                    received.by =
+                                        Some(Host::Name(tokenizer.next().unwrap().text.into()));
                                 }
                                 break;
                             }
@@ -292,7 +160,7 @@ impl<'x> MessageStream<'x> {
                                 tokenizer.next();
                             }
                             Token::Email => {
-                                received.for_ = Some(tokenizer.next().unwrap().text);
+                                received.for_ = Some(tokenizer.next().unwrap().text.into());
                                 break;
                             }
                             _ => {
@@ -313,7 +181,7 @@ impl<'x> MessageStream<'x> {
                             }
                             _ => {
                                 if !token.token.is_separator() {
-                                    received.id = Some(tokenizer.next().unwrap().text);
+                                    received.id = Some(tokenizer.next().unwrap().text.into());
                                 }
                                 break;
                             }
@@ -354,7 +222,7 @@ impl<'x> MessageStream<'x> {
                             }
                             _ => {
                                 if !token.token.is_separator() {
-                                    received.via = Some(tokenizer.next().unwrap().text);
+                                    received.via = Some(tokenizer.next().unwrap().text.into());
                                 }
                                 break;
                             }
@@ -370,7 +238,7 @@ impl<'x> MessageStream<'x> {
                             }
                             _ => {
                                 if !token.token.is_separator() {
-                                    received.ident = Some(tokenizer.next().unwrap().text);
+                                    received.ident = Some(tokenizer.next().unwrap().text.into());
                                 }
                                 break;
                             }
@@ -393,7 +261,7 @@ impl<'x> MessageStream<'x> {
                             _ => {
                                 if !token.token.is_separator() {
                                     received.helo =
-                                        Some(Host::Name(tokenizer.next().unwrap().text));
+                                        Some(Host::Name(tokenizer.next().unwrap().text.into()));
                                 }
                                 break;
                             }
@@ -410,12 +278,13 @@ impl<'x> MessageStream<'x> {
                 }
                 Token::Domain => {
                     if state == State::From && token.comment_depth > 0 {
-                        received.from_iprev = Some(token.text);
+                        received.from_iprev = Some(token.text.into());
                     }
                 }
                 Token::Email => {
                     if state == State::From {
-                        received.ident = Some(token.text.strip_suffix('@').unwrap_or(token.text));
+                        received.ident =
+                            Some(token.text.strip_suffix('@').unwrap_or(token.text).into());
                     }
                 }
                 Token::Integer(num) => {
@@ -432,8 +301,10 @@ impl<'x> MessageStream<'x> {
                         }
                     }
                 }
-                Token::Cipher if token.comment_depth > 0 => {
-                    received.tls_cipher = Some(token.text);
+                Token::Cipher => {
+                    if token.comment_depth > 0 || received.tls_cipher.is_none() {
+                        received.tls_cipher = Some(token.text.into());
+                    }
                 }
                 Token::TlsVersion(tls)
                     if token.comment_depth > 0 && received.tls_version.is_none() =>
@@ -472,7 +343,25 @@ impl<'x> MessageStream<'x> {
             .into();
         }
 
-        received
+        if received.from.is_some()
+            || received.from_ip.is_some()
+            || received.from_iprev.is_some()
+            || received.by.is_some()
+            || received.for_.is_some()
+            || received.with.is_some()
+            || received.tls_version.is_some()
+            || received.tls_cipher.is_some()
+            || received.id.is_some()
+            || received.ident.is_some()
+            || received.helo.is_some()
+            || received.helo_cmd.is_some()
+            || received.via.is_some()
+            || received.date.is_some()
+        {
+            HeaderValue::Received(Box::new(received))
+        } else {
+            HeaderValue::Empty
+        }
     }
 }
 
@@ -871,10 +760,10 @@ impl<'x, 'y> Iterator for Tokenizer<'x, 'y> {
             }
         };
 
-        println!("{:?} => {}", token, text);
+        /*println!("{:?} => {}", token, text);
         if let Some(token) = &self.next_token {
             println!("{:?}", token.token);
-        }
+        }*/
 
         TokenData {
             text,
@@ -912,7 +801,7 @@ impl<'x> From<Token> for TokenData<'x> {
 }
 
 impl Month {
-    fn to_number(&self) -> i64 {
+    fn to_number(self) -> i64 {
         match self {
             Month::Jan => 1,
             Month::Feb => 2,
@@ -952,23 +841,23 @@ impl Token {
 
 #[cfg(test)]
 mod tests {
-    use std::io::BufRead;
 
-    use serde::{Deserialize, Serialize};
-
-    use crate::parsers::MessageStream;
-
-    use super::Received;
-
-    #[derive(Debug, Serialize, Deserialize)]
-    struct Test<'x> {
-        header: &'x str,
-        expected: Received<'x>,
-    }
+    use crate::parsers::{fields::load_tests, MessageStream};
 
     #[test]
     fn parse_received() {
-        let file = std::fs::File::open("/Users/me/code/mail-parser/test/headers.txt").unwrap();
+        for test in load_tests("received.json") {
+            assert_eq!(
+                MessageStream::new(test.header.as_bytes())
+                    .parse_received()
+                    .unwrap_received(),
+                test.expected,
+                "failed for {:?}",
+                test.header
+            );
+        }
+
+        /*let file = std::fs::File::open("/Users/me/code/mail-parser/test/headers.txt").unwrap();
         //let file = std::fs::File::open("/Users/me/code/mail-parser/test/tokens.txt").unwrap();
         let reader = std::io::BufReader::new(file);
         let mut lines = String::new();
@@ -981,7 +870,9 @@ mod tests {
         let mut tests = vec![];
 
         for line in lines.split_inclusive('\n') {
-            let expected = MessageStream::new(line.as_bytes()).parse_received();
+            let expected = MessageStream::new(line.as_bytes())
+                .parse_received()
+                .unwrap_received();
 
             tests.push(Test {
                 header: line,
@@ -993,6 +884,6 @@ mod tests {
             "/Users/me/code/mail-parser/test/headers.json",
             serde_json::to_string_pretty(&tests).unwrap(),
         )
-        .unwrap();
+        .unwrap();*/
     }
 }

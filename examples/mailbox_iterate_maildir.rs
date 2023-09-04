@@ -15,11 +15,14 @@ use mail_parser::mailbox::maildir::FolderIterator;
 
 fn main() {
     // Iterates a Maildir++ structure printing the results to stdout.
-    let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    test_dir.push("tests");
-    test_dir.push("maildir");
-
-    for folder in FolderIterator::new(test_dir, ".".into()).unwrap() {
+    for folder in FolderIterator::new(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("resources")
+            .join("maildir"),
+        ".".into(),
+    )
+    .unwrap()
+    {
         let folder = folder.unwrap();
         println!("------\nMailbox: {:?}", folder.name().unwrap_or("INBOX"));
 

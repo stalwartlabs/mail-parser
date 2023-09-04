@@ -280,10 +280,6 @@ mod tests {
 
     #[test]
     fn parse_maildir() {
-        let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        test_dir.push("tests");
-        test_dir.push("maildir");
-
         let mut messages = Vec::new();
         let expected_messages = vec![
             (
@@ -342,7 +338,14 @@ mod tests {
             ),
         ];
 
-        for folder in FolderIterator::new(test_dir, ".".into()).unwrap() {
+        for folder in FolderIterator::new(
+            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .join("resources")
+                .join("maildir"),
+            ".".into(),
+        )
+        .unwrap()
+        {
             let folder = folder.unwrap();
             let name = folder.name().unwrap_or("INBOX").to_string();
 

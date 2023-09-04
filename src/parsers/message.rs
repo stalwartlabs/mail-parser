@@ -545,9 +545,10 @@ mod tests {
     #[test]
     fn parse_full_messages() {
         for test_suite in ["rfc", "legacy", "thirdparty", "malformed"] {
-            let mut test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-            test_dir.push("tests");
-            test_dir.push(test_suite);
+            let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .join("resources")
+                .join("eml")
+                .join(test_suite);
 
             let mut tests_run = 0;
 

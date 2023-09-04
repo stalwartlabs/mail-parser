@@ -1,0 +1,4204 @@
+[
+  {
+    "header": "from unknown (HELO MP61M.F-I.DE) () by p01ev.mail.s-web.de with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Sep 2023 04:24:06 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "unknown"
+      },
+      "by": {
+        "Name": "p01ev.mail.s-web.de"
+      },
+      "with": "ESMTP",
+      "tls_cipher": "DHE-RSA-AES256-GCM-SHA384",
+      "helo": {
+        "Name": "MP61M.F-I.DE"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 2,
+        "hour": 4,
+        "minute": 24,
+        "second": 6,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from NODE50.F-I.DE (NODE50) by MP61M.F-I.DE (MP61 ) for <TCMCSEPO@NODE50> with ESMTP (IBM TCMCSEPO z/OS V02R05.00) Id MP61M.20230902.020403.767296.121.91633@F-I.DE ; Sat, 02 Sep 2023 02:04:03 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "NODE50.F-I.DE"
+      },
+      "by": {
+        "Name": "MP61M.F-I.DE"
+      },
+      "for_": "TCMCSEPO@NODE50",
+      "with": "ESMTP",
+      "id": "MP61M.20230902.020403.767296.121.91633@F-I.DE",
+      "date": {
+        "year": 2023,
+        "month": 9,
+        "day": 2,
+        "hour": 2,
+        "minute": 4,
+        "second": 3,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from out-25.smtp.github.com (out-25.smtp.github.com. [192.30.252.208]) (using TLSv1.3 with cipher TLS13_AES_256_GCM_SHA384)\r\n\t by mail.stalw.art (Stalwart SMTP) with ESMTPS id 41A2C80D73C;\r\n\tTue, 29 Aug 2023 16:20:12 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "out-25.smtp.github.com"
+      },
+      "from_ip": "192.30.252.208",
+      "from_iprev": "out-25.smtp.github.com.",
+      "by": {
+        "Name": "mail.stalw.art"
+      },
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_3",
+      "tls_cipher": "TLS13_AES_256_GCM_SHA384",
+      "id": "41A2C80D73C",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 29,
+        "hour": 16,
+        "minute": 20,
+        "second": 12,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from github.com (hubbernetes-node-c032927.ash1-iad.github.net [10.56.145.42]) by smtp.github.com (Postfix) with ESMTPA id B4E173410F4 for <hello@stalw.art>; Tue, 29 Aug 2023 09:20:10 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "Name": "github.com"
+      },
+      "from_ip": "10.56.145.42",
+      "from_iprev": "hubbernetes-node-c032927.ash1-iad.github.net",
+      "by": {
+        "Name": "smtp.github.com"
+      },
+      "for_": "hello@stalw.art",
+      "with": "ESMTPA",
+      "id": "B4E173410F4",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 29,
+        "hour": 9,
+        "minute": 20,
+        "second": 10,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ietfa.amsl.com (localhost [IPv6:::1]) by ietfa.amsl.com (Postfix) with ESMTP id 6296FC13AE3E for <hello@domain.comt>; Mon, 28 Aug 2023 02:21:37 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "Name": "ietfa.amsl.com"
+      },
+      "from_ip": "::1",
+      "by": {
+        "Name": "ietfa.amsl.com"
+      },
+      "for_": "hello@domain.comt",
+      "with": "ESMTP",
+      "id": "6296FC13AE3E",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 28,
+        "hour": 2,
+        "minute": 21,
+        "second": 37,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from wmail.tana.it (wmail.tana.it [94.198.96.74]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256) (No client certificate requested) by ietfa.amsl.com (Postfix) with ESMTPS id 10B7AC151535 for <dmarc@ietf.org>; Mon, 28 Aug 2023 02:21:23 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "Name": "wmail.tana.it"
+      },
+      "from_ip": "94.198.96.74",
+      "from_iprev": "wmail.tana.it",
+      "by": {
+        "Name": "ietfa.amsl.com"
+      },
+      "for_": "dmarc@ietf.org",
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_3",
+      "tls_cipher": "TLS_AES_256_GCM_SHA384",
+      "id": "10B7AC151535",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 28,
+        "hour": 2,
+        "minute": 21,
+        "second": 23,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [172.25.197.120] (pcale.tana [172.25.197.120]) (AUTH: CRAM-MD5 uXDGrn@SYT0/k, TLS: TLS1.3, 128bits, ECDHE_RSA_AES_128_GCM_SHA256) by wmail.tana.it with ESMTPSA id 00000000005DC0D6.0000000064EC6711.00003756; Mon, 28 Aug 2023 11:21:21 +0200\n",
+    "expected": {
+      "from": {
+        "IpAddr": "172.25.197.120"
+      },
+      "from_ip": "172.25.197.120",
+      "from_iprev": "pcale.tana",
+      "by": {
+        "Name": "wmail.tana.it"
+      },
+      "with": "ESMTPSA",
+      "tls_version": "TLSv1_3",
+      "tls_cipher": "ECDHE_RSA_AES_128_GCM_SHA256",
+      "id": "00000000005DC0D6.0000000064EC6711.00003756",
+      "ident": "uXDGrn@SYT0",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 28,
+        "hour": 11,
+        "minute": 21,
+        "second": 21,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from gal.iecc.com (gal.iecc.com [IPv6:2001:470:1f07:1126:0:43:6f73:7461]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256) (No client certificate requested) by ietfa.amsl.com (Postfix) with ESMTPS id C95E9C151087  for <dmarc@ietf.org>; Sun, 27 Aug 2023 03:00:06 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "Name": "gal.iecc.com"
+      },
+      "from_ip": "2001:470:1f07:1126:0:43:6f73:7461",
+      "from_iprev": "gal.iecc.com",
+      "by": {
+        "Name": "ietfa.amsl.com"
+      },
+      "for_": "dmarc@ietf.org",
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_3",
+      "tls_cipher": "TLS_AES_256_GCM_SHA384",
+      "id": "C95E9C151087",
+      "date": {
+        "year": 2023,
+        "month": 8,
+        "day": 27,
+        "hour": 3,
+        "minute": 0,
+        "second": 6,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from infodrom.org by finlandia.Infodrom.North.DE via smail from stdin id <m1FglM8-000okjC@finlandia.Infodrom.North.DE> for debian-security-announce@lists.debian.org; Thu, 18 May 2006 18:28:08 +0200 (CEST)\n",
+    "expected": {
+      "from": {
+        "Name": "infodrom.org"
+      },
+      "by": {
+        "Name": "finlandia.Infodrom.North.DE"
+      },
+      "for_": "debian-security-announce@lists.debian.org",
+      "id": "m1FglM8-000okjC@finlandia.Infodrom.North.DE",
+      "via": "smail",
+      "date": {
+        "year": 2006,
+        "month": 5,
+        "day": 18,
+        "hour": 18,
+        "minute": 28,
+        "second": 8,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from wilhelm.eyp.ee with ESMTP id h1I7hGU06122 for <spamassassin-talk@lists.sourceforge.net>; Tue, 18 Feb 2003 09:43:16 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "wilhelm.eyp.ee"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "ESMTP",
+      "id": "h1I7hGU06122",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 18,
+        "hour": 9,
+        "minute": 43,
+        "second": 16,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from www-data by wwwmail.documenta.de (Exim 4.50) with local for <example@vandinter.org> id 1GFbZc-0006QV-L8; Tue, 22 Aug 2006 21:06:04 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "www-data"
+      },
+      "by": {
+        "Name": "wwwmail.documenta.de"
+      },
+      "for_": "example@vandinter.org",
+      "with": "Local",
+      "id": "1GFbZc-0006QV-L8",
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 22,
+        "hour": 21,
+        "minute": 6,
+        "second": 4,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from server.yourhostingaccount.com with local  for example@vandinter.org  id 1GDtdl-0002GU-QE (8710); Thu, 17 Aug 2006 21:59:17 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "server.yourhostingaccount.com"
+      },
+      "for_": "example@vandinter.org",
+      "with": "Local",
+      "id": "1GDtdl-0002GU-QE",
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 17,
+        "hour": 21,
+        "minute": 59,
+        "second": 17,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from virtual-access.org by bolero.conactive.com ; Thu, 20 Feb 2003 23:32:58 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "virtual-access.org"
+      },
+      "by": {
+        "Name": "bolero.conactive.com"
+      },
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 20,
+        "hour": 23,
+        "minute": 32,
+        "second": 58,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "FROM ca-ex-bridge1.nai.com BY scwsout1.nai.com ; Fri Feb 07 10:18:12 2003 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "ca-ex-bridge1.nai.com"
+      },
+      "by": {
+        "Name": "scwsout1.nai.com"
+      },
+      "date": {
+        "year": 1910,
+        "month": 7,
+        "day": 2,
+        "hour": 18,
+        "minute": 12,
+        "second": 211,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [86.122.158.69] by mta2.iomartmail.com; Thu, 2 Aug 2007 21:50:04 -0200\n",
+    "expected": {
+      "from": {
+        "IpAddr": "86.122.158.69"
+      },
+      "by": {
+        "Name": "mta2.iomartmail.com"
+      },
+      "date": {
+        "year": 2007,
+        "month": 8,
+        "day": 2,
+        "hour": 21,
+        "minute": 50,
+        "second": 4,
+        "tz_before_gmt": true,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from av0001.technodiva.com (localhost [127.0.0.1])by  localhost.technodiva.com (Postfix) with ESMTP id 846CF2117for  <proftp-user@lists.sourceforge.net>; Mon,  7 Aug 2006 17:48:07 +0200 (MEST)\n",
+    "expected": {
+      "from": {
+        "Name": "av0001.technodiva.com"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "localhost.technodiva.com"
+      },
+      "with": "ESMTP",
+      "id": "846CF2117for",
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 7,
+        "hour": 17,
+        "minute": 48,
+        "second": 7,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 142.169.110.122 (SquirrelMail authenticated user synapse) by mail.nomis80.org with HTTP; Sat, 3 Apr 2004 10:33:43 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "IpAddr": "142.169.110.122"
+      },
+      "by": {
+        "Name": "mail.nomis80.org"
+      },
+      "with": "HTTP",
+      "date": {
+        "year": 2004,
+        "month": 4,
+        "day": 3,
+        "hour": 10,
+        "minute": 33,
+        "second": 43,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 82.135.198.129 by FWM-M18.sysops.aol.com (64.12.168.82) with HTTP (WebMailUI); Tue, 19 Jun 2007 11:16:54 -0400\n",
+    "expected": {
+      "from": {
+        "IpAddr": "82.135.198.129"
+      },
+      "by": {
+        "Name": "FWM-M18.sysops.aol.com"
+      },
+      "with": "HTTP",
+      "date": {
+        "year": 2007,
+        "month": 6,
+        "day": 19,
+        "hour": 11,
+        "minute": 16,
+        "second": 54,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from inet-vrs-05.redmond.corp.microsoft.com ([157.54.6.157]) by INET-IMC-05.redmond.corp.microsoft.com with Microsoft SMTPSVC(5.0.2195.6624); Thu, 6 Mar 2003 12:02:35 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "inet-vrs-05.redmond.corp.microsoft.com"
+      },
+      "from_ip": "157.54.6.157",
+      "by": {
+        "Name": "INET-IMC-05.redmond.corp.microsoft.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 6,
+        "hour": 12,
+        "minute": 2,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 0 ([61.31.135.91]) by bass.bass.com.eg with Microsoft SMTPSVC(5.0.2195.6713); Tue, 21 Sep 2004 08:59:06 +0300\n",
+    "expected": {
+      "from": {
+        "Name": "0"
+      },
+      "from_ip": "61.31.135.91",
+      "by": {
+        "Name": "bass.bass.com.eg"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2004,
+        "month": 9,
+        "day": 21,
+        "hour": 8,
+        "minute": 59,
+        "second": 6,
+        "tz_before_gmt": false,
+        "tz_hour": 3,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 0 ([61.31.138.57] RDNS failed) by nccdi.com with Microsoft SMTPSVC(6.0.3790.0); Thu, 23 Sep 2004 08:51:06 -0700\n",
+    "expected": {
+      "from": {
+        "Name": "0"
+      },
+      "from_ip": "61.31.138.57",
+      "by": {
+        "Name": "nccdi.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2004,
+        "month": 9,
+        "day": 23,
+        "hour": 8,
+        "minute": 51,
+        "second": 6,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from tthompson ([217.35.105.172] unverified) by mail.neosinteractive.com with Microsoft SMTPSVC(5.0.2195.5329); Tue, 11 Mar 2003 13:23:01 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "tthompson"
+      },
+      "from_ip": "217.35.105.172",
+      "by": {
+        "Name": "mail.neosinteractive.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 11,
+        "hour": 13,
+        "minute": 23,
+        "second": 1,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([172.16.1.78]) by email2.codeworksonline.com with Microsoft SMTPSVC(5.0.2195.6713); Wed, 6 Sep 2006 21:14:29 -0400\n",
+    "expected": {
+      "from_ip": "172.16.1.78",
+      "by": {
+        "Name": "email2.codeworksonline.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 6,
+        "hour": 21,
+        "minute": 14,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail pickup service by mail1.insuranceiq.com with Microsoft SMTPSVC; Thu, 13 Feb 2003 19:05:39 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "mail"
+      },
+      "by": {
+        "Name": "mail1.insuranceiq.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 13,
+        "hour": 19,
+        "minute": 5,
+        "second": 39,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from EXC-DAG-02.global.net (10.45.252.152) by EXC-DAG-02.global.net (10.45.252.152) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1261.35; Mon, 29 Oct 2018 11:17:19 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "EXC-DAG-02.global.net"
+      },
+      "from_ip": "10.45.252.152",
+      "by": {
+        "Name": "EXC-DAG-02.global.net"
+      },
+      "with": "SMTP",
+      "tls_version": "TLSv1_2",
+      "tls_cipher": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+      "id": "15.1.1261.35",
+      "date": {
+        "year": 2018,
+        "month": 10,
+        "day": 29,
+        "hour": 11,
+        "minute": 17,
+        "second": 19,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from AM5PR0402MB2836.eurprd04.prod.outlook.com ([fe80::19bd:c588:dd17:5226]) by AM5PR0402MB2836.eurprd04.prod.outlook.com ([fe80::19bd:c588:dd17:5226%6]) with mapi id 15.20.1943.023; Wed, 5 Jun 2019 10:17:08 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "AM5PR0402MB2836.eurprd04.prod.outlook.com"
+      },
+      "from_ip": "fe80::19bd:c588:dd17:5226",
+      "by": {
+        "Name": "AM5PR0402MB2836.eurprd04.prod.outlook.com"
+      },
+      "id": "15.20.1943.023",
+      "date": {
+        "year": 2019,
+        "month": 6,
+        "day": 5,
+        "hour": 10,
+        "minute": 17,
+        "second": 8,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from list.brainbuzz.com (63.146.189.86:23198) by mx1.yourtech.net with [XMail 1.20 ESMTP Server] id <S72E> for <jason@ellingson.org.spamassassin.org> from <bounce-cscommunity-11965901@list.cramsession.com.spamassassin.org>; Sat, 18 Sep 2004 23:17:54 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "list.brainbuzz.com"
+      },
+      "from_ip": "63.146.189.86",
+      "by": {
+        "Name": "mx1.yourtech.net"
+      },
+      "for_": "jason@ellingson.org.spamassassin.org",
+      "with": "ESMTP",
+      "id": "S72E",
+      "date": {
+        "year": 2004,
+        "month": 9,
+        "day": 18,
+        "hour": 23,
+        "minute": 17,
+        "second": 54,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from list.brainbuzz.com (63.146.189.86:23198) by mx1.yourtech.net (209.32.147.34:25) with [XMail 1.20 ESMTP Server] id <S72E> for <jason@ellingson.org.spamassassin.org> from <bounce-cscommunity-11965901@list.cramsession.com.spamassassin.org>; Sat, 18 Sep 2004 23:17:54 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "list.brainbuzz.com"
+      },
+      "from_ip": "63.146.189.86",
+      "by": {
+        "Name": "mx1.yourtech.net"
+      },
+      "for_": "jason@ellingson.org.spamassassin.org",
+      "with": "ESMTP",
+      "id": "S72E",
+      "date": {
+        "year": 2004,
+        "month": 9,
+        "day": 18,
+        "hour": 23,
+        "minute": 17,
+        "second": 54,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([10.225.209.19:33672]) by ecelerity-va-1 (ecelerity HEAD) with SMTP id EE/20-30863-33CE1054; Fri, 08 Sep 2006 18:18:27 -0400\n",
+    "expected": {
+      "from_ip": "10.225.209.19",
+      "by": {
+        "Name": "ecelerity-va-1"
+      },
+      "with": "SMTP",
+      "id": "EE",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 8,
+        "hour": 18,
+        "minute": 18,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([127.0.0.1:32923]) by bm1-21.ed10.com (ecelerity 2.1.1ea r(11031M)) with ECSTREAM id 8B/57-16227-3764EB44 for <example@vandinter.org>; Wed, 19 Jul 2006 10:49:23 -0400\n",
+    "expected": {
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "bm1-21.ed10.com"
+      },
+      "for_": "example@vandinter.org",
+      "id": "8B",
+      "date": {
+        "year": 2006,
+        "month": 7,
+        "day": 19,
+        "hour": 10,
+        "minute": 49,
+        "second": 23,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([192.168.1.151:49601] helo=dev1.democracyinaction.org) by m12.prod.democracyinaction.com (ecelerity 2.1.1.3 r(11743)) with ESMTP id 52/92-02454-89FBA054 for <example@vandinter.org>; Fri, 15 Sep 2006 10:58:32 -0400\n",
+    "expected": {
+      "from_ip": "192.168.1.151",
+      "by": {
+        "Name": "m12.prod.democracyinaction.com"
+      },
+      "for_": "example@vandinter.org",
+      "with": "ESMTP",
+      "id": "52",
+      "helo": {
+        "Name": "dev1.democracyinaction.org"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 15,
+        "hour": 10,
+        "minute": 58,
+        "second": 32,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from root (helo=candygram.thunk.org) by thunker.thunk.org with local-esmtps  (tls_cipher TLS-1.0:RSA_AES_256_CBC_SHA:32)  (Exim 4.50 #1 (Debian)) id 1FwHqR-0008Bw-OG; Fri, 30 Jun 2006 08:11:35 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "root"
+      },
+      "by": {
+        "Name": "thunker.thunk.org"
+      },
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_0",
+      "tls_cipher": "RSA_AES_256_CBC_SHA",
+      "id": "1FwHqR-0008Bw-OG",
+      "helo": {
+        "Name": "candygram.thunk.org"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 30,
+        "hour": 8,
+        "minute": 11,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from root (helo=localhost) by broadcast.iac.iafrica.com with local-bsmtp (Exim 4.30; FreeBSD) id 1GN22d-0000xp-2K for example@vandinter.org; Tue, 12 Sep 2006 08:46:43 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "root"
+      },
+      "by": {
+        "Name": "broadcast.iac.iafrica.com"
+      },
+      "for_": "example@vandinter.org",
+      "with": "SMTP",
+      "id": "1GN22d-0000xp-2K",
+      "helo": {
+        "Name": "localhost"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 12,
+        "hour": 8,
+        "minute": 46,
+        "second": 43,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from smarter (helo=localhost) by mx1-out.lists.smarterliving.com with local-bsmtp (Exim 4.24) id 1GIRA2-0007IZ-4n for example@vandinter.org; Wed, 30 Aug 2006 10:35:22 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "smarter"
+      },
+      "by": {
+        "Name": "mx1-out.lists.smarterliving.com"
+      },
+      "for_": "example@vandinter.org",
+      "with": "SMTP",
+      "id": "1GIRA2-0007IZ-4n",
+      "helo": {
+        "Name": "localhost"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 30,
+        "hour": 10,
+        "minute": 35,
+        "second": 22,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from andrew by trinity.supernews.net with local (Exim 4.12) id 18xeL6-000Dn1-00; Tue, 25 Mar 2003 02:39:00 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "andrew"
+      },
+      "by": {
+        "Name": "trinity.supernews.net"
+      },
+      "with": "Local",
+      "id": "18xeL6-000Dn1-00",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 25,
+        "hour": 2,
+        "minute": 39,
+        "second": 0,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [61.174.163.26] (helo=host) by sc8-sf-list1.sourceforge.net with smtp (Exim 3.31-VA-mm2 #1 (Debian)) id 18t2z0-0001NX-00 for <razor-users@lists.sourceforge.net>; Wed, 12 Mar 2003 01:57:10 -0800\n",
+    "expected": {
+      "from": {
+        "IpAddr": "61.174.163.26"
+      },
+      "by": {
+        "Name": "sc8-sf-list1.sourceforge.net"
+      },
+      "for_": "razor-users@lists.sourceforge.net",
+      "with": "SMTP",
+      "id": "18t2z0-0001NX-00",
+      "helo": {
+        "Name": "host"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 12,
+        "hour": 1,
+        "minute": 57,
+        "second": 10,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [218.19.142.229] (helo=hotmail.com ident=yiuhyotp) by yzordderrex with smtp (Exim 3.35 #1 (Debian)) id 194BE5-0005Zh-00; Sat, 12 Apr 2003 03:58:53 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "218.19.142.229"
+      },
+      "by": {
+        "Name": "yzordderrex"
+      },
+      "with": "SMTP",
+      "id": "194BE5-0005Zh-00",
+      "ident": "yiuhyotp",
+      "helo": {
+        "Name": "hotmail.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 12,
+        "hour": 3,
+        "minute": 58,
+        "second": 53,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from sc8-sf-list1-b.sourceforge.net ([10.3.1.13] helo=sc8-sf-list1.sourceforge.net) by sc8-sf-list2.sourceforge.net with esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id 18t301-0007Bh-00; Wed, 12 Mar 2003 01:58:13 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "sc8-sf-list1-b.sourceforge.net"
+      },
+      "from_ip": "10.3.1.13",
+      "by": {
+        "Name": "sc8-sf-list2.sourceforge.net"
+      },
+      "with": "ESMTP",
+      "id": "18t301-0007Bh-00",
+      "helo": {
+        "Name": "sc8-sf-list1.sourceforge.net"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 12,
+        "hour": 1,
+        "minute": 58,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from dsl092-072-213.bos1.dsl.speakeasy.net ([66.92.72.213] helo=blazing.arsecandle.org) by sc8-sf-list1.sourceforge.net with esmtp (Cipher TLSv1:DES-CBC3-SHA:168) (Exim 3.31-VA-mm2 #1 (Debian)) id 18lyuU-0007TI-00 for <SpamAssassin-talk@lists.sourceforge.net>; Thu, 20 Feb 2003 14:11:18 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "dsl092-072-213.bos1.dsl.speakeasy.net"
+      },
+      "from_ip": "66.92.72.213",
+      "by": {
+        "Name": "sc8-sf-list1.sourceforge.net"
+      },
+      "for_": "SpamAssassin-talk@lists.sourceforge.net",
+      "with": "ESMTP",
+      "tls_version": "TLSv1_0",
+      "tls_cipher": "DES-CBC3-SHA",
+      "id": "18lyuU-0007TI-00",
+      "helo": {
+        "Name": "blazing.arsecandle.org"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 20,
+        "hour": 14,
+        "minute": 11,
+        "second": 18,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from eclectic.kluge.net ([66.92.69.221] ident=[W9VcNxE2vKxgWHD05PJbLzIHSxcmZQ/O]) by sc8-sf-list1.sourceforge.net with esmtp (Cipher TLSv1:DES-CBC3-SHA:168) (Exim 3.31-VA-mm2 #1 (Debian)) id 18m0hT-00031I-00 for <spamassassin-talk@lists.sourceforge.net>; Thu, 20 Feb 2003 16:06:00 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "eclectic.kluge.net"
+      },
+      "from_ip": "66.92.69.221",
+      "by": {
+        "Name": "sc8-sf-list1.sourceforge.net"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "ESMTP",
+      "tls_version": "TLSv1_0",
+      "tls_cipher": "DES-CBC3-SHA",
+      "id": "18m0hT-00031I-00",
+      "ident": "W9VcNxE2vKxgWHD05PJbLzIHSxcmZQ",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 20,
+        "hour": 16,
+        "minute": 6,
+        "second": 0,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail.ssccbelen.edu.pe ([216.244.149.154]) by yzordderrex with esmtp (Exim 3.35 #1 (Debian)) id 18tqiz-000702-00 for <jm@example.com>; Fri, 14 Mar 2003 15:03:57 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "mail.ssccbelen.edu.pe"
+      },
+      "from_ip": "216.244.149.154",
+      "by": {
+        "Name": "yzordderrex"
+      },
+      "for_": "jm@example.com",
+      "with": "ESMTP",
+      "id": "18tqiz-000702-00",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 14,
+        "hour": 15,
+        "minute": 3,
+        "second": 57,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from server040.webpack.hosteurope.de ([80.237.130.48]:52313) by vps832469583.serverpool.info with esmtps (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA:24) (Exim 4.50) id 1GzVLs-0002Oz-7b\n",
+    "expected": {
+      "from": {
+        "Name": "server040.webpack.hosteurope.de"
+      },
+      "from_ip": "80.237.130.48",
+      "by": {
+        "Name": "vps832469583.serverpool.info"
+      },
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_0",
+      "tls_cipher": "DHE_RSA_3DES_EDE_CBC_SHA",
+      "id": "1GzVLs-0002Oz-7b",
+      "date": null
+    }
+  },
+  {
+    "header": "from boggle.ihug.co.nz [203.109.252.209] by grunt6.ihug.co.nz with esmtp (Exim 3.35 #1 (Debian)) id 18SWRe-0006X6-00; Sun, 29 Dec 2002 18:57:06 +1300\n",
+    "expected": {
+      "from": {
+        "Name": "boggle.ihug.co.nz"
+      },
+      "from_ip": "203.109.252.209",
+      "by": {
+        "Name": "grunt6.ihug.co.nz"
+      },
+      "with": "ESMTP",
+      "id": "18SWRe-0006X6-00",
+      "date": {
+        "year": 2002,
+        "month": 12,
+        "day": 29,
+        "hour": 18,
+        "minute": 57,
+        "second": 6,
+        "tz_before_gmt": false,
+        "tz_hour": 13,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from helene8.i.pinwand.net (helene.cats.ms) [10.0.8.6.13219] (mail) by lisbeth.i.pinwand.net with esmtp (Exim 3.35 #1 (Debian)) id 1CO5y7-0001vC-00; Sun, 31 Oct 2004 04:01:23 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "helene8.i.pinwand.net"
+      },
+      "from_iprev": "helene.cats.ms",
+      "by": {
+        "Name": "lisbeth.i.pinwand.net"
+      },
+      "with": "ESMTP",
+      "id": "1CO5y7-0001vC-00",
+      "date": {
+        "year": 2004,
+        "month": 10,
+        "day": 31,
+        "hour": 4,
+        "minute": 1,
+        "second": 23,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from localhost (unknown [127.0.0.1]) by cabbage.jmason.org (Postfix) with ESMTP id A96E18BD97 for <jm@localhost>; Thu, 13 Mar 2003 15:23:15 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "cabbage.jmason.org"
+      },
+      "for_": "jm@localhost",
+      "with": "ESMTP",
+      "id": "A96E18BD97",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 15,
+        "minute": 23,
+        "second": 15,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 207.8.214.3 (unknown[211.94.164.65]) by puzzle.pobox.com (Postfix) with SMTP id 9029AFB732; Sat,  8 Nov 2003 17:57:46 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "IpAddr": "207.8.214.3"
+      },
+      "from_ip": "211.94.164.65",
+      "by": {
+        "Name": "puzzle.pobox.com"
+      },
+      "with": "SMTP",
+      "id": "9029AFB732",
+      "date": {
+        "year": 2003,
+        "month": 11,
+        "day": 8,
+        "hour": 17,
+        "minute": 57,
+        "second": 46,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from DPLAPTOP ( 72.242.176.162) by mail.puryear-it.com (Scalix SMTP Relay 10.0.1.3) via ESMTP; Fri, 23 Jun 2006 16:39:47 -0500 (CDT)\n",
+    "expected": {
+      "from": {
+        "Name": "DPLAPTOP"
+      },
+      "from_ip": "72.242.176.162",
+      "by": {
+        "Name": "mail.puryear-it.com"
+      },
+      "via": "ESMTP",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 23,
+        "hour": 16,
+        "minute": 39,
+        "second": 47,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 217.137.58.28 ([217.137.58.28]) by webmail.ukonline.net (IMP) with HTTP for <anarchyintheuk@localhost>; Sun, 11 Apr 2004 00:31:07 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "217.137.58.28"
+      },
+      "from_ip": "217.137.58.28",
+      "by": {
+        "Name": "webmail.ukonline.net"
+      },
+      "for_": "anarchyintheuk@localhost",
+      "with": "HTTP",
+      "date": {
+        "year": 2004,
+        "month": 4,
+        "day": 11,
+        "hour": 0,
+        "minute": 31,
+        "second": 7,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail1.insuranceiq.com (host66.insuranceiq.com [65.217.159.66] (may be forged)) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id h2F0c2x31856 for <jm@jmason.org>; Sat, 15 Mar 2003 00:38:03 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "mail1.insuranceiq.com"
+      },
+      "from_ip": "65.217.159.66",
+      "from_iprev": "host66.insuranceiq.com",
+      "by": {
+        "Name": "dogma.slashnull.org"
+      },
+      "for_": "jm@jmason.org",
+      "with": "ESMTP",
+      "id": "h2F0c2x31856",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 15,
+        "hour": 0,
+        "minute": 38,
+        "second": 3,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from BAY0-HMR08.adinternal.hotmail.com (bay0-hmr08.bay0.hotmail.com [65.54.241.207]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id h2DBpvs24047 for <webmaster@efi.ie>; Thu, 13 Mar 2003 11:51:57 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "BAY0-HMR08.adinternal.hotmail.com"
+      },
+      "from_ip": "65.54.241.207",
+      "from_iprev": "bay0-hmr08.bay0.hotmail.com",
+      "by": {
+        "Name": "dogma.slashnull.org"
+      },
+      "for_": "webmaster@efi.ie",
+      "with": "ESMTP",
+      "id": "h2DBpvs24047",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 11,
+        "minute": 51,
+        "second": 57,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ran-out.mx.develooper.com (IDENT:qmailr@one.develooper.com [64.81.84.115]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id h381Vvf19860 for <jm-cpan@jmason.org>; Tue, 8 Apr 2003 02:31:57 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "ran-out.mx.develooper.com"
+      },
+      "from_ip": "64.81.84.115",
+      "by": {
+        "Name": "dogma.slashnull.org"
+      },
+      "for_": "jm-cpan@jmason.org",
+      "with": "SMTP",
+      "id": "h381Vvf19860",
+      "ident": "qmailr@one.develooper.com",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 8,
+        "hour": 2,
+        "minute": 31,
+        "second": 57,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from rev.net (natpool62.rev.net [63.148.93.62] (may be forged)) (authenticated) by mail.rev.net (8.11.4/8.11.4) with ESMTP id h0KKa7d32306 for <spamassassin-talk@lists.sourceforge.net>\n",
+    "expected": {
+      "from": {
+        "Name": "rev.net"
+      },
+      "from_ip": "63.148.93.62",
+      "from_iprev": "natpool62.rev.net",
+      "by": {
+        "Name": "mail.rev.net"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "ESMTP",
+      "id": "h0KKa7d32306",
+      "date": null
+    }
+  },
+  {
+    "header": "from ns.elcanto.co.kr (66.161.246.58 [66.161.246.58]) by mail.ssccbelen.edu.pe with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.1960.3) id G69TW478; Thu, 13 Mar 2003 14:01:10 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "ns.elcanto.co.kr"
+      },
+      "from_ip": "66.161.246.58",
+      "by": {
+        "Name": "mail.ssccbelen.edu.pe"
+      },
+      "with": "SMTP",
+      "id": "G69TW478",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 14,
+        "minute": 1,
+        "second": 10,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail2.detr.gsi.gov.uk ([51.64.35.18] helo=ahvfw.dtlr.gsi.gov.uk) by mail4.gsi.gov.uk with smtp id 190K1R-0000me-00 for spamassassin-talk-admin@lists.sourceforge.net; Tue, 01 Apr 2003 12:33:46 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "mail2.detr.gsi.gov.uk"
+      },
+      "from_ip": "51.64.35.18",
+      "by": {
+        "Name": "mail4.gsi.gov.uk"
+      },
+      "for_": "spamassassin-talk-admin@lists.sourceforge.net",
+      "with": "SMTP",
+      "id": "190K1R-0000me-00",
+      "helo": {
+        "Name": "ahvfw.dtlr.gsi.gov.uk"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 1,
+        "hour": 12,
+        "minute": 33,
+        "second": 46,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 12-211-5-69.client.attbi.com (<unknown.domain>[12.211.5.69]) by rwcrmhc53.attbi.com (rwcrmhc53) with SMTP id <2002112823351305300akl1ue>; Thu, 28 Nov 2002 23:35:13 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "12-211-5-69.client.attbi.com"
+      },
+      "from_ip": "12.211.5.69",
+      "from_iprev": "unknown.domain",
+      "by": {
+        "Name": "rwcrmhc53.attbi.com"
+      },
+      "with": "SMTP",
+      "id": "2002112823351305300akl1ue",
+      "date": {
+        "year": 2002,
+        "month": 11,
+        "day": 28,
+        "hour": 23,
+        "minute": 35,
+        "second": 13,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from attbi.com (h000502e08144.ne.client2.attbi.com[24.128.27.103]) by rwcrmhc53.attbi.com (rwcrmhc53) with SMTP id <20030222193438053008f7tee>; Sat, 22 Feb 2003 19:34:39 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "attbi.com"
+      },
+      "from_ip": "24.128.27.103",
+      "from_iprev": "h000502e08144.ne.client2.attbi.com",
+      "by": {
+        "Name": "rwcrmhc53.attbi.com"
+      },
+      "with": "SMTP",
+      "id": "20030222193438053008f7tee",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 22,
+        "hour": 19,
+        "minute": 34,
+        "second": 39,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 4wtgRl (kgbxn@[211.244.147.115]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id h8BBsUJ18848; Thu, 11 Sep 2003 12:54:31 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "4wtgRl"
+      },
+      "from_ip": "211.244.147.115",
+      "by": {
+        "Name": "dogma.slashnull.org"
+      },
+      "with": "SMTP",
+      "id": "h8BBsUJ18848",
+      "ident": "kgbxn",
+      "date": {
+        "year": 2003,
+        "month": 9,
+        "day": 11,
+        "hour": 12,
+        "minute": 54,
+        "second": 31,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 213.123.174.21 by lw11fd.law11.hotmail.msn.com with HTTP; Wed, 24 Jul 2002 16:36:44 GMT\n",
+    "expected": {
+      "from": {
+        "IpAddr": "213.123.174.21"
+      },
+      "by": {
+        "Name": "lw11fd.law11.hotmail.msn.com"
+      },
+      "with": "HTTP",
+      "date": {
+        "year": 2002,
+        "month": 7,
+        "day": 24,
+        "hour": 16,
+        "minute": 36,
+        "second": 44,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x71-x56-x24-5.webspeed.dk (HELO niels) (69.96.3.15) by la.mx.develooper.com (qpsmtpd/0.27-dev) with SMTP; Fri, 02 Jan 2004 19:26:52 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "x71-x56-x24-5.webspeed.dk"
+      },
+      "from_ip": "69.96.3.15",
+      "by": {
+        "Name": "la.mx.develooper.com"
+      },
+      "with": "SMTP",
+      "helo": {
+        "Name": "niels"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2004,
+        "month": 1,
+        "day": 2,
+        "hour": 19,
+        "minute": 26,
+        "second": 52,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from sc8-sf-sshgate.sourceforge.net (HELO sc8-sf-netmisc.sourceforge.net) (66.35.250.220) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Fri, 02 Jan 2004 14:44:41 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "sc8-sf-sshgate.sourceforge.net"
+      },
+      "from_ip": "66.35.250.220",
+      "by": {
+        "Name": "la.mx.develooper.com"
+      },
+      "with": "ESMTP",
+      "helo": {
+        "Name": "sc8-sf-netmisc.sourceforge.net"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2004,
+        "month": 1,
+        "day": 2,
+        "hour": 14,
+        "minute": 44,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mx10.topofferz.net (HELO ) (69.6.60.10) by blazing.arsecandle.org with SMTP; 3 Mar 2004 20:34:38 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "mx10.topofferz.net"
+      },
+      "from_ip": "69.6.60.10",
+      "by": {
+        "Name": "blazing.arsecandle.org"
+      },
+      "with": "SMTP",
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2004,
+        "month": 3,
+        "day": 3,
+        "hour": 20,
+        "minute": 34,
+        "second": 38,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail-backend.DDDD.com (LHLO mail-backend.DDDD.com) (10.2.2.20) by mail-backend.DDDD.com with LMTP; Thu, 18 Jun 2015 16:50:56 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "Name": "mail-backend.DDDD.com"
+      },
+      "from_ip": "10.2.2.20",
+      "by": {
+        "Name": "mail-backend.DDDD.com"
+      },
+      "with": "LMTP",
+      "helo": {
+        "Name": "mail-backend.DDDD.com"
+      },
+      "helo_cmd": "Lhlo",
+      "date": {
+        "year": 2015,
+        "month": 6,
+        "day": 18,
+        "hour": 16,
+        "minute": 50,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from dslb-082-083-045-064.pools.arcor-ip.net (EHLO homepc) [82.83.45.64] by mail.gmx.net (mp010) with SMTP; 03 Feb 2007 13:13:47 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "dslb-082-083-045-064.pools.arcor-ip.net"
+      },
+      "from_ip": "82.83.45.64",
+      "by": {
+        "Name": "mail.gmx.net"
+      },
+      "with": "SMTP",
+      "helo": {
+        "Name": "homepc"
+      },
+      "helo_cmd": "Ehlo",
+      "date": {
+        "year": 2007,
+        "month": 2,
+        "day": 3,
+        "hour": 13,
+        "minute": 13,
+        "second": 47,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from imo-m01.mx.aol.com ([64.12.136.4]) by eagle.glenraven.com via smtpd (for [198.85.87.98]) with SMTP; Wed, 08 Oct 2003 16:25:37 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "imo-m01.mx.aol.com"
+      },
+      "from_ip": "64.12.136.4",
+      "by": {
+        "Name": "eagle.glenraven.com"
+      },
+      "with": "SMTP",
+      "via": "smtpd",
+      "date": {
+        "year": 2003,
+        "month": 10,
+        "day": 8,
+        "hour": 16,
+        "minute": 25,
+        "second": 37,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from postfix3-2.free.fr (HELO machine.domain.com) (foobar@213.228.0.169) by totor.bouissou.net with SMTP; 14 Nov 2003 08:05:50 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "postfix3-2.free.fr"
+      },
+      "by": {
+        "Name": "totor.bouissou.net"
+      },
+      "with": "SMTP",
+      "ident": "foobar@213.228.0.169",
+      "helo": {
+        "Name": "machine.domain.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 11,
+        "day": 14,
+        "hour": 8,
+        "minute": 5,
+        "second": 50,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from unknown (HELO terpsichore.farfalle.com) (jdavid@[216.254.40.70]) (envelope-sender <jdavid@farfalle.com>) by mail13.speakeasy.net (qmail-ldap-1.03) with SMTP for <jm@jmason.org>; 12 Feb 2003 18:23:19 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "unknown"
+      },
+      "from_ip": "216.254.40.70",
+      "by": {
+        "Name": "mail13.speakeasy.net"
+      },
+      "for_": "jm@jmason.org",
+      "with": "SMTP",
+      "ident": "jdavid@farfalle.com",
+      "helo": {
+        "Name": "terpsichore.farfalle.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 12,
+        "hour": 18,
+        "minute": 23,
+        "second": 19,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 211.245.85.228  (EHLO ) (211.245.85.228) by mta232.mail.scd.yahoo.com with SMTP; Sun, 25 Jan 2004 00:24:37 -0800\n",
+    "expected": {
+      "from": {
+        "IpAddr": "211.245.85.228"
+      },
+      "from_ip": "211.245.85.228",
+      "by": {
+        "Name": "mta232.mail.scd.yahoo.com"
+      },
+      "with": "SMTP",
+      "helo_cmd": "Ehlo",
+      "date": {
+        "year": 2004,
+        "month": 1,
+        "day": 25,
+        "hour": 0,
+        "minute": 24,
+        "second": 37,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [193.220.176.134] by web40310.mail.yahoo.com via HTTP; Wed, 12 Feb 2003 14:22:21 PST\n",
+    "expected": {
+      "from": {
+        "IpAddr": "193.220.176.134"
+      },
+      "by": {
+        "Name": "web40310.mail.yahoo.com"
+      },
+      "via": "HTTP",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 12,
+        "hour": 14,
+        "minute": 22,
+        "second": 21,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 192.168.5.158 ( [192.168.5.158]) as user jason@localhost by mail.reusch.net with HTTP; Mon, 8 Jul 2002 23:24:56 -0400\n",
+    "expected": {
+      "from": {
+        "IpAddr": "192.168.5.158"
+      },
+      "from_ip": "192.168.5.158",
+      "by": {
+        "Name": "mail.reusch.net"
+      },
+      "with": "HTTP",
+      "ident": "jason@localhost",
+      "date": {
+        "year": 2002,
+        "month": 7,
+        "day": 8,
+        "hour": 23,
+        "minute": 24,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from (64.52.135.194 [64.52.135.194]) by mail.unearthed.com with ESMTP id BQB0hUH2 Thu, 20 Feb 2003 16:13:20 -0700 (PST)\n",
+    "expected": {
+      "from_ip": "64.52.135.194",
+      "by": {
+        "Name": "mail.unearthed.com"
+      },
+      "with": "ESMTP",
+      "id": "BQB0hUH2",
+      "date": null
+    }
+  },
+  {
+    "header": "from [65.167.180.251] by relent.cedata.com (MessageWall 1.1.0) with SMTP; 20 Feb 2003 23:57:15 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "65.167.180.251"
+      },
+      "by": {
+        "Name": "relent.cedata.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 20,
+        "hour": 23,
+        "minute": 57,
+        "second": 15,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from  ([172.16.1.78]) by email2.codeworksonline.com with Microsoft SMTPSVC(5.0.2195.6713); Wed, 6 Sep 2006 21:14:29 -0400\n",
+    "expected": {
+      "from_ip": "172.16.1.78",
+      "by": {
+        "Name": "email2.codeworksonline.com"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 6,
+        "hour": 21,
+        "minute": 14,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from (130.215.36.186) by mcafee.wpi.edu via smtp id 021b_7e19a55a_ea7e_11da_83a9_00304811e63a; Tue, 23 May 2006 13:06:35 -0400\n",
+    "expected": {
+      "from_ip": "130.215.36.186",
+      "by": {
+        "Name": "mcafee.wpi.edu"
+      },
+      "id": "021b_7e19a55a_ea7e_11da_83a9_00304811e63a",
+      "via": "smtp",
+      "date": {
+        "year": 2006,
+        "month": 5,
+        "day": 23,
+        "hour": 13,
+        "minute": 6,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([172.21.2.10]) by out-relay4.mtahq.org with ESMTP  id 4420961.8281; Tue, 22 Aug 2006 17:53:08 -0400\n",
+    "expected": {
+      "from_ip": "172.21.2.10",
+      "by": {
+        "Name": "out-relay4.mtahq.org"
+      },
+      "with": "ESMTP",
+      "id": "4420961.8281",
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 22,
+        "hour": 17,
+        "minute": 53,
+        "second": 8,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from acecomms [202.83.84.95] by mailscan.acenet.net.au [202.83.84.27] with SMTP (MDaemon.PRO.v5.0.6.R) for <spamassassin-talk@lists.sourceforge.net>; Fri, 21 Feb 2003 09:32:27 +1000\n",
+    "expected": {
+      "from": {
+        "Name": "acecomms"
+      },
+      "from_ip": "202.83.84.95",
+      "by": {
+        "Name": "mailscan.acenet.net.au"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 21,
+        "hour": 9,
+        "minute": 32,
+        "second": 27,
+        "tz_before_gmt": false,
+        "tz_hour": 10,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from smtp510.aspkunden.de [(134.97.4.21)] by mail.aspemail.de (134.97.4.24) (MDaemon PRO v19.0.2)  with ESMTP id md50018233933.msg; Tue, 16 Jul 2019 11:39:22 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "smtp510.aspkunden.de"
+      },
+      "from_ip": "134.97.4.21",
+      "by": {
+        "Name": "mail.aspemail.de"
+      },
+      "with": "ESMTP",
+      "id": "md50018233933.msg",
+      "date": {
+        "year": 2019,
+        "month": 7,
+        "day": 16,
+        "hour": 11,
+        "minute": 39,
+        "second": 22,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail.sxptt.zj.cn ([218.0.185.24]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id h2FH0Zx11330 for <webmaster@efi.ie>; Sat, 15 Mar 2003 17:00:41 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "mail.sxptt.zj.cn"
+      },
+      "from_ip": "218.0.185.24",
+      "by": {
+        "Name": "dogma.slashnull.org"
+      },
+      "for_": "webmaster@efi.ie",
+      "with": "ESMTP",
+      "id": "h2FH0Zx11330",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 15,
+        "hour": 17,
+        "minute": 0,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from umr-mail7.umr.edu (umr-mail7.umr.edu [131.151.1.64]) via ESMTP by mrelay1.cc.umr.edu (8.12.1/) id h06GHYLZ022481; Mon, 6 Jan 2003 10:17:34 -0600\n",
+    "expected": {
+      "from": {
+        "Name": "umr-mail7.umr.edu"
+      },
+      "from_ip": "131.151.1.64",
+      "from_iprev": "umr-mail7.umr.edu",
+      "by": {
+        "Name": "mrelay1.cc.umr.edu"
+      },
+      "id": "h06GHYLZ022481",
+      "via": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 6,
+        "hour": 10,
+        "minute": 17,
+        "second": 34,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from Agni (localhost [::ffff:127.0.0.1]) (TLS: TLSv1/SSLv3, 168bits,DES-CBC3-SHA) by agni.forevermore.net with esmtp; Mon, 28 Oct 2002 14:48:52 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "Agni"
+      },
+      "from_ip": "::ffff:127.0.0.1",
+      "by": {
+        "Name": "agni.forevermore.net"
+      },
+      "with": "ESMTP",
+      "tls_version": "TLSv1_0",
+      "tls_cipher": "DES-CBC3-SHA",
+      "date": {
+        "year": 2002,
+        "month": 10,
+        "day": 28,
+        "hour": 14,
+        "minute": 48,
+        "second": 52,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from gandalf ([4.37.75.131]) (authenticated bits=0) by herald.cc.purdue.edu (8.12.5/8.12.5/herald) with ESMTP id g9JLefrm028228 for <spamassassin-talk@lists.sourceforge.net>; Sat, 19 Oct 2002 16:40:41 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "Name": "gandalf"
+      },
+      "from_ip": "4.37.75.131",
+      "by": {
+        "Name": "herald.cc.purdue.edu"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "ESMTP",
+      "id": "g9JLefrm028228",
+      "date": {
+        "year": 2002,
+        "month": 10,
+        "day": 19,
+        "hour": 16,
+        "minute": 40,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from bushinternet.com (softdnserr [::ffff:61.99.99.67]) by mail.cs.helsinki.fi with esmtp; Fri, 22 Aug 2003 12:25:41 +0300\n",
+    "expected": {
+      "from": {
+        "Name": "bushinternet.com"
+      },
+      "from_ip": "::ffff:61.99.99.67",
+      "by": {
+        "Name": "mail.cs.helsinki.fi"
+      },
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 8,
+        "day": 22,
+        "hour": 12,
+        "minute": 25,
+        "second": 41,
+        "tz_before_gmt": false,
+        "tz_hour": 3,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from jsoliday.acs.internap.com ([63.251.66.24.63559]) by mailhost.acs.internap.com with esmtp  (v3.35.1) id 1GNrLz-000295-00; Thu, 14 Sep 2006 09:34:07 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "jsoliday.acs.internap.com"
+      },
+      "by": {
+        "Name": "mailhost.acs.internap.com"
+      },
+      "with": "ESMTP",
+      "id": "1GNrLz-000295-00",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 14,
+        "hour": 9,
+        "minute": 34,
+        "second": 7,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from roissy (p573.as1.exs.dublin.eircom.net [159.134.226.61]) (authenticated bits=0) by slate.dublin.wbtsystems.com (8.12.6/8.12.6) with ESMTP id g9MFWcvb068860 for <jm@jmason.org>; Tue, 22 Oct 2002 16:32:39 +0100 (IST)\n",
+    "expected": {
+      "from": {
+        "Name": "roissy"
+      },
+      "from_ip": "159.134.226.61",
+      "from_iprev": "p573.as1.exs.dublin.eircom.net",
+      "by": {
+        "Name": "slate.dublin.wbtsystems.com"
+      },
+      "for_": "jm@jmason.org",
+      "with": "ESMTP",
+      "id": "g9MFWcvb068860",
+      "date": {
+        "year": 2002,
+        "month": 10,
+        "day": 22,
+        "hour": 16,
+        "minute": 32,
+        "second": 39,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from cabbage.jmason.org [127.0.0.1] by localhost with IMAP (fetchmail-5.9.0) for jm@localhost (single-drop); Thu, 13 Mar 2003 20:39:56 -0800 (PST)\n",
+    "expected": {
+      "from": {
+        "Name": "cabbage.jmason.org"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "localhost"
+      },
+      "for_": "jm@localhost",
+      "with": "IMAP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 20,
+        "minute": 39,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from pop3.mail.dk (195.41.46.251) by loki.valhalla with POP3; 14 Apr 2010 11:14:29 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "pop3.mail.dk"
+      },
+      "from_ip": "195.41.46.251",
+      "by": {
+        "Name": "loki.valhalla"
+      },
+      "with": "POP3",
+      "date": {
+        "year": 2010,
+        "month": 4,
+        "day": 14,
+        "hour": 11,
+        "minute": 14,
+        "second": 29,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from unknown (HELO feux01a-isp) (213.199.4.210) by totor.bouissou.net with SMTP; 1 Nov 2003 07:05:19 -0000 \n",
+    "expected": {
+      "from": {
+        "Name": "unknown"
+      },
+      "from_ip": "213.199.4.210",
+      "by": {
+        "Name": "totor.bouissou.net"
+      },
+      "with": "SMTP",
+      "helo": {
+        "Name": "feux01a-isp"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 11,
+        "day": 1,
+        "hour": 7,
+        "minute": 5,
+        "second": 19,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from adsl-207-213-27-129.dsl.lsan03.pacbell.net (HELO merlin.net.au) (Owner50@207.213.27.129) by totor.bouissou.net with SMTP; 10 Nov 2003 06:30:34 -0000 \n",
+    "expected": {
+      "from": {
+        "Name": "adsl-207-213-27-129.dsl.lsan03.pacbell.net"
+      },
+      "by": {
+        "Name": "totor.bouissou.net"
+      },
+      "with": "SMTP",
+      "ident": "Owner50@207.213.27.129",
+      "helo": {
+        "Name": "merlin.net.au"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 11,
+        "day": 10,
+        "hour": 6,
+        "minute": 30,
+        "second": 34,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x1-6-00-04-bd-d2-e0-a3.k317.webspeed.dk (benelli@80.167.158.170) by totor.bouissou.net with SMTP; 5 Nov 2003 23:18:42 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "x1-6-00-04-bd-d2-e0-a3.k317.webspeed.dk"
+      },
+      "by": {
+        "Name": "totor.bouissou.net"
+      },
+      "with": "SMTP",
+      "ident": "benelli@80.167.158.170",
+      "date": {
+        "year": 2003,
+        "month": 11,
+        "day": 5,
+        "hour": 23,
+        "minute": 18,
+        "second": 42,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [129.24.215.125] by ws1-7.us4.outblaze.com with http for _bushisevil_@mail.com; Thu, 13 Feb 2003 15:59:28 -0500\n",
+    "expected": {
+      "from": {
+        "IpAddr": "129.24.215.125"
+      },
+      "by": {
+        "Name": "ws1-7.us4.outblaze.com"
+      },
+      "for_": "_bushisevil_@mail.com",
+      "with": "HTTP",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 13,
+        "hour": 15,
+        "minute": 59,
+        "second": 28,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from snake.corp.yahoo.com(216.145.52.229) by x.x.org via smap (V1.3) id xma093673; Wed, 26 Mar 03 20:43:24 -0600\n",
+    "expected": {
+      "from": {
+        "Name": "snake.corp.yahoo.com"
+      },
+      "from_ip": "216.145.52.229",
+      "by": {
+        "Name": "x.x.org"
+      },
+      "id": "xma093673",
+      "via": "smap",
+      "date": {
+        "year": 1903,
+        "month": 3,
+        "day": 26,
+        "hour": 20,
+        "minute": 43,
+        "second": 24,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from smtp.greyware.com(208.14.208.51, HELO smtp.sff.net) by x.x.org via smap (V1.3) id xma002908; Fri, 27 Feb 04 14:16:56 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "smtp.greyware.com"
+      },
+      "from_ip": "208.14.208.51",
+      "by": {
+        "Name": "x.x.org"
+      },
+      "id": "xma002908",
+      "helo": {
+        "Name": "smtp.sff.net"
+      },
+      "helo_cmd": "Helo",
+      "via": "smap",
+      "date": {
+        "year": 1904,
+        "month": 2,
+        "day": 27,
+        "hour": 14,
+        "minute": 16,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [192.168.0.71] by web01-nyc.clicvu.com (Post.Office MTA v3.5.3 release 223 ID# 0-64039U1000L100S0V35) with SMTP id com for <x@x.org>; Tue, 25 Mar 2003 11:42:04 -0500\n",
+    "expected": {
+      "from": {
+        "IpAddr": "192.168.0.71"
+      },
+      "by": {
+        "Name": "web01-nyc.clicvu.com"
+      },
+      "for_": "x@x.org",
+      "with": "SMTP",
+      "id": "com",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 25,
+        "hour": 11,
+        "minute": 42,
+        "second": 4,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [127.0.0.1] by euphoria (ArGoSoft Mail Server Freeware, Version 1.8 (1.8.2.5)); Sat, 8 Feb 2003 09:45:32 +0200\n",
+    "expected": {
+      "from": {
+        "IpAddr": "127.0.0.1"
+      },
+      "by": {
+        "Name": "euphoria"
+      },
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 8,
+        "hour": 9,
+        "minute": 45,
+        "second": 32,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 157.54.8.23 by inet-vrs-05.redmond.corp.microsoft.com (InterScan E-Mail VirusWall NT); Thu, 06 Mar 2003 12:02:35 -0800\n",
+    "expected": {
+      "from": {
+        "IpAddr": "157.54.8.23"
+      },
+      "by": {
+        "Name": "inet-vrs-05.redmond.corp.microsoft.com"
+      },
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 6,
+        "hour": 12,
+        "minute": 2,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 10.165.130.62 by CNNIMAIL12.CNN.COM (SMTPL release 1.0d) with TCP; Fri, 1 Sep 2006 20:28:14 -0400\n",
+    "expected": {
+      "from": {
+        "IpAddr": "10.165.130.62"
+      },
+      "by": {
+        "Name": "CNNIMAIL12.CNN.COM"
+      },
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 1,
+        "hour": 20,
+        "minute": 28,
+        "second": 14,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from faerber.muc.de by slarti.muc.de with BSMTP (rsmtp-qm-ot 0.4) for asrg@ietf.org; 7 Mar 2003 21:10:38 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "faerber.muc.de"
+      },
+      "by": {
+        "Name": "slarti.muc.de"
+      },
+      "for_": "asrg@ietf.org",
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 7,
+        "hour": 21,
+        "minute": 10,
+        "second": 38,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from spike (spike.ig.co.uk [193.32.60.32]) by mail.ig.co.uk with SMTP id h27CrCD03362 for <asrg@ietf.org>; Fri, 7 Mar 2003 12:53:12 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "spike"
+      },
+      "from_ip": "193.32.60.32",
+      "from_iprev": "spike.ig.co.uk",
+      "by": {
+        "Name": "mail.ig.co.uk"
+      },
+      "for_": "asrg@ietf.org",
+      "with": "SMTP",
+      "id": "h27CrCD03362",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 7,
+        "hour": 12,
+        "minute": 53,
+        "second": 12,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from customer254-217.iplannetworks.net (HELO AGAMENON) (baldusi@200.69.254.217 with plain) by smtp.mail.vip.sc5.yahoo.com with SMTP; 11 Mar 2003 21:03:28 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "customer254-217.iplannetworks.net"
+      },
+      "by": {
+        "Name": "smtp.mail.vip.sc5.yahoo.com"
+      },
+      "with": "SMTP",
+      "ident": "baldusi@200.69.254.217",
+      "helo": {
+        "Name": "AGAMENON"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 11,
+        "hour": 21,
+        "minute": 3,
+        "second": 28,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [192.168.1.104] (account nazgul HELO [192.168.1.104]) by somewhere.com (CommuniGate Pro SMTP 3.5.7) with ESMTP-TLS id 2088434; Fri, 07 Mar 2003 13:05:06 -0500\n",
+    "expected": {
+      "from": {
+        "IpAddr": "192.168.1.104"
+      },
+      "by": {
+        "Name": "somewhere.com"
+      },
+      "with": "ESMTPS",
+      "id": "2088434",
+      "helo": {
+        "IpAddr": "192.168.1.104"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 7,
+        "hour": 13,
+        "minute": 5,
+        "second": 6,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from host.example.com ([192.0.2.1] verified) by mail.example.net (CommuniGate Pro SMTP 5.1.13) with ESMTP id 9786656 for user@example.net; Thu, 27 Mar 2008 15:08:17 +0600\n",
+    "expected": {
+      "from": {
+        "Name": "host.example.com"
+      },
+      "from_ip": "192.0.2.1",
+      "by": {
+        "Name": "mail.example.net"
+      },
+      "for_": "user@example.net",
+      "with": "ESMTP",
+      "id": "9786656",
+      "date": {
+        "year": 2008,
+        "month": 3,
+        "day": 27,
+        "hour": 15,
+        "minute": 8,
+        "second": 17,
+        "tz_before_gmt": false,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([10.0.0.6]) by mail0.ciphertrust.com with ESMTP ; Thu, 13 Mar 2003 06:26:21 -0500 (EST)\n",
+    "expected": {
+      "from_ip": "10.0.0.6",
+      "by": {
+        "Name": "mail0.ciphertrust.com"
+      },
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 6,
+        "minute": 26,
+        "second": 21,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ironport.com (10.1.1.5) by a50.ironport.com with ESMTP; 01 Apr 2003 12:00:51 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "ironport.com"
+      },
+      "from_ip": "10.1.1.5",
+      "by": {
+        "Name": "a50.ironport.com"
+      },
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 1,
+        "hour": 12,
+        "minute": 0,
+        "second": 51,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from dyn-81-166-39-132.ppp.tiscali.fr (81.166.39.132) by cpmail.dk.tiscali.com (6.7.018)\n",
+    "expected": {
+      "from": {
+        "Name": "dyn-81-166-39-132.ppp.tiscali.fr"
+      },
+      "from_ip": "81.166.39.132",
+      "by": {
+        "Name": "cpmail.dk.tiscali.com"
+      },
+      "date": null
+    }
+  },
+  {
+    "header": "from scv3.apple.com (scv3.apple.com) by mailgate2.apple.com (Content Technologies SMTPRS 4.2.1) with ESMTP id <T61095998e1118164e13f8@mailgate2.apple.com>; Mon, 17 Mar 2003 17:04:54 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "scv3.apple.com"
+      },
+      "from_iprev": "scv3.apple.com",
+      "by": {
+        "Name": "mailgate2.apple.com"
+      },
+      "with": "ESMTP",
+      "id": "T61095998e1118164e13f8@mailgate2.apple.com",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 17,
+        "hour": 17,
+        "minute": 4,
+        "second": 54,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 01al10015010057.ad.bls.com ([90.152.5.141] [90.152.5.141]) by aismtp3g.bls.com with ESMTP; Mon, 10 Mar 2003 11:10:41 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "01al10015010057.ad.bls.com"
+      },
+      "from_ip": "90.152.5.141",
+      "by": {
+        "Name": "aismtp3g.bls.com"
+      },
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 10,
+        "hour": 11,
+        "minute": 10,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 206.47.0.153 by dm3cn8.bell.ca with ESMTP (Tumbleweed MMS SMTP Relay (MMS v5.0)); Mon, 24 Mar 2003 19:49:48 -0500\n",
+    "expected": {
+      "from": {
+        "IpAddr": "206.47.0.153"
+      },
+      "by": {
+        "Name": "dm3cn8.bell.ca"
+      },
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 24,
+        "hour": 19,
+        "minute": 49,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from pobox.com (h005018086b3b.ne.client2.attbi.com[66.31.45.164]) by rwcrmhc53.attbi.com (rwcrmhc53) with SMTP id <2003031302165605300suph7e>; Thu, 13 Mar 2003 02:16:56 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "pobox.com"
+      },
+      "from_ip": "66.31.45.164",
+      "from_iprev": "h005018086b3b.ne.client2.attbi.com",
+      "by": {
+        "Name": "rwcrmhc53.attbi.com"
+      },
+      "with": "SMTP",
+      "id": "2003031302165605300suph7e",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 2,
+        "minute": 16,
+        "second": 56,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [10.128.128.81]:50999 (HELO dfintra.f-secure.com) by fsav4im2 ([10.128.128.74]:25) (F-Secure Anti-Virus for Internet Mail 6.0.34 Release) with SMTP; Tue, 5 Mar 2002 14:11:53 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "10.128.128.81"
+      },
+      "by": {
+        "Name": "fsav4im2"
+      },
+      "with": "SMTP",
+      "helo": {
+        "Name": "dfintra.f-secure.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2002,
+        "month": 3,
+        "day": 5,
+        "hour": 14,
+        "minute": 11,
+        "second": 53,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 62.180.7.250 (HELO daisy) by smtp.altavista.de (209.228.22.152) with SMTP; 19 Sep 2002 17:03:17 +0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "62.180.7.250"
+      },
+      "by": {
+        "Name": "smtp.altavista.de"
+      },
+      "with": "SMTP",
+      "helo": {
+        "Name": "daisy"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2002,
+        "month": 9,
+        "day": 19,
+        "hour": 17,
+        "minute": 3,
+        "second": 17,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from oemcomputer [63.232.189.195] by highstream.net (SMTPD32-7.07) id A4CE7F2A0028; Sat, 01 Feb 2003 21:39:10 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "oemcomputer"
+      },
+      "from_ip": "63.232.189.195",
+      "by": {
+        "Name": "highstream.net"
+      },
+      "id": "A4CE7F2A0028",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 1,
+        "hour": 21,
+        "minute": 39,
+        "second": 10,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from nodnsquery(192.100.64.12) by herbivore.monmouth.edu via csmap (V4.1) id srcAAAyHaywy\n",
+    "expected": {
+      "from": {
+        "Name": "nodnsquery"
+      },
+      "from_ip": "192.100.64.12",
+      "by": {
+        "Name": "herbivore.monmouth.edu"
+      },
+      "id": "srcAAAyHaywy",
+      "via": "csmap",
+      "date": null
+    }
+  },
+  {
+    "header": "from [192.168.0.13] by <server> (MailGate 3.5.172) with SMTP; Tue, 1 Apr 2003 15:04:55 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "192.168.0.13"
+      },
+      "by": {
+        "Name": "server"
+      },
+      "with": "SMTP",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 1,
+        "hour": 15,
+        "minute": 4,
+        "second": 55,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from jmason.org (unverified [195.218.107.131]) by ni-mail1.dna.utvinternet.net <B0014212518@ni-mail1.dna.utvinternet.net>; Tue, 11 Feb 2003 12:18:12 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "jmason.org"
+      },
+      "from_ip": "195.218.107.131",
+      "by": {
+        "Name": "ni-mail1.dna.utvinternet.net"
+      },
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 11,
+        "hour": 12,
+        "minute": 18,
+        "second": 12,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [212.87.144.30] (account seiz [212.87.144.30] verified) by x.imd.net (CommuniGate Pro SMTP 4.0.3) with ESMTP-TLS id 5026665 for spamassassin-talk@lists.sourceforge.net; Wed, 15 Jan 2003 16:27:05 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "212.87.144.30"
+      },
+      "from_ip": "212.87.144.30",
+      "by": {
+        "Name": "x.imd.net"
+      },
+      "for_": "spamassassin-talk@lists.sourceforge.net",
+      "with": "ESMTPS",
+      "id": "5026665",
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 15,
+        "hour": 16,
+        "minute": 27,
+        "second": 5,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [206.51.230.145] (helo=t-online.de) by mxeu2.kundenserver.de with ESMTP (Nemesis), id 0MKpdM-1CkRpr14PF-000608; Fri, 31 Dec 2004 19:49:15 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "206.51.230.145"
+      },
+      "by": {
+        "Name": "mxeu2.kundenserver.de"
+      },
+      "with": "ESMTP",
+      "id": "0MKpdM-1CkRpr14PF-000608",
+      "helo": {
+        "Name": "t-online.de"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2004,
+        "month": 12,
+        "day": 31,
+        "hour": 19,
+        "minute": 49,
+        "second": 15,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [218.19.142.229] (helo=hotmail.com ident=yiuhyotp) by yzordderrex with smtp (Exim 3.35 #1 (Debian)) id 194BE5-0005Zh-00; Sat, 12 Apr 2003 03:58:53 +0100\n",
+    "expected": {
+      "from": {
+        "IpAddr": "218.19.142.229"
+      },
+      "by": {
+        "Name": "yzordderrex"
+      },
+      "with": "SMTP",
+      "id": "194BE5-0005Zh-00",
+      "ident": "yiuhyotp",
+      "helo": {
+        "Name": "hotmail.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 12,
+        "hour": 3,
+        "minute": 58,
+        "second": 53,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mtsbp606.email-info.net (?dXqpg3b0hiH9faI2OxLT94P/YKDD3rQ1?@64.253.199.166) by kde.informatik.uni-kl.de with SMTP; 30 Apr 2003 15:06:29\n",
+    "expected": {
+      "from": {
+        "Name": "mtsbp606.email-info.net"
+      },
+      "by": {
+        "Name": "kde.informatik.uni-kl.de"
+      },
+      "with": "SMTP",
+      "ident": "YKDD3rQ1?@64.253.199.166",
+      "date": {
+        "year": 2003,
+        "month": 4,
+        "day": 30,
+        "hour": 15,
+        "minute": 6,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from TCE-E-7-182-54.bta.net.cn(202.106.182.54) via SMTP by st.tahina.priv.at, id smtpdEDUB8h; Sun Nov 13 14:50:12 2005\n",
+    "expected": {
+      "from": {
+        "Name": "TCE-E-7-182-54.bta.net.cn"
+      },
+      "from_ip": "202.106.182.54",
+      "by": {
+        "Name": "st.tahina.priv.at"
+      },
+      "id": "smtpdEDUB8h",
+      "via": "SMTP",
+      "date": {
+        "year": 1914,
+        "month": 13,
+        "day": 11,
+        "hour": 50,
+        "minute": 12,
+        "second": 213,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from pl027.nas934.d-osaka.nttpc.ne.jp(61.197.82.27), claiming to be \"foo.woas.net\" via SMTP by st.tahina.priv.at, id smtpd1PBsZT; Sun Nov 13 15:38:52 2005\n",
+    "expected": {
+      "from": {
+        "Name": "pl027.nas934.d-osaka.nttpc.ne.jp"
+      },
+      "from_ip": "61.197.82.27",
+      "by": {
+        "Name": "st.tahina.priv.at"
+      },
+      "id": "smtpd1PBsZT",
+      "via": "SMTP",
+      "date": {
+        "year": 1915,
+        "month": 13,
+        "day": 11,
+        "hour": 38,
+        "minute": 52,
+        "second": 213,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from itrqtnlnq (lucilleskinner@93.124.107.183 with login) by smtp111.mail.ne1.yahoo.com with SMTP; 17 Jan 2011 08:23:27 -0800 PST\n",
+    "expected": {
+      "from": {
+        "Name": "itrqtnlnq"
+      },
+      "by": {
+        "Name": "smtp111.mail.ne1.yahoo.com"
+      },
+      "with": "SMTP",
+      "ident": "lucilleskinner@93.124.107.183",
+      "date": {
+        "year": 2011,
+        "month": 1,
+        "day": 17,
+        "hour": 8,
+        "minute": 23,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from raptor.research.att.com (bala@localhost) by raptor.research.att.com (SGI-8.9.3/8.8.7) with ESMTP id KAA14788 for <asrg@example.com>; Fri, 7 Mar 2003 10:37:56 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "Name": "raptor.research.att.com"
+      },
+      "by": {
+        "Name": "raptor.research.att.com"
+      },
+      "for_": "asrg@example.com",
+      "with": "ESMTP",
+      "id": "KAA14788",
+      "ident": "bala@localhost",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 7,
+        "hour": 10,
+        "minute": 37,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from paul (helo=felix) by felix.peema.org with local-esmtp (Exim 4.43) id 1Ccq0j-0002k2-Lk; Fri, 10 Dec 2004 19:01:01 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "paul"
+      },
+      "by": {
+        "Name": "felix.peema.org"
+      },
+      "with": "ESMTP",
+      "id": "1Ccq0j-0002k2-Lk",
+      "helo": {
+        "Name": "felix"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2004,
+        "month": 12,
+        "day": 10,
+        "hour": 19,
+        "minute": 1,
+        "second": 1,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 127.0.0.1 (AVG SMTP 7.0.299 [265.6.8]); Wed, 05 Jan 2005 15:06:48 -0800\n",
+    "expected": {
+      "from": {
+        "IpAddr": "127.0.0.1"
+      },
+      "date": {
+        "year": 2005,
+        "month": 1,
+        "day": 5,
+        "hour": 15,
+        "minute": 6,
+        "second": 48,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from qmail-scanner-general-admin@lists.sourceforge.net by alpha by uid 7791 with qmail-scanner-1.14 (spamassassin: 2.41. Clear:SA:0(-4.1/5.0):. Processed in 0.209512 secs)\n",
+    "expected": {
+      "from": {
+        "Name": "qmail-scanner-general-admin@lists.sourceforge.net"
+      },
+      "by": {
+        "Name": "uid"
+      },
+      "date": null
+    }
+  },
+  {
+    "header": "from DSmith1204@aol.com by imo-m09.mx.aol.com (mail_out_v34.13.) id 7.53.208064a0 (4394); Sat, 11 Jan 2003 23:24:31 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "Name": "DSmith1204@aol.com"
+      },
+      "by": {
+        "Name": "imo-m09.mx.aol.com"
+      },
+      "id": "7.53.208064a0",
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 11,
+        "hour": 23,
+        "minute": 24,
+        "second": 31,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from Unknown/Local ([?.?.?.?]) by mailcity.com; Fri, 17 Jan 2003 15:23:29 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "Unknown"
+      },
+      "by": {
+        "Name": "mailcity.com"
+      },
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 17,
+        "hour": 15,
+        "minute": 23,
+        "second": 29,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from localhost (mailnull@localhost) by x.org (8.12.6/8.9.3) with SMTP id h2R2iivG093740; Wed, 26 Mar 2003 20:44:44 -0600 \n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "by": {
+        "Name": "x.org"
+      },
+      "with": "SMTP",
+      "id": "h2R2iivG093740",
+      "ident": "mailnull@localhost",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 26,
+        "hour": 20,
+        "minute": 44,
+        "second": 44,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from localhost (localhost [127.0.0.1]) (uid 500) by mail with local; Tue, 07 Jan 2003 11:40:47 -0600\n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "mail"
+      },
+      "with": "Local",
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 7,
+        "hour": 11,
+        "minute": 40,
+        "second": 47,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from olgisoft.com (127.0.0.1) by 127.0.0.1 (EzMTS MTSSmtp 1.55d5) ; Thu, 20 Mar 03 10:06:43 +0100 for <asrg@ietf.org>\n",
+    "expected": {
+      "from": {
+        "Name": "olgisoft.com"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "IpAddr": "127.0.0.1"
+      },
+      "for_": "asrg@ietf.org",
+      "date": {
+        "year": 1903,
+        "month": 3,
+        "day": 20,
+        "hour": 10,
+        "minute": 6,
+        "second": 43,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from casper.ghostscript.com (raph@casper [127.0.0.1]) h148aux8016336verify=FAIL); Tue, 4 Feb 2003 00:36:56 -0800\n",
+    "expected": {
+      "from": {
+        "Name": "casper.ghostscript.com"
+      },
+      "from_ip": "127.0.0.1",
+      "ident": "raph@casper",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 4,
+        "hour": 0,
+        "minute": 36,
+        "second": 56,
+        "tz_before_gmt": true,
+        "tz_hour": 8,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from (AUTH: e40a9cea) by vqx.net with esmtp (courier-0.40) for <asrg@ietf.org>; Mon, 03 Mar 2003 14:49:28 +0000\n",
+    "expected": {
+      "by": {
+        "Name": "vqx.net"
+      },
+      "for_": "asrg@ietf.org",
+      "with": "ESMTP",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 3,
+        "hour": 14,
+        "minute": 49,
+        "second": 28,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from localhost (localhost [[UNIX: localhost]]) by home.barryodonovan.com (8.12.11/8.12.11/Submit) id iBADHRP6011034; Fri, 10 Dec 2004 13:17:27 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "by": {
+        "Name": "home.barryodonovan.com"
+      },
+      "id": "iBADHRP6011034",
+      "date": {
+        "year": 2004,
+        "month": 12,
+        "day": 10,
+        "hour": 13,
+        "minute": 17,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from dc-mail-3102.iad3.amazon.com by mail-store-2001.amazon.com with ESMTP (peer crosscheck: dc-mail-3102.iad3.amazon.com)\n",
+    "expected": {
+      "from": {
+        "Name": "dc-mail-3102.iad3.amazon.com"
+      },
+      "by": {
+        "Name": "mail-store-2001.amazon.com"
+      },
+      "with": "ESMTP",
+      "date": null
+    }
+  },
+  {
+    "header": "from GWGC6-MTA by gc6.jefferson.co.us with Novell_GroupWise; Tue, 30 Nov 2004 10:09:15 -0700\n",
+    "expected": {
+      "from": {
+        "Name": "GWGC6-MTA"
+      },
+      "by": {
+        "Name": "gc6.jefferson.co.us"
+      },
+      "date": {
+        "year": 2004,
+        "month": 11,
+        "day": 30,
+        "hour": 10,
+        "minute": 9,
+        "second": 15,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from no.name.available by [165.224.43.143] via smtpd (for [165.224.216.89]) with ESMTP; Fri, 28 Jan 2005 13:06:39 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "no.name.available"
+      },
+      "by": {
+        "IpAddr": "165.224.43.143"
+      },
+      "with": "ESMTP",
+      "via": "smtpd",
+      "date": {
+        "year": 2005,
+        "month": 1,
+        "day": 28,
+        "hour": 13,
+        "minute": 6,
+        "second": 39,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from no.name.available by [165.224.216.88] via smtpd (for lists.sourceforge.net [66.35.250.206]) with ESMTP; Fri, 28 Jan 2005 15:42:30 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "no.name.available"
+      },
+      "by": {
+        "IpAddr": "165.224.216.88"
+      },
+      "with": "ESMTP",
+      "via": "smtpd",
+      "date": {
+        "year": 2005,
+        "month": 1,
+        "day": 28,
+        "hour": 15,
+        "minute": 42,
+        "second": 30,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 156.56.111.196 by blazing.arsecandle.org (envelope-from <gentoo-announce-return-530-rod=arsecandle.org@lists.gentoo.org>, uid 502) with qmail-scanner-1.24 (clamdscan: 0.80/594. f-prot: 4.4.2/3.14.11. Clear:RC:0(156.56.111.196):. Processed in 0.288806 secs); 06 Feb 2005 21:11:38 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "156.56.111.196"
+      },
+      "by": {
+        "Name": "blazing.arsecandle.org"
+      },
+      "date": {
+        "year": 2005,
+        "month": 2,
+        "day": 6,
+        "hour": 21,
+        "minute": 11,
+        "second": 38,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mmail by argon.connect.org.uk with local (connectmail/exim) id 18tOsg-0008FX-00; Thu, 13 Mar 2003 09:20:06 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "mmail"
+      },
+      "by": {
+        "Name": "argon.connect.org.uk"
+      },
+      "with": "Local",
+      "id": "18tOsg-0008FX-00",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 13,
+        "hour": 9,
+        "minute": 20,
+        "second": 6,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from testintranator.net.vm ([unix socket])_ by testintranator.net.vm (Cyrus v2.3.14) with LMTPA;_ Tue, 21 Jul 2009 14:34:14 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "testintranator.net.vm"
+      },
+      "by": {
+        "Name": "testintranator.net.vm"
+      },
+      "with": "LMTPA",
+      "date": {
+        "year": 2009,
+        "month": 7,
+        "day": 21,
+        "hour": 14,
+        "minute": 34,
+        "second": 14,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from CATHY.IJS.SI by CATHY.IJS.SI (PMDF V4.3-10 #8779) id <01KTSSR50NSW001MXN@CATHY.IJS.SI>; Fri, 21 Mar 2003 20:50:56 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "CATHY.IJS.SI"
+      },
+      "by": {
+        "Name": "CATHY.IJS.SI"
+      },
+      "id": "01KTSSR50NSW001MXN@CATHY.IJS.SI",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 21,
+        "hour": 20,
+        "minute": 50,
+        "second": 56,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from MATT_LINUX by hippo.star.co.uk via smtpd (for mail.webnote.net [193.120.211.219]) with SMTP; 3 Jul 2002 15:43:50 UT\n",
+    "expected": {
+      "from": {
+        "Name": "MATT_LINUX"
+      },
+      "by": {
+        "Name": "hippo.star.co.uk"
+      },
+      "with": "SMTP",
+      "via": "smtpd",
+      "date": {
+        "year": 2002,
+        "month": 7,
+        "day": 3,
+        "hour": 15,
+        "minute": 43,
+        "second": 50,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from cp-its-ieg01.mail.saic.com by cpmx.mail.saic.com for me@jmason.org; Tue, 23 Jul 2002 14:09:10 -0700\n",
+    "expected": {
+      "from": {
+        "Name": "cp-its-ieg01.mail.saic.com"
+      },
+      "by": {
+        "Name": "cpmx.mail.saic.com"
+      },
+      "for_": "me@jmason.org",
+      "date": {
+        "year": 2002,
+        "month": 7,
+        "day": 23,
+        "hour": 14,
+        "minute": 9,
+        "second": 10,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from senmail2.senate.gov with LMTP by senmail2 (3.0.2/sieved-3-0-build-942) for <example@vandinter.org>; Fri, 30 Jun 2006 10:58:41 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "senmail2.senate.gov"
+      },
+      "by": {
+        "Name": "senmail2"
+      },
+      "for_": "example@vandinter.org",
+      "with": "LMTP",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 30,
+        "hour": 10,
+        "minute": 58,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from zimbramail.artsit.org.uk (unverified) by MAILSWEEP.birminghamartsit.org.uk (Clearswift SMTPRS 5.1.7) with ESMTP id <T78926b35f2c0a80003da8@MAILSWEEP.birminghamartsit.org.uk> for <discuss@lists.surbl.org>; Tue, 30 May 2006 15:56:15 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "zimbramail.artsit.org.uk"
+      },
+      "by": {
+        "Name": "MAILSWEEP.birminghamartsit.org.uk"
+      },
+      "for_": "discuss@lists.surbl.org",
+      "with": "ESMTP",
+      "id": "T78926b35f2c0a80003da8@MAILSWEEP.birminghamartsit.org.uk",
+      "date": {
+        "year": 2006,
+        "month": 5,
+        "day": 30,
+        "hour": 15,
+        "minute": 56,
+        "second": 15,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from MjA3NDc4Mg (unknown) by ismtpd0001p1lon1.sendgrid.net (SG) with HTTP id aqHKNX2kSp-HiqspAa-uvw for <email@e.example.com>; Thu, 02 Apr 2020 07:53:55.516 +0000 (UTC)\n",
+    "expected": {
+      "from": {
+        "Name": "MjA3NDc4Mg"
+      },
+      "by": {
+        "Name": "ismtpd0001p1lon1.sendgrid.net"
+      },
+      "for_": "email@e.example.com",
+      "with": "HTTP",
+      "id": "aqHKNX2kSp-HiqspAa-uvw",
+      "date": {
+        "year": 2020,
+        "month": 4,
+        "day": 2,
+        "hour": 7,
+        "minute": 53,
+        "second": 0,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from localhost (example.com [local]) by example.com (OpenSMTPD) with ESMTPA id 5db34e0d for <email@example.com>; Tue, 7 Apr 2020 01:38:29 -0600 (MDT)\n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "from_iprev": "example.com",
+      "by": {
+        "Name": "example.com"
+      },
+      "for_": "email@example.com",
+      "with": "ESMTPA",
+      "id": "5db34e0d",
+      "date": {
+        "year": 2020,
+        "month": 4,
+        "day": 7,
+        "hour": 1,
+        "minute": 38,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from DL1GSPMX02 (dl1gspmx02.gamestop.com) by email.ebgames.com (LSMTP for Windows NT v1.1b) with SMTP id <21.000575A0@email.ebgames.com>; Tue, 12 Sep 2006 21:06:43 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "DL1GSPMX02"
+      },
+      "from_iprev": "dl1gspmx02.gamestop.com",
+      "by": {
+        "Name": "email.ebgames.com"
+      },
+      "with": "SMTP",
+      "id": "21.000575A0@email.ebgames.com",
+      "date": {
+        "year": 2006,
+        "month": 9,
+        "day": 12,
+        "hour": 21,
+        "minute": 6,
+        "second": 43,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from ([127.0.0.1]) with MailEnable ESMTP; Wed, 10 Jul 2019 10:29:59 +0300\n",
+    "expected": {
+      "from_ip": "127.0.0.1",
+      "with": "ESMTP",
+      "date": {
+        "year": 2019,
+        "month": 7,
+        "day": 10,
+        "hour": 10,
+        "minute": 29,
+        "second": 59,
+        "tz_before_gmt": false,
+        "tz_hour": 3,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from facebook.com (RrlQsUbrndsQ6/zbJaSzSPcmy3GwqE5h6IukkE5GGBIJgonAFnoQE3L+9tv2TU3e 2401:db00:1110:50e8:face:0000:002f:0000) by facebook.com with Thrift id 423753524b5011e9a83e248a0796a3b2-169bd530; Wed, 20 Mar 2019 13:39:29 -0700\n",
+    "expected": {
+      "from": {
+        "Name": "facebook.com"
+      },
+      "from_ip": "2401:db00:1110:50e8:face:0:2f:0",
+      "by": {
+        "Name": "facebook.com"
+      },
+      "id": "423753524b5011e9a83e248a0796a3b2-169bd530",
+      "date": {
+        "year": 2019,
+        "month": 3,
+        "day": 20,
+        "hour": 13,
+        "minute": 39,
+        "second": 29,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from 384836569573 named unknown by gmailapi.google.com with HTTPREST; Wed, 6 Mar 2019 03:39:24 -0500\n",
+    "expected": {
+      "from": {
+        "Name": "384836569573"
+      },
+      "by": {
+        "Name": "gmailapi.google.com"
+      },
+      "with": "HTTP",
+      "date": {
+        "year": 2019,
+        "month": 3,
+        "day": 6,
+        "hour": 3,
+        "minute": 39,
+        "second": 24,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail.payex.com id <B5b8f11e30004>; Wed, 05 Sep 2018 01:14:43 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "mail.payex.com"
+      },
+      "id": "B5b8f11e30004",
+      "date": {
+        "year": 2018,
+        "month": 9,
+        "day": 5,
+        "hour": 1,
+        "minute": 14,
+        "second": 43,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [<4124973-137966-3089@be2.maropost.com>] ([<4124973-137966-3089@be2.maropost.com>] helo=maropost.com)  by 643852-mailer2 (envelope-from 4124973-137966-3089@be2.maropost.com) Jetsend MTA 0.0.1 with ESMTP; Fri Sep 14 14:36:56 EDT 2018\n",
+    "expected": {
+      "by": {
+        "Name": "643852-mailer2"
+      },
+      "with": "ESMTP",
+      "ident": "4124973-137966-3089@be2.maropost.com",
+      "helo": {
+        "Name": "maropost.com"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 1914,
+        "month": 14,
+        "day": 9,
+        "hour": 36,
+        "minute": 56,
+        "second": 226,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from maroon.pobox.com (localhost [127.0.0.1]) by maroon.pobox.com (Postfix) with ESMTP id  EA14340A31F; Wed, 15 Jun 2011 10:42:35 -0400 (EDT)\n",
+    "expected": {
+      "from": {
+        "Name": "maroon.pobox.com"
+      },
+      "from_ip": "127.0.0.1",
+      "by": {
+        "Name": "maroon.pobox.com"
+      },
+      "with": "ESMTP",
+      "id": "EA14340A31F",
+      "date": {
+        "year": 2011,
+        "month": 6,
+        "day": 15,
+        "hour": 10,
+        "minute": 42,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail-qw0-f46.google.com (mail-qw0-f46.google.com [209.85.216.46]) by maroon.pobox.com (Postfix) with ESMTPS id 70BCC40A1DB for <address>; Wed, 15 Jun 2011  10:42:13 -0400 (EDT)\n",
+    "expected": {
+      "from": {
+        "Name": "mail-qw0-f46.google.com"
+      },
+      "from_ip": "209.85.216.46",
+      "from_iprev": "mail-qw0-f46.google.com",
+      "by": {
+        "Name": "maroon.pobox.com"
+      },
+      "with": "ESMTPS",
+      "id": "70BCC40A1DB",
+      "date": {
+        "year": 2011,
+        "month": 6,
+        "day": 15,
+        "hour": 10,
+        "minute": 42,
+        "second": 13,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [10.231.252.223] (79.sub-174-252-72.myvzw.com [174.252.72.79]) by mx.google.com with ESMTPS id m16sm345129qck.28.2011.06.15.07.42.02 (version=TLSv1/SSLv3 cipher=OTHER); Wed, 15 Jun 2011 07:42:08 -0700 (PDT)\n",
+    "expected": {
+      "from": {
+        "IpAddr": "10.231.252.223"
+      },
+      "from_ip": "174.252.72.79",
+      "from_iprev": "79.sub-174-252-72.myvzw.com",
+      "by": {
+        "Name": "mx.google.com"
+      },
+      "with": "ESMTPS",
+      "tls_version": "TLSv1_0",
+      "id": "m16sm345129qck.28.2011.06.15.07.42.02",
+      "date": {
+        "year": 2011,
+        "month": 6,
+        "day": 15,
+        "hour": 7,
+        "minute": 42,
+        "second": 8,
+        "tz_before_gmt": true,
+        "tz_hour": 7,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from mail-eopbgr60122.outbound.protection.outlook.com (HELO EUR04-DB3-obe.outb) server-7.tower-with AES256-GCM-SHA384 encrypted SMTP; 13 Sep 2018 14:47:44 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "mail-eopbgr60122.outbound.protection.outlook.com"
+      },
+      "tls_cipher": "AES256-GCM-SHA384",
+      "helo": {
+        "Name": "EUR04-DB3-obe.outb"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2018,
+        "month": 9,
+        "day": 13,
+        "hour": 14,
+        "minute": 47,
+        "second": 44,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from DB6PR07MB3286.eurprd07.prod.outlook.com (10.175.233.33) by DB6PR07MB3384.eurprd07.prod.outlook.com (10.175.234.11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1143.11; Thu, 13 Sep 2018 14:47:44 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "DB6PR07MB3286.eurprd07.prod.outlook.com"
+      },
+      "from_ip": "10.175.233.33",
+      "by": {
+        "Name": "DB6PR07MB3384.eurprd07.prod.outlook.com"
+      },
+      "with": "SMTP",
+      "tls_version": "TLSv1_2",
+      "tls_cipher": "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      "id": "15.20.1143.11",
+      "date": {
+        "year": 2018,
+        "month": 9,
+        "day": 13,
+        "hour": 14,
+        "minute": 47,
+        "second": 44,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from DB6PR07MB3286.eurprd07.prod.outlook.com ([fe80::ccea:aa3a:fbcf:883f]) by DB6PR07MB3286.eurprd07.prod.outlook.com ([fe80::ccea:aa3a:fbcf:883f%6]) with mapi id 15.20.1164.0; 14:47:44 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "DB6PR07MB3286.eurprd07.prod.outlook.com"
+      },
+      "from_ip": "fe80::ccea:aa3a:fbcf:883f",
+      "by": {
+        "Name": "DB6PR07MB3286.eurprd07.prod.outlook.com"
+      },
+      "id": "15.20.1164.0",
+      "date": null
+    }
+  },
+  {
+    "header": "FROM hackers.mr.itd.umich.edu (smtp.mail.umich.edu [141.211.14.81]) BY madman.mr.itd.umich.edu ID 434B508E.174A6.13932 ; 11 Oct 2005 01:41:34 -0400\n",
+    "expected": {
+      "from": {
+        "Name": "hackers.mr.itd.umich.edu"
+      },
+      "from_ip": "141.211.14.81",
+      "from_iprev": "smtp.mail.umich.edu",
+      "by": {
+        "Name": "madman.mr.itd.umich.edu"
+      },
+      "id": "434B508E.174A6.13932",
+      "date": {
+        "year": 2005,
+        "month": 10,
+        "day": 11,
+        "hour": 1,
+        "minute": 41,
+        "second": 34,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "FROM [192.168.1.24] (s233-64-90-216.try.wideopenwest.com [64.233.216.90]) BY hackers.mr.itd.umich.edu ID 434B5051.8CDE5.15436 ; 11 Oct 2005 01:40:33 -0400\n",
+    "expected": {
+      "from": {
+        "IpAddr": "192.168.1.24"
+      },
+      "from_ip": "64.233.216.90",
+      "from_iprev": "s233-64-90-216.try.wideopenwest.com",
+      "by": {
+        "Name": "hackers.mr.itd.umich.edu"
+      },
+      "id": "434B5051.8CDE5.15436",
+      "date": {
+        "year": 2005,
+        "month": 10,
+        "day": 11,
+        "hour": 1,
+        "minute": 40,
+        "second": 33,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "FROM helo (1.2.3.4 [1.2.3.4]) BY xxx.com (Rockliffe SMTPRA 10.3.0) WITH SMTP ID <B0065361981@xxx.com> FOR <foo@bar.net>; Tue, 6 Nov 2018 07:41:26 +0200\n",
+    "expected": {
+      "from": {
+        "Name": "helo"
+      },
+      "from_ip": "1.2.3.4",
+      "by": {
+        "Name": "xxx.com"
+      },
+      "for_": "foo@bar.net",
+      "with": "SMTP",
+      "id": "B0065361981@xxx.com",
+      "date": {
+        "year": 2018,
+        "month": 11,
+        "day": 6,
+        "hour": 7,
+        "minute": 41,
+        "second": 26,
+        "tz_before_gmt": false,
+        "tz_hour": 2,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(from localhost [24.180.47.240]) by host.name (NAVGW 2.5.2.12) with SMTP id M2006060503484615455 for <user@domain.co.uk>; Mon, 05 Jun 2006 03:48:47 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "localhost"
+      },
+      "from_ip": "24.180.47.240",
+      "by": {
+        "Name": "host.name"
+      },
+      "for_": "user@domain.co.uk",
+      "with": "SMTP",
+      "id": "M2006060503484615455",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 5,
+        "hour": 3,
+        "minute": 48,
+        "second": 47,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(from username@localhost) by home.example.com (8.12.11/8.12.11/Submit) id iBADHRP6011034; Fri, 10 Dec 2004 13:17:27 GMT\n",
+    "expected": {
+      "from": {
+        "Name": "username@localhost"
+      },
+      "by": {
+        "Name": "home.example.com"
+      },
+      "id": "iBADHRP6011034",
+      "date": {
+        "year": 2004,
+        "month": 12,
+        "day": 10,
+        "hour": 13,
+        "minute": 17,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(from vashugins@juno.com)  by m06.lax.untd.com (jqueuemail) id LRVB3JAJ; Fri, 02 Jun 2006 08:15:21 PDT\n",
+    "expected": {
+      "from": {
+        "Name": "vashugins@juno.com"
+      },
+      "by": {
+        "Name": "m06.lax.untd.com"
+      },
+      "id": "LRVB3JAJ",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 2,
+        "hour": 8,
+        "minute": 15,
+        "second": 21,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(qmail 27981 invoked by uid 225); 14 Mar 2003 07:24:34 -0000\n",
+    "expected": {
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 14,
+        "hour": 7,
+        "minute": 24,
+        "second": 34,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(qmail 84907 invoked from network); 13 Feb 2003 20:59:28 -0000\n",
+    "expected": {
+      "from": {
+        "Name": "network"
+      },
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 13,
+        "hour": 20,
+        "minute": 59,
+        "second": 28,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(ofmipd 208.31.42.38); 17 Mar 2003 04:09:01 -0000\n",
+    "expected": {
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 17,
+        "hour": 4,
+        "minute": 9,
+        "second": 1,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "with ECARTIS (v1.0.0; list bind-announce); Fri, 18 Aug 2006 07:19:58 +0000 (UTC)\n",
+    "expected": {
+      "date": {
+        "year": 2006,
+        "month": 8,
+        "day": 18,
+        "hour": 7,
+        "minute": 19,
+        "second": 58,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "by faerber.muc.de (OpenXP/32 v3.9.4 (Win32) alpha @ 2003-03-07-1751d); 07 Mar 2003 22:10:29 +0000\n",
+    "expected": {
+      "by": {
+        "Name": "faerber.muc.de"
+      },
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 7,
+        "hour": 22,
+        "minute": 10,
+        "second": 29,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "by x.x.org (bulk_mailer v1.13); Wed, 26 Mar 2003 20:44:41 -0600\n",
+    "expected": {
+      "by": {
+        "Name": "x.x.org"
+      },
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 26,
+        "hour": 20,
+        "minute": 44,
+        "second": 41,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "by SPIDERMAN with Internet Mail Service (5.5.2653.19) id <19AF8VY2>; Tue, 25 Mar 2003 11:58:27 -0500\n",
+    "expected": {
+      "by": {
+        "Name": "SPIDERMAN"
+      },
+      "id": "19AF8VY2",
+      "date": {
+        "year": 2003,
+        "month": 3,
+        "day": 25,
+        "hour": 11,
+        "minute": 58,
+        "second": 27,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "by oak.ein.cz (Postfix, from userid 1002) id DABBD1BED3; Thu, 13 Feb 2003 14:02:21 +0100 (CET)\n",
+    "expected": {
+      "from": {
+        "Name": "userid"
+      },
+      "by": {
+        "Name": "oak.ein.cz"
+      },
+      "id": "DABBD1BED3",
+      "date": {
+        "year": 2003,
+        "month": 2,
+        "day": 13,
+        "hour": 14,
+        "minute": 2,
+        "second": 21,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "by OTM-MIX(otm-mix00) id k5N1aDtp040896; Fri, 23 Jun 2006 10:36:14 +0900 (JST)\n",
+    "expected": {
+      "by": {
+        "Name": "OTM-MIX"
+      },
+      "id": "k5N1aDtp040896",
+      "date": {
+        "year": 2006,
+        "month": 6,
+        "day": 23,
+        "hour": 10,
+        "minute": 36,
+        "second": 14,
+        "tz_before_gmt": false,
+        "tz_hour": 9,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "; Tue, 23 May 2006 13:06:35 -0400\n",
+    "expected": {
+      "date": {
+        "year": 2006,
+        "month": 5,
+        "day": 23,
+        "hour": 13,
+        "minute": 6,
+        "second": 35,
+        "tz_before_gmt": true,
+        "tz_hour": 4,
+        "tz_minute": 0
+      }
+    }
+  }
+]

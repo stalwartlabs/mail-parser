@@ -248,23 +248,13 @@
 //!    println!("{}", serde_json::to_string_pretty(&message).unwrap());
 //!    println!("{}", serde_yaml::to_string(&message).unwrap());
 //!```
+pub mod core;
 pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
-use std::{
-    borrow::Cow,
-    convert::TryInto,
-    fmt::{self, Display},
-    hash::Hash,
-};
+use std::{borrow::Cow, hash::Hash, net::IpAddr};
 
-use decoders::html::{html_to_text, text_to_html};
-use parsers::{
-    fields::thread::thread_name,
-    preview::{preview_html, preview_text},
-    MessageStream,
-};
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
 
@@ -378,22 +368,6 @@ pub struct Addr<'x> {
     pub address: Option<Cow<'x, str>>,
 }
 
-impl<'x> Addr<'x> {
-    pub fn new(name: Option<&'x str>, address: &'x str) -> Self {
-        Self {
-            name: name.map(|name| name.into()),
-            address: Some(address.into()),
-        }
-    }
-
-    pub fn into_owned(self) -> Addr<'static> {
-        Addr {
-            name: self.name.map(|s| s.into_owned().into()),
-            address: self.address.map(|s| s.into_owned().into()),
-        }
-    }
-}
-
 /// An RFC5322 address group.
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -407,22 +381,6 @@ pub struct Group<'x> {
     pub addresses: Vec<Addr<'x>>,
 }
 
-impl<'x> Group<'x> {
-    pub fn new(name: &'x str, addresses: Vec<Addr<'x>>) -> Self {
-        Self {
-            name: Some(name.into()),
-            addresses,
-        }
-    }
-
-    pub fn into_owned(self) -> Group<'static> {
-        Group {
-            name: self.name.map(|s| s.into_owned().into()),
-            addresses: self.addresses.into_iter().map(|a| a.into_owned()).collect(),
-        }
-    }
-}
-
 /// A message header.
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -434,124 +392,11 @@ pub struct Header<'x> {
     pub offset_end: usize,
 }
 
-impl<'x> Header<'x> {
-    /// Returns the header name
-    pub fn name(&self) -> &str {
-        self.name.as_str()
-    }
-
-    /// Returns the parsed header value
-    pub fn value(&self) -> &HeaderValue {
-        &self.value
-    }
-
-    /// Returns the raw offset start
-    pub fn offset_start(&self) -> usize {
-        self.offset_start
-    }
-
-    /// Returns the raw offset end
-    pub fn offset_end(&self) -> usize {
-        self.offset_end
-    }
-
-    /// Returns the raw offset of the header name
-    pub fn offset_field(&self) -> usize {
-        self.offset_field
-    }
-
-    /// Returns an owned version of the header
-    pub fn into_owned(self) -> Header<'static> {
-        Header {
-            name: self.name.into_owned(),
-            value: self.value.into_owned(),
-            offset_field: self.offset_field,
-            offset_start: self.offset_start,
-            offset_end: self.offset_end,
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub enum HeaderName<'x> {
     Rfc(RfcHeader),
     Other(Cow<'x, str>),
-}
-
-impl PartialEq for HeaderName<'_> {
-    fn eq(&self, other: &Self) -> bool {
-        match (self, other) {
-            (Self::Rfc(a), Self::Rfc(b)) => a == b,
-            (Self::Other(a), Self::Other(b)) => a.eq_ignore_ascii_case(b),
-            _ => false,
-        }
-    }
-}
-
-impl<'x> Hash for HeaderName<'x> {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        match self {
-            HeaderName::Rfc(rfc) => rfc.hash(state),
-            HeaderName::Other(value) => {
-                for ch in value.as_bytes() {
-                    ch.to_ascii_lowercase().hash(state)
-                }
-            }
-        }
-    }
-}
-
-impl Eq for HeaderName<'_> {}
-
-impl<'x> HeaderName<'x> {
-    pub fn as_str(&self) -> &str {
-        match self {
-            HeaderName::Rfc(header) => header.as_str(),
-            HeaderName::Other(name) => name.as_ref(),
-        }
-    }
-
-    pub fn to_owned(&self) -> HeaderName<'static> {
-        match self {
-            HeaderName::Rfc(header) => HeaderName::Rfc(*header),
-            HeaderName::Other(name) => HeaderName::Other(name.clone().into_owned().into()),
-        }
-    }
-
-    pub fn into_owned(self) -> HeaderName<'static> {
-        match self {
-            HeaderName::Rfc(header) => HeaderName::Rfc(header),
-            HeaderName::Other(name) => HeaderName::Other(name.into_owned().into()),
-        }
-    }
-
-    pub fn unwrap(self) -> String {
-        match self {
-            HeaderName::Rfc(header) => header.as_str().to_owned(),
-            HeaderName::Other(name) => name.into_owned(),
-        }
-    }
-
-    /// Returns true if it is a MIME header.
-    pub fn is_mime_header(&self) -> bool {
-        match self {
-            HeaderName::Rfc(header) => header.is_mime_header(),
-            HeaderName::Other(_) => false,
-        }
-    }
-
-    /// Returns the lenght of the header
-    pub fn len(&self) -> usize {
-        match self {
-            HeaderName::Rfc(name) => name.len(),
-            HeaderName::Other(name) => name.len(),
-        }
-    }
-
-    pub fn is_empty(&self) -> bool {
-        false
-    }
 }
 
 /// A header field
@@ -599,116 +444,6 @@ pub enum RfcHeader {
     ListUnsubscribe = 36,
 } // Note: Do not add new entries without updating HDR* tables
 
-impl RfcHeader {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            RfcHeader::Subject => "Subject",
-            RfcHeader::From => "From",
-            RfcHeader::To => "To",
-            RfcHeader::Cc => "Cc",
-            RfcHeader::Date => "Date",
-            RfcHeader::Bcc => "Bcc",
-            RfcHeader::ReplyTo => "Reply-To",
-            RfcHeader::Sender => "Sender",
-            RfcHeader::Comments => "Comments",
-            RfcHeader::InReplyTo => "In-Reply-To",
-            RfcHeader::Keywords => "Keywords",
-            RfcHeader::Received => "Received",
-            RfcHeader::MessageId => "Message-ID",
-            RfcHeader::References => "References",
-            RfcHeader::ReturnPath => "Return-Path",
-            RfcHeader::MimeVersion => "MIME-Version",
-            RfcHeader::ContentDescription => "Content-Description",
-            RfcHeader::ContentId => "Content-ID",
-            RfcHeader::ContentLanguage => "Content-Language",
-            RfcHeader::ContentLocation => "Content-Location",
-            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding",
-            RfcHeader::ContentType => "Content-Type",
-            RfcHeader::ContentDisposition => "Content-Disposition",
-            RfcHeader::ResentTo => "Resent-To",
-            RfcHeader::ResentFrom => "Resent-From",
-            RfcHeader::ResentBcc => "Resent-Bcc",
-            RfcHeader::ResentCc => "Resent-Cc",
-            RfcHeader::ResentSender => "Resent-Sender",
-            RfcHeader::ResentDate => "Resent-Date",
-            RfcHeader::ResentMessageId => "Resent-Message-ID",
-            RfcHeader::ListArchive => "List-Archive",
-            RfcHeader::ListHelp => "List-Help",
-            RfcHeader::ListId => "List-ID",
-            RfcHeader::ListOwner => "List-Owner",
-            RfcHeader::ListPost => "List-Post",
-            RfcHeader::ListSubscribe => "List-Subscribe",
-            RfcHeader::ListUnsubscribe => "List-Unsubscribe",
-        }
-    }
-
-    pub fn len(&self) -> usize {
-        match self {
-            RfcHeader::Subject => "Subject".len(),
-            RfcHeader::From => "From".len(),
-            RfcHeader::To => "To".len(),
-            RfcHeader::Cc => "Cc".len(),
-            RfcHeader::Date => "Date".len(),
-            RfcHeader::Bcc => "Bcc".len(),
-            RfcHeader::ReplyTo => "Reply-To".len(),
-            RfcHeader::Sender => "Sender".len(),
-            RfcHeader::Comments => "Comments".len(),
-            RfcHeader::InReplyTo => "In-Reply-To".len(),
-            RfcHeader::Keywords => "Keywords".len(),
-            RfcHeader::Received => "Received".len(),
-            RfcHeader::MessageId => "Message-ID".len(),
-            RfcHeader::References => "References".len(),
-            RfcHeader::ReturnPath => "Return-Path".len(),
-            RfcHeader::MimeVersion => "MIME-Version".len(),
-            RfcHeader::ContentDescription => "Content-Description".len(),
-            RfcHeader::ContentId => "Content-ID".len(),
-            RfcHeader::ContentLanguage => "Content-Language".len(),
-            RfcHeader::ContentLocation => "Content-Location".len(),
-            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding".len(),
-            RfcHeader::ContentType => "Content-Type".len(),
-            RfcHeader::ContentDisposition => "Content-Disposition".len(),
-            RfcHeader::ResentTo => "Resent-To".len(),
-            RfcHeader::ResentFrom => "Resent-From".len(),
-            RfcHeader::ResentBcc => "Resent-Bcc".len(),
-            RfcHeader::ResentCc => "Resent-Cc".len(),
-            RfcHeader::ResentSender => "Resent-Sender".len(),
-            RfcHeader::ResentDate => "Resent-Date".len(),
-            RfcHeader::ResentMessageId => "Resent-Message-ID".len(),
-            RfcHeader::ListArchive => "List-Archive".len(),
-            RfcHeader::ListHelp => "List-Help".len(),
-            RfcHeader::ListId => "List-ID".len(),
-            RfcHeader::ListOwner => "List-Owner".len(),
-            RfcHeader::ListPost => "List-Post".len(),
-            RfcHeader::ListSubscribe => "List-Subscribe".len(),
-            RfcHeader::ListUnsubscribe => "List-Unsubscribe".len(),
-        }
-    }
-
-    /// Returns true if it is a MIME header.
-    pub fn is_mime_header(&self) -> bool {
-        matches!(
-            self,
-            RfcHeader::ContentDescription
-                | RfcHeader::ContentId
-                | RfcHeader::ContentLanguage
-                | RfcHeader::ContentLocation
-                | RfcHeader::ContentTransferEncoding
-                | RfcHeader::ContentType
-                | RfcHeader::ContentDisposition
-        )
-    }
-
-    pub fn is_empty(&self) -> bool {
-        false
-    }
-}
-
-impl Display for RfcHeader {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.as_str())
-    }
-}
-
 /// Parsed header value.
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -737,6 +472,9 @@ pub enum HeaderValue<'x> {
     /// Content-Type or Content-Disposition header
     ContentType(ContentType<'x>),
 
+    /// Received header
+    Received(Box<Received<'x>>),
+
     #[default]
     Empty,
 }
@@ -752,147 +490,6 @@ pub enum HeaderForm {
     Date,
     URLs,
 }
-
-impl<'x> HeaderValue<'x> {
-    pub fn is_empty(&self) -> bool {
-        *self == HeaderValue::Empty
-    }
-
-    pub fn unwrap_text(self) -> Cow<'x, str> {
-        match self {
-            HeaderValue::Text(s) => s,
-            _ => panic!("HeaderValue::unwrap_text called on non-Text value"),
-        }
-    }
-
-    pub fn unwrap_datetime(self) -> DateTime {
-        match self {
-            HeaderValue::DateTime(d) => d,
-            _ => panic!("HeaderValue::unwrap_datetime called on non-DateTime value"),
-        }
-    }
-
-    pub fn unwrap_content_type(self) -> ContentType<'x> {
-        match self {
-            HeaderValue::ContentType(c) => c,
-            _ => panic!("HeaderValue::unwrap_content_type called on non-ContentType value"),
-        }
-    }
-
-    pub fn as_text_ref(&self) -> Option<&str> {
-        match *self {
-            HeaderValue::Text(ref s) => Some(s),
-            HeaderValue::TextList(ref l) => l.last()?.as_ref().into(),
-            _ => None,
-        }
-    }
-
-    pub fn as_text_list(&self) -> Option<Vec<&str>> {
-        match *self {
-            HeaderValue::Text(ref s) => Some(vec![s.as_ref()]),
-            HeaderValue::TextList(ref l) => Some(l.iter().map(|l| l.as_ref()).collect()),
-            _ => None,
-        }
-    }
-
-    pub fn content_type(&self) -> &ContentType<'x> {
-        match *self {
-            HeaderValue::ContentType(ref ct) => ct,
-            _ => panic!(
-                "HeaderValue::content_type called on non-ContentType: {:?}",
-                self
-            ),
-        }
-    }
-
-    pub fn as_content_type_ref(&self) -> Option<&ContentType> {
-        match *self {
-            HeaderValue::ContentType(ref c) => Some(c),
-            _ => None,
-        }
-    }
-
-    pub fn as_datetime_ref(&self) -> Option<&DateTime> {
-        match *self {
-            HeaderValue::DateTime(ref d) => Some(d),
-            _ => None,
-        }
-    }
-
-    pub fn into_owned(self) -> HeaderValue<'static> {
-        match self {
-            HeaderValue::Address(addr) => HeaderValue::Address(addr.into_owned()),
-            HeaderValue::AddressList(list) => {
-                HeaderValue::AddressList(list.into_iter().map(|addr| addr.into_owned()).collect())
-            }
-            HeaderValue::Group(group) => HeaderValue::Group(group.into_owned()),
-            HeaderValue::GroupList(list) => {
-                HeaderValue::GroupList(list.into_iter().map(|group| group.into_owned()).collect())
-            }
-            HeaderValue::Text(text) => HeaderValue::Text(text.into_owned().into()),
-            HeaderValue::TextList(list) => HeaderValue::TextList(
-                list.into_iter()
-                    .map(|text| text.into_owned().into())
-                    .collect(),
-            ),
-            HeaderValue::DateTime(datetime) => HeaderValue::DateTime(datetime),
-            HeaderValue::ContentType(ct) => HeaderValue::ContentType(ContentType {
-                c_type: ct.c_type.into_owned().into(),
-                c_subtype: ct.c_subtype.map(|s| s.into_owned().into()),
-                attributes: ct.attributes.map(|attributes| {
-                    attributes
-                        .into_iter()
-                        .map(|(k, v)| (k.into_owned().into(), v.into_owned().into()))
-                        .collect()
-                }),
-            }),
-            HeaderValue::Empty => HeaderValue::Empty,
-        }
-    }
-
-    pub fn len(&self) -> usize {
-        match self {
-            HeaderValue::Text(text) => text.len(),
-            HeaderValue::TextList(list) => list.iter().map(|t| t.len()).sum(),
-            HeaderValue::Address(a) => {
-                a.name.as_ref().map_or(0, |a| a.len()) + a.address.as_ref().map_or(0, |a| a.len())
-            }
-            HeaderValue::AddressList(list) => list
-                .iter()
-                .map(|a| {
-                    a.name.as_ref().map_or(0, |a| a.len())
-                        + a.address.as_ref().map_or(0, |a| a.len())
-                })
-                .sum(),
-            HeaderValue::Group(group) => group
-                .addresses
-                .iter()
-                .map(|a| {
-                    a.name.as_ref().map_or(0, |a| a.len())
-                        + a.address.as_ref().map_or(0, |a| a.len())
-                })
-                .sum(),
-            HeaderValue::GroupList(grouplist) => grouplist
-                .iter()
-                .flat_map(|g| g.addresses.iter())
-                .map(|a| {
-                    a.name.as_ref().map_or(0, |a| a.len())
-                        + a.address.as_ref().map_or(0, |a| a.len())
-                })
-                .sum(),
-            HeaderValue::DateTime(_) => 24,
-            HeaderValue::ContentType(ct) => {
-                ct.c_type.len()
-                    + ct.c_subtype.as_ref().map_or(0, |s| s.len())
-                    + ct.attributes
-                        .as_ref()
-                        .map_or(0, |at| at.iter().map(|(a, b)| a.len() + b.len()).sum())
-            }
-            HeaderValue::Empty => 0,
-        }
-    }
-}
-
 /// An RFC2047 Content-Type or RFC2183 Content-Disposition MIME header field.
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
@@ -919,462 +516,148 @@ pub struct DateTime {
     pub tz_minute: u8,
 }
 
-impl<'x> Message<'x> {
-    /// Returns the root message part
-    pub fn root_part(&self) -> &MessagePart<'x> {
-        &self.parts[0]
-    }
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub struct Received<'x> {
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    from: Option<Host<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    from_ip: Option<IpAddr>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    from_iprev: Option<Cow<'x, str>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    by: Option<Host<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    for_: Option<Cow<'x, str>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    with: Option<Protocol>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    tls_version: Option<TlsVersion>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    tls_cipher: Option<Cow<'x, str>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none")
+    )]
+    id: Option<Cow<'x, str>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    ident: Option<Cow<'x, str>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    helo: Option<Host<'x>>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    helo_cmd: Option<Greeting>,
+    #[cfg_attr(
+        feature = "serde_support",
+        serde(skip_serializing_if = "Option::is_none"),
+        serde(default)
+    )]
+    via: Option<Cow<'x, str>>,
+    date: Option<DateTime>,
+}
 
-    /// Returns a parsed header.
-    pub fn header(&self, header: &str) -> Option<&HeaderValue> {
-        self.parts[0].headers.header(header).map(|h| &h.value)
-    }
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+pub enum Host<'x> {
+    Name(Cow<'x, str>),
+    IpAddr(IpAddr),
+}
 
-    /// Removed a parsed header and returns its value.
-    pub fn remove_header(&mut self, header: &str) -> Option<HeaderValue> {
-        let headers = &mut self.parts[0].headers;
-        headers
-            .iter()
-            .position(|h| h.name.as_str() == header)
-            .map(|pos| headers.swap_remove(pos).value)
-    }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+enum TlsVersion {
+    SSLv2,
+    SSLv3,
+    TLSv1_0,
+    TLSv1_1,
+    TLSv1_2,
+    TLSv1_3,
+    DTLSv1_0,
+    DTLSv1_2,
+    DTLSv1_3,
+}
 
-    /// Removed a parsed RFC heade and returns its value.
-    pub fn remove_header_rfc(&mut self, header: RfcHeader) -> Option<HeaderValue> {
-        let headers = &mut self.parts[0].headers;
-        headers
-            .iter()
-            .position(|h| matches!(&h.name, HeaderName::Rfc(header_name) if header_name == &header))
-            .map(|pos| headers.swap_remove(pos).value)
-    }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+enum Greeting {
+    Helo,
+    Ehlo,
+    Lhlo,
+}
 
-    /// Returns the raw header.
-    pub fn header_raw(&self, header_name: &str) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .header(header_name)
-            .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
-    }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[allow(clippy::upper_case_acronyms)]
+enum Protocol {
+    // IANA Mail Transmission Types
+    SMTP,
+    ESMTP,
+    ESMTPA,
+    ESMTPS,
+    ESMTPSA,
+    LMTP,
+    LMTPA,
+    LMTPS,
+    LMTPSA,
+    MMS,
+    UTF8SMTP,
+    UTF8SMTPA,
+    UTF8SMTPS,
+    UTF8SMTPSA,
+    UTF8LMTP,
+    UTF8LMTPA,
+    UTF8LMTPS,
+    UTF8LMTPSA,
 
-    // Parse a header as a specific type.
-    pub fn header_as(&self, header_name: &str, form: HeaderForm) -> Vec<HeaderValue> {
-        let mut results = Vec::new();
-        for header in &self.parts[0].headers {
-            if header.name.as_str().eq_ignore_ascii_case(header_name) {
-                results.push(
-                    self.raw_message
-                        .get(header.offset_start..header.offset_end)
-                        .map_or(HeaderValue::Empty, |bytes| match form {
-                            HeaderForm::Raw => HeaderValue::Text(
-                                std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
-                            ),
-                            HeaderForm::Text => MessageStream::new(bytes).parse_unstructured(),
-                            HeaderForm::Addresses => MessageStream::new(bytes).parse_address(),
-                            HeaderForm::GroupedAddresses => {
-                                MessageStream::new(bytes).parse_address()
-                            }
-                            HeaderForm::MessageIds => MessageStream::new(bytes).parse_id(),
-                            HeaderForm::Date => MessageStream::new(bytes).parse_date(),
-                            HeaderForm::URLs => MessageStream::new(bytes).parse_address(),
-                        }),
-                );
-            }
-        }
-
-        results
-    }
-
-    /// Returns an iterator over the RFC headers of this message.
-    pub fn headers(&self) -> &[Header] {
-        &self.parts[0].headers
-    }
-
-    /// Returns an iterator over the matching RFC headers of this message.
-    pub fn header_values<'y: 'x>(
-        &'y self,
-        name: RfcHeader,
-    ) -> impl Iterator<Item = &HeaderValue<'x>> {
-        self.parts[0].headers.iter().filter_map(move |header| {
-            if matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == &name) {
-                Some(&header.value)
-            } else {
-                None
-            }
-        })
-    }
-
-    /// Returns all headers in raw format
-    pub fn headers_raw(&self) -> impl Iterator<Item = (&str, &str)> {
-        self.parts[0].headers.iter().filter_map(move |header| {
-            Some((
-                header.name.as_str(),
-                std::str::from_utf8(&self.raw_message[header.offset_start..header.offset_end])
-                    .ok()?,
-            ))
-        })
-    }
-
-    /// Returns the raw message
-    pub fn raw_message(&self) -> &[u8] {
-        let part = &self.parts[0];
-        self.raw_message
-            .get(part.offset_header..part.offset_end)
-            .unwrap_or_default()
-    }
-
-    /// Returns the BCC header field
-    pub fn bcc(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Bcc)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the CC header field
-    pub fn cc(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Cc)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Comments header fields
-    pub fn comments(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Comments)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Date header field
-    pub fn date(&self) -> Option<&DateTime> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Date)
-            .and_then(|header| header.as_datetime_ref())
-    }
-
-    /// Returns the From header field
-    pub fn from(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::From)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all In-Reply-To header fields
-    pub fn in_reply_to(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::InReplyTo)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Keywords header fields
-    pub fn keywords(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Keywords)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Archive header field
-    pub fn list_archive(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListArchive)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Help header field
-    pub fn list_help(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListHelp)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-ID header field
-    pub fn list_id(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListId)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Owner header field
-    pub fn list_owner(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListOwner)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Post header field
-    pub fn list_post(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListPost)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Subscribe header field
-    pub fn list_subscribe(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListSubscribe)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the List-Unsubscribe header field
-    pub fn list_unsubscribe(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ListUnsubscribe)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Message-ID header field
-    pub fn message_id(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::MessageId)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    /// Returns the MIME-Version header field
-    pub fn mime_version(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::MimeVersion)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Received header fields
-    pub fn received(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Received)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all References header fields
-    pub fn references(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::References)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Reply-To header field
-    pub fn reply_to(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ReplyTo)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Resent-BCC header field
-    pub fn resent_bcc(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentBcc)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Resent-CC header field
-    pub fn resent_cc(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentTo)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Resent-Date header fields
-    pub fn resent_date(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentDate)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Resent-From header field
-    pub fn resent_from(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentFrom)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Resent-Message-ID header fields
-    pub fn resent_message_id(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentMessageId)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Sender header field
-    pub fn resent_sender(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentSender)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Resent-To header field
-    pub fn resent_to(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ResentTo)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns all Return-Path header fields
-    pub fn return_path(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ReturnPath)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the return address from either the Return-Path
-    /// or From header fields
-    pub fn return_address(&self) -> Option<&str> {
-        match self.parts[0].headers.rfc(&RfcHeader::ReturnPath) {
-            Some(HeaderValue::Text(text)) => Some(text.as_ref()),
-            Some(HeaderValue::TextList(text_list)) => text_list.last().map(|t| t.as_ref()),
-            _ => match self.parts[0].headers.rfc(&RfcHeader::From) {
-                Some(HeaderValue::Address(addr)) => addr.address.as_deref(),
-                Some(HeaderValue::AddressList(addr_list)) => {
-                    addr_list.last().and_then(|a| a.address.as_deref())
-                }
-                _ => None,
-            },
-        }
-    }
-
-    /// Returns the Sender header field
-    pub fn sender(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Sender)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns the Subject header field
-    pub fn subject(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::Subject)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    /// Returns the message thread name or 'base subject' as defined in
-    /// [RFC 5957 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1)
-    pub fn thread_name(&self) -> Option<&str> {
-        thread_name(self.subject()?).into()
-    }
-
-    /// Returns the To header field
-    pub fn to(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::To)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    /// Returns a preview of the message body
-    pub fn body_preview(&self, preview_len: usize) -> Option<Cow<'x, str>> {
-        if !self.text_body.is_empty() {
-            preview_text(self.body_text(0)?, preview_len).into()
-        } else if !self.html_body.is_empty() {
-            preview_html(self.body_html(0)?, preview_len).into()
-        } else {
-            None
-        }
-    }
-
-    /// Returns a message body part as text/plain
-    pub fn body_html(&'x self, pos: usize) -> Option<Cow<'x, str>> {
-        let part = self.parts.get(*self.html_body.get(pos)?)?;
-        match &part.body {
-            PartType::Html(html) => Some(html.as_ref().into()),
-            PartType::Text(text) => Some(text_to_html(text.as_ref()).into()),
-            _ => None,
-        }
-    }
-
-    /// Returns a message body part as text/plain
-    pub fn body_text(&'x self, pos: usize) -> Option<Cow<'x, str>> {
-        let part = self.parts.get(*self.text_body.get(pos)?)?;
-        match &part.body {
-            PartType::Text(text) => Some(text.as_ref().into()),
-            PartType::Html(html) => Some(html_to_text(html.as_ref()).into()),
-            _ => None,
-        }
-    }
-
-    /// Returns a message part by position
-    pub fn part(&self, pos: usize) -> Option<&MessagePart> {
-        self.parts.get(pos)
-    }
-
-    /// Returns an inline HTML body part by position
-    pub fn html_part(&self, pos: usize) -> Option<&MessagePart> {
-        self.parts.get(*self.html_body.get(pos)?)
-    }
-
-    /// Returns an inline text body part by position
-    pub fn text_part(&self, pos: usize) -> Option<&MessagePart> {
-        self.parts.get(*self.text_body.get(pos)?)
-    }
-
-    /// Returns an attacment by position
-    pub fn attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(*self.attachments.get(pos)?)
-    }
-
-    /// Returns the number of plain text body parts
-    pub fn text_body_count(&self) -> usize {
-        self.text_body.len()
-    }
-
-    /// Returns the number of HTML body parts
-    pub fn html_body_count(&self) -> usize {
-        self.html_body.len()
-    }
-
-    /// Returns the number of attachments
-    pub fn attachment_count(&self) -> usize {
-        self.attachments.len()
-    }
-
-    /// Returns an Interator over the text body parts
-    pub fn text_bodies(&'x self) -> BodyPartIterator<'x> {
-        BodyPartIterator::new(self, &self.text_body)
-    }
-
-    /// Returns an Interator over the HTML body parts
-    pub fn html_bodies(&'x self) -> BodyPartIterator<'x> {
-        BodyPartIterator::new(self, &self.html_body)
-    }
-
-    /// Returns an Interator over the attachments
-    pub fn attachments(&'x self) -> AttachmentIterator<'x> {
-        AttachmentIterator::new(self)
-    }
-
-    /// Returns an owned version of the message
-    pub fn into_owned(self) -> Message<'static> {
-        Message {
-            html_body: self.html_body,
-            text_body: self.text_body,
-            attachments: self.attachments,
-            parts: self.parts.into_iter().map(|p| p.into_owned()).collect(),
-            raw_message: self.raw_message.into_owned().into(),
-        }
-    }
+    // Non-Standard Mail Transmission Types
+    HTTP,
+    HTTPS,
+    IMAP,
+    POP3,
+    Local, // includes stdin, socket, etc.
 }
 
 /// MIME Header field access trait
@@ -1411,252 +694,9 @@ pub trait MimeHeaders<'x> {
     }
 }
 
-impl<'x> MimeHeaders<'x> for Message<'x> {
-    fn content_description(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentDescription)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_disposition(&self) -> Option<&ContentType> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentDisposition)
-            .and_then(|header| header.as_content_type_ref())
-    }
-
-    fn content_id(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentId)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_transfer_encoding(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentTransferEncoding)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_type(&self) -> Option<&ContentType> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentType)
-            .and_then(|header| header.as_content_type_ref())
-    }
-
-    fn content_language(&self) -> &HeaderValue {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentLanguage)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    fn content_location(&self) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .rfc(&RfcHeader::ContentLocation)
-            .and_then(|header| header.as_text_ref())
-    }
-}
-
-impl<'x> MessagePart<'x> {
-    /// Returns the body part's contents as a `u8` slice
-    pub fn contents(&'x self) -> &'x [u8] {
-        match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
-            PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
-            PartType::Message(message) => message.raw_message.as_ref(),
-            PartType::Multipart(_) => b"",
-        }
-    }
-
-    /// Returns the body part's contents as a `str`
-    pub fn text_contents(&'x self) -> Option<&'x str> {
-        match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
-            PartType::Binary(bin) | PartType::InlineBinary(bin) => {
-                std::str::from_utf8(bin.as_ref()).ok()
-            }
-            PartType::Message(message) => std::str::from_utf8(message.raw_message.as_ref()).ok(),
-            PartType::Multipart(_) => None,
-        }
-    }
-
-    /// Returns the nested message
-    pub fn message(&'x self) -> Option<&Message<'x>> {
-        if let PartType::Message(message) = &self.body {
-            Some(message)
-        } else {
-            None
-        }
-    }
-
-    /// Returns the sub parts ids of a MIME part
-    pub fn sub_parts(&'x self) -> Option<&[MessagePartId]> {
-        if let PartType::Multipart(parts) = &self.body {
-            Some(parts.as_ref())
-        } else {
-            None
-        }
-    }
-
-    /// Returns the body part's length
-    pub fn len(&self) -> usize {
-        match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.len(),
-            PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.len(),
-            PartType::Message(message) => message.raw_message.len(),
-            PartType::Multipart(_) => 0,
-        }
-    }
-
-    /// Returns `true` when the body part MIME type is text/*
-    pub fn is_text(&self) -> bool {
-        matches!(self.body, PartType::Text(_) | PartType::Html(_))
-    }
-
-    /// Returns `true` when the body part MIME type is text/tml
-    pub fn is_text_html(&self) -> bool {
-        matches!(self.body, PartType::Html(_))
-    }
-
-    /// Returns `true` when the part is binary
-    pub fn is_binary(&self) -> bool {
-        matches!(self.body, PartType::Binary(_) | PartType::InlineBinary(_))
-    }
-
-    /// Returns `true` when the part is multipart
-    pub fn is_multipart(&self) -> bool {
-        matches!(self.body, PartType::Multipart(_))
-    }
-
-    /// Returns `true` when the part is a nested message
-    pub fn is_message(&self) -> bool {
-        matches!(self.body, PartType::Message(_))
-    }
-
-    /// Returns `true` when the body part is empty
-    pub fn is_empty(&self) -> bool {
-        self.len() == 0
-    }
-
-    /// Get the message headers
-    pub fn headers(&self) -> &[Header] {
-        &self.headers
-    }
-
-    /// Returns the body raw length
-    pub fn raw_len(&self) -> usize {
-        self.offset_end.saturating_sub(self.offset_header)
-    }
-
-    /// Get the raw header offset of this part
-    pub fn raw_header_offset(&self) -> usize {
-        self.offset_header
-    }
-
-    /// Get the raw body offset of this part
-    pub fn raw_body_offset(&self) -> usize {
-        self.offset_body
-    }
-
-    /// Get the raw body end offset of this part
-    pub fn raw_end_offset(&self) -> usize {
-        self.offset_end
-    }
-
-    /// Returns an owned version of the this part
-    pub fn into_owned(self) -> MessagePart<'static> {
-        MessagePart {
-            headers: self.headers.into_iter().map(|h| h.into_owned()).collect(),
-            is_encoding_problem: self.is_encoding_problem,
-            body: match self.body {
-                PartType::Text(v) => PartType::Text(v.into_owned().into()),
-                PartType::Html(v) => PartType::Html(v.into_owned().into()),
-                PartType::Binary(v) => PartType::Binary(v.into_owned().into()),
-                PartType::InlineBinary(v) => PartType::InlineBinary(v.into_owned().into()),
-                PartType::Message(v) => PartType::Message(v.into_owned()),
-                PartType::Multipart(v) => PartType::Multipart(v),
-            },
-            encoding: self.encoding,
-            offset_header: self.offset_header,
-            offset_body: self.offset_body,
-            offset_end: self.offset_end,
-        }
-    }
-}
-
-impl<'x> fmt::Display for MessagePart<'x> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        fmt.write_str(self.text_contents().unwrap_or("[no contents]"))
-    }
-}
-
-impl<'x> MimeHeaders<'x> for MessagePart<'x> {
-    fn content_description(&self) -> Option<&str> {
-        self.headers
-            .rfc(&RfcHeader::ContentDescription)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_disposition(&self) -> Option<&ContentType> {
-        self.headers
-            .rfc(&RfcHeader::ContentDisposition)
-            .and_then(|header| header.as_content_type_ref())
-    }
-
-    fn content_id(&self) -> Option<&str> {
-        self.headers
-            .rfc(&RfcHeader::ContentId)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_transfer_encoding(&self) -> Option<&str> {
-        self.headers
-            .rfc(&RfcHeader::ContentTransferEncoding)
-            .and_then(|header| header.as_text_ref())
-    }
-
-    fn content_type(&self) -> Option<&ContentType> {
-        self.headers
-            .rfc(&RfcHeader::ContentType)
-            .and_then(|header| header.as_content_type_ref())
-    }
-
-    fn content_language(&self) -> &HeaderValue {
-        self.headers
-            .rfc(&RfcHeader::ContentLanguage)
-            .unwrap_or(&HeaderValue::Empty)
-    }
-
-    fn content_location(&self) -> Option<&str> {
-        self.headers
-            .rfc(&RfcHeader::ContentLocation)
-            .and_then(|header| header.as_text_ref())
-    }
-}
-
 pub trait GetHeader {
     fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue>;
     fn header(&self, name: &str) -> Option<&Header>;
-}
-
-impl<'x> GetHeader for Vec<Header<'x>> {
-    fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue<'x>> {
-        self.iter()
-            .rev()
-            .find(|header| matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == name))
-            .map(|header| &header.value)
-    }
-
-    fn header(&self, name: &str) -> Option<&Header> {
-        self.iter()
-            .rev()
-            .find(|header| header.name.as_str().eq_ignore_ascii_case(name))
-    }
 }
 
 #[doc(hidden)]
@@ -1670,132 +710,4 @@ pub struct BodyPartIterator<'x> {
 pub struct AttachmentIterator<'x> {
     message: &'x Message<'x>,
     pos: isize,
-}
-
-impl<'x> BodyPartIterator<'x> {
-    fn new(message: &'x Message<'x>, list: &'x [MessagePartId]) -> BodyPartIterator<'x> {
-        BodyPartIterator {
-            message,
-            list,
-            pos: -1,
-        }
-    }
-}
-
-impl<'x> Iterator for BodyPartIterator<'x> {
-    type Item = &'x MessagePart<'x>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.pos += 1;
-        self.message.parts.get(*self.list.get(self.pos as usize)?)
-    }
-}
-
-impl<'x> AttachmentIterator<'x> {
-    fn new(message: &'x Message<'x>) -> AttachmentIterator<'x> {
-        AttachmentIterator { message, pos: -1 }
-    }
-}
-
-impl<'x> Iterator for AttachmentIterator<'x> {
-    type Item = &'x MessagePart<'x>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.pos += 1;
-        self.message.attachment(self.pos as usize)
-    }
-}
-
-/// An RFC2047 Content-Type or RFC2183 Content-Disposition MIME header field.
-impl<'x> ContentType<'x> {
-    /// Returns the type
-    pub fn ctype(&self) -> &str {
-        &self.c_type
-    }
-
-    /// Returns the sub-type
-    pub fn subtype(&self) -> Option<&str> {
-        self.c_subtype.as_ref()?.as_ref().into()
-    }
-
-    /// Returns an attribute by name
-    pub fn attribute(&self, name: &str) -> Option<&str> {
-        self.attributes
-            .as_ref()?
-            .iter()
-            .find(|(key, _)| key == name)?
-            .1
-            .as_ref()
-            .into()
-    }
-
-    /// Removes an attribute by name
-    pub fn remove_attribute(&mut self, name: &str) -> Option<Cow<str>> {
-        let attributes = self.attributes.as_mut()?;
-
-        attributes
-            .iter()
-            .position(|(key, _)| key == name)
-            .map(|pos| attributes.swap_remove(pos).1)
-    }
-
-    /// Returns all attributes
-    pub fn attributes(&self) -> Option<&[(Cow<str>, Cow<str>)]> {
-        self.attributes.as_deref()
-    }
-
-    /// Returns `true` when the provided attribute name is present
-    pub fn has_attribute(&self, name: &str) -> bool {
-        self.attributes
-            .as_ref()
-            .map_or_else(|| false, |attr| attr.iter().any(|(key, _)| key == name))
-    }
-
-    /// Returns ```true``` if the Content-Disposition type is "attachment"
-    pub fn is_attachment(&self) -> bool {
-        self.c_type.eq_ignore_ascii_case("attachment")
-    }
-
-    /// Returns ```true``` if the Content-Disposition type is "inline"
-    pub fn is_inline(&self) -> bool {
-        self.c_type.eq_ignore_ascii_case("inline")
-    }
-}
-
-impl<'x> PartType<'x> {
-    #[allow(clippy::len_without_is_empty)]
-    pub fn len(&self) -> usize {
-        match self {
-            PartType::Text(v) | PartType::Html(v) => v.len(),
-            PartType::Binary(v) | PartType::InlineBinary(v) => v.len(),
-            PartType::Message(v) => v.raw_message.len(),
-            PartType::Multipart(_) => 0,
-        }
-    }
-}
-
-impl From<DateTime> for i64 {
-    fn from(value: DateTime) -> Self {
-        value.to_timestamp()
-    }
-}
-
-impl From<RfcHeader> for String {
-    fn from(header: RfcHeader) -> Self {
-        header.to_string()
-    }
-}
-
-impl From<RfcHeader> for Cow<'_, str> {
-    fn from(header: RfcHeader) -> Self {
-        Cow::Borrowed(header.as_str())
-    }
-}
-
-impl<'x> TryInto<Message<'x>> for &'x [u8] {
-    type Error = ();
-
-    fn try_into(self) -> Result<Message<'x>, Self::Error> {
-        Message::parse(self).ok_or(())
-    }
 }
