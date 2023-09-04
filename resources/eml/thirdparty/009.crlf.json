@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "In parts"
           },
@@ -23,9 +21,7 @@
           "offset_end": 19
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -34,9 +30,7 @@
           "offset_end": 38
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -68,9 +62,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -83,9 +75,7 @@
           "offset_end": 114
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "binary"
           },
@@ -105,9 +95,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",

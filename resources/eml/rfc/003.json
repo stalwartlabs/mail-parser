@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -31,9 +29,7 @@
           "offset_end": 46
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -49,9 +45,7 @@
           "offset_end": 79
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 1993,
@@ -70,9 +64,7 @@
           "offset_end": 123
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Formatted text mail"
           },
@@ -81,9 +73,7 @@
           "offset_end": 152
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -92,9 +82,7 @@
           "offset_end": 170
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -127,9 +115,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -158,9 +144,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -184,9 +168,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "application",

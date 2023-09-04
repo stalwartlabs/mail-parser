@@ -16,9 +16,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -36,9 +34,7 @@
           "offset_end": 44
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -61,9 +57,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -87,9 +81,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -107,9 +99,7 @@
           "offset_end": 154
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "2.0"
           },
@@ -132,9 +122,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -158,9 +146,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -178,9 +164,7 @@
           "offset_end": 264
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "abc"
           },
@@ -203,9 +187,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -229,9 +211,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -249,9 +229,7 @@
           "offset_end": 374
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": "Empty",
           "offset_field": 374,
           "offset_start": 387,
@@ -271,9 +249,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",

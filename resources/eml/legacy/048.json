@@ -20,9 +20,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "3923670C.67D83A99@example.com"
           },
@@ -31,9 +29,7 @@
           "offset_end": 45
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -52,9 +48,7 @@
           "offset_end": 84
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -71,7 +65,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "Mozilla 4.7 [en] (WinNT; I)"
@@ -82,7 +76,7 @@
         },
         {
           "name": {
-            "Other": "X-Accept-Language"
+            "other": "X-Accept-Language"
           },
           "value": {
             "Text": "en"
@@ -92,9 +86,7 @@
           "offset_end": 188
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -103,9 +95,7 @@
           "offset_end": 207
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -121,9 +111,7 @@
           "offset_end": 240
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
@@ -132,9 +120,7 @@
           "offset_end": 294
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -168,9 +154,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -188,9 +172,7 @@
           "offset_end": 508
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "7bit"
           },
@@ -210,9 +192,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -230,9 +210,7 @@
           "offset_end": 1399
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "x-uuencode"
           },
@@ -241,9 +219,7 @@
           "offset_end": 1438
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -2340,9 +2316,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -2360,9 +2334,7 @@
           "offset_end": 3653
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "x-uuencode"
           },
@@ -2371,9 +2343,7 @@
           "offset_end": 3692
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -4252,9 +4222,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -4272,9 +4240,7 @@
           "offset_end": 5690
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "x-uuencode"
           },
@@ -4283,9 +4249,7 @@
           "offset_end": 5729
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",

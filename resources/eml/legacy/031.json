@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -34,9 +32,7 @@
           "offset_end": 45
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -52,9 +48,7 @@
           "offset_end": 91
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -70,9 +64,7 @@
           "offset_end": 124
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Test message from PINE"
           },
@@ -81,9 +73,7 @@
           "offset_end": 157
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "Pine.LNX.4.21.0005190951410.8452-102000@penguin.example.com"
           },
@@ -92,9 +82,7 @@
           "offset_end": 232
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -103,9 +91,7 @@
           "offset_end": 251
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -138,9 +124,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -169,9 +153,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "application",
@@ -189,9 +171,7 @@
           "offset_end": 785
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "BASE64"
           },
@@ -200,9 +180,7 @@
           "offset_end": 820
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "Pine.LNX.4.21.0005190955480.8452@penguin.example.com"
           },
@@ -211,9 +189,7 @@
           "offset_end": 888
         },
         {
-          "name": {
-            "Rfc": "content_description"
-          },
+          "name": "content_description",
           "value": {
             "Text": "A PNG graphic file"
           },
@@ -222,9 +198,7 @@
           "offset_end": 929
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",
@@ -1707,9 +1681,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "application",
@@ -1727,9 +1699,7 @@
           "offset_end": 3096
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "BASE64"
           },
@@ -1738,9 +1708,7 @@
           "offset_end": 3131
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "Pine.LNX.4.21.0005190955481.8452@penguin.example.com"
           },
@@ -1749,9 +1717,7 @@
           "offset_end": 3199
         },
         {
-          "name": {
-            "Rfc": "content_description"
-          },
+          "name": "content_description",
           "value": {
             "Text": "A PNG graphic file"
           },
@@ -1760,9 +1726,7 @@
           "offset_end": 3240
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",

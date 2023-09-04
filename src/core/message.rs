@@ -19,7 +19,7 @@ use crate::{
         MessageStream,
     },
     Address, AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm,
-    HeaderName, HeaderValue, Message, MessagePart, PartType, RfcHeader,
+    HeaderName, HeaderValue, Message, MessagePart, PartType, Received,
 };
 
 impl<'x> Message<'x> {
@@ -29,44 +29,41 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a parsed header.
-    pub fn header(&self, header: &str) -> Option<&HeaderValue> {
+    pub fn header(&self, header: impl Into<HeaderName<'x>>) -> Option<&HeaderValue> {
         self.parts[0].headers.header(header).map(|h| &h.value)
     }
 
     /// Removed a parsed header and returns its value.
-    pub fn remove_header(&mut self, header: &str) -> Option<HeaderValue> {
+    pub fn remove_header(&mut self, header: impl Into<HeaderName<'x>>) -> Option<HeaderValue> {
+        let header = header.into();
         let headers = &mut self.parts[0].headers;
         headers
             .iter()
-            .position(|h| h.name.as_str() == header)
-            .map(|pos| headers.swap_remove(pos).value)
-    }
-
-    /// Removed a parsed RFC heade and returns its value.
-    pub fn remove_header_rfc(&mut self, header: RfcHeader) -> Option<HeaderValue> {
-        let headers = &mut self.parts[0].headers;
-        headers
-            .iter()
-            .position(|h| matches!(&h.name, HeaderName::Rfc(header_name) if header_name == &header))
+            .position(|h| h.name == header)
             .map(|pos| headers.swap_remove(pos).value)
     }
 
     /// Returns the raw header.
-    pub fn header_raw(&self, header_name: &str) -> Option<&str> {
+    pub fn header_raw(&self, header: impl Into<HeaderName<'x>>) -> Option<&str> {
         self.parts[0]
             .headers
-            .header(header_name)
+            .header(header)
             .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
     }
 
     // Parse a header as a specific type.
-    pub fn header_as(&self, header_name: &str, form: HeaderForm) -> Vec<HeaderValue> {
+    pub fn header_as(
+        &self,
+        header: impl Into<HeaderName<'x>>,
+        form: HeaderForm,
+    ) -> Vec<HeaderValue> {
+        let header = header.into();
         let mut results = Vec::new();
-        for header in &self.parts[0].headers {
-            if header.name.as_str().eq_ignore_ascii_case(header_name) {
+        for header_ in &self.parts[0].headers {
+            if header_.name == header {
                 results.push(
                     self.raw_message
-                        .get(header.offset_start..header.offset_end)
+                        .get(header_.offset_start..header_.offset_end)
                         .map_or(HeaderValue::Empty, |bytes| match form {
                             HeaderForm::Raw => HeaderValue::Text(
                                 std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
@@ -95,10 +92,11 @@ impl<'x> Message<'x> {
     /// Returns an iterator over the matching RFC headers of this message.
     pub fn header_values<'y: 'x>(
         &'y self,
-        name: RfcHeader,
+        name: impl Into<HeaderName<'x>>,
     ) -> impl Iterator<Item = &HeaderValue<'x>> {
+        let name = name.into();
         self.parts[0].headers.iter().filter_map(move |header| {
-            if matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == &name) {
+            if header.name == name {
                 Some(&header.value)
             } else {
                 None
@@ -129,7 +127,7 @@ impl<'x> Message<'x> {
     pub fn bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Bcc)
+            .header_value(&HeaderName::Bcc)
             .and_then(|a| a.as_address())
     }
 
@@ -137,7 +135,7 @@ impl<'x> Message<'x> {
     pub fn cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Cc)
+            .header_value(&HeaderName::Cc)
             .and_then(|a| a.as_address())
     }
 
@@ -145,7 +143,7 @@ impl<'x> Message<'x> {
     pub fn comments(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Comments)
+            .header_value(&HeaderName::Comments)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -153,7 +151,7 @@ impl<'x> Message<'x> {
     pub fn date(&self) -> Option<&DateTime> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Date)
+            .header_value(&HeaderName::Date)
             .and_then(|header| header.as_datetime())
     }
 
@@ -161,7 +159,7 @@ impl<'x> Message<'x> {
     pub fn from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::From)
+            .header_value(&HeaderName::From)
             .and_then(|a| a.as_address())
     }
 
@@ -169,7 +167,7 @@ impl<'x> Message<'x> {
     pub fn in_reply_to(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::InReplyTo)
+            .header_value(&HeaderName::InReplyTo)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -177,7 +175,7 @@ impl<'x> Message<'x> {
     pub fn keywords(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Keywords)
+            .header_value(&HeaderName::Keywords)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -185,7 +183,7 @@ impl<'x> Message<'x> {
     pub fn list_archive(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListArchive)
+            .header_value(&HeaderName::ListArchive)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -193,7 +191,7 @@ impl<'x> Message<'x> {
     pub fn list_help(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListHelp)
+            .header_value(&HeaderName::ListHelp)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -201,7 +199,7 @@ impl<'x> Message<'x> {
     pub fn list_id(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListId)
+            .header_value(&HeaderName::ListId)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -209,7 +207,7 @@ impl<'x> Message<'x> {
     pub fn list_owner(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListOwner)
+            .header_value(&HeaderName::ListOwner)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -217,7 +215,7 @@ impl<'x> Message<'x> {
     pub fn list_post(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListPost)
+            .header_value(&HeaderName::ListPost)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -225,7 +223,7 @@ impl<'x> Message<'x> {
     pub fn list_subscribe(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListSubscribe)
+            .header_value(&HeaderName::ListSubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -233,7 +231,7 @@ impl<'x> Message<'x> {
     pub fn list_unsubscribe(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ListUnsubscribe)
+            .header_value(&HeaderName::ListUnsubscribe)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -241,7 +239,7 @@ impl<'x> Message<'x> {
     pub fn message_id(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::MessageId)
+            .header_value(&HeaderName::MessageId)
             .and_then(|header| header.as_text())
     }
 
@@ -249,23 +247,23 @@ impl<'x> Message<'x> {
     pub fn mime_version(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::MimeVersion)
+            .header_value(&HeaderName::MimeVersion)
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    /// Returns all Received header fields
-    pub fn received(&self) -> &HeaderValue {
+    /// Returns the first Received header field
+    pub fn received(&self) -> Option<&Received> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Received)
-            .unwrap_or(&HeaderValue::Empty)
+            .header_value(&HeaderName::Received)
+            .and_then(|header| header.as_received())
     }
 
     /// Returns all References header fields
     pub fn references(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::References)
+            .header_value(&HeaderName::References)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -273,7 +271,7 @@ impl<'x> Message<'x> {
     pub fn reply_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ReplyTo)
+            .header_value(&HeaderName::ReplyTo)
             .and_then(|a| a.as_address())
     }
 
@@ -281,7 +279,7 @@ impl<'x> Message<'x> {
     pub fn resent_bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentBcc)
+            .header_value(&HeaderName::ResentBcc)
             .and_then(|a| a.as_address())
     }
 
@@ -289,7 +287,7 @@ impl<'x> Message<'x> {
     pub fn resent_cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentTo)
+            .header_value(&HeaderName::ResentTo)
             .and_then(|a| a.as_address())
     }
 
@@ -297,7 +295,7 @@ impl<'x> Message<'x> {
     pub fn resent_date(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentDate)
+            .header_value(&HeaderName::ResentDate)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -305,7 +303,7 @@ impl<'x> Message<'x> {
     pub fn resent_from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentFrom)
+            .header_value(&HeaderName::ResentFrom)
             .and_then(|a| a.as_address())
     }
 
@@ -313,7 +311,7 @@ impl<'x> Message<'x> {
     pub fn resent_message_id(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentMessageId)
+            .header_value(&HeaderName::ResentMessageId)
             .unwrap_or(&HeaderValue::Empty)
     }
 
@@ -321,7 +319,7 @@ impl<'x> Message<'x> {
     pub fn resent_sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentSender)
+            .header_value(&HeaderName::ResentSender)
             .and_then(|a| a.as_address())
     }
 
@@ -329,7 +327,7 @@ impl<'x> Message<'x> {
     pub fn resent_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ResentTo)
+            .header_value(&HeaderName::ResentTo)
             .and_then(|a| a.as_address())
     }
 
@@ -337,17 +335,17 @@ impl<'x> Message<'x> {
     pub fn return_path(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ReturnPath)
+            .header_value(&HeaderName::ReturnPath)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     /// Returns the return address from either the Return-Path
     /// or From header fields
     pub fn return_address(&self) -> Option<&str> {
-        match self.parts[0].headers.rfc(&RfcHeader::ReturnPath) {
+        match self.parts[0].headers.header_value(&HeaderName::ReturnPath) {
             Some(HeaderValue::Text(text)) => Some(text.as_ref()),
             Some(HeaderValue::TextList(text_list)) => text_list.last().map(|t| t.as_ref()),
-            _ => match self.parts[0].headers.rfc(&RfcHeader::From) {
+            _ => match self.parts[0].headers.header_value(&HeaderName::From) {
                 Some(HeaderValue::Address(addr)) => addr.first()?.address.as_deref(),
                 _ => None,
             },
@@ -358,7 +356,7 @@ impl<'x> Message<'x> {
     pub fn sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Sender)
+            .header_value(&HeaderName::Sender)
             .and_then(|a| a.as_address())
     }
 
@@ -366,7 +364,7 @@ impl<'x> Message<'x> {
     pub fn subject(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::Subject)
+            .header_value(&HeaderName::Subject)
             .and_then(|header| header.as_text())
     }
 
@@ -380,7 +378,7 @@ impl<'x> Message<'x> {
     pub fn to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::To)
+            .header_value(&HeaderName::To)
             .and_then(|a| a.as_address())
     }
 

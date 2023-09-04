@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
           },
@@ -22,7 +20,7 @@
         },
         {
           "name": {
-            "Other": "X-Sender"
+            "other": "X-Sender"
           },
           "value": {
             "Text": "dwsauder@pop.example.com (Unverified)"
@@ -33,7 +31,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
@@ -44,7 +42,7 @@
         },
         {
           "name": {
-            "Other": "X-Priority"
+            "other": "X-Priority"
           },
           "value": {
             "Text": "5 (Lowest)"
@@ -54,9 +52,7 @@
           "offset_end": 194
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -75,9 +71,7 @@
           "offset_end": 233
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -93,9 +87,7 @@
           "offset_end": 266
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -111,9 +103,7 @@
           "offset_end": 308
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "The Hare and the Tortoise"
           },
@@ -122,9 +112,7 @@
           "offset_end": 344
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -133,9 +121,7 @@
           "offset_end": 363
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",

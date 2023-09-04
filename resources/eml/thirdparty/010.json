@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "こんにちは"
           },
@@ -21,9 +19,7 @@
           "offset_end": 42
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -32,9 +28,7 @@
           "offset_end": 60
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -69,9 +63,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -84,9 +76,7 @@
           "offset_end": 175
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "binary"
           },
@@ -95,9 +85,7 @@
           "offset_end": 209
         },
         {
-          "name": {
-            "Rfc": "content_language"
-          },
+          "name": "content_language",
           "value": {
             "Text": "ja"
           },

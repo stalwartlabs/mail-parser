@@ -11,11 +11,12 @@
 
 use core::fmt;
 use std::hash::Hash;
+use std::net::IpAddr;
 use std::{borrow::Cow, fmt::Display};
 
 use crate::{
-    Address, ContentType, DateTime, GetHeader, Header, HeaderName, HeaderValue, Host, Message,
-    MessagePart, MessagePartId, MimeHeaders, PartType, Received, RfcHeader,
+    Address, ContentType, DateTime, GetHeader, Greeting, Header, HeaderName, HeaderValue, Host,
+    Message, MessagePart, MessagePartId, MimeHeaders, PartType, Protocol, Received, TlsVersion,
 };
 
 impl<'x> Header<'x> {
@@ -269,9 +270,8 @@ impl<'x> HeaderValue<'x> {
 impl PartialEq for HeaderName<'_> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (Self::Rfc(a), Self::Rfc(b)) => a == b,
             (Self::Other(a), Self::Other(b)) => a.eq_ignore_ascii_case(b),
-            _ => false,
+            _ => self.id() == other.id(),
         }
     }
 }
@@ -279,150 +279,208 @@ impl PartialEq for HeaderName<'_> {
 impl<'x> Hash for HeaderName<'x> {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         match self {
-            HeaderName::Rfc(rfc) => rfc.hash(state),
             HeaderName::Other(value) => {
                 for ch in value.as_bytes() {
                     ch.to_ascii_lowercase().hash(state)
                 }
             }
+            _ => self.id().hash(state),
         }
     }
 }
 
 impl Eq for HeaderName<'_> {}
 
-impl<'x> HeaderName<'x> {
-    pub fn as_str(&self) -> &str {
-        match self {
-            HeaderName::Rfc(header) => header.as_str(),
-            HeaderName::Other(name) => name.as_ref(),
-        }
+impl<'x> From<HeaderName<'x>> for u8 {
+    fn from(name: HeaderName<'x>) -> Self {
+        name.id()
     }
+}
 
+impl<'x> HeaderName<'x> {
     pub fn to_owned(&self) -> HeaderName<'static> {
         match self {
-            HeaderName::Rfc(header) => HeaderName::Rfc(*header),
-            HeaderName::Other(name) => HeaderName::Other(name.clone().into_owned().into()),
+            HeaderName::Other(name) => HeaderName::Other(name.to_string().into()),
+            HeaderName::Subject => HeaderName::Subject,
+            HeaderName::From => HeaderName::From,
+            HeaderName::To => HeaderName::To,
+            HeaderName::Cc => HeaderName::Cc,
+            HeaderName::Date => HeaderName::Date,
+            HeaderName::Bcc => HeaderName::Bcc,
+            HeaderName::ReplyTo => HeaderName::ReplyTo,
+            HeaderName::Sender => HeaderName::Sender,
+            HeaderName::Comments => HeaderName::Comments,
+            HeaderName::InReplyTo => HeaderName::InReplyTo,
+            HeaderName::Keywords => HeaderName::Keywords,
+            HeaderName::Received => HeaderName::Received,
+            HeaderName::MessageId => HeaderName::MessageId,
+            HeaderName::References => HeaderName::References,
+            HeaderName::ReturnPath => HeaderName::ReturnPath,
+            HeaderName::MimeVersion => HeaderName::MimeVersion,
+            HeaderName::ContentDescription => HeaderName::ContentDescription,
+            HeaderName::ContentId => HeaderName::ContentId,
+            HeaderName::ContentLanguage => HeaderName::ContentLanguage,
+            HeaderName::ContentLocation => HeaderName::ContentLocation,
+            HeaderName::ContentTransferEncoding => HeaderName::ContentTransferEncoding,
+            HeaderName::ContentType => HeaderName::ContentType,
+            HeaderName::ContentDisposition => HeaderName::ContentDisposition,
+            HeaderName::ResentTo => HeaderName::ResentTo,
+            HeaderName::ResentFrom => HeaderName::ResentFrom,
+            HeaderName::ResentBcc => HeaderName::ResentBcc,
+            HeaderName::ResentCc => HeaderName::ResentCc,
+            HeaderName::ResentSender => HeaderName::ResentSender,
+            HeaderName::ResentDate => HeaderName::ResentDate,
+            HeaderName::ResentMessageId => HeaderName::ResentMessageId,
+            HeaderName::ListArchive => HeaderName::ListArchive,
+            HeaderName::ListHelp => HeaderName::ListHelp,
+            HeaderName::ListId => HeaderName::ListId,
+            HeaderName::ListOwner => HeaderName::ListOwner,
+            HeaderName::ListPost => HeaderName::ListPost,
+            HeaderName::ListSubscribe => HeaderName::ListSubscribe,
+            HeaderName::ListUnsubscribe => HeaderName::ListUnsubscribe,
         }
     }
 
     pub fn into_owned(self) -> HeaderName<'static> {
         match self {
-            HeaderName::Rfc(header) => HeaderName::Rfc(header),
             HeaderName::Other(name) => HeaderName::Other(name.into_owned().into()),
+            HeaderName::Subject => HeaderName::Subject,
+            HeaderName::From => HeaderName::From,
+            HeaderName::To => HeaderName::To,
+            HeaderName::Cc => HeaderName::Cc,
+            HeaderName::Date => HeaderName::Date,
+            HeaderName::Bcc => HeaderName::Bcc,
+            HeaderName::ReplyTo => HeaderName::ReplyTo,
+            HeaderName::Sender => HeaderName::Sender,
+            HeaderName::Comments => HeaderName::Comments,
+            HeaderName::InReplyTo => HeaderName::InReplyTo,
+            HeaderName::Keywords => HeaderName::Keywords,
+            HeaderName::Received => HeaderName::Received,
+            HeaderName::MessageId => HeaderName::MessageId,
+            HeaderName::References => HeaderName::References,
+            HeaderName::ReturnPath => HeaderName::ReturnPath,
+            HeaderName::MimeVersion => HeaderName::MimeVersion,
+            HeaderName::ContentDescription => HeaderName::ContentDescription,
+            HeaderName::ContentId => HeaderName::ContentId,
+            HeaderName::ContentLanguage => HeaderName::ContentLanguage,
+            HeaderName::ContentLocation => HeaderName::ContentLocation,
+            HeaderName::ContentTransferEncoding => HeaderName::ContentTransferEncoding,
+            HeaderName::ContentType => HeaderName::ContentType,
+            HeaderName::ContentDisposition => HeaderName::ContentDisposition,
+            HeaderName::ResentTo => HeaderName::ResentTo,
+            HeaderName::ResentFrom => HeaderName::ResentFrom,
+            HeaderName::ResentBcc => HeaderName::ResentBcc,
+            HeaderName::ResentCc => HeaderName::ResentCc,
+            HeaderName::ResentSender => HeaderName::ResentSender,
+            HeaderName::ResentDate => HeaderName::ResentDate,
+            HeaderName::ResentMessageId => HeaderName::ResentMessageId,
+            HeaderName::ListArchive => HeaderName::ListArchive,
+            HeaderName::ListHelp => HeaderName::ListHelp,
+            HeaderName::ListId => HeaderName::ListId,
+            HeaderName::ListOwner => HeaderName::ListOwner,
+            HeaderName::ListPost => HeaderName::ListPost,
+            HeaderName::ListSubscribe => HeaderName::ListSubscribe,
+            HeaderName::ListUnsubscribe => HeaderName::ListUnsubscribe,
         }
     }
 
-    pub fn unwrap(self) -> String {
+    pub fn into_string(self) -> String {
         match self {
-            HeaderName::Rfc(header) => header.as_str().to_owned(),
             HeaderName::Other(name) => name.into_owned(),
+            _ => self.as_str().to_string(),
         }
     }
 
-    /// Returns true if it is a MIME header.
-    pub fn is_mime_header(&self) -> bool {
+    pub fn as_str<'y: 'x>(&'y self) -> &'x str {
         match self {
-            HeaderName::Rfc(header) => header.is_mime_header(),
-            HeaderName::Other(_) => false,
+            HeaderName::Other(other) => other.as_ref(),
+            _ => self.as_static_str(),
         }
     }
 
-    /// Returns the lenght of the header
-    pub fn len(&self) -> usize {
+    pub fn as_static_str(&self) -> &'static str {
         match self {
-            HeaderName::Rfc(name) => name.len(),
-            HeaderName::Other(name) => name.len(),
-        }
-    }
-
-    pub fn is_empty(&self) -> bool {
-        false
-    }
-}
-
-impl RfcHeader {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            RfcHeader::Subject => "Subject",
-            RfcHeader::From => "From",
-            RfcHeader::To => "To",
-            RfcHeader::Cc => "Cc",
-            RfcHeader::Date => "Date",
-            RfcHeader::Bcc => "Bcc",
-            RfcHeader::ReplyTo => "Reply-To",
-            RfcHeader::Sender => "Sender",
-            RfcHeader::Comments => "Comments",
-            RfcHeader::InReplyTo => "In-Reply-To",
-            RfcHeader::Keywords => "Keywords",
-            RfcHeader::Received => "Received",
-            RfcHeader::MessageId => "Message-ID",
-            RfcHeader::References => "References",
-            RfcHeader::ReturnPath => "Return-Path",
-            RfcHeader::MimeVersion => "MIME-Version",
-            RfcHeader::ContentDescription => "Content-Description",
-            RfcHeader::ContentId => "Content-ID",
-            RfcHeader::ContentLanguage => "Content-Language",
-            RfcHeader::ContentLocation => "Content-Location",
-            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding",
-            RfcHeader::ContentType => "Content-Type",
-            RfcHeader::ContentDisposition => "Content-Disposition",
-            RfcHeader::ResentTo => "Resent-To",
-            RfcHeader::ResentFrom => "Resent-From",
-            RfcHeader::ResentBcc => "Resent-Bcc",
-            RfcHeader::ResentCc => "Resent-Cc",
-            RfcHeader::ResentSender => "Resent-Sender",
-            RfcHeader::ResentDate => "Resent-Date",
-            RfcHeader::ResentMessageId => "Resent-Message-ID",
-            RfcHeader::ListArchive => "List-Archive",
-            RfcHeader::ListHelp => "List-Help",
-            RfcHeader::ListId => "List-ID",
-            RfcHeader::ListOwner => "List-Owner",
-            RfcHeader::ListPost => "List-Post",
-            RfcHeader::ListSubscribe => "List-Subscribe",
-            RfcHeader::ListUnsubscribe => "List-Unsubscribe",
+            HeaderName::Subject => "Subject",
+            HeaderName::From => "From",
+            HeaderName::To => "To",
+            HeaderName::Cc => "Cc",
+            HeaderName::Date => "Date",
+            HeaderName::Bcc => "Bcc",
+            HeaderName::ReplyTo => "Reply-To",
+            HeaderName::Sender => "Sender",
+            HeaderName::Comments => "Comments",
+            HeaderName::InReplyTo => "In-Reply-To",
+            HeaderName::Keywords => "Keywords",
+            HeaderName::Received => "Received",
+            HeaderName::MessageId => "Message-ID",
+            HeaderName::References => "References",
+            HeaderName::ReturnPath => "Return-Path",
+            HeaderName::MimeVersion => "MIME-Version",
+            HeaderName::ContentDescription => "Content-Description",
+            HeaderName::ContentId => "Content-ID",
+            HeaderName::ContentLanguage => "Content-Language",
+            HeaderName::ContentLocation => "Content-Location",
+            HeaderName::ContentTransferEncoding => "Content-Transfer-Encoding",
+            HeaderName::ContentType => "Content-Type",
+            HeaderName::ContentDisposition => "Content-Disposition",
+            HeaderName::ResentTo => "Resent-To",
+            HeaderName::ResentFrom => "Resent-From",
+            HeaderName::ResentBcc => "Resent-Bcc",
+            HeaderName::ResentCc => "Resent-Cc",
+            HeaderName::ResentSender => "Resent-Sender",
+            HeaderName::ResentDate => "Resent-Date",
+            HeaderName::ResentMessageId => "Resent-Message-ID",
+            HeaderName::ListArchive => "List-Archive",
+            HeaderName::ListHelp => "List-Help",
+            HeaderName::ListId => "List-ID",
+            HeaderName::ListOwner => "List-Owner",
+            HeaderName::ListPost => "List-Post",
+            HeaderName::ListSubscribe => "List-Subscribe",
+            HeaderName::ListUnsubscribe => "List-Unsubscribe",
+            HeaderName::Other(_) => "",
         }
     }
 
     pub fn len(&self) -> usize {
         match self {
-            RfcHeader::Subject => "Subject".len(),
-            RfcHeader::From => "From".len(),
-            RfcHeader::To => "To".len(),
-            RfcHeader::Cc => "Cc".len(),
-            RfcHeader::Date => "Date".len(),
-            RfcHeader::Bcc => "Bcc".len(),
-            RfcHeader::ReplyTo => "Reply-To".len(),
-            RfcHeader::Sender => "Sender".len(),
-            RfcHeader::Comments => "Comments".len(),
-            RfcHeader::InReplyTo => "In-Reply-To".len(),
-            RfcHeader::Keywords => "Keywords".len(),
-            RfcHeader::Received => "Received".len(),
-            RfcHeader::MessageId => "Message-ID".len(),
-            RfcHeader::References => "References".len(),
-            RfcHeader::ReturnPath => "Return-Path".len(),
-            RfcHeader::MimeVersion => "MIME-Version".len(),
-            RfcHeader::ContentDescription => "Content-Description".len(),
-            RfcHeader::ContentId => "Content-ID".len(),
-            RfcHeader::ContentLanguage => "Content-Language".len(),
-            RfcHeader::ContentLocation => "Content-Location".len(),
-            RfcHeader::ContentTransferEncoding => "Content-Transfer-Encoding".len(),
-            RfcHeader::ContentType => "Content-Type".len(),
-            RfcHeader::ContentDisposition => "Content-Disposition".len(),
-            RfcHeader::ResentTo => "Resent-To".len(),
-            RfcHeader::ResentFrom => "Resent-From".len(),
-            RfcHeader::ResentBcc => "Resent-Bcc".len(),
-            RfcHeader::ResentCc => "Resent-Cc".len(),
-            RfcHeader::ResentSender => "Resent-Sender".len(),
-            RfcHeader::ResentDate => "Resent-Date".len(),
-            RfcHeader::ResentMessageId => "Resent-Message-ID".len(),
-            RfcHeader::ListArchive => "List-Archive".len(),
-            RfcHeader::ListHelp => "List-Help".len(),
-            RfcHeader::ListId => "List-ID".len(),
-            RfcHeader::ListOwner => "List-Owner".len(),
-            RfcHeader::ListPost => "List-Post".len(),
-            RfcHeader::ListSubscribe => "List-Subscribe".len(),
-            RfcHeader::ListUnsubscribe => "List-Unsubscribe".len(),
+            HeaderName::Subject => "Subject".len(),
+            HeaderName::From => "From".len(),
+            HeaderName::To => "To".len(),
+            HeaderName::Cc => "Cc".len(),
+            HeaderName::Date => "Date".len(),
+            HeaderName::Bcc => "Bcc".len(),
+            HeaderName::ReplyTo => "Reply-To".len(),
+            HeaderName::Sender => "Sender".len(),
+            HeaderName::Comments => "Comments".len(),
+            HeaderName::InReplyTo => "In-Reply-To".len(),
+            HeaderName::Keywords => "Keywords".len(),
+            HeaderName::Received => "Received".len(),
+            HeaderName::MessageId => "Message-ID".len(),
+            HeaderName::References => "References".len(),
+            HeaderName::ReturnPath => "Return-Path".len(),
+            HeaderName::MimeVersion => "MIME-Version".len(),
+            HeaderName::ContentDescription => "Content-Description".len(),
+            HeaderName::ContentId => "Content-ID".len(),
+            HeaderName::ContentLanguage => "Content-Language".len(),
+            HeaderName::ContentLocation => "Content-Location".len(),
+            HeaderName::ContentTransferEncoding => "Content-Transfer-Encoding".len(),
+            HeaderName::ContentType => "Content-Type".len(),
+            HeaderName::ContentDisposition => "Content-Disposition".len(),
+            HeaderName::ResentTo => "Resent-To".len(),
+            HeaderName::ResentFrom => "Resent-From".len(),
+            HeaderName::ResentBcc => "Resent-Bcc".len(),
+            HeaderName::ResentCc => "Resent-Cc".len(),
+            HeaderName::ResentSender => "Resent-Sender".len(),
+            HeaderName::ResentDate => "Resent-Date".len(),
+            HeaderName::ResentMessageId => "Resent-Message-ID".len(),
+            HeaderName::ListArchive => "List-Archive".len(),
+            HeaderName::ListHelp => "List-Help".len(),
+            HeaderName::ListId => "List-ID".len(),
+            HeaderName::ListOwner => "List-Owner".len(),
+            HeaderName::ListPost => "List-Post".len(),
+            HeaderName::ListSubscribe => "List-Subscribe".len(),
+            HeaderName::ListUnsubscribe => "List-Unsubscribe".len(),
+            HeaderName::Other(other) => other.len(),
         }
     }
 
@@ -430,18 +488,66 @@ impl RfcHeader {
     pub fn is_mime_header(&self) -> bool {
         matches!(
             self,
-            RfcHeader::ContentDescription
-                | RfcHeader::ContentId
-                | RfcHeader::ContentLanguage
-                | RfcHeader::ContentLocation
-                | RfcHeader::ContentTransferEncoding
-                | RfcHeader::ContentType
-                | RfcHeader::ContentDisposition
+            HeaderName::ContentDescription
+                | HeaderName::ContentId
+                | HeaderName::ContentLanguage
+                | HeaderName::ContentLocation
+                | HeaderName::ContentTransferEncoding
+                | HeaderName::ContentType
+                | HeaderName::ContentDisposition
         )
+    }
+
+    /// Returns true if it is an `Other` header name
+    pub fn is_other(&self) -> bool {
+        matches!(self, HeaderName::Other(_))
     }
 
     pub fn is_empty(&self) -> bool {
         false
+    }
+
+    pub fn id(&self) -> u8 {
+        match self {
+            HeaderName::Subject => 0,
+            HeaderName::From => 1,
+            HeaderName::To => 2,
+            HeaderName::Cc => 3,
+            HeaderName::Date => 4,
+            HeaderName::Bcc => 5,
+            HeaderName::ReplyTo => 6,
+            HeaderName::Sender => 7,
+            HeaderName::Comments => 8,
+            HeaderName::InReplyTo => 9,
+            HeaderName::Keywords => 10,
+            HeaderName::Received => 11,
+            HeaderName::MessageId => 12,
+            HeaderName::References => 13,
+            HeaderName::ReturnPath => 14,
+            HeaderName::MimeVersion => 15,
+            HeaderName::ContentDescription => 16,
+            HeaderName::ContentId => 17,
+            HeaderName::ContentLanguage => 18,
+            HeaderName::ContentLocation => 19,
+            HeaderName::ContentTransferEncoding => 20,
+            HeaderName::ContentType => 21,
+            HeaderName::ContentDisposition => 22,
+            HeaderName::ResentTo => 23,
+            HeaderName::ResentFrom => 24,
+            HeaderName::ResentBcc => 25,
+            HeaderName::ResentCc => 26,
+            HeaderName::ResentSender => 27,
+            HeaderName::ResentDate => 28,
+            HeaderName::ResentMessageId => 29,
+            HeaderName::ListArchive => 30,
+            HeaderName::ListHelp => 31,
+            HeaderName::ListId => 32,
+            HeaderName::ListOwner => 33,
+            HeaderName::ListPost => 34,
+            HeaderName::ListSubscribe => 35,
+            HeaderName::ListUnsubscribe => 36,
+            HeaderName::Other(_) => 37,
+        }
     }
 }
 
@@ -449,49 +555,49 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
     fn content_description(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentDescription)
+            .header_value(&HeaderName::ContentDescription)
             .and_then(|header| header.as_text())
     }
 
     fn content_disposition(&self) -> Option<&ContentType> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentDisposition)
+            .header_value(&HeaderName::ContentDisposition)
             .and_then(|header| header.as_content_type())
     }
 
     fn content_id(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentId)
+            .header_value(&HeaderName::ContentId)
             .and_then(|header| header.as_text())
     }
 
     fn content_transfer_encoding(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentTransferEncoding)
+            .header_value(&HeaderName::ContentTransferEncoding)
             .and_then(|header| header.as_text())
     }
 
     fn content_type(&self) -> Option<&ContentType> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentType)
+            .header_value(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type())
     }
 
     fn content_language(&self) -> &HeaderValue {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentLanguage)
+            .header_value(&HeaderName::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     fn content_location(&self) -> Option<&str> {
         self.parts[0]
             .headers
-            .rfc(&RfcHeader::ContentLocation)
+            .header_value(&HeaderName::ContentLocation)
             .and_then(|header| header.as_text())
     }
 }
@@ -632,43 +738,43 @@ impl<'x> fmt::Display for MessagePart<'x> {
 impl<'x> MimeHeaders<'x> for MessagePart<'x> {
     fn content_description(&self) -> Option<&str> {
         self.headers
-            .rfc(&RfcHeader::ContentDescription)
+            .header_value(&HeaderName::ContentDescription)
             .and_then(|header| header.as_text())
     }
 
     fn content_disposition(&self) -> Option<&ContentType> {
         self.headers
-            .rfc(&RfcHeader::ContentDisposition)
+            .header_value(&HeaderName::ContentDisposition)
             .and_then(|header| header.as_content_type())
     }
 
     fn content_id(&self) -> Option<&str> {
         self.headers
-            .rfc(&RfcHeader::ContentId)
+            .header_value(&HeaderName::ContentId)
             .and_then(|header| header.as_text())
     }
 
     fn content_transfer_encoding(&self) -> Option<&str> {
         self.headers
-            .rfc(&RfcHeader::ContentTransferEncoding)
+            .header_value(&HeaderName::ContentTransferEncoding)
             .and_then(|header| header.as_text())
     }
 
     fn content_type(&self) -> Option<&ContentType> {
         self.headers
-            .rfc(&RfcHeader::ContentType)
+            .header_value(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type())
     }
 
     fn content_language(&self) -> &HeaderValue {
         self.headers
-            .rfc(&RfcHeader::ContentLanguage)
+            .header_value(&HeaderName::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
     }
 
     fn content_location(&self) -> Option<&str> {
         self.headers
-            .rfc(&RfcHeader::ContentLocation)
+            .header_value(&HeaderName::ContentLocation)
             .and_then(|header| header.as_text())
     }
 }
@@ -749,6 +855,76 @@ impl<'x> Received<'x> {
             date: self.date,
         }
     }
+
+    /// Returns the hostname or IP address of the machine that originated the message
+    pub fn from(&self) -> Option<&Host> {
+        self.from.as_ref()
+    }
+
+    /// Returns the IP address of the machine that originated the message
+    pub fn from_ip(&self) -> Option<IpAddr> {
+        self.from_ip
+    }
+
+    /// Returns the reverse DNS hostname of the machine that originated the message
+    pub fn from_iprev(&self) -> Option<&str> {
+        self.from_iprev.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the hostname or IP address of the machine that received the message
+    pub fn by(&self) -> Option<&Host> {
+        self.by.as_ref()
+    }
+
+    /// Returns the email address of the user that the message was received for
+    pub fn for_(&self) -> Option<&str> {
+        self.for_.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the protocol that was used to receive the message
+    pub fn with(&self) -> Option<Protocol> {
+        self.with
+    }
+
+    /// Returns the TLS version that was used to receive the message
+    pub fn tls_version(&self) -> Option<TlsVersion> {
+        self.tls_version
+    }
+
+    /// Returns the TLS cipher that was used to receive the message
+    pub fn tls_cipher(&self) -> Option<&str> {
+        self.tls_cipher.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the message ID of the message that was received
+    pub fn id(&self) -> Option<&str> {
+        self.id.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the identity of the user that sent the message
+    pub fn ident(&self) -> Option<&str> {
+        self.ident.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the EHLO/LHLO/HELO hostname or IP address of the machine that sent the message
+    pub fn helo(&self) -> Option<&Host> {
+        self.helo.as_ref()
+    }
+
+    /// Returns the EHLO/LHLO/HELO command that was sent by the client
+    pub fn helo_cmd(&self) -> Option<Greeting> {
+        self.helo_cmd
+    }
+
+    /// Returns the link type over which the message was received
+    pub fn via(&self) -> Option<&str> {
+        self.via.as_ref().map(|s| s.as_ref())
+    }
+
+    /// Returns the date and time when the message was received
+    pub fn date(&self) -> Option<DateTime> {
+        self.date
+    }
 }
 
 /// A hostname or IP address.
@@ -761,30 +937,95 @@ impl<'x> Host<'x> {
     }
 }
 
-impl<'x> GetHeader for Vec<Header<'x>> {
-    fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue<'x>> {
+impl<'x> GetHeader<'x> for Vec<Header<'x>> {
+    fn header_value(&self, name: &HeaderName) -> Option<&HeaderValue<'x>> {
         self.iter()
             .rev()
-            .find(|header| matches!(&header.name, HeaderName::Rfc(rfc_name) if rfc_name == name))
+            .find(|header| &header.name == name)
             .map(|header| &header.value)
     }
 
-    fn header(&self, name: &str) -> Option<&Header> {
-        self.iter()
-            .rev()
-            .find(|header| header.name.as_str().eq_ignore_ascii_case(name))
+    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header> {
+        let name = name.into();
+        self.iter().rev().find(|header| header.name == name)
     }
 }
 
-impl From<RfcHeader> for String {
-    fn from(header: RfcHeader) -> Self {
+impl<'x> From<&'x str> for HeaderName<'x> {
+    fn from(value: &'x str) -> Self {
+        HeaderName::parse(value).unwrap_or(HeaderName::Other("".into()))
+    }
+}
+
+impl<'x> From<Cow<'x, str>> for HeaderName<'x> {
+    fn from(value: Cow<'x, str>) -> Self {
+        HeaderName::parse(value).unwrap_or(HeaderName::Other("".into()))
+    }
+}
+
+impl<'x> From<String> for HeaderName<'x> {
+    fn from(value: String) -> Self {
+        HeaderName::parse(value).unwrap_or(HeaderName::Other("".into()))
+    }
+}
+
+impl From<HeaderName<'_>> for String {
+    fn from(header: HeaderName) -> Self {
         header.to_string()
     }
 }
 
-impl From<RfcHeader> for Cow<'_, str> {
-    fn from(header: RfcHeader) -> Self {
-        Cow::Borrowed(header.as_str())
+impl<'x> From<HeaderName<'x>> for Cow<'x, str> {
+    fn from(header: HeaderName<'x>) -> Self {
+        match header {
+            HeaderName::Other(value) => value,
+            _ => Cow::Borrowed(header.as_static_str()),
+        }
+    }
+}
+
+impl From<u8> for HeaderName<'_> {
+    fn from(value: u8) -> Self {
+        match value {
+            0 => HeaderName::Subject,
+            1 => HeaderName::From,
+            2 => HeaderName::To,
+            3 => HeaderName::Cc,
+            4 => HeaderName::Date,
+            5 => HeaderName::Bcc,
+            6 => HeaderName::ReplyTo,
+            7 => HeaderName::Sender,
+            8 => HeaderName::Comments,
+            9 => HeaderName::InReplyTo,
+            10 => HeaderName::Keywords,
+            11 => HeaderName::Received,
+            12 => HeaderName::MessageId,
+            13 => HeaderName::References,
+            14 => HeaderName::ReturnPath,
+            15 => HeaderName::MimeVersion,
+            16 => HeaderName::ContentDescription,
+            17 => HeaderName::ContentId,
+            18 => HeaderName::ContentLanguage,
+            19 => HeaderName::ContentLocation,
+            20 => HeaderName::ContentTransferEncoding,
+            21 => HeaderName::ContentType,
+            22 => HeaderName::ContentDisposition,
+            23 => HeaderName::ResentTo,
+            24 => HeaderName::ResentFrom,
+            25 => HeaderName::ResentBcc,
+            26 => HeaderName::ResentCc,
+            27 => HeaderName::ResentSender,
+            28 => HeaderName::ResentDate,
+            29 => HeaderName::ResentMessageId,
+            30 => HeaderName::ListArchive,
+            31 => HeaderName::ListHelp,
+            32 => HeaderName::ListId,
+            33 => HeaderName::ListOwner,
+            34 => HeaderName::ListPost,
+            35 => HeaderName::ListSubscribe,
+            36 => HeaderName::ListUnsubscribe,
+            _ => HeaderName::Other("".into()),
+        }
     }
 }
 
@@ -794,7 +1035,7 @@ impl From<DateTime> for i64 {
     }
 }
 
-impl Display for RfcHeader {
+impl Display for HeaderName<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_str())
     }

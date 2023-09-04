@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com"
           },
@@ -25,7 +23,7 @@
         },
         {
           "name": {
-            "Other": "X-Sender"
+            "other": "X-Sender"
           },
           "value": {
             "Text": "dwsauder@pop.example.com (Unverified)"
@@ -36,7 +34,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
@@ -47,7 +45,7 @@
         },
         {
           "name": {
-            "Other": "X-Priority"
+            "other": "X-Priority"
           },
           "value": {
             "Text": "2 (High)"
@@ -57,9 +55,7 @@
           "offset_end": 192
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -78,9 +74,7 @@
           "offset_end": 231
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -96,9 +90,7 @@
           "offset_end": 288
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -114,9 +106,7 @@
           "offset_end": 330
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
@@ -125,9 +115,7 @@
           "offset_end": 383
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -136,9 +124,7 @@
           "offset_end": 402
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -175,9 +161,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -195,9 +179,7 @@
           "offset_end": 599
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "quoted-printable"
           },
@@ -217,9 +199,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -237,9 +217,7 @@
           "offset_end": 1975
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.2"
           },
@@ -248,9 +226,7 @@
           "offset_end": 2041
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -259,9 +235,7 @@
           "offset_end": 2076
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -1616,9 +1590,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -1636,9 +1608,7 @@
           "offset_end": 4036
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "4.2.0.58.20000519003934.00a866f0@pop.example.com.3"
           },
@@ -1647,9 +1617,7 @@
           "offset_end": 4102
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -1658,9 +1626,7 @@
           "offset_end": 4137
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",

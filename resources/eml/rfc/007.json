@@ -22,9 +22,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "RFC 8621 Section 4.1.4 test"
           },
@@ -33,9 +31,7 @@
           "offset_end": 37
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -68,9 +64,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -83,9 +77,7 @@
           "offset_end": 111
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -109,9 +101,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -145,9 +135,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -179,9 +167,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -214,9 +200,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -229,9 +213,7 @@
           "offset_end": 326
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -255,9 +237,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -270,9 +250,7 @@
           "offset_end": 388
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -298,9 +276,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -313,9 +289,7 @@
           "offset_end": 450
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -339,9 +313,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -373,9 +345,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -399,9 +369,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -427,9 +395,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -442,9 +408,7 @@
           "offset_end": 667
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",
@@ -470,9 +434,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "application",
@@ -498,9 +460,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -527,9 +487,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "J"
                   },
@@ -556,9 +514,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -571,9 +527,7 @@
           "offset_end": 833
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",

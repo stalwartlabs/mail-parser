@@ -19,9 +19,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "39236103.FFE674FC@example.com"
           },
@@ -30,9 +28,7 @@
           "offset_end": 45
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -51,9 +47,7 @@
           "offset_end": 84
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -70,7 +64,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "Mozilla 4.7 [en] (WinNT; I)"
@@ -81,7 +75,7 @@
         },
         {
           "name": {
-            "Other": "X-Accept-Language"
+            "other": "X-Accept-Language"
           },
           "value": {
             "Text": "en"
@@ -91,9 +85,7 @@
           "offset_end": 188
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -102,9 +94,7 @@
           "offset_end": 207
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -120,9 +110,7 @@
           "offset_end": 277
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Test message from Netscape Communicator 4.7"
           },
@@ -131,9 +119,7 @@
           "offset_end": 331
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -166,9 +152,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -201,9 +185,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -221,9 +203,7 @@
           "offset_end": 672
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "7bit"
           },
@@ -243,9 +223,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -258,9 +236,7 @@
           "offset_end": 1908
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "part1.39236103.1B697A54@example.com"
           },
@@ -269,9 +245,7 @@
           "offset_end": 1959
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -280,9 +254,7 @@
           "offset_end": 1994
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -1637,9 +1609,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -1652,9 +1622,7 @@
           "offset_end": 3941
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "part2.39236103.1B697A54@example.com"
           },
@@ -1663,9 +1631,7 @@
           "offset_end": 3992
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -1674,9 +1640,7 @@
           "offset_end": 4027
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -3159,9 +3123,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -3179,9 +3141,7 @@
           "offset_end": 6218
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -3190,9 +3150,7 @@
           "offset_end": 6253
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -4520,9 +4478,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -4540,9 +4496,7 @@
           "offset_end": 8182
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -4551,9 +4505,7 @@
           "offset_end": 8217
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",

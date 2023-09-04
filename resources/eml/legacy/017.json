@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "4.2.0.58.20000519004755.00a86100@pop.example.com"
           },
@@ -25,7 +23,7 @@
         },
         {
           "name": {
-            "Other": "X-Sender"
+            "other": "X-Sender"
           },
           "value": {
             "Text": "dwsauder@pop.example.com (Unverified)"
@@ -36,7 +34,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
@@ -46,9 +44,7 @@
           "offset_end": 170
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -67,9 +63,7 @@
           "offset_end": 209
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -85,9 +79,7 @@
           "offset_end": 257
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -103,9 +95,7 @@
           "offset_end": 299
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "The Hare and the Tortoise"
           },
@@ -114,9 +104,7 @@
           "offset_end": 335
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -125,9 +113,7 @@
           "offset_end": 354
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -160,9 +146,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -191,9 +175,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -211,9 +193,7 @@
           "offset_end": 1373
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "x-uuencode"
           },
@@ -222,9 +202,7 @@
           "offset_end": 1412
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",
@@ -2108,9 +2086,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -2128,9 +2104,7 @@
           "offset_end": 3413
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "x-uuencode"
           },
@@ -2139,9 +2113,7 @@
           "offset_end": 3452
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",

@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "4.2.0.58.20000519010842.00a8c7f0@pop.example.com"
           },
@@ -22,7 +20,7 @@
         },
         {
           "name": {
-            "Other": "X-Sender"
+            "other": "X-Sender"
           },
           "value": {
             "Text": "dwsauder@pop.example.com (Unverified)"
@@ -33,7 +31,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
@@ -44,7 +42,7 @@
         },
         {
           "name": {
-            "Other": "X-Priority"
+            "other": "X-Priority"
           },
           "value": {
             "Text": "1 (Highest)"
@@ -54,9 +52,7 @@
           "offset_end": 195
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -75,9 +71,7 @@
           "offset_end": 234
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -93,9 +87,7 @@
           "offset_end": 274
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -111,9 +103,7 @@
           "offset_end": 316
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Die Hasen und die Fr�sche"
           },
@@ -122,9 +112,7 @@
           "offset_end": 352
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -133,9 +121,7 @@
           "offset_end": 371
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -153,9 +139,7 @@
           "offset_end": 419
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "8bit"
           },

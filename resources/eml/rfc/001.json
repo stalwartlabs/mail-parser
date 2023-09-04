@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -28,9 +26,7 @@
           "offset_end": 15
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -46,18 +42,14 @@
           "offset_end": 27
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": "Empty",
           "offset_field": 27,
           "offset_start": 32,
           "offset_end": 42
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "whatever"
           },
@@ -66,9 +58,7 @@
           "offset_end": 60
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -77,9 +67,7 @@
           "offset_end": 78
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "id1@host.com"
           },
@@ -88,9 +76,7 @@
           "offset_end": 105
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -108,9 +94,7 @@
           "offset_end": 154
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "id001@guppylake.bellcore.com"
           },
@@ -134,9 +118,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -265,9 +247,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -388,9 +368,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",

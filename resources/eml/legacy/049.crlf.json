@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -28,9 +26,7 @@
           "offset_end": 40
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -46,9 +42,7 @@
           "offset_end": 76
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Test message from Microsoft Outlook 00"
           },
@@ -57,9 +51,7 @@
           "offset_end": 125
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -78,9 +70,7 @@
           "offset_end": 164
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGIEKGCHAA.doug@example.com"
           },
@@ -90,7 +80,7 @@
         },
         {
           "name": {
-            "Other": "X-Priority"
+            "other": "X-Priority"
           },
           "value": {
             "Text": "3 (Normal)"
@@ -101,7 +91,7 @@
         },
         {
           "name": {
-            "Other": "X-MSMail-Priority"
+            "other": "X-MSMail-Priority"
           },
           "value": {
             "Text": "Normal"
@@ -112,7 +102,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
@@ -123,7 +113,7 @@
         },
         {
           "name": {
-            "Other": "Importance"
+            "other": "Importance"
           },
           "value": {
             "Text": "Normal"
@@ -134,7 +124,7 @@
         },
         {
           "name": {
-            "Other": "X-MimeOLE"
+            "other": "X-MimeOLE"
           },
           "value": {
             "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"

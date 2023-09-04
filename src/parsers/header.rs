@@ -11,7 +11,7 @@
 
 use std::borrow::Cow;
 
-use crate::{Header, HeaderName, RfcHeader};
+use crate::{Header, HeaderName};
 
 use super::MessageStream;
 
@@ -38,49 +38,46 @@ impl<'x> MessageStream<'x> {
 
             if let Some(header_name) = self.parse_header_name() {
                 let from_offset = self.offset();
-                let value = if let HeaderName::Rfc(rfc_name) = &header_name {
-                    match rfc_name {
-                        RfcHeader::Subject
-                        | RfcHeader::Comments
-                        | RfcHeader::ContentDescription
-                        | RfcHeader::ContentLocation
-                        | RfcHeader::ContentTransferEncoding => self.parse_unstructured(),
-                        RfcHeader::From
-                        | RfcHeader::To
-                        | RfcHeader::Cc
-                        | RfcHeader::Bcc
-                        | RfcHeader::ReplyTo
-                        | RfcHeader::Sender
-                        | RfcHeader::ResentTo
-                        | RfcHeader::ResentFrom
-                        | RfcHeader::ResentBcc
-                        | RfcHeader::ResentCc
-                        | RfcHeader::ResentSender
-                        | RfcHeader::ListArchive
-                        | RfcHeader::ListHelp
-                        | RfcHeader::ListId
-                        | RfcHeader::ListOwner
-                        | RfcHeader::ListPost
-                        | RfcHeader::ListSubscribe
-                        | RfcHeader::ListUnsubscribe => self.parse_address(),
-                        RfcHeader::Date | RfcHeader::ResentDate => self.parse_date(),
-                        RfcHeader::MessageId
-                        | RfcHeader::References
-                        | RfcHeader::InReplyTo
-                        | RfcHeader::ReturnPath
-                        | RfcHeader::ContentId
-                        | RfcHeader::ResentMessageId => self.parse_id(),
-                        RfcHeader::Keywords | RfcHeader::ContentLanguage => {
-                            self.parse_comma_separared()
-                        }
-                        RfcHeader::Received => self.parse_received(),
-                        RfcHeader::MimeVersion => self.parse_raw(),
-                        RfcHeader::ContentType | RfcHeader::ContentDisposition => {
-                            self.parse_content_type()
-                        }
+                let value = match &header_name {
+                    HeaderName::Subject
+                    | HeaderName::Comments
+                    | HeaderName::ContentDescription
+                    | HeaderName::ContentLocation
+                    | HeaderName::ContentTransferEncoding => self.parse_unstructured(),
+                    HeaderName::From
+                    | HeaderName::To
+                    | HeaderName::Cc
+                    | HeaderName::Bcc
+                    | HeaderName::ReplyTo
+                    | HeaderName::Sender
+                    | HeaderName::ResentTo
+                    | HeaderName::ResentFrom
+                    | HeaderName::ResentBcc
+                    | HeaderName::ResentCc
+                    | HeaderName::ResentSender
+                    | HeaderName::ListArchive
+                    | HeaderName::ListHelp
+                    | HeaderName::ListId
+                    | HeaderName::ListOwner
+                    | HeaderName::ListPost
+                    | HeaderName::ListSubscribe
+                    | HeaderName::ListUnsubscribe => self.parse_address(),
+                    HeaderName::Date | HeaderName::ResentDate => self.parse_date(),
+                    HeaderName::MessageId
+                    | HeaderName::References
+                    | HeaderName::InReplyTo
+                    | HeaderName::ReturnPath
+                    | HeaderName::ContentId
+                    | HeaderName::ResentMessageId => self.parse_id(),
+                    HeaderName::Keywords | HeaderName::ContentLanguage => {
+                        self.parse_comma_separared()
                     }
-                } else {
-                    self.parse_raw()
+                    HeaderName::Received => self.parse_received(),
+                    HeaderName::MimeVersion => self.parse_raw(),
+                    HeaderName::ContentType | HeaderName::ContentDisposition => {
+                        self.parse_content_type()
+                    }
+                    HeaderName::Other(_) => self.parse_raw(),
                 };
 
                 headers.push(Header {
@@ -158,7 +155,7 @@ impl<'x> MessageStream<'x> {
                     let token_hash = token_hash - 4;
 
                     if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                        return Some(HeaderName::Rfc(HDR_MAP[token_hash]));
+                        return Some(HDR_MAP[token_hash].clone());
                     }
                 }
             }
@@ -211,7 +208,7 @@ impl<'x> HeaderName<'x> {
                 let token_hash = token_hash - 4;
 
                 if data_.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                    return HeaderName::Rfc(HDR_MAP[token_hash]).into();
+                    return HDR_MAP[token_hash].clone().into();
                 }
             }
         }
@@ -224,29 +221,23 @@ impl<'x> HeaderName<'x> {
     }
 }
 
-impl From<RfcHeader> for u8 {
-    fn from(name: RfcHeader) -> Self {
-        name as u8
-    }
-}
-
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, HeaderName, RfcHeader};
+    use crate::{parsers::MessageStream, HeaderName};
 
     #[test]
     fn header_name_parse() {
         let inputs = [
-            ("From: ", HeaderName::Rfc(RfcHeader::From)),
-            ("receiVED: ", HeaderName::Rfc(RfcHeader::Received)),
-            (" subject   : ", HeaderName::Rfc(RfcHeader::Subject)),
+            ("From: ", HeaderName::From),
+            ("receiVED: ", HeaderName::Received),
+            (" subject   : ", HeaderName::Subject),
             (
                 "X-Custom-Field : ",
                 HeaderName::Other("X-Custom-Field".into()),
             ),
             (" T : ", HeaderName::Other("T".into())),
             ("mal formed: ", HeaderName::Other("mal formed".into())),
-            ("MIME-version : ", HeaderName::Rfc(RfcHeader::MimeVersion)),
+            ("MIME-version : ", HeaderName::MimeVersion),
         ];
 
         for (input, expected_result) in inputs {
@@ -319,76 +310,76 @@ static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
 ];
 
-static HDR_MAP: &[RfcHeader] = &[
-    RfcHeader::Date,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::Sender,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::Received,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::References,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::Cc,
-    RfcHeader::Comments,
-    RfcHeader::ResentCc,
-    RfcHeader::ContentId,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ResentMessageId,
-    RfcHeader::ReplyTo,
-    RfcHeader::ResentTo,
-    RfcHeader::ResentBcc,
-    RfcHeader::ContentLanguage,
-    RfcHeader::Subject,
-    RfcHeader::ResentSender,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ResentDate,
-    RfcHeader::To,
-    RfcHeader::Bcc,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ContentTransferEncoding,
-    RfcHeader::ReturnPath,
-    RfcHeader::ListId,
-    RfcHeader::Keywords,
-    RfcHeader::ContentDescription,
-    RfcHeader::ListOwner,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ContentType,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ListHelp,
-    RfcHeader::MessageId,
-    RfcHeader::ContentLocation,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ListSubscribe,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ListPost,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ResentFrom,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ContentDisposition,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::InReplyTo,
-    RfcHeader::ListArchive,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::From,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::ListUnsubscribe,
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion, // Invalid
-    RfcHeader::MimeVersion,
+static HDR_MAP: &[HeaderName] = &[
+    HeaderName::Date,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::Sender,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::Received,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::References,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::Cc,
+    HeaderName::Comments,
+    HeaderName::ResentCc,
+    HeaderName::ContentId,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ResentMessageId,
+    HeaderName::ReplyTo,
+    HeaderName::ResentTo,
+    HeaderName::ResentBcc,
+    HeaderName::ContentLanguage,
+    HeaderName::Subject,
+    HeaderName::ResentSender,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ResentDate,
+    HeaderName::To,
+    HeaderName::Bcc,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ContentTransferEncoding,
+    HeaderName::ReturnPath,
+    HeaderName::ListId,
+    HeaderName::Keywords,
+    HeaderName::ContentDescription,
+    HeaderName::ListOwner,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ContentType,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ListHelp,
+    HeaderName::MessageId,
+    HeaderName::ContentLocation,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ListSubscribe,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ListPost,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ResentFrom,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ContentDisposition,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::InReplyTo,
+    HeaderName::ListArchive,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::From,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::ListUnsubscribe,
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion, // Invalid
+    HeaderName::MimeVersion,
 ];
 
 static HDR_NAMES: &[&[u8]] = &[

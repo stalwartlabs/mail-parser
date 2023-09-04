@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "return_path"
-          },
+          "name": "return_path",
           "value": {
             "Text": "test@example.org"
           },
@@ -23,9 +21,7 @@
           "offset_end": 32
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Hello world"
           },
@@ -34,9 +30,7 @@
           "offset_end": 53
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -52,9 +46,7 @@
           "offset_end": 88
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -70,9 +62,7 @@
           "offset_end": 125
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "1.2.3.4@example"
           },
@@ -81,9 +71,7 @@
           "offset_end": 155
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -92,9 +80,7 @@
           "offset_end": 173
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2007,
@@ -113,9 +99,7 @@
           "offset_end": 211
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -155,9 +139,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -170,9 +152,7 @@
           "offset_end": 385
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "quoted-printable"
           },
@@ -192,9 +172,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "application",

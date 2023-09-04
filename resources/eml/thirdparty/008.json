@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -31,9 +29,7 @@
           "offset_end": 22
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2007,
@@ -52,9 +48,7 @@
           "offset_end": 60
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -63,9 +57,7 @@
           "offset_end": 78
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -98,9 +90,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -129,9 +119,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -161,9 +149,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -179,9 +165,7 @@
                   "offset_end": 273
                 },
                 {
-                  "name": {
-                    "Rfc": "date"
-                  },
+                  "name": "date",
                   "value": {
                     "DateTime": {
                       "year": 2012,
@@ -200,9 +184,7 @@
                   "offset_end": 311
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "submsg"
                   },
@@ -211,9 +193,7 @@
                   "offset_end": 327
                 },
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "multipart",
@@ -245,9 +225,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "text",
@@ -271,9 +249,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "multipart",
@@ -305,9 +281,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "multipart",
@@ -376,9 +350,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",

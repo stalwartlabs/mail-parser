@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "return_path"
-          },
+          "name": "return_path",
           "value": {
             "Text": "dummy@xyz-webserver.abcd-gestion.local"
           },
@@ -24,7 +22,7 @@
         },
         {
           "name": {
-            "Other": "Delivered-To"
+            "other": "Delivered-To"
           },
           "value": {
             "Text": "admin@xyz-webserver.abcd-gestion.local"
@@ -34,9 +32,7 @@
           "offset_end": 105
         },
         {
-          "name": {
-            "Rfc": "received"
-          },
+          "name": "received",
           "value": {
             "Received": {
               "from": {
@@ -65,9 +61,7 @@
           "offset_end": 234
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -85,9 +79,7 @@
           "offset_end": 320
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "ca2236fb-9819-82dd-c501-d3bcf737a768@xyz-webserver.abcd-gestion.local"
           },
@@ -96,9 +88,7 @@
           "offset_end": 404
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2022,
@@ -117,9 +107,7 @@
           "offset_end": 442
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -129,7 +117,7 @@
         },
         {
           "name": {
-            "Other": "User-Agent"
+            "other": "User-Agent"
           },
           "value": {
             "Text": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101\n Thunderbird/91.11.0"
@@ -139,9 +127,7 @@
           "offset_end": 559
         },
         {
-          "name": {
-            "Rfc": "content_language"
-          },
+          "name": "content_language",
           "value": {
             "Text": "fr"
           },
@@ -150,9 +136,7 @@
           "offset_end": 580
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -168,9 +152,7 @@
           "offset_end": 635
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -186,9 +168,7 @@
           "offset_end": 688
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "small image"
           },
@@ -211,9 +191,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -235,9 +213,7 @@
           "offset_end": 849
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "7bit"
           },
@@ -257,9 +233,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -291,9 +265,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -311,9 +283,7 @@
           "offset_end": 1082
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "7bit"
           },
@@ -333,9 +303,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -353,9 +321,7 @@
           "offset_end": 1440
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "inline",
@@ -373,9 +339,7 @@
           "offset_end": 1501
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "part1.9UVUk3pv.Sy4hPOBH@xyz-webserver.abcd-gestion.local"
           },
@@ -384,9 +348,7 @@
           "offset_end": 1572
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },

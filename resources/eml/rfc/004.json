@@ -13,9 +13,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -31,9 +29,7 @@
           "offset_end": 24
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -49,9 +45,7 @@
           "offset_end": 43
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 1994,
@@ -70,9 +64,7 @@
           "offset_end": 81
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Internet Digest, volume 42"
           },
@@ -81,9 +73,7 @@
           "offset_end": 117
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -92,9 +82,7 @@
           "offset_end": 135
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -136,9 +124,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -183,9 +169,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -201,9 +185,7 @@
                   "offset_end": 437
                 },
                 {
-                  "name": {
-                    "Rfc": "date"
-                  },
+                  "name": "date",
                   "value": {
                     "DateTime": {
                       "year": 1993,
@@ -222,9 +204,7 @@
                   "offset_end": 475
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "my opinion"
                   },
@@ -264,9 +244,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -282,9 +260,7 @@
                   "offset_end": 570
                 },
                 {
-                  "name": {
-                    "Rfc": "date"
-                  },
+                  "name": "date",
                   "value": {
                     "DateTime": {
                       "year": 1993,
@@ -303,9 +279,7 @@
                   "offset_end": 608
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "my different opinion"
                   },

@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -28,9 +26,7 @@
           "offset_end": 40
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -46,9 +42,7 @@
           "offset_end": 101
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
           },
@@ -57,9 +51,7 @@
           "offset_end": 185
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -78,9 +70,7 @@
           "offset_end": 224
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
           },
@@ -89,9 +79,7 @@
           "offset_end": 285
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -100,9 +88,7 @@
           "offset_end": 304
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -120,9 +106,7 @@
           "offset_end": 356
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "quoted-printable"
           },
@@ -132,7 +116,7 @@
         },
         {
           "name": {
-            "Other": "X-Priority"
+            "other": "X-Priority"
           },
           "value": {
             "Text": "3 (Normal)"
@@ -143,7 +127,7 @@
         },
         {
           "name": {
-            "Other": "X-MSMail-Priority"
+            "other": "X-MSMail-Priority"
           },
           "value": {
             "Text": "Normal"
@@ -154,7 +138,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
@@ -165,7 +149,7 @@
         },
         {
           "name": {
-            "Other": "Importance"
+            "other": "Importance"
           },
           "value": {
             "Text": "Normal"
@@ -176,7 +160,7 @@
         },
         {
           "name": {
-            "Other": "X-MimeOLE"
+            "other": "X-MimeOLE"
           },
           "value": {
             "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"

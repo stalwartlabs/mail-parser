@@ -17,9 +17,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -28,9 +26,7 @@
           "offset_end": 18
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -46,9 +42,7 @@
           "offset_end": 62
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -64,9 +58,7 @@
           "offset_end": 95
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 1994,
@@ -85,9 +77,7 @@
           "offset_end": 139
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "A multipart example"
           },
@@ -96,9 +86,7 @@
           "offset_end": 168
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -143,9 +131,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -174,9 +160,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -208,9 +192,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "audio",
@@ -223,9 +205,7 @@
           "offset_end": 1098
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -245,9 +225,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "image",
@@ -260,9 +238,7 @@
           "offset_end": 1264
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -282,9 +258,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -308,9 +282,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -337,9 +309,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -355,9 +325,7 @@
                   "offset_end": 1635
                 },
                 {
-                  "name": {
-                    "Rfc": "to"
-                  },
+                  "name": "to",
                   "value": {
                     "Address": {
                       "List": [
@@ -373,9 +341,7 @@
                   "offset_end": 1661
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "(subject in US-ASCII)"
                   },
@@ -384,9 +350,7 @@
                   "offset_end": 1692
                 },
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "text",
@@ -404,9 +368,7 @@
                   "offset_end": 1737
                 },
                 {
-                  "name": {
-                    "Rfc": "content_transfer_encoding"
-                  },
+                  "name": "content_transfer_encoding",
                   "value": {
                     "Text": "Quoted-printable"
                   },

@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -33,9 +31,7 @@
           "offset_end": 45
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -51,9 +47,7 @@
           "offset_end": 91
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -73,9 +67,7 @@
           "offset_end": 185
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Die Hasen und die Frösche"
           },
@@ -84,9 +76,7 @@
           "offset_end": 240
         },
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "Pine.LNX.4.21.0005191024380.8452-200000@penguin.example.com"
           },
@@ -95,9 +85,7 @@
           "offset_end": 315
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -106,9 +94,7 @@
           "offset_end": 334
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -140,9 +126,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -171,9 +155,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -195,9 +177,7 @@
           "offset_end": 856
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "BASE64"
           },
@@ -206,9 +186,7 @@
           "offset_end": 891
         },
         {
-          "name": {
-            "Rfc": "content_id"
-          },
+          "name": "content_id",
           "value": {
             "Text": "Pine.LNX.4.21.0005191026120.8452@penguin.example.com"
           },
@@ -217,9 +195,7 @@
           "offset_end": 959
         },
         {
-          "name": {
-            "Rfc": "content_description"
-          },
+          "name": "content_description",
           "value": {
             "Text": "Short story in German"
           },
@@ -228,9 +204,7 @@
           "offset_end": 1003
         },
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",

@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "message_id"
-          },
+          "name": "message_id",
           "value": {
             "Text": "3923561C.B7078DEF@example.com"
           },
@@ -21,9 +19,7 @@
           "offset_end": 45
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2000,
@@ -42,9 +38,7 @@
           "offset_end": 84
         },
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -61,7 +55,7 @@
         },
         {
           "name": {
-            "Other": "X-Mailer"
+            "other": "X-Mailer"
           },
           "value": {
             "Text": "Mozilla 4.7 [en] (WinNT; I)"
@@ -72,7 +66,7 @@
         },
         {
           "name": {
-            "Other": "X-Accept-Language"
+            "other": "X-Accept-Language"
           },
           "value": {
             "Text": "en"
@@ -82,9 +76,7 @@
           "offset_end": 188
         },
         {
-          "name": {
-            "Rfc": "mime_version"
-          },
+          "name": "mime_version",
           "value": {
             "Text": "1.0"
           },
@@ -93,9 +85,7 @@
           "offset_end": 207
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -111,9 +101,7 @@
           "offset_end": 277
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
           },
@@ -122,9 +110,7 @@
           "offset_end": 360
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -142,9 +128,7 @@
           "offset_end": 406
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "quoted-printable"
           },

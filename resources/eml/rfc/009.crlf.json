@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -30,9 +28,7 @@
           "offset_end": 38
         },
         {
-          "name": {
-            "Rfc": "to"
-          },
+          "name": "to",
           "value": {
             "Address": {
               "List": [
@@ -48,9 +44,7 @@
           "offset_end": 73
         },
         {
-          "name": {
-            "Rfc": "date"
-          },
+          "name": "date",
           "value": {
             "DateTime": {
               "year": 2009,
@@ -69,9 +63,7 @@
           "offset_end": 112
         },
         {
-          "name": {
-            "Rfc": "subject"
-          },
+          "name": "subject",
           "value": {
             "Text": "whatever"
           },
@@ -80,9 +72,7 @@
           "offset_end": 131
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -114,9 +104,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -148,9 +136,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -179,9 +165,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -210,9 +194,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -239,9 +221,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -257,9 +237,7 @@
                   "offset_end": 626
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "Hello, this is an elaborate request for you to finally say hello already!"
                   },

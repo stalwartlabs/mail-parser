@@ -246,7 +246,6 @@
 //!
 //!    // Integrates with Serde
 //!    println!("{}", serde_json::to_string_pretty(&message).unwrap());
-//!    println!("{}", serde_yaml::to_string(&message).unwrap());
 //!```
 pub mod core;
 pub mod decoders;
@@ -392,57 +391,50 @@ pub struct Header<'x> {
     pub offset_end: usize,
 }
 
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-pub enum HeaderName<'x> {
-    Rfc(RfcHeader),
-    Other(Cow<'x, str>),
-}
-
 /// A header field
-#[repr(u8)]
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
-pub enum RfcHeader {
-    Subject = 0,
-    From = 1,
-    To = 2,
-    Cc = 3,
-    Date = 4,
-    Bcc = 5,
-    ReplyTo = 6,
-    Sender = 7,
-    Comments = 8,
-    InReplyTo = 9,
-    Keywords = 10,
-    Received = 11,
-    MessageId = 12,
-    References = 13,
-    ReturnPath = 14,
-    MimeVersion = 15,
-    ContentDescription = 16,
-    ContentId = 17,
-    ContentLanguage = 18,
-    ContentLocation = 19,
-    ContentTransferEncoding = 20,
-    ContentType = 21,
-    ContentDisposition = 22,
-    ResentTo = 23,
-    ResentFrom = 24,
-    ResentBcc = 25,
-    ResentCc = 26,
-    ResentSender = 27,
-    ResentDate = 28,
-    ResentMessageId = 29,
-    ListArchive = 30,
-    ListHelp = 31,
-    ListId = 32,
-    ListOwner = 33,
-    ListPost = 34,
-    ListSubscribe = 35,
-    ListUnsubscribe = 36,
-} // Note: Do not add new entries without updating HDR* tables
+pub enum HeaderName<'x> {
+    Subject,
+    From,
+    To,
+    Cc,
+    Date,
+    Bcc,
+    ReplyTo,
+    Sender,
+    Comments,
+    InReplyTo,
+    Keywords,
+    Received,
+    MessageId,
+    References,
+    ReturnPath,
+    MimeVersion,
+    ContentDescription,
+    ContentId,
+    ContentLanguage,
+    ContentLocation,
+    ContentTransferEncoding,
+    ContentType,
+    ContentDisposition,
+    ResentTo,
+    ResentFrom,
+    ResentBcc,
+    ResentCc,
+    ResentSender,
+    ResentDate,
+    ResentMessageId,
+    ListArchive,
+    ListHelp,
+    ListId,
+    ListOwner,
+    ListPost,
+    ListSubscribe,
+    ListUnsubscribe,
+    Other(Cow<'x, str>),
+}
 
 /// Parsed header value.
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
@@ -502,7 +494,7 @@ pub struct ContentType<'x> {
 }
 
 /// An RFC5322 datetime.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct DateTime {
     pub year: u16,
@@ -524,79 +516,79 @@ pub struct Received<'x> {
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    from: Option<Host<'x>>,
+    pub from: Option<Host<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    from_ip: Option<IpAddr>,
+    pub from_ip: Option<IpAddr>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    from_iprev: Option<Cow<'x, str>>,
+    pub from_iprev: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    by: Option<Host<'x>>,
+    pub by: Option<Host<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    for_: Option<Cow<'x, str>>,
+    pub for_: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    with: Option<Protocol>,
+    pub with: Option<Protocol>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    tls_version: Option<TlsVersion>,
+    pub tls_version: Option<TlsVersion>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    tls_cipher: Option<Cow<'x, str>>,
+    pub tls_cipher: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none")
     )]
-    id: Option<Cow<'x, str>>,
+    pub id: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    ident: Option<Cow<'x, str>>,
+    pub ident: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    helo: Option<Host<'x>>,
+    pub helo: Option<Host<'x>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    helo_cmd: Option<Greeting>,
+    pub helo_cmd: Option<Greeting>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none"),
         serde(default)
     )]
-    via: Option<Cow<'x, str>>,
-    date: Option<DateTime>,
+    pub via: Option<Cow<'x, str>>,
+    pub date: Option<DateTime>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -608,7 +600,7 @@ pub enum Host<'x> {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-enum TlsVersion {
+pub enum TlsVersion {
     SSLv2,
     SSLv3,
     TLSv1_0,
@@ -622,7 +614,7 @@ enum TlsVersion {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-enum Greeting {
+pub enum Greeting {
     Helo,
     Ehlo,
     Lhlo,
@@ -631,7 +623,7 @@ enum Greeting {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 #[allow(clippy::upper_case_acronyms)]
-enum Protocol {
+pub enum Protocol {
     // IANA Mail Transmission Types
     SMTP,
     ESMTP,
@@ -694,9 +686,9 @@ pub trait MimeHeaders<'x> {
     }
 }
 
-pub trait GetHeader {
-    fn rfc(&self, name: &RfcHeader) -> Option<&HeaderValue>;
-    fn header(&self, name: &str) -> Option<&Header>;
+pub trait GetHeader<'x> {
+    fn header_value(&self, name: &HeaderName) -> Option<&HeaderValue>;
+    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header>;
 }
 
 #[doc(hidden)]

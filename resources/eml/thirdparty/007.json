@@ -10,9 +10,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "from"
-          },
+          "name": "from",
           "value": {
             "Address": {
               "List": [
@@ -28,9 +26,7 @@
           "offset_end": 36
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -76,9 +72,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -94,9 +88,7 @@
                   "offset_end": 121
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "my opinion"
                   },
@@ -136,9 +128,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -154,9 +144,7 @@
                   "offset_end": 198
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "i disagree"
                   },
@@ -198,9 +186,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -216,9 +202,7 @@
                   "offset_end": 281
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "funny hat"
                   },
@@ -227,9 +211,7 @@
                   "offset_end": 300
                 },
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "multipart",
@@ -261,9 +243,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "text",
@@ -276,9 +256,7 @@
                   "offset_end": 372
                 },
                 {
-                  "name": {
-                    "Rfc": "content_transfer_encoding"
-                  },
+                  "name": "content_transfer_encoding",
                   "value": {
                     "Text": "binary"
                   },
@@ -298,9 +276,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "application",
@@ -322,9 +298,7 @@
                   "offset_end": 517
                 },
                 {
-                  "name": {
-                    "Rfc": "content_transfer_encoding"
-                  },
+                  "name": "content_transfer_encoding",
                   "value": {
                     "Text": "binary"
                   },

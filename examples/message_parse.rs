@@ -141,5 +141,4 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // Integrates with Serde
     println!("{}", serde_json::to_string_pretty(&message).unwrap());
-    println!("{}", serde_yaml::to_string(&message).unwrap());
 }

@@ -12,9 +12,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "multipart",
@@ -46,9 +44,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "text",
@@ -66,9 +62,7 @@
           "offset_end": 166
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "7bit"
           },
@@ -88,9 +82,7 @@
     {
       "headers": [
         {
-          "name": {
-            "Rfc": "content_disposition"
-          },
+          "name": "content_disposition",
           "value": {
             "ContentType": {
               "c_type": "attachment",
@@ -108,9 +100,7 @@
           "offset_end": 360
         },
         {
-          "name": {
-            "Rfc": "content_type"
-          },
+          "name": "content_type",
           "value": {
             "ContentType": {
               "c_type": "message",
@@ -123,9 +113,7 @@
           "offset_end": 389
         },
         {
-          "name": {
-            "Rfc": "content_transfer_encoding"
-          },
+          "name": "content_transfer_encoding",
           "value": {
             "Text": "base64"
           },
@@ -148,9 +136,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "to"
-                  },
+                  "name": "to",
                   "value": {
                     "Address": {
                       "List": [
@@ -166,9 +152,7 @@
                   "offset_end": 45
                 },
                 {
-                  "name": {
-                    "Rfc": "from"
-                  },
+                  "name": "from",
                   "value": {
                     "Address": {
                       "List": [
@@ -184,9 +168,7 @@
                   "offset_end": 77
                 },
                 {
-                  "name": {
-                    "Rfc": "subject"
-                  },
+                  "name": "subject",
                   "value": {
                     "Text": "HTML test"
                   },
@@ -195,9 +177,7 @@
                   "offset_end": 97
                 },
                 {
-                  "name": {
-                    "Rfc": "message_id"
-                  },
+                  "name": "message_id",
                   "value": {
                     "Text": "random-message-id@example.com"
                   },
@@ -206,9 +186,7 @@
                   "offset_end": 142
                 },
                 {
-                  "name": {
-                    "Rfc": "date"
-                  },
+                  "name": "date",
                   "value": {
                     "DateTime": {
                       "year": 2021,
@@ -227,9 +205,7 @@
                   "offset_end": 181
                 },
                 {
-                  "name": {
-                    "Rfc": "mime_version"
-                  },
+                  "name": "mime_version",
                   "value": {
                     "Text": "1.0"
                   },
@@ -238,9 +214,7 @@
                   "offset_end": 200
                 },
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "multipart",
@@ -258,9 +232,7 @@
                   "offset_end": 292
                 },
                 {
-                  "name": {
-                    "Rfc": "content_language"
-                  },
+                  "name": "content_language",
                   "value": {
                     "Text": "en-US"
                   },
@@ -283,9 +255,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "text",
@@ -307,9 +277,7 @@
                   "offset_end": 465
                 },
                 {
-                  "name": {
-                    "Rfc": "content_transfer_encoding"
-                  },
+                  "name": "content_transfer_encoding",
                   "value": {
                     "Text": "7bit"
                   },
@@ -329,9 +297,7 @@
             {
               "headers": [
                 {
-                  "name": {
-                    "Rfc": "content_type"
-                  },
+                  "name": "content_type",
                   "value": {
                     "ContentType": {
                       "c_type": "text",
@@ -349,9 +315,7 @@
                   "offset_end": 616
                 },
                 {
-                  "name": {
-                    "Rfc": "content_transfer_encoding"
-                  },
+                  "name": "content_transfer_encoding",
                   "value": {
                     "Text": "7bit"
                   },

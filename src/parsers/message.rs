@@ -13,8 +13,8 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{charsets::map::charset_decoder, DecodeFnc},
-    ContentType, Encoding, GetHeader, HeaderValue, Message, MessagePart, MessagePartId, PartType,
-    RfcHeader,
+    ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Message, MessagePart, MessagePartId,
+    PartType,
 };
 
 use super::MessageStream;
@@ -150,7 +150,7 @@ impl<'x> Message<'x> {
             state.sub_part_ids.push(message.parts.len());
 
             let content_type = part_headers
-                .rfc(&RfcHeader::ContentType)
+                .header_value(&HeaderName::ContentType)
                 .and_then(|c| c.as_content_type());
 
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
@@ -196,7 +196,7 @@ impl<'x> Message<'x> {
             }
 
             let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
-                .rfc(&RfcHeader::ContentTransferEncoding)
+                .header_value(&HeaderName::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
                     (Encoding::Base64, MessageStream::decode_base64_mime)
@@ -265,7 +265,7 @@ impl<'x> Message<'x> {
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
                     && part_headers
-                        .rfc(&RfcHeader::ContentDisposition)
+                        .header_value(&HeaderName::ContentDisposition)
                         .map_or_else(|| true, |d| !d.content_type().is_attachment())
                     && (state.parts == 1
                         || (state.mime_type != MimeType::MultipartRelated
