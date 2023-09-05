@@ -66,13 +66,14 @@ fn main() {
         .parse(MESSAGE)
         .unwrap();
 
-    // Parse only To, From, Date, and Subject headers
+    // Parse only To, From, Date, and Subject headers. All other headers are parsed as raw.
     let _message = MessageParser::new()
         .with_mime_headers()
         .header_text(HeaderName::Subject)
         .header_address(HeaderName::From)
         .header_address(HeaderName::To)
         .header_date(HeaderName::Date)
+        .default_header_raw()
         .parse(MESSAGE)
         .unwrap();
 }

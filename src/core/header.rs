@@ -1035,6 +1035,89 @@ impl From<DateTime> for i64 {
     }
 }
 
+impl TlsVersion {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            TlsVersion::SSLv2 => "SSLv2",
+            TlsVersion::SSLv3 => "SSLv3",
+            TlsVersion::TLSv1_0 => "TLSv1.0",
+            TlsVersion::TLSv1_1 => "TLSv1.1",
+            TlsVersion::TLSv1_2 => "TLSv1.2",
+            TlsVersion::TLSv1_3 => "TLSv1.3",
+            TlsVersion::DTLSv1_0 => "DTLSv1.0",
+            TlsVersion::DTLSv1_2 => "DTLSv1.2",
+            TlsVersion::DTLSv1_3 => "DTLSv1.3",
+        }
+    }
+}
+
+impl Greeting {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Greeting::Helo => "HELO",
+            Greeting::Ehlo => "EHLO",
+            Greeting::Lhlo => "LHLO",
+        }
+    }
+}
+
+impl Protocol {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Protocol::SMTP => "SMTP",
+            Protocol::LMTP => "LMTP",
+            Protocol::ESMTP => "ESMTP",
+            Protocol::ESMTPS => "ESMTPS",
+            Protocol::ESMTPA => "ESMTPA",
+            Protocol::ESMTPSA => "ESMTPSA",
+            Protocol::LMTPA => "LMTPA",
+            Protocol::LMTPS => "LMTPS",
+            Protocol::LMTPSA => "LMTPSA",
+            Protocol::UTF8SMTP => "UTF8SMTP",
+            Protocol::UTF8SMTPA => "UTF8SMTPA",
+            Protocol::UTF8SMTPS => "UTF8SMTPS",
+            Protocol::UTF8SMTPSA => "UTF8SMTPSA",
+            Protocol::UTF8LMTP => "UTF8LMTP",
+            Protocol::UTF8LMTPA => "UTF8LMTPA",
+            Protocol::UTF8LMTPS => "UTF8LMTPS",
+            Protocol::UTF8LMTPSA => "UTF8LMTPSA",
+            Protocol::HTTP => "HTTP",
+            Protocol::HTTPS => "HTTPS",
+            Protocol::IMAP => "IMAP",
+            Protocol::POP3 => "POP3",
+            Protocol::MMS => "MMS",
+            Protocol::Local => "Local",
+        }
+    }
+}
+
+impl Display for Host<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Host::Name(name) => name.fmt(f),
+            Host::IpAddr(ip) => ip.fmt(f),
+        }
+    }
+}
+
+impl Display for Protocol {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl Display for Greeting {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl Display for TlsVersion {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
 impl Display for HeaderName<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_str())
