@@ -73,12 +73,30 @@ impl<'x> Address<'x> {
     }
 
     /// Returns an iterator over the addresses in the list, or the addresses in the groups.
-    pub fn iter<'y: 'x>(&'y self) -> Box<dyn Iterator<Item = &Addr<'x>> + 'x> {
+    pub fn iter<'y: 'x>(&'y self) -> Box<dyn DoubleEndedIterator<Item = &Addr<'x>> + 'x> {
         match self {
             Address::List(list) => Box::new(list.iter()),
             Address::Group(group) => {
                 Box::new(group.iter().flat_map(|group| group.addresses.iter()))
             }
+        }
+    }
+
+    /// Returns whether the list contains the given address.
+    pub fn contains(&self, addr: &str) -> bool {
+        match self {
+            Address::List(list) => list.iter().any(|a| {
+                a.address
+                    .as_ref()
+                    .map_or(false, |a| a.eq_ignore_ascii_case(addr))
+            }),
+            Address::Group(group) => group.iter().any(|group| {
+                group.addresses.iter().any(|a| {
+                    a.address
+                        .as_ref()
+                        .map_or(false, |a| a.eq_ignore_ascii_case(addr))
+                })
+            }),
         }
     }
 
@@ -123,5 +141,13 @@ impl<'x> Addr<'x> {
             name: self.name.map(|s| s.into_owned().into()),
             address: self.address.map(|s| s.into_owned().into()),
         }
+    }
+
+    pub fn name(&self) -> Option<&str> {
+        self.name.as_deref()
+    }
+
+    pub fn address(&self) -> Option<&str> {
+        self.address.as_deref()
     }
 }
