@@ -80,7 +80,7 @@ fuzz_target!(|data: &[u8]| {
         }
 
         // Fuzz the entire library
-        Message::parse(data);
+        MessageParser::default().parse(data);
     }
 });
 

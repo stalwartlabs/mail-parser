@@ -56,7 +56,7 @@ impl<'x> MessageStream<'x> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, Message};
+    use crate::{parsers::MessageStream, MessageParser};
 
     #[test]
     fn parse_raw_text() {
@@ -99,7 +99,7 @@ Content-Type: multipart/mixed; boundary="festivus";
 
 Here's a message body.
 "#;
-        let message = Message::parse(input).unwrap();
+        let message = MessageParser::default().parse(input).unwrap();
         let mut iter = message.headers_raw();
         assert_eq!(
             iter.next().unwrap(),

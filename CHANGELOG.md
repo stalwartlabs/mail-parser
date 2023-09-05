@@ -1,3 +1,14 @@
+mail-parser 0.9.0
+================================
+This version introduces multiple breaking changes. Please read the following notes carefully.
+
+- Parsing is now done using `MessageParser`, which allows to customize the parsing process.
+- Added parser for `Received` headers.
+- Added `MessageParser::parse_headers` function to parse only the headers of a message.
+- Removed `RfcHeader` enum, now all headers are represented using `HeaderName`.
+- All address types are now stored in the `HeaderValue::Address` variant using the `Address` enum.
+- Renamed the `as_` prefix to `to_` in some functions.
+
 mail-parser 0.8.2
 ================================
 - Fix: Parsing address name with \ characters (#41) 

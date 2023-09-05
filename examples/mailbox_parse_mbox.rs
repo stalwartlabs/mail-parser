@@ -9,13 +9,15 @@
  * except according to those terms.
  */
 
-use mail_parser::{mailbox::mbox::MessageIterator, Message};
+use mail_parser::{mailbox::mbox::MessageIterator, MessageParser};
 
 fn main() {
     // Reads an MBox mailbox from stdin and prints each message as JSON.
     for raw_message in MessageIterator::new(std::io::stdin()) {
         let raw_message = raw_message.unwrap();
-        let message = Message::parse(raw_message.contents()).unwrap();
+        let message = MessageParser::default()
+            .parse(raw_message.contents())
+            .unwrap();
 
         println!("{}", serde_json::to_string(&message).unwrap());
     }

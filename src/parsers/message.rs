@@ -13,8 +13,8 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{charsets::map::charset_decoder, DecodeFnc},
-    ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Message, MessagePart, MessagePartId,
-    PartType,
+    ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Message, MessageParser, MessagePart,
+    MessagePartId, PartType,
 };
 
 use super::MessageStream;
@@ -106,29 +106,32 @@ impl MessageParserState {
     }
 }
 
-impl<'x> Message<'x> {
-    fn new() -> Message<'x> {
-        Message {
-            ..Default::default()
-        }
-    }
-
-    /// Returns `false` if at least one header field was successfully parsed.
-    pub fn is_empty(&self) -> bool {
-        self.parts.is_empty()
-    }
-
+impl MessageParser {
     /// Parses a byte slice containing the RFC5322 raw message and returns a
     /// `Message` struct.
     ///
     /// This function never panics, a best-effort is made to parse the message and
     /// if no headers are found None is returned.
     ///
-    pub fn parse(raw_message: &'x [u8]) -> Option<Message<'x>> {
-        Message::parse_(raw_message, MAX_NESTED_ENCODED)
+    pub fn parse<'x>(&self, raw_message: impl IntoByteSlice<'x>) -> Option<Message<'x>> {
+        self.parse_(raw_message.into_byte_slice(), MAX_NESTED_ENCODED, false)
     }
 
-    fn parse_(raw_message: &'x [u8], depth: usize) -> Option<Message<'x>> {
+    /// Parses a byte slice containing the RFC5322 raw message and returns a
+    /// `Message` struct containing only the headers.
+    pub fn parse_headers<'x>(
+        &self,
+        raw_message: impl IntoByteSlice<'x> + 'x,
+    ) -> Option<Message<'x>> {
+        self.parse_(raw_message.into_byte_slice(), MAX_NESTED_ENCODED, true)
+    }
+
+    fn parse_<'x>(
+        &self,
+        raw_message: &'x [u8],
+        depth: usize,
+        skip_body: bool,
+    ) -> Option<Message<'x>> {
         let mut stream = MessageStream::new(raw_message);
 
         let mut message = Message::new();
@@ -141,10 +144,13 @@ impl<'x> Message<'x> {
         'outer: loop {
             // Parse headers
             state.offset_header = stream.offset();
-            if !stream.parse_headers(&mut part_headers) {
+            if !stream.parse_headers(self, &mut part_headers) {
                 break;
             }
             state.offset_body = stream.offset();
+            if skip_body {
+                break;
+            }
 
             state.parts += 1;
             state.sub_part_ids.push(message.parts.len());
@@ -356,7 +362,7 @@ impl<'x> Message<'x> {
                 message.attachments.push(message.parts.len());
 
                 if depth != 0 {
-                    if let Some(nested_message) = Message::parse_(bytes.as_ref(), depth - 1) {
+                    if let Some(nested_message) = self.parse_(bytes.as_ref(), depth - 1, false) {
                         PartType::Message(Message {
                             html_body: nested_message.html_body,
                             text_body: nested_message.text_body,
@@ -536,11 +542,58 @@ impl<'x> Message<'x> {
     }
 }
 
+impl<'x> Message<'x> {
+    fn new() -> Message<'x> {
+        Message {
+            ..Default::default()
+        }
+    }
+
+    /// Returns `false` if at least one header field was successfully parsed.
+    pub fn is_empty(&self) -> bool {
+        self.parts.is_empty()
+    }
+}
+
+pub trait IntoByteSlice<'x> {
+    fn into_byte_slice(self) -> &'x [u8];
+}
+
+impl<'x> IntoByteSlice<'x> for &'x [u8] {
+    fn into_byte_slice(self) -> &'x [u8] {
+        self
+    }
+}
+
+impl<'x, const N: usize> IntoByteSlice<'x> for &'x [u8; N] {
+    fn into_byte_slice(self) -> &'x [u8] {
+        self
+    }
+}
+
+impl<'x> IntoByteSlice<'x> for &'x str {
+    fn into_byte_slice(self) -> &'x [u8] {
+        self.as_bytes()
+    }
+}
+
+impl<'x> IntoByteSlice<'x> for &'x String {
+    fn into_byte_slice(self) -> &'x [u8] {
+        self.as_bytes()
+    }
+}
+
+impl<'x> IntoByteSlice<'x> for &'x Vec<u8> {
+    fn into_byte_slice(self) -> &'x [u8] {
+        self
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::{fs, path::PathBuf};
 
-    use crate::parsers::message::Message;
+    use crate::MessageParser;
 
     #[test]
     fn parse_full_messages() {
@@ -563,7 +616,7 @@ mod tests {
                     file_name.set_extension("json");
                     let expected_result = fs::read(&file_name).unwrap();
 
-                    let message = Message::parse(&raw_message).unwrap();
+                    let message = MessageParser::default().parse(&raw_message).unwrap();
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     if json_message.as_bytes() != expected_result {
@@ -580,7 +633,7 @@ mod tests {
                     file_name.set_extension("crlf.json");
                     let expected_result = fs::read(&file_name).unwrap();
 
-                    let message = Message::parse(&raw_message).unwrap();
+                    let message = MessageParser::default().parse(&raw_message).unwrap();
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     if json_message.as_bytes() != expected_result {

@@ -19,7 +19,7 @@ use crate::{
         MessageStream,
     },
     Address, AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm,
-    HeaderName, HeaderValue, Message, MessagePart, PartType, Received,
+    HeaderName, HeaderValue, Message, MessageParser, MessagePart, PartType, Received,
 };
 
 impl<'x> Message<'x> {
@@ -479,6 +479,6 @@ impl<'x> TryInto<Message<'x>> for &'x [u8] {
     type Error = ();
 
     fn try_into(self) -> Result<Message<'x>, Self::Error> {
-        Message::parse(self).ok_or(())
+        MessageParser::default().parse(self).ok_or(())
     }
 }

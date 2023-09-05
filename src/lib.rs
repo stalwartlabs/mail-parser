@@ -154,7 +154,7 @@
 //!--festivus--
 //!"#;
 //!
-//!    let message = Message::parse(input).unwrap();
+//!    let message = MessageParser::default().parse(input).unwrap();
 //!
 //!    // Parses addresses (including comments), lists and groups
 //!    assert_eq!(
@@ -252,10 +252,20 @@ pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
-use std::{borrow::Cow, hash::Hash, net::IpAddr};
+use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 
+use parsers::MessageStream;
 #[cfg(feature = "serde_support")]
 use serde::{Deserialize, Serialize};
+
+/// RFC5322/RFC822 message parser.
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct MessageParser {
+    pub(crate) header_map: HashMap<HeaderName<'static>, HdrParseFnc>,
+    pub(crate) def_hdr_parse_fnc: HdrParseFnc,
+}
+
+pub(crate) type HdrParseFnc = for<'x> fn(&mut MessageStream<'x>) -> crate::HeaderValue<'x>;
 
 /// An RFC5322/RFC822 message.
 #[derive(Debug, Default, PartialEq, Clone)]

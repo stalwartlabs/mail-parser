@@ -11,12 +11,12 @@
 
 use std::borrow::Cow;
 
-use crate::{Header, HeaderName};
+use crate::{Header, HeaderName, MessageParser};
 
 use super::MessageStream;
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_headers(&mut self, headers: &mut Vec<Header<'x>>) -> bool {
+    pub fn parse_headers(&mut self, conf: &MessageParser, headers: &mut Vec<Header<'x>>) -> bool {
         loop {
             loop {
                 match self.peek() {
@@ -38,46 +38,53 @@ impl<'x> MessageStream<'x> {
 
             if let Some(header_name) = self.parse_header_name() {
                 let from_offset = self.offset();
-                let value = match &header_name {
-                    HeaderName::Subject
-                    | HeaderName::Comments
-                    | HeaderName::ContentDescription
-                    | HeaderName::ContentLocation
-                    | HeaderName::ContentTransferEncoding => self.parse_unstructured(),
-                    HeaderName::From
-                    | HeaderName::To
-                    | HeaderName::Cc
-                    | HeaderName::Bcc
-                    | HeaderName::ReplyTo
-                    | HeaderName::Sender
-                    | HeaderName::ResentTo
-                    | HeaderName::ResentFrom
-                    | HeaderName::ResentBcc
-                    | HeaderName::ResentCc
-                    | HeaderName::ResentSender
-                    | HeaderName::ListArchive
-                    | HeaderName::ListHelp
-                    | HeaderName::ListId
-                    | HeaderName::ListOwner
-                    | HeaderName::ListPost
-                    | HeaderName::ListSubscribe
-                    | HeaderName::ListUnsubscribe => self.parse_address(),
-                    HeaderName::Date | HeaderName::ResentDate => self.parse_date(),
-                    HeaderName::MessageId
-                    | HeaderName::References
-                    | HeaderName::InReplyTo
-                    | HeaderName::ReturnPath
-                    | HeaderName::ContentId
-                    | HeaderName::ResentMessageId => self.parse_id(),
-                    HeaderName::Keywords | HeaderName::ContentLanguage => {
-                        self.parse_comma_separared()
+                let value = if conf.header_map.is_empty() {
+                    match &header_name {
+                        HeaderName::Subject
+                        | HeaderName::Comments
+                        | HeaderName::ContentDescription
+                        | HeaderName::ContentLocation
+                        | HeaderName::ContentTransferEncoding => self.parse_unstructured(),
+                        HeaderName::From
+                        | HeaderName::To
+                        | HeaderName::Cc
+                        | HeaderName::Bcc
+                        | HeaderName::ReplyTo
+                        | HeaderName::Sender
+                        | HeaderName::ResentTo
+                        | HeaderName::ResentFrom
+                        | HeaderName::ResentBcc
+                        | HeaderName::ResentCc
+                        | HeaderName::ResentSender
+                        | HeaderName::ListArchive
+                        | HeaderName::ListHelp
+                        | HeaderName::ListId
+                        | HeaderName::ListOwner
+                        | HeaderName::ListPost
+                        | HeaderName::ListSubscribe
+                        | HeaderName::ListUnsubscribe => self.parse_address(),
+                        HeaderName::Date | HeaderName::ResentDate => self.parse_date(),
+                        HeaderName::MessageId
+                        | HeaderName::References
+                        | HeaderName::InReplyTo
+                        | HeaderName::ReturnPath
+                        | HeaderName::ContentId
+                        | HeaderName::ResentMessageId => self.parse_id(),
+                        HeaderName::Keywords | HeaderName::ContentLanguage => {
+                            self.parse_comma_separared()
+                        }
+                        HeaderName::Received => self.parse_received(),
+                        HeaderName::MimeVersion => self.parse_raw(),
+                        HeaderName::ContentType | HeaderName::ContentDisposition => {
+                            self.parse_content_type()
+                        }
+                        HeaderName::Other(_) => self.parse_raw(),
                     }
-                    HeaderName::Received => self.parse_received(),
-                    HeaderName::MimeVersion => self.parse_raw(),
-                    HeaderName::ContentType | HeaderName::ContentDisposition => {
-                        self.parse_content_type()
-                    }
-                    HeaderName::Other(_) => self.parse_raw(),
+                } else {
+                    (conf
+                        .header_map
+                        .get(&header_name)
+                        .unwrap_or(&conf.def_hdr_parse_fnc))(self)
                 };
 
                 headers.push(Header {
@@ -253,9 +260,9 @@ mod tests {
 }
 
 /*
-type ParserFnc<'x> = fn(&mut MessageStream<'x>) -> HeaderValue<'x>;
+type ParserFnc<'x> = fn(&mut MessageStream<'x>) -> crate::HeaderValue<'x>;
 
-static HDR_PARSER: &[(bool, for<'x> fn(&mut MessageStream<'x>) -> HeaderValue<'x>] = &[
+static HDR_PARSER: &[(bool, ParserFnc)] = &[
     (false, MessageStream::parse_unstructured), // Subject = 0,
     (false, MessageStream::parse_address),      // From = 1,
     (false, MessageStream::parse_address),      // To = 2,
@@ -294,7 +301,8 @@ static HDR_PARSER: &[(bool, for<'x> fn(&mut MessageStream<'x>) -> HeaderValue<'x
     (false, MessageStream::parse_address),      // ListSubscribe = 35,
     (false, MessageStream::parse_address),      // ListUnsubscribe = 36,
     (true, MessageStream::parse_raw),           // Other = 37,
-];*/
+];
+*/
 
 static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,

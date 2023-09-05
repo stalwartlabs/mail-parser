@@ -75,7 +75,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 --festivus--
 "#;
 
-    let message = Message::parse(input).unwrap();
+    let message = MessageParser::default().parse(input).unwrap();
 
     // Parses addresses (including comments), lists and groups
     assert_eq!(

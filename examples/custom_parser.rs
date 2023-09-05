@@ -9,10 +9,9 @@
  * except according to those terms.
  */
 
-use mail_parser::*;
+use mail_parser::{HeaderName, MessageParser};
 
-fn main() {
-    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
+const MESSAGE: &str = r#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
 To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
     jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
 Date: Sat, 20 Nov 2021 14:22:01 -0800
@@ -28,9 +27,7 @@ HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm
 cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
 gJiN4MjYzQTs8L3A+PC9odG1sPg==
 --festivus
-Content-Type: message/rfc822; name="Exporting my book about coffee tables.eml"
-Content-Disposition: inline; filename="Exporting my book about coffee tables.eml"  
-Content-Transfer-Encoding: 7bit
+Content-Type: message/rfc822
 
 From: "Cosmo Kramer" <kramer@kramerica.com>
 Subject: Exporting my book about coffee tables
@@ -55,19 +52,27 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 --festivus--
 "#;
 
-    write_attachments(&MessageParser::default().parse(input).unwrap());
-}
+fn main() {
+    // Parse only the message headers
+    let _headers = MessageParser::new()
+        .parse_headers(MESSAGE)
+        .unwrap()
+        .headers();
 
-fn write_attachments(message: &Message) {
-    for attachment in message.attachments() {
-        if !attachment.is_message() {
-            std::fs::write(
-                attachment.attachment_name().unwrap_or("Untitled"),
-                attachment.contents(),
-            )
-            .unwrap();
-        } else {
-            write_attachments(attachment.message().unwrap());
-        }
-    }
+    // Parse only the message body, ignoring all headers (except MIME headers, which are required to parse the body)
+    let _message = MessageParser::new()
+        .with_mime_headers()
+        .default_header_ignore()
+        .parse(MESSAGE)
+        .unwrap();
+
+    // Parse only To, From, Date, and Subject headers
+    let _message = MessageParser::new()
+        .with_mime_headers()
+        .header_text(HeaderName::Subject)
+        .header_address(HeaderName::From)
+        .header_address(HeaderName::To)
+        .header_date(HeaderName::Date)
+        .parse(MESSAGE)
+        .unwrap();
 }

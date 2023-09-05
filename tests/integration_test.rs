@@ -54,7 +54,20 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 --festivus--
 "#;
 
-    let message = Message::parse(input).unwrap();
+    // Default parser
+    let message = MessageParser::default().parse(input).unwrap();
+    let headers = MessageParser::default().parse_headers(input).unwrap();
+    let custom_message = MessageParser::default()
+        .with_minimal_headers()
+        .parse(input)
+        .unwrap();
+
+    assert_eq!(message.headers(), headers.headers());
+    assert_eq!(message.headers(), custom_message.headers());
+    assert_eq!(message.parts.len(), 3);
+    assert_eq!(headers.parts.len(), 1);
+    assert_eq!(message.parts.len(), custom_message.parts.len());
+    assert_eq!(message.parts, custom_message.parts);
 
     assert_eq!(
         bincode::deserialize::<Vec<Header>>(
