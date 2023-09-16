@@ -2,12 +2,12 @@
 name = "mail-parser"
 description = "Fast and robust e-mail parsing library for Rust"
 version = "0.9.0"
-edition = "2018"
+edition = "2021"
 authors = [ "Stalwart Labs <hello@stalw.art>"]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/stalwartlabs/mail-parser"
 homepage = "https://github.com/stalwartlabs/mail-parser"
-keywords = ["email", "mime", "mail", "parser", "e-mail"]
+keywords = ["email", "e-mail", "mail", "parser", "parse", "mime"]
 categories = ["email", "parser-implementations"]
 readme = "README.md"
 resolver = "2"
