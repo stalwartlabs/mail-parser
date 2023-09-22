@@ -1,0 +1,147 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    1
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "subject",
+          "value": {
+            "Text": "Hello world"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 21
+        },
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "Test User",
+                  "address": "test@example.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 21,
+          "offset_start": 26,
+          "offset_end": 56
+        },
+        {
+          "name": "to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "Another User",
+                  "address": "test2@example.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 56,
+          "offset_start": 59,
+          "offset_end": 93
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "boundary"
+                ]
+              ]
+            }
+          },
+          "offset_field": 93,
+          "offset_start": 106,
+          "offset_end": 144
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 145,
+      "offset_end": 333
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": null
+            }
+          },
+          "offset_field": 156,
+          "offset_start": 169,
+          "offset_end": 180
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 180,
+          "offset_start": 206,
+          "offset_end": 214
+        },
+        {
+          "name": "content_disposition",
+          "value": "Empty",
+          "offset_field": 214,
+          "offset_start": 234,
+          "offset_end": 269
+        },
+        {
+          "name": "content_id",
+          "value": {
+            "Text": "image001.png@[...]"
+          },
+          "offset_field": 269,
+          "offset_start": 280,
+          "offset_end": 302
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "InlineBinary": [
+          104,
+          101,
+          108,
+          108,
+          111,
+          32,
+          119,
+          111,
+          114,
+          108,
+          100,
+          10
+        ]
+      },
+      "offset_header": 156,
+      "offset_body": 303,
+      "offset_end": 319
+    }
+  ]
+}

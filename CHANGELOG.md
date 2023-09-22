@@ -1,3 +1,9 @@
+mail-parser 0.9.1
+================================
+- Fixed panic when Content-Disposition is empty (#63)
+- Removed `content_type()` and `address()` functions that could `panic!`. Use `as_content_type()` and `as_address()` instead.
+- Updated Rust edition to 2021.
+
 mail-parser 0.9.0
 ================================
 This version introduces multiple breaking changes. Please read the following notes carefully.

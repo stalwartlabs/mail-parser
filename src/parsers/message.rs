@@ -272,7 +272,10 @@ impl MessageParser {
                 let is_inline = is_inline
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
-                        .map_or_else(|| true, |d| !d.content_type().is_attachment())
+                        .map_or_else(
+                            || true,
+                            |d| !d.as_content_type().map_or(false, |ct| ct.is_attachment()),
+                        )
                     && (state.parts == 1
                         || (state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline

@@ -164,13 +164,6 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn address(&self) -> &Address<'x> {
-        match *self {
-            HeaderValue::Address(ref a) => a,
-            _ => panic!("HeaderValue::address called on non-Address: {:?}", self),
-        }
-    }
-
     pub fn as_address(&self) -> Option<&Address<'x>> {
         match *self {
             HeaderValue::Address(ref a) => Some(a),
@@ -182,16 +175,6 @@ impl<'x> HeaderValue<'x> {
         match *self {
             HeaderValue::Received(ref r) => Some(r),
             _ => None,
-        }
-    }
-
-    pub fn content_type(&self) -> &ContentType<'x> {
-        match *self {
-            HeaderValue::ContentType(ref ct) => ct,
-            _ => panic!(
-                "HeaderValue::content_type called on non-ContentType: {:?}",
-                self
-            ),
         }
     }
 

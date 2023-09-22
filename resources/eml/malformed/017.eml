@@ -1,0 +1,15 @@
+Subject: Hello world
+From: Test User <test@example.org>
+To: Another User <test2@example.org>
+Content-Type: multipart/mixed
+	boundary="boundary"
+
+--boundary
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Disposition: ;
+        filename="image001.png"
+Content-ID: <image001.png@[...]>
+
+aGVsbG8gd29ybGQK
+--boundary--
