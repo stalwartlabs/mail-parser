@@ -24,7 +24,7 @@ const MAX_NESTED_ENCODED: usize = 3;
 #[derive(Debug, PartialEq, Default)]
 enum MimeType {
     MultipartMixed,
-    MultipartAlernative,
+    MultipartAlternative,
     MultipartRelated,
     MultipartDigest,
     TextPlain,
@@ -49,7 +49,7 @@ fn mime_type(
                 false,
                 match content_type.subtype() {
                     Some("mixed") => MimeType::MultipartMixed,
-                    Some("alternative") => MimeType::MultipartAlernative,
+                    Some("alternative") => MimeType::MultipartAlternative,
                     Some("related") => MimeType::MultipartRelated,
                     Some("digest") => MimeType::MultipartDigest,
                     _ => MimeType::Other,
@@ -170,7 +170,7 @@ impl MessageParser {
                         let part_id = message.parts.len();
                         let new_state = MessageParserState {
                             in_alternative: state.in_alternative
-                                || mime_type == MimeType::MultipartAlernative,
+                                || mime_type == MimeType::MultipartAlternative,
                             mime_type,
                             mime_boundary: mime_boundary.as_bytes().to_vec().into(),
                             html_parts: message.html_body.len(),
@@ -283,7 +283,7 @@ impl MessageParser {
                                     .map_or_else(|| true, |c| !c.has_attribute("name")))));
 
                 let (add_to_html, add_to_text) =
-                    if let MimeType::MultipartAlernative = state.mime_type {
+                    if let MimeType::MultipartAlternative = state.mime_type {
                         match mime_type {
                             MimeType::TextHtml => (true, false),
                             MimeType::TextPlain => (false, true),
@@ -440,7 +440,7 @@ impl MessageParser {
                     if stream.is_multipart_end() {
                         // End of MIME part reached
 
-                        if MimeType::MultipartAlernative == state.mime_type
+                        if MimeType::MultipartAlternative == state.mime_type
                             && state.need_html_body
                             && state.need_text_body
                         {

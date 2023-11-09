@@ -521,82 +521,34 @@ pub struct DateTime {
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Received<'x> {
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub from: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub from_ip: Option<IpAddr>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub from_iprev: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub by: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub for_: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub with: Option<Protocol>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub tls_version: Option<TlsVersion>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub tls_cipher: Option<Cow<'x, str>>,
     #[cfg_attr(
         feature = "serde_support",
         serde(skip_serializing_if = "Option::is_none")
     )]
     pub id: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub ident: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub helo: Option<Host<'x>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub helo_cmd: Option<Greeting>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none"),
-        serde(default)
-    )]
+    #[cfg_attr(feature = "serde_support", serde(default))]
     pub via: Option<Cow<'x, str>>,
     pub date: Option<DateTime>,
 }
