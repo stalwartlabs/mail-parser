@@ -192,12 +192,19 @@
                         "Name": "mailhost.whitehouse.gov"
                       },
                       "from_ip": "192.168.51.200",
+                      "from_iprev": null,
                       "by": {
                         "Name": "heartbeat.whitehouse.gov"
                       },
                       "for_": "vice-president@heartbeat.whitehouse.gov",
                       "with": "ESMTP",
+                      "tls_version": null,
+                      "tls_cipher": null,
                       "id": "SAA22453\n",
+                      "ident": null,
+                      "helo": null,
+                      "helo_cmd": null,
+                      "via": null,
                       "date": {
                         "year": 1998,
                         "month": 8,
@@ -223,12 +230,19 @@
                         "Name": "the_big_box.whitehouse.gov"
                       },
                       "from_ip": "192.168.51.50",
+                      "from_iprev": null,
                       "by": {
                         "Name": "mailhost.whitehouse.gov"
                       },
                       "for_": "vice-president@whitehouse.gov",
                       "with": "ESMTP",
+                      "tls_version": null,
+                      "tls_cipher": null,
                       "id": "RAA20366\n",
+                      "ident": null,
+                      "helo": null,
+                      "helo_cmd": null,
+                      "via": null,
                       "date": {
                         "year": 1998,
                         "month": 8,

@@ -39,10 +39,18 @@
                 "IpAddr": "10.1.1.1"
               },
               "from_ip": "10.1.1.1",
+              "from_iprev": null,
               "by": {
                 "Name": "xyz-webserver.abcd-gestion.com"
               },
+              "for_": null,
               "with": "ESMTPA",
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
               "date": {
                 "year": 2022,
                 "month": 7,

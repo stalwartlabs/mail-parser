@@ -25,6 +25,8 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
 
     let mut state = QuotedPrintableState::None;
     let mut hex1 = 0;
+    let mut ws_count = 0;
+    let mut crlf = b"\n".as_ref();
 
     for &ch in bytes {
         match ch {
@@ -39,12 +41,23 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
                 if QuotedPrintableState::Eq == state {
                     state = QuotedPrintableState::None;
                 } else {
-                    buf.push(b'\n');
+                    if ws_count > 0 {
+                        buf.truncate(buf.len() - ws_count);
+                    }
+                    buf.extend_from_slice(crlf);
                 }
+                ws_count = 0;
             }
-            b'\r' => (),
+            b'\r' => {
+                crlf = b"\r\n".as_ref();
+            }
             _ => match state {
                 QuotedPrintableState::None => {
+                    if ch.is_ascii_whitespace() {
+                        ws_count += 1;
+                    } else {
+                        ws_count = 0;
+                    }
                     buf.push(ch);
                 }
                 QuotedPrintableState::Eq => {
@@ -59,7 +72,7 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
 
                     if hex1 != -1 {
                         state = QuotedPrintableState::Hex1;
-                    } else {
+                    } else if !ch.is_ascii_whitespace() {
                         return None;
                     }
                 }
@@ -72,6 +85,7 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
                     state = QuotedPrintableState::None;
                     if hex2 != -1 {
                         buf.push(((hex1 as u8) << 4) | hex2 as u8);
+                        ws_count = 0;
                     } else {
                         return None;
                     }
@@ -337,14 +351,21 @@ mod tests {
                 concat!(
                     "Die Hasen klagten einst uber ihre Lage; \"wir leben\", ",
                     "sprach ein Redner, \"in steter Furcht vor Menschen und ",
-                    "Tieren, eine Beute der Hunde, der\n"
+                    "Tieren, eine Beute der Hunde, der\r\n"
                 ),
+            ),
+            (
+                concat!(
+                    "hello  \r\nbar=\r\n\r\nfoo\t=\r\nbar\r\nfoo\t \t= \r\n=62\r\nfoo = ",
+                    "\t\r\nbar\r\nfoo =\r\n=62\r\nfoo  \r\nbar=\r\n\r\nfoo_bar\r\n"
+                ),
+                "hello\r\nbar\r\nfoo\tbar\r\nfoo\t \tb\r\nfoo bar\r\nfoo b\r\nfoo\r\nbar\r\nfoo_bar\r\n",
             ),
             ("\n\n", "\n\n"),
         ] {
             assert_eq!(
-                super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default(),
-                expected_result.as_bytes(),
+                String::from_utf8(super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default()).unwrap(),
+                expected_result,
                 "Failed for {encoded_str:?}",
             );
         }

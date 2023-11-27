@@ -27,9 +27,9 @@ Performance and memory safety were two important factors while designing _mail-p
 - **High performance Base64 decoding** based on Chromium's decoder ([the fastest non-SIMD decoder](https://github.com/lemire/fastbase64)). 
 - **Fast parsing** of message header fields, character set names and HTML entities using [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function).
 - Written in **100% safe** Rust with no external dependencies.
-- Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and 
-  thoroughly [tested with MIRI](#testing-fuzzing--benchmarking).
-- **Battle-tested** with millions of real-world e-mail messages dating from 1995 until today.
+- Every function in the library has been [fuzzed](#testing-fuzzing--benchmarking) and thoroughly [tested with MIRI](#testing-fuzzing--benchmarking).
+- **Battle-tested** with millions of real-world e-mail messages dating from 1995 until today. 
+- Used in production environments worldwide by [Stalwart Mail Server](https://github.com/stalwartlabs/mail-server).
 
 ## Usage Example
 

@@ -1,3 +1,8 @@
+mail-parser 0.9.2
+================================
+- Fixed `quoted_printable_decode` external function (not used by mail-parser directly).
+- Fix `Received` header serialization for bincode compatibility.
+
 mail-parser 0.9.1
 ================================
 - Fixed panic when Content-Disposition is empty (#63)
