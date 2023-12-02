@@ -17,7 +17,7 @@ impl<'x> PartType<'x> {
         match self {
             PartType::Text(v) | PartType::Html(v) => v.len(),
             PartType::Binary(v) | PartType::InlineBinary(v) => v.len(),
-            PartType::Message(v) => v.raw_message.len(),
+            PartType::Message(v) => v.raw_message().len(),
             PartType::Multipart(_) => 0,
         }
     }

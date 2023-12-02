@@ -129,7 +129,12 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         )
     );
 
-    let nested_message = message.attachment(0).unwrap().message().unwrap();
+    let nested_part = message.attachment(0).unwrap();
+    assert_eq!(nested_part.len(), 723);
+    assert_eq!(nested_part.body.len(), 723);
+    assert_eq!(nested_part.contents().len(), 723);
+
+    let nested_message = nested_part.message().unwrap();
 
     assert_eq!(
         nested_message.subject().unwrap(),
