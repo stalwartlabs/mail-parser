@@ -339,9 +339,7 @@ impl MessageParser {
                         (Cow::Borrowed(bytes), None) => String::from_utf8_lossy(bytes),
                     };
 
-                    let is_html = mime_type == MimeType::TextHtml;
-
-                    if is_html {
+                    if mime_type == MimeType::TextHtml {
                         PartType::Html(text)
                     } else {
                         PartType::Text(text)
