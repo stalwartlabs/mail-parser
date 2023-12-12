@@ -339,12 +339,10 @@ impl MessageParser {
                     } else {
                         PartType::Text(text)
                     }
+                } else if !is_inline {
+                    PartType::Binary(bytes)
                 } else {
-                    if !is_inline {
-                        PartType::Binary(bytes)
-                    } else {
-                        PartType::InlineBinary(bytes)
-                    }
+                    PartType::InlineBinary(bytes)
                 }
             } else {
                 message.attachments.push(message.parts.len());
