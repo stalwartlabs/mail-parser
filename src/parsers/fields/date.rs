@@ -417,7 +417,9 @@ impl<'x> MessageStream<'x> {
 
         if pos >= 6 {
             HeaderValue::DateTime(DateTime {
-                year: if (1..=99).contains(&parts[2]) {
+                year: if (0..=49).contains(&parts[2]) {
+                    parts[2] + 2000
+                } else if (50..=99).contains(&parts[2]) {
                     parts[2] + 1900
                 } else {
                     parts[2]
