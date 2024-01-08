@@ -134,15 +134,15 @@ impl<'x> MessageStream<'x> {
         self.checkpoint();
 
         match (self.next(), self.peek()) {
-            (Some(&a), Some(&&b)) if a == b'\r' && b == b'\n' => {
+            (Some(b'\r'), Some(b'\n')) => {
                 self.next();
                 false
             }
-            (Some(&a), Some(&&b)) if a == b'-' && b == b'-' => {
+            (Some(b'-'), Some(b'-')) => {
                 self.next();
                 true
             }
-            (Some(&a), _) if a == b'\n' => false,
+            (Some(b'\n'), _) => false,
             (Some(&a), _) if a.is_ascii_whitespace() => {
                 self.skip_crlf();
                 false

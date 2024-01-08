@@ -290,96 +290,6 @@ impl<'x> MessageStream<'x> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::parsers::MessageStream;
-
-    #[test]
-    fn decode_base64() {
-        for (encoded_str, expected_result) in [
-            ("VGVzdA==", "Test"),
-            ("WWU=", "Ye"),
-            ("QQ==", "A"),
-            ("cm8=", "ro"),
-            (
-                "QXJlIHlvdSBhIFNoaW1hbm8gb3IgQ2FtcGFnbm9sbyBwZXJzb24/",
-                "Are you a Shimano or Campagnolo person?",
-            ),
-            (
-                "PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8Ym9keT4KPC9ib2R5Pgo8L2h0bWw+Cg==",
-                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
-            ),
-            (
-                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
-                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
-            ),
-            ("w6HDqcOtw7PDug==", "áéíóú"),
-            ("====", ""),
-            ("w6HDq!cOtw7PDug=", ""),
-            ("w6 HD qcOt", "áéí"),
-            ("cmáé", ""),
-            ("áé", ""),
-            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==", "áéíóú"),
-            ("w6HDqcOtw7PDug==", "áéíóú"),
-        ] {
-            assert_eq!(
-                super::base64_decode(encoded_str.as_bytes()).unwrap_or_default(),
-                expected_result.as_bytes(),
-                "Failed for {encoded_str:?}",
-            );
-        }
-    }
-
-    #[test]
-    fn decode_base64_mime() {
-        for (encoded_str, expected_result) in [
-            ("VGVzdA==\r\n--boundary\n", "Test"),
-            (
-                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==\r\n--boundary--\r\n",
-                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
-            ),
-            ("w6HDqcOtw7PDug==\r\n--boundary \n", "áéíóú"),
-            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n", "áéíóú"),
-            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
-            (
-                "w6HDqcOtw7PDug==\n--boundary--",
-                "áéíóú",
-            ),
-            (
-                "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",
-                "áéíóú",
-            ),
-        ] {
-            let mut s = MessageStream::new(encoded_str.as_bytes());
-            let (_, result) = s.decode_base64_mime(b"boundary");
-
-            assert_eq!(
-                result,
-                expected_result.as_bytes(),
-                "Failed for {encoded_str:?}",
-            );
-        }
-    }
-
-    #[test]
-    fn decode_base64_word() {
-        for (encoded_str, expected_result) in [
-            ("w 6 H D q c O t w 7 P D u g==  ?=", "áéíóú"),
-            ("w6HDqcOtw7PDug==?=", "áéíóú"),
-            ("w6HDqc\n  Otw7PDug==?=", "áéíóú"),
-            ("w6HDqcOtw7PDug================?=", "áéíóú"),
-            ("?=", ""),
-        ] {
-            let mut s = MessageStream::new(encoded_str.as_bytes());
-            assert_eq!(
-                s.decode_base64_word().unwrap(),
-                expected_result.as_bytes(),
-                "Failed for {encoded_str:?}",
-            );
-        }
-    }
-}
-
 /*
  * Table adapted from Nick Galbreath's "High performance base64 encoder / decoder"
  *
@@ -550,3 +460,93 @@ pub static BASE64_MAP: &[&[u32]] = &[
         0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
     ],
 ];
+
+#[cfg(test)]
+mod tests {
+    use crate::parsers::MessageStream;
+
+    #[test]
+    fn decode_base64() {
+        for (encoded_str, expected_result) in [
+            ("VGVzdA==", "Test"),
+            ("WWU=", "Ye"),
+            ("QQ==", "A"),
+            ("cm8=", "ro"),
+            (
+                "QXJlIHlvdSBhIFNoaW1hbm8gb3IgQ2FtcGFnbm9sbyBwZXJzb24/",
+                "Are you a Shimano or Campagnolo person?",
+            ),
+            (
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8Ym9keT4KPC9ib2R5Pgo8L2h0bWw+Cg==",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
+            ),
+            (
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
+            ),
+            ("w6HDqcOtw7PDug==", "áéíóú"),
+            ("====", ""),
+            ("w6HDq!cOtw7PDug=", ""),
+            ("w6 HD qcOt", "áéí"),
+            ("cmáé", ""),
+            ("áé", ""),
+            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==", "áéíóú"),
+            ("w6HDqcOtw7PDug==", "áéíóú"),
+        ] {
+            assert_eq!(
+                super::base64_decode(encoded_str.as_bytes()).unwrap_or_default(),
+                expected_result.as_bytes(),
+                "Failed for {encoded_str:?}",
+            );
+        }
+    }
+
+    #[test]
+    fn decode_base64_mime() {
+        for (encoded_str, expected_result) in [
+            ("VGVzdA==\r\n--boundary\n", "Test"),
+            (
+                "PCFET0NUWVBFIGh0bWw+CjxodG1sPg\no8Ym9ke\nT4KPC 9ib2R5Pg\n o8L2h0bWw+Cg==\r\n--boundary--\r\n",
+                "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
+            ),
+            ("w6HDqcOtw7PDug==\r\n--boundary \n", "áéíóú"),
+            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n", "áéíóú"),
+            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
+            (
+                "w6HDqcOtw7PDug==\n--boundary--",
+                "áéíóú",
+            ),
+            (
+                "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",
+                "áéíóú",
+            ),
+        ] {
+            let mut s = MessageStream::new(encoded_str.as_bytes());
+            let (_, result) = s.decode_base64_mime(b"boundary");
+
+            assert_eq!(
+                result,
+                expected_result.as_bytes(),
+                "Failed for {encoded_str:?}",
+            );
+        }
+    }
+
+    #[test]
+    fn decode_base64_word() {
+        for (encoded_str, expected_result) in [
+            ("w 6 H D q c O t w 7 P D u g==  ?=", "áéíóú"),
+            ("w6HDqcOtw7PDug==?=", "áéíóú"),
+            ("w6HDqc\n  Otw7PDug==?=", "áéíóú"),
+            ("w6HDqcOtw7PDug================?=", "áéíóú"),
+            ("?=", ""),
+        ] {
+            let mut s = MessageStream::new(encoded_str.as_bytes());
+            assert_eq!(
+                s.decode_base64_word().unwrap(),
+                expected_result.as_bytes(),
+                "Failed for {encoded_str:?}",
+            );
+        }
+    }
+}

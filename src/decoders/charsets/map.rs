@@ -81,33 +81,6 @@ pub fn no_op(_bytes: &[u8]) -> String {
     "".to_string()
 }
 
-#[cfg(test)]
-mod tests {
-    use super::charset_decoder;
-
-    #[test]
-    #[allow(clippy::uninlined_format_args)]
-    fn decoder_charset() {
-        let inputs = [
-            "l8",
-            //"utf-8",
-            "utf-7",
-            //"US-Ascii",
-            "csgb18030",
-            "iso-8859-1",
-            "extended_unix_code_packed_format_for_japanese",
-        ];
-
-        for input in inputs {
-            assert!(
-                charset_decoder(input.as_bytes()).is_some(),
-                "Failed for {}",
-                input
-            );
-        }
-    }
-}
-
 // Perfect hashing table for charset names
 static CH_HASH: &[u32] = &[
     765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765, 765,
@@ -1648,3 +1621,30 @@ static FNC_MAP: &[for<'x> fn(&'x [u8]) -> String; 758] = &[
     no_op,
     decoder_gb18030,
 ];
+
+#[cfg(test)]
+mod tests {
+    use super::charset_decoder;
+
+    #[test]
+    #[allow(clippy::uninlined_format_args)]
+    fn decoder_charset() {
+        let inputs = [
+            "l8",
+            //"utf-8",
+            "utf-7",
+            //"US-Ascii",
+            "csgb18030",
+            "iso-8859-1",
+            "extended_unix_code_packed_format_for_japanese",
+        ];
+
+        for input in inputs {
+            assert!(
+                charset_decoder(input.as_bytes()).is_some(),
+                "Failed for {}",
+                input
+            );
+        }
+    }
+}

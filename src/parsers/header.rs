@@ -228,82 +228,6 @@ impl<'x> HeaderName<'x> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::{parsers::MessageStream, HeaderName};
-
-    #[test]
-    fn header_name_parse() {
-        let inputs = [
-            ("From: ", HeaderName::From),
-            ("receiVED: ", HeaderName::Received),
-            (" subject   : ", HeaderName::Subject),
-            (
-                "X-Custom-Field : ",
-                HeaderName::Other("X-Custom-Field".into()),
-            ),
-            (" T : ", HeaderName::Other("T".into())),
-            ("mal formed: ", HeaderName::Other("mal formed".into())),
-            ("MIME-version : ", HeaderName::MimeVersion),
-        ];
-
-        for (input, expected_result) in inputs {
-            assert_eq!(
-                expected_result,
-                MessageStream::new(input.as_bytes())
-                    .parse_header_name()
-                    .unwrap(),
-                "Failed to parse '{input:?}'",
-            );
-        }
-    }
-}
-
-/*
-type ParserFnc<'x> = fn(&mut MessageStream<'x>) -> crate::HeaderValue<'x>;
-
-static HDR_PARSER: &[(bool, ParserFnc)] = &[
-    (false, MessageStream::parse_unstructured), // Subject = 0,
-    (false, MessageStream::parse_address),      // From = 1,
-    (false, MessageStream::parse_address),      // To = 2,
-    (false, MessageStream::parse_address),      // Cc = 3,
-    (false, MessageStream::parse_date),         // Date = 4,
-    (false, MessageStream::parse_address),      // Bcc = 5,
-    (false, MessageStream::parse_address),      // ReplyTo = 6,
-    (false, MessageStream::parse_address),      // Sender = 7,
-    (true, MessageStream::parse_unstructured),  // Comments = 8,
-    (false, MessageStream::parse_id),           // InReplyTo = 9,
-    (true, MessageStream::parse_comma_separared), // Keywords = 10,
-    (true, MessageStream::parse_raw),           // Received = 11,
-    (false, MessageStream::parse_id),           // MessageId = 12,
-    (true, MessageStream::parse_id),            // References = 13, (RFC 5322 recommends One)
-    (false, MessageStream::parse_id),           // ReturnPath = 14,
-    (false, MessageStream::parse_raw),          // MimeVersion = 15,
-    (false, MessageStream::parse_unstructured), // ContentDescription = 16,
-    (false, MessageStream::parse_id),           // ContentId = 17,
-    (false, MessageStream::parse_comma_separared), // ContentLanguage = 18
-    (false, MessageStream::parse_unstructured), // ContentLocation = 19
-    (false, MessageStream::parse_unstructured), // ContentTransferEncoding = 20,
-    (false, MessageStream::parse_content_type), // ContentType = 21,
-    (false, MessageStream::parse_content_type), // ContentDisposition = 22,
-    (true, MessageStream::parse_address),       // ResentTo = 23,
-    (true, MessageStream::parse_address),       // ResentFrom = 24,
-    (true, MessageStream::parse_address),       // ResentBcc = 25,
-    (true, MessageStream::parse_address),       // ResentCc = 26,
-    (true, MessageStream::parse_address),       // ResentSender = 27,
-    (true, MessageStream::parse_date),          // ResentDate = 28,
-    (true, MessageStream::parse_id),            // ResentMessageId = 29,
-    (false, MessageStream::parse_address),      // ListArchive = 30,
-    (false, MessageStream::parse_address),      // ListHelp = 31,
-    (false, MessageStream::parse_address),      // ListId = 32,
-    (false, MessageStream::parse_address),      // ListOwner = 33,
-    (false, MessageStream::parse_address),      // ListPost = 34,
-    (false, MessageStream::parse_address),      // ListSubscribe = 35,
-    (false, MessageStream::parse_address),      // ListUnsubscribe = 36,
-    (true, MessageStream::parse_raw),           // Other = 37,
-];
-*/
-
 static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
@@ -461,3 +385,34 @@ static HDR_NAMES: &[&[u8]] = &[
     b"",
     b"mime-version",
 ];
+
+#[cfg(test)]
+mod tests {
+    use crate::{parsers::MessageStream, HeaderName};
+
+    #[test]
+    fn header_name_parse() {
+        let inputs = [
+            ("From: ", HeaderName::From),
+            ("receiVED: ", HeaderName::Received),
+            (" subject   : ", HeaderName::Subject),
+            (
+                "X-Custom-Field : ",
+                HeaderName::Other("X-Custom-Field".into()),
+            ),
+            (" T : ", HeaderName::Other("T".into())),
+            ("mal formed: ", HeaderName::Other("mal formed".into())),
+            ("MIME-version : ", HeaderName::MimeVersion),
+        ];
+
+        for (input, expected_result) in inputs {
+            assert_eq!(
+                expected_result,
+                MessageStream::new(input.as_bytes())
+                    .parse_header_name()
+                    .unwrap(),
+                "Failed to parse '{input:?}'",
+            );
+        }
+    }
+}

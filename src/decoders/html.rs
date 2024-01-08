@@ -276,92 +276,6 @@ pub fn text_to_html(input: &str) -> String {
     String::from_utf8(result).unwrap()
 }
 
-#[cfg(test)]
-mod tests {
-
-    use crate::decoders::html::{add_html_token, html_to_text, text_to_html};
-
-    #[test]
-    fn convert_text_to_html() {
-        let inputs = [
-            (
-                "hello\nworld\n",
-                "<html><body>hello<br/>world<br/></body></html>",
-            ),
-            ("using <>\n", "<html><body>using &lt;><br/></body></html>"),
-        ];
-
-        for input in inputs {
-            assert_eq!(text_to_html(input.0), input.1);
-        }
-    }
-
-    #[test]
-    fn convert_html_to_text() {
-        let inputs = [
-            ("<html>hello<br/>world<br/></html>", "hello\nworld\n"),
-            ("<html>using &lt;><br/></html>", "using <>\n"),
-            ("test <not br/>tag<br />", "test tag\n"),
-            ("<>< ><tag\n/>>hello    world< br \n />", ">hello world\n"),
-            (
-                concat!(
-                    "<head><title>ignore head</title><not head>xyz</not head></head>",
-                    "<h1>&lt;body&gt;</h1>"
-                ),
-                "<body>",
-            ),
-            (
-                concat!(
-                    "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; ",
-                    "don&apos;t hurt me.</p>"
-                ),
-                "what is ♥?\nßĂΒγ don't hurt me.\n",
-            ),
-            (
-                concat!(
-                    "<!--[if mso]><style type=\"text/css\">body, table, td, a, p, ",
-                    "span, ul, li {font-family: Arial, sans-serif!important;}</style><![endif]-->",
-                    "this is <!-- <> < < < < ignore  > -> here -->the actual<!--> text"
-                ),
-                "this is the actual text",
-            ),
-            (
-                "   < p >  hello < / p > < p > world < / p >   !!! < br > ",
-                "hello\nworld\n!!!\n",
-            ),
-            (
-                " <p>please unsubscribe <a href=#>here</a>.</p> ",
-                "please unsubscribe here.\n",
-            ),
-        ];
-
-        for input in inputs {
-            assert_eq!(html_to_text(input.0), input.1, "Failed for '{:?}'", input.0);
-        }
-    }
-
-    #[test]
-    fn convert_html_entity() {
-        let inputs = [
-            ("&lt;", "<"),
-            ("&#32;", " "),
-            ("&#x20;", " "),
-            ("&nbsp;", "\u{a0}"),
-            ("&CounterClockwiseContourIntegral;", "∳"),
-            ("&curvearrowright;", "↷"),
-            ("&rarr;", "→"),
-            ("&#xFFFFFFF;", "�"),
-            ("&hmmm", "&hmmm"),
-        ];
-
-        for input in inputs {
-            let mut result = String::with_capacity(input.0.len());
-            add_html_token(&mut result, input.0.as_bytes(), false);
-            assert_eq!(result, input.1, "Failed for '{:?}", input.0);
-        }
-    }
-}
-
 static ENTITY_HASH: &[u32; 260] = &[
     18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080,
     18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080, 18080,
@@ -1082,3 +996,89 @@ static ENTITY_MAP: &[u32; 18016] = &[
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x021B7,
 ];
+
+#[cfg(test)]
+mod tests {
+
+    use crate::decoders::html::{add_html_token, html_to_text, text_to_html};
+
+    #[test]
+    fn convert_text_to_html() {
+        let inputs = [
+            (
+                "hello\nworld\n",
+                "<html><body>hello<br/>world<br/></body></html>",
+            ),
+            ("using <>\n", "<html><body>using &lt;><br/></body></html>"),
+        ];
+
+        for input in inputs {
+            assert_eq!(text_to_html(input.0), input.1);
+        }
+    }
+
+    #[test]
+    fn convert_html_to_text() {
+        let inputs = [
+            ("<html>hello<br/>world<br/></html>", "hello\nworld\n"),
+            ("<html>using &lt;><br/></html>", "using <>\n"),
+            ("test <not br/>tag<br />", "test tag\n"),
+            ("<>< ><tag\n/>>hello    world< br \n />", ">hello world\n"),
+            (
+                concat!(
+                    "<head><title>ignore head</title><not head>xyz</not head></head>",
+                    "<h1>&lt;body&gt;</h1>"
+                ),
+                "<body>",
+            ),
+            (
+                concat!(
+                    "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; ",
+                    "don&apos;t hurt me.</p>"
+                ),
+                "what is ♥?\nßĂΒγ don't hurt me.\n",
+            ),
+            (
+                concat!(
+                    "<!--[if mso]><style type=\"text/css\">body, table, td, a, p, ",
+                    "span, ul, li {font-family: Arial, sans-serif!important;}</style><![endif]-->",
+                    "this is <!-- <> < < < < ignore  > -> here -->the actual<!--> text"
+                ),
+                "this is the actual text",
+            ),
+            (
+                "   < p >  hello < / p > < p > world < / p >   !!! < br > ",
+                "hello\nworld\n!!!\n",
+            ),
+            (
+                " <p>please unsubscribe <a href=#>here</a>.</p> ",
+                "please unsubscribe here.\n",
+            ),
+        ];
+
+        for input in inputs {
+            assert_eq!(html_to_text(input.0), input.1, "Failed for '{:?}'", input.0);
+        }
+    }
+
+    #[test]
+    fn convert_html_entity() {
+        let inputs = [
+            ("&lt;", "<"),
+            ("&#32;", " "),
+            ("&#x20;", " "),
+            ("&nbsp;", "\u{a0}"),
+            ("&CounterClockwiseContourIntegral;", "∳"),
+            ("&curvearrowright;", "↷"),
+            ("&rarr;", "→"),
+            ("&#xFFFFFFF;", "�"),
+            ("&hmmm", "&hmmm"),
+        ];
+
+        for input in inputs {
+            let mut result = String::with_capacity(input.0.len());
+            add_html_token(&mut result, input.0.as_bytes(), false);
+            assert_eq!(result, input.1, "Failed for '{:?}", input.0);
+        }
+    }
+}
