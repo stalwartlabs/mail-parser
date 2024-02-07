@@ -587,7 +587,7 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
 
 impl<'x> MessagePart<'x> {
     /// Returns the body part's contents as a `u8` slice
-    pub fn contents(&'x self) -> &'x [u8] {
+    pub fn contents(&self) -> &[u8] {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
@@ -597,7 +597,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the body part's contents as a `str`
-    pub fn text_contents(&'x self) -> Option<&'x str> {
+    pub fn text_contents(&self) -> Option<&str> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => {
@@ -609,7 +609,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the nested message
-    pub fn message(&'x self) -> Option<&Message<'x>> {
+    pub fn message(&self) -> Option<&Message<'x>> {
         if let PartType::Message(message) = &self.body {
             Some(message)
         } else {
@@ -618,7 +618,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the sub parts ids of a MIME part
-    pub fn sub_parts(&'x self) -> Option<&[MessagePartId]> {
+    pub fn sub_parts(&self) -> Option<&[MessagePartId]> {
         if let PartType::Multipart(parts) = &self.body {
             Some(parts.as_ref())
         } else {
