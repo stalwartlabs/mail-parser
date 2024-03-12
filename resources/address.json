@@ -744,5 +744,38 @@
         }
       ]
     }
+  },
+  {
+    "header": "\"phil@example.com\" <phil@example.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "phil@example.com",
+          "address": "phil@example.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "\"<phil@example.com>\" <phil@example.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "<phil@example.com>",
+          "address": "phil@example.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "phil@example.com <phil@example.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "phil@example.com",
+          "address": "phil@example.com"
+        }
+      ]
+    }
   }
 ]

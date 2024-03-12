@@ -247,6 +247,7 @@ impl<'x> MessageStream<'x> {
                     continue;
                 }
                 b'<' if parser.state == AddressState::Name => {
+                    parser.is_token_email = false;
                     parser.add_token(self, false);
                     parser.state_stack.push(AddressState::Name);
                     parser.state = AddressState::Address;
