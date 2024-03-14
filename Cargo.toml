@@ -13,8 +13,8 @@ readme = "README.md"
 resolver = "2"
 
 [dependencies]
-encoding_rs = { version="0.8", optional=true }
-serde = { version = "1.0", features = ["derive"], optional=true }
+encoding_rs = { version = "0.8", optional = true }
+serde = { version = "1.0", features = ["derive"], optional = true }
 
 [dev-dependencies]
 mail-parser = { path = ".", features = ["serde_support", "full_encoding"] }
