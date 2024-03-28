@@ -1,3 +1,7 @@
+mail-parser 0.9.3
+================================
+- Fixed parsing of address names containing @ (#80)
+
 mail-parser 0.9.2
 ================================
 - Fixed `quoted_printable_decode` external function (not used by mail-parser directly).
