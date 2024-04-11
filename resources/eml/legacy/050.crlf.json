@@ -1,9 +1,13 @@
 {
   "html_body": [
-    1
+    1,
+    2,
+    3
   ],
   "text_body": [
-    1
+    1,
+    2,
+    3
   ],
   "attachments": [
     2,
@@ -255,7 +259,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Binary": [
+        "InlineBinary": [
           137,
           80,
           78,
@@ -1646,7 +1650,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Binary": [
+        "InlineBinary": [
           137,
           80,
           78,
