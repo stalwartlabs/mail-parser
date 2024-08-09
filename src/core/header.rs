@@ -591,7 +591,7 @@ impl<'x> MessagePart<'x> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
-            PartType::Message(message) => message.raw_message.as_ref(),
+            PartType::Message(message) => message.raw_message(),
             PartType::Multipart(_) => b"",
         }
     }
@@ -603,7 +603,7 @@ impl<'x> MessagePart<'x> {
             PartType::Binary(bin) | PartType::InlineBinary(bin) => {
                 std::str::from_utf8(bin.as_ref()).ok()
             }
-            PartType::Message(message) => std::str::from_utf8(message.raw_message.as_ref()).ok(),
+            PartType::Message(message) => std::str::from_utf8(message.raw_message()).ok(),
             PartType::Multipart(_) => None,
         }
     }
@@ -631,7 +631,7 @@ impl<'x> MessagePart<'x> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.len(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.len(),
-            PartType::Message(message) => message.raw_message.len(),
+            PartType::Message(message) => message.raw_message().len(),
             PartType::Multipart(_) => 0,
         }
     }
