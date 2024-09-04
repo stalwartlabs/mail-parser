@@ -280,7 +280,15 @@ impl MessageParser {
                         || (state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline
                                 || content_type
-                                    .map_or_else(|| true, |c| !c.has_attribute("name")))));
+                                    .map_or_else(|| true, |c| !c.has_attribute("name"))))
+                        || state.mime_type == MimeType::MultipartRelated
+                            && mime_type == MimeType::Inline
+                            && part_headers
+                                .header_value(&HeaderName::ContentDisposition)
+                                .map_or_else(
+                                    || false,
+                                    |d| d.as_content_type().map_or(false, |ct| ct.is_inline()),
+                                ));
 
                 let (add_to_html, add_to_text) =
                     if let MimeType::MultipartAlternative = state.mime_type {
