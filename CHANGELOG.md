@@ -1,3 +1,7 @@
+mail-parser 0.9.4
+================================
+- Flexible parsing of charset names (#85).
+
 mail-parser 0.9.3
 ================================
 - Fixed parsing of address names containing @ (#80)
