@@ -14,7 +14,7 @@ use encoding_rs::*;
 
 #[cfg(feature = "full_encoding")]
 fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> String {
-    let mut result = String::with_capacity(bytes.len() * 3);
+    let mut result = String::with_capacity(bytes.len() * 4);
 
     if let (CoderResult::OutputFull, _, _) = decoder.decode_to_string(bytes, &mut result, true) {
         debug_assert!(false, "String full while decoding.")
