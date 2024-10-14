@@ -306,6 +306,13 @@ impl MessageParser {
                         (false, false)
                     };
 
+                if add_to_html {
+                    message.html_body.push(message.parts.len());
+                }
+                if add_to_text {
+                    message.text_body.push(message.parts.len());
+                }
+
                 if is_text {
                     let text = match (
                         bytes,
@@ -326,12 +333,6 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    if add_to_text {
-                        message.text_body.push(message.parts.len());
-                    }
-                    if add_to_html {
-                        message.html_body.push(message.parts.len());
-                    }
                     if !add_to_html && is_html || !add_to_text && !is_html {
                         message.attachments.push(message.parts.len());
                     }
@@ -342,13 +343,6 @@ impl MessageParser {
                         PartType::Text(text)
                     }
                 } else {
-                    if add_to_html {
-                        message.html_body.push(message.parts.len());
-                    }
-                    if add_to_text {
-                        message.text_body.push(message.parts.len());
-                    }
-
                     message.attachments.push(message.parts.len());
 
                     if !is_inline {
