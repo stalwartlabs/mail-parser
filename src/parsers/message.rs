@@ -329,17 +329,17 @@ impl MessageParser {
                     let mut classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| -> Vec<Class> {
                         let mut add_to = Vec::new();
                     if add_to_html && !is_html {
-                        message.html_body.push(message.parts.len());
+                        add_to.push(Class::Html);
                     } else if add_to_text && is_html {
-                        message.text_body.push(message.parts.len());
+                        add_to.push(Class::Text);
                     }
 
                     if add_to_html && is_html {
-                        message.html_body.push(message.parts.len());
+                        add_to.push(Class::Html);
                     } else if add_to_text && !is_html {
-                        message.text_body.push(message.parts.len());
+                        add_to.push(Class::Text);
                     } else {
-                        message.attachments.push(message.parts.len());
+                        add_to.push(Class::Attachment);
                     }
                         add_to.sort();
                         add_to
@@ -352,7 +352,13 @@ impl MessageParser {
                         Attachment,
                     }
 
-                    classifier(add_to_html, is_html, add_to_text);
+                    for add_to in classifier(add_to_html, is_html, add_to_text) {
+                        match add_to {
+                            Class::Html => message.html_body.push(message.parts.len()),
+                            Class::Text => message.text_body.push(message.parts.len()),
+                            Class::Attachment => message.attachments.push(message.parts.len()),
+                        }
+                    }
 
                     if is_html {
                         PartType::Html(text)
