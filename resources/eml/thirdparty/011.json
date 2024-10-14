@@ -1,6 +1,7 @@
 {
   "html_body": [
-    3
+    3,
+    4
   ],
   "text_body": [
     1
@@ -367,7 +368,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Binary": [
+        "InlineBinary": [
           137,
           80,
           78,
