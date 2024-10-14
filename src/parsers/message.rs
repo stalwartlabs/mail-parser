@@ -326,19 +326,15 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    let mut alt_classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| {
-                        if add_to_text {
-                            message.text_body.push(message.parts.len());
-                        }
-                        if add_to_html {
-                            message.html_body.push(message.parts.len());
-                        }
-                        if !add_to_html && is_html || !add_to_text && !is_html {
-                            message.attachments.push(message.parts.len());
-                        }
-                    };
-
-                    alt_classifier(add_to_html, is_html, add_to_text);
+                    if add_to_text {
+                        message.text_body.push(message.parts.len());
+                    }
+                    if add_to_html {
+                        message.html_body.push(message.parts.len());
+                    }
+                    if !add_to_html && is_html || !add_to_text && !is_html {
+                        message.attachments.push(message.parts.len());
+                    }
 
                     if is_html {
                         PartType::Html(text)
