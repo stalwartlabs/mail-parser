@@ -163,9 +163,7 @@ impl MessageParser {
                 mime_type(content_type, &state.mime_type);
 
             if is_multipart {
-                if let Some(mime_boundary) =
-                    content_type.map_or_else(|| None, |f| f.attribute("boundary"))
-                {
+                if let Some(mime_boundary) = content_type.and_then(|f| f.attribute("boundary")) {
                     if stream.seek_next_part(mime_boundary.as_bytes()) {
                         let part_id = message.parts.len();
                         let new_state = MessageParserState {
@@ -272,15 +270,13 @@ impl MessageParser {
                 let is_inline = is_inline
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
-                        .map_or_else(
-                            || true,
-                            |d| !d.as_content_type().map_or(false, |ct| ct.is_attachment()),
-                        )
+                        .map_or(true, |d| {
+                            !d.as_content_type().map_or(false, |ct| ct.is_attachment())
+                        })
                     && (state.parts == 1
-                        || (state.mime_type != MimeType::MultipartRelated
+                        || state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline
-                                || content_type
-                                    .map_or_else(|| true, |c| !c.has_attribute("name")))));
+                                || content_type.map_or(true, |c| !c.has_attribute("name"))));
 
                 let (add_to_html, add_to_text) =
                     if let MimeType::MultipartAlternative = state.mime_type {

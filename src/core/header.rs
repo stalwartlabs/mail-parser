@@ -804,7 +804,7 @@ impl<'x> ContentType<'x> {
     pub fn has_attribute(&self, name: &str) -> bool {
         self.attributes
             .as_ref()
-            .map_or_else(|| false, |attr| attr.iter().any(|(key, _)| key == name))
+            .map_or(false, |attr| attr.iter().any(|(key, _)| key == name))
     }
 
     /// Returns ```true``` if the Content-Disposition type is "attachment"
