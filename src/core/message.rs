@@ -90,8 +90,8 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an iterator over the matching RFC headers of this message.
-    pub fn header_values<'y: 'x>(
-        &'y self,
+    pub fn header_values(
+        &self,
         name: impl Into<HeaderName<'x>>,
     ) -> impl Iterator<Item = &HeaderValue<'x>> {
         let name = name.into();
@@ -124,7 +124,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the BCC header field
-    pub fn bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn bcc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Bcc)
@@ -132,7 +132,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the CC header field
-    pub fn cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Cc)
@@ -156,7 +156,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the From header field
-    pub fn from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn from(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::From)
@@ -268,7 +268,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Reply-To header field
-    pub fn reply_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn reply_to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ReplyTo)
@@ -276,7 +276,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-BCC header field
-    pub fn resent_bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_bcc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentBcc)
@@ -284,7 +284,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-CC header field
-    pub fn resent_cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentTo)
@@ -300,7 +300,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-From header field
-    pub fn resent_from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_from(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentFrom)
@@ -316,7 +316,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn resent_sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_sender(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentSender)
@@ -324,7 +324,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-To header field
-    pub fn resent_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentTo)
@@ -353,7 +353,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn sender(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Sender)
@@ -375,7 +375,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the To header field
-    pub fn to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::To)

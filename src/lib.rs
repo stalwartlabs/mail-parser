@@ -649,8 +649,8 @@ pub trait MimeHeaders<'x> {
 }
 
 pub trait GetHeader<'x> {
-    fn header_value(&self, name: &HeaderName) -> Option<&HeaderValue>;
-    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header>;
+    fn header_value(&self, name: &HeaderName<'_>) -> Option<&HeaderValue<'x>>;
+    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header<'x>>;
 }
 
 #[doc(hidden)]

@@ -374,7 +374,7 @@ impl<'x> HeaderName<'x> {
         }
     }
 
-    pub fn as_str<'y: 'x>(&'y self) -> &'x str {
+    pub fn as_str(&self) -> &str {
         match self {
             HeaderName::Other(other) => other.as_ref(),
             _ => self.as_static_str(),
@@ -921,14 +921,14 @@ impl<'x> Host<'x> {
 }
 
 impl<'x> GetHeader<'x> for Vec<Header<'x>> {
-    fn header_value(&self, name: &HeaderName) -> Option<&HeaderValue<'x>> {
+    fn header_value(&self, name: &HeaderName<'_>) -> Option<&HeaderValue<'x>> {
         self.iter()
             .rev()
             .find(|header| &header.name == name)
             .map(|header| &header.value)
     }
 
-    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header> {
+    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header<'x>> {
         let name = name.into();
         self.iter().rev().find(|header| header.name == name)
     }
