@@ -326,35 +326,19 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    let alt_classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| -> Vec<Class> {
-                        let mut add_to = Vec::new();
+                    let mut alt_classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| {
                         if add_to_text {
-                            add_to.push(Class::Text);
+                            message.text_body.push(message.parts.len());
                         }
                         if add_to_html {
-                            add_to.push(Class::Html);
+                            message.html_body.push(message.parts.len());
                         }
                         if !add_to_html && is_html || !add_to_text && !is_html {
-                            add_to.push(Class::Attachment);
+                            message.attachments.push(message.parts.len());
                         }
-                        add_to.sort();
-                        add_to
                     };
 
-                    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-                    enum Class {
-                        Html,
-                        Text,
-                        Attachment,
-                    }
-
-                    for add_to in alt_classifier(add_to_html, is_html, add_to_text) {
-                        match add_to {
-                            Class::Html => message.html_body.push(message.parts.len()),
-                            Class::Text => message.text_body.push(message.parts.len()),
-                            Class::Attachment => message.attachments.push(message.parts.len()),
-                        }
-                    }
+                    alt_classifier(add_to_html, is_html, add_to_text);
 
                     if is_html {
                         PartType::Html(text)
