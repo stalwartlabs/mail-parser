@@ -242,7 +242,7 @@ static HDR_HASH: &[u8] = &[
     73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
 ];
 
-static HDR_MAP: &[HeaderName] = &[
+static HDR_MAP: &[HeaderName<'_>] = &[
     HeaderName::Date,
     HeaderName::MimeVersion, // Invalid
     HeaderName::Sender,

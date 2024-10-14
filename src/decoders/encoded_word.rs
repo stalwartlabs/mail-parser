@@ -26,7 +26,7 @@ impl<'x> MessageStream<'x> {
 
         let mut charset_start = 0;
         let mut charset_end = 0;
-        let mut decode_fnc: Option<DecodeWordFnc> = None;
+        let mut decode_fnc: Option<DecodeWordFnc<'_>> = None;
 
         while let Some(ch) = self.next() {
             match state {

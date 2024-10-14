@@ -38,7 +38,7 @@ enum MimeType {
 
 #[inline(always)]
 fn mime_type(
-    content_type: Option<&ContentType>,
+    content_type: Option<&ContentType<'_>>,
     parent_content_type: &MimeType,
 ) -> (bool, bool, bool, MimeType) {
     if let Some(content_type) = content_type {
@@ -199,7 +199,7 @@ impl MessageParser {
                 }
             }
 
-            let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
+            let (mut encoding, decode_fnc): (Encoding, DecodeFnc<'_>) = match part_headers
                 .header_value(&HeaderName::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {

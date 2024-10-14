@@ -56,7 +56,7 @@ impl FolderIterator<'_> {
     pub fn new(
         path: impl Into<PathBuf>,
         sub_folder_prefix: Option<&str>,
-    ) -> io::Result<FolderIterator> {
+    ) -> io::Result<FolderIterator<'_>> {
         let path = path.into();
 
         Ok(FolderIterator {

@@ -26,7 +26,7 @@ impl<'x> Header<'x> {
     }
 
     /// Returns the parsed header value
-    pub fn value(&self) -> &HeaderValue {
+    pub fn value(&self) -> &HeaderValue<'x> {
         &self.value
     }
 
@@ -171,14 +171,14 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn as_received(&self) -> Option<&Received> {
+    pub fn as_received(&self) -> Option<&Received<'x>> {
         match *self {
             HeaderValue::Received(ref r) => Some(r),
             _ => None,
         }
     }
 
-    pub fn as_content_type(&self) -> Option<&ContentType> {
+    pub fn as_content_type(&self) -> Option<&ContentType<'x>> {
         match *self {
             HeaderValue::ContentType(ref c) => Some(c),
             _ => None,
@@ -542,7 +542,7 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
             .and_then(|header| header.as_text())
     }
 
-    fn content_disposition(&self) -> Option<&ContentType> {
+    fn content_disposition(&self) -> Option<&ContentType<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ContentDisposition)
@@ -563,14 +563,14 @@ impl<'x> MimeHeaders<'x> for Message<'x> {
             .and_then(|header| header.as_text())
     }
 
-    fn content_type(&self) -> Option<&ContentType> {
+    fn content_type(&self) -> Option<&ContentType<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type())
     }
 
-    fn content_language(&self) -> &HeaderValue {
+    fn content_language(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ContentLanguage)
@@ -667,7 +667,7 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Get the message headers
-    pub fn headers(&self) -> &[Header] {
+    pub fn headers(&self) -> &[Header<'x>] {
         &self.headers
     }
 
@@ -713,7 +713,7 @@ impl<'x> MessagePart<'x> {
 }
 
 impl<'x> fmt::Display for MessagePart<'x> {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt.write_str(self.text_contents().unwrap_or("[no contents]"))
     }
 }
@@ -725,7 +725,7 @@ impl<'x> MimeHeaders<'x> for MessagePart<'x> {
             .and_then(|header| header.as_text())
     }
 
-    fn content_disposition(&self) -> Option<&ContentType> {
+    fn content_disposition(&self) -> Option<&ContentType<'x>> {
         self.headers
             .header_value(&HeaderName::ContentDisposition)
             .and_then(|header| header.as_content_type())
@@ -743,13 +743,13 @@ impl<'x> MimeHeaders<'x> for MessagePart<'x> {
             .and_then(|header| header.as_text())
     }
 
-    fn content_type(&self) -> Option<&ContentType> {
+    fn content_type(&self) -> Option<&ContentType<'x>> {
         self.headers
             .header_value(&HeaderName::ContentType)
             .and_then(|header| header.as_content_type())
     }
 
-    fn content_language(&self) -> &HeaderValue {
+    fn content_language(&self) -> &HeaderValue<'x> {
         self.headers
             .header_value(&HeaderName::ContentLanguage)
             .unwrap_or(&HeaderValue::Empty)
@@ -786,7 +786,7 @@ impl<'x> ContentType<'x> {
     }
 
     /// Removes an attribute by name
-    pub fn remove_attribute(&mut self, name: &str) -> Option<Cow<str>> {
+    pub fn remove_attribute(&mut self, name: &str) -> Option<Cow<'x, str>> {
         let attributes = self.attributes.as_mut()?;
 
         attributes
@@ -796,7 +796,7 @@ impl<'x> ContentType<'x> {
     }
 
     /// Returns all attributes
-    pub fn attributes(&self) -> Option<&[(Cow<str>, Cow<str>)]> {
+    pub fn attributes(&self) -> Option<&[(Cow<'x, str>, Cow<'x, str>)]> {
         self.attributes.as_deref()
     }
 
@@ -840,7 +840,7 @@ impl<'x> Received<'x> {
     }
 
     /// Returns the hostname or IP address of the machine that originated the message
-    pub fn from(&self) -> Option<&Host> {
+    pub fn from(&self) -> Option<&Host<'x>> {
         self.from.as_ref()
     }
 
@@ -855,7 +855,7 @@ impl<'x> Received<'x> {
     }
 
     /// Returns the hostname or IP address of the machine that received the message
-    pub fn by(&self) -> Option<&Host> {
+    pub fn by(&self) -> Option<&Host<'x>> {
         self.by.as_ref()
     }
 
@@ -890,7 +890,7 @@ impl<'x> Received<'x> {
     }
 
     /// Returns the EHLO/LHLO/HELO hostname or IP address of the machine that sent the message
-    pub fn helo(&self) -> Option<&Host> {
+    pub fn helo(&self) -> Option<&Host<'x>> {
         self.helo.as_ref()
     }
 
@@ -953,7 +953,7 @@ impl<'x> From<String> for HeaderName<'x> {
 }
 
 impl From<HeaderName<'_>> for String {
-    fn from(header: HeaderName) -> Self {
+    fn from(header: HeaderName<'_>) -> Self {
         header.to_string()
     }
 }

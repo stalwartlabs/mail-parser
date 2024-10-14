@@ -282,7 +282,7 @@ impl Ord for DateTime {
 }
 
 impl fmt::Display for DateTime {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt.write_str(&self.to_rfc3339())
     }
 }
