@@ -345,6 +345,30 @@ impl MessageParser {
                         add_to
                     };
 
+                    let alt_classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| -> Vec<Class> {
+                        let mut add_to = Vec::new();
+                        if add_to_text {
+                            add_to.push(Class::Text);
+                        }
+                        if add_to_html {
+                            add_to.push(Class::Html);
+                        }
+                        if !add_to_html && is_html || !add_to_text && !is_html {
+                            add_to.push(Class::Attachment);
+                        }
+                        add_to.sort();
+                        add_to
+                    };
+
+                    // classifiers are identical
+                    for f1 in [false, true] {
+                        for f2 in [false, true] {
+                            for f3 in [false, true] {
+                                assert_eq!(classifier(f1, f2, f3), alt_classifier(f1, f2, f3));
+                            }
+                        }
+                    }
+
                     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
                     enum Class {
                         Html,
