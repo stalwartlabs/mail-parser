@@ -626,7 +626,7 @@ mod tests {
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     if json_message.as_bytes() != expected_result {
-                        file_name.set_extension("crlf.failed");
+                        file_name.set_extension("failed");
                         fs::write(&file_name, json_message.as_bytes()).unwrap();
                         panic!(
                             "Test failed, parsed message saved to {}",
