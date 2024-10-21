@@ -326,6 +326,7 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
+                    let mut classifier = |add_to_html: bool, is_html: bool, add_to_text: bool| {
                     if add_to_html && !is_html {
                         message.html_body.push(message.parts.len());
                     } else if add_to_text && is_html {
@@ -339,6 +340,9 @@ impl MessageParser {
                     } else {
                         message.attachments.push(message.parts.len());
                     }
+                    };
+
+                    classifier(add_to_html, is_html, add_to_text);
 
                     if is_html {
                         PartType::Html(text)
