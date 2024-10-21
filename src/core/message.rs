@@ -29,12 +29,12 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a parsed header.
-    pub fn header(&self, header: impl Into<HeaderName<'x>>) -> Option<&HeaderValue> {
+    pub fn header(&self, header: impl Into<HeaderName<'x>>) -> Option<&HeaderValue<'x>> {
         self.parts[0].headers.header(header).map(|h| &h.value)
     }
 
     /// Removed a parsed header and returns its value.
-    pub fn remove_header(&mut self, header: impl Into<HeaderName<'x>>) -> Option<HeaderValue> {
+    pub fn remove_header(&mut self, header: impl Into<HeaderName<'x>>) -> Option<HeaderValue<'x>> {
         let header = header.into();
         let headers = &mut self.parts[0].headers;
         headers
@@ -56,7 +56,7 @@ impl<'x> Message<'x> {
         &self,
         header: impl Into<HeaderName<'x>>,
         form: HeaderForm,
-    ) -> Vec<HeaderValue> {
+    ) -> Vec<HeaderValue<'_>> {
         let header = header.into();
         let mut results = Vec::new();
         for header_ in &self.parts[0].headers {
@@ -85,13 +85,13 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an iterator over the RFC headers of this message.
-    pub fn headers(&self) -> &[Header] {
+    pub fn headers(&self) -> &[Header<'x>] {
         &self.parts[0].headers
     }
 
     /// Returns an iterator over the matching RFC headers of this message.
-    pub fn header_values<'y: 'x>(
-        &'y self,
+    pub fn header_values(
+        &self,
         name: impl Into<HeaderName<'x>>,
     ) -> impl Iterator<Item = &HeaderValue<'x>> {
         let name = name.into();
@@ -124,7 +124,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the BCC header field
-    pub fn bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn bcc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Bcc)
@@ -132,7 +132,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the CC header field
-    pub fn cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Cc)
@@ -140,7 +140,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all Comments header fields
-    pub fn comments(&self) -> &HeaderValue {
+    pub fn comments(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Comments)
@@ -156,7 +156,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the From header field
-    pub fn from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn from(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::From)
@@ -164,7 +164,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all In-Reply-To header fields
-    pub fn in_reply_to(&self) -> &HeaderValue {
+    pub fn in_reply_to(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::InReplyTo)
@@ -172,7 +172,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all Keywords header fields
-    pub fn keywords(&self) -> &HeaderValue {
+    pub fn keywords(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Keywords)
@@ -180,7 +180,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Archive header field
-    pub fn list_archive(&self) -> &HeaderValue {
+    pub fn list_archive(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListArchive)
@@ -188,7 +188,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Help header field
-    pub fn list_help(&self) -> &HeaderValue {
+    pub fn list_help(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListHelp)
@@ -196,7 +196,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-ID header field
-    pub fn list_id(&self) -> &HeaderValue {
+    pub fn list_id(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListId)
@@ -204,7 +204,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Owner header field
-    pub fn list_owner(&self) -> &HeaderValue {
+    pub fn list_owner(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListOwner)
@@ -212,7 +212,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Post header field
-    pub fn list_post(&self) -> &HeaderValue {
+    pub fn list_post(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListPost)
@@ -220,7 +220,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Subscribe header field
-    pub fn list_subscribe(&self) -> &HeaderValue {
+    pub fn list_subscribe(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListSubscribe)
@@ -228,7 +228,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the List-Unsubscribe header field
-    pub fn list_unsubscribe(&self) -> &HeaderValue {
+    pub fn list_unsubscribe(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ListUnsubscribe)
@@ -244,7 +244,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the MIME-Version header field
-    pub fn mime_version(&self) -> &HeaderValue {
+    pub fn mime_version(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::MimeVersion)
@@ -252,7 +252,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the first Received header field
-    pub fn received(&self) -> Option<&Received> {
+    pub fn received(&self) -> Option<&Received<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Received)
@@ -260,7 +260,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all References header fields
-    pub fn references(&self) -> &HeaderValue {
+    pub fn references(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::References)
@@ -268,7 +268,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Reply-To header field
-    pub fn reply_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn reply_to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ReplyTo)
@@ -276,7 +276,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-BCC header field
-    pub fn resent_bcc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_bcc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentBcc)
@@ -284,7 +284,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-CC header field
-    pub fn resent_cc<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentTo)
@@ -292,7 +292,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all Resent-Date header fields
-    pub fn resent_date(&self) -> &HeaderValue {
+    pub fn resent_date(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentDate)
@@ -300,7 +300,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-From header field
-    pub fn resent_from<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_from(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentFrom)
@@ -308,7 +308,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all Resent-Message-ID header fields
-    pub fn resent_message_id(&self) -> &HeaderValue {
+    pub fn resent_message_id(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentMessageId)
@@ -316,7 +316,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn resent_sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_sender(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentSender)
@@ -324,7 +324,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Resent-To header field
-    pub fn resent_to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn resent_to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ResentTo)
@@ -332,7 +332,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all Return-Path header fields
-    pub fn return_path(&self) -> &HeaderValue {
+    pub fn return_path(&self) -> &HeaderValue<'x> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::ReturnPath)
@@ -353,7 +353,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the Sender header field
-    pub fn sender<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn sender(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Sender)
@@ -375,7 +375,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns the To header field
-    pub fn to<'y: 'x>(&'y self) -> Option<&Address<'x>> {
+    pub fn to(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::To)
@@ -414,17 +414,17 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a message part by position
-    pub fn part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn part(&self, pos: usize) -> Option<&MessagePart<'x>> {
         self.parts.get(pos)
     }
 
     /// Returns an inline HTML body part by position
-    pub fn html_part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn html_part(&self, pos: usize) -> Option<&MessagePart<'x>> {
         self.parts.get(*self.html_body.get(pos)?)
     }
 
     /// Returns an inline text body part by position
-    pub fn text_part(&self, pos: usize) -> Option<&MessagePart> {
+    pub fn text_part(&self, pos: usize) -> Option<&MessagePart<'x>> {
         self.parts.get(*self.text_body.get(pos)?)
     }
 

@@ -223,7 +223,7 @@ impl<'x> ContentTypeParser<'x> {
         self.reset_parser();
     }
 
-    fn add_attr_position(&mut self, stream: &MessageStream) -> bool {
+    fn add_attr_position(&mut self, stream: &MessageStream<'_>) -> bool {
         if self.token_start > 0 {
             self.attr_position =
                 String::from_utf8_lossy(&stream.data[self.token_start - 1..self.token_end])

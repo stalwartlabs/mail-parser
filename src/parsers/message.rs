@@ -38,7 +38,7 @@ enum MimeType {
 
 #[inline(always)]
 fn mime_type(
-    content_type: Option<&ContentType>,
+    content_type: Option<&ContentType<'_>>,
     parent_content_type: &MimeType,
 ) -> (bool, bool, bool, MimeType) {
     if let Some(content_type) = content_type {
@@ -163,9 +163,7 @@ impl MessageParser {
                 mime_type(content_type, &state.mime_type);
 
             if is_multipart {
-                if let Some(mime_boundary) =
-                    content_type.map_or_else(|| None, |f| f.attribute("boundary"))
-                {
+                if let Some(mime_boundary) = content_type.and_then(|f| f.attribute("boundary")) {
                     if stream.seek_next_part(mime_boundary.as_bytes()) {
                         let part_id = message.parts.len();
                         let new_state = MessageParserState {
@@ -201,7 +199,7 @@ impl MessageParser {
                 }
             }
 
-            let (mut encoding, decode_fnc): (Encoding, DecodeFnc) = match part_headers
+            let (mut encoding, decode_fnc): (Encoding, DecodeFnc<'_>) = match part_headers
                 .header_value(&HeaderName::ContentTransferEncoding)
             {
                 Some(HeaderValue::Text(encoding)) if encoding.eq_ignore_ascii_case("base64") => {
@@ -272,15 +270,13 @@ impl MessageParser {
                 let is_inline = is_inline
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
-                        .map_or_else(
-                            || true,
-                            |d| !d.as_content_type().map_or(false, |ct| ct.is_attachment()),
-                        )
+                        .map_or(true, |d| {
+                            !d.as_content_type().map_or(false, |ct| ct.is_attachment())
+                        })
                     && (state.parts == 1
-                        || (state.mime_type != MimeType::MultipartRelated
+                        || state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline
-                                || content_type
-                                    .map_or_else(|| true, |c| !c.has_attribute("name")))));
+                                || content_type.map_or(true, |c| !c.has_attribute("name"))));
 
                 let (add_to_html, add_to_text) =
                     if let MimeType::MultipartAlternative = state.mime_type {
@@ -306,6 +302,13 @@ impl MessageParser {
                         (false, false)
                     };
 
+                if add_to_html {
+                    message.html_body.push(message.parts.len());
+                }
+                if add_to_text {
+                    message.text_body.push(message.parts.len());
+                }
+
                 if is_text {
                     let text = match (
                         bytes,
@@ -326,17 +329,7 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    if add_to_html && !is_html {
-                        message.html_body.push(message.parts.len());
-                    } else if add_to_text && is_html {
-                        message.text_body.push(message.parts.len());
-                    }
-
-                    if add_to_html && is_html {
-                        message.html_body.push(message.parts.len());
-                    } else if add_to_text && !is_html {
-                        message.text_body.push(message.parts.len());
-                    } else {
+                    if !add_to_html && is_html || !add_to_text && !is_html {
                         message.attachments.push(message.parts.len());
                     }
 
@@ -346,13 +339,6 @@ impl MessageParser {
                         PartType::Text(text)
                     }
                 } else {
-                    if add_to_html {
-                        message.html_body.push(message.parts.len());
-                    }
-                    if add_to_text {
-                        message.text_body.push(message.parts.len());
-                    }
-
                     message.attachments.push(message.parts.len());
 
                     if !is_inline {
@@ -640,7 +626,7 @@ mod tests {
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
                     if json_message.as_bytes() != expected_result {
-                        file_name.set_extension("crlf.failed");
+                        file_name.set_extension("failed");
                         fs::write(&file_name, json_message.as_bytes()).unwrap();
                         panic!(
                             "Test failed, parsed message saved to {}",

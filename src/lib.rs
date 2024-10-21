@@ -1,3 +1,4 @@
+#![deny(rust_2018_idioms)]
 /*
  * Copyright Stalwart Labs Ltd. See the COPYING
  * file at the top-level directory of this distribution.
@@ -619,15 +620,15 @@ pub trait MimeHeaders<'x> {
     /// Returns the Content-Description field
     fn content_description(&self) -> Option<&str>;
     /// Returns the Content-Disposition field
-    fn content_disposition(&self) -> Option<&ContentType>;
+    fn content_disposition(&self) -> Option<&ContentType<'_>>;
     /// Returns the Content-ID field
     fn content_id(&self) -> Option<&str>;
     /// Returns the Content-Encoding field
     fn content_transfer_encoding(&self) -> Option<&str>;
     /// Returns the Content-Type field
-    fn content_type(&self) -> Option<&ContentType>;
+    fn content_type(&self) -> Option<&ContentType<'_>>;
     /// Returns the Content-Language field
-    fn content_language(&self) -> &HeaderValue;
+    fn content_language(&self) -> &HeaderValue<'_>;
     /// Returns the Content-Location field
     fn content_location(&self) -> Option<&str>;
     /// Returns the attachment name, if any.
@@ -649,8 +650,8 @@ pub trait MimeHeaders<'x> {
 }
 
 pub trait GetHeader<'x> {
-    fn header_value(&self, name: &HeaderName) -> Option<&HeaderValue>;
-    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header>;
+    fn header_value(&self, name: &HeaderName<'_>) -> Option<&HeaderValue<'x>>;
+    fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header<'x>>;
 }
 
 #[doc(hidden)]
