@@ -146,11 +146,13 @@
       "is_encoding_problem": false,
       "body": {
         "Message": {
-          "html_body": [],
-          "text_body": [],
-          "attachments": [
+          "html_body": [
             0
           ],
+          "text_body": [
+            0
+          ],
+          "attachments": [],
           "parts": [
             {
               "headers": [
