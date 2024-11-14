@@ -67,7 +67,7 @@ where
                     self.message =
                         Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
                     return message;
-                } else {
+                }
                     if message_line[0] != b'>' {
                         message.contents.extend_from_slice(&message_line);
                     } else if message_line
@@ -82,7 +82,6 @@ where
                     } else {
                         message.contents.extend_from_slice(&message_line);
                     }
-                }
             } else {
                 if is_from {
                     self.message =
