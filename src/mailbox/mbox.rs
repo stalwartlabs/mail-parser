@@ -65,7 +65,6 @@ where
                 if !is_from {
                     if message_line[0] != b'>' {
                         message.contents.extend_from_slice(&message_line);
-                        message_line.clear();
                     } else if message_line
                         .iter()
                         .skip_while(|&&ch| ch == b'>')
@@ -75,10 +74,8 @@ where
                         == b"From "
                     {
                         message.contents.extend_from_slice(&message_line[1..]);
-                        message_line.clear();
                     } else {
                         message.contents.extend_from_slice(&message_line);
-                        message_line.clear();
                     }
                 } else {
                     let message = self.message.take().map(Ok);
@@ -91,8 +88,8 @@ where
                     self.message =
                         Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
                 }
-                message_line.clear();
             }
+            message_line.clear();
         }
 
         self.message.take().map(Ok)
