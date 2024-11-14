@@ -64,7 +64,8 @@ where
             if let Some(message) = &mut self.message {
                 if !is_from {
                     if message_line[0] != b'>' {
-                        message.contents.append(&mut message_line);
+                        message.contents.extend_from_slice(&message_line);
+                        message_line.clear();
                     } else if message_line
                         .iter()
                         .skip_while(|&&ch| ch == b'>')
@@ -76,7 +77,8 @@ where
                         message.contents.extend_from_slice(&message_line[1..]);
                         message_line.clear();
                     } else {
-                        message.contents.append(&mut message_line);
+                        message.contents.extend_from_slice(&message_line);
+                        message_line.clear();
                     }
                 } else {
                     let message = self.message.take().map(Ok);
