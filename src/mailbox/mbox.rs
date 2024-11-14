@@ -54,20 +54,12 @@ where
 
         loop {
             match self.reader.read_until(b'\n', &mut message_line) {
-                Ok(bytes_read) => {
-                    if bytes_read == 0 {
-                        break;
-                    }
-                }
-                Err(_) => {
-                    return Some(Err(ParseError {}));
-                }
+                Ok(0) => break,
+                Ok(_) => {}
+                Err(_) => return Some(Err(ParseError {})),
             }
 
-            let is_from = message_line
-                .get(..5)
-                .map(|line| line == b"From ")
-                .unwrap_or(false);
+            let is_from = message_line.starts_with(b"From ");
 
             if let Some(message) = &mut self.message {
                 if !is_from {
