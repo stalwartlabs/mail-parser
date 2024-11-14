@@ -68,20 +68,20 @@ where
                         Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
                     return message;
                 }
-                    if message_line[0] != b'>' {
-                        message.contents.extend_from_slice(&message_line);
-                    } else if message_line
-                        .iter()
-                        .skip_while(|&&ch| ch == b'>')
-                        .take(5)
-                        .copied()
-                        .collect::<Vec<u8>>()
-                        == b"From "
-                    {
-                        message.contents.extend_from_slice(&message_line[1..]);
-                    } else {
-                        message.contents.extend_from_slice(&message_line);
-                    }
+                if message_line[0] != b'>' {
+                    message.contents.extend_from_slice(&message_line);
+                } else if message_line
+                    .iter()
+                    .skip_while(|&&ch| ch == b'>')
+                    .take(5)
+                    .copied()
+                    .collect::<Vec<u8>>()
+                    == b"From "
+                {
+                    message.contents.extend_from_slice(&message_line[1..]);
+                } else {
+                    message.contents.extend_from_slice(&message_line);
+                }
             } else {
                 if is_from {
                     self.message =
