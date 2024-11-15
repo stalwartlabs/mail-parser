@@ -61,7 +61,8 @@ where
 
             let is_from = message_line.starts_with(b"From ");
 
-            if is_from && self.message.is_some() {
+            if is_from {
+            if self.message.is_some() {
                 // self.message is Some here, so message is Some
                 let message = self.message.take().map(Ok);
                 self.message =
@@ -72,7 +73,7 @@ where
                 }
             }
 
-            if is_from && self.message.is_none() {
+            if self.message.is_none() {
                 // self.message is None here, so message is None
                 let message = self.message.take().map(Ok);
                 self.message =
@@ -81,6 +82,7 @@ where
                 if message.is_some() {
                     return message;
                 }
+            }
             }
 
             if let Some(message) = &mut self.message {
