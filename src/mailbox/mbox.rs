@@ -62,11 +62,16 @@ where
             let is_from = message_line.starts_with(b"From ");
 
             if let Some(message) = &mut self.message {
-                if is_from {
+                if is_from && self.message.is_some() {
+                    // self.message is Some here, so message is Some
                     let message = self.message.take().map(Ok);
                     self.message =
                         Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                    return message;
+                    // branch is always executed due to comment above
+                    // but will not compile because borrow checker doesnt know this
+                    // if message.is_some() {
+                        return message;
+                    // }
                 }
                 if message_line[0] != b'>' {
                     message.contents.extend_from_slice(&message_line);
