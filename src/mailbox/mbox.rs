@@ -72,6 +72,17 @@ where
                 }
             }
 
+            if is_from && self.message.is_none() {
+                // self.message is None here, so message is None
+                let message = self.message.take().map(Ok);
+                self.message =
+                    Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
+                // branch doesnt do anything due to comment above
+                if message.is_some() {
+                    return message;
+                }
+            }
+
             if let Some(message) = &mut self.message {
                 if !is_from && message_line[0] != b'>' {
                     message.contents.extend_from_slice(&message_line);
@@ -86,16 +97,6 @@ where
                     message.contents.extend_from_slice(&message_line[1..]);
                 } else if !is_from {
                     message.contents.extend_from_slice(&message_line);
-                }
-            }
-            if is_from && self.message.is_none() {
-                // self.message is None here, so message is None
-                let message = self.message.take().map(Ok);
-                self.message =
-                    Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                // branch doesnt do anything due to comment above
-                if message.is_some() {
-                    return message;
                 }
             }
             message_line.clear();
