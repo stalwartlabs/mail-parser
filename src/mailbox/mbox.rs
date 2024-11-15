@@ -87,16 +87,15 @@ where
                 } else {
                     message.contents.extend_from_slice(&message_line);
                 }
-            } else {
-                if is_from && self.message.is_none() {
-                    // self.message is None here, so message is None
-                    let message = self.message.take().map(Ok);
-                    self.message =
-                        Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                    // branch doesnt do anything due to comment above
-                    if message.is_some() {
-                        return message;
-                    }
+            }
+            if is_from && self.message.is_none() {
+                // self.message is None here, so message is None
+                let message = self.message.take().map(Ok);
+                self.message =
+                    Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
+                // branch doesnt do anything due to comment above
+                if message.is_some() {
+                    return message;
                 }
             }
             message_line.clear();
