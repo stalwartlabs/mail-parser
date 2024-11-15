@@ -54,7 +54,7 @@ where
 
         loop {
             match self.reader.read_until(b'\n', &mut message_line) {
-                Ok(0) => break,
+                Ok(0) => return self.message.take().map(Ok),
                 Ok(_) => {}
                 Err(_) => return Some(Err(ParseError {})),
             }
@@ -90,8 +90,6 @@ where
             }
             message_line.clear();
         }
-
-        self.message.take().map(Ok)
     }
 }
 
