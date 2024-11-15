@@ -68,12 +68,14 @@ where
                 if message.is_some() {
                     return message;
                 }
+                message_line.clear();
+                continue;
             }
 
             if let Some(message) = &mut self.message {
-                if !is_from && message_line[0] != b'>' {
+                if message_line[0] != b'>' {
                     message.contents.extend_from_slice(&message_line);
-                } else if !is_from && message_line
+                } else if message_line
                     .iter()
                     .skip_while(|&&ch| ch == b'>')
                     .take(5)
@@ -82,7 +84,7 @@ where
                     == b"From "
                 {
                     message.contents.extend_from_slice(&message_line[1..]);
-                } else if !is_from {
+                } else {
                     message.contents.extend_from_slice(&message_line);
                 }
             }
