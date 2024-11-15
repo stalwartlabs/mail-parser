@@ -62,27 +62,12 @@ where
             let is_from = message_line.starts_with(b"From ");
 
             if is_from {
-            if self.message.is_some() {
-                // self.message is Some here, so message is Some
                 let message = self.message.take().map(Ok);
                 self.message =
                     Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                // branch is always executed due to comment above
                 if message.is_some() {
                     return message;
                 }
-            }
-
-            if self.message.is_none() {
-                // self.message is None here, so message is None
-                let message = self.message.take().map(Ok);
-                self.message =
-                    Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                // branch doesnt do anything due to comment above
-                if message.is_some() {
-                    return message;
-                }
-            }
             }
 
             if let Some(message) = &mut self.message {
