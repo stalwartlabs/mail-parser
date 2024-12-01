@@ -1204,5 +1204,18 @@
         ]
       ]
     }
+  },
+  {
+    "header": "attachment;\r\n\tfilename=\"=?utf-8?Q?Auftragsbest=C3=A4tigung_Xxxxx_Xxxxxx_XXXXXXXXXX=2EPD?=\r\n =?utf-8?Q?F?=\"\r\n",
+    "expected": {
+      "c_type": "attachment",
+      "c_subtype": null,
+      "attributes": [
+        [
+          "filename",
+          "Auftragsbestätigung Xxxxx Xxxxxx XXXXXXXXXX.PDF"
+        ]
+      ]
+    }
   }
 ]

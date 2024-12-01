@@ -318,6 +318,7 @@ impl<'x> MessageStream<'x> {
                         }
                         ContentState::AttributeQuotedValue => {
                             if next_is_space {
+                                self.next();
                                 parser.remove_crlf = true;
                                 continue;
                             } else {
