@@ -259,7 +259,7 @@ impl PartialEq for HeaderName<'_> {
     }
 }
 
-impl<'x> Hash for HeaderName<'x> {
+impl Hash for HeaderName<'_> {
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
         match self {
             HeaderName::Other(value) => {
@@ -280,7 +280,7 @@ impl<'x> From<HeaderName<'x>> for u8 {
     }
 }
 
-impl<'x> HeaderName<'x> {
+impl HeaderName<'_> {
     pub fn to_owned(&self) -> HeaderName<'static> {
         match self {
             HeaderName::Other(name) => HeaderName::Other(name.to_string().into()),
@@ -712,7 +712,7 @@ impl<'x> MessagePart<'x> {
     }
 }
 
-impl<'x> fmt::Display for MessagePart<'x> {
+impl fmt::Display for MessagePart<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt.write_str(self.text_contents().unwrap_or("[no contents]"))
     }
@@ -911,7 +911,7 @@ impl<'x> Received<'x> {
 }
 
 /// A hostname or IP address.
-impl<'x> Host<'x> {
+impl Host<'_> {
     pub fn into_owned(self) -> Host<'static> {
         match self {
             Host::Name(name) => Host::Name(name.into_owned().into()),
@@ -946,7 +946,7 @@ impl<'x> From<Cow<'x, str>> for HeaderName<'x> {
     }
 }
 
-impl<'x> From<String> for HeaderName<'x> {
+impl From<String> for HeaderName<'_> {
     fn from(value: String) -> Self {
         HeaderName::parse(value).unwrap_or(HeaderName::Other("".into()))
     }

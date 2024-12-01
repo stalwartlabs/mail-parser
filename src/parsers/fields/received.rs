@@ -365,7 +365,7 @@ impl<'x> MessageStream<'x> {
     }
 }
 
-impl<'x, 'y> Iterator for Tokenizer<'x, 'y> {
+impl<'x> Iterator for Tokenizer<'x, '_> {
     type Item = TokenData<'x>;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -789,7 +789,7 @@ impl<'x, 'y> Tokenizer<'x, 'y> {
     }
 }
 
-impl<'x> From<Token> for TokenData<'x> {
+impl From<Token> for TokenData<'_> {
     fn from(token: Token) -> Self {
         Self {
             token,

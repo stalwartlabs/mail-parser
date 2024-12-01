@@ -359,7 +359,7 @@ pub enum PartType<'x> {
     Multipart(Vec<MessagePartId>),
 }
 
-impl<'x> Default for PartType<'x> {
+impl Default for PartType<'_> {
     fn default() -> Self {
         PartType::Multipart(Vec::with_capacity(0))
     }

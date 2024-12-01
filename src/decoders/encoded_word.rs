@@ -20,7 +20,7 @@ enum Rfc2047State {
     Data,
 }
 
-impl<'x> MessageStream<'x> {
+impl MessageStream<'_> {
     pub fn decode_rfc2047(&mut self) -> Option<String> {
         let mut state = Rfc2047State::Init;
 

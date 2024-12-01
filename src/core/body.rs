@@ -11,7 +11,7 @@
 
 use crate::{AttachmentIterator, BodyPartIterator, Message, MessagePart, MessagePartId, PartType};
 
-impl<'x> PartType<'x> {
+impl PartType<'_> {
     #[allow(clippy::len_without_is_empty)]
     pub fn len(&self) -> usize {
         match self {
