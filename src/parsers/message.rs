@@ -608,6 +608,9 @@ mod tests {
                     let message = MessageParser::default().parse(&raw_message).unwrap();
                     let json_message = serde_json::to_string_pretty(&message).unwrap();
 
+                    // Test that deserialization also works
+                    let _: super::Message<'_> = serde_json::from_str(&json_message).unwrap();
+
                     if json_message.as_bytes() != expected_result {
                         file_name.set_extension("failed");
                         fs::write(&file_name, json_message.as_bytes()).unwrap();
