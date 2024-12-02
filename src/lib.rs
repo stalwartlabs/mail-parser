@@ -280,7 +280,6 @@ pub struct Message<'x> {
     pub attachments: Vec<MessagePartId>,
 
     #[cfg_attr(feature = "serde_support", serde(default))]
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
     pub parts: Vec<MessagePart<'x>>,
 
     #[cfg_attr(feature = "serde_support", serde(skip))]
@@ -295,7 +294,6 @@ pub struct MessagePart<'x> {
     pub headers: Vec<Header<'x>>,
     pub is_encoding_problem: bool,
     #[cfg_attr(feature = "serde_support", serde(default))]
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
     pub body: PartType<'x>,
     #[cfg_attr(feature = "serde_support", serde(skip))]
     pub encoding: Encoding,
@@ -345,11 +343,9 @@ pub enum PartType<'x> {
     Html(Cow<'x, str>),
 
     /// Any other part type that is not text.
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
     Binary(Cow<'x, [u8]>),
 
     /// Any inline binary data that.
-    #[cfg_attr(feature = "serde_support", serde(borrow))]
     InlineBinary(Cow<'x, [u8]>),
 
     /// Nested RFC5322 message.
