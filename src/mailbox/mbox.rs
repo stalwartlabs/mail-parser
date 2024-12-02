@@ -76,14 +76,15 @@ where
             if let Some(message) = &mut self.message {
                 if message_line[0] != b'>' {
                     message.contents.extend_from_slice(&message_line);
-                } else if message_line
+                    message_line.clear();
+                    continue;
+                }
+                // can become split_once once slice_split_once becomes stable
+                let i = message_line
                     .iter()
-                    .skip_while(|&&ch| ch == b'>')
-                    .take(5)
-                    .copied()
-                    .collect::<Vec<u8>>()
-                    == b"From "
-                {
+                    .position(|&ch| ch != b'>')
+                    .unwrap_or(message_line.len());
+                if message_line[i..].starts_with(b"From ") {
                     message.contents.extend_from_slice(&message_line[1..]);
                 } else {
                     message.contents.extend_from_slice(&message_line);
