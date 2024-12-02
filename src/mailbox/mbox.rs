@@ -29,9 +29,6 @@ pub struct Message {
     contents: Vec<u8>,
 }
 
-#[derive(Debug)]
-pub struct ParseError {}
-
 impl<T> MessageIterator<T>
 where
     T: Read,
@@ -48,7 +45,7 @@ impl<T> Iterator for MessageIterator<T>
 where
     T: Read,
 {
-    type Item = Result<Message, ParseError>;
+    type Item = std::io::Result<Message>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let mut message_line = Vec::with_capacity(80);
@@ -57,7 +54,7 @@ where
             match self.reader.read_until(b'\n', &mut message_line) {
                 Ok(0) => return self.message.take().map(Ok),
                 Ok(_) => {}
-                Err(_) => return Some(Err(ParseError {})),
+                Err(e) => return Some(Err(e)),
             }
 
             let is_from = message_line.starts_with(b"From ");
