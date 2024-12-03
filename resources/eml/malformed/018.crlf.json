@@ -1,0 +1,58 @@
+{
+  "html_body": [
+    0
+  ],
+  "text_body": [
+    0
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "Windows-1252"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 52
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 52,
+          "offset_start": 78,
+          "offset_end": 97
+        },
+        {
+          "name": "mime_version",
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 97,
+          "offset_start": 110,
+          "offset_end": 116
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "Best\r\nEnviado desde mi BlackBerry=AE de Vodafone=\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\r\n<plist version=\"1.0\">\r\n<dict>\r\n</dict>\r\n</plist>"
+      },
+      "offset_header": 0,
+      "offset_body": 118,
+      "offset_end": 361
+    }
+  ]
+}
