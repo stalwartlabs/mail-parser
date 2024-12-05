@@ -264,6 +264,14 @@ impl MessageParser {
             }
 
             let body_part = if mime_type != MimeType::Message {
+                let additional_inline = mime_type == MimeType::Inline
+                    && part_headers
+                        .header_value(&HeaderName::ContentDisposition)
+                        .map_or(false, |d| {
+                            d.as_content_type().is_some_and(|ct| ct.is_inline())
+                        })
+                    && state.mime_type == MimeType::MultipartRelated;
+
                 let is_inline = is_inline
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
@@ -343,7 +351,7 @@ impl MessageParser {
                     } else {
                         PartType::Text(text)
                     }
-                } else if is_inline {
+                } else if is_inline || additional_inline {
                     PartType::InlineBinary(bytes)
                 } else {
                     PartType::Binary(bytes)
