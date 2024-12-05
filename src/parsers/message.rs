@@ -278,6 +278,14 @@ impl MessageParser {
                             && (mime_type == MimeType::Inline
                                 || content_type.map_or(true, |c| !c.has_attribute("name"))));
 
+                let additional_inline = state.mime_type == MimeType::MultipartRelated
+                    && mime_type == MimeType::Inline
+                    && part_headers
+                        .header_value(&HeaderName::ContentDisposition)
+                        .map_or(false, |d| {
+                            d.as_content_type().map_or(false, |ct| ct.is_inline())
+                        });
+
                 let (add_to_html, add_to_text) =
                     if let MimeType::MultipartAlternative = state.mime_type {
                         match mime_type {
@@ -341,7 +349,7 @@ impl MessageParser {
                 } else {
                     message.attachments.push(message.parts.len());
 
-                    if is_inline {
+                    if is_inline || additional_inline {
                         PartType::InlineBinary(bytes)
                     } else {
                         PartType::Binary(bytes)
