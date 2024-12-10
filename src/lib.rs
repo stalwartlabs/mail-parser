@@ -654,15 +654,13 @@ pub trait GetHeader<'x> {
     fn header(&self, name: impl Into<HeaderName<'x>>) -> Option<&Header<'x>>;
 }
 
-#[doc(hidden)]
-pub struct BodyPartIterator<'x> {
+struct BodyPartIterator<'x> {
     message: &'x Message<'x>,
     list: &'x [MessagePartId],
     pos: isize,
 }
 
-#[doc(hidden)]
-pub struct AttachmentIterator<'x> {
+struct AttachmentIterator<'x> {
     message: &'x Message<'x>,
     pos: isize,
 }
