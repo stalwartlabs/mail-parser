@@ -449,17 +449,17 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an Interator over the text body parts
-    pub fn text_bodies(&'x self) -> BodyPartIterator<'x> {
+    pub fn text_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
         BodyPartIterator::new(self, &self.text_body)
     }
 
     /// Returns an Interator over the HTML body parts
-    pub fn html_bodies(&'x self) -> BodyPartIterator<'x> {
+    pub fn html_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
         BodyPartIterator::new(self, &self.html_body)
     }
 
     /// Returns an Interator over the attachments
-    pub fn attachments(&'x self) -> AttachmentIterator<'x> {
+    pub fn attachments(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
         AttachmentIterator::new(self)
     }
 
