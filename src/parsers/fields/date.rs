@@ -338,9 +338,9 @@ impl<'x> MessageStream<'x> {
                         parts_sizes[pos] -= 1;
                         parts[pos] += (*ch - b'0') as u32 * u32::pow(10, parts_sizes[pos]);
 
-                            ignore = false;
+                        ignore = false;
                     }
-                        is_new_token = false;
+                    is_new_token = false;
                 }
                 b':' => {
                     if !is_new_token && !ignore && (pos == 3 || pos == 4) {
@@ -368,7 +368,7 @@ impl<'x> MessageStream<'x> {
                         }
                         month_pos += 1;
                     }
-                        is_new_token = false;
+                    is_new_token = false;
                 }
                 b'(' => {
                     comment_count += 1;
