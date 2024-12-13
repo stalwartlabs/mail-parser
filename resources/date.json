@@ -384,5 +384,61 @@
       "tz_hour": 7,
       "tz_minute": 0
     }
+  },
+  {
+    "header": "Sun, 27 Oct 2002 23:57:07 EST",
+    "expected": {
+      "year": 2002,
+      "month": 10,
+      "day": 27,
+      "hour": 23,
+      "minute": 57,
+      "second": 7,
+      "tz_before_gmt": true,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Thu, 10 Jul 1997 14:53:31 EST5EDT",
+    "expected": {
+      "year": 1997,
+      "month": 7,
+      "day": 10,
+      "hour": 14,
+      "minute": 53,
+      "second": 31,
+      "tz_before_gmt": true,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Thu, 10 Jul 1997 14:53:31 A",
+    "expected": {
+      "year": 1997,
+      "month": 7,
+      "day": 10,
+      "hour": 14,
+      "minute": 53,
+      "second": 31,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Thu, 10 Jul 1997 14:53:31 ZZZZ",
+    "expected": {
+      "year": 1997,
+      "month": 7,
+      "day": 10,
+      "hour": 14,
+      "minute": 53,
+      "second": 31,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
   }
 ]
