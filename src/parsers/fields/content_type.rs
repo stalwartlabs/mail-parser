@@ -329,6 +329,9 @@ impl<'x> MessageStream<'x> {
                     }
 
                     if next_is_space {
+                        if parser.state == ContentState::Type {
+                            continue;
+                        }
                         parser.state = ContentState::AttributeName;
                         self.next();
 

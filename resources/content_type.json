@@ -1217,5 +1217,12 @@
         ]
       ]
     }
+  },
+  {
+    "header": "\n text/plain\r\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain"
+    }
   }
 ]
