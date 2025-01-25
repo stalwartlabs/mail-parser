@@ -14,7 +14,8 @@ use std::io::{BufRead, BufReader, Read};
 
 /// Parses an Mbox mailbox from a `Read` stream, returning each message as a
 /// `Vec<u8>`.
-/// supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
+///
+/// Supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
 pub struct MessageIterator<T: Read> {
     reader: BufReader<T>,
     message: Option<Message>,
@@ -27,9 +28,6 @@ pub struct Message {
     from: String,
     contents: Vec<u8>,
 }
-
-#[derive(Debug)]
-pub struct ParseError {}
 
 impl<T> MessageIterator<T>
 where
@@ -47,61 +45,50 @@ impl<T> Iterator for MessageIterator<T>
 where
     T: Read,
 {
-    type Item = Result<Message, ParseError>;
+    type Item = std::io::Result<Message>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let mut message_line = Vec::with_capacity(80);
 
         loop {
             match self.reader.read_until(b'\n', &mut message_line) {
-                Ok(bytes_read) => {
-                    if bytes_read == 0 {
-                        break;
-                    }
-                }
-                Err(_) => {
-                    return Some(Err(ParseError {}));
-                }
+                Ok(0) => return self.message.take().map(Ok),
+                Ok(_) => {}
+                Err(e) => return Some(Err(e)),
             }
 
-            let is_from = message_line
-                .get(..5)
-                .map(|line| line == b"From ")
-                .unwrap_or(false);
+            let is_from = message_line.starts_with(b"From ");
 
-            if let Some(message) = &mut self.message {
-                if !is_from {
-                    if message_line[0] != b'>' {
-                        message.contents.append(&mut message_line);
-                    } else if message_line
-                        .iter()
-                        .skip_while(|&&ch| ch == b'>')
-                        .take(5)
-                        .copied()
-                        .collect::<Vec<u8>>()
-                        == b"From "
-                    {
-                        message.contents.extend_from_slice(&message_line[1..]);
-                        message_line.clear();
-                    } else {
-                        message.contents.append(&mut message_line);
-                    }
-                } else {
-                    let message = self.message.take().map(Ok);
-                    self.message =
-                        Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
+            if is_from {
+                let message = self.message.take().map(Ok);
+                self.message =
+                    Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
+                if message.is_some() {
                     return message;
                 }
-            } else {
-                if is_from {
-                    self.message =
-                        Message::new(std::str::from_utf8(&message_line).unwrap_or("")).into();
-                }
                 message_line.clear();
+                continue;
             }
-        }
 
-        self.message.take().map(Ok)
+            if let Some(message) = &mut self.message {
+                if message_line[0] != b'>' {
+                    message.contents.extend_from_slice(&message_line);
+                    message_line.clear();
+                    continue;
+                }
+                // can become split_once once slice_split_once becomes stable
+                let i = message_line
+                    .iter()
+                    .position(|&ch| ch != b'>')
+                    .unwrap_or(message_line.len());
+                if message_line[i..].starts_with(b"From ") {
+                    message.contents.extend_from_slice(&message_line[1..]);
+                } else {
+                    message.contents.extend_from_slice(&message_line);
+                }
+            }
+            message_line.clear();
+        }
     }
 }
 
