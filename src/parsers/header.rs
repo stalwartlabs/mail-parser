@@ -123,8 +123,8 @@ impl<'x> MessageStream<'x> {
 
                         if let Some(header) = header.get_mut(token_len) {
                             *header = ch.to_ascii_lowercase();
+                            token_len += 1;
                         }
-                        token_len += 1;
                     }
                 }
             }
