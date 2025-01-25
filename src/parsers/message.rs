@@ -250,7 +250,9 @@ impl MessageParser {
             let mut is_encoding_problem = offset_end == usize::MAX;
             if is_encoding_problem {
                 encoding = Encoding::None;
-                mime_type = MimeType::TextOther;
+                if mime_type != MimeType::TextPlain {
+                    mime_type = MimeType::TextOther;
+                }
                 is_inline = false;
                 is_text = true;
 
@@ -277,6 +279,14 @@ impl MessageParser {
                         || state.mime_type != MimeType::MultipartRelated
                             && (mime_type == MimeType::Inline
                                 || content_type.map_or(true, |c| !c.has_attribute("name"))));
+
+                // if message consists of single text/plain part, classify as text regardless
+                // of encoding issues: see malformed/018.eml
+                let is_inline = is_inline
+                    || state.parts == 1
+                        && state.mime_type == MimeType::Message
+                        && mime_type == MimeType::TextPlain
+                        && is_encoding_problem;
 
                 let (add_to_html, add_to_text) =
                     if let MimeType::MultipartAlternative = state.mime_type {
