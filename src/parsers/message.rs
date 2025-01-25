@@ -1,12 +1,7 @@
 /*
- * Copyright Stalwart Labs Ltd. See the COPYING
- * file at the top-level dir&ectory of this distribution.
+ * SPDX-FileCopyrightText: 2020 Stalwart Labs LLC <hello@stalw.art>
  *
- * Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
- * https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
- * <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
- * option. This file may not be copied, modified, or distributed
- * except according to those terms.
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
 use std::borrow::Cow;
@@ -273,7 +268,7 @@ impl MessageParser {
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
                         .map_or(true, |d| {
-                            !d.as_content_type().is_some_and( |ct| ct.is_attachment())
+                            !d.as_content_type().is_some_and(|ct| ct.is_attachment())
                         })
                     && (state.parts == 1
                         || state.mime_type != MimeType::MultipartRelated
@@ -606,7 +601,7 @@ mod tests {
 
             for file_name in fs::read_dir(&test_dir).unwrap() {
                 let mut file_name = file_name.unwrap().path();
-                if file_name.extension().is_some_and( |e| e == "eml") {
+                if file_name.extension().is_some_and(|e| e == "eml") {
                     let raw_original = fs::read(&file_name).unwrap();
                     tests_run += 1;
 
