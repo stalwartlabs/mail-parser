@@ -61,14 +61,7 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
                     buf.push(ch);
                 }
                 QuotedPrintableState::Eq => {
-                    hex1 = {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            *HEX_MAP.get_unchecked(ch as usize)
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        HEX_MAP[ch as usize]
-                    };
+                    hex1 = HEX_MAP[ch as usize];
 
                     if hex1 != -1 {
                         state = QuotedPrintableState::Hex1;
@@ -77,9 +70,6 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
                     }
                 }
                 QuotedPrintableState::Hex1 => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
-                    #[cfg(not(feature = "ludicrous_mode"))]
                     let hex2 = HEX_MAP[ch as usize];
 
                     state = QuotedPrintableState::None;
@@ -99,26 +89,10 @@ pub fn quoted_printable_decode(bytes: &[u8]) -> Option<Vec<u8>> {
 
 #[inline(always)]
 pub fn quoted_printable_decode_char(hex1: u8, hex2: u8) -> Option<u8> {
-    #[cfg(feature = "ludicrous_mode")]
-    {
-        let hex1 = unsafe { *HEX_MAP.get_unchecked(hex1 as usize) };
-        let hex2 = unsafe { *HEX_MAP.get_unchecked(hex2 as usize) };
-        if hex1 != -1 && hex2 != -1 {
-            (((hex1 as u8) << 4) | hex2 as u8).into()
-        } else {
-            None
-        }
-    }
-    #[cfg(not(feature = "ludicrous_mode"))]
-    {
-        let hex1 = HEX_MAP[hex1 as usize];
-        let hex2 = HEX_MAP[hex2 as usize];
-        if hex1 != -1 && hex2 != -1 {
-            (((hex1 as u8) << 4) | hex2 as u8).into()
-        } else {
-            None
-        }
-    }
+    let hex1 = HEX_MAP[hex1 as usize];
+    let hex2 = HEX_MAP[hex2 as usize];
+
+    (hex1 != -1 && hex2 != -1).then_some(((hex1 as u8) << 4) | hex2 as u8)
 }
 
 impl<'x> MessageStream<'x> {
@@ -184,14 +158,7 @@ impl<'x> MessageStream<'x> {
                         buf.push(ch);
                     }
                     QuotedPrintableState::Eq => {
-                        hex1 = {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *HEX_MAP.get_unchecked(ch as usize)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            HEX_MAP[ch as usize]
-                        };
+                        hex1 = HEX_MAP[ch as usize];
                         if hex1 != -1 {
                             state = QuotedPrintableState::Hex1;
                         } else if !ch.is_ascii_whitespace() {
@@ -200,9 +167,6 @@ impl<'x> MessageStream<'x> {
                         }
                     }
                     QuotedPrintableState::Hex1 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
-                        #[cfg(not(feature = "ludicrous_mode"))]
                         let hex2 = HEX_MAP[ch as usize];
 
                         state = QuotedPrintableState::None;
@@ -276,14 +240,7 @@ impl<'x> MessageStream<'x> {
                         buf.push(ch);
                     }
                     QuotedPrintableState::Eq => {
-                        hex1 = {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *HEX_MAP.get_unchecked(ch as usize)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            HEX_MAP[ch as usize]
-                        };
+                        hex1 = HEX_MAP[ch as usize];
                         if hex1 != -1 {
                             state = QuotedPrintableState::Hex1;
                         } else {
@@ -292,11 +249,7 @@ impl<'x> MessageStream<'x> {
                         }
                     }
                     QuotedPrintableState::Hex1 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        let hex2 = unsafe { *HEX_MAP.get_unchecked(ch as usize) };
-                        #[cfg(not(feature = "ludicrous_mode"))]
                         let hex2 = HEX_MAP[ch as usize];
-
                         state = QuotedPrintableState::None;
                         if hex2 != -1 {
                             buf.push(((hex1 as u8) << 4) | hex2 as u8);

@@ -273,7 +273,7 @@ impl MessageParser {
                     && part_headers
                         .header_value(&HeaderName::ContentDisposition)
                         .map_or(true, |d| {
-                            !d.as_content_type().map_or(false, |ct| ct.is_attachment())
+                            !d.as_content_type().is_some_and( |ct| ct.is_attachment())
                         })
                     && (state.parts == 1
                         || state.mime_type != MimeType::MultipartRelated
@@ -606,7 +606,7 @@ mod tests {
 
             for file_name in fs::read_dir(&test_dir).unwrap() {
                 let mut file_name = file_name.unwrap().path();
-                if file_name.extension().map_or(false, |e| e == "eml") {
+                if file_name.extension().is_some_and( |e| e == "eml") {
                     let raw_original = fs::read(&file_name).unwrap();
                     tests_run += 1;
 

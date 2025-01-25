@@ -566,22 +566,6 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
         let text = std::str::from_utf8(self.stream.bytes(start_pos..self.stream.offset() - 1))
             .unwrap_or_default();
 
-        /*println!(
-            "({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, 0x{:x}) => Token::{},",
-            n_alpha,
-            n_digit,
-            n_hex,
-            n_dot,
-            n_at,
-            n_other,
-            n_colon,
-            n_plus,
-            n_minus,
-            n_utf,
-            hash,
-            text
-        );*/
-
         let token = match (
             n_alpha, n_digit, n_hex, n_dot, n_at, n_other, n_colon, n_plus, n_minus, n_utf, hash,
         ) {
@@ -759,11 +743,6 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
                 }
             }
         };
-
-        /*println!("{:?} => {}", token, text);
-        if let Some(token) = &self.next_token {
-            println!("{:?}", token.token);
-        }*/
 
         TokenData {
             text,

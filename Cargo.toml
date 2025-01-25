@@ -1,7 +1,7 @@
 [package]
 name = "mail-parser"
 description = "Fast and robust e-mail parsing library for Rust"
-version = "0.9.4"
+version = "0.10.0"
 edition = "2021"
 authors = [ "Stalwart Labs <hello@stalw.art>"]
 license = "Apache-2.0 OR MIT"
@@ -13,6 +13,7 @@ readme = "README.md"
 resolver = "2"
 
 [dependencies]
+hashify = { path = "../hashify" }
 encoding_rs = { version = "0.8", optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
 
@@ -27,7 +28,9 @@ chrono = "0.4"
 default = ["full_encoding"]
 full_encoding = ["encoding_rs"]
 serde_support = ["serde"]
-ludicrous_mode = []
 
 [profile.bench]
 debug = true
+
+[lib]
+doctest = false

@@ -78,7 +78,7 @@ impl<'x> MessageStream<'x> {
                         HeaderName::ContentType | HeaderName::ContentDisposition => {
                             self.parse_content_type()
                         }
-                        HeaderName::Other(_) => self.parse_raw(),
+                        _ => self.parse_raw(),
                     }
                 } else {
                     (conf
@@ -104,8 +104,8 @@ impl<'x> MessageStream<'x> {
         let mut token_start: usize = 0;
         let mut token_end: usize = 0;
         let mut token_len: usize = 0;
-        let mut token_hash: usize = 0;
-        let mut last_ch: u8 = 0;
+
+        let mut header = [0u8; 30];
 
         while let Some(&ch) = self.next() {
             match ch {
@@ -124,19 +124,10 @@ impl<'x> MessageStream<'x> {
                             token_end = token_start;
                         } else {
                             token_end = self.offset();
-                            last_ch = ch;
                         }
 
-                        if let 0 | 9 = token_len {
-                            token_hash += {
-                                #[cfg(feature = "ludicrous_mode")]
-                                unsafe {
-                                    *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
-                                }
-
-                                #[cfg(not(feature = "ludicrous_mode"))]
-                                HDR_HASH[ch.to_ascii_lowercase() as usize]
-                            } as usize;
+                        if let Some(header) = header.get_mut(token_len) {
+                            *header = ch.to_ascii_lowercase();
                         }
                         token_len += 1;
                     }
@@ -145,28 +136,13 @@ impl<'x> MessageStream<'x> {
         }
 
         if token_start != 0 {
-            let field = self.bytes(token_start - 1..token_end);
-
-            if (2..=25).contains(&token_len) {
-                token_hash += token_len + {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
-                    }
-
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    HDR_HASH[last_ch.to_ascii_lowercase() as usize]
-                } as usize;
-
-                if (4..=72).contains(&token_hash) {
-                    let token_hash = token_hash - 4;
-
-                    if field.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                        return Some(HDR_MAP[token_hash].clone());
-                    }
-                }
-            }
-            Some(HeaderName::Other(String::from_utf8_lossy(field)))
+            header_map(&header[..token_len])
+                .unwrap_or_else(|| {
+                    HeaderName::Other(String::from_utf8_lossy(
+                        self.bytes(token_start - 1..token_end),
+                    ))
+                })
+                .into()
         } else {
             None
         }
@@ -176,215 +152,64 @@ impl<'x> MessageStream<'x> {
 impl<'x> HeaderName<'x> {
     /// Parse a header name
     pub fn parse(data: impl Into<Cow<'x, str>>) -> Option<HeaderName<'x>> {
-        let mut token_hash: usize = 0;
-        let mut last_ch: u8 = 0;
         let data = data.into();
-        let data_ = data.as_bytes();
-
-        for (pos, &ch) in data_.iter().enumerate() {
-            if ch.is_ascii_alphanumeric() || [b'_', b'-'].contains(&ch) {
-                if let 0 | 9 = pos {
-                    token_hash += {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            *HDR_HASH.get_unchecked(ch.to_ascii_lowercase() as usize)
-                        }
-
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        HDR_HASH[ch.to_ascii_lowercase() as usize]
-                    } as usize;
-                }
-                last_ch = ch;
-            } else {
-                return None;
-            }
-        }
-
-        if (2..=25).contains(&data.len()) {
-            token_hash += data.len() + {
-                #[cfg(feature = "ludicrous_mode")]
-                unsafe {
-                    *HDR_HASH.get_unchecked(last_ch.to_ascii_lowercase() as usize)
-                }
-
-                #[cfg(not(feature = "ludicrous_mode"))]
-                HDR_HASH[last_ch.to_ascii_lowercase() as usize]
-            } as usize;
-
-            if (4..=72).contains(&token_hash) {
-                let token_hash = token_hash - 4;
-
-                if data_.eq_ignore_ascii_case(HDR_NAMES[token_hash]) {
-                    return HDR_MAP[token_hash].clone().into();
-                }
-            }
-        }
 
         if !data.is_empty() {
-            HeaderName::Other(data).into()
+            let data_lc = data.to_ascii_lowercase();
+            header_map(data_lc.as_bytes())
+                .unwrap_or(HeaderName::Other(data))
+                .into()
         } else {
             None
         }
     }
 }
 
-static HDR_HASH: &[u8] = &[
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 0, 20, 5, 0, 0, 25, 0, 5, 20, 73, 25, 25, 30, 10, 10, 5, 73, 0, 0, 15, 73, 73, 73, 73, 20,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-    73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73,
-];
-
-static HDR_MAP: &[HeaderName<'_>] = &[
-    HeaderName::Date,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::Sender,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::Received,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::References,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::Cc,
-    HeaderName::Comments,
-    HeaderName::ResentCc,
-    HeaderName::ContentId,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ResentMessageId,
-    HeaderName::ReplyTo,
-    HeaderName::ResentTo,
-    HeaderName::ResentBcc,
-    HeaderName::ContentLanguage,
-    HeaderName::Subject,
-    HeaderName::ResentSender,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ResentDate,
-    HeaderName::To,
-    HeaderName::Bcc,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ContentTransferEncoding,
-    HeaderName::ReturnPath,
-    HeaderName::ListId,
-    HeaderName::Keywords,
-    HeaderName::ContentDescription,
-    HeaderName::ListOwner,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ContentType,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ListHelp,
-    HeaderName::MessageId,
-    HeaderName::ContentLocation,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ListSubscribe,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ListPost,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ResentFrom,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ContentDisposition,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::InReplyTo,
-    HeaderName::ListArchive,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::From,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::ListUnsubscribe,
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion, // Invalid
-    HeaderName::MimeVersion,
-];
-
-static HDR_NAMES: &[&[u8]] = &[
-    b"date",
-    b"",
-    b"sender",
-    b"",
-    b"received",
-    b"",
-    b"references",
-    b"",
-    b"cc",
-    b"comments",
-    b"resent-cc",
-    b"content-id",
-    b"",
-    b"resent-message-id",
-    b"reply-to",
-    b"resent-to",
-    b"resent-bcc",
-    b"content-language",
-    b"subject",
-    b"resent-sender",
-    b"",
-    b"",
-    b"resent-date",
-    b"to",
-    b"bcc",
-    b"",
-    b"content-transfer-encoding",
-    b"return-path",
-    b"list-id",
-    b"keywords",
-    b"content-description",
-    b"list-owner",
-    b"",
-    b"content-type",
-    b"",
-    b"list-help",
-    b"message-id",
-    b"content-location",
-    b"",
-    b"",
-    b"list-subscribe",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"list-post",
-    b"",
-    b"resent-from",
-    b"",
-    b"",
-    b"content-disposition",
-    b"",
-    b"in-reply-to",
-    b"list-archive",
-    b"",
-    b"from",
-    b"",
-    b"list-unsubscribe",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"",
-    b"mime-version",
-];
+fn header_map(name: &[u8]) -> Option<HeaderName<'static>> {
+    hashify::map! {name,
+    "arc-authentication-results" => HeaderName::ArcAuthenticationResults,
+    "arc-seal" => HeaderName::ArcSeal,
+    "arc-message-signature" => HeaderName::ArcMessageSignature,
+    "bcc" => HeaderName::Bcc,
+    "cc" => HeaderName::Cc,
+    "comments" => HeaderName::Comments,
+    "content-description" => HeaderName::ContentDescription,
+    "content-disposition" => HeaderName::ContentDisposition,
+    "content-id" => HeaderName::ContentId,
+    "content-language" => HeaderName::ContentLanguage,
+    "content-location" => HeaderName::ContentLocation,
+    "content-transfer-encoding" => HeaderName::ContentTransferEncoding,
+    "content-type" => HeaderName::ContentType,
+    "date" => HeaderName::Date,
+    "dkim-signature" => HeaderName::DkimSignature,
+    "from" => HeaderName::From,
+    "in-reply-to" => HeaderName::InReplyTo,
+    "keywords" => HeaderName::Keywords,
+    "list-archive" => HeaderName::ListArchive,
+    "list-help" => HeaderName::ListHelp,
+    "list-id" => HeaderName::ListId,
+    "list-owner" => HeaderName::ListOwner,
+    "list-post" => HeaderName::ListPost,
+    "list-subscribe" => HeaderName::ListSubscribe,
+    "list-unsubscribe" => HeaderName::ListUnsubscribe,
+    "message-id" => HeaderName::MessageId,
+    "mime-version" => HeaderName::MimeVersion,
+    "received" => HeaderName::Received,
+    "references" => HeaderName::References,
+    "reply-to" => HeaderName::ReplyTo,
+    "resent-bcc" => HeaderName::ResentBcc,
+    "resent-cc" => HeaderName::ResentCc,
+    "resent-date" => HeaderName::ResentDate,
+    "resent-from" => HeaderName::ResentFrom,
+    "resent-message-id" => HeaderName::ResentMessageId,
+    "resent-sender" => HeaderName::ResentSender,
+    "resent-to" => HeaderName::ResentTo,
+    "return-path" => HeaderName::ReturnPath,
+    "sender" => HeaderName::Sender,
+    "subject" => HeaderName::Subject,
+    "to" => HeaderName::To,
+    }
+}
 
 #[cfg(test)]
 mod tests {

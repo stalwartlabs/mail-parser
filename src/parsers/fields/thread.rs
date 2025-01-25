@@ -9,12 +9,13 @@
  * except according to those terms.
  */
 
-static RE_PREFIXES: &[&str] = &[
-    "re", "res", "sv", "antw", "ref", "aw", "απ", "השב", "vá", "r", "rif", "bls", "odp", "ynt",
-    "atb", "رد", "回复", "转发",
-];
+fn is_re_prefix(prefix: &str) -> bool {
+    hashify::set! {prefix.as_bytes(),  "re", "res", "sv", "antw", "ref", "aw", "απ", "השב", "vá", "r", "rif", "bls", "odp", "ynt",
+    "atb", "رد", "回复", "转发",}
+}
 
-static FWD_PREFIXES: &[&str] = &[
+fn is_fwd_prefix(prefix: &str) -> bool {
+    hashify::set! {prefix.as_bytes(),
     "fwd",
     "fw",
     "rv",
@@ -37,7 +38,8 @@ static FWD_PREFIXES: &[&str] = &[
     "إعادة توجيه",
     "回覆",
     "轉寄",
-];
+    }
+}
 
 pub fn thread_name(text: &str) -> &str {
     let mut token_start = 0;
@@ -63,9 +65,7 @@ pub fn thread_name(text: &str) -> &str {
                             token_end = pos;
                         }
                         let prefix = text[token_start..token_end].to_lowercase();
-                        if RE_PREFIXES.contains(&prefix.as_ref())
-                            || FWD_PREFIXES.contains(&prefix.as_ref())
-                        {
+                        if is_re_prefix(prefix.as_ref()) || is_fwd_prefix(prefix.as_ref()) {
                             seen_header = true;
                         } else {
                             break;
@@ -98,9 +98,7 @@ pub fn thread_name(text: &str) -> &str {
                         token_end = pos;
                     }
                     let prefix = text[token_start..token_end].to_lowercase();
-                    if !RE_PREFIXES.contains(&prefix.as_ref())
-                        && !FWD_PREFIXES.contains(&prefix.as_ref())
-                    {
+                    if !is_re_prefix(prefix.as_ref()) && !is_fwd_prefix(prefix.as_ref()) {
                         break;
                     }
                 } else {
@@ -115,10 +113,10 @@ pub fn thread_name(text: &str) -> &str {
                 }
 
                 let prefix = text[token_start..token_end].to_lowercase();
-                if FWD_PREFIXES.contains(&prefix.as_ref()) {
+                if is_fwd_prefix(prefix.as_ref()) {
                     token_found = false;
                     seen_blob_header = true;
-                } else if seen_blob_header && RE_PREFIXES.contains(&prefix.as_ref()) {
+                } else if seen_blob_header && is_re_prefix(prefix.as_ref()) {
                     token_found = false;
                 } else {
                     in_blob_ignore = true;
@@ -175,7 +173,7 @@ pub fn trim_trailing_fwd(text: &str) -> &str {
                 if in_parentheses {
                     in_parentheses = false;
                     if fwd_end - pos > 2
-                        && FWD_PREFIXES.contains(&text[pos + 1..fwd_end].to_lowercase().as_ref())
+                        && is_fwd_prefix(text[pos + 1..fwd_end].to_lowercase().as_ref())
                     {
                         text_end = pos;
                         trim_end = true;

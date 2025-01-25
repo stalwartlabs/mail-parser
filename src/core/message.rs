@@ -93,7 +93,7 @@ impl<'x> Message<'x> {
     pub fn header_values(
         &self,
         name: impl Into<HeaderName<'x>>,
-    ) -> impl Iterator<Item = &HeaderValue<'x>> {
+    ) -> impl Iterator<Item = &HeaderValue<'x>> + Sync + Send {
         let name = name.into();
         self.parts[0].headers.iter().filter_map(move |header| {
             if header.name == name {
@@ -105,7 +105,7 @@ impl<'x> Message<'x> {
     }
 
     /// Returns all headers in raw format
-    pub fn headers_raw(&self) -> impl Iterator<Item = (&str, &str)> {
+    pub fn headers_raw(&self) -> impl Iterator<Item = (&str, &str)> + Sync + Send {
         self.parts[0].headers.iter().filter_map(move |header| {
             Some((
                 header.name.as_str(),
@@ -449,17 +449,17 @@ impl<'x> Message<'x> {
     }
 
     /// Returns an Interator over the text body parts
-    pub fn text_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
+    pub fn text_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> + Sync + Send {
         BodyPartIterator::new(self, &self.text_body)
     }
 
     /// Returns an Interator over the HTML body parts
-    pub fn html_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
+    pub fn html_bodies(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> + Sync + Send {
         BodyPartIterator::new(self, &self.html_body)
     }
 
     /// Returns an Interator over the attachments
-    pub fn attachments(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> {
+    pub fn attachments(&self) -> impl Iterator<Item = &'_ MessagePart<'_>> + Sync + Send {
         AttachmentIterator::new(self)
     }
 

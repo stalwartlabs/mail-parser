@@ -1,3 +1,16 @@
+mail-parser 0.10.0
+================================
+- Perfect hashing using `hashify` crate rather than static `gperf` generated code.
+- Added `DkimSignature`, `ArcAuthenticationResults`, `ArcMessageSignature` and `ArcSeal` headers. 
+- `HeaderName` is non-exhaustive.
+- Parse obsolete timezones (#95).
+- Fix: Folding ws between "Content-Type:" and "plain/text" leads to empty header (#96).
+- Fix: Multiline quoted continuations (closes #92).
+- Fix: Deserialize (#93).
+- Retain mbox IO errors (#91).
+- Hide concrete type behind impl type (#94).
+- Removed `ludicrous` feature, the Rust compiler is smart enough to optimize array lookups.
+
 mail-parser 0.9.4
 ================================
 - Flexible parsing of charset names (#85).

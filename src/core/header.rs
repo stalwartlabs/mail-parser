@@ -156,10 +156,10 @@ impl<'x> HeaderValue<'x> {
         }
     }
 
-    pub fn as_text_list(&self) -> Option<Vec<&str>> {
+    pub fn as_text_list(&self) -> Option<&[Cow<'x, str>]> {
         match *self {
-            HeaderValue::Text(ref s) => Some(vec![s.as_ref()]),
-            HeaderValue::TextList(ref l) => Some(l.iter().map(|l| l.as_ref()).collect()),
+            HeaderValue::Text(ref s) => Some(std::slice::from_ref(s)),
+            HeaderValue::TextList(ref l) => Some(l.as_slice()),
             _ => None,
         }
     }
@@ -321,6 +321,10 @@ impl HeaderName<'_> {
             HeaderName::ListPost => HeaderName::ListPost,
             HeaderName::ListSubscribe => HeaderName::ListSubscribe,
             HeaderName::ListUnsubscribe => HeaderName::ListUnsubscribe,
+            HeaderName::ArcAuthenticationResults => HeaderName::ArcAuthenticationResults,
+            HeaderName::ArcMessageSignature => HeaderName::ArcMessageSignature,
+            HeaderName::ArcSeal => HeaderName::ArcSeal,
+            HeaderName::DkimSignature => HeaderName::DkimSignature,
         }
     }
 
@@ -364,6 +368,10 @@ impl HeaderName<'_> {
             HeaderName::ListPost => HeaderName::ListPost,
             HeaderName::ListSubscribe => HeaderName::ListSubscribe,
             HeaderName::ListUnsubscribe => HeaderName::ListUnsubscribe,
+            HeaderName::ArcAuthenticationResults => HeaderName::ArcAuthenticationResults,
+            HeaderName::ArcMessageSignature => HeaderName::ArcMessageSignature,
+            HeaderName::ArcSeal => HeaderName::ArcSeal,
+            HeaderName::DkimSignature => HeaderName::DkimSignature,
         }
     }
 
@@ -420,6 +428,10 @@ impl HeaderName<'_> {
             HeaderName::ListPost => "List-Post",
             HeaderName::ListSubscribe => "List-Subscribe",
             HeaderName::ListUnsubscribe => "List-Unsubscribe",
+            HeaderName::ArcAuthenticationResults => "ARC-Authentication-Results",
+            HeaderName::ArcMessageSignature => "ARC-Message-Signature",
+            HeaderName::ArcSeal => "ARC-Seal",
+            HeaderName::DkimSignature => "DKIM-Signature",
             HeaderName::Other(_) => "",
         }
     }
@@ -463,6 +475,10 @@ impl HeaderName<'_> {
             HeaderName::ListPost => "List-Post".len(),
             HeaderName::ListSubscribe => "List-Subscribe".len(),
             HeaderName::ListUnsubscribe => "List-Unsubscribe".len(),
+            HeaderName::ArcAuthenticationResults => "ARC-Authentication-Results".len(),
+            HeaderName::ArcMessageSignature => "ARC-Message-Signature".len(),
+            HeaderName::ArcSeal => "ARC-Seal".len(),
+            HeaderName::DkimSignature => "DKIM-Signature".len(),
             HeaderName::Other(other) => other.len(),
         }
     }
@@ -530,6 +546,10 @@ impl HeaderName<'_> {
             HeaderName::ListSubscribe => 35,
             HeaderName::ListUnsubscribe => 36,
             HeaderName::Other(_) => 37,
+            HeaderName::ArcAuthenticationResults => 38,
+            HeaderName::ArcMessageSignature => 39,
+            HeaderName::ArcSeal => 40,
+            HeaderName::DkimSignature => 41,
         }
     }
 }
@@ -804,7 +824,7 @@ impl<'x> ContentType<'x> {
     pub fn has_attribute(&self, name: &str) -> bool {
         self.attributes
             .as_ref()
-            .map_or(false, |attr| attr.iter().any(|(key, _)| key == name))
+            .is_some_and(|attr| attr.iter().any(|(key, _)| key == name))
     }
 
     /// Returns ```true``` if the Content-Disposition type is "attachment"
@@ -1007,6 +1027,10 @@ impl From<u8> for HeaderName<'_> {
             34 => HeaderName::ListPost,
             35 => HeaderName::ListSubscribe,
             36 => HeaderName::ListUnsubscribe,
+            38 => HeaderName::ArcAuthenticationResults,
+            39 => HeaderName::ArcMessageSignature,
+            40 => HeaderName::ArcSeal,
+            41 => HeaderName::DkimSignature,
             _ => HeaderName::Other("".into()),
         }
     }

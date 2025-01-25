@@ -36,68 +36,26 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
             for (pos, &ch) in entity.iter().enumerate() {
                 match pos {
                     0 | 5 | 6 | 9 | 11 => {
-                        hash += {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *ENTITY_HASH.get_unchecked(ch as usize)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            ENTITY_HASH[ch as usize]
-                        };
+                        hash += ENTITY_HASH[ch as usize];
                     }
                     1 => {
-                        hash += {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *ENTITY_HASH.get_unchecked(ch as usize + 4)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            ENTITY_HASH[ch as usize + 4]
-                        };
+                        hash += ENTITY_HASH[ch as usize + 4];
                     }
                     2 | 4 => {
-                        hash += {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *ENTITY_HASH.get_unchecked(ch as usize + 1)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            ENTITY_HASH[ch as usize + 1]
-                        };
+                        hash += ENTITY_HASH[ch as usize + 1];
                     }
                     3 => {
-                        hash += {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                *ENTITY_HASH.get_unchecked(ch as usize + 3)
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
-                            ENTITY_HASH[ch as usize + 3]
-                        };
+                        hash += ENTITY_HASH[ch as usize + 3];
                     }
                     _ => (),
                 }
                 if pos == entity.len() - 1 {
-                    hash += {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            *ENTITY_HASH.get_unchecked(ch as usize)
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
-                        ENTITY_HASH[ch as usize]
-                    };
+                    hash += ENTITY_HASH[ch as usize];
                 }
             }
 
             if (64..=18079).contains(&hash) {
-                entity_code = {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        *ENTITY_MAP.get_unchecked((hash - 64) as usize)
-                    }
-                    #[cfg(not(feature = "ludicrous_mode"))]
-                    ENTITY_MAP[(hash - 64) as usize]
-                };
+                entity_code = ENTITY_MAP[(hash - 64) as usize];
             }
         }
 

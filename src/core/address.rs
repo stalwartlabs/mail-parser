@@ -73,7 +73,7 @@ impl<'x> Address<'x> {
     }
 
     /// Returns an iterator over the addresses in the list, or the addresses in the groups.
-    pub fn iter(&self) -> Box<dyn DoubleEndedIterator<Item = &Addr<'x>> + '_> {
+    pub fn iter(&self) -> Box<dyn DoubleEndedIterator<Item = &Addr<'x>> + '_ + Sync + Send> {
         match self {
             Address::List(list) => Box::new(list.iter()),
             Address::Group(group) => {
@@ -88,13 +88,13 @@ impl<'x> Address<'x> {
             Address::List(list) => list.iter().any(|a| {
                 a.address
                     .as_ref()
-                    .map_or(false, |a| a.eq_ignore_ascii_case(addr))
+                    .is_some_and(|a| a.eq_ignore_ascii_case(addr))
             }),
             Address::Group(group) => group.iter().any(|group| {
                 group.addresses.iter().any(|a| {
                     a.address
                         .as_ref()
-                        .map_or(false, |a| a.eq_ignore_ascii_case(addr))
+                        .is_some_and(|a| a.eq_ignore_ascii_case(addr))
                 })
             }),
         }

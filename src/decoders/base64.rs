@@ -29,13 +29,6 @@ pub fn base64_decode_stream<'x>(
     let mut buf = Vec::with_capacity(stream_len / 4 * 3);
 
     for &ch in stream {
-        #[cfg(feature = "ludicrous_mode")]
-        let val = unsafe {
-            *BASE64_MAP
-                .get_unchecked(byte_count as usize)
-                .get_unchecked(ch as usize)
-        };
-        #[cfg(not(feature = "ludicrous_mode"))]
         let val = BASE64_MAP[byte_count as usize][ch as usize];
 
         if val < 0x01ffffff {
@@ -47,11 +40,6 @@ pub fn base64_decode_stream<'x>(
                 chunk |= val;
 
                 if byte_count == 0 {
-                    #[cfg(feature = "ludicrous_mode")]
-                    unsafe {
-                        buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
-                    }
-                    #[cfg(not(feature = "ludicrous_mode"))]
                     buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                 }
             }
@@ -59,20 +47,10 @@ pub fn base64_decode_stream<'x>(
             match ch {
                 b'=' => match byte_count {
                     1 | 2 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.push(*chunk.to_le_bytes().get_unchecked(0));
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.push(chunk.to_le_bytes()[0]);
                         byte_count = 0;
                     }
                     3 => {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                         byte_count = 0;
                     }
@@ -103,13 +81,6 @@ impl<'x> MessageStream<'x> {
         self.checkpoint();
 
         while let Some(&ch) = self.next() {
-            #[cfg(feature = "ludicrous_mode")]
-            let val = unsafe {
-                *BASE64_MAP
-                    .get_unchecked(byte_count as usize)
-                    .get_unchecked(ch as usize)
-            };
-            #[cfg(not(feature = "ludicrous_mode"))]
             let val = BASE64_MAP[byte_count as usize][ch as usize];
 
             if val < 0x01ffffff {
@@ -121,11 +92,6 @@ impl<'x> MessageStream<'x> {
                     chunk |= val;
 
                     if byte_count == 0 {
-                        #[cfg(feature = "ludicrous_mode")]
-                        unsafe {
-                            buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
-                        }
-                        #[cfg(not(feature = "ludicrous_mode"))]
                         buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                     }
                 }
@@ -133,20 +99,10 @@ impl<'x> MessageStream<'x> {
                 match ch {
                     b'=' => match byte_count {
                         1 | 2 => {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                buf.push(*chunk.to_le_bytes().get_unchecked(0));
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
                             buf.push(chunk.to_le_bytes()[0]);
                             byte_count = 0;
                         }
                         3 => {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
                             buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                             byte_count = 0;
                         }
@@ -215,20 +171,10 @@ impl<'x> MessageStream<'x> {
                 b'=' => {
                     match byte_count {
                         1 | 2 => {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                buf.push(*chunk.to_le_bytes().get_unchecked(0));
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
                             buf.push(chunk.to_le_bytes()[0]);
                             byte_count = 0;
                         }
                         3 => {
-                            #[cfg(feature = "ludicrous_mode")]
-                            unsafe {
-                                buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..2));
-                            }
-                            #[cfg(not(feature = "ludicrous_mode"))]
                             buf.extend_from_slice(&chunk.to_le_bytes()[0..2]);
                             byte_count = 0;
                         }
@@ -253,13 +199,6 @@ impl<'x> MessageStream<'x> {
                 }
                 b' ' | b'\t' | b'\r' => (),
                 _ => {
-                    #[cfg(feature = "ludicrous_mode")]
-                    let val = unsafe {
-                        *BASE64_MAP
-                            .get_unchecked(byte_count as usize)
-                            .get_unchecked(ch as usize)
-                    };
-                    #[cfg(not(feature = "ludicrous_mode"))]
                     let val = BASE64_MAP[byte_count as usize][ch as usize];
 
                     if val < 0x01ffffff {
@@ -271,11 +210,6 @@ impl<'x> MessageStream<'x> {
                             chunk |= val;
 
                             if byte_count == 0 {
-                                #[cfg(feature = "ludicrous_mode")]
-                                unsafe {
-                                    buf.extend_from_slice(chunk.to_le_bytes().get_unchecked(0..3));
-                                }
-                                #[cfg(not(feature = "ludicrous_mode"))]
                                 buf.extend_from_slice(&chunk.to_le_bytes()[0..3]);
                             }
                         }

@@ -453,17 +453,18 @@ impl<'x> MessageStream<'x> {
                 break;
             }
         }
-        match buf.as_ref() {
-            b"EDT" => -4,
-            b"EST" => -5,
-            b"CDT" => -5,
-            b"CST" => -6,
-            b"MDT" => -6,
-            b"MST" => -7,
-            b"PDT" => -7,
-            b"PST" => -8,
-            _ => 0,
+
+        hashify::map! { buf.as_ref(),
+            "EDT" => -4,
+            "EST" => -5,
+            "CDT" => -5,
+            "CST" => -6,
+            "MDT" => -6,
+            "MST" => -7,
+            "PDT" => -7,
+            "PST" => -8,
         }
+        .unwrap_or(0)
     }
 }
 

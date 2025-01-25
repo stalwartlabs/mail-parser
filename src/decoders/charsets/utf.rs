@@ -34,7 +34,7 @@ fn add_utf16_bytes(state: &mut Utf7DecoderState, n_bytes: usize) {
     }
 }
 
-pub fn decoder_utf7(bytes: &[u8]) -> String {
+pub(crate) fn decoder_utf7(bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len());
     let mut byte_count: u8 = 0;
     let mut in_b64 = false;
@@ -111,16 +111,18 @@ fn decoder_utf16_(bytes: &[u8], fnc: fn([u8; 2]) -> u16) -> String {
     }
 }
 
-pub fn decoder_utf16_le(bytes: &[u8]) -> String {
+#[inline(always)]
+pub(crate) fn decoder_utf16_le(bytes: &[u8]) -> String {
     decoder_utf16_(bytes, u16::from_le_bytes)
 }
 
-pub fn decoder_utf16_be(bytes: &[u8]) -> String {
+#[inline(always)]
+pub(crate) fn decoder_utf16_be(bytes: &[u8]) -> String {
     decoder_utf16_(bytes, u16::from_be_bytes)
 }
 
 #[allow(clippy::type_complexity)]
-pub fn decoder_utf16(bytes: &[u8]) -> String {
+pub(crate) fn decoder_utf16(bytes: &[u8]) -> String {
     // Read BOM
     let (bytes, fnc): (&[u8], fn([u8; 2]) -> u16) = match bytes.get(0..2) {
         Some([0xfe, 0xff]) => (bytes.get(2..).unwrap_or(&[]), u16::from_be_bytes),
@@ -129,11 +131,6 @@ pub fn decoder_utf16(bytes: &[u8]) -> String {
     };
 
     decoder_utf16_(bytes, fnc)
-}
-
-// Not currently used at the moment
-pub fn decoder_utf8(bytes: &[u8]) -> String {
-    String::from_utf8_lossy(bytes).into_owned()
 }
 
 #[cfg(test)]
