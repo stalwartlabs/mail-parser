@@ -338,13 +338,9 @@ impl<'x> MessageStream<'x> {
                         parts_sizes[pos] -= 1;
                         parts[pos] += (*ch - b'0') as u32 * u32::pow(10, parts_sizes[pos]);
 
-                        if ignore {
-                            ignore = false;
-                        }
+                        ignore = false;
                     }
-                    if is_new_token {
-                        is_new_token = false;
-                    }
+                    is_new_token = false;
                 }
                 b':' => {
                     if !is_new_token && !ignore && (pos == 3 || pos == 4) {
@@ -372,9 +368,15 @@ impl<'x> MessageStream<'x> {
                         }
                         month_pos += 1;
                     }
-                    if is_new_token {
-                        is_new_token = false;
+                    if pos == 6 {
+                        let mut buf = [*ch, 0, 0];
+                        let zone = self.obs_zone(&mut buf);
+                        is_plus = !zone.is_negative();
+                        parts[pos] = 100 * zone.unsigned_abs();
+                        parts_sizes[pos] = 0;
+                        next_part = true;
                     }
+                    is_new_token = false;
                 }
                 b'(' => {
                     comment_count += 1;
@@ -433,12 +435,34 @@ impl<'x> MessageStream<'x> {
                 hour: parts[3] as u8,
                 minute: parts[4] as u8,
                 second: parts[5] as u8,
-                tz_hour: (parts[6] / 100) as u8,
-                tz_minute: (parts[6] % 100) as u8,
+                tz_hour: ((parts[6] / 100) % 12) as u8,
+                tz_minute: ((parts[6] % 100) % 60) as u8,
                 tz_before_gmt: !is_plus,
             })
         } else {
             HeaderValue::Empty
+        }
+    }
+    // 4.3 obsolete date and time
+    fn obs_zone(&mut self, buf: &mut [u8; 3]) -> i32 {
+        let mut i = 1;
+        for &b in self.by_ref() {
+            buf[i] = b;
+            i += 1;
+            if i == 3 {
+                break;
+            }
+        }
+        match buf.as_ref() {
+            b"EDT" => -4,
+            b"EST" => -5,
+            b"CDT" => -5,
+            b"CST" => -6,
+            b"MDT" => -6,
+            b"MST" => -7,
+            b"PDT" => -7,
+            b"PST" => -8,
+            _ => 0,
         }
     }
 }
