@@ -449,7 +449,7 @@ impl<'x> MessageStream<'x> {
             }
         }
 
-        hashify::map! { buf.as_ref(),
+        hashify::tiny_map! { buf.as_ref(),
             "EDT" => -4,
             "EST" => -5,
             "CDT" => -5,

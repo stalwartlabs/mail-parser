@@ -22,7 +22,7 @@ pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
         };
     }
 
-    hashify::map!(&l_charset[..charset.len().clamp(1, 45)],
+    hashify::tiny_map!(&l_charset[..charset.len().clamp(1, 45)],
         "850" => decoder_ibm_850,
         "866" => decoder_ibm866,
         "arabic" => decoder_iso_8859_6,

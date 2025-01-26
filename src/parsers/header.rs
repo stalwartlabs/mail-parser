@@ -161,7 +161,7 @@ impl<'x> HeaderName<'x> {
 }
 
 fn header_map(name: &[u8]) -> Option<HeaderName<'static>> {
-    hashify::map! {name,
+    hashify::tiny_map! {name,
     "arc-authentication-results" => HeaderName::ArcAuthenticationResults,
     "arc-seal" => HeaderName::ArcSeal,
     "arc-message-signature" => HeaderName::ArcMessageSignature,
