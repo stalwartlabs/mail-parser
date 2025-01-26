@@ -1,3 +1,7 @@
+mail-parser 0.10.1
+================================
+- Fixed `HeaderName::parse` function.
+
 mail-parser 0.10.0
 ================================
 - Perfect hashing using `hashify` crate rather than static `gperf` generated code.

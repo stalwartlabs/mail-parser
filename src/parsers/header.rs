@@ -150,7 +150,14 @@ impl<'x> HeaderName<'x> {
         let data = data.into();
 
         if !data.is_empty() {
-            let data_lc = data.to_ascii_lowercase();
+            let mut data_lc = String::with_capacity(data.len());
+            for ch in data.chars() {
+                match ch {
+                    'A'..='Z' => data_lc.push(ch.to_ascii_lowercase()),
+                    'a'..='z' | '0'..='9' | '-' | '_' => data_lc.push(ch),
+                    _ => return None,
+                }
+            }
             header_map(data_lc.as_bytes())
                 .unwrap_or(HeaderName::Other(data))
                 .into()
