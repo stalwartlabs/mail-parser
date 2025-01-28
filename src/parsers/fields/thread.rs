@@ -5,8 +5,26 @@
  */
 
 fn is_re_prefix(prefix: &str) -> bool {
-    hashify::tiny_set! {prefix.as_bytes(),  "re", "res", "sv", "antw", "ref", "aw", "απ", "השב", "vá", "r", "rif", "bls", "odp", "ynt",
-    "atb", "رد", "回复", "转发",}
+    hashify::tiny_set! {prefix.as_bytes(),
+        "re",
+        "res",
+        "sv",
+        "antw",
+        "ref",
+        "aw",
+        "απ",
+        "השב",
+        "vá",
+        "r",
+        "rif",
+        "bls",
+        "odp",
+        "ynt",
+        "atb",
+        "رد",
+        "回复",
+        "转发",
+    }
 }
 
 fn is_fwd_prefix(prefix: &str) -> bool {

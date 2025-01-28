@@ -1,3 +1,7 @@
+mail-parser 0.10.2
+================================
+- Fixed `HeaderName` enum order to avoid breaking bincode serialization.
+
 mail-parser 0.10.1
 ================================
 - Fixed `HeaderName::parse` function.

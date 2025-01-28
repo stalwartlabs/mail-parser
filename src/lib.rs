@@ -162,9 +162,6 @@ pub struct Header<'x> {
 #[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
 #[non_exhaustive]
 pub enum HeaderName<'x> {
-    ArcAuthenticationResults,
-    ArcMessageSignature,
-    ArcSeal,
     Subject,
     From,
     To,
@@ -188,7 +185,6 @@ pub enum HeaderName<'x> {
     ContentTransferEncoding,
     ContentType,
     ContentDisposition,
-    DkimSignature,
     ResentTo,
     ResentFrom,
     ResentBcc,
@@ -204,6 +200,10 @@ pub enum HeaderName<'x> {
     ListSubscribe,
     ListUnsubscribe,
     Other(Cow<'x, str>),
+    DkimSignature,
+    ArcAuthenticationResults,
+    ArcMessageSignature,
+    ArcSeal,
 }
 
 /// Parsed header value.
