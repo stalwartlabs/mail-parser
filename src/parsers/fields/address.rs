@@ -177,7 +177,7 @@ impl<'x> AddressParser<'x> {
             } else if has_name {
                 Group {
                     name: self.group_name.take(),
-                    addresses: Vec::new(),
+                    addresses: std::mem::take(&mut self.addresses),
                 }
             } else {
                 return;
