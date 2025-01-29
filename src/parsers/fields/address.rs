@@ -169,7 +169,7 @@ impl<'x> AddressParser<'x> {
                     name: self.group_name.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else if has_addresses && !has_name {
+            } else if has_addresses {
                 Group {
                     name: self.group_comment.take(),
                     addresses: std::mem::take(&mut self.addresses),
