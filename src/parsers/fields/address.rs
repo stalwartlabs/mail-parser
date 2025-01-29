@@ -218,7 +218,7 @@ impl<'x> MessageStream<'x> {
                 b'\n' => {
                     parser.add_token(self, false);
                     if self.try_next_is_space() {
-                            parser.is_token_start = true;
+                        parser.is_token_start = true;
                         continue;
                     } else {
                         break;
@@ -284,13 +284,13 @@ impl<'x> MessageStream<'x> {
                     self.restore();
                 }
                 b' ' | b'\t' => {
-                        parser.is_token_start = true;
-                        parser.is_escaped = false;
+                    parser.is_token_start = true;
+                    parser.is_escaped = false;
                     if parser.state == AddressState::Quote {
                         if parser.token_start == 0 {
                             parser.token_start = self.offset();
                         }
-                            parser.token_end = self.offset();
+                        parser.token_end = self.offset();
                     }
                     continue;
                 }
@@ -326,14 +326,14 @@ impl<'x> MessageStream<'x> {
                 _ => (),
             }
 
-                parser.is_escaped = false;
+            parser.is_escaped = false;
 
-                parser.is_token_start = false;
+            parser.is_token_start = false;
 
             if parser.token_start == 0 {
                 parser.token_start = self.offset();
             }
-                parser.token_end = self.offset();
+            parser.token_end = self.offset();
         }
 
         parser.add_address();
