@@ -151,26 +151,6 @@ impl<'x> AddressParser<'x> {
         let has_comment = self.group_comment.is_some();
         let has_addresses = !self.addresses.is_empty();
 
-        // equivalence check
-        for has_addresses in [false, true] {
-            for has_name in [false, true] {
-                assert_eq!(
-                    !(has_addresses && has_name) && has_addresses,
-                    has_addresses && !has_name
-                );
-            }
-        }
-
-        // equivalence check
-        for has_addresses in [false, true] {
-            for has_name in [false, true] {
-                assert_eq!(
-                    !(has_addresses && has_name) && !has_addresses && has_name,
-                    has_name && !has_addresses
-                );
-            }
-        }
-
         self.result
             .push(if has_name && has_addresses && has_comment {
                 Group {
@@ -189,17 +169,11 @@ impl<'x> AddressParser<'x> {
                     name: self.group_name.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-                // the branch above has failed, giving !(has_addresses && has_name) here
-                // so the branch succeeds when !(has_addresses && has_name) && has_addresses holds
-                // which is by assert above if and only if has_addresses && !has_name holds
             } else if has_addresses && !has_name {
                 Group {
                     name: self.group_comment.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-                // the branches above have failed, giving !(has_addresses && has_name) && !has_addresses here
-                // so the branch succeeds when !(has_addresses && has_name) && !has_addresses && has_name holds
-                // which is by assert above if and only if has_name && !has_addresses holds
             } else if has_name && !has_addresses {
                 Group {
                     name: self.group_name.take(),
