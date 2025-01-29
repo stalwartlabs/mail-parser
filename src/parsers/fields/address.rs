@@ -151,6 +151,10 @@ impl<'x> AddressParser<'x> {
         let has_comment = self.group_comment.is_some();
         let has_addresses = !self.addresses.is_empty();
 
+        if !has_name && !has_addresses {
+            return;
+        }
+
         self.result
             .push(if has_name && has_addresses && has_comment {
                 Group {
@@ -169,13 +173,11 @@ impl<'x> AddressParser<'x> {
                     name: self.group_name.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else if has_addresses {
+            } else {
                 Group {
                     name: self.group_comment.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else {
-                return;
             });
     }
 }
