@@ -316,7 +316,7 @@ impl MessageParser {
 
                 let is_html = mime_type == MimeType::TextHtml;
 
-                if !is_text || is_text && (!add_to_html && is_html || !add_to_text && !is_html) {
+                if !is_text || !add_to_html && is_html || !add_to_text && !is_html {
                     message.attachments.push(message.parts.len());
                 }
 
