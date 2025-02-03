@@ -108,17 +108,17 @@ impl MessageParser {
     /// This function never panics, a best-effort is made to parse the message and
     /// if no headers are found None is returned.
     ///
-    pub fn parse<'x>(&self, raw_message: impl IntoByteSlice<'x>) -> Option<Message<'x>> {
-        self.parse_(raw_message.into_byte_slice(), MAX_NESTED_ENCODED, false)
+    pub fn parse<'x>(&self, raw_message: &'x (impl AsRef<[u8]> + ?Sized)) -> Option<Message<'x>> {
+        self.parse_(raw_message.as_ref(), MAX_NESTED_ENCODED, false)
     }
 
     /// Parses a byte slice containing the RFC5322 raw message and returns a
     /// `Message` struct containing only the headers.
     pub fn parse_headers<'x>(
         &self,
-        raw_message: impl IntoByteSlice<'x> + 'x,
+        raw_message: &'x (impl AsRef<[u8]> + ?Sized),
     ) -> Option<Message<'x>> {
-        self.parse_(raw_message.into_byte_slice(), MAX_NESTED_ENCODED, true)
+        self.parse_(raw_message.as_ref(), MAX_NESTED_ENCODED, true)
     }
 
     fn parse_<'x>(
@@ -546,40 +546,6 @@ impl<'x> Message<'x> {
     /// Returns `false` if at least one header field was successfully parsed.
     pub fn is_empty(&self) -> bool {
         self.parts.is_empty()
-    }
-}
-
-pub trait IntoByteSlice<'x> {
-    fn into_byte_slice(self) -> &'x [u8];
-}
-
-impl<'x> IntoByteSlice<'x> for &'x [u8] {
-    fn into_byte_slice(self) -> &'x [u8] {
-        self
-    }
-}
-
-impl<'x, const N: usize> IntoByteSlice<'x> for &'x [u8; N] {
-    fn into_byte_slice(self) -> &'x [u8] {
-        self
-    }
-}
-
-impl<'x> IntoByteSlice<'x> for &'x str {
-    fn into_byte_slice(self) -> &'x [u8] {
-        self.as_bytes()
-    }
-}
-
-impl<'x> IntoByteSlice<'x> for &'x String {
-    fn into_byte_slice(self) -> &'x [u8] {
-        self.as_bytes()
-    }
-}
-
-impl<'x> IntoByteSlice<'x> for &'x Vec<u8> {
-    fn into_byte_slice(self) -> &'x [u8] {
-        self
     }
 }
 
