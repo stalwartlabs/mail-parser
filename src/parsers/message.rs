@@ -291,7 +291,7 @@ impl MessageParser {
                             _ => (false, false),
                         }
                     } else if is_inline {
-                        if state.in_alternative && (state.need_text_body || state.need_html_body) {
+                        if state.in_alternative {
                             match mime_type {
                                 MimeType::TextHtml => {
                                     state.need_text_body = false;
