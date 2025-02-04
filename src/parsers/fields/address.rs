@@ -5,6 +5,7 @@
  */
 
 use std::borrow::Cow;
+use std::mem;
 
 use crate::{parsers::MessageStream, Addr, Address, Group, HeaderValue};
 
@@ -138,15 +139,10 @@ impl<'x> AddressParser<'x> {
         }
 
         if !self.mail_tokens.is_empty() {
-            if self.group_name.is_none() {
-                self.group_name = concat_tokens(&mut self.mail_tokens).into();
+            if let Some(group_name) = &mut self.group_name {
+                *group_name = mem::take(group_name) + " " + concat_tokens(&mut self.mail_tokens);
             } else {
-                self.group_name = Some(
-                    (self.group_name.as_ref().unwrap().as_ref().to_owned()
-                        + " "
-                        + concat_tokens(&mut self.mail_tokens).as_ref())
-                    .into(),
-                );
+                self.group_name = concat_tokens(&mut self.mail_tokens).into();
             }
         }
     }
@@ -155,6 +151,10 @@ impl<'x> AddressParser<'x> {
         let has_name = self.group_name.is_some();
         let has_comment = self.group_comment.is_some();
         let has_addresses = !self.addresses.is_empty();
+
+        if !has_name && !has_addresses {
+            return;
+        }
 
         self.result
             .push(if has_name && has_addresses && has_comment {
@@ -169,23 +169,16 @@ impl<'x> AddressParser<'x> {
                     ),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else if has_addresses && has_name {
+            } else if has_name {
                 Group {
                     name: self.group_name.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else if has_addresses {
+            } else {
                 Group {
                     name: self.group_comment.take(),
                     addresses: std::mem::take(&mut self.addresses),
                 }
-            } else if has_name {
-                Group {
-                    name: self.group_name.take(),
-                    addresses: Vec::new(),
-                }
-            } else {
-                return;
             });
     }
 }
@@ -218,9 +211,7 @@ impl<'x> MessageStream<'x> {
                 b'\n' => {
                     parser.add_token(self, false);
                     if self.try_next_is_space() {
-                        if !parser.is_token_start {
-                            parser.is_token_start = true;
-                        }
+                        parser.is_token_start = true;
                         continue;
                     } else {
                         break;
@@ -286,19 +277,13 @@ impl<'x> MessageStream<'x> {
                     self.restore();
                 }
                 b' ' | b'\t' => {
-                    if !parser.is_token_start {
-                        parser.is_token_start = true;
-                    }
-                    if parser.is_escaped {
-                        parser.is_escaped = false;
-                    }
+                    parser.is_token_start = true;
+                    parser.is_escaped = false;
                     if parser.state == AddressState::Quote {
                         if parser.token_start == 0 {
                             parser.token_start = self.offset();
-                            parser.token_end = parser.token_start;
-                        } else {
-                            parser.token_end = self.offset();
                         }
+                        parser.token_end = self.offset();
                     }
                     continue;
                 }
@@ -334,20 +319,14 @@ impl<'x> MessageStream<'x> {
                 _ => (),
             }
 
-            if parser.is_escaped {
-                parser.is_escaped = false;
-            }
+            parser.is_escaped = false;
 
-            if parser.is_token_start {
-                parser.is_token_start = false;
-            }
+            parser.is_token_start = false;
 
             if parser.token_start == 0 {
                 parser.token_start = self.offset();
-                parser.token_end = parser.token_start;
-            } else {
-                parser.token_end = self.offset();
             }
+            parser.token_end = self.offset();
         }
 
         parser.add_address();
