@@ -314,6 +314,12 @@ impl MessageParser {
                     message.text_body.push(message.parts.len());
                 }
 
+                let is_html = mime_type == MimeType::TextHtml;
+
+                if !is_text || is_text && (!add_to_html && is_html || !add_to_text && !is_html) {
+                    message.attachments.push(message.parts.len());
+                }
+
                 if is_text {
                     let text = match (
                         bytes,
@@ -332,20 +338,12 @@ impl MessageParser {
                         (Cow::Borrowed(bytes), None) => String::from_utf8_lossy(bytes),
                     };
 
-                    let is_html = mime_type == MimeType::TextHtml;
-
-                    if !add_to_html && is_html || !add_to_text && !is_html {
-                        message.attachments.push(message.parts.len());
-                    }
-
                     if is_html {
                         PartType::Html(text)
                     } else {
                         PartType::Text(text)
                     }
                 } else {
-                    message.attachments.push(message.parts.len());
-
                     if is_inline {
                         PartType::InlineBinary(bytes)
                     } else {
