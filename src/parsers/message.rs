@@ -346,10 +346,10 @@ impl MessageParser {
                 } else {
                     message.attachments.push(message.parts.len());
 
-                    if !is_inline {
-                        PartType::Binary(bytes)
-                    } else {
+                    if is_inline {
                         PartType::InlineBinary(bytes)
+                    } else {
+                        PartType::Binary(bytes)
                     }
                 }
             } else {
