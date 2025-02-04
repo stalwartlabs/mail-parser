@@ -5,6 +5,7 @@
  */
 
 use std::borrow::Cow;
+use std::mem;
 
 use crate::{parsers::MessageStream, Addr, Address, Group, HeaderValue};
 
@@ -139,7 +140,7 @@ impl<'x> AddressParser<'x> {
 
         if !self.mail_tokens.is_empty() {
             if let Some(group_name) = &mut self.group_name {
-                *group_name = group_name.to_owned() + " " + concat_tokens(&mut self.mail_tokens);
+                *group_name = mem::take(group_name) + " " + concat_tokens(&mut self.mail_tokens);
             } else {
                 self.group_name = concat_tokens(&mut self.mail_tokens).into();
             }
