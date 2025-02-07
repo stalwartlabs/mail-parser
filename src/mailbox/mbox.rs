@@ -5,14 +5,14 @@
  */
 
 use crate::DateTime;
-use std::io::{BufRead, BufReader, Read};
+use std::io::BufRead;
 
 /// Parses an Mbox mailbox from a `Read` stream, returning each message as a
 /// `Vec<u8>`.
 ///
 /// Supports >From  quoting as defined in the [QMail mbox specification](http://qmail.org/qmail-manual-html/man5/mbox.html).
-pub struct MessageIterator<T: Read> {
-    reader: BufReader<T>,
+pub struct MessageIterator<T> {
+    reader: T,
     message: Option<Message>,
 }
 
@@ -26,11 +26,11 @@ pub struct Message {
 
 impl<T> MessageIterator<T>
 where
-    T: Read,
+    T: BufRead,
 {
     pub fn new(reader: T) -> MessageIterator<T> {
         MessageIterator {
-            reader: BufReader::new(reader),
+            reader,
             message: None,
         }
     }
@@ -38,7 +38,7 @@ where
 
 impl<T> Iterator for MessageIterator<T>
 where
-    T: Read,
+    T: BufRead,
 {
     type Item = std::io::Result<Message>;
 
