@@ -8,7 +8,7 @@ use mail_parser::{mailbox::mbox::MessageIterator, MessageParser};
 
 fn main() {
     // Reads an MBox mailbox from stdin and prints each message as JSON.
-    for raw_message in MessageIterator::new(std::io::stdin()) {
+    for raw_message in MessageIterator::new(std::io::stdin().lock()) {
         let raw_message = raw_message.unwrap();
         let message = MessageParser::default()
             .parse(raw_message.contents())
