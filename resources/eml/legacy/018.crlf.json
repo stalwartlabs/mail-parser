@@ -325,7 +325,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Binary": [
+        "InlineBinary": [
           137,
           80,
           78,
@@ -1716,7 +1716,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Binary": [
+        "InlineBinary": [
           137,
           80,
           78,
