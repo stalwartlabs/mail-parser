@@ -1,5 +1,6 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
+
 use mail_parser::{
     decoders::{
         base64::base64_decode,
