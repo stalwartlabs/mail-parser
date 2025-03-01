@@ -582,9 +582,12 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
             | (0, 1.., 0, 0, 0, 0, 0, 0, 1, 0, _)
             | (0, 1.., 0, 0, 0, 0, 0, 1, 0, 0, _) => {
                 // Integer
-                text.parse::<i64>()
-                    .map(Token::Integer)
-                    .unwrap_or(Token::Text)
+                text.parse::<i64>().map(Token::Integer).unwrap_or_else(|_| {
+                    text.trim()
+                        .parse::<i64>()
+                        .map(Token::Integer)
+                        .unwrap_or(Token::Text)
+                })
             }
             (1.., _, _, _, 1, _, _, _, _, _, _) | (_, _, 1.., _, 1, _, _, _, _, _, _) => {
                 // E-mail address
