@@ -1,14 +1,9 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
-
 use mail_parser::{
     decoders::{
         base64::base64_decode,
-        charsets::{
-            map::charset_decoder,
-            single_byte::decoder_iso_8859_1,
-            utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
-        },
+        charsets::map::charset_decoder,
         hex::decode_hex,
         html::{add_html_token, html_to_text, text_to_html},
         quoted_printable::quoted_printable_decode,
@@ -17,7 +12,7 @@ use mail_parser::{
         fields::thread::{thread_name, trim_trailing_fwd},
         MessageStream,
     },
-    Message,
+    Message, MessageParser,
 };
 
 static RFC822_ALPHABET: &[u8] = b"0123456789abcdefghijklm:=- \r\n";
@@ -38,7 +33,7 @@ fuzz_target!(|data: &[u8]| {
         MessageStream::new(data).parse_raw();
         MessageStream::new(data).parse_unstructured();
         MessageStream::new(data).parse_content_type();
-        MessageStream::new(data).parse_headers(&mut Vec::new());
+        MessageStream::new(data).parse_headers(&MessageParser::default(), &mut Vec::new());
         MessageStream::new(data).parse_header_name();
         MessageStream::new(data).decode_rfc2047();
 
@@ -67,17 +62,6 @@ fuzz_target!(|data: &[u8]| {
         // Fuzz decoding functions
         decode_hex(data);
         charset_decoder(data);
-
-        for decoder in &[
-            decoder_utf7,
-            decoder_utf16_le,
-            decoder_utf16_be,
-            decoder_utf16,
-            decoder_iso_8859_1,
-        ] as &[for<'x> fn(&'x [u8]) -> String]
-        {
-            decoder(data);
-        }
 
         // Fuzz the entire library
         MessageParser::default().parse(data);
