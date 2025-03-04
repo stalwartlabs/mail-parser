@@ -15,13 +15,7 @@ impl<'x> MessageStream<'x> {
             match ch {
                 b'\n' => {
                     if !self.try_next_is_space() {
-                        return if token_start > 0 {
-                            HeaderValue::Text(String::from_utf8_lossy(
-                                self.bytes(token_start - 1..token_end),
-                            ))
-                        } else {
-                            HeaderValue::Empty
-                        };
+                        break;
                     } else {
                         continue;
                     }
