@@ -15,13 +15,7 @@ impl<'x> MessageStream<'x> {
             match ch {
                 b'\n' => {
                     if !self.try_next_is_space() {
-                        return if token_start > 0 {
-                            HeaderValue::Text(String::from_utf8_lossy(
-                                self.bytes(token_start - 1..token_end),
-                            ))
-                        } else {
-                            HeaderValue::Empty
-                        };
+                        break;
                     } else {
                         continue;
                     }
@@ -37,7 +31,13 @@ impl<'x> MessageStream<'x> {
             token_end = self.offset();
         }
 
-        HeaderValue::Empty
+        if token_start > 0 {
+            HeaderValue::Text(String::from_utf8_lossy(
+                self.bytes(token_start - 1..token_end),
+            ))
+        } else {
+            HeaderValue::Empty
+        }
     }
 
     pub fn parse_and_ignore(&mut self) {
@@ -70,6 +70,7 @@ mod tests {
                     "for <mary@example.net>;  21 Nov 1997 10:05:43 -0600"
                 ),
             ),
+            ("Re: Saying Hello", "Re: Saying Hello"), // No newline test
         ];
 
         for (input, expected) in inputs {
