@@ -656,7 +656,7 @@ impl<'x> MessagePart<'x> {
         matches!(self.body, PartType::Text(_) | PartType::Html(_))
     }
 
-    /// Returns `true` when the body part MIME type is text/tml
+    /// Returns `true` when the body part MIME type is text/html
     pub fn is_text_html(&self) -> bool {
         matches!(self.body, PartType::Html(_))
     }
