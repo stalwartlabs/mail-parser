@@ -289,7 +289,7 @@ impl MessageParser {
                             _ => (false, false),
                         }
                     } else if is_inline {
-                        if state.in_alternative && (state.need_text_body || state.need_html_body) {
+                        if state.in_alternative {
                             match mime_type {
                                 MimeType::TextHtml => {
                                     state.need_text_body = false;
@@ -312,6 +312,12 @@ impl MessageParser {
                     message.text_body.push(message.parts.len());
                 }
 
+                let is_html = mime_type == MimeType::TextHtml;
+
+                if !is_text || !add_to_html && is_html || !add_to_text && !is_html {
+                    message.attachments.push(message.parts.len());
+                }
+
                 if is_text {
                     let text = match (
                         bytes,
@@ -330,25 +336,15 @@ impl MessageParser {
                         (Cow::Borrowed(bytes), None) => String::from_utf8_lossy(bytes),
                     };
 
-                    let is_html = mime_type == MimeType::TextHtml;
-
-                    if !add_to_html && is_html || !add_to_text && !is_html {
-                        message.attachments.push(message.parts.len());
-                    }
-
                     if is_html {
                         PartType::Html(text)
                     } else {
                         PartType::Text(text)
                     }
+                } else if is_inline {
+                    PartType::InlineBinary(bytes)
                 } else {
-                    message.attachments.push(message.parts.len());
-
-                    if !is_inline {
-                        PartType::Binary(bytes)
-                    } else {
-                        PartType::InlineBinary(bytes)
-                    }
+                    PartType::Binary(bytes)
                 }
             } else {
                 message.attachments.push(message.parts.len());
