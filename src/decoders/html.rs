@@ -78,7 +78,8 @@ pub fn html_to_text(input: &str) -> String {
                         match input.get(token_start..token_end + 1) {
                             Some(tag)
                                 if tag.eq_ignore_ascii_case(b"br")
-                                    || (tag.eq_ignore_ascii_case(b"p") && is_tag_close) =>
+                                    || (tag.eq_ignore_ascii_case(b"p") && is_tag_close)
+                                    || (tag.eq_ignore_ascii_case(b"div") && is_tag_close) =>
                             {
                                 result.push('\n');
                                 is_after_space = false;
@@ -2389,6 +2390,13 @@ mod tests {
             (
                 " <p>please unsubscribe <a href=#>here</a>.</p> ",
                 "please unsubscribe here.\n",
+            ),
+            (
+                concat!(
+                    "<div>what is the</div>weather <div>",
+                    "today</div>"
+                ),
+                "what is the\nweather today\n",
             ),
         ];
 
