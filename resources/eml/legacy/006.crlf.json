@@ -93,10 +93,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_000_0004_01BFC037.28F2FA90"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_000_0004_01BFC037.28F2FA90"
+                }
               ]
             }
           },
@@ -180,10 +180,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -207,10 +207,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -1562,10 +1562,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -1589,10 +1589,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },

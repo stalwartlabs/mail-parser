@@ -96,10 +96,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "-1463757054-170444605-958746196=:8452"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "-1463757054-170444605-958746196=:8452"
+                }
               ]
             }
           },
@@ -128,10 +128,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "US-ASCII"
-                ]
+                {
+                  "name": "charset",
+                  "value": "US-ASCII"
+                }
               ]
             }
           },
@@ -157,10 +157,10 @@
               "c_type": "application",
               "c_subtype": "octet-stream",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -202,10 +202,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },

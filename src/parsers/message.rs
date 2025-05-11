@@ -148,7 +148,7 @@ impl MessageParser {
             }
 
             state.parts += 1;
-            state.sub_part_ids.push(message.parts.len());
+            state.sub_part_ids.push(message.parts.len() as u32);
 
             let content_type = part_headers
                 .header_value(&HeaderName::ContentType)
@@ -170,14 +170,14 @@ impl MessageParser {
                             text_parts: message.text_body.len(),
                             need_html_body: state.need_html_body,
                             need_text_body: state.need_text_body,
-                            part_id,
+                            part_id: part_id as u32,
                             ..Default::default()
                         };
                         //add_missing_type(&mut part_header, "text".into(), "plain".into());
                         message.parts.push(MessagePart {
                             headers: std::mem::take(&mut part_headers),
-                            offset_header: state.offset_header,
-                            offset_body: state.offset_body,
+                            offset_header: state.offset_header as u32,
+                            offset_body: state.offset_body as u32,
                             offset_end: 0,
                             is_encoding_problem: false,
                             encoding: Encoding::None,
@@ -217,16 +217,16 @@ impl MessageParser {
                     mime_boundary: state.mime_boundary.take(),
                     need_html_body: true,
                     need_text_body: true,
-                    part_id: message.parts.len(),
+                    part_id: message.parts.len() as u32,
                     ..Default::default()
                 };
-                message.attachments.push(message.parts.len());
+                message.attachments.push(message.parts.len() as u32);
                 message.parts.push(MessagePart {
                     headers: std::mem::take(&mut part_headers),
                     encoding,
                     is_encoding_problem: false,
-                    offset_header: state.offset_header,
-                    offset_body: state.offset_body,
+                    offset_header: state.offset_header as u32,
+                    offset_body: state.offset_body as u32,
                     offset_end: 0,
                     body: PartType::default(), // Temp value, will be replaced later.
                 });
@@ -306,10 +306,10 @@ impl MessageParser {
                     };
 
                 if add_to_html {
-                    message.html_body.push(message.parts.len());
+                    message.html_body.push(message.parts.len() as u32);
                 }
                 if add_to_text {
-                    message.text_body.push(message.parts.len());
+                    message.text_body.push(message.parts.len() as u32);
                 }
 
                 if is_text {
@@ -333,7 +333,7 @@ impl MessageParser {
                     let is_html = mime_type == MimeType::TextHtml;
 
                     if !add_to_html && is_html || !add_to_text && !is_html {
-                        message.attachments.push(message.parts.len());
+                        message.attachments.push(message.parts.len() as u32);
                     }
 
                     if is_html {
@@ -342,7 +342,7 @@ impl MessageParser {
                         PartType::Text(text)
                     }
                 } else {
-                    message.attachments.push(message.parts.len());
+                    message.attachments.push(message.parts.len() as u32);
 
                     if !is_inline {
                         PartType::Binary(bytes)
@@ -351,7 +351,7 @@ impl MessageParser {
                     }
                 }
             } else {
-                message.attachments.push(message.parts.len());
+                message.attachments.push(message.parts.len() as u32);
 
                 if depth != 0 {
                     if let Some(nested_message) = self.parse_(bytes.as_ref(), depth - 1, false) {
@@ -382,9 +382,9 @@ impl MessageParser {
                 encoding,
                 is_encoding_problem,
                 body: body_part,
-                offset_header: state.offset_header,
-                offset_body: state.offset_body,
-                offset_end: state.offset_end,
+                offset_header: state.offset_header as u32,
+                offset_body: state.offset_body as u32,
+                offset_end: state.offset_end as u32,
             });
 
             if state.mime_boundary.is_some() {
@@ -410,9 +410,9 @@ impl MessageParser {
                             message.raw_message = raw_message.into();
                             //raw_message[state.offset_header..offset_end].as_ref().into();
 
-                            if let Some(part) = prev_message.parts.get_mut(state.part_id) {
+                            if let Some(part) = prev_message.parts.get_mut(state.part_id as usize) {
                                 part.body = PartType::Message(message);
-                                part.offset_end = offset_end;
+                                part.offset_end = offset_end as u32;
                             } else {
                                 debug_assert!(false, "Invalid part ID, could not find message.");
                             }
@@ -452,7 +452,7 @@ impl MessageParser {
                             }
                         }
 
-                        if let Some(part) = message.parts.get_mut(state.part_id) {
+                        if let Some(part) = message.parts.get_mut(state.part_id as usize) {
                             // Add headers and substructure to parent part
                             part.body =
                                 PartType::Multipart(std::mem::take(&mut state.sub_part_ids));
@@ -466,14 +466,14 @@ impl MessageParser {
                                     if let Some(offset) =
                                         stream.seek_next_part_offset(mime_boundary)
                                     {
-                                        part.offset_end = offset;
+                                        part.offset_end = offset as u32;
                                         continue 'inner;
                                     }
                                 }
                             }
 
                             // This part has no boundary, update end offset
-                            part.offset_end = stream.offset();
+                            part.offset_end = stream.offset() as u32;
                         } else {
                             debug_assert!(false, "Invalid part ID, could not find multipart.");
                         }
@@ -494,16 +494,16 @@ impl MessageParser {
             if let Some(mut prev_message) = prev_message {
                 message.raw_message = raw_message.into(); //raw_message[state.offset_header..stream.offset()].as_ref().into();
 
-                if let Some(part) = prev_message.parts.get_mut(state.part_id) {
+                if let Some(part) = prev_message.parts.get_mut(state.part_id as usize) {
                     part.body = PartType::Message(message);
-                    part.offset_end = stream.offset();
+                    part.offset_end = stream.offset() as u32;
                 } else {
                     debug_assert!(false, "Invalid part ID, could not find message.");
                 }
 
                 message = prev_message;
-            } else if let Some(part) = message.parts.get_mut(state.part_id) {
-                part.offset_end = stream.offset();
+            } else if let Some(part) = message.parts.get_mut(state.part_id as usize) {
+                part.offset_end = stream.offset() as u32;
                 part.body = PartType::Multipart(state.sub_part_ids);
             } else {
                 debug_assert!(false, "This should not have happened.");
@@ -514,7 +514,7 @@ impl MessageParser {
         message.raw_message = raw_message.into();
 
         if !message.is_empty() {
-            message.parts[0].offset_end = message.raw_message.len();
+            message.parts[0].offset_end = message.raw_message.len() as u32;
             Some(message)
         } else if !part_headers.is_empty() {
             // Message without a body
@@ -524,8 +524,8 @@ impl MessageParser {
                 is_encoding_problem: true,
                 body: PartType::Text("".into()),
                 offset_header: 0,
-                offset_body: message.raw_message.len(),
-                offset_end: message.raw_message.len(),
+                offset_body: message.raw_message.len() as u32,
+                offset_end: message.raw_message.len() as u32,
             });
             Some(message)
         } else {

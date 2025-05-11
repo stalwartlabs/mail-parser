@@ -59,10 +59,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "boundary"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "boundary"
+                }
               ]
             }
           },

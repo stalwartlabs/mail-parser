@@ -116,10 +116,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "------------9D454F23DA86BCD63FA3805F"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------9D454F23DA86BCD63FA3805F"
+                }
               ]
             }
           },
@@ -148,10 +148,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -186,10 +186,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },

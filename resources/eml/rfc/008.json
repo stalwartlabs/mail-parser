@@ -18,10 +18,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                }
               ]
             }
           },
@@ -50,10 +50,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "utf-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "utf-8"
+                }
               ]
             }
           },
@@ -88,10 +88,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "attached_email.eml"
-                ]
+                {
+                  "name": "filename",
+                  "value": "attached_email.eml"
+                }
               ]
             }
           },
@@ -220,10 +220,10 @@
                       "c_type": "multipart",
                       "c_subtype": "alternative",
                       "attributes": [
-                        [
-                          "boundary",
-                          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                        ]
+                        {
+                          "name": "boundary",
+                          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        }
                       ]
                     }
                   },
@@ -261,14 +261,14 @@
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": [
-                        [
-                          "charset",
-                          "utf-8"
-                        ],
-                        [
-                          "format",
-                          "flowed"
-                        ]
+                        {
+                          "name": "charset",
+                          "value": "utf-8"
+                        },
+                        {
+                          "name": "format",
+                          "value": "flowed"
+                        }
                       ]
                     }
                   },
@@ -303,10 +303,10 @@
                       "c_type": "text",
                       "c_subtype": "html",
                       "attributes": [
-                        [
-                          "charset",
-                          "utf-8"
-                        ]
+                        {
+                          "name": "charset",
+                          "value": "utf-8"
+                        }
                       ]
                     }
                   },

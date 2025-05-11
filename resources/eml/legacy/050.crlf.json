@@ -130,14 +130,14 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "type",
-                  "text/html"
-                ],
-                [
-                  "boundary",
-                  "=====================_715546120==_.REL"
-                ]
+                {
+                  "name": "type",
+                  "value": "text/html"
+                },
+                {
+                  "name": "boundary",
+                  "value": "=====================_715546120==_.REL"
+                }
               ]
             }
           },
@@ -167,10 +167,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -205,10 +205,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "2aa658b6.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "2aa658b6.png"
+                }
               ]
             }
           },
@@ -241,10 +241,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "2aa658b6.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "2aa658b6.png"
+                }
               ]
             }
           },
@@ -1596,10 +1596,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "2aa658c0.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "2aa658c0.png"
+                }
               ]
             }
           },
@@ -1632,10 +1632,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "2aa658c0.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "2aa658c0.png"
+                }
               ]
             }
           },

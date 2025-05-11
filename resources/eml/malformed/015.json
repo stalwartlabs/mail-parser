@@ -105,18 +105,18 @@
               "c_type": "multipart",
               "c_subtype": "signed",
               "attributes": [
-                [
-                  "micalg",
-                  "pgp-sha1"
-                ],
-                [
-                  "protocol",
-                  "application/pgp-signature"
-                ],
-                [
-                  "boundary",
-                  "=-GNQXLhuj24Pl1aCkk4/d"
-                ]
+                {
+                  "name": "micalg",
+                  "value": "pgp-sha1"
+                },
+                {
+                  "name": "protocol",
+                  "value": "application/pgp-signature"
+                },
+                {
+                  "name": "boundary",
+                  "value": "=-GNQXLhuj24Pl1aCkk4/d"
+                }
               ]
             }
           },
@@ -178,10 +178,10 @@
               "c_type": "application",
               "c_subtype": "pgp-signature",
               "attributes": [
-                [
-                  "name",
-                  "signature.asc"
-                ]
+                {
+                  "name": "name",
+                  "value": "signature.asc"
+                }
               ]
             }
           },

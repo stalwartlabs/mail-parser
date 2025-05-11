@@ -118,10 +118,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------CA611088711119FBDB3473B4"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------CA611088711119FBDB3473B4"
+                }
               ]
             }
           },
@@ -150,10 +150,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -188,14 +188,14 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ],
-                [
-                  "name",
-                  "HasenundFrösche.txt"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                },
+                {
+                  "name": "name",
+                  "value": "HasenundFrösche.txt"
+                }
               ]
             }
           },
@@ -219,10 +219,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "HasenundFrösche.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "HasenundFrösche.txt"
+                }
               ]
             }
           },

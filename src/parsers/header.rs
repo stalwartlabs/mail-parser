@@ -85,9 +85,9 @@ impl<'x> MessageStream<'x> {
                 headers.push(Header {
                     name: header_name,
                     value,
-                    offset_field,
-                    offset_start: from_offset,
-                    offset_end: self.offset(),
+                    offset_field: offset_field as u32,
+                    offset_start: from_offset as u32,
+                    offset_end: self.offset() as u32,
                 });
             } else if self.is_eof() {
                 return false;

@@ -92,10 +92,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -119,10 +119,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },

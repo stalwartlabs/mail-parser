@@ -16,10 +16,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "Windows-1252"
-                ]
+                {
+                  "name": "charset",
+                  "value": "Windows-1252"
+                }
               ]
             }
           },

@@ -36,10 +36,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "1"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "1"
+                }
               ]
             }
           },
@@ -101,18 +101,18 @@
               "c_type": "message",
               "c_subtype": "partial",
               "attributes": [
-                [
-                  "number",
-                  "1"
-                ],
-                [
-                  "total",
-                  "5"
-                ],
-                [
-                  "id",
-                  "heks68ewe@example.org"
-                ]
+                {
+                  "name": "number",
+                  "value": "1"
+                },
+                {
+                  "name": "total",
+                  "value": "5"
+                },
+                {
+                  "name": "id",
+                  "value": "heks68ewe@example.org"
+                }
               ]
             }
           },

@@ -119,10 +119,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "=====================_716373961==_"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "=====================_716373961==_"
+                }
               ]
             }
           },
@@ -152,10 +152,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -190,10 +190,10 @@
               "c_type": "application",
               "c_subtype": "mac-binhex40",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -208,10 +208,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -2167,10 +2167,10 @@
               "c_type": "application",
               "c_subtype": "mac-binhex40",
               "attributes": [
-                [
-                  "name",
-                  "HasenundFr�sche.txt"
-                ]
+                {
+                  "name": "name",
+                  "value": "HasenundFr�sche.txt"
+                }
               ]
             }
           },
@@ -2185,10 +2185,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "HasenundFr�sche.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "HasenundFr�sche.txt"
+                }
               ]
             }
           },

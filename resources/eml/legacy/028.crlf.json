@@ -97,10 +97,10 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_000_000C_01BFC038.5A5C8E60"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_000_000C_01BFC038.5A5C8E60"
+                }
               ]
             }
           },
@@ -185,10 +185,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_001_000D_01BFC038.5A5C8E60"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_001_000D_01BFC038.5A5C8E60"
+                }
               ]
             }
           },
@@ -217,10 +217,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -255,10 +255,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -293,10 +293,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -1666,10 +1666,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },

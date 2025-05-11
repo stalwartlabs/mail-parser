@@ -59,10 +59,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "foo bar"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "foo bar"
+                }
               ]
             }
           },
@@ -91,10 +91,10 @@
               "c_type": "text",
               "c_subtype": "x-myown",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -191,10 +191,10 @@
                       "c_type": "multipart",
                       "c_subtype": "alternative",
                       "attributes": [
-                        [
-                          "boundary",
-                          "sub1"
-                        ]
+                        {
+                          "name": "boundary",
+                          "value": "sub1"
+                        }
                       ]
                     }
                   },

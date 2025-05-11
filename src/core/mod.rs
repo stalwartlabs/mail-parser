@@ -9,3 +9,5 @@ pub mod body;
 pub mod builder;
 pub mod header;
 pub mod message;
+#[cfg(feature = "rkyv")]
+pub mod rkyv;

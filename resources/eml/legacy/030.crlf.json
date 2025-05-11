@@ -124,10 +124,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------0BBC657DDC74A0B8454627FD"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------0BBC657DDC74A0B8454627FD"
+                }
               ]
             }
           },
@@ -158,10 +158,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -196,10 +196,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -223,10 +223,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -1578,10 +1578,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -1605,10 +1605,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -2933,14 +2933,14 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ],
-                [
-                  "name",
-                  "hareandtoroise.txt"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                },
+                {
+                  "name": "name",
+                  "value": "hareandtoroise.txt"
+                }
               ]
             }
           },
@@ -2964,10 +2964,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "hareandtoroise.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "hareandtoroise.txt"
+                }
               ]
             }
           },

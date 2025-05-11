@@ -40,10 +40,10 @@ impl<'x> Message<'x> {
 
     /// Returns the raw header.
     pub fn header_raw(&self, header: impl Into<HeaderName<'x>>) -> Option<&str> {
-        self.parts[0]
-            .headers
-            .header(header)
-            .and_then(|h| std::str::from_utf8(&self.raw_message[h.offset_start..h.offset_end]).ok())
+        self.parts[0].headers.header(header).and_then(|h| {
+            std::str::from_utf8(&self.raw_message[h.offset_start as usize..h.offset_end as usize])
+                .ok()
+        })
     }
 
     // Parse a header as a specific type.
@@ -58,7 +58,7 @@ impl<'x> Message<'x> {
             if header_.name == header {
                 results.push(
                     self.raw_message
-                        .get(header_.offset_start..header_.offset_end)
+                        .get(header_.offset_start as usize..header_.offset_end as usize)
                         .map_or(HeaderValue::Empty, |bytes| match form {
                             HeaderForm::Raw => HeaderValue::Text(
                                 std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
@@ -104,8 +104,10 @@ impl<'x> Message<'x> {
         self.parts[0].headers.iter().filter_map(move |header| {
             Some((
                 header.name.as_str(),
-                std::str::from_utf8(&self.raw_message[header.offset_start..header.offset_end])
-                    .ok()?,
+                std::str::from_utf8(
+                    &self.raw_message[header.offset_start as usize..header.offset_end as usize],
+                )
+                .ok()?,
             ))
         })
     }
@@ -114,7 +116,7 @@ impl<'x> Message<'x> {
     pub fn raw_message(&self) -> &[u8] {
         let part = &self.parts[0];
         self.raw_message
-            .get(part.offset_header..part.offset_end)
+            .get(part.offset_header as usize..part.offset_end as usize)
             .unwrap_or_default()
     }
 
@@ -390,7 +392,7 @@ impl<'x> Message<'x> {
 
     /// Returns a message body part as text/plain
     pub fn body_html(&'x self, pos: usize) -> Option<Cow<'x, str>> {
-        let part = self.parts.get(*self.html_body.get(pos)?)?;
+        let part = self.parts.get(*self.html_body.get(pos)? as usize)?;
         match &part.body {
             PartType::Html(html) => Some(html.as_ref().into()),
             PartType::Text(text) => Some(text_to_html(text.as_ref()).into()),
@@ -400,7 +402,7 @@ impl<'x> Message<'x> {
 
     /// Returns a message body part as text/plain
     pub fn body_text(&'x self, pos: usize) -> Option<Cow<'x, str>> {
-        let part = self.parts.get(*self.text_body.get(pos)?)?;
+        let part = self.parts.get(*self.text_body.get(pos)? as usize)?;
         match &part.body {
             PartType::Text(text) => Some(text.as_ref().into()),
             PartType::Html(html) => Some(html_to_text(html.as_ref()).into()),
@@ -409,23 +411,24 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a message part by position
-    pub fn part(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(pos)
+    pub fn part(&self, pos: u32) -> Option<&MessagePart<'x>> {
+        self.parts.get(pos as usize)
     }
 
     /// Returns an inline HTML body part by position
-    pub fn html_part(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(*self.html_body.get(pos)?)
+    pub fn html_part(&self, pos: u32) -> Option<&MessagePart<'x>> {
+        self.parts.get(*self.html_body.get(pos as usize)? as usize)
     }
 
     /// Returns an inline text body part by position
-    pub fn text_part(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(*self.text_body.get(pos)?)
+    pub fn text_part(&self, pos: u32) -> Option<&MessagePart<'x>> {
+        self.parts.get(*self.text_body.get(pos as usize)? as usize)
     }
 
     /// Returns an attacment by position
-    pub fn attachment(&self, pos: usize) -> Option<&MessagePart<'x>> {
-        self.parts.get(*self.attachments.get(pos)?)
+    pub fn attachment(&self, pos: u32) -> Option<&MessagePart<'x>> {
+        self.parts
+            .get(*self.attachments.get(pos as usize)? as usize)
     }
 
     /// Returns the number of plain text body parts

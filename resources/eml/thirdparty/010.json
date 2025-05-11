@@ -34,14 +34,14 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "1"
-                ],
-                [
-                  "comment",
-                  "人権の無視及"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "1"
+                },
+                {
+                  "name": "comment",
+                  "value": "人権の無視及"
+                }
               ]
             }
           },

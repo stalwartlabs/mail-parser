@@ -1,3 +1,9 @@
+mail-parser 0.11.0
+================================
+- `rkyv` zero-copy deserialization support.
+- Changed `usize` to `u32` types.
+- Renamed `serde_support` feature to `serde`.
+
 mail-parser 0.10.2
 ================================
 - Fixed `HeaderName` enum order to avoid breaking bincode serialization.

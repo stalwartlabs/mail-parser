@@ -75,10 +75,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "------------89rdZlF87ukwoHkrsSI299lb"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------89rdZlF87ukwoHkrsSI299lb"
+                }
               ]
             }
           },
@@ -205,14 +205,14 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ],
-                [
-                  "format",
-                  "flowed"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "format",
+                  "value": "flowed"
+                }
               ]
             }
           },
@@ -247,10 +247,10 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "boundary",
-                  "------------NiQaqvKcGeCafTrVNpipUb0K"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------NiQaqvKcGeCafTrVNpipUb0K"
+                }
               ]
             }
           },
@@ -279,10 +279,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -317,10 +317,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "01H5HSCoUeEcg6CH.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "01H5HSCoUeEcg6CH.png"
+                }
               ]
             }
           },
@@ -335,10 +335,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "01H5HSCoUeEcg6CH.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "01H5HSCoUeEcg6CH.png"
+                }
               ]
             }
           },

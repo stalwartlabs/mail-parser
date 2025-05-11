@@ -125,10 +125,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------B7133A01A6B323BF00DBC9A7"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------B7133A01A6B323BF00DBC9A7"
+                }
               ]
             }
           },
@@ -158,10 +158,10 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "boundary",
-                  "------------8E6A06810565BCAB5E1F7D97"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------8E6A06810565BCAB5E1F7D97"
+                }
               ]
             }
           },
@@ -191,10 +191,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -260,10 +260,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "C:TEMPnsmailV0.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "C:TEMPnsmailV0.png"
+                }
               ]
             }
           },
@@ -1646,10 +1646,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "C:TEMPnsmailNM.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "C:TEMPnsmailNM.png"
+                }
               ]
             }
           },
@@ -3129,10 +3129,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -3156,10 +3156,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -4484,10 +4484,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -4511,10 +4511,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },

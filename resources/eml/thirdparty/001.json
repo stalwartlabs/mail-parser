@@ -29,10 +29,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "bound"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "bound"
+                }
               ]
             }
           },

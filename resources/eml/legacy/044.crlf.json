@@ -126,10 +126,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------A1FCDEE154E03D875E5D6779"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------A1FCDEE154E03D875E5D6779"
+                }
               ]
             }
           },
@@ -160,10 +160,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -198,10 +198,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -225,10 +225,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -1708,10 +1708,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -1735,10 +1735,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -3063,10 +3063,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -3090,10 +3090,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },

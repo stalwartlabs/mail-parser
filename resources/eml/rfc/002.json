@@ -59,10 +59,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "D7F------------D7FD5A0B8AB9C65CCDBFA872"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "D7F------------D7FD5A0B8AB9C65CCDBFA872"
+                }
               ]
             }
           },
@@ -91,10 +91,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -345,10 +345,10 @@
                       "c_type": "multipart",
                       "c_subtype": "mixed",
                       "attributes": [
-                        [
-                          "boundary",
-                          "DC8------------DC8638F443D87A7F0726DEF7"
-                        ]
+                        {
+                          "name": "boundary",
+                          "value": "DC8------------DC8638F443D87A7F0726DEF7"
+                        }
                       ]
                     }
                   },
@@ -377,10 +377,10 @@
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": [
-                        [
-                          "charset",
-                          "us-ascii"
-                        ]
+                        {
+                          "name": "charset",
+                          "value": "us-ascii"
+                        }
                       ]
                     }
                   },
@@ -415,10 +415,10 @@
                       "c_type": "image",
                       "c_subtype": "gif",
                       "attributes": [
-                        [
-                          "name",
-                          "map_of_Argentina.gif"
-                        ]
+                        {
+                          "name": "name",
+                          "value": "map_of_Argentina.gif"
+                        }
                       ]
                     }
                   },
@@ -442,10 +442,10 @@
                       "c_type": "inline",
                       "c_subtype": null,
                       "attributes": [
-                        [
-                          "fi1ename",
-                          "map_of_Argentina.gif"
-                        ]
+                        {
+                          "name": "fi1ename",
+                          "value": "map_of_Argentina.gif"
+                        }
                       ]
                     }
                   },

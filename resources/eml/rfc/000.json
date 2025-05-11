@@ -92,10 +92,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "unique-boundary-1"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "unique-boundary-1"
+                }
               ]
             }
           },
@@ -137,10 +137,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "US-ASCII"
-                ]
+                {
+                  "name": "charset",
+                  "value": "US-ASCII"
+                }
               ]
             }
           },
@@ -166,10 +166,10 @@
               "c_type": "multipart",
               "c_subtype": "parallel",
               "attributes": [
-                [
-                  "boundary",
-                  "unique-boundary-2"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "unique-boundary-2"
+                }
               ]
             }
           },
@@ -356,10 +356,10 @@
                       "c_type": "text",
                       "c_subtype": "plain",
                       "attributes": [
-                        [
-                          "charset",
-                          "ISO-8859-1"
-                        ]
+                        {
+                          "name": "charset",
+                          "value": "ISO-8859-1"
+                        }
                       ]
                     }
                   },

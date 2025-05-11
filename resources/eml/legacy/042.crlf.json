@@ -118,10 +118,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------77060D866A66DC8D0921E051"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------77060D866A66DC8D0921E051"
+                }
               ]
             }
           },
@@ -150,10 +150,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -188,14 +188,14 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ],
-                [
-                  "name",
-                  "farmerandstork.txt"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                },
+                {
+                  "name": "name",
+                  "value": "farmerandstork.txt"
+                }
               ]
             }
           },
@@ -219,10 +219,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "farmerandstork.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "farmerandstork.txt"
+                }
               ]
             }
           },

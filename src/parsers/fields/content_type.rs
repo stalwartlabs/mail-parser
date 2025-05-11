@@ -9,7 +9,7 @@ use std::borrow::Cow;
 use crate::{
     decoders::{charsets::map::charset_decoder, hex::decode_hex},
     parsers::MessageStream,
-    ContentType, HeaderValue,
+    Attribute, ContentType, HeaderValue,
 };
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -36,7 +36,7 @@ struct ContentTypeParser<'x> {
     attr_position: u32,
 
     values: Vec<Cow<'x, str>>,
-    attributes: Vec<(Cow<'x, str>, Cow<'x, str>)>,
+    attributes: Vec<Attribute<'x>>,
     continuations: Option<Vec<Continuation<'x>>>,
 
     token_start: usize,
@@ -93,8 +93,11 @@ impl<'x> ContentTypeParser<'x> {
                 let attr_name =
                     self.attr_name.as_ref().unwrap_or(&"unknown".into()).clone() + "-language";
 
-                if !self.attributes.iter().any(|(name, _)| name == &attr_name) {
-                    self.attributes.push((attr_name, attr_part));
+                if !self.attributes.iter().any(|a| a.name == attr_name) {
+                    self.attributes.push(Attribute {
+                        name: attr_name,
+                        value: attr_part,
+                    });
                 } else {
                     self.values.push("'".into());
                     self.values.push(attr_part);
@@ -155,9 +158,9 @@ impl<'x> ContentTypeParser<'x> {
         };
 
         if !self.is_continuation {
-            self.attributes.push((
-                self.attr_name.take().unwrap(),
-                if !has_values {
+            self.attributes.push(Attribute {
+                name: self.attr_name.take().unwrap(),
+                value: if !has_values {
                     value.unwrap()
                 } else {
                     if let Some(value) = value {
@@ -165,7 +168,7 @@ impl<'x> ContentTypeParser<'x> {
                     }
                     self.values.concat().into()
                 },
-            ));
+            });
         } else {
             let attr_name = self.attr_name.take().unwrap();
             let mut value = if let Some(value) = value {
@@ -205,7 +208,10 @@ impl<'x> ContentTypeParser<'x> {
 
                 self.attr_position = 0;
             } else {
-                self.attributes.push((attr_name, value));
+                self.attributes.push(Attribute {
+                    name: attr_name,
+                    value,
+                });
             }
             self.is_continuation = false;
             self.attr_charset = None;
@@ -236,11 +242,10 @@ impl<'x> ContentTypeParser<'x> {
         let continuations = self.continuations.as_mut().unwrap();
         continuations.sort();
         for (key, _, value) in continuations.drain(..) {
-            if let Some((_, old_value)) = self.attributes.iter_mut().find(|(name, _)| name == &key)
-            {
-                *old_value = format!("{old_value}{value}").into();
+            if let Some(old) = self.attributes.iter_mut().find(|a| a.name == key) {
+                old.value = format!("{}{value}", old.value).into();
             } else {
-                self.attributes.push((key, value));
+                self.attributes.push(Attribute { name: key, value });
             }
         }
     }

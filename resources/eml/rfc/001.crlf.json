@@ -82,10 +82,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "42"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "42"
+                }
               ]
             }
           },
@@ -124,30 +124,30 @@
               "c_type": "message",
               "c_subtype": "external-body",
               "attributes": [
-                [
-                  "name",
-                  "BodyFormats.ps"
-                ],
-                [
-                  "site",
-                  "thumper.bellcore.com"
-                ],
-                [
-                  "mode",
-                  "image"
-                ],
-                [
-                  "access-type",
-                  "ANON-FTP"
-                ],
-                [
-                  "directory",
-                  "pub"
-                ],
-                [
-                  "expiration",
-                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                ]
+                {
+                  "name": "name",
+                  "value": "BodyFormats.ps"
+                },
+                {
+                  "name": "site",
+                  "value": "thumper.bellcore.com"
+                },
+                {
+                  "name": "mode",
+                  "value": "image"
+                },
+                {
+                  "name": "access-type",
+                  "value": "ANON-FTP"
+                },
+                {
+                  "name": "directory",
+                  "value": "pub"
+                },
+                {
+                  "name": "expiration",
+                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                }
               ]
             }
           },
@@ -255,22 +255,22 @@
               "c_type": "message",
               "c_subtype": "external-body",
               "attributes": [
-                [
-                  "access-type",
-                  "local-file"
-                ],
-                [
-                  "name",
-                  "/u/nsb/writing/rfcs/RFC-MIME.ps"
-                ],
-                [
-                  "site",
-                  "thumper.bellcore.com"
-                ],
-                [
-                  "expiration",
-                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                ]
+                {
+                  "name": "access-type",
+                  "value": "local-file"
+                },
+                {
+                  "name": "name",
+                  "value": "/u/nsb/writing/rfcs/RFC-MIME.ps"
+                },
+                {
+                  "name": "site",
+                  "value": "thumper.bellcore.com"
+                },
+                {
+                  "name": "expiration",
+                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                }
               ]
             }
           },
@@ -378,18 +378,18 @@
               "c_type": "message",
               "c_subtype": "external-body",
               "attributes": [
-                [
-                  "access-type",
-                  "mail-server"
-                ],
-                [
-                  "server",
-                  "listserv@bogus.bitnet"
-                ],
-                [
-                  "expiration",
-                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                ]
+                {
+                  "name": "access-type",
+                  "value": "mail-server"
+                },
+                {
+                  "name": "server",
+                  "value": "listserv@bogus.bitnet"
+                },
+                {
+                  "name": "expiration",
+                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                }
               ]
             }
           },

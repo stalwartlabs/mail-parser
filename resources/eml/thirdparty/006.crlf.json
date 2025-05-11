@@ -36,10 +36,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "1"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "1"
+                }
               ]
             }
           },
@@ -67,18 +67,18 @@
               "c_type": "multipart",
               "c_subtype": "signed",
               "attributes": [
-                [
-                  "protocol",
-                  "signature/plain"
-                ],
-                [
-                  "migalc",
-                  "pen+paper"
-                ],
-                [
-                  "boundary",
-                  "2"
-                ]
+                {
+                  "name": "protocol",
+                  "value": "signature/plain"
+                },
+                {
+                  "name": "migalc",
+                  "value": "pen+paper"
+                },
+                {
+                  "name": "boundary",
+                  "value": "2"
+                }
               ]
             }
           },
@@ -118,10 +118,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "3"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "3"
+                }
               ]
             }
           },
@@ -150,10 +150,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -212,10 +212,10 @@
               "c_type": "signature",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },

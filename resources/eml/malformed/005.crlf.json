@@ -16,10 +16,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "a--"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "a--"
+                }
               ]
             }
           },
@@ -47,10 +47,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "a----"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "a----"
+                }
               ]
             }
           },

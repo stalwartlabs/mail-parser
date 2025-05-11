@@ -32,10 +32,10 @@
               "c_type": "multipart",
               "c_subtype": "digest",
               "attributes": [
-                [
-                  "boundary",
-                  "1"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "1"
+                }
               ]
             }
           },
@@ -217,10 +217,10 @@
                       "c_type": "multipart",
                       "c_subtype": "mixed",
                       "attributes": [
-                        [
-                          "boundary",
-                          "2"
-                        ]
+                        {
+                          "name": "boundary",
+                          "value": "2"
+                        }
                       ]
                     }
                   },
@@ -282,14 +282,14 @@
                       "c_type": "application",
                       "c_subtype": "octet-stream",
                       "attributes": [
-                        [
-                          "disposition",
-                          "attachment"
-                        ],
-                        [
-                          "name",
-                          "test.txt"
-                        ]
+                        {
+                          "name": "disposition",
+                          "value": "attachment"
+                        },
+                        {
+                          "name": "name",
+                          "value": "test.txt"
+                        }
                       ]
                     }
                   },

@@ -116,10 +116,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-7"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-7"
+                }
               ]
             }
           },

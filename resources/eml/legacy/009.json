@@ -138,14 +138,14 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ],
-                [
-                  "format",
-                  "flowed"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                },
+                {
+                  "name": "format",
+                  "value": "flowed"
+                }
               ]
             }
           },

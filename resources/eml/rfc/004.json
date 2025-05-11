@@ -88,10 +88,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "---- main boundary ----"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "---- main boundary ----"
+                }
               ]
             }
           },
@@ -130,10 +130,10 @@
               "c_type": "multipart",
               "c_subtype": "digest",
               "attributes": [
-                [
-                  "boundary",
-                  "---- next message ----"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "---- next message ----"
+                }
               ]
             }
           },

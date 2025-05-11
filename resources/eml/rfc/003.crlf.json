@@ -88,10 +88,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "boundary42"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "boundary42"
+                }
               ]
             }
           },
@@ -121,10 +121,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },

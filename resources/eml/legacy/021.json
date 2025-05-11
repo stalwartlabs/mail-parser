@@ -98,10 +98,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_000_0010_01BFC038.B91BC650"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_000_0010_01BFC038.B91BC650"
+                }
               ]
             }
           },
@@ -186,10 +186,10 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_001_0011_01BFC038.B91BC650"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_001_0011_01BFC038.B91BC650"
+                }
               ]
             }
           },
@@ -218,10 +218,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "----=_NextPart_002_0012_01BFC038.B91BC650"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "----=_NextPart_002_0012_01BFC038.B91BC650"
+                }
               ]
             }
           },
@@ -250,10 +250,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -288,10 +288,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -326,10 +326,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -1699,10 +1699,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -1726,10 +1726,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -3054,10 +3054,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -3081,10 +3081,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },

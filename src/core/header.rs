@@ -10,8 +10,9 @@ use std::net::IpAddr;
 use std::{borrow::Cow, fmt::Display};
 
 use crate::{
-    Address, ContentType, DateTime, GetHeader, Greeting, Header, HeaderName, HeaderValue, Host,
-    Message, MessagePart, MessagePartId, MimeHeaders, PartType, Protocol, Received, TlsVersion,
+    Address, Attribute, ContentType, DateTime, GetHeader, Greeting, Header, HeaderName,
+    HeaderValue, Host, Message, MessagePart, MessagePartId, MimeHeaders, PartType, Protocol,
+    Received, TlsVersion,
 };
 
 impl<'x> Header<'x> {
@@ -26,17 +27,17 @@ impl<'x> Header<'x> {
     }
 
     /// Returns the raw offset start
-    pub fn offset_start(&self) -> usize {
+    pub fn offset_start(&self) -> u32 {
         self.offset_start
     }
 
     /// Returns the raw offset end
-    pub fn offset_end(&self) -> usize {
+    pub fn offset_end(&self) -> u32 {
         self.offset_end
     }
 
     /// Returns the raw offset of the header name
-    pub fn offset_field(&self) -> usize {
+    pub fn offset_field(&self) -> u32 {
         self.offset_field
     }
 
@@ -203,7 +204,10 @@ impl<'x> HeaderValue<'x> {
                 attributes: ct.attributes.map(|attributes| {
                     attributes
                         .into_iter()
-                        .map(|(k, v)| (k.into_owned().into(), v.into_owned().into()))
+                        .map(|a| Attribute {
+                            name: a.name.into_owned().into(),
+                            value: a.value.into_owned().into(),
+                        })
                         .collect()
                 }),
             }),
@@ -235,9 +239,9 @@ impl<'x> HeaderValue<'x> {
             HeaderValue::ContentType(ct) => {
                 ct.c_type.len()
                     + ct.c_subtype.as_ref().map_or(0, |s| s.len())
-                    + ct.attributes
-                        .as_ref()
-                        .map_or(0, |at| at.iter().map(|(a, b)| a.len() + b.len()).sum())
+                    + ct.attributes.as_ref().map_or(0, |at| {
+                        at.iter().map(|a| a.name.len() + a.value.len()).sum()
+                    })
             }
             HeaderValue::Received(_) => 1,
             HeaderValue::Empty => 0,
@@ -249,7 +253,48 @@ impl PartialEq for HeaderName<'_> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Other(a), Self::Other(b)) => a.eq_ignore_ascii_case(b),
-            _ => self.id() == other.id(),
+            (Self::Subject, Self::Subject) => true,
+            (Self::From, Self::From) => true,
+            (Self::To, Self::To) => true,
+            (Self::Cc, Self::Cc) => true,
+            (Self::Date, Self::Date) => true,
+            (Self::Bcc, Self::Bcc) => true,
+            (Self::ReplyTo, Self::ReplyTo) => true,
+            (Self::Sender, Self::Sender) => true,
+            (Self::Comments, Self::Comments) => true,
+            (Self::InReplyTo, Self::InReplyTo) => true,
+            (Self::Keywords, Self::Keywords) => true,
+            (Self::Received, Self::Received) => true,
+            (Self::MessageId, Self::MessageId) => true,
+            (Self::References, Self::References) => true,
+            (Self::ReturnPath, Self::ReturnPath) => true,
+            (Self::MimeVersion, Self::MimeVersion) => true,
+            (Self::ContentDescription, Self::ContentDescription) => true,
+            (Self::ContentId, Self::ContentId) => true,
+            (Self::ContentLanguage, Self::ContentLanguage) => true,
+            (Self::ContentLocation, Self::ContentLocation) => true,
+            (Self::ContentTransferEncoding, Self::ContentTransferEncoding) => true,
+            (Self::ContentType, Self::ContentType) => true,
+            (Self::ContentDisposition, Self::ContentDisposition) => true,
+            (Self::ResentTo, Self::ResentTo) => true,
+            (Self::ResentFrom, Self::ResentFrom) => true,
+            (Self::ResentBcc, Self::ResentBcc) => true,
+            (Self::ResentCc, Self::ResentCc) => true,
+            (Self::ResentSender, Self::ResentSender) => true,
+            (Self::ResentDate, Self::ResentDate) => true,
+            (Self::ResentMessageId, Self::ResentMessageId) => true,
+            (Self::ListArchive, Self::ListArchive) => true,
+            (Self::ListHelp, Self::ListHelp) => true,
+            (Self::ListId, Self::ListId) => true,
+            (Self::ListOwner, Self::ListOwner) => true,
+            (Self::ListPost, Self::ListPost) => true,
+            (Self::ListSubscribe, Self::ListSubscribe) => true,
+            (Self::ListUnsubscribe, Self::ListUnsubscribe) => true,
+            (Self::ArcAuthenticationResults, Self::ArcAuthenticationResults) => true,
+            (Self::ArcMessageSignature, Self::ArcMessageSignature) => true,
+            (Self::ArcSeal, Self::ArcSeal) => true,
+            (Self::DkimSignature, Self::DkimSignature) => true,
+            _ => false,
         }
     }
 }
@@ -687,22 +732,22 @@ impl<'x> MessagePart<'x> {
     }
 
     /// Returns the body raw length
-    pub fn raw_len(&self) -> usize {
+    pub fn raw_len(&self) -> u32 {
         self.offset_end.saturating_sub(self.offset_header)
     }
 
     /// Get the raw header offset of this part
-    pub fn raw_header_offset(&self) -> usize {
+    pub fn raw_header_offset(&self) -> u32 {
         self.offset_header
     }
 
     /// Get the raw body offset of this part
-    pub fn raw_body_offset(&self) -> usize {
+    pub fn raw_body_offset(&self) -> u32 {
         self.offset_body
     }
 
     /// Get the raw body end offset of this part
-    pub fn raw_end_offset(&self) -> usize {
+    pub fn raw_end_offset(&self) -> u32 {
         self.offset_end
     }
 
@@ -794,8 +839,8 @@ impl<'x> ContentType<'x> {
         self.attributes
             .as_ref()?
             .iter()
-            .find(|(key, _)| key == name)?
-            .1
+            .find(|a| a.name == name)?
+            .value
             .as_ref()
             .into()
     }
@@ -806,12 +851,12 @@ impl<'x> ContentType<'x> {
 
         attributes
             .iter()
-            .position(|(key, _)| key == name)
-            .map(|pos| attributes.swap_remove(pos).1)
+            .position(|a| a.name == name)
+            .map(|pos| attributes.swap_remove(pos).value)
     }
 
     /// Returns all attributes
-    pub fn attributes(&self) -> Option<&[(Cow<'x, str>, Cow<'x, str>)]> {
+    pub fn attributes(&self) -> Option<&[Attribute<'x>]> {
         self.attributes.as_deref()
     }
 
@@ -819,7 +864,7 @@ impl<'x> ContentType<'x> {
     pub fn has_attribute(&self, name: &str) -> bool {
         self.attributes
             .as_ref()
-            .is_some_and(|attr| attr.iter().any(|(key, _)| key == name))
+            .is_some_and(|attr| attr.iter().any(|a| a.name == name))
     }
 
     /// Returns ```true``` if the Content-Disposition type is "attachment"

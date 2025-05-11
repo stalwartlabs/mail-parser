@@ -94,10 +94,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "utf-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "utf-8"
+                }
               ]
             }
           },

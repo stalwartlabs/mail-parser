@@ -54,10 +54,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "166091464015.94FEC6.541095"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "166091464015.94FEC6.541095"
+                }
               ]
             }
           },
@@ -125,10 +125,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "166091464014.8cee04D8.541095"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "166091464014.8cee04D8.541095"
+                }
               ]
             }
           },

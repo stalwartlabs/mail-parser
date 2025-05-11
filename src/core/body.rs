@@ -33,7 +33,9 @@ impl<'x> Iterator for BodyPartIterator<'x> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.pos += 1;
-        self.message.parts.get(*self.list.get(self.pos as usize)?)
+        self.message
+            .parts
+            .get(*self.list.get(self.pos as usize)? as usize)
     }
 }
 
@@ -48,6 +50,6 @@ impl<'x> Iterator for AttachmentIterator<'x> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.pos += 1;
-        self.message.attachment(self.pos as usize)
+        self.message.attachment(self.pos as u32)
     }
 }

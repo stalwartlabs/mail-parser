@@ -11,11 +11,8 @@ pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
-use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
-
 use parsers::MessageStream;
-#[cfg(feature = "serde_support")]
-use serde::{Deserialize, Serialize};
+use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 
 /// RFC5322/RFC822 message parser.
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -28,41 +25,55 @@ pub(crate) type HdrParseFnc = for<'x> fn(&mut MessageStream<'x>) -> crate::Heade
 
 /// An RFC5322/RFC822 message.
 #[derive(Debug, Default, PartialEq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub struct Message<'x> {
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub html_body: Vec<MessagePartId>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub text_body: Vec<MessagePartId>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub attachments: Vec<MessagePartId>,
 
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub parts: Vec<MessagePart<'x>>,
 
-    #[cfg_attr(feature = "serde_support", serde(skip))]
+    #[cfg_attr(feature = "serde", serde(skip))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Skip))]
     pub raw_message: Cow<'x, [u8]>,
 }
 
 /// MIME Message Part
 #[derive(Debug, PartialEq, Default, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub struct MessagePart<'x> {
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub headers: Vec<Header<'x>>,
     pub is_encoding_problem: bool,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    //#[cfg_attr(feature = "rkyv", rkyv(omit_bounds))]
     pub body: PartType<'x>,
-    #[cfg_attr(feature = "serde_support", serde(skip))]
+    #[cfg_attr(feature = "serde", serde(skip))]
     pub encoding: Encoding,
-    pub offset_header: usize,
-    pub offset_body: usize,
-    pub offset_end: usize,
+    pub offset_header: u32,
+    pub offset_body: u32,
+    pub offset_end: u32,
 }
 
 /// MIME Part encoding type
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 #[repr(u8)]
 pub enum Encoding {
     #[default]
@@ -82,7 +93,7 @@ impl From<u8> for Encoding {
 }
 
 /// Unique ID representing a MIME part within a message.
-pub type MessagePartId = usize;
+pub type MessagePartId = u32;
 
 /// A text, binary or nested e-mail MIME message part.
 ///
@@ -92,22 +103,45 @@ pub type MessagePartId = usize;
 /// - MultiPart: Multipart part.
 ///
 #[derive(Debug, PartialEq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+#[cfg_attr(
+    feature = "rkyv",
+    rkyv(serialize_bounds(
+        __S: rkyv::ser::Writer + rkyv::ser::Allocator,
+        __S::Error: rkyv::rancor::Source,
+    ))
+)]
+#[cfg_attr(
+    feature = "rkyv",
+    rkyv(deserialize_bounds(__D::Error: rkyv::rancor::Source))
+)]
+#[cfg_attr(
+    feature = "rkyv",
+    rkyv(bytecheck(
+        bounds(
+            __C: rkyv::validation::ArchiveContext,
+        )
+    ))
+)]
 pub enum PartType<'x> {
     /// Any text/* part
-    Text(Cow<'x, str>),
+    Text(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
 
     /// A text/html part
-    Html(Cow<'x, str>),
+    Html(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
 
     /// Any other part type that is not text.
-    Binary(Cow<'x, [u8]>),
+    Binary(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, [u8]>),
 
     /// Any inline binary data that.
-    InlineBinary(Cow<'x, [u8]>),
+    InlineBinary(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, [u8]>),
 
     /// Nested RFC5322 message.
-    Message(Message<'x>),
+    Message(#[cfg_attr(feature = "rkyv", rkyv(omit_bounds))] Message<'x>),
 
     /// Multipart part
     Multipart(Vec<MessagePartId>),
@@ -121,45 +155,68 @@ impl Default for PartType<'_> {
 
 /// An RFC5322 or RFC2369 internet address.
 #[derive(Debug, PartialEq, Eq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub struct Addr<'x> {
     /// The address name including comments
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub name: Option<Cow<'x, str>>,
 
     /// An e-mail address (RFC5322/RFC2369) or URL (RFC2369)
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub address: Option<Cow<'x, str>>,
 }
 
 /// An RFC5322 address group.
 #[derive(Debug, PartialEq, Eq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub struct Group<'x> {
     /// Group name
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub name: Option<Cow<'x, str>>,
 
     /// Addresses member of the group
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub addresses: Vec<Addr<'x>>,
 }
 
 /// A message header.
 #[derive(Debug, PartialEq, Eq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+#[cfg_attr(feature = "rkyv", rkyv(compare(PartialEq)))]
 pub struct Header<'x> {
     pub name: HeaderName<'x>,
     pub value: HeaderValue<'x>,
-    pub offset_field: usize,
-    pub offset_start: usize,
-    pub offset_end: usize,
+    pub offset_field: u32,
+    pub offset_start: u32,
+    pub offset_end: u32,
 }
 
 /// A header field
 #[derive(Debug, Clone, PartialOrd, Ord)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
-#[cfg_attr(feature = "serde_support", serde(rename_all = "snake_case"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+#[cfg_attr(feature = "rkyv", rkyv(compare(PartialEq)))]
 #[non_exhaustive]
 pub enum HeaderName<'x> {
     Subject,
@@ -199,7 +256,7 @@ pub enum HeaderName<'x> {
     ListPost,
     ListSubscribe,
     ListUnsubscribe,
-    Other(Cow<'x, str>),
+    Other(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
     DkimSignature,
     ArcAuthenticationResults,
     ArcMessageSignature,
@@ -208,16 +265,24 @@ pub enum HeaderName<'x> {
 
 /// Parsed header value.
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub enum HeaderValue<'x> {
     /// Address list or group
     Address(Address<'x>),
 
     /// String
-    Text(Cow<'x, str>),
+    Text(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
 
     /// List of strings
-    TextList(Vec<Cow<'x, str>>),
+    TextList(
+        #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
+        Vec<Cow<'x, str>>,
+    ),
 
     /// Datetime
     DateTime(DateTime),
@@ -233,7 +298,11 @@ pub enum HeaderValue<'x> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub enum Address<'x> {
     /// Address list
     List(Vec<Addr<'x>>),
@@ -254,18 +323,41 @@ pub enum HeaderForm {
 }
 /// An RFC2047 Content-Type or RFC2183 Content-Disposition MIME header field.
 #[derive(Debug, PartialEq, Eq, Clone)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub struct ContentType<'x> {
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))]
     pub c_type: Cow<'x, str>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub c_subtype: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
-    pub attributes: Option<Vec<(Cow<'x, str>, Cow<'x, str>)>>,
+    #[cfg_attr(feature = "serde", serde(default))]
+    pub attributes: Option<Vec<Attribute<'x>>>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+pub struct Attribute<'x> {
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))]
+    pub name: Cow<'x, str>,
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))]
+    pub value: Cow<'x, str>,
 }
 
 /// An RFC5322 datetime.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub struct DateTime {
     pub year: u16,
     pub month: u8,
@@ -279,49 +371,66 @@ pub struct DateTime {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 pub struct Received<'x> {
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub from: Option<Host<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub from_ip: Option<IpAddr>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub from_iprev: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub by: Option<Host<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub for_: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub with: Option<Protocol>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub tls_version: Option<TlsVersion>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub tls_cipher: Option<Cow<'x, str>>,
-    #[cfg_attr(
-        feature = "serde_support",
-        serde(skip_serializing_if = "Option::is_none")
-    )]
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub id: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub ident: Option<Cow<'x, str>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub helo: Option<Host<'x>>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub helo_cmd: Option<Greeting>,
-    #[cfg_attr(feature = "serde_support", serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
+    #[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::Map<rkyv::with::AsOwned>))]
     pub via: Option<Cow<'x, str>>,
     pub date: Option<DateTime>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub enum Host<'x> {
-    Name(Cow<'x, str>),
+    Name(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
     IpAddr(IpAddr),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub enum TlsVersion {
     SSLv2,
     SSLv3,
@@ -335,7 +444,12 @@ pub enum TlsVersion {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
+
 pub enum Greeting {
     Helo,
     Ehlo,
@@ -343,7 +457,11 @@ pub enum Greeting {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
+)]
 #[allow(clippy::upper_case_acronyms)]
 pub enum Protocol {
     // IANA Mail Transmission Types
@@ -416,10 +534,10 @@ pub trait GetHeader<'x> {
 struct BodyPartIterator<'x> {
     message: &'x Message<'x>,
     list: &'x [MessagePartId],
-    pos: isize,
+    pos: i32,
 }
 
 struct AttachmentIterator<'x> {
     message: &'x Message<'x>,
-    pos: isize,
+    pos: i32,
 }

@@ -26,10 +26,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "1"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "1"
+                }
               ]
             }
           },
@@ -80,10 +80,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -118,10 +118,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -156,10 +156,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -194,10 +194,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -232,10 +232,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },
@@ -268,10 +268,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },

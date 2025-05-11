@@ -127,10 +127,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "UTF-8"
-                ]
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                }
               ]
             }
           },

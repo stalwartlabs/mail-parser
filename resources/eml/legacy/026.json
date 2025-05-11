@@ -119,10 +119,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "=====================_716740438==_"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "=====================_716740438==_"
+                }
               ]
             }
           },
@@ -152,10 +152,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -190,18 +190,18 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "name",
-                  "HasenundFr�sche.txt"
-                ],
-                [
-                  "x-mac-type",
-                  "54455854"
-                ],
-                [
-                  "x-mac-creator",
-                  "74747874"
-                ]
+                {
+                  "name": "name",
+                  "value": "HasenundFr�sche.txt"
+                },
+                {
+                  "name": "x-mac-type",
+                  "value": "54455854"
+                },
+                {
+                  "name": "x-mac-creator",
+                  "value": "74747874"
+                }
               ]
             }
           },
@@ -225,10 +225,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "HasenundFr�sche.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "HasenundFr�sche.txt"
+                }
               ]
             }
           },
@@ -254,10 +254,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -272,10 +272,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "farmerandstork.txt"
-                ]
+                {
+                  "name": "filename",
+                  "value": "farmerandstork.txt"
+                }
               ]
             }
           },

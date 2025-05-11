@@ -125,10 +125,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "------------A1E83A41894D3755390B838A"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------A1E83A41894D3755390B838A"
+                }
               ]
             }
           },
@@ -158,10 +158,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "------------F03F94BA73D3B9E8C1B94D92"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------F03F94BA73D3B9E8C1B94D92"
+                }
               ]
             }
           },
@@ -190,10 +190,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -228,10 +228,10 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "boundary",
-                  "------------C02FA3D0A04E95F295FB25EB"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "------------C02FA3D0A04E95F295FB25EB"
+                }
               ]
             }
           },
@@ -261,10 +261,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "us-ascii"
-                ]
+                {
+                  "name": "charset",
+                  "value": "us-ascii"
+                }
               ]
             }
           },
@@ -330,10 +330,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "C:TEMPnsmailEG.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "C:TEMPnsmailEG.png"
+                }
               ]
             }
           },
@@ -1716,10 +1716,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "C:TEMPnsmail39.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "C:TEMPnsmail39.png"
+                }
               ]
             }
           },
@@ -3199,10 +3199,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "redball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -3226,10 +3226,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "redball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "redball.png"
+                }
               ]
             }
           },
@@ -4709,10 +4709,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -4736,10 +4736,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },

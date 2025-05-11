@@ -132,10 +132,10 @@
               "c_type": "multipart",
               "c_subtype": "mixed",
               "attributes": [
-                [
-                  "boundary",
-                  "=====================_715392540==_"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "=====================_715392540==_"
+                }
               ]
             }
           },
@@ -165,14 +165,14 @@
               "c_type": "multipart",
               "c_subtype": "related",
               "attributes": [
-                [
-                  "type",
-                  "multipart/alternative"
-                ],
-                [
-                  "boundary",
-                  "=====================_715392540==_.REL"
-                ]
+                {
+                  "name": "type",
+                  "value": "multipart/alternative"
+                },
+                {
+                  "name": "boundary",
+                  "value": "=====================_715392540==_.REL"
+                }
               ]
             }
           },
@@ -202,10 +202,10 @@
               "c_type": "multipart",
               "c_subtype": "alternative",
               "attributes": [
-                [
-                  "boundary",
-                  "=====================_715392550==_.ALT"
-                ]
+                {
+                  "name": "boundary",
+                  "value": "=====================_715392550==_.ALT"
+                }
               ]
             }
           },
@@ -234,10 +234,10 @@
               "c_type": "text",
               "c_subtype": "plain",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -272,10 +272,10 @@
               "c_type": "text",
               "c_subtype": "html",
               "attributes": [
-                [
-                  "charset",
-                  "iso-8859-1"
-                ]
+                {
+                  "name": "charset",
+                  "value": "iso-8859-1"
+                }
               ]
             }
           },
@@ -310,10 +310,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "2aa3ed95.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "2aa3ed95.png"
+                }
               ]
             }
           },
@@ -346,10 +346,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "2aa3ed95.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "2aa3ed95.png"
+                }
               ]
             }
           },
@@ -1701,10 +1701,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "2aa3edd1.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "2aa3edd1.png"
+                }
               ]
             }
           },
@@ -1737,10 +1737,10 @@
               "c_type": "inline",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "2aa3edd1.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "2aa3edd1.png"
+                }
               ]
             }
           },
@@ -3220,10 +3220,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "blueball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -3247,10 +3247,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "blueball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "blueball.png"
+                }
               ]
             }
           },
@@ -4602,10 +4602,10 @@
               "c_type": "image",
               "c_subtype": "png",
               "attributes": [
-                [
-                  "name",
-                  "greenball.png"
-                ]
+                {
+                  "name": "name",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
@@ -4629,10 +4629,10 @@
               "c_type": "attachment",
               "c_subtype": null,
               "attributes": [
-                [
-                  "filename",
-                  "greenball.png"
-                ]
+                {
+                  "name": "filename",
+                  "value": "greenball.png"
+                }
               ]
             }
           },
