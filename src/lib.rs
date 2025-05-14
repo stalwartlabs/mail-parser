@@ -5,7 +5,7 @@
  */
 #![doc = include_str!("../README.md")]
 #![deny(rust_2018_idioms)]
-#[forbid(unsafe_code)]
+#![forbid(unsafe_code)]
 pub mod core;
 pub mod decoders;
 pub mod mailbox;
