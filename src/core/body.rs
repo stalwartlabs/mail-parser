@@ -10,7 +10,8 @@ impl PartType<'_> {
     #[allow(clippy::len_without_is_empty)]
     pub fn len(&self) -> usize {
         match self {
-            PartType::Text(v) | PartType::Html(v) => v.len(),
+            PartType::Text(v) => v.len(),
+            PartType::Html(v) => v.potentially_wrong_charset().len(),
             PartType::Binary(v) | PartType::InlineBinary(v) => v.len(),
             PartType::Message(v) => v.raw_message.len(),
             PartType::Multipart(_) => 0,

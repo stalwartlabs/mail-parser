@@ -649,7 +649,8 @@ impl<'x> MessagePart<'x> {
     /// Returns the body part's contents as a `u8` slice
     pub fn contents(&self) -> &[u8] {
         match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.as_bytes(),
+            PartType::Text(text) => text.as_bytes(),
+            PartType::Html(text) => text.potentially_wrong_charset().as_bytes(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.as_ref(),
             PartType::Message(message) => message.raw_message(),
             PartType::Multipart(_) => b"",
@@ -659,7 +660,8 @@ impl<'x> MessagePart<'x> {
     /// Returns the body part's contents as a `str`
     pub fn text_contents(&self) -> Option<&str> {
         match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
+            PartType::Text(text) => text.as_ref().into(),
+            PartType::Html(text) => text.potentially_wrong_charset().as_ref().into(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => {
                 std::str::from_utf8(bin.as_ref()).ok()
             }
@@ -689,7 +691,8 @@ impl<'x> MessagePart<'x> {
     /// Returns the body part's length
     pub fn len(&self) -> usize {
         match &self.body {
-            PartType::Text(text) | PartType::Html(text) => text.len(),
+            PartType::Text(text) => text.len(),
+            PartType::Html(text) => text.potentially_wrong_charset().len(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => bin.len(),
             PartType::Message(message) => message.raw_message().len(),
             PartType::Multipart(_) => 0,
@@ -758,7 +761,7 @@ impl<'x> MessagePart<'x> {
             is_encoding_problem: self.is_encoding_problem,
             body: match self.body {
                 PartType::Text(v) => PartType::Text(v.into_owned().into()),
-                PartType::Html(v) => PartType::Html(v.into_owned().into()),
+                PartType::Html(v) => PartType::Html(v.make_owned()),
                 PartType::Binary(v) => PartType::Binary(v.into_owned().into()),
                 PartType::InlineBinary(v) => PartType::InlineBinary(v.into_owned().into()),
                 PartType::Message(v) => PartType::Message(v.into_owned()),

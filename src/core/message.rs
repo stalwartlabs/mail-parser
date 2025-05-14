@@ -14,7 +14,7 @@ use crate::{
         MessageStream,
     },
     Address, AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm,
-    HeaderName, HeaderValue, Message, MessageParser, MessagePart, PartType, Received,
+    HeaderName, HeaderValue, Html, Message, MessageParser, MessagePart, PartType, Received,
 };
 
 impl<'x> Message<'x> {
@@ -391,11 +391,11 @@ impl<'x> Message<'x> {
     }
 
     /// Returns a message body part as text/plain
-    pub fn body_html(&'x self, pos: usize) -> Option<Cow<'x, str>> {
+    pub fn body_html(&'x self, pos: usize) -> Option<Html<'x>> {
         let part = self.parts.get(*self.html_body.get(pos)? as usize)?;
         match &part.body {
-            PartType::Html(html) => Some(html.as_ref().into()),
-            PartType::Text(text) => Some(text_to_html(text.as_ref()).into()),
+            PartType::Html(html) => Some(html.to_owned()),
+            PartType::Text(text) => Some(Html::new(text_to_html(text.as_ref()).into())),
             _ => None,
         }
     }
@@ -405,7 +405,7 @@ impl<'x> Message<'x> {
         let part = self.parts.get(*self.text_body.get(pos)? as usize)?;
         match &part.body {
             PartType::Text(text) => Some(text.as_ref().into()),
-            PartType::Html(html) => Some(html_to_text(html.as_ref()).into()),
+            PartType::Html(html) => Some(html_to_text(html.potentially_wrong_charset()).into()),
             _ => None,
         }
     }

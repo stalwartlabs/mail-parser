@@ -134,7 +134,7 @@ pub enum PartType<'x> {
     Text(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
 
     /// A text/html part
-    Html(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
+    Html(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Html<'x>),
 
     /// Any other part type that is not text.
     Binary(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, [u8]>),
