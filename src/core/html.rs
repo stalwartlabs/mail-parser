@@ -14,16 +14,16 @@ impl<'x> Html<'x> {
     pub(crate) fn new(html: Cow<'x, str>) -> Html<'x> {
         Html(html)
     }
-    /// Access the raw html with a potentially wrong charset.
+    /// Access the raw html with the original charset.
     ///
-    /// `mail-parser` only returns utf-8 strings, so the only sensible charset for the html is utf-8. Because html can declare its charset in `<meta>` tags, in the process of transcoding to utf-8 these may be incorrect.
-    /// Call [`Html::strip_charset`] before this method if the html will be given to a standard-conforming browser.
+    /// `mail-parser` returns utf-8 strings, so the only correct charset for the html is utf-8. Because html can declare its charset in `<meta>` tags, in the process of transcoding these may become incorrect.
+    /// If the correct charset is needed [`Html::strip_charset`] must be called before accessing the html with this method.
     pub fn potentially_wrong_charset(&self) -> &Cow<'x, str> {
         &self.0
     }
     /// Strip charset from html, making it utf-8 by default.
     ///
-    /// Call this method if the result is given to a standard-conforming browser.
+    /// This method should be called if the consumer of the html is a standard-conforming browser.
     pub fn strip_charset(&mut self) {
         let mut off = 0;
         let mut first = true;
