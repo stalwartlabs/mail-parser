@@ -8,10 +8,10 @@ use serde::{Deserialize, Serialize};
 pub struct Html<'x>(Cow<'x, str>);
 
 impl<'x> Html<'x> {
-    pub fn make_owned(self) -> Html<'static> {
+    pub(crate) fn make_owned(self) -> Html<'static> {
         Html(self.0.into_owned().into())
     }
-    pub fn new(html: Cow<'x, str>) -> Html<'x> {
+    pub(crate) fn new(html: Cow<'x, str>) -> Html<'x> {
         Html(html)
     }
     /// Access the raw html with a potentially wrong charset.
