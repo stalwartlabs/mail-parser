@@ -11,6 +11,8 @@ pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
+
+use core::Html;
 use parsers::MessageStream;
 use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 

@@ -8,6 +8,9 @@ pub mod address;
 pub mod body;
 pub mod builder;
 pub mod header;
+mod html;
 pub mod message;
 #[cfg(feature = "rkyv")]
 pub mod rkyv;
+
+pub use html::Html;
