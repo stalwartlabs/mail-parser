@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-pub mod address;
-pub mod body;
-pub mod builder;
-pub mod header;
+mod address;
+mod body;
+mod builder;
+mod header;
 mod html;
-pub mod message;
+mod message;
 #[cfg(feature = "rkyv")]
 pub mod rkyv;
 
