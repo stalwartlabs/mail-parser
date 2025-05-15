@@ -7,9 +7,13 @@
 use std::borrow::Cow;
 
 use crate::decoders::html::html_to_text;
+use crate::Html;
 
-pub fn preview_html<'x>(html: Cow<'_, str>, max_len: usize) -> Cow<'x, str> {
-    preview_text(html_to_text(html.as_ref()).into(), max_len)
+pub fn preview_html<'x>(html: Html<'_>, max_len: usize) -> Cow<'x, str> {
+    preview_text(
+        html_to_text(html.potentially_wrong_charset()).into(),
+        max_len,
+    )
 }
 
 pub fn preview_text<'x>(text: Cow<'_, str>, mut max_len: usize) -> Cow<'x, str> {

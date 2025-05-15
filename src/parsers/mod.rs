@@ -7,9 +7,9 @@
 use std::{iter::Peekable, ops::Range, slice::Iter};
 
 pub mod fields;
-pub mod header;
-pub mod message;
-pub mod mime;
+mod header;
+mod message;
+mod mime;
 pub mod preview;
 
 pub struct MessageStream<'x> {

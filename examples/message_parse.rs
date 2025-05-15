@@ -89,7 +89,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 
     // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
     assert_eq!(
-        message.body_html(0).unwrap(),
+        message.body_html(0).unwrap().potentially_wrong_charset(),
         concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
@@ -120,7 +120,10 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
     );
     assert_eq!(
-        nested_message.body_html(0).unwrap(),
+        nested_message
+            .body_html(0)
+            .unwrap()
+            .potentially_wrong_charset(),
         "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
     );
 

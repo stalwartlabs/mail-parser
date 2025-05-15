@@ -8,8 +8,8 @@ use std::borrow::Cow;
 
 use crate::{
     decoders::{charsets::map::charset_decoder, DecodeFnc},
-    ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Message, MessageParser, MessagePart,
-    MessagePartId, PartType,
+    ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Html, Message, MessageParser,
+    MessagePart, MessagePartId, PartType,
 };
 
 use super::MessageStream;
@@ -337,7 +337,7 @@ impl MessageParser {
                     }
 
                     if is_html {
-                        PartType::Html(text)
+                        PartType::Html(Html::new(text))
                     } else {
                         PartType::Text(text)
                     }

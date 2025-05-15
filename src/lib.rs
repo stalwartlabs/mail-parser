@@ -5,12 +5,13 @@
  */
 #![doc = include_str!("../README.md")]
 #![deny(rust_2018_idioms)]
-#[forbid(unsafe_code)]
+#![forbid(unsafe_code)]
 pub mod core;
 pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
+use core::Html;
 use parsers::MessageStream;
 use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 
@@ -132,7 +133,7 @@ pub enum PartType<'x> {
     Text(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
 
     /// A text/html part
-    Html(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
+    Html(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Html<'x>),
 
     /// Any other part type that is not text.
     Binary(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, [u8]>),
