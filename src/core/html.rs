@@ -27,16 +27,15 @@ impl<'x> Html<'x> {
     pub fn strip_charset(&mut self) {
         let mut off = 0;
         let mut first = true;
-        let mut found = None;
-        'meta: for part in self.0.split("<meta") {
+        let mut found = Vec::with_capacity(2);
+        for part in self.0.split("<meta") {
             if !first {
                 let Some((between, _)) = part.split_once('>') else {
                     return;
                 };
                 for w in between.as_bytes().windows(b"charset".len()) {
                     if w.eq_ignore_ascii_case(b"charset") {
-                        found = Some((off, off + "<meta".len() + between.len() + ">".len()));
-                        break 'meta;
+                        found.push((off, off + "<meta".len() + between.len() + ">".len()));
                     }
                 }
                 off += "<meta".len();
@@ -44,8 +43,12 @@ impl<'x> Html<'x> {
             off += part.len();
             first = false;
         }
-        if let Some((start, end)) = found {
-            self.0.to_mut().replace_range(start..end, "");
+        let mut deleted = 0;
+        for (start, end) in found {
+            self.0
+                .to_mut()
+                .replace_range(start - deleted..end - deleted, "");
+            deleted += end - start;
         }
     }
 }
@@ -80,6 +83,9 @@ mod tests {
         assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
 
         let stripped = strip("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
+        assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
+
+        let stripped = strip("<head><meta cHarSet=Windows-1252><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
         assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
     }
 }
