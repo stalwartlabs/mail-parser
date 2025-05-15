@@ -16,15 +16,15 @@ impl<'x> Html<'x> {
     }
     /// Access the raw html with the original charset.
     ///
-    /// `mail-parser` returns utf-8 strings, so the only correct charset for the html is utf-8. Because html can declare its charset in `<meta>` tags, in the process of transcoding these may become incorrect.
-    /// If the correct charset is needed [`Html::strip_charset`] must be called before accessing the html with this method.
+    /// `mail-parser` returns utf-8 strings, so the only correct charset for the html is utf-8. Because html can declare its charset in `<meta>` tags, these may be incorrect after transcoding.
+    /// If the charset must be correct call [`Html::fix_charset`] before accessing the html with this method.
     pub fn potentially_wrong_charset(&self) -> &Cow<'x, str> {
         &self.0
     }
-    /// Strip charset from html, making it utf-8 by default.
+    /// Replace charset with `utf-8`.
     ///
     /// This method should be called if the consumer of the html is a standard-conforming browser.
-    pub fn strip_charset(&mut self) {
+    pub fn fix_charset(&mut self) {
         let mut off = 0;
         let mut first = true;
         let mut found = Vec::with_capacity(2);
@@ -35,7 +35,10 @@ impl<'x> Html<'x> {
                 };
                 for w in between.as_bytes().windows(b"charset".len()) {
                     if w.eq_ignore_ascii_case(b"charset") {
-                        found.push((off, off + "<meta".len() + between.len() + ">".len()));
+                        found.push((
+                            off as isize,
+                            (off + "<meta".len() + between.len() + ">".len()) as isize,
+                        ));
                     }
                 }
                 off += "<meta".len();
@@ -43,12 +46,19 @@ impl<'x> Html<'x> {
             off += part.len();
             first = false;
         }
-        let mut deleted = 0;
+        let mut deleted: isize = 0;
+        let mut first = true;
         for (start, end) in found {
-            self.0
-                .to_mut()
-                .replace_range(start - deleted..end - deleted, "");
-            deleted += end - start;
+            let mut replace = "";
+            if first {
+                replace = "<meta charset=utf-8>";
+            }
+            self.0.to_mut().replace_range(
+                (start - deleted) as usize..(end - deleted) as usize,
+                replace,
+            );
+            deleted += end - start - replace.len() as isize;
+            first = false;
         }
     }
 }
@@ -57,35 +67,44 @@ impl<'x> Html<'x> {
 mod tests {
     use super::*;
 
-    fn strip(html: &str) -> Cow<'_, str> {
+    fn fix(html: &str) -> Cow<'_, str> {
         let mut html = Html(html.into());
-        html.strip_charset();
+        html.fix_charset();
         html.potentially_wrong_charset().clone()
     }
 
     #[test]
-    fn strip_charset() {
+    fn fix_charset() {
         assert_eq!(
-            strip("<head><meta cHarSet=Windows-1252></head>"),
-            "<head></head>"
+            fix("<head><meta cHarSet=Windows-1252></head>"),
+            "<head><meta charset=utf-8></head>"
         );
 
-        let stripped = strip("<head><meta cHarSet=\"Windows-1252\"></head>");
-        assert_eq!(stripped, "<head></head>");
+        let fixed = fix("<head><meta cHarSet=\"Windows-1252\"></head>");
+        assert_eq!(fixed, "<head><meta charset=utf-8></head>");
 
-        let stripped = strip("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet=Windows-1252\"></head>");
-        assert_eq!(stripped, "<head></head>");
+        let fixed = fix("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet=Windows-1252\"></head>");
+        assert_eq!(fixed, "<head><meta charset=utf-8></head>");
 
-        let stripped = strip("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;></head>");
-        assert_eq!(stripped, "<head></head>");
+        let fixed = fix("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;></head>");
+        assert_eq!(fixed, "<head><meta charset=utf-8></head>");
 
-        let stripped = strip("<head><meta name=\"xxx\"><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;></head>");
-        assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
+        let fixed = fix("<head><meta name=\"xxx\"><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;></head>");
+        assert_eq!(
+            fixed,
+            "<head><meta name=\"xxx\"><meta charset=utf-8></head>"
+        );
 
-        let stripped = strip("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
-        assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
+        let fixed = fix("<head><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
+        assert_eq!(
+            fixed,
+            "<head><meta charset=utf-8><meta name=\"xxx\"></head>"
+        );
 
-        let stripped = strip("<head><meta cHarSet=Windows-1252><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
-        assert_eq!(stripped, "<head><meta name=\"xxx\"></head>");
+        let fixed = fix("<head><meta cHarSet=Windows-1252><meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
+        assert_eq!(
+            fixed,
+            "<head><meta charset=utf-8><meta name=\"xxx\"></head>"
+        );
     }
 }
