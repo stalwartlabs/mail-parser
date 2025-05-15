@@ -28,7 +28,7 @@ impl<'x> Html<'x> {
         let mut off = 0;
         let mut first = true;
         let mut found = Vec::with_capacity(2);
-        for part in self.0.split("<meta") {
+        for part in self.0.split("<meta ") {
             if !first {
                 let Some((between, _)) = part.split_once('>') else {
                     return;
@@ -37,11 +37,12 @@ impl<'x> Html<'x> {
                     if w.eq_ignore_ascii_case(b"charset") {
                         found.push((
                             off as isize,
-                            (off + "<meta".len() + between.len() + ">".len()) as isize,
+                            (off + "<meta ".len() + between.len() + ">".len()) as isize,
                         ));
+                        break;
                     }
                 }
-                off += "<meta".len();
+                off += "<meta ".len();
             }
             off += part.len();
             first = false;
@@ -112,5 +113,8 @@ mod tests {
             malformed,
             "<head><meta cHarSet=Windows-1252<meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>"
         );
+
+        let fixed = fix("<metacharset></metacharset>");
+        assert_eq!(fixed, "<metacharset></metacharset>");
     }
 }
