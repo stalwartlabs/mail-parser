@@ -106,5 +106,11 @@ mod tests {
             fixed,
             "<head><meta charset=utf-8><meta name=\"xxx\"></head>"
         );
+
+        let malformed = fix("<head><meta cHarSet=Windows-1252<meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>");
+        assert_eq!(
+            malformed,
+            "<head><meta cHarSet=Windows-1252<meta http-equiv=\"Content-Type\" content=\"text/html; cHarSet = &quot;Windows-1252&quot;><meta name=\"xxx\"></head>"
+        );
     }
 }
