@@ -301,11 +301,9 @@ pub enum HeaderValue<'x> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-pub enum Address<'x> {
-    /// Address list
-    List(Vec<Addr<'x>>),
-    /// Group of addresses
-    Group(Vec<Group<'x>>),
+#[cfg_attr(feature = "serde", serde(transparent))]
+pub struct Address<'x> {
+    pub groups: Vec<Group<'x>>,
 }
 
 /// Header form
