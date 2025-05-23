@@ -32,14 +32,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Test User",
-                  "address": "test@example.org"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Test User",
+                    "address": "test@example.org"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 53,
           "offset_start": 58,
@@ -48,14 +51,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Another User",
-                  "address": "test2@example.org"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Another User",
+                    "address": "test2@example.org"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 88,
           "offset_start": 91,

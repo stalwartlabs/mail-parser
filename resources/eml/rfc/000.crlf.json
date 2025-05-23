@@ -28,14 +28,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Nathaniel Borenstein",
-                  "address": "nsb@nsb.fv.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Nathaniel Borenstein",
+                    "address": "nsb@nsb.fv.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 19,
           "offset_start": 24,
@@ -44,14 +47,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Ned Freed",
-                  "address": "ned@innosoft.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Ned Freed",
+                    "address": "ned@innosoft.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 64,
           "offset_start": 67,
@@ -311,14 +317,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "mailbox in US-ASCII",
-                          "address": null
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "mailbox in US-ASCII",
+                            "address": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 1670,
                   "offset_start": 1675,
@@ -327,14 +336,17 @@
                 {
                   "name": "to",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "address in US-ASCII",
-                          "address": null
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "address in US-ASCII",
+                            "address": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 1699,
                   "offset_start": 1702,

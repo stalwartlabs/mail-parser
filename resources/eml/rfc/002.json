@@ -14,14 +14,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Al Gore",
-                  "address": "vice-president@whitehouse.gov"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Al Gore",
+                    "address": "vice-president@whitehouse.gov"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -30,14 +33,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "White House Transportation Coordinator",
-                  "address": "transport@whitehouse.gov"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "White House Transportation Coordinator",
+                    "address": "transport@whitehouse.gov"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 47,
           "offset_start": 50,
@@ -291,14 +297,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "Bill Clinton",
-                          "address": "president@whitehouse.gov"
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "Bill Clinton",
+                            "address": "president@whitehouse.gov"
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 1198,
                   "offset_start": 1203,
@@ -307,14 +316,17 @@
                 {
                   "name": "to",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "A1 Gore (The Enforcer)",
-                          "address": "vice-president@whitehouse.gov"
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "A1 Gore (The Enforcer)",
+                            "address": "vice-president@whitehouse.gov"
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 1244,
                   "offset_start": 1247,

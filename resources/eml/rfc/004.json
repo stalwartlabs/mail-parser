@@ -15,14 +15,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Moderator-Address",
-                  "address": null
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Moderator-Address",
+                    "address": null
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -31,14 +34,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Recipient-List",
-                  "address": null
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Recipient-List",
+                    "address": null
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 24,
           "offset_start": 27,
@@ -171,14 +177,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "someone-else",
-                          "address": null
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "someone-else",
+                            "address": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 418,
                   "offset_start": 423,
@@ -246,14 +255,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "someone-else-again",
-                          "address": null
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "someone-else-again",
+                            "address": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 545,
                   "offset_start": 550,
