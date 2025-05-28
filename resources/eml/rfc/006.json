@@ -12,14 +12,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": null,
-                  "address": "sender@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": null,
+                    "address": "sender@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -28,14 +31,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": null,
-                  "address": "recipient@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": null,
+                    "address": "recipient@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 25,
           "offset_start": 28,
