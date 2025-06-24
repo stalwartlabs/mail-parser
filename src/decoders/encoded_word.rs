@@ -164,10 +164,9 @@ mod tests {
         ] {
             match MessageStream::new(input.as_bytes()).decode_rfc2047() {
                 Some(result) => {
-                    //println!("Decoded '{}'", string);
                     assert_eq!(result, expected_result);
                 }
-                _ => panic!("Failed to decode '{}'", input),
+                _ => panic!("Failed to decode '{input}'"),
             }
         }
     }
