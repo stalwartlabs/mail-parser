@@ -6,9 +6,7 @@
 
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
-use crate::{
-    parsers::MessageStream, DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion,
-};
+use crate::{parsers::MessageStream, DateTime, Greeting, Host, Protocol, Received, TlsVersion};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Token {
@@ -90,7 +88,7 @@ enum State {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_received(&mut self) -> HeaderValue<'x> {
+    pub fn parse_received(&mut self) -> Option<Received<'x>> {
         //let c = print!("-> {}", std::str::from_utf8(self.data).unwrap());
 
         let mut tokenizer = Tokenizer::new(self).peekable();
@@ -353,9 +351,9 @@ impl<'x> MessageStream<'x> {
             || received.via.is_some()
             || received.date.is_some()
         {
-            HeaderValue::Received(Box::new(received))
+            Some(received)
         } else {
-            HeaderValue::Empty
+            None
         }
     }
 }
@@ -824,7 +822,7 @@ mod tests {
             assert_eq!(
                 MessageStream::new(test.header.as_bytes())
                     .parse_received()
-                    .unwrap_received(),
+                    .unwrap(),
                 test.expected,
                 "failed for {:?}",
                 test.header

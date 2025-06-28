@@ -63,14 +63,18 @@ impl<'x> Message<'x> {
                             HeaderForm::Raw => HeaderValue::Text(
                                 std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
                             ),
-                            HeaderForm::Text => MessageStream::new(bytes).parse_unstructured(),
-                            HeaderForm::Addresses => MessageStream::new(bytes).parse_address(),
+                            HeaderForm::Text => {
+                                MessageStream::new(bytes).parse_unstructured().into()
+                            }
+                            HeaderForm::Addresses => {
+                                MessageStream::new(bytes).parse_address().into()
+                            }
                             HeaderForm::GroupedAddresses => {
-                                MessageStream::new(bytes).parse_address()
+                                MessageStream::new(bytes).parse_address().into()
                             }
                             HeaderForm::MessageIds => MessageStream::new(bytes).parse_id(),
-                            HeaderForm::Date => MessageStream::new(bytes).parse_date(),
-                            HeaderForm::URLs => MessageStream::new(bytes).parse_address(),
+                            HeaderForm::Date => MessageStream::new(bytes).parse_date().into(),
+                            HeaderForm::URLs => MessageStream::new(bytes).parse_address().into(),
                         }),
                 );
             }
