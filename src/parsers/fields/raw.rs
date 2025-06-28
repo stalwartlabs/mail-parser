@@ -77,8 +77,7 @@ mod tests {
             assert_eq!(
                 MessageStream::new(input.as_bytes()).parse_raw().unwrap(),
                 expected,
-                "Failed for '{:?}'",
-                input
+                "Failed for '{input:?}'"
             );
         }
     }
