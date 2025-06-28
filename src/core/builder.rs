@@ -17,7 +17,7 @@ impl MessageParser {
     pub fn new() -> Self {
         Self {
             header_map: Default::default(),
-            def_hdr_parse_fnc: |s| s.parse_raw(),
+            def_hdr_parse_fnc: |s| s.parse_raw().into(),
         }
     }
 
@@ -122,19 +122,21 @@ impl MessageParser {
     /// Parse a header as text decoding RFC 2047 encoded words.
     pub fn header_text(mut self, header: impl Into<HeaderName<'static>>) -> Self {
         self.header_map
-            .insert(header.into(), |s| s.parse_unstructured());
+            .insert(header.into(), |s| s.parse_unstructured().into());
         self
     }
 
     /// Parse a header as a RFC 5322 date.
     pub fn header_date(mut self, header: impl Into<HeaderName<'static>>) -> Self {
-        self.header_map.insert(header.into(), |s| s.parse_date());
+        self.header_map
+            .insert(header.into(), |s| s.parse_date().into());
         self
     }
 
     /// Parse a header as an address.
     pub fn header_address(mut self, header: impl Into<HeaderName<'static>>) -> Self {
-        self.header_map.insert(header.into(), |s| s.parse_address());
+        self.header_map
+            .insert(header.into(), |s| s.parse_address().into());
         self
     }
 
@@ -147,7 +149,7 @@ impl MessageParser {
     /// Parse a header as a MIME `Content-Type` or `Content-Disposition` type.
     pub fn header_content_type(mut self, header: impl Into<HeaderName<'static>>) -> Self {
         self.header_map
-            .insert(header.into(), |s| s.parse_content_type());
+            .insert(header.into(), |s| s.parse_content_type().into());
         self
     }
 
@@ -161,13 +163,14 @@ impl MessageParser {
     /// Parse a header as a received header.
     pub fn header_received(mut self, header: impl Into<HeaderName<'static>>) -> Self {
         self.header_map
-            .insert(header.into(), |s| s.parse_received());
+            .insert(header.into(), |s| s.parse_received().map(Box::new).into());
         self
     }
 
     /// Parse a header as a raw string, no RFC 2047 decoding is done.
     pub fn header_raw(mut self, header: impl Into<HeaderName<'static>>) -> Self {
-        self.header_map.insert(header.into(), |s| s.parse_raw());
+        self.header_map
+            .insert(header.into(), |s| s.parse_raw().into());
         self
     }
 
@@ -182,13 +185,13 @@ impl MessageParser {
 
     /// Parse all other headers as text decoding RFC 2047 encoded words.
     pub fn default_header_text(mut self) -> Self {
-        self.def_hdr_parse_fnc = |s| s.parse_unstructured();
+        self.def_hdr_parse_fnc = |s| s.parse_unstructured().into();
         self
     }
 
     /// Parse all other headers as raw strings, no RFC 2047 decoding is done.
     pub fn default_header_raw(mut self) -> Self {
-        self.def_hdr_parse_fnc = |s| s.parse_raw();
+        self.def_hdr_parse_fnc = |s| s.parse_raw().into();
         self
     }
 

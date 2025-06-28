@@ -9,7 +9,7 @@ use std::borrow::Cow;
 use crate::{
     decoders::{charsets::map::charset_decoder, hex::decode_hex},
     parsers::MessageStream,
-    Attribute, ContentType, HeaderValue,
+    Attribute, ContentType,
 };
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -252,7 +252,7 @@ impl<'x> ContentTypeParser<'x> {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_content_type(&mut self) -> HeaderValue<'x> {
+    pub fn parse_content_type(&mut self) -> Option<ContentType<'x>> {
         let mut parser = ContentTypeParser {
             state: ContentState::Type,
             state_stack: Vec::new(),
@@ -345,7 +345,7 @@ impl<'x> MessageStream<'x> {
                         }
 
                         return if let Some(content_type) = parser.c_type {
-                            HeaderValue::ContentType(ContentType {
+                            Some(ContentType {
                                 c_type: content_type,
                                 c_subtype: parser.c_subtype.take(),
                                 attributes: if !parser.attributes.is_empty() {
@@ -355,7 +355,7 @@ impl<'x> MessageStream<'x> {
                                 },
                             })
                         } else {
-                            HeaderValue::Empty
+                            None
                         };
                     }
                 }
@@ -513,7 +513,7 @@ impl<'x> MessageStream<'x> {
             }
         }
 
-        HeaderValue::Empty
+        None
     }
 }
 #[cfg(test)]
@@ -523,14 +523,8 @@ mod tests {
     #[test]
     fn parse_content_fields() {
         for test in load_tests("content_type.json") {
-            assert_eq!(
-                MessageStream::new(test.header.as_bytes())
-                    .parse_content_type()
-                    .into_content_type(),
-                test.expected,
-                "failed for {:?}",
-                test.header
-            );
+            let content_type = MessageStream::new(test.header.as_bytes()).parse_content_type();
+            assert_eq!(content_type, test.expected, "failed for {:?}", test.header);
         }
 
         /*let mut builder = crate::parsers::fields::TestBuilder::new("content_type.json");
