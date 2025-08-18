@@ -207,7 +207,10 @@ impl DateTime {
     /// Creates a DateTime object from a timestamp
     pub fn from_timestamp(timestamp: i64) -> Self {
         // Ported from http://howardhinnant.github.io/date_algorithms.html#civil_from_days
-        let (z, seconds) = ((timestamp / 86400) + 719468, timestamp % 86400);
+        let (z, seconds) = (
+            (timestamp.div_euclid(86400)) + 719468,
+            timestamp.rem_euclid(86400),
+        );
         let era: i64 = (if z >= 0 { z } else { z - 146096 }) / 146097;
         let doe: u64 = (z - era * 146097) as u64; // [0, 146096]
         let yoe: u64 = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365; // [0, 399]

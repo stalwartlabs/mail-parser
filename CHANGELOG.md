@@ -1,8 +1,13 @@
+mail-parser 0.11.1
+================================
+- Fix `DateTime::from_timestamp` to handle negative timestamps correctly.
+
 mail-parser 0.11.0
 ================================
 - `rkyv` zero-copy deserialization support.
 - Changed `usize` to `u32` types.
 - Renamed `serde_support` feature to `serde`.
+- Fix: Parsing of headers without LFs (#102) 
 
 mail-parser 0.10.2
 ================================

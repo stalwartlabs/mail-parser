@@ -16,6 +16,7 @@ use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 
 /// RFC5322/RFC822 message parser.
 #[derive(Debug, PartialEq, Eq, Clone)]
+#[allow(unpredictable_function_pointer_comparisons)]
 pub struct MessageParser {
     pub(crate) header_map: HashMap<HeaderName<'static>, HdrParseFnc>,
     pub(crate) def_hdr_parse_fnc: HdrParseFnc,
@@ -160,7 +161,6 @@ impl Default for PartType<'_> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub struct Addr<'x> {
     /// The address name including comments
     #[cfg_attr(feature = "serde", serde(default))]
@@ -180,7 +180,6 @@ pub struct Addr<'x> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub struct Group<'x> {
     /// Group name
     #[cfg_attr(feature = "serde", serde(default))]
@@ -270,7 +269,6 @@ pub enum HeaderName<'x> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub enum HeaderValue<'x> {
     /// Address list or group
     Address(Address<'x>),
@@ -418,7 +416,6 @@ pub struct Received<'x> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub enum Host<'x> {
     Name(#[cfg_attr(feature = "rkyv", rkyv(with = rkyv::with::AsOwned))] Cow<'x, str>),
     IpAddr(IpAddr),
@@ -430,7 +427,6 @@ pub enum Host<'x> {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub enum TlsVersion {
     SSLv2,
     SSLv3,
@@ -449,7 +445,6 @@ pub enum TlsVersion {
     feature = "rkyv",
     derive(rkyv::Serialize, rkyv::Deserialize, rkyv::Archive)
 )]
-
 pub enum Greeting {
     Helo,
     Ehlo,
