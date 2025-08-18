@@ -488,7 +488,10 @@ pub static MONTH_MAP: &[u8; 31] = &[
 mod tests {
     use chrono::{FixedOffset, LocalResult, SecondsFormat, TimeZone, Utc};
 
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::{
+        parsers::{fields::load_tests, MessageStream},
+        DateTime,
+    };
 
     #[test]
     fn parse_dates() {
@@ -528,6 +531,8 @@ mod tests {
                                 .unwrap()
                                 .to_rfc3339_opts(SecondsFormat::Secs, true)
                         );
+                        let ts = datetime.to_timestamp();
+                        assert_eq!(DateTime::from_timestamp(ts).to_timestamp(), ts);
                     }
                 }
                 _ => {}
