@@ -461,6 +461,29 @@ impl<'x> Message<'x> {
         AttachmentIterator::new(self)
     }
 
+/// Returns all parts of the email.
+pub fn all_parts(&self) -> impl Iterator<Item = &MessagePart<'_>> + '_ {
+    (0..).map(move |id| self.part(id))
+        .take_while(|part| part.is_some())
+        .filter_map(move |part| part)
+}
+
+/// Returns all parts of the email that are not Multipart.
+pub fn leaf_parts(&self) -> impl Iterator<Item = &MessagePart<'_>> + '_ {
+    self.all_parts().filter(|part| !part.is_multipart())
+}
+
+/// Returns all parts of the email that are not Multipart, attachments, or HTML
+/// or text body parts.
+pub fn other_parts(&self) -> impl Iterator<Item = &MessagePart<'_>> + '_ {
+    let this = self;
+    self.leaf_parts().filter(move |part| {
+        !this.attachments().any(|attachment| part == &attachment) &&
+        !this.html_bodies().any(|html_body_part| part == &html_body_part) &&
+        !this.text_bodies().any(|text_body_part| part == &text_body_part)
+    })
+}
+
     /// Returns an owned version of the message
     pub fn into_owned(self) -> Message<'static> {
         Message {
