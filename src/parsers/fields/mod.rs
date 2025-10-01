@@ -5,14 +5,14 @@
  */
 
 pub mod address;
-pub mod content_type;
+mod content_type;
 pub mod date;
-pub mod id;
-pub mod list;
-pub mod raw;
-pub mod received;
+mod id;
+mod list;
+mod raw;
+mod received;
 pub mod thread;
-pub mod unstructured;
+mod unstructured;
 
 #[cfg(test)]
 use serde::{Deserialize, Serialize};
