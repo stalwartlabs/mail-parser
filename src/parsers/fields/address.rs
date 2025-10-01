@@ -354,9 +354,16 @@ impl<'x> MessageStream<'x> {
 
         if parser.group_name.is_some() || !parser.result.is_empty() {
             parser.add_group();
-            HeaderValue::Address(Address::Group(parser.result))
+            HeaderValue::Address(Address {
+                groups: parser.result,
+            })
         } else if !parser.addresses.is_empty() {
-            HeaderValue::Address(Address::List(parser.addresses))
+            HeaderValue::Address(Address {
+                groups: vec![Group {
+                    name: None,
+                    addresses: parser.addresses,
+                }],
+            })
         } else {
             HeaderValue::Empty
         }
