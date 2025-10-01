@@ -6,7 +6,7 @@
 
 use std::fmt;
 
-use crate::{parsers::MessageStream, DateTime, HeaderValue};
+use crate::{parsers::MessageStream, DateTime};
 
 pub static DOW: &[&str] = &["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 pub static MONTH: &[&str] = &[
@@ -16,10 +16,7 @@ pub static MONTH: &[&str] = &[
 impl DateTime {
     /// Parses an RFC822 date
     pub fn parse_rfc822(value: &str) -> Option<Self> {
-        match MessageStream::new(value.as_bytes()).parse_date() {
-            HeaderValue::DateTime(dt) => dt.into(),
-            _ => None,
-        }
+        MessageStream::new(value.as_bytes()).parse_date()
     }
 
     /// Parses an RFC3339 date
@@ -286,7 +283,7 @@ impl fmt::Display for DateTime {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_date(&mut self) -> HeaderValue<'x> {
+    pub fn parse_date(&mut self) -> Option<DateTime> {
         let mut pos = 0;
         let mut parts = [0u32; 7];
         let mut parts_sizes = [
@@ -416,7 +413,7 @@ impl<'x> MessageStream<'x> {
         }
 
         if pos >= 6 {
-            HeaderValue::DateTime(DateTime {
+            Some(DateTime {
                 year: if (0..=49).contains(&parts[2]) {
                     parts[2] + 2000
                 } else if (50..=99).contains(&parts[2]) {
@@ -438,7 +435,7 @@ impl<'x> MessageStream<'x> {
                 tz_before_gmt: !is_plus,
             })
         } else {
-            HeaderValue::Empty
+            None
         }
     }
     // 4.3 obsolete date and time
@@ -496,9 +493,7 @@ mod tests {
     #[test]
     fn parse_dates() {
         for test in load_tests("date.json") {
-            let datetime = MessageStream::new(test.header.as_bytes())
-                .parse_date()
-                .into_datetime();
+            let datetime = MessageStream::new(test.header.as_bytes()).parse_date();
             assert_eq!(datetime, test.expected, "failed for {:?}", test.header);
 
             match datetime {

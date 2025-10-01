@@ -39,7 +39,7 @@ impl<'x> MessageStream<'x> {
                         | HeaderName::Comments
                         | HeaderName::ContentDescription
                         | HeaderName::ContentLocation
-                        | HeaderName::ContentTransferEncoding => self.parse_unstructured(),
+                        | HeaderName::ContentTransferEncoding => self.parse_unstructured().into(),
                         HeaderName::From
                         | HeaderName::To
                         | HeaderName::Cc
@@ -57,8 +57,8 @@ impl<'x> MessageStream<'x> {
                         | HeaderName::ListOwner
                         | HeaderName::ListPost
                         | HeaderName::ListSubscribe
-                        | HeaderName::ListUnsubscribe => self.parse_address(),
-                        HeaderName::Date | HeaderName::ResentDate => self.parse_date(),
+                        | HeaderName::ListUnsubscribe => self.parse_address().into(),
+                        HeaderName::Date | HeaderName::ResentDate => self.parse_date().into(),
                         HeaderName::MessageId
                         | HeaderName::References
                         | HeaderName::InReplyTo
@@ -68,12 +68,12 @@ impl<'x> MessageStream<'x> {
                         HeaderName::Keywords | HeaderName::ContentLanguage => {
                             self.parse_comma_separared()
                         }
-                        HeaderName::Received => self.parse_received(),
-                        HeaderName::MimeVersion => self.parse_raw(),
+                        HeaderName::Received => self.parse_received().map(Box::new).into(),
+                        HeaderName::MimeVersion => self.parse_raw().into(),
                         HeaderName::ContentType | HeaderName::ContentDisposition => {
-                            self.parse_content_type()
+                            self.parse_content_type().into()
                         }
-                        _ => self.parse_raw(),
+                        _ => self.parse_raw().into(),
                     }
                 } else {
                     (conf
