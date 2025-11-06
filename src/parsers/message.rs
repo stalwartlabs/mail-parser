@@ -513,8 +513,8 @@ impl MessageParser {
 
         message.raw_message = raw_message.into();
 
-        if !message.is_empty() {
-            message.parts[0].offset_end = message.raw_message.len() as u32;
+        if let Some(part) = message.parts.first_mut() {
+            part.offset_end = message.raw_message.len() as u32;
             Some(message)
         } else if !part_headers.is_empty() {
             // Message without a body
