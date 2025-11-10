@@ -118,5 +118,9 @@
   {
     "header": "Les Communs - =?utf-8?Q?R=C3=A9capitulatif?= de la\r\n =?utf-8?Q?r=C3=A9servation?= 13510164434879\r\n",
     "expected": "Les Communs - Récapitulatif de la réservation 13510164434879"
+  },
+  {
+    "header": "=?utf-8?Q?Peri=C3=B1an?= missing text",
+    "expected": "Periñan missing text"
   }
 ]
