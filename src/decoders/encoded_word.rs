@@ -149,6 +149,11 @@ mod tests {
                 "مرحبا بالعالم",
                 true,
             ),
+            (
+                "?iso-8859-8-i?Q?=E4=F9=E1:_Septier_-_cooperation?=",
+                "השב: Septier - cooperation",
+                true,
+            ),
             #[cfg(feature = "full_encoding")]
             (
                 "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=",
