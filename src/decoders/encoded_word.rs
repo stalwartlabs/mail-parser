@@ -77,7 +77,7 @@ impl MessageStream<'_> {
 
         if let Some(bytes) = decode_fnc.and_then(|fnc| fnc(self)) {
             if let Some(decoder) = charset_decoder(self.bytes(charset_start..charset_end)) {
-                decoder(&bytes).into()
+                decoder.decode(&bytes).into()
             } else {
                 String::from_utf8(bytes)
                     .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
@@ -149,11 +149,6 @@ mod tests {
                 "مرحبا بالعالم",
                 true,
             ),
-            (
-                "?iso-8859-8-i?Q?=E4=F9=E1:_Septier_-_cooperation?=",
-                "השב: Septier - cooperation",
-                true,
-            ),
             #[cfg(feature = "full_encoding")]
             (
                 "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=",
@@ -164,6 +159,12 @@ mod tests {
             (
                 "?iso-2022-jp?q?=1B$B%O%m!<!&%o!<%k%I=1B(B?=",
                 "ハロー・ワールド",
+                true,
+            ),
+            #[cfg(feature = "full_encoding")]
+            (
+                "?iso-8859-8-i?Q?=E4=F9=E1:_Septier_-_cooperation?=",
+                "השב: Septier - cooperation",
                 true,
             ),
         ] {

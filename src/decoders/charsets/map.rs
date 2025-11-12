@@ -8,10 +8,10 @@ use super::{
     multi_byte::*,
     single_byte::*,
     utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
-    DecoderFnc,
+    Decoder, DecoderFnc,
 };
 
-pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
+fn primary_charset_decoder(charset: &[u8]) -> Option<fn(&[u8]) -> String> {
     let mut l_charset = [0u8; 45];
 
     for (dest, src) in l_charset.iter_mut().zip(charset.iter()) {
@@ -173,6 +173,14 @@ pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
         "windows_874" => decoder_windows874,
         "windows_936" => decoder_gbk,
     )
+}
+
+pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
+    primary_charset_decoder(charset)
+        .map(Decoder::Fn)
+        // fallback labels
+        .or_else(|| encoding_rs::Encoding::for_label(charset).map(Decoder::Encoding))
+        .map(DecoderFnc)
 }
 
 #[cfg(test)]
