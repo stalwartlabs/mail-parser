@@ -149,6 +149,23 @@ mod tests {
                 "مرحبا بالعالم",
                 true,
             ),
+            // utf-7 and equivalent charset labels from the charset crate
+            ("?utf-7?Q?Heinz_M+APw-ller?=", "Heinz Müller", true),
+            (
+                "?x-unicode-2-0-utf-7?Q?Heinz_M+APw-ller?=",
+                "Heinz Müller",
+                true,
+            ),
+            (
+                "?unicode-1-1-utf-7?Q?Heinz_M+APw-ller?=",
+                "Heinz Müller",
+                true,
+            ),
+            (
+                "?csunicode11utf7?Q?Heinz_M+APw-ller?=",
+                "Heinz Müller",
+                true,
+            ),
             #[cfg(feature = "full_encoding")]
             (
                 "?shift_jis?B?g26DjYFbgUWDj4Fbg4uDaA==?=",
