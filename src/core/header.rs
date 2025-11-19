@@ -751,6 +751,11 @@ impl<'x> MessagePart<'x> {
         self.offset_end
     }
 
+    /// Get the raw body bytes of this part
+    pub fn raw_body(&self) -> &[u8] {
+        self.raw_body.as_ref()
+    }
+
     /// Returns an owned version of the this part
     pub fn into_owned(self) -> MessagePart<'static> {
         MessagePart {
