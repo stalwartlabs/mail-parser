@@ -182,6 +182,7 @@ impl MessageParser {
                             is_encoding_problem: false,
                             encoding: Encoding::None,
                             body: PartType::default(),
+                            raw_body: vec![].into(),
                         });
                         state_stack.push((state, None));
                         state = new_state;
@@ -229,6 +230,7 @@ impl MessageParser {
                     offset_body: state.offset_body as u32,
                     offset_end: 0,
                     body: PartType::default(), // Temp value, will be replaced later.
+                    raw_body: vec![].into(),
                 });
                 state_stack.push((state, message.into()));
                 message = Message::new();
@@ -262,6 +264,7 @@ impl MessageParser {
             } else {
                 state.offset_end = offset_end;
             }
+            let raw_body = bytes.clone();
 
             let body_part = if mime_type != MimeType::Message {
                 let is_inline = is_inline
@@ -382,6 +385,7 @@ impl MessageParser {
                 encoding,
                 is_encoding_problem,
                 body: body_part,
+                raw_body: raw_body,
                 offset_header: state.offset_header as u32,
                 offset_body: state.offset_body as u32,
                 offset_end: state.offset_end as u32,
@@ -523,6 +527,7 @@ impl MessageParser {
                 encoding: Encoding::None,
                 is_encoding_problem: true,
                 body: PartType::Text("".into()),
+                raw_body: vec![].into(),
                 offset_header: 0,
                 offset_body: message.raw_message.len() as u32,
                 offset_end: message.raw_message.len() as u32,

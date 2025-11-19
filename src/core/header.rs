@@ -764,6 +764,7 @@ impl<'x> MessagePart<'x> {
                 PartType::Message(v) => PartType::Message(v.into_owned()),
                 PartType::Multipart(v) => PartType::Multipart(v),
             },
+            raw_body: self.raw_body.into_owned().into(),
             encoding: self.encoding,
             offset_header: self.offset_header,
             offset_body: self.offset_body,
