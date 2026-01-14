@@ -450,7 +450,7 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
                     } else if n_total > 0 {
                         break;
                     } else {
-                        start_pos += 1;
+                        start_pos = self.stream.offset();
                     }
                 }
                 b'(' => {
