@@ -4200,5 +4200,137 @@
         "tz_minute": 0
       }
     }
+  },
+  {
+    "header": "from nm2-vm1.bullet.mail.ukl.yahoo.com (nm2-vm1.bullet.mail.ukl.yahoo.com [217.146.183.227]) by lists.maptools.org (Postfix) with SMTP id BC0C186A2A for <shapelib@lists.maptools.org>; Wed,  9 Mar 2011 06:19:47 -0500 (EST)\n",
+    "expected": {
+      "from": {
+        "Name": "nm2-vm1.bullet.mail.ukl.yahoo.com"
+      },
+      "from_ip": "217.146.183.227",
+      "from_iprev": "nm2-vm1.bullet.mail.ukl.yahoo.com",
+      "for_": "shapelib@lists.maptools.org",
+      "by": {
+        "Name": "lists.maptools.org"
+      },
+      "with": "SMTP",
+      "id": "BC0C186A2A",
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 6,
+        "minute": 19,
+        "second": 47,
+        "tz_before_gmt": true,
+        "tz_hour": 5,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [217.146.183.184] by nm2.bullet.mail.ukl.yahoo.com with NNFMP;\r\n\t09 Mar 2011 11:19:46 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "217.146.183.184"
+      },
+      "by": {
+        "Name": "nm2.bullet.mail.ukl.yahoo.com"
+      },
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 11,
+        "minute": 19,
+        "second": 46,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [217.146.183.162] by tm15.bullet.mail.ukl.yahoo.com with NNFMP; 09 Mar 2011 11:19:46 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "217.146.183.162"
+      },
+      "by": {
+        "Name": "tm15.bullet.mail.ukl.yahoo.com"
+      },
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 11,
+        "minute": 19,
+        "second": 46,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [127.0.0.1] by omp1003.mail.ukl.yahoo.com with NNFMP; 09 Mar 2011 11:19:46 -0000\n",
+    "expected": {
+      "from": {
+        "IpAddr": "127.0.0.1"
+      },
+      "by": {
+        "Name": "omp1003.mail.ukl.yahoo.com"
+      },
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 11,
+        "minute": 19,
+        "second": 46,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "(qmail 31873 invoked by uid 60001); 9 Mar 2011 11:19:46 -0000\n",
+    "expected": {
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 11,
+        "minute": 19,
+        "second": 46,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from [93.48.39.139] by web28416.mail.ukl.yahoo.com via HTTP; Wed, 09 Mar 2011 11:19:45 GMT\n",
+    "expected": {
+      "from": {
+        "IpAddr": "93.48.39.139"
+      },
+      "by": {
+        "Name": "web28416.mail.ukl.yahoo.com"
+      },
+      "via": "HTTP",
+      "date": {
+        "year": 2011,
+        "month": 3,
+        "day": 9,
+        "hour": 11,
+        "minute": 19,
+        "second": 45,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
   }
 ]

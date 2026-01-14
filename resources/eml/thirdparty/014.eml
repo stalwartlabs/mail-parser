@@ -1,0 +1,68 @@
+Return-Path: <calpas2007@yahoo.fr>
+Message-ID: <325993.29502.qm@web28416.mail.ukl.yahoo.com>
+Received: from nm2-vm1.bullet.mail.ukl.yahoo.com
+	(nm2-vm1.bullet.mail.ukl.yahoo.com [217.146.183.227])
+	by lists.maptools.org (Postfix) with SMTP id BC0C186A2A
+	for <shapelib@lists.maptools.org>; Wed,  9 Mar 2011 06:19:47 -0500 (EST)
+Received: from [217.146.183.184] by nm2.bullet.mail.ukl.yahoo.com with NNFMP;
+	09 Mar 2011 11:19:46 -0000
+Received: from [217.146.183.162] by tm15.bullet.mail.ukl.yahoo.com with NNFMP;
+	09 Mar 2011 11:19:46 -0000
+Received: from [127.0.0.1] by omp1003.mail.ukl.yahoo.com with NNFMP;
+	09 Mar 2011 11:19:46 -0000
+Received: (qmail 31873 invoked by uid 60001); 9 Mar 2011 11:19:46 -0000
+Received: from [93.48.39.139] by web28416.mail.ukl.yahoo.com via HTTP;
+	Wed, 09 Mar 2011 11:19:45 GMT
+X-YMail-OSG: xF6vL5gVM1nJDIpUac8HXQgtzEKILWMleuWXpnKhS4zjeWk
+	AzOMT9R5FsxhNIfJowfwIoeDe4kCWtluFsT5_o6NqzymePDH8x1m9dBMI_r.
+	yNT1aac5Z.dK2GS8Nsuks7LrwYx0Y0SV45wWRzmK8ExyNKvPh.VzTeJQBn6T
+	mEWJDI82qsbKIqLwl7PQPf79.DT_AthBEa72VUqZ5bOIjxyd9xP36T9KbbBv z8rA-
+X-Yahoo-Newman-Property: ymail-5
+X-Yahoo-Newman-Id: 895263.62503.bm@omp1003.mail.ukl.yahoo.com
+X-Mailer: YahooMailRC/559 YahooMailWebService/0.8.109.292656
+Date: Wed, 9 Mar 2011 11:19:45 +0000 (GMT)
+From: calpas calpas <calpas2007@yahoo.fr>
+To: shapelib@lists.maptools.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1188948659-1299669585=:29502"
+Subject: [Shapelib] need some help
+X-BeenThere: shapelib@lists.maptools.org
+X-Mailman-Version: 2.1.9
+Precedence: list
+Reply-To: Shapelib Development <shapelib@lists.maptools.org>
+List-Id: Shapelib Development <shapelib.lists.maptools.org>
+List-Unsubscribe: <http://lists.maptools.org/mailman/listinfo/shapelib>,
+	<mailto:shapelib-request@lists.maptools.org?subject=unsubscribe>
+List-Archive: <http://lists.maptools.org/pipermail/shapelib>
+List-Post: <mailto:shapelib@lists.maptools.org>
+List-Help: <mailto:shapelib-request@lists.maptools.org?subject=help>
+List-Subscribe: <http://lists.maptools.org/mailman/listinfo/shapelib>,
+	<mailto:shapelib-request@lists.maptools.org?subject=subscribe>
+X-List-Received-Date: Wed, 09 Mar 2011 11:20:10 -0000
+
+--0-1188948659-1299669585=:29502
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Dear all,=0A=0AI am writting my first C application to access the shapefile=
+ and retrieve some =0Adata. I'm trying to use the shapelib to achieve that =
+unfortunately I'm keeping =0Aon having the following errors: =0A=0A    /hom=
+e/geotema/valatest/src/readshapetest.c:19: undefined reference to =0A`SHPOp=
+en'=0A    /home/geotema/valatest/src/readshapetest.c:21: undefined referenc=
+e to =0A`SHPGetInfo'=0A=0AI cannot figure out what is missing. could anyone=
+ help me to sort out this =0Aissue???=0A=0ACheers=0A=0A=0A
+--0-1188948659-1299669585=:29502
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><style type=3D"text/css"><!-- DIV {margin:0px;} --></style></he=
+ad><body><div style=3D"font-family:times new roman,new york,times,serif;fon=
+t-size:12pt"><div>Dear all,<br><br>I am writting my first C application to =
+access the shapefile and retrieve some data. I'm trying to use the shapelib=
+ to achieve that unfortunately I'm keeping on having the following errors: =
+<br>&nbsp;&nbsp;&nbsp; /home/geotema/valatest/src/readshapetest.c:19: undef=
+ined reference to `SHPOpen'<br>&nbsp;&nbsp;&nbsp; /home/geotema/valatest/sr=
+c/readshapetest.c:21: undefined reference to `SHPGetInfo'<br><br>I cannot f=
+igure out what is missing. could anyone help me to sort out this issue???<b=
+r><br>Cheers<br><br></div>=0A</div><br>=0A=0A=0A=0A=0A      </body></html>
+--0-1188948659-1299669585=:29502--

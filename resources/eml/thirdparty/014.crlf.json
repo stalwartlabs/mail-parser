@@ -1,0 +1,633 @@
+{
+  "html_body": [
+    2
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "return_path",
+          "value": {
+            "Text": "calpas2007@yahoo.fr"
+          },
+          "offset_field": 0,
+          "offset_start": 12,
+          "offset_end": 36
+        },
+        {
+          "name": "message_id",
+          "value": {
+            "Text": "325993.29502.qm@web28416.mail.ukl.yahoo.com"
+          },
+          "offset_field": 36,
+          "offset_start": 47,
+          "offset_end": 95
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": {
+                "Name": "nm2-vm1.bullet.mail.ukl.yahoo.com"
+              },
+              "from_ip": "217.146.183.227",
+              "from_iprev": "nm2-vm1.bullet.mail.ukl.yahoo.com",
+              "by": {
+                "Name": "lists.maptools.org"
+              },
+              "for_": "shapelib@lists.maptools.org",
+              "with": "SMTP",
+              "tls_version": null,
+              "tls_cipher": null,
+              "id": "BC0C186A2A",
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 6,
+                "minute": 19,
+                "second": 47,
+                "tz_before_gmt": true,
+                "tz_hour": 5,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 95,
+          "offset_start": 104,
+          "offset_end": 334
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": {
+                "IpAddr": "217.146.183.184"
+              },
+              "from_ip": null,
+              "from_iprev": null,
+              "by": {
+                "Name": "nm2.bullet.mail.ukl.yahoo.com"
+              },
+              "for_": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 11,
+                "minute": 19,
+                "second": 46,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 334,
+          "offset_start": 343,
+          "offset_end": 442
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": {
+                "IpAddr": "217.146.183.162"
+              },
+              "from_ip": null,
+              "from_iprev": null,
+              "by": {
+                "Name": "tm15.bullet.mail.ukl.yahoo.com"
+              },
+              "for_": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 11,
+                "minute": 19,
+                "second": 46,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 442,
+          "offset_start": 451,
+          "offset_end": 551
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": {
+                "IpAddr": "127.0.0.1"
+              },
+              "from_ip": null,
+              "from_iprev": null,
+              "by": {
+                "Name": "omp1003.mail.ukl.yahoo.com"
+              },
+              "for_": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 11,
+                "minute": 19,
+                "second": 46,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 551,
+          "offset_start": 560,
+          "offset_end": 650
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": null,
+              "from_ip": null,
+              "from_iprev": null,
+              "by": null,
+              "for_": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 11,
+                "minute": 19,
+                "second": 46,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 650,
+          "offset_start": 659,
+          "offset_end": 723
+        },
+        {
+          "name": "received",
+          "value": {
+            "Received": {
+              "from": {
+                "IpAddr": "93.48.39.139"
+              },
+              "from_ip": null,
+              "from_iprev": null,
+              "by": {
+                "Name": "web28416.mail.ukl.yahoo.com"
+              },
+              "for_": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": "HTTP",
+              "date": {
+                "year": 2011,
+                "month": 3,
+                "day": 9,
+                "hour": 11,
+                "minute": 19,
+                "second": 45,
+                "tz_before_gmt": true,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 723,
+          "offset_start": 732,
+          "offset_end": 827
+        },
+        {
+          "name": {
+            "other": "X-YMail-OSG"
+          },
+          "value": {
+            "Text": "xF6vL5gVM1nJDIpUac8HXQgtzEKILWMleuWXpnKhS4zjeWk\r\n\tAzOMT9R5FsxhNIfJowfwIoeDe4kCWtluFsT5_o6NqzymePDH8x1m9dBMI_r.\r\n\tyNT1aac5Z.dK2GS8Nsuks7LrwYx0Y0SV45wWRzmK8ExyNKvPh.VzTeJQBn6T\r\n\tmEWJDI82qsbKIqLwl7PQPf79.DT_AthBEa72VUqZ5bOIjxyd9xP36T9KbbBv z8rA-"
+          },
+          "offset_field": 827,
+          "offset_start": 839,
+          "offset_end": 1084
+        },
+        {
+          "name": {
+            "other": "X-Yahoo-Newman-Property"
+          },
+          "value": {
+            "Text": "ymail-5"
+          },
+          "offset_field": 1084,
+          "offset_start": 1108,
+          "offset_end": 1118
+        },
+        {
+          "name": {
+            "other": "X-Yahoo-Newman-Id"
+          },
+          "value": {
+            "Text": "895263.62503.bm@omp1003.mail.ukl.yahoo.com"
+          },
+          "offset_field": 1118,
+          "offset_start": 1136,
+          "offset_end": 1181
+        },
+        {
+          "name": {
+            "other": "X-Mailer"
+          },
+          "value": {
+            "Text": "YahooMailRC/559 YahooMailWebService/0.8.109.292656"
+          },
+          "offset_field": 1181,
+          "offset_start": 1190,
+          "offset_end": 1243
+        },
+        {
+          "name": "date",
+          "value": {
+            "DateTime": {
+              "year": 2011,
+              "month": 3,
+              "day": 9,
+              "hour": 11,
+              "minute": 19,
+              "second": 45,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 1243,
+          "offset_start": 1248,
+          "offset_end": 1287
+        },
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "calpas calpas",
+                  "address": "calpas2007@yahoo.fr"
+                }
+              ]
+            }
+          },
+          "offset_field": 1287,
+          "offset_start": 1292,
+          "offset_end": 1330
+        },
+        {
+          "name": "to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "shapelib@lists.maptools.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 1330,
+          "offset_start": 1333,
+          "offset_end": 1363
+        },
+        {
+          "name": "mime_version",
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 1363,
+          "offset_start": 1376,
+          "offset_end": 1382
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "0-1188948659-1299669585=:29502"
+                }
+              ]
+            }
+          },
+          "offset_field": 1382,
+          "offset_start": 1395,
+          "offset_end": 1462
+        },
+        {
+          "name": "subject",
+          "value": {
+            "Text": "[Shapelib] need some help"
+          },
+          "offset_field": 1462,
+          "offset_start": 1470,
+          "offset_end": 1498
+        },
+        {
+          "name": {
+            "other": "X-BeenThere"
+          },
+          "value": {
+            "Text": "shapelib@lists.maptools.org"
+          },
+          "offset_field": 1498,
+          "offset_start": 1510,
+          "offset_end": 1540
+        },
+        {
+          "name": {
+            "other": "X-Mailman-Version"
+          },
+          "value": {
+            "Text": "2.1.9"
+          },
+          "offset_field": 1540,
+          "offset_start": 1558,
+          "offset_end": 1566
+        },
+        {
+          "name": {
+            "other": "Precedence"
+          },
+          "value": {
+            "Text": "list"
+          },
+          "offset_field": 1566,
+          "offset_start": 1577,
+          "offset_end": 1584
+        },
+        {
+          "name": "reply_to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "Shapelib Development",
+                  "address": "shapelib@lists.maptools.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 1584,
+          "offset_start": 1593,
+          "offset_end": 1646
+        },
+        {
+          "name": "list_id",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "Shapelib Development",
+                  "address": "shapelib.lists.maptools.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 1646,
+          "offset_start": 1654,
+          "offset_end": 1707
+        },
+        {
+          "name": "list_unsubscribe",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "http://lists.maptools.org/mailman/listinfo/shapelib"
+                },
+                {
+                  "name": null,
+                  "address": "mailto:shapelib-request@lists.maptools.org?subject=unsubscribe"
+                }
+              ]
+            }
+          },
+          "offset_field": 1707,
+          "offset_start": 1724,
+          "offset_end": 1848
+        },
+        {
+          "name": "list_archive",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "http://lists.maptools.org/pipermail/shapelib"
+                }
+              ]
+            }
+          },
+          "offset_field": 1848,
+          "offset_start": 1861,
+          "offset_end": 1910
+        },
+        {
+          "name": "list_post",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "mailto:shapelib@lists.maptools.org"
+                }
+              ]
+            }
+          },
+          "offset_field": 1910,
+          "offset_start": 1920,
+          "offset_end": 1959
+        },
+        {
+          "name": "list_help",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "mailto:shapelib-request@lists.maptools.org?subject=help"
+                }
+              ]
+            }
+          },
+          "offset_field": 1959,
+          "offset_start": 1969,
+          "offset_end": 2029
+        },
+        {
+          "name": "list_subscribe",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "http://lists.maptools.org/mailman/listinfo/shapelib"
+                },
+                {
+                  "name": null,
+                  "address": "mailto:shapelib-request@lists.maptools.org?subject=subscribe"
+                }
+              ]
+            }
+          },
+          "offset_field": 2029,
+          "offset_start": 2044,
+          "offset_end": 2166
+        },
+        {
+          "name": {
+            "other": "X-List-Received-Date"
+          },
+          "value": {
+            "Text": "Wed, 09 Mar 2011 11:20:10 -0000"
+          },
+          "offset_field": 2166,
+          "offset_start": 2187,
+          "offset_end": 2221
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 2223,
+      "offset_end": 3808
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "utf-8"
+                }
+              ]
+            }
+          },
+          "offset_field": 2257,
+          "offset_start": 2270,
+          "offset_end": 2298
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 2298,
+          "offset_start": 2324,
+          "offset_end": 2343
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Dear all,\n\nI am writting my first C application to access the shapefile and retrieve some \ndata. I'm trying to use the shapelib to achieve that unfortunately I'm keeping \non having the following errors: \n\n    /home/geotema/valatest/src/readshapetest.c:19: undefined reference to \n`SHPOpen'\n    /home/geotema/valatest/src/readshapetest.c:21: undefined reference to \n`SHPGetInfo'\n\nI cannot figure out what is missing. could anyone help me to sort out this \nissue???\n\nCheers\n\n\n"
+      },
+      "offset_header": 2257,
+      "offset_body": 2345,
+      "offset_end": 2871
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "utf-8"
+                }
+              ]
+            }
+          },
+          "offset_field": 2907,
+          "offset_start": 2920,
+          "offset_end": 2947
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 2947,
+          "offset_start": 2973,
+          "offset_end": 2992
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html><head><style type=\"text/css\"><!-- DIV {margin:0px;} --></style></head><body><div style=\"font-family:times new roman,new york,times,serif;font-size:12pt\"><div>Dear all,<br><br>I am writting my first C application to access the shapefile and retrieve some data. I'm trying to use the shapelib to achieve that unfortunately I'm keeping on having the following errors: <br>&nbsp;&nbsp;&nbsp; /home/geotema/valatest/src/readshapetest.c:19: undefined reference to `SHPOpen'<br>&nbsp;&nbsp;&nbsp; /home/geotema/valatest/src/readshapetest.c:21: undefined reference to `SHPGetInfo'<br><br>I cannot figure out what is missing. could anyone help me to sort out this issue???<br><br>Cheers<br><br></div>\n</div><br>\n\n\n\n\n      </body></html>"
+      },
+      "offset_header": 2907,
+      "offset_body": 2994,
+      "offset_end": 3770
+    }
+  ]
+}
