@@ -4332,5 +4332,31 @@
         "tz_minute": 0
       }
     }
+  },
+  {
+    "header": " from [127.0.0.1] (host.example.com [35.173.1.1])\r\n by bf7aa1d4e8a6 with SMTP id 660a079b99f27ed5a03038a8; Mon, 01 Apr 2024\r\n 01:02:19 GMT\r\n",
+    "expected": {
+      "from": {
+        "IpAddr": "127.0.0.1"
+      },
+      "from_ip": "35.173.1.1",
+      "from_iprev": "host.example.com",
+      "by": {
+        "Name": "bf7aa1d4e8a6"
+      },
+      "with": "SMTP",
+      "id": "660a079b99f27ed5a03038a8",
+      "date": {
+        "year": 2024,
+        "month": 4,
+        "day": 1,
+        "hour": 1,
+        "minute": 2,
+        "second": 19,
+        "tz_before_gmt": true,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
   }
 ]
