@@ -490,11 +490,29 @@ impl MessageParser {
         }
 
         // Corrupted MIME message, try to recover whatever is possible.
+        let mut last_message = true;
         while let Some((prev_state, prev_message)) = state_stack.pop() {
             if let Some(mut prev_message) = prev_message {
                 message.raw_message = raw_message.into(); //raw_message[state.offset_header..stream.offset()].as_ref().into();
 
                 if let Some(part) = prev_message.parts.get_mut(state.part_id as usize) {
+                    // complete message as best we can if no parts yet assigned
+                    if message.parts.is_empty() {
+                        let bytes = &message.raw_message[state.offset_header..];
+                        message.parts.push(MessagePart {
+                            headers: std::mem::take(&mut part_headers),
+                            encoding: Encoding::None,
+                            is_encoding_problem: true,
+                            body: if last_message {
+                                PartType::Binary(bytes.to_owned().into())
+                            } else {
+                                PartType::Text("".into())
+                            },
+                            offset_header: state.offset_header as u32,
+                            offset_body: state.offset_body as u32,
+                            offset_end: state.offset_end as u32,
+                        });
+                    }
                     part.body = PartType::Message(message);
                     part.offset_end = stream.offset() as u32;
                 } else {
@@ -509,12 +527,13 @@ impl MessageParser {
                 debug_assert!(false, "This should not have happened.");
             }
             state = prev_state;
+            last_message = false;
         }
 
         message.raw_message = raw_message.into();
 
-        if !message.is_empty() {
-            message.parts[0].offset_end = message.raw_message.len() as u32;
+        if let Some(part) = message.parts.first_mut() {
+            part.offset_end = message.raw_message.len() as u32;
             Some(message)
         } else if !part_headers.is_empty() {
             // Message without a body
