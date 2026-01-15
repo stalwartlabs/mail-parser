@@ -9,7 +9,21 @@ pub mod multi_byte;
 pub mod single_byte;
 pub mod utf;
 
-pub type DecoderFnc = fn(&[u8]) -> String;
+pub struct DecoderFnc(Decoder);
+
+enum Decoder {
+    Encoding(&'static encoding_rs::Encoding),
+    Fn(fn(&[u8]) -> String),
+}
+
+impl DecoderFnc {
+    pub(crate) fn decode(&self, bytes: &[u8]) -> String {
+        match self.0 {
+            Decoder::Encoding(enc) => enc.decode(bytes).0.into_owned(),
+            Decoder::Fn(decoder) => decoder(bytes),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -63,7 +77,7 @@ mod tests {
             let decoder = charset_decoder(input.0.as_bytes())
                 .expect(&("Failed to find decoder for ".to_owned() + input.0));
 
-            assert_eq!(decoder(&input.1), input.2);
+            assert_eq!(decoder.decode(&input.1), input.2);
         }
     }
 }

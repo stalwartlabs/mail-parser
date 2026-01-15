@@ -188,7 +188,7 @@ impl<'x> ContentTypeParser<'x> {
                         .as_ref()
                         .and_then(|c| charset_decoder(c.as_bytes()))
                     {
-                        decoder(&decoded_bytes).into()
+                        decoder.decode(&decoded_bytes).into()
                     } else {
                         String::from_utf8(decoded_bytes)
                             .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
