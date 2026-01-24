@@ -220,14 +220,7 @@ impl<'x> HeaderValue<'x> {
         match self {
             HeaderValue::Text(text) => text.len(),
             HeaderValue::TextList(list) => list.iter().map(|t| t.len()).sum(),
-            HeaderValue::Address(Address::List(list)) => list
-                .iter()
-                .map(|a| {
-                    a.name.as_ref().map_or(0, |a| a.len())
-                        + a.address.as_ref().map_or(0, |a| a.len())
-                })
-                .sum(),
-            HeaderValue::Address(Address::Group(grouplist)) => grouplist
+            HeaderValue::Address(Address { groups }) => groups
                 .iter()
                 .flat_map(|g| g.addresses.iter())
                 .map(|a| {
