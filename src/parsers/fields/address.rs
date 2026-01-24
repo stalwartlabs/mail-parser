@@ -6,7 +6,7 @@
 
 use std::borrow::Cow;
 
-use crate::{parsers::MessageStream, Addr, Address, Group, HeaderValue};
+use crate::{parsers::MessageStream, Addr, Address, Group};
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -191,7 +191,7 @@ impl<'x> AddressParser<'x> {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_address(&mut self) -> HeaderValue<'x> {
+    pub fn parse_address(&mut self) -> Option<Address<'x>> {
         let mut parser = AddressParser {
             token_start: 0,
             token_end: 0,
@@ -354,11 +354,11 @@ impl<'x> MessageStream<'x> {
 
         if parser.group_name.is_some() || !parser.result.is_empty() {
             parser.add_group();
-            HeaderValue::Address(Address::Group(parser.result))
+            Some(Address::Group(parser.result))
         } else if !parser.addresses.is_empty() {
-            HeaderValue::Address(Address::List(parser.addresses))
+            Some(Address::List(parser.addresses))
         } else {
-            HeaderValue::Empty
+            None
         }
     }
 }
@@ -468,7 +468,7 @@ mod tests {
             assert_eq!(
                 MessageStream::new(test.header.as_bytes())
                     .parse_address()
-                    .unwrap_address(),
+                    .unwrap(),
                 test.expected,
                 "failed for {:?}",
                 test.header
