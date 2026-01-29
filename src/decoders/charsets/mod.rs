@@ -60,8 +60,9 @@ mod tests {
             ];
 
         for input in inputs {
-            let decoder = charset_decoder(input.0.as_bytes())
-                .expect(&("Failed to find decoder for ".to_owned() + input.0));
+            let decoder = charset_decoder(input.0.as_bytes()).unwrap_or_else(|| {
+                panic!("{}", ("Failed to find decoder for ".to_owned() + input.0))
+            });
 
             assert_eq!(decoder(&input.1), input.2);
         }

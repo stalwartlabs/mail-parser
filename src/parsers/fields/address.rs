@@ -138,15 +138,11 @@ impl<'x> AddressParser<'x> {
         }
 
         if !self.mail_tokens.is_empty() {
-            if self.group_name.is_none() {
-                self.group_name = concat_tokens(&mut self.mail_tokens).into();
+            if let Some(group_name) = &self.group_name {
+                self.group_name =
+                    Some(format!("{} {}", group_name, concat_tokens(&mut self.mail_tokens)).into());
             } else {
-                self.group_name = Some(
-                    (self.group_name.as_ref().unwrap().as_ref().to_owned()
-                        + " "
-                        + concat_tokens(&mut self.mail_tokens).as_ref())
-                    .into(),
-                );
+                self.group_name = concat_tokens(&mut self.mail_tokens).into();
             }
         }
     }
