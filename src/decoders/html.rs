@@ -41,6 +41,9 @@ pub fn html_to_text(input: &str) -> String {
 
     let mut in_tag = false;
     let mut in_head = false;
+    let mut in_style = false;
+    let mut in_script = false;
+    let mut in_template = false;
     let mut in_comment = false;
 
     let mut is_token_start = true;
@@ -58,7 +61,13 @@ pub fn html_to_text(input: &str) -> String {
         if !in_comment {
             match ch {
                 b'<' => {
-                    if !in_tag && !in_head && !is_token_start {
+                    if !in_tag
+                        && !in_head
+                        && !in_style
+                        && !in_script
+                        && !in_template
+                        && !is_token_start
+                    {
                         add_html_token(
                             &mut result,
                             &input[token_start..token_end + 1],
@@ -87,6 +96,15 @@ pub fn html_to_text(input: &str) -> String {
                             Some(tag) if tag.eq_ignore_ascii_case(b"head") => {
                                 in_head = !is_tag_close;
                             }
+                            Some(tag) if tag.eq_ignore_ascii_case(b"style") => {
+                                in_style = !is_tag_close;
+                            }
+                            Some(tag) if tag.eq_ignore_ascii_case(b"script") => {
+                                in_script = !is_tag_close;
+                            }
+                            Some(tag) if tag.eq_ignore_ascii_case(b"template") => {
+                                in_template = !is_tag_close;
+                            }
                             _ => (),
                         }
                     }
@@ -109,7 +127,7 @@ pub fn html_to_text(input: &str) -> String {
                     }
                 }
                 b' ' | b'\t' | b'\r' | b'\n' => {
-                    if !in_tag && !in_head {
+                    if !in_tag && !in_head && !in_style && !in_script && !in_template {
                         if !is_token_start {
                             add_html_token(
                                 &mut result,
@@ -126,6 +144,9 @@ pub fn html_to_text(input: &str) -> String {
                     continue;
                 }
                 b'&' if !in_tag && !is_token_start && !in_head => {
+                    if in_style || in_script || in_template {
+                        continue;
+                    }
                     add_html_token(
                         &mut result,
                         &input[token_start..token_end + 1],
@@ -136,6 +157,9 @@ pub fn html_to_text(input: &str) -> String {
                     is_after_space = false;
                 }
                 b';' if !in_tag && !is_token_start && !in_head => {
+                    if in_style || in_script || in_template {
+                        continue;
+                    }
                     add_html_token(
                         &mut result,
                         &input[token_start..pos + 1],
@@ -170,7 +194,7 @@ pub fn html_to_text(input: &str) -> String {
         }
     }
 
-    if !in_tag && !is_token_start && !in_head {
+    if !in_tag && !is_token_start && !in_head && !in_style && !in_script && !in_template {
         add_html_token(
             &mut result,
             &input[token_start..token_end + 1],
@@ -2416,5 +2440,42 @@ mod tests {
             add_html_token(&mut result, input.0.as_bytes(), false);
             assert_eq!(result, input.1, "Failed for '{:?}", input.0);
         }
+    }
+
+    #[test]
+    fn html_to_text_removes_style_content() {
+        let input = "<style>body{color:red}</style><div>Hello</div>";
+        let output = html_to_text(input);
+        assert!(!output.contains("body{color:red}"));
+        assert!(output.contains("Hello"));
+    }
+
+    #[test]
+    fn html_to_text_removes_script_content() {
+        let input = concat!(
+            "<style>body{color:red}</style>",
+            "<div>Hello</div>",
+            "<script>alert('x')</script>",
+            "<div>World</div>"
+        );
+        let output = html_to_text(input);
+        assert!(!output.contains("body{color:red}"));
+        assert!(!output.contains("alert('x')"));
+        assert!(output.contains("Hello"));
+        assert!(output.contains("World"));
+    }
+
+    #[test]
+    fn html_to_text_removes_template_content() {
+        let input = concat!(
+            "<div>Hello</div>",
+            "<template><div>Hidden</div><style>.x{}</style></template>",
+            "<div>World</div>"
+        );
+        let output = html_to_text(input);
+        assert!(!output.contains("Hidden"));
+        assert!(!output.contains(".x{}"));
+        assert!(output.contains("Hello"));
+        assert!(output.contains("World"));
     }
 }
