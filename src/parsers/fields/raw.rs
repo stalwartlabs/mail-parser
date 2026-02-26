@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use crate::{parsers::MessageStream, HeaderValue};
+use crate::parsers::MessageStream;
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_raw(&mut self) -> HeaderValue<'x> {
+    pub fn parse_raw(&mut self) -> Option<std::borrow::Cow<'x, str>> {
         let mut token_start: usize = 0;
         let mut token_end: usize = 0;
 
@@ -32,11 +32,11 @@ impl<'x> MessageStream<'x> {
         }
 
         if token_start > 0 {
-            HeaderValue::Text(String::from_utf8_lossy(
+            Some(String::from_utf8_lossy(
                 self.bytes(token_start - 1..token_end),
             ))
         } else {
-            HeaderValue::Empty
+            None
         }
     }
 
@@ -75,9 +75,7 @@ mod tests {
 
         for (input, expected) in inputs {
             assert_eq!(
-                MessageStream::new(input.as_bytes())
-                    .parse_raw()
-                    .unwrap_text(),
+                MessageStream::new(input.as_bytes()).parse_raw().unwrap(),
                 expected,
                 "Failed for '{:?}'",
                 input

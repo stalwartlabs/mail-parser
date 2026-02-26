@@ -11,6 +11,50 @@ pub mod decoders;
 pub mod mailbox;
 pub mod parsers;
 
+impl<'x> From<Option<Address<'x>>> for HeaderValue<'x> {
+    fn from(src: Option<Address<'x>>) -> HeaderValue<'x> {
+        match src {
+            Some(x) => HeaderValue::Address(x),
+            None => HeaderValue::Empty,
+        }
+    }
+}
+impl<'x> From<Option<Cow<'x, str>>> for HeaderValue<'x> {
+    fn from(src: Option<Cow<'x, str>>) -> HeaderValue<'x> {
+        match src {
+            Some(x) => HeaderValue::Text(x),
+            None => HeaderValue::Empty,
+        }
+    }
+}
+
+impl<'x> From<Option<DateTime>> for HeaderValue<'x> {
+    fn from(src: Option<DateTime>) -> HeaderValue<'x> {
+        match src {
+            Some(x) => HeaderValue::DateTime(x),
+            None => HeaderValue::Empty,
+        }
+    }
+}
+
+impl<'x> From<Option<ContentType<'x>>> for HeaderValue<'x> {
+    fn from(src: Option<ContentType<'x>>) -> HeaderValue<'x> {
+        match src {
+            Some(x) => HeaderValue::ContentType(x),
+            None => HeaderValue::Empty,
+        }
+    }
+}
+
+impl<'x> From<Option<Box<Received<'x>>>> for HeaderValue<'x> {
+    fn from(src: Option<Box<Received<'x>>>) -> HeaderValue<'x> {
+        match src {
+            Some(x) => HeaderValue::Received(x),
+            None => HeaderValue::Empty,
+        }
+    }
+}
+
 use parsers::MessageStream;
 use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 

@@ -6,7 +6,7 @@
 
 use std::borrow::Cow;
 
-use crate::{parsers::MessageStream, HeaderValue};
+use crate::parsers::MessageStream;
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -39,7 +39,7 @@ impl<'x> UnstructuredParser<'x> {
 }
 
 impl<'x> MessageStream<'x> {
-    pub fn parse_unstructured(&mut self) -> HeaderValue<'x> {
+    pub fn parse_unstructured(&mut self) -> Option<Cow<'x, str>> {
         let mut parser = UnstructuredParser {
             token_start: 0,
             token_end: 0,
@@ -54,9 +54,9 @@ impl<'x> MessageStream<'x> {
 
                     if !self.try_next_is_space() {
                         return match parser.tokens.len() {
-                            1 => HeaderValue::Text(parser.tokens.pop().unwrap()),
-                            0 => HeaderValue::Empty,
-                            _ => HeaderValue::Text(parser.tokens.concat().into()),
+                            1 => Some(parser.tokens.pop().unwrap()),
+                            0 => None,
+                            _ => Some(parser.tokens.concat().into()),
                         };
                     } else {
                         continue;
@@ -84,7 +84,7 @@ impl<'x> MessageStream<'x> {
             parser.token_end = self.offset();
         }
 
-        HeaderValue::Empty
+        None
     }
 }
 
@@ -98,7 +98,7 @@ mod tests {
             assert_eq!(
                 MessageStream::new(test.header.as_bytes())
                     .parse_unstructured()
-                    .unwrap_text(),
+                    .unwrap(),
                 test.expected,
                 "failed for {:?}",
                 test.header
