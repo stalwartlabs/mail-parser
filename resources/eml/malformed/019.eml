@@ -1,0 +1,10 @@
+Content-Type: multipart/mixed; boundary="89"
+
+--89
+Content-Type: text/plain
+
+--89
+Content-Type: message/rfc822
+
+invalid
+--89--

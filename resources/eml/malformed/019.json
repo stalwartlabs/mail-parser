@@ -1,0 +1,134 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "89"
+                }
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 46,
+      "offset_end": 126
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 51,
+          "offset_start": 64,
+          "offset_end": 76
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": ""
+      },
+      "offset_header": 51,
+      "offset_body": 77,
+      "offset_end": 77
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "offset_field": 82,
+          "offset_start": 95,
+          "offset_end": 111
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Message": {
+          "html_body": [],
+          "text_body": [],
+          "attachments": [],
+          "parts": [
+            {
+              "headers": [
+                {
+                  "name": {
+                    "other": "--89--"
+                  },
+                  "value": "Empty",
+                  "offset_field": 120,
+                  "offset_start": 126,
+                  "offset_end": 126
+                }
+              ],
+              "is_encoding_problem": true,
+              "body": {
+                "Binary": [
+                  105,
+                  110,
+                  118,
+                  97,
+                  108,
+                  105,
+                  100,
+                  10,
+                  45,
+                  45,
+                  56,
+                  57,
+                  45,
+                  45
+                ]
+              },
+              "offset_header": 112,
+              "offset_body": 0,
+              "offset_end": 0
+            }
+          ]
+        }
+      },
+      "offset_header": 82,
+      "offset_body": 112,
+      "offset_end": 126
+    }
+  ]
+}
