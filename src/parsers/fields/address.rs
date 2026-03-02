@@ -362,12 +362,14 @@ impl<'x> MessageStream<'x> {
 }
 
 fn concat_tokens<'x>(tokens: &mut Vec<Cow<'x, str>>) -> Cow<'x, str> {
-    if tokens.len() == 1 {
-        tokens.pop().unwrap()
-    } else {
+    if 1 < tokens.len() {
         let result = tokens.concat();
         tokens.clear();
         result.into()
+    } else if let Some(tok) = tokens.pop() {
+        tok
+    } else {
+        Cow::Borrowed("")
     }
 }
 
