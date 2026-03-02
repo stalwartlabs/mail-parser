@@ -461,14 +461,14 @@ mod tests {
     #[test]
     fn parse_addresses() {
         for test in load_tests("address.json") {
-            assert_eq!(
-                MessageStream::new(test.header.as_bytes())
-                    .parse_address()
-                    .unwrap_address(),
-                test.expected,
-                "failed for {:?}",
-                test.header
-            );
+            let with_trim = MessageStream::new(test.header.trim().as_bytes())
+                .parse_address()
+                .unwrap_address();
+            let without_trim = MessageStream::new(test.header.as_bytes())
+                .parse_address()
+                .unwrap_address();
+            assert_eq!(with_trim, without_trim);
+            assert_eq!(without_trim, test.expected, "failed for {:?}", test.header);
         }
     }
 }
