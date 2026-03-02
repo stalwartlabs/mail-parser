@@ -209,9 +209,9 @@ impl<'x> MessageStream<'x> {
             result: Vec::new(),
         };
 
-        while let Some(ch) = self.next() {
-            match ch {
-                b'\n' => {
+        loop {
+            match self.next() {
+                Some(b'\n') | None => {
                     parser.add_token(self, false);
                     if self.try_next_is_space() {
                         if !parser.is_token_start {
@@ -222,7 +222,7 @@ impl<'x> MessageStream<'x> {
                         break;
                     }
                 }
-                b'\\' if parser.state != AddressState::Name && !parser.is_escaped => {
+                Some(b'\\') if parser.state != AddressState::Name && !parser.is_escaped => {
                     if parser.token_start > 0 {
                         if parser.state == AddressState::Quote {
                             parser.token_end = self.offset() - 1;
@@ -232,24 +232,24 @@ impl<'x> MessageStream<'x> {
                     parser.is_escaped = true;
                     continue;
                 }
-                b',' if parser.state == AddressState::Name => {
+                Some(b',') if parser.state == AddressState::Name => {
                     parser.add_token(self, false);
                     parser.add_address();
                     continue;
                 }
-                b'<' if parser.state == AddressState::Name => {
+                Some(b'<') if parser.state == AddressState::Name => {
                     parser.is_token_email = false;
                     parser.add_token(self, false);
                     parser.state_stack.push(AddressState::Name);
                     parser.state = AddressState::Address;
                     continue;
                 }
-                b'>' if parser.state == AddressState::Address => {
+                Some(b'>') if parser.state == AddressState::Address => {
                     parser.add_token(self, false);
                     parser.state = parser.state_stack.pop().unwrap();
                     continue;
                 }
-                b'"' if !parser.is_escaped => match parser.state {
+                Some(b'"') if !parser.is_escaped => match parser.state {
                     AddressState::Name => {
                         parser.state_stack.push(AddressState::Name);
                         parser.state = AddressState::Quote;
@@ -263,10 +263,12 @@ impl<'x> MessageStream<'x> {
                     }
                     _ => (),
                 },
-                b'@' if parser.state == AddressState::Name => {
+                Some(b'@') if parser.state == AddressState::Name => {
                     parser.is_token_email = true;
                 }
-                b'=' if parser.is_token_start && !parser.is_escaped && self.peek_char(b'?') => {
+                Some(b'=')
+                    if parser.is_token_start && !parser.is_escaped && self.peek_char(b'?') =>
+                {
                     self.checkpoint();
                     if let Some(token) = self.decode_rfc2047() {
                         let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
@@ -281,7 +283,7 @@ impl<'x> MessageStream<'x> {
                     }
                     self.restore();
                 }
-                b' ' | b'\t' => {
+                Some(b' ' | b'\t') => {
                     if !parser.is_token_start {
                         parser.is_token_start = true;
                     }
@@ -298,8 +300,8 @@ impl<'x> MessageStream<'x> {
                     }
                     continue;
                 }
-                b'\r' => continue,
-                b'(' if parser.state != AddressState::Quote && !parser.is_escaped => {
+                Some(b'\r') => continue,
+                Some(b'(') if parser.state != AddressState::Quote && !parser.is_escaped => {
                     parser.state_stack.push(parser.state);
                     if parser.state != AddressState::Comment {
                         parser.add_token(self, false);
@@ -307,7 +309,7 @@ impl<'x> MessageStream<'x> {
                         continue;
                     }
                 }
-                b')' if parser.state == AddressState::Comment && !parser.is_escaped => {
+                Some(b')') if parser.state == AddressState::Comment && !parser.is_escaped => {
                     let new_state = parser.state_stack.pop().unwrap();
                     if parser.state != new_state {
                         parser.add_token(self, false);
@@ -315,13 +317,13 @@ impl<'x> MessageStream<'x> {
                         continue;
                     }
                 }
-                b':' if parser.state == AddressState::Name && !parser.is_escaped => {
+                Some(b':') if parser.state == AddressState::Name && !parser.is_escaped => {
                     parser.add_group();
                     parser.add_token(self, false);
                     parser.add_group_details();
                     continue;
                 }
-                b';' if parser.state == AddressState::Name => {
+                Some(b';') if parser.state == AddressState::Name => {
                     parser.add_token(self, false);
                     parser.add_address();
                     parser.add_group();
