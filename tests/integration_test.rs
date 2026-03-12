@@ -150,3 +150,38 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         "Book about ☕ tables.gif"
     );
 }
+
+#[test]
+fn test_text_calendar_is_treated_as_inline_body() {
+    let input = br#"From: organizer@example.com
+To: attendee@example.com
+Subject: Calendar reply
+MIME-Version: 1.0
+Content-Type: text/calendar; method=REPLY; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+BEGIN:VCALENDAR
+VERSION:2.0
+METHOD:REPLY
+BEGIN:VEVENT
+SUMMARY:Accepted: Team Sync
+DTSTART:20260109T025000Z
+DTEND:20260109T041500Z
+END:VEVENT
+END:VCALENDAR
+"#;
+
+    let message = MessageParser::default().parse(input).unwrap();
+
+    assert_eq!(message.text_body_count(), 1);
+    assert_eq!(message.html_body_count(), 1);
+    assert_eq!(message.attachment_count(), 0);
+    assert_eq!(message.parts.len(), 1);
+
+    assert!(message.body_text(0).unwrap().contains("BEGIN:VCALENDAR"));
+    assert!(message
+        .body_text(0)
+        .unwrap()
+        .contains("SUMMARY:Accepted: Team Sync"));
+    assert!(message.body_html(0).unwrap().contains("BEGIN:VCALENDAR"));
+}
