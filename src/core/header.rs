@@ -4,10 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use core::fmt;
-use std::hash::Hash;
-use std::net::IpAddr;
-use std::{borrow::Cow, fmt::Display};
+use alloc::{
+    borrow::Cow,
+    boxed::Box,
+    string::{String, ToString},
+    vec::Vec,
+};
+use core::{fmt, fmt::Display, hash::Hash, net::IpAddr};
 
 use crate::{
     Address, Attribute, ContentType, DateTime, GetHeader, Greeting, Header, HeaderName,
@@ -154,7 +157,7 @@ impl<'x> HeaderValue<'x> {
 
     pub fn as_text_list(&self) -> Option<&[Cow<'x, str>]> {
         match *self {
-            HeaderValue::Text(ref s) => Some(std::slice::from_ref(s)),
+            HeaderValue::Text(ref s) => Some(core::slice::from_ref(s)),
             HeaderValue::TextList(ref l) => Some(l.as_slice()),
             _ => None,
         }
@@ -300,7 +303,7 @@ impl PartialEq for HeaderName<'_> {
 }
 
 impl Hash for HeaderName<'_> {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
         match self {
             HeaderName::Other(value) => {
                 for ch in value.as_bytes() {
@@ -661,9 +664,9 @@ impl<'x> MessagePart<'x> {
         match &self.body {
             PartType::Text(text) | PartType::Html(text) => text.as_ref().into(),
             PartType::Binary(bin) | PartType::InlineBinary(bin) => {
-                std::str::from_utf8(bin.as_ref()).ok()
+                core::str::from_utf8(bin.as_ref()).ok()
             }
-            PartType::Message(message) => std::str::from_utf8(message.raw_message()).ok(),
+            PartType::Message(message) => core::str::from_utf8(message.raw_message()).ok(),
             PartType::Multipart(_) => None,
         }
     }

@@ -15,6 +15,12 @@ pub mod thread;
 pub mod unstructured;
 
 #[cfg(test)]
+extern crate std;
+
+#[cfg(test)]
+use alloc::{string::String, vec::Vec};
+
+#[cfg(test)]
 use serde::{Deserialize, Serialize};
 
 #[cfg(test)]

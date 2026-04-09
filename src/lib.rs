@@ -3,22 +3,29 @@
  *
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
+#![no_std]
 #![doc = include_str!("../README.md")]
 #![deny(rust_2018_idioms)]
 #[forbid(unsafe_code)]
+#[macro_use]
+extern crate alloc;
+#[cfg(any(feature = "std", test))]
+extern crate std;
 pub mod core;
 pub mod decoders;
+#[cfg(feature = "std")]
 pub mod mailbox;
 pub mod parsers;
 
+use ::core::{hash::Hash, net::IpAddr};
+use alloc::{borrow::Cow, boxed::Box, collections::BTreeMap, vec::Vec};
 use parsers::MessageStream;
-use std::{borrow::Cow, collections::HashMap, hash::Hash, net::IpAddr};
 
 /// RFC5322/RFC822 message parser.
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[allow(unpredictable_function_pointer_comparisons)]
 pub struct MessageParser {
-    pub(crate) header_map: HashMap<HeaderName<'static>, HdrParseFnc>,
+    pub(crate) header_map: BTreeMap<HeaderName<'static>, HdrParseFnc>,
     pub(crate) def_hdr_parse_fnc: HdrParseFnc,
 }
 

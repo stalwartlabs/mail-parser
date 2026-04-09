@@ -4,7 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
+use alloc::{
+    string::{String, ToString},
+    vec::Vec,
+};
+use core::char::{decode_utf16, REPLACEMENT_CHARACTER};
 
 use crate::decoders::base64::BASE64_MAP;
 
@@ -15,7 +19,7 @@ struct Utf7DecoderState {
 }
 
 fn add_utf16_bytes(state: &mut Utf7DecoderState, n_bytes: usize) {
-    debug_assert!(n_bytes < std::mem::size_of::<u32>());
+    debug_assert!(n_bytes < core::mem::size_of::<u32>());
 
     for byte in state.b64_bytes.to_le_bytes()[0..n_bytes].iter() {
         if let Some(pending_byte) = state.pending_byte {

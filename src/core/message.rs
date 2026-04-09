@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::{borrow::Cow, convert::TryInto};
+use alloc::{borrow::Cow, vec::Vec};
 
 use crate::{
     decoders::html::{html_to_text, text_to_html},
@@ -41,7 +41,7 @@ impl<'x> Message<'x> {
     /// Returns the raw header.
     pub fn header_raw(&self, header: impl Into<HeaderName<'x>>) -> Option<&str> {
         self.parts[0].headers.header(header).and_then(|h| {
-            std::str::from_utf8(&self.raw_message[h.offset_start as usize..h.offset_end as usize])
+            core::str::from_utf8(&self.raw_message[h.offset_start as usize..h.offset_end as usize])
                 .ok()
         })
     }
@@ -61,7 +61,10 @@ impl<'x> Message<'x> {
                         .get(header_.offset_start as usize..header_.offset_end as usize)
                         .map_or(HeaderValue::Empty, |bytes| match form {
                             HeaderForm::Raw => HeaderValue::Text(
-                                std::str::from_utf8(bytes).unwrap_or_default().trim().into(),
+                                core::str::from_utf8(bytes)
+                                    .unwrap_or_default()
+                                    .trim()
+                                    .into(),
                             ),
                             HeaderForm::Text => MessageStream::new(bytes).parse_unstructured(),
                             HeaderForm::Addresses => MessageStream::new(bytes).parse_address(),
@@ -104,7 +107,7 @@ impl<'x> Message<'x> {
         self.parts[0].headers.iter().filter_map(move |header| {
             Some((
                 header.name.as_str(),
-                std::str::from_utf8(
+                core::str::from_utf8(
                     &self.raw_message[header.offset_start as usize..header.offset_end as usize],
                 )
                 .ok()?,

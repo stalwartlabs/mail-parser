@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use alloc::string::String;
+
 fn single_byte_decoder(table: &[char], bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 2);
 

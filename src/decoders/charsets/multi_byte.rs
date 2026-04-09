@@ -7,6 +7,8 @@
 #[cfg(feature = "full_encoding")]
 use encoding_rs::*;
 
+use alloc::string::String;
+
 #[cfg(feature = "full_encoding")]
 fn multi_byte_decoder(mut decoder: Decoder, bytes: &[u8]) -> String {
     let mut result = String::with_capacity(bytes.len() * 4);

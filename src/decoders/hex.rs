@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use alloc::vec::Vec;
+
 use super::quoted_printable::HEX_MAP;
 
 #[derive(PartialEq, Debug)]
@@ -76,7 +78,7 @@ mod tests {
 
             assert!(success, "Failed for '{:?}'", input.0);
 
-            let result_str = std::str::from_utf8(&result).unwrap();
+            let result_str = core::str::from_utf8(&result).unwrap();
 
             /*println!(
                 "Decoded '{}'\n -> to ->\n'{}'\n{}",

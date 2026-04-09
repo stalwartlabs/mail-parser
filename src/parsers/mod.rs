@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::{iter::Peekable, ops::Range, slice::Iter};
+use core::{iter::Peekable, ops::Range, slice::Iter};
 
 pub mod fields;
 pub mod header;
@@ -36,7 +36,7 @@ impl<'x> MessageStream<'x> {
 
     #[inline(always)]
     pub fn offset(&self) -> usize {
-        std::cmp::min(self.pos, self.data.len())
+        core::cmp::min(self.pos, self.data.len())
     }
 
     #[inline(always)]

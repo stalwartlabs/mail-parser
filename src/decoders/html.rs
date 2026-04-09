@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::char::REPLACEMENT_CHARACTER;
+use alloc::{string::String, vec::Vec};
+use core::char::REPLACEMENT_CHARACTER;
 
 pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
     if add_space {
@@ -19,7 +20,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
                 (code, 10)
             };
 
-            std::str::from_utf8(code)
+            core::str::from_utf8(code)
                 .ok()
                 .and_then(|code| u32::from_str_radix(code, radix).ok())
         } else {
@@ -32,7 +33,7 @@ pub fn add_html_token(result: &mut String, token: &[u8], add_space: bool) {
         }
     }
 
-    result.push_str(std::str::from_utf8(token).unwrap());
+    result.push_str(core::str::from_utf8(token).unwrap());
 }
 
 pub fn html_to_text(input: &str) -> String {
@@ -2358,7 +2359,11 @@ fn lookup_entity(key: &[u8]) -> Option<&u32> {
 }
 
 #[cfg(test)]
+extern crate std;
+
+#[cfg(test)]
 mod tests {
+    use alloc::string::String;
 
     use crate::decoders::html::{add_html_token, html_to_text, text_to_html};
 

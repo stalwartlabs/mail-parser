@@ -9,6 +9,8 @@ pub mod multi_byte;
 pub mod single_byte;
 pub mod utf;
 
+use alloc::string::String;
+
 pub type DecoderFnc = fn(&[u8]) -> String;
 
 #[cfg(test)]
@@ -60,9 +62,8 @@ mod tests {
             ];
 
         for input in inputs {
-            let decoder = charset_decoder(input.0.as_bytes()).unwrap_or_else(|| {
-                panic!("{}", ("Failed to find decoder for ".to_owned() + input.0))
-            });
+            let decoder = charset_decoder(input.0.as_bytes())
+                .unwrap_or_else(|| panic!("Failed to find decoder for {}", input.0));
 
             assert_eq!(decoder(&input.1), input.2);
         }
