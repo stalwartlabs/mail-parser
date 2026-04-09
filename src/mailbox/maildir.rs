@@ -7,6 +7,8 @@
 use std::{
     fs, io,
     path::{Path, PathBuf},
+    string::{String, ToString},
+    vec::Vec,
 };
 
 /// Maildir folder iterator
@@ -267,7 +269,7 @@ impl Message {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
+    use std::{path::PathBuf, string::ToString, vec::Vec};
 
     use crate::mailbox::maildir::{Flag, Message};
 

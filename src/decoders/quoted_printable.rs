@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::borrow::Cow;
+use alloc::{borrow::Cow, vec::Vec};
 
 use crate::parsers::MessageStream;
 
@@ -283,6 +283,8 @@ pub static HEX_MAP: &[i8] = &[
 
 #[cfg(test)]
 mod tests {
+    use alloc::string::String;
+
     use crate::parsers::MessageStream;
 
     #[test]
@@ -402,7 +404,7 @@ mod tests {
             let (bytes_read, result) = s.decode_quoted_printable_mime(b"boundary");
             assert_ne!(bytes_read, usize::MAX);
             assert_eq!(
-                std::str::from_utf8(result.as_ref()).unwrap(),
+                core::str::from_utf8(result.as_ref()).unwrap(),
                 expected_result,
                 "Failed for {encoded_str:?}",
             );

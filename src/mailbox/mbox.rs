@@ -4,8 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use std::{
+    io::BufRead,
+    string::{String, ToString},
+    vec::Vec,
+};
+
 use crate::DateTime;
-use std::io::BufRead;
 
 /// Parses an Mbox mailbox from a `Read` stream, returning each message as a
 /// `Vec<u8>`.
@@ -206,6 +211,8 @@ impl Message {
 
 #[cfg(test)]
 mod tests {
+    use std::string::ToString;
+
     use crate::mailbox::mbox::Message;
 
     use super::MessageIterator;

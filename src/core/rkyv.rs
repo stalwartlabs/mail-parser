@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::fmt::Display;
+use alloc::{boxed::Box, string::ToString};
+use core::fmt::Display;
 
 use rkyv::{string::ArchivedString, vec::ArchivedVec};
 
@@ -155,7 +156,7 @@ impl ArchivedEncoding {
 }
 
 impl Display for ArchivedHeaderName<'_> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.as_str())
     }
 }
@@ -210,8 +211,8 @@ impl PartialEq for ArchivedHeaderName<'_> {
     }
 }
 
-impl std::hash::Hash for ArchivedHeaderName<'_> {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+impl core::hash::Hash for ArchivedHeaderName<'_> {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
         match self {
             ArchivedHeaderName::Other(value) => {
                 for ch in value.as_bytes() {
@@ -500,7 +501,7 @@ impl<'x> ArchivedHeaderValue<'x> {
 
     pub fn as_text_list(&self) -> Option<&[ArchivedString]> {
         match *self {
-            ArchivedHeaderValue::Text(ref s) => Some(std::slice::from_ref(s)),
+            ArchivedHeaderValue::Text(ref s) => Some(core::slice::from_ref(s)),
             ArchivedHeaderValue::TextList(ref l) => Some(l.as_slice()),
             _ => None,
         }

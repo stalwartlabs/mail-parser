@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::fmt;
+use alloc::string::String;
+use core::fmt;
 
 use crate::{parsers::MessageStream, DateTime, HeaderValue};
 
@@ -236,7 +237,7 @@ impl DateTime {
 
     /// Returns the day of week where [0, 6] represents [Sun, Sat].
     pub fn day_of_week(&self) -> u8 {
-        (((self.to_timestamp_local() as f64 / 86400.0).floor() as i64 + 4).rem_euclid(7)) as u8
+        ((self.to_timestamp_local().div_euclid(86400) + 4).rem_euclid(7)) as u8
     }
 
     /// Returns the julian day
@@ -264,17 +265,17 @@ impl DateTime {
 }
 
 impl PartialOrd for DateTime {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
 
 impl Ord for DateTime {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         match self.to_timestamp() - other.to_timestamp() {
-            0 => std::cmp::Ordering::Equal,
-            x if x > 0 => std::cmp::Ordering::Greater,
-            _ => std::cmp::Ordering::Less,
+            0 => core::cmp::Ordering::Equal,
+            x if x > 0 => core::cmp::Ordering::Greater,
+            _ => core::cmp::Ordering::Less,
         }
     }
 }

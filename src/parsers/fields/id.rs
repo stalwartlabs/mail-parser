@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use alloc::{string::String, vec::Vec};
+
 use crate::{parsers::MessageStream, HeaderValue};
 
 impl<'x> MessageStream<'x> {
@@ -71,8 +73,11 @@ impl<'x> MessageStream<'x> {
     }
 }
 #[cfg(test)]
+extern crate std;
+
+#[cfg(test)]
 mod tests {
-    use std::borrow::Cow;
+    use alloc::{borrow::Cow, vec::Vec};
 
     use crate::parsers::{fields::load_tests, MessageStream};
 

@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use alloc::boxed::Box;
+use core::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
 use crate::{
     parsers::MessageStream, DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion,
@@ -91,7 +92,7 @@ enum State {
 
 impl<'x> MessageStream<'x> {
     pub fn parse_received(&mut self) -> HeaderValue<'x> {
-        //let c = print!("-> {}", std::str::from_utf8(self.data).unwrap());
+        //let c = print!("-> {}", core::str::from_utf8(self.data).unwrap());
 
         let mut tokenizer = Tokenizer::new(self).peekable();
         let mut received = Received::default();
@@ -558,7 +559,7 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
             return self.next_token.take();
         }
 
-        let text = std::str::from_utf8(self.stream.bytes(start_pos..self.stream.offset() - 1))
+        let text = core::str::from_utf8(self.stream.bytes(start_pos..self.stream.offset() - 1))
             .unwrap_or_default();
 
         let token = match (

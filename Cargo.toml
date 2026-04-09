@@ -27,6 +27,7 @@ chrono = "0.4"
 
 [features]
 default = []
+std = []
 full_encoding = ["encoding_rs"]
 serde = ["dep:serde"]
 rkyv = ["dep:rkyv"]
@@ -36,3 +37,11 @@ debug = true
 
 [lib]
 doctest = false
+
+[[example]]
+name = "mailbox_iterate_maildir"
+required-features = ["std"]
+
+[[example]]
+name = "mailbox_parse_mbox"
+required-features = ["std"]

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::borrow::Cow;
+use alloc::{borrow::Cow, string::String, vec::Vec};
 
 use crate::{
     decoders::{charsets::map::charset_decoder, DecodeFnc},
@@ -175,7 +175,7 @@ impl MessageParser {
                         };
                         //add_missing_type(&mut part_header, "text".into(), "plain".into());
                         message.parts.push(MessagePart {
-                            headers: std::mem::take(&mut part_headers),
+                            headers: core::mem::take(&mut part_headers),
                             offset_header: state.offset_header as u32,
                             offset_body: state.offset_body as u32,
                             offset_end: 0,
@@ -222,7 +222,7 @@ impl MessageParser {
                 };
                 message.attachments.push(message.parts.len() as u32);
                 message.parts.push(MessagePart {
-                    headers: std::mem::take(&mut part_headers),
+                    headers: core::mem::take(&mut part_headers),
                     encoding,
                     is_encoding_problem: false,
                     offset_header: state.offset_header as u32,
@@ -378,7 +378,7 @@ impl MessageParser {
 
             // Add part
             message.parts.push(MessagePart {
-                headers: std::mem::take(&mut part_headers),
+                headers: core::mem::take(&mut part_headers),
                 encoding,
                 is_encoding_problem,
                 body: body_part,
@@ -456,7 +456,7 @@ impl MessageParser {
                             // Add headers and substructure to parent part
                             if state.sub_part_ids.len() != 1 || state.sub_part_ids[0] != 0 {
                                 part.body =
-                                    PartType::Multipart(std::mem::take(&mut state.sub_part_ids));
+                                    PartType::Multipart(core::mem::take(&mut state.sub_part_ids));
                             }
 
                             // Restore ancestor's state
@@ -552,7 +552,11 @@ impl<'x> Message<'x> {
 }
 
 #[cfg(test)]
+extern crate std;
+
+#[cfg(test)]
 mod tests {
+    use alloc::vec::Vec;
     use std::{fs, path::PathBuf};
 
     use crate::MessageParser;

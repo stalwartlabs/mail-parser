@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use alloc::string::String;
+
 use crate::{parsers::MessageStream, HeaderValue};
 
 impl<'x> MessageStream<'x> {

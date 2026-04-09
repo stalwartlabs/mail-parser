@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+use alloc::{boxed::Box, vec::Vec};
+
 use crate::{Addr, Address, Group};
 
 impl<'x> Address<'x> {
