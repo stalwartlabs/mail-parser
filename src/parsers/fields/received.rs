@@ -477,14 +477,14 @@ impl<'x> Iterator for Tokenizer<'x, '_> {
                 }
                 b'[' => {
                     if !self.in_quote {
-                        self.bracket_depth = self.comment_depth.saturating_add(1);
+                        self.bracket_depth = self.bracket_depth.saturating_add(1);
                     }
                     self.next_token = Some(Token::BracketOpen.into());
                     break;
                 }
                 b']' => {
                     if !self.in_quote {
-                        self.bracket_depth = self.comment_depth.saturating_sub(1);
+                        self.bracket_depth = self.bracket_depth.saturating_sub(1);
                     }
                     self.next_token = Some(Token::BracketClose.into());
                     break;
