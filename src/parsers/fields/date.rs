@@ -258,7 +258,7 @@ impl DateTime {
         dt.tz_before_gmt = tz < 0;
         let tz = tz.abs();
         dt.tz_hour = (tz / 3600) as u8;
-        dt.tz_minute = (tz % 3600) as u8;
+        dt.tz_minute = ((tz % 3600) / 60) as u8;
         dt
     }
 }
