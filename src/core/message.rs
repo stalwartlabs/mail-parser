@@ -284,7 +284,7 @@ impl<'x> Message<'x> {
     pub fn resent_cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
-            .header_value(&HeaderName::ResentTo)
+            .header_value(&HeaderName::ResentCc)
             .and_then(|a| a.as_address())
     }
 
