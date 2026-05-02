@@ -340,10 +340,8 @@ impl<'x> MessageStream<'x> {
                     }
                     is_new_token = false;
                 }
-                b':' => {
-                    if !is_new_token && !ignore && (pos == 3 || pos == 4) {
-                        next_part = true;
-                    }
+                b':' if !is_new_token && !ignore && (pos == 3 || pos == 4) => {
+                    next_part = true;
                 }
                 b'+' => {
                     pos = 6;
@@ -352,10 +350,8 @@ impl<'x> MessageStream<'x> {
                     is_plus = false;
                     pos = 6;
                 }
-                b' ' | b'\t' => {
-                    if !is_new_token && !ignore {
-                        next_part = true;
-                    }
+                b' ' | b'\t' if !is_new_token && !ignore => {
+                    next_part = true;
                 }
                 b'a'..=b'z' | b'A'..=b'Z' => {
                     if pos == 1 {

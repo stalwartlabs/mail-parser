@@ -295,14 +295,12 @@ impl<'x> MessageStream<'x> {
                     }
                     continue;
                 }
-                b'A'..=b'Z' => {
-                    if parser.is_lower_case {
-                        if let ContentState::Type
-                        | ContentState::SubType
-                        | ContentState::AttributeName = parser.state
-                        {
-                            parser.is_lower_case = false;
-                        }
+                b'A'..=b'Z' if parser.is_lower_case => {
+                    if let ContentState::Type
+                    | ContentState::SubType
+                    | ContentState::AttributeName = parser.state
+                    {
+                        parser.is_lower_case = false;
                     }
                 }
                 b'\n' => {

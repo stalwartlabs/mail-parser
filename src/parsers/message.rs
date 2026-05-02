@@ -446,7 +446,7 @@ impl MessageParser {
                             if state.html_parts == message.html_body.len()
                                 && state.text_parts != message.text_body.len()
                             {
-                                for &part_id in &message.text_body[state.html_parts..] {
+                                for &part_id in &message.text_body[state.text_parts..] {
                                     message.html_body.push(part_id);
                                 }
                             }

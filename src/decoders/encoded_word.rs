@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use crate::{decoders::charsets::map::charset_decoder, parsers::MessageStream};
-
 use super::DecodeWordFnc;
+use crate::{decoders::charsets::map::charset_decoder, parsers::MessageStream};
 
 enum Rfc2047State {
     Init,
@@ -43,10 +42,8 @@ impl MessageStream<'_> {
                         }
                         state = Rfc2047State::Encoding;
                     }
-                    b'*' => {
-                        if charset_end == charset_start {
-                            charset_end = self.offset() - 1;
-                        }
+                    b'*' if charset_end == charset_start => {
+                        charset_end = self.offset() - 1;
                     }
                     b'\n' => {
                         return None;

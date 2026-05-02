@@ -1,3 +1,7 @@
+mail-parser 0.11.3
+================================
+- Fix panic with messages containing corrupted attachments (#145)
+
 mail-parser 0.11.2
 ================================
 - Do not return invalid mime parts when parsing broken nested messages.

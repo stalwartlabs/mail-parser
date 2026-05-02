@@ -1,0 +1,99 @@
+Fro :uMmlti Sender <multi@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:t <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--Boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text bodyulti@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--Boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text body of the multipart fixture.
+
+--boundary42
+Content-Type: text/html; charset=us-ascii
+
+<p>HTML body of the multiparuMmlti Sender <multi@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+M01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--Boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text body of the multipart fixture.
+
+--boundary42
+Content-Type: text/html; charset=us-ascii
+
+<p>HTML body of the multiparuMmlti Sender <multi@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixtur
+
+--boundary42
+Content-Type: text/html; charset=us-ascii
+
+<p>HTML body of the multiparuMmlti Sender <multi@example.test>
+þTo: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text body of the multipart fixture.
+
+--boundary42
+Ct fixture.</Mmlti Sender <multi@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--Boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text body of the multipart fixture.
+
+--boundary42
+Content-Type: text/html; charset=us-ascii
+
+<p>HTML body of the multiparuMmlti Sendure.
+
+--boundary42
+Ct fixture.</Mmlti Sender <multi@example.test>
+To: rimap-test <rimap-test@example.test>
+Subject: Sprint 3 multipart fixture
+Message-ID: <multi-001@example.test>
+Date: Tue, 7 Apr 2026 10:00:01 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="boundary42"
+
+--Boundary42
+Content-Type: text/plain; charset=us-ascii
+JPlain text body of the multipart fixture.
+
+--boundary42
+ boundivy="boundary42"
+
+--boundary42
+Content-Tp>
+
+--boundary42--

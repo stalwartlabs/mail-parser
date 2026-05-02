@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
-
 use crate::{
     parsers::MessageStream, DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion,
 };
+use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Token {
@@ -263,43 +262,32 @@ impl<'x> MessageStream<'x> {
                         }
                     }
                 }
-                Token::IpAddr(ip) => {
+                Token::IpAddr(ip)
                     if state == State::From
                         && (token.bracket_depth > 0
-                            || (token.comment_depth > 0 && received.from_ip.is_none()))
-                    {
-                        received.from_ip = Some(ip);
+                            || (token.comment_depth > 0 && received.from_ip.is_none())) =>
+                {
+                    received.from_ip = Some(ip);
+                }
+                Token::Domain if state == State::From && token.comment_depth > 0 => {
+                    received.from_iprev = Some(token.text.into());
+                }
+                Token::Email if state == State::From => {
+                    received.ident =
+                        Some(token.text.strip_suffix('@').unwrap_or(token.text).into());
+                }
+                Token::Integer(num) if state == State::Date => {
+                    if let Some(part) = date_part.next() {
+                        *part = num;
                     }
                 }
-                Token::Domain => {
-                    if state == State::From && token.comment_depth > 0 {
-                        received.from_iprev = Some(token.text.into());
+                Token::Month(month) if state == State::Date => {
+                    if let Some(part) = date_part.next() {
+                        *part = month.to_number();
                     }
                 }
-                Token::Email => {
-                    if state == State::From {
-                        received.ident =
-                            Some(token.text.strip_suffix('@').unwrap_or(token.text).into());
-                    }
-                }
-                Token::Integer(num) => {
-                    if state == State::Date {
-                        if let Some(part) = date_part.next() {
-                            *part = num;
-                        }
-                    }
-                }
-                Token::Month(month) => {
-                    if state == State::Date {
-                        if let Some(part) = date_part.next() {
-                            *part = month.to_number();
-                        }
-                    }
-                }
-                Token::Cipher => {
-                    if token.comment_depth > 0 || received.tls_cipher.is_none() {
-                        received.tls_cipher = Some(token.text.into());
-                    }
+                Token::Cipher if token.comment_depth > 0 || received.tls_cipher.is_none() => {
+                    received.tls_cipher = Some(token.text.into());
                 }
                 Token::TlsVersion(tls)
                     if token.comment_depth > 0 && received.tls_version.is_none() =>
