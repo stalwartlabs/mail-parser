@@ -16,6 +16,8 @@ resolver = "2"
 hashify = { version = "0.2" }
 encoding_rs = { version = "0.8", optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
+clap = { version = "4", features = ["derive"], optional = true }
 rkyv = { version = "0.8", optional = true }
 
 [dev-dependencies]
@@ -30,6 +32,7 @@ default = []
 full_encoding = ["encoding_rs"]
 serde = ["dep:serde"]
 rkyv = ["dep:rkyv"]
+cli = ["dep:clap", "dep:serde_json", "full_encoding", "serde"]
 
 [profile.bench]
 debug = true
