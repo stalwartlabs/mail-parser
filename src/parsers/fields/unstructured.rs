@@ -84,7 +84,13 @@ impl<'x> MessageStream<'x> {
             parser.token_end = self.offset();
         }
 
-        HeaderValue::Empty
+        parser.add_token(self);
+
+        match parser.tokens.len() {
+            1 => HeaderValue::Text(parser.tokens.pop().unwrap()),
+            0 => HeaderValue::Empty,
+            _ => HeaderValue::Text(parser.tokens.concat().into()),
+        }
     }
 }
 
