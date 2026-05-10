@@ -79,8 +79,7 @@ mod tests {
                     .parse_raw()
                     .unwrap_text(),
                 expected,
-                "Failed for '{:?}'",
-                input
+                "Failed for '{input:?}'"
             );
         }
     }

@@ -164,7 +164,7 @@ mod tests {
                     //println!("Decoded '{}'", string);
                     assert_eq!(result, expected_result);
                 }
-                _ => panic!("Failed to decode '{}'", input),
+                _ => panic!("Failed to decode '{input}'"),
             }
         }
     }
