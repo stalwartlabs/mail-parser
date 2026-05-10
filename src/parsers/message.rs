@@ -320,12 +320,14 @@ impl MessageParser {
                                 .and_then(|c| charset_decoder(c.as_bytes()))
                         }),
                     ) {
-                        (Cow::Owned(vec), Some(charset_decoder)) => charset_decoder(&vec).into(),
+                        (Cow::Owned(vec), Some(charset_decoder)) => {
+                            charset_decoder.decode(&vec).into()
+                        }
                         (Cow::Owned(vec), None) => String::from_utf8(vec)
                             .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
                             .into(),
                         (Cow::Borrowed(bytes), Some(charset_decoder)) => {
-                            charset_decoder(bytes).into()
+                            charset_decoder.decode(bytes).into()
                         }
                         (Cow::Borrowed(bytes), None) => String::from_utf8_lossy(bytes),
                     };

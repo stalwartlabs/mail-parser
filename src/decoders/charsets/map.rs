@@ -8,10 +8,10 @@ use super::{
     multi_byte::*,
     single_byte::*,
     utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
-    DecoderFnc,
+    Decoder, DecoderFnc,
 };
 
-pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
+fn primary_charset_decoder(charset: &[u8]) -> Option<fn(&[u8]) -> String> {
     let mut l_charset = [0u8; 45];
 
     for (dest, src) in l_charset.iter_mut().zip(charset.iter()) {
@@ -161,6 +161,9 @@ pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
         "utf_16be" => decoder_utf16_be,
         "utf_16le" => decoder_utf16_le,
         "utf_7" => decoder_utf7,
+        "x_unicode_2_0_utf_7" => decoder_utf7,
+        "unicode_1_1_utf_7" => decoder_utf7,
+        "csunicode11utf7" => decoder_utf7,
         "windows_1250" => decoder_cp1250,
         "windows_1251" => decoder_cp1251,
         "windows_1252" => decoder_cp1252,
@@ -173,6 +176,14 @@ pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
         "windows_874" => decoder_windows874,
         "windows_936" => decoder_gbk,
     )
+}
+
+pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {
+    primary_charset_decoder(charset)
+        .map(Decoder::Fn)
+        // fallback labels
+        .or_else(|| encoding_rs::Encoding::for_label(charset).map(Decoder::Encoding))
+        .map(DecoderFnc)
 }
 
 #[cfg(test)]
