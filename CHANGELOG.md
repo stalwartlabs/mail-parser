@@ -1,3 +1,7 @@
+mail-parser 0.11.4
+================================
+- Reject dates with invalid month names.
+
 mail-parser 0.11.3
 ================================
 - Fix panic with messages containing corrupted attachments (#145)

@@ -412,6 +412,14 @@ impl<'x> MessageStream<'x> {
         }
 
         if pos >= 6 {
+            let month: u8 = if month_pos == 3 {
+                MONTH_MAP.get(month_hash).copied().unwrap_or(0)
+            } else {
+                parts[1] as u8
+            };
+            if !(1..=12).contains(&month) {
+                return HeaderValue::Empty;
+            }
             HeaderValue::DateTime(DateTime {
                 year: if (0..=49).contains(&parts[2]) {
                     parts[2] + 2000
@@ -420,11 +428,7 @@ impl<'x> MessageStream<'x> {
                 } else {
                     parts[2]
                 } as u16,
-                month: if month_pos == 3 && month_hash <= 30 {
-                    MONTH_MAP[month_hash]
-                } else {
-                    parts[1] as u8
-                },
+                month,
                 day: parts[0] as u8,
                 hour: parts[3] as u8,
                 minute: parts[4] as u8,

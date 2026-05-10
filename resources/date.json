@@ -359,17 +359,7 @@
   },
   {
     "header": "13 zzz 2021 09:55:06 +0200",
-    "expected": {
-      "year": 2021,
-      "month": 0,
-      "day": 13,
-      "hour": 9,
-      "minute": 55,
-      "second": 6,
-      "tz_before_gmt": false,
-      "tz_hour": 2,
-      "tz_minute": 0
-    }
+    "expected": null
   },
   {
     "header": "by 2002:aa7:cd10:0:b0:45c:2c83:1208 with SMTP id b16-20020aa7cd10000000b0045c2c831208mr4220805edw.81.1665423075119;\n\tMon, 10 Oct 2022 10:31:15 -0700 (PDT)",
@@ -440,5 +430,21 @@
       "tz_hour": 0,
       "tz_minute": 0
     }
+  },
+  {
+    "header": "Tue, 7 All 2026 19:14:51 +0000",
+    "expected": null
+  },
+  {
+    "header": "Tue, 7 Bog 2026 19:14:51 +0000",
+    "expected": null
+  },
+  {
+    "header": "Tue, 7 Sjj 2026 19:14:51 +0000",
+    "expected": null
+  },
+  {
+    "header": "Tue, 7 00 2026 19:14:51 +0000",
+    "expected": null
   }
 ]
