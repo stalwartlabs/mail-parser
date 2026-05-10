@@ -49,14 +49,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Doug Sauder",
-                  "address": "dwsauder@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Doug Sauder",
+                    "address": "dwsauder@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 82,
           "offset_start": 87,
@@ -96,14 +99,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Heinz Müller",
-                  "address": "mueller@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Heinz Müller",
+                    "address": "mueller@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 201,
           "offset_start": 204,

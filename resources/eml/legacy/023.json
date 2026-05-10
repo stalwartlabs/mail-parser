@@ -66,14 +66,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Jürgen Schmürgen",
-                  "address": "jschmuergen@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Jürgen Schmürgen",
+                    "address": "jschmuergen@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 205,
           "offset_start": 208,
@@ -82,14 +85,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Doug Sauder",
-                  "address": "dwsauder@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Doug Sauder",
+                    "address": "dwsauder@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 289,
           "offset_start": 294,

@@ -14,14 +14,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Nathaniel Borenstein",
-                  "address": "nsb@bellcore.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Nathaniel Borenstein",
+                    "address": "nsb@bellcore.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -30,14 +33,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Ned Freed",
-                  "address": "ned@innosoft.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Ned Freed",
+                    "address": "ned@innosoft.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 46,
           "offset_start": 49,
