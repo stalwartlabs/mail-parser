@@ -61,6 +61,7 @@ pub struct MessagePart<'x> {
     #[cfg_attr(feature = "serde", serde(default))]
     //#[cfg_attr(feature = "rkyv", rkyv(omit_bounds))]
     pub body: PartType<'x>,
+    pub raw_body: Cow<'x, [u8]>,
     #[cfg_attr(feature = "serde", serde(skip))]
     pub encoding: Encoding,
     pub offset_header: u32,
