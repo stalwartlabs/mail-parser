@@ -433,7 +433,7 @@ impl<'x> MessageStream<'x> {
                 hour: parts[3] as u8,
                 minute: parts[4] as u8,
                 second: parts[5] as u8,
-                tz_hour: ((parts[6] / 100) % 12) as u8,
+                tz_hour: ((parts[6] / 100) % 24) as u8,
                 tz_minute: ((parts[6] % 100) % 60) as u8,
                 tz_before_gmt: !is_plus,
             })

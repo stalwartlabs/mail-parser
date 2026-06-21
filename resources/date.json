@@ -446,5 +446,47 @@
   {
     "header": "Tue, 7 00 2026 19:14:51 +0000",
     "expected": null
+  },
+  {
+    "header": "17 May 2026 22:15:15 +1200",
+    "expected": {
+      "year": 2026,
+      "month": 5,
+      "day": 17,
+      "hour": 22,
+      "minute": 15,
+      "second": 15,
+      "tz_before_gmt": false,
+      "tz_hour": 12,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "17 May 2026 22:15:15 +1345",
+    "expected": {
+      "year": 2026,
+      "month": 5,
+      "day": 17,
+      "hour": 22,
+      "minute": 15,
+      "second": 15,
+      "tz_before_gmt": false,
+      "tz_hour": 13,
+      "tz_minute": 45
+    }
+  },
+  {
+    "header": "17 May 2026 22:15:15 +1400",
+    "expected": {
+      "year": 2026,
+      "month": 5,
+      "day": 17,
+      "hour": 22,
+      "minute": 15,
+      "second": 15,
+      "tz_before_gmt": false,
+      "tz_hour": 14,
+      "tz_minute": 0
+    }
   }
 ]

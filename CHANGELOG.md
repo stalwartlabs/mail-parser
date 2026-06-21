@@ -1,6 +1,7 @@
 mail-parser 0.11.4
 ================================
 - Reject dates with invalid month names.
+- `parse_date()` doesn't handle UTC+12 and greater (#148)
 
 mail-parser 0.11.3
 ================================
