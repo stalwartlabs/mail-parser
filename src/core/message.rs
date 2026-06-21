@@ -248,12 +248,19 @@ impl<'x> Message<'x> {
             .unwrap_or(&HeaderValue::Empty)
     }
 
-    /// Returns the first Received header field
+    /// Returns the last Received header field
     pub fn received(&self) -> Option<&Received<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Received)
             .and_then(|header| header.as_received())
+    }
+
+    /// Returns an iterator over all Received header fields, in the order they
+    /// appear in the message.
+    pub fn received_all(&self) -> impl Iterator<Item = &Received<'x>> + Sync + Send {
+        self.header_values(HeaderName::Received)
+            .filter_map(|header| header.as_received())
     }
 
     /// Returns all References header fields
