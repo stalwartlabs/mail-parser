@@ -5,7 +5,7 @@
  */
 
 use crate::{
-    parsers::MessageStream, DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion,
+    DateTime, Greeting, HeaderValue, Host, Protocol, Received, TlsVersion, parsers::MessageStream,
 };
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
@@ -804,7 +804,7 @@ impl Token {
 #[cfg(test)]
 mod tests {
 
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::parsers::{MessageStream, fields::load_tests};
 
     #[test]
     fn parse_received() {

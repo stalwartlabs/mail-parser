@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use crate::{parsers::MessageStream, HeaderValue};
+use crate::{HeaderValue, parsers::MessageStream};
 
 impl<'x> MessageStream<'x> {
     pub fn parse_raw(&mut self) -> HeaderValue<'x> {
@@ -51,7 +51,7 @@ impl<'x> MessageStream<'x> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, MessageParser};
+    use crate::{MessageParser, parsers::MessageStream};
 
     #[test]
     fn parse_raw_text() {

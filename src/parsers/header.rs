@@ -215,7 +215,7 @@ fn header_map(name: &[u8]) -> Option<HeaderName<'static>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{parsers::MessageStream, HeaderName};
+    use crate::{HeaderName, parsers::MessageStream};
 
     #[test]
     fn header_name_parse() {

@@ -439,12 +439,12 @@ mod tests {
                 "<!DOCTYPE html>\n<html>\n<body>\n</body>\n</html>\n",
             ),
             ("w6HDqcOtw7PDug==\r\n--boundary \n", "áéíóú"),
-            ("w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n", "áéíóú"),
-            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
             (
-                "w6HDqcOtw7PDug==\n--boundary--",
+                "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n",
                 "áéíóú",
             ),
+            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
+            ("w6HDqcOtw7PDug==\n--boundary--", "áéíóú"),
             (
                 "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",
                 "áéíóú",

@@ -333,7 +333,10 @@ mod tests {
             ("\n\n", "\n\n"),
         ] {
             assert_eq!(
-                String::from_utf8(super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default()).unwrap(),
+                String::from_utf8(
+                    super::quoted_printable_decode(encoded_str.as_bytes()).unwrap_or_default()
+                )
+                .unwrap(),
                 expected_result,
                 "Failed for {encoded_str:?}",
             );

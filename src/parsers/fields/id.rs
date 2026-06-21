@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use crate::{parsers::MessageStream, HeaderValue};
+use crate::{HeaderValue, parsers::MessageStream};
 
 impl<'x> MessageStream<'x> {
     pub fn parse_id(&mut self) -> HeaderValue<'x> {
@@ -74,7 +74,7 @@ impl<'x> MessageStream<'x> {
 mod tests {
     use std::borrow::Cow;
 
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::parsers::{MessageStream, fields::load_tests};
 
     #[test]
     fn parse_message_ids() {

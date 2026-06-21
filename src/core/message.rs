@@ -7,14 +7,14 @@
 use std::{borrow::Cow, convert::TryInto};
 
 use crate::{
-    decoders::html::{html_to_text, text_to_html},
-    parsers::{
-        fields::thread::thread_name,
-        preview::{preview_html, preview_text},
-        MessageStream,
-    },
     Address, AttachmentIterator, BodyPartIterator, DateTime, GetHeader, Header, HeaderForm,
     HeaderName, HeaderValue, Message, MessageParser, MessagePart, PartType, Received,
+    decoders::html::{html_to_text, text_to_html},
+    parsers::{
+        MessageStream,
+        fields::thread::thread_name,
+        preview::{preview_html, preview_text},
+    },
 };
 
 impl<'x> Message<'x> {

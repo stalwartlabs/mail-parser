@@ -7,9 +7,9 @@
 use std::borrow::Cow;
 
 use crate::{
+    Attribute, ContentType, HeaderValue,
     decoders::{charsets::map::charset_decoder, hex::decode_hex},
     parsers::MessageStream,
-    Attribute, ContentType, HeaderValue,
 };
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -516,7 +516,7 @@ impl<'x> MessageStream<'x> {
 }
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::parsers::{MessageStream, fields::load_tests};
 
     #[test]
     fn parse_content_fields() {

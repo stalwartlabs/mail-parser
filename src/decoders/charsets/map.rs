@@ -5,10 +5,10 @@
  */
 
 use super::{
+    DecoderFnc,
     multi_byte::*,
     single_byte::*,
-    utf::{decoder_utf16, decoder_utf16_be, decoder_utf16_le, decoder_utf7},
-    DecoderFnc,
+    utf::{decoder_utf7, decoder_utf16, decoder_utf16_be, decoder_utf16_le},
 };
 
 pub fn charset_decoder(charset: &[u8]) -> Option<DecoderFnc> {

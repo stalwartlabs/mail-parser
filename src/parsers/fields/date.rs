@@ -6,7 +6,7 @@
 
 use std::fmt;
 
-use crate::{parsers::MessageStream, DateTime, HeaderValue};
+use crate::{DateTime, HeaderValue, parsers::MessageStream};
 
 pub static DOW: &[&str] = &["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 pub static MONTH: &[&str] = &[
@@ -489,8 +489,8 @@ mod tests {
     use chrono::{FixedOffset, LocalResult, SecondsFormat, TimeZone, Utc};
 
     use crate::{
-        parsers::{fields::load_tests, MessageStream},
         DateTime,
+        parsers::{MessageStream, fields::load_tests},
     };
 
     #[test]

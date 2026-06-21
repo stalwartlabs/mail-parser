@@ -6,7 +6,7 @@
 
 use std::borrow::Cow;
 
-use crate::{parsers::MessageStream, HeaderValue};
+use crate::{HeaderValue, parsers::MessageStream};
 struct UnstructuredParser<'x> {
     token_start: usize,
     token_end: usize,
@@ -90,7 +90,7 @@ impl<'x> MessageStream<'x> {
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::parsers::{MessageStream, fields::load_tests};
 
     #[test]
     fn parse_unstructured() {

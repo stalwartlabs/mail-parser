@@ -7,9 +7,9 @@
 use std::borrow::Cow;
 
 use crate::{
-    decoders::{charsets::map::charset_decoder, DecodeFnc},
     ContentType, Encoding, GetHeader, HeaderName, HeaderValue, Message, MessageParser, MessagePart,
     MessagePartId, PartType,
+    decoders::{DecodeFnc, charsets::map::charset_decoder},
 };
 
 use super::MessageStream;
@@ -157,40 +157,40 @@ impl MessageParser {
             let (is_multipart, mut is_inline, mut is_text, mut mime_type) =
                 mime_type(content_type, &state.mime_type);
 
-            if is_multipart {
-                if let Some(mime_boundary) = content_type.and_then(|f| f.attribute("boundary")) {
-                    if stream.seek_next_part(mime_boundary.as_bytes()) {
-                        let part_id = message.parts.len();
-                        let new_state = MessageParserState {
-                            in_alternative: state.in_alternative
-                                || mime_type == MimeType::MultipartAlternative,
-                            mime_type,
-                            mime_boundary: mime_boundary.as_bytes().to_vec().into(),
-                            html_parts: message.html_body.len(),
-                            text_parts: message.text_body.len(),
-                            need_html_body: state.need_html_body,
-                            need_text_body: state.need_text_body,
-                            part_id: part_id as u32,
-                            ..Default::default()
-                        };
-                        //add_missing_type(&mut part_header, "text".into(), "plain".into());
-                        message.parts.push(MessagePart {
-                            headers: std::mem::take(&mut part_headers),
-                            offset_header: state.offset_header as u32,
-                            offset_body: state.offset_body as u32,
-                            offset_end: 0,
-                            is_encoding_problem: false,
-                            encoding: Encoding::None,
-                            body: PartType::default(),
-                        });
-                        state_stack.push((state, None));
-                        state = new_state;
-                        stream.skip_crlf();
-                        continue;
-                    } else {
-                        mime_type = MimeType::TextOther;
-                        is_text = true;
-                    }
+            if is_multipart
+                && let Some(mime_boundary) = content_type.and_then(|f| f.attribute("boundary"))
+            {
+                if stream.seek_next_part(mime_boundary.as_bytes()) {
+                    let part_id = message.parts.len();
+                    let new_state = MessageParserState {
+                        in_alternative: state.in_alternative
+                            || mime_type == MimeType::MultipartAlternative,
+                        mime_type,
+                        mime_boundary: mime_boundary.as_bytes().to_vec().into(),
+                        html_parts: message.html_body.len(),
+                        text_parts: message.text_body.len(),
+                        need_html_body: state.need_html_body,
+                        need_text_body: state.need_text_body,
+                        part_id: part_id as u32,
+                        ..Default::default()
+                    };
+                    //add_missing_type(&mut part_header, "text".into(), "plain".into());
+                    message.parts.push(MessagePart {
+                        headers: std::mem::take(&mut part_headers),
+                        offset_header: state.offset_header as u32,
+                        offset_body: state.offset_body as u32,
+                        offset_end: 0,
+                        is_encoding_problem: false,
+                        encoding: Encoding::None,
+                        body: PartType::default(),
+                    });
+                    state_stack.push((state, None));
+                    state = new_state;
+                    stream.skip_crlf();
+                    continue;
+                } else {
+                    mime_type = MimeType::TextOther;
+                    is_text = true;
                 }
             }
 
@@ -399,11 +399,7 @@ impl MessageParser {
                                 .map(|b| {
                                     let pos = stream.offset().saturating_sub(b.len() + 2);
                                     stream.data.get(pos - 2).map_or(pos - 1, |&ch| {
-                                        if ch == b'\r' {
-                                            pos - 2
-                                        } else {
-                                            pos - 1
-                                        }
+                                        if ch == b'\r' { pos - 2 } else { pos - 1 }
                                     })
                                 })
                                 .unwrap_or_else(|| stream.offset());

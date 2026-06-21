@@ -134,8 +134,8 @@ impl Iterator for FolderIterator<'_> {
             };
 
             let path = entry.path();
-            if path.is_dir() {
-                if let Some(name) =
+            if path.is_dir()
+                && let Some(name) =
                     path.file_name()
                         .and_then(|name| name.to_str())
                         .and_then(|name| {
@@ -149,26 +149,25 @@ impl Iterator for FolderIterator<'_> {
                                 None
                             }
                         })
-                {
-                    match fs::read_dir(&path) {
-                        Ok(next_it) => {
-                            self.it_stack.push(next_it);
-                            self.name_stack.push(name.to_string());
-                        }
-                        Err(err) => {
-                            return Some(Err(err));
-                        }
+            {
+                match fs::read_dir(&path) {
+                    Ok(next_it) => {
+                        self.it_stack.push(next_it);
+                        self.name_stack.push(name.to_string());
                     }
+                    Err(err) => {
+                        return Some(Err(err));
+                    }
+                }
 
-                    match MessageIterator::new_(
-                        &path,
-                        self.name_stack.join(self.prefix.unwrap_or("/")).into(),
-                    ) {
-                        Ok(folder) => return Some(Ok(folder)),
-                        Err(err) => {
-                            if err.kind() != io::ErrorKind::NotFound {
-                                return Some(Err(err));
-                            }
+                match MessageIterator::new_(
+                    &path,
+                    self.name_stack.join(self.prefix.unwrap_or("/")).into(),
+                ) {
+                    Ok(folder) => return Some(Ok(folder)),
+                    Err(err) => {
+                        if err.kind() != io::ErrorKind::NotFound {
+                            return Some(Err(err));
                         }
                     }
                 }
@@ -188,51 +187,51 @@ impl Iterator for MessageIterator {
                 None => return None,
             };
             let path = entry.path();
-            if path.is_file() {
-                if let Some(name) = path.file_name().and_then(|name| name.to_str()) {
-                    if !name.starts_with('.') {
-                        let internal_date = match fs::metadata(&path)
-                            .and_then(|m| m.modified())
-                            .and_then(|d| {
-                                d.duration_since(std::time::UNIX_EPOCH)
-                                    .map(|d| d.as_secs())
-                                    .map_err(|e| {
-                                        io::Error::new(io::ErrorKind::InvalidData, e.to_string())
-                                    })
-                            }) {
-                            Ok(metadata) => metadata,
-                            Err(err) => return Some(Err(err)),
-                        };
-                        let contents = match fs::read(&path) {
-                            Ok(contents) => contents,
-                            Err(err) => return Some(Err(err)),
-                        };
-                        let mut flags = Vec::new();
-                        if let Some((_, part)) = name.rsplit_once("2,") {
-                            for &ch in part.as_bytes() {
-                                match ch {
-                                    b'P' => flags.push(Flag::Passed),
-                                    b'R' => flags.push(Flag::Replied),
-                                    b'S' => flags.push(Flag::Seen),
-                                    b'T' => flags.push(Flag::Trashed),
-                                    b'D' => flags.push(Flag::Draft),
-                                    b'F' => flags.push(Flag::Flagged),
-                                    _ => {
-                                        if !ch.is_ascii_alphanumeric() {
-                                            break;
-                                        }
-                                    }
+            if path.is_file()
+                && let Some(name) = path.file_name().and_then(|name| name.to_str())
+                && !name.starts_with('.')
+            {
+                let internal_date =
+                    match fs::metadata(&path)
+                        .and_then(|m| m.modified())
+                        .and_then(|d| {
+                            d.duration_since(std::time::UNIX_EPOCH)
+                                .map(|d| d.as_secs())
+                                .map_err(|e| {
+                                    io::Error::new(io::ErrorKind::InvalidData, e.to_string())
+                                })
+                        }) {
+                        Ok(metadata) => metadata,
+                        Err(err) => return Some(Err(err)),
+                    };
+                let contents = match fs::read(&path) {
+                    Ok(contents) => contents,
+                    Err(err) => return Some(Err(err)),
+                };
+                let mut flags = Vec::new();
+                if let Some((_, part)) = name.rsplit_once("2,") {
+                    for &ch in part.as_bytes() {
+                        match ch {
+                            b'P' => flags.push(Flag::Passed),
+                            b'R' => flags.push(Flag::Replied),
+                            b'S' => flags.push(Flag::Seen),
+                            b'T' => flags.push(Flag::Trashed),
+                            b'D' => flags.push(Flag::Draft),
+                            b'F' => flags.push(Flag::Flagged),
+                            _ => {
+                                if !ch.is_ascii_alphanumeric() {
+                                    break;
                                 }
                             }
                         }
-                        return Some(Ok(Message {
-                            contents,
-                            internal_date,
-                            flags,
-                            path: path.to_path_buf(),
-                        }));
                     }
                 }
+                return Some(Ok(Message {
+                    contents,
+                    internal_date,
+                    flags,
+                    path: path.to_path_buf(),
+                }));
             }
         }
     }

@@ -6,7 +6,7 @@
 
 use std::borrow::Cow;
 
-use crate::{parsers::MessageStream, Addr, Address, Group, HeaderValue};
+use crate::{Addr, Address, Group, HeaderValue, parsers::MessageStream};
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -456,7 +456,7 @@ pub fn parse_address_detail_part(addr: &str) -> Option<&str> {
 
 #[cfg(test)]
 mod tests {
-    use crate::parsers::{fields::load_tests, MessageStream};
+    use crate::parsers::{MessageStream, fields::load_tests};
 
     #[test]
     fn parse_addresses() {

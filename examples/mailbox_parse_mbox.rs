@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use mail_parser::{mailbox::mbox::MessageIterator, MessageParser};
+use mail_parser::{MessageParser, mailbox::mbox::MessageIterator};
 
 fn main() {
     // Reads an MBox mailbox from stdin and prints each message as JSON.
