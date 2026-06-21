@@ -243,7 +243,6 @@ impl MessageParser {
 
             // Attempt to recover contents of an invalid message
             let mut is_encoding_problem = offset_end == usize::MAX;
-            eprintln!("DBG part={} ct={:?} mime_type={:?} is_text={} is_inline={} enc_problem={} offset_end={}", state.parts, content_type.map(|c| format!("{}/{}", c.ctype(), c.subtype().unwrap_or(""))), mime_type, is_text, is_inline, is_encoding_problem, offset_end as i64);
             if is_encoding_problem {
                 encoding = Encoding::None;
                 if mime_type != MimeType::TextPlain {

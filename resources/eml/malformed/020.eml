@@ -1,0 +1,41 @@
+From: test <test@example.com>
+Subject: test multipart, related first, with image
+To: test2 <test2@example.com>
+Date: Sat, 27 Feb 2016 17:11:45 +0100
+MIME-Version: 1.0
+Content-Type: multipart/related;
+ boundary="------------related"
+
+--------------related
+Content-Type: multipart/alternative;
+ boundary="------------alternative"
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Plain Text
+
+--------------alternative
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    HTML Body<br>
+    <img src="cid:part1" alt=""><br>
+  </body>
+</html>
+
+--------------alternative
+
+--------------related
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-ID: <part1>
+
+iVBORw0KGgoAAAANSUhEUgAAAAYAAAALCAIAAADTMGvBAAAAEUlEQVQImWPgsi5DQwxDWggA
+lCEwN+YGfiYAAAAASUVORK5CYII=
+
+--------------related--

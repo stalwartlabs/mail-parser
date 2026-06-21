@@ -1,0 +1,737 @@
+{
+  "html_body": [
+    2
+  ],
+  "text_body": [
+    2
+  ],
+  "attachments": [
+    3,
+    4
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "test@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 3,
+          "offset_end": 22
+        },
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "test@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 22,
+          "offset_start": 27,
+          "offset_end": 46
+        },
+        {
+          "name": "subject",
+          "value": {
+            "Text": "29 (HTML + embedded image) + attachment"
+          },
+          "offset_field": 46,
+          "offset_start": 54,
+          "offset_end": 96
+        },
+        {
+          "name": "message_id",
+          "value": {
+            "Text": "cdf5bf44-03a4-4be1-c9c7-88cb4a5838ed@example.com"
+          },
+          "offset_field": 96,
+          "offset_start": 107,
+          "offset_end": 160
+        },
+        {
+          "name": "date",
+          "value": {
+            "DateTime": {
+              "year": 2017,
+              "month": 12,
+              "day": 30,
+              "hour": 20,
+              "minute": 19,
+              "second": 46,
+              "tz_before_gmt": false,
+              "tz_hour": 1,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 160,
+          "offset_start": 165,
+          "offset_end": 199
+        },
+        {
+          "name": {
+            "other": "User-Agent"
+          },
+          "value": {
+            "Text": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101\r\n Thunderbird/59.0a1"
+          },
+          "offset_field": 199,
+          "offset_start": 210,
+          "offset_end": 298
+        },
+        {
+          "name": "mime_version",
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 298,
+          "offset_start": 311,
+          "offset_end": 317
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------F5CEBCED9FC06ACB07B3D485"
+                }
+              ]
+            }
+          },
+          "offset_field": 317,
+          "offset_start": 330,
+          "offset_end": 399
+        },
+        {
+          "name": "content_language",
+          "value": {
+            "Text": "en-GB"
+          },
+          "offset_field": 399,
+          "offset_start": 416,
+          "offset_end": 424
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          4
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 426,
+      "offset_end": 2085
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------1722706F2C203820A6CAA06F"
+                }
+              ]
+            }
+          },
+          "offset_field": 512,
+          "offset_start": 525,
+          "offset_end": 596
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3
+        ]
+      },
+      "offset_header": 512,
+      "offset_body": 598,
+      "offset_end": 1640
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "utf-8"
+                }
+              ]
+            }
+          },
+          "offset_field": 640,
+          "offset_start": 653,
+          "offset_end": 682
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 682,
+          "offset_start": 708,
+          "offset_end": 727
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html>\r\n  <head>\r\n\r\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n  </head>\r\n  <body text=\"#000000\" bgcolor=\"#FFFFFF\">\r\n    <p><tt>Search for höhö</tt></p>\r\n    <p><img src=\"cid:part1.8C5E6A81.D0C1B91A@example.com\" alt=\"\"></p>\r\n  </body>\r\n</html>\r\n"
+      },
+      "offset_header": 640,
+      "offset_body": 729,
+      "offset_end": 1014
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": [
+                {
+                  "name": "name",
+                  "value": "kigaaldcbanejcbi.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1056,
+          "offset_start": 1069,
+          "offset_end": 1112
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 1112,
+          "offset_start": 1138,
+          "offset_end": 1147
+        },
+        {
+          "name": "content_id",
+          "value": {
+            "Text": "part1.8C5E6A81.D0C1B91A@example.com"
+          },
+          "offset_field": 1147,
+          "offset_start": 1158,
+          "offset_end": 1198
+        },
+        {
+          "name": "content_disposition",
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": [
+                {
+                  "name": "filename",
+                  "value": "kigaaldcbanejcbi.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1198,
+          "offset_start": 1218,
+          "offset_end": 1262
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13,
+          73,
+          72,
+          68,
+          82,
+          0,
+          0,
+          0,
+          16,
+          0,
+          0,
+          0,
+          16,
+          8,
+          2,
+          0,
+          0,
+          0,
+          144,
+          145,
+          104,
+          54,
+          0,
+          0,
+          0,
+          1,
+          115,
+          82,
+          71,
+          66,
+          0,
+          174,
+          206,
+          28,
+          233,
+          0,
+          0,
+          0,
+          4,
+          103,
+          65,
+          77,
+          65,
+          0,
+          0,
+          177,
+          143,
+          11,
+          252,
+          97,
+          5,
+          0,
+          0,
+          0,
+          9,
+          112,
+          72,
+          89,
+          115,
+          0,
+          0,
+          14,
+          195,
+          0,
+          0,
+          14,
+          195,
+          1,
+          199,
+          111,
+          168,
+          100,
+          0,
+          0,
+          0,
+          18,
+          116,
+          69,
+          88,
+          116,
+          83,
+          111,
+          102,
+          116,
+          119,
+          97,
+          114,
+          101,
+          0,
+          71,
+          114,
+          101,
+          101,
+          110,
+          115,
+          104,
+          111,
+          116,
+          94,
+          85,
+          8,
+          5,
+          0,
+          0,
+          0,
+          105,
+          73,
+          68,
+          65,
+          84,
+          56,
+          79,
+          221,
+          208,
+          59,
+          18,
+          128,
+          32,
+          12,
+          69,
+          209,
+          236,
+          76,
+          62,
+          110,
+          7,
+          113,
+          255,
+          77,
+          124,
+          4,
+          70,
+          50,
+          136,
+          128,
+          173,
+          111,
+          110,
+          197,
+          112,
+          40,
+          160,
+          221,
+          158,
+          200,
+          155,
+          168,
+          10,
+          221,
+          156,
+          77,
+          253,
+          23,
+          16,
+          145,
+          190,
+          154,
+          43,
+          192,
+          227,
+          182,
+          228,
+          76,
+          204,
+          193,
+          0,
+          136,
+          209,
+          175,
+          148,
+          90,
+          96,
+          183,
+          35,
+          157,
+          18,
+          49,
+          115,
+          215,
+          140,
+          64,
+          215,
+          76,
+          0,
+          214,
+          152,
+          57,
+          192,
+          180,
+          89,
+          2,
+          216,
+          109,
+          86,
+          1,
+          38,
+          230,
+          241,
+          173,
+          3,
+          128,
+          225,
+          188,
+          130,
+          218,
+          59,
+          192,
+          62,
+          2,
+          230,
+          11,
+          203,
+          69,
+          57,
+          197,
+          69,
+          41,
+          47,
+          201,
+          0,
+          0,
+          0,
+          0,
+          73,
+          69,
+          78,
+          68,
+          174,
+          66,
+          96,
+          130
+        ]
+      },
+      "offset_header": 1056,
+      "offset_body": 1264,
+      "offset_end": 1596
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": [
+                {
+                  "name": "name",
+                  "value": "attach2.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1682,
+          "offset_start": 1695,
+          "offset_end": 1729
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 1729,
+          "offset_start": 1755,
+          "offset_end": 1764
+        },
+        {
+          "name": "content_disposition",
+          "value": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": [
+                {
+                  "name": "filename",
+                  "value": "attach2.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1764,
+          "offset_start": 1784,
+          "offset_end": 1823
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13,
+          73,
+          72,
+          68,
+          82,
+          0,
+          0,
+          0,
+          14,
+          0,
+          0,
+          0,
+          14,
+          8,
+          2,
+          0,
+          0,
+          0,
+          144,
+          42,
+          186,
+          134,
+          0,
+          0,
+          0,
+          1,
+          115,
+          82,
+          71,
+          66,
+          0,
+          174,
+          206,
+          28,
+          233,
+          0,
+          0,
+          0,
+          4,
+          103,
+          65,
+          77,
+          65,
+          0,
+          0,
+          177,
+          143,
+          11,
+          252,
+          97,
+          5,
+          0,
+          0,
+          0,
+          9,
+          112,
+          72,
+          89,
+          115,
+          0,
+          0,
+          14,
+          195,
+          0,
+          0,
+          14,
+          195,
+          1,
+          199,
+          111,
+          168,
+          100,
+          0,
+          0,
+          0,
+          18,
+          116,
+          69,
+          88,
+          116,
+          83,
+          111,
+          102,
+          116,
+          119,
+          97,
+          114,
+          101,
+          0,
+          71,
+          114,
+          101,
+          101,
+          110,
+          115,
+          104,
+          111,
+          116,
+          94,
+          85,
+          8,
+          5,
+          0,
+          0,
+          0,
+          21,
+          73,
+          68,
+          65,
+          84,
+          40,
+          83,
+          99,
+          248,
+          79,
+          52,
+          24,
+          85,
+          58,
+          170,
+          148,
+          104,
+          165,
+          255,
+          255,
+          3,
+          0,
+          211,
+          78,
+          73,
+          211,
+          59,
+          213,
+          209,
+          91,
+          0,
+          0,
+          0,
+          0,
+          73,
+          69,
+          78,
+          68,
+          174,
+          66,
+          96,
+          130
+        ]
+      },
+      "offset_header": 1682,
+      "offset_body": 1825,
+      "offset_end": 2041
+    }
+  ]
+}

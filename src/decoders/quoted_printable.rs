@@ -157,8 +157,10 @@ impl<'x> MessageStream<'x> {
                         if hex1 != -1 {
                             state = QuotedPrintableState::Hex1;
                         } else if !ch.is_ascii_whitespace() {
-                            self.restore();
-                            return (usize::MAX, b""[..].into());
+                            state = QuotedPrintableState::None;
+                            buf.push(b'=');
+                            buf.push(ch);
+                            ws_count = 0;
                         }
                     }
                     QuotedPrintableState::Hex1 => {
@@ -169,8 +171,10 @@ impl<'x> MessageStream<'x> {
                             buf.push(((hex1 as u8) << 4) | hex2 as u8);
                             ws_count = 0;
                         } else {
-                            self.restore();
-                            return (usize::MAX, b""[..].into());
+                            buf.push(b'=');
+                            buf.push(last_ch);
+                            buf.push(ch);
+                            ws_count = 0;
                         }
                     }
                 },
@@ -346,6 +350,11 @@ mod tests {
     #[test]
     fn decode_quoted_printable_mime() {
         for (encoded_str, expected_result) in [
+            (
+                "<meta content=\"text/html; charset=utf-8\"> h=C3=B6\n--boundary",
+                "<meta content=\"text/html; charset=utf-8\"> hö",
+            ),
+            ("first=AZ second\n--boundary", "first=AZ second"),
             (
                 "=E2=80=94=E2=80=89Antoine de Saint-Exup=C3=A9ry\n--boundary",
                 "— Antoine de Saint-Exupéry",

@@ -1,0 +1,811 @@
+{
+  "html_body": [
+    4
+  ],
+  "text_body": [
+    2
+  ],
+  "attachments": [
+    5,
+    6
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "test@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 3,
+          "offset_end": 21
+        },
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "test@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 21,
+          "offset_start": 26,
+          "offset_end": 44
+        },
+        {
+          "name": "subject",
+          "value": {
+            "Text": "30 plaintext + (HTML + embedded image) + attachment"
+          },
+          "offset_field": 44,
+          "offset_start": 52,
+          "offset_end": 105
+        },
+        {
+          "name": "message_id",
+          "value": {
+            "Text": "1e58c8f2-3a15-96e7-76b7-046cf6e1ce1e@example.com"
+          },
+          "offset_field": 105,
+          "offset_start": 116,
+          "offset_end": 168
+        },
+        {
+          "name": "date",
+          "value": {
+            "DateTime": {
+              "year": 2017,
+              "month": 12,
+              "day": 30,
+              "hour": 20,
+              "minute": 50,
+              "second": 1,
+              "tz_before_gmt": false,
+              "tz_hour": 1,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 168,
+          "offset_start": 173,
+          "offset_end": 206
+        },
+        {
+          "name": {
+            "other": "User-Agent"
+          },
+          "value": {
+            "Text": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101\n Thunderbird/59.0a1"
+          },
+          "offset_field": 206,
+          "offset_start": 217,
+          "offset_end": 303
+        },
+        {
+          "name": "mime_version",
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 303,
+          "offset_start": 316,
+          "offset_end": 321
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------B94553864BC0A4472640622E"
+                }
+              ]
+            }
+          },
+          "offset_field": 321,
+          "offset_start": 334,
+          "offset_end": 401
+        },
+        {
+          "name": "content_language",
+          "value": {
+            "Text": "en-GB"
+          },
+          "offset_field": 401,
+          "offset_start": 418,
+          "offset_end": 425
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          6
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 426,
+      "offset_end": 2381
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------B24EA868A72E5E6144485481"
+                }
+              ]
+            }
+          },
+          "offset_field": 510,
+          "offset_start": 523,
+          "offset_end": 596
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          2,
+          3
+        ]
+      },
+      "offset_header": 510,
+      "offset_body": 597,
+      "offset_end": 1948
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "windows-1252"
+                },
+                {
+                  "name": "format",
+                  "value": "flowed"
+                }
+              ]
+            }
+          },
+          "offset_field": 637,
+          "offset_start": 650,
+          "offset_end": 699
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 699,
+          "offset_start": 725,
+          "offset_end": 743
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Search for hähä\n\n"
+      },
+      "offset_header": 637,
+      "offset_body": 744,
+      "offset_end": 765
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------D1360749D11EBC0C64444B6C"
+                }
+              ]
+            }
+          },
+          "offset_field": 805,
+          "offset_start": 818,
+          "offset_end": 887
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          4,
+          5
+        ]
+      },
+      "offset_header": 805,
+      "offset_body": 888,
+      "offset_end": 1906
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "html",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "windows-1252"
+                }
+              ]
+            }
+          },
+          "offset_field": 928,
+          "offset_start": 941,
+          "offset_end": 974
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "quoted-printable"
+          },
+          "offset_field": 974,
+          "offset_start": 1000,
+          "offset_end": 1018
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Html": "<html>\n  <head>\n\n    <meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\">\n  </head>\n  <body text=\"#000000\" bgcolor=\"#FFFFFF\">\n    <p><tt>Search for höhö</tt></p>\n    <p><img src=\"cid:part1.8C5E6A81.D0C1B91A@example.com\" alt=\"\"></p>\n  </body>\n</html>\n"
+      },
+      "offset_header": 928,
+      "offset_body": 1019,
+      "offset_end": 1295
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": [
+                {
+                  "name": "name",
+                  "value": "kigaaldcbanejcbi.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1335,
+          "offset_start": 1348,
+          "offset_end": 1389
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 1389,
+          "offset_start": 1415,
+          "offset_end": 1423
+        },
+        {
+          "name": "content_id",
+          "value": {
+            "Text": "part1.8C5E6A81.D0C1B91A@example.com"
+          },
+          "offset_field": 1423,
+          "offset_start": 1434,
+          "offset_end": 1473
+        },
+        {
+          "name": "content_disposition",
+          "value": {
+            "ContentType": {
+              "c_type": "inline",
+              "c_subtype": null,
+              "attributes": [
+                {
+                  "name": "filename",
+                  "value": "kigaaldcbanejcbi.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1473,
+          "offset_start": 1493,
+          "offset_end": 1535
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13,
+          73,
+          72,
+          68,
+          82,
+          0,
+          0,
+          0,
+          16,
+          0,
+          0,
+          0,
+          16,
+          8,
+          2,
+          0,
+          0,
+          0,
+          144,
+          145,
+          104,
+          54,
+          0,
+          0,
+          0,
+          1,
+          115,
+          82,
+          71,
+          66,
+          0,
+          174,
+          206,
+          28,
+          233,
+          0,
+          0,
+          0,
+          4,
+          103,
+          65,
+          77,
+          65,
+          0,
+          0,
+          177,
+          143,
+          11,
+          252,
+          97,
+          5,
+          0,
+          0,
+          0,
+          9,
+          112,
+          72,
+          89,
+          115,
+          0,
+          0,
+          14,
+          195,
+          0,
+          0,
+          14,
+          195,
+          1,
+          199,
+          111,
+          168,
+          100,
+          0,
+          0,
+          0,
+          18,
+          116,
+          69,
+          88,
+          116,
+          83,
+          111,
+          102,
+          116,
+          119,
+          97,
+          114,
+          101,
+          0,
+          71,
+          114,
+          101,
+          101,
+          110,
+          115,
+          104,
+          111,
+          116,
+          94,
+          85,
+          8,
+          5,
+          0,
+          0,
+          0,
+          105,
+          73,
+          68,
+          65,
+          84,
+          56,
+          79,
+          221,
+          208,
+          59,
+          18,
+          128,
+          32,
+          12,
+          69,
+          209,
+          236,
+          76,
+          62,
+          110,
+          7,
+          113,
+          255,
+          77,
+          124,
+          4,
+          70,
+          50,
+          136,
+          128,
+          173,
+          111,
+          110,
+          197,
+          112,
+          40,
+          160,
+          221,
+          158,
+          200,
+          155,
+          168,
+          10,
+          221,
+          156,
+          77,
+          253,
+          23,
+          16,
+          145,
+          190,
+          154,
+          43,
+          192,
+          227,
+          182,
+          228,
+          76,
+          204,
+          193,
+          0,
+          136,
+          209,
+          175,
+          148,
+          90,
+          96,
+          183,
+          35,
+          157,
+          18,
+          49,
+          115,
+          215,
+          140,
+          64,
+          215,
+          76,
+          0,
+          214,
+          152,
+          57,
+          192,
+          180,
+          89,
+          2,
+          216,
+          109,
+          86,
+          1,
+          38,
+          230,
+          241,
+          173,
+          3,
+          128,
+          225,
+          188,
+          130,
+          218,
+          59,
+          192,
+          62,
+          2,
+          230,
+          11,
+          203,
+          69,
+          57,
+          197,
+          69,
+          41,
+          47,
+          201,
+          0,
+          0,
+          0,
+          0,
+          73,
+          69,
+          78,
+          68,
+          174,
+          66,
+          96,
+          130
+        ]
+      },
+      "offset_header": 1335,
+      "offset_body": 1536,
+      "offset_end": 1864
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": [
+                {
+                  "name": "name",
+                  "value": "attach2.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 1988,
+          "offset_start": 2001,
+          "offset_end": 2033
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 2033,
+          "offset_start": 2059,
+          "offset_end": 2067
+        },
+        {
+          "name": "content_disposition",
+          "value": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": [
+                {
+                  "name": "filename",
+                  "value": "attach2.png"
+                }
+              ]
+            }
+          },
+          "offset_field": 2067,
+          "offset_start": 2087,
+          "offset_end": 2124
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13,
+          73,
+          72,
+          68,
+          82,
+          0,
+          0,
+          0,
+          14,
+          0,
+          0,
+          0,
+          14,
+          8,
+          2,
+          0,
+          0,
+          0,
+          144,
+          42,
+          186,
+          134,
+          0,
+          0,
+          0,
+          1,
+          115,
+          82,
+          71,
+          66,
+          0,
+          174,
+          206,
+          28,
+          233,
+          0,
+          0,
+          0,
+          4,
+          103,
+          65,
+          77,
+          65,
+          0,
+          0,
+          177,
+          143,
+          11,
+          252,
+          97,
+          5,
+          0,
+          0,
+          0,
+          9,
+          112,
+          72,
+          89,
+          115,
+          0,
+          0,
+          14,
+          195,
+          0,
+          0,
+          14,
+          195,
+          1,
+          199,
+          111,
+          168,
+          100,
+          0,
+          0,
+          0,
+          18,
+          116,
+          69,
+          88,
+          116,
+          83,
+          111,
+          102,
+          116,
+          119,
+          97,
+          114,
+          101,
+          0,
+          71,
+          114,
+          101,
+          101,
+          110,
+          115,
+          104,
+          111,
+          116,
+          94,
+          85,
+          8,
+          5,
+          0,
+          0,
+          0,
+          21,
+          73,
+          68,
+          65,
+          84,
+          40,
+          83,
+          99,
+          248,
+          79,
+          52,
+          24,
+          85,
+          58,
+          170,
+          148,
+          104,
+          165,
+          255,
+          255,
+          3,
+          0,
+          211,
+          78,
+          73,
+          211,
+          59,
+          213,
+          209,
+          91,
+          0,
+          0,
+          0,
+          0,
+          73,
+          69,
+          78,
+          68,
+          174,
+          66,
+          96,
+          130
+        ]
+      },
+      "offset_header": 1988,
+      "offset_body": 2125,
+      "offset_end": 2339
+    }
+  ]
+}

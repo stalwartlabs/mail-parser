@@ -46,9 +46,9 @@
           "offset_end": 112
         }
       ],
-      "is_encoding_problem": true,
+      "is_encoding_problem": false,
       "body": {
-        "Text": "Best\nEnviado desde mi BlackBerry=AE de Vodafone=\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n</dict>\n</plist>"
+        "Text": "Best\nEnviado desde mi BlackBerry® de Vodafone<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n</dict>\n</plist>"
       },
       "offset_header": 0,
       "offset_body": 113,

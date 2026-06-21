@@ -3,6 +3,7 @@ mail-parser 0.11.4
 - Add `Message::received_all()` to iterate over all Received header fields (#146)
 - Reject dates with invalid month names.
 - `parse_date()` doesn't handle UTC+12 and greater (#148)
+- Leniently decode quoted-printable bodies with invalid `=` escapes (#144)
 
 mail-parser 0.11.3
 ================================

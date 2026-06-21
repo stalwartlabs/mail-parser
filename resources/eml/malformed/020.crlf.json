@@ -1,0 +1,291 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "test",
+                  "address": "test@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 31
+        },
+        {
+          "name": "subject",
+          "value": {
+            "Text": "test multipart, related first, with image"
+          },
+          "offset_field": 31,
+          "offset_start": 39,
+          "offset_end": 83
+        },
+        {
+          "name": "to",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": "test2",
+                  "address": "test2@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 83,
+          "offset_start": 86,
+          "offset_end": 114
+        },
+        {
+          "name": "date",
+          "value": {
+            "DateTime": {
+              "year": 2016,
+              "month": 2,
+              "day": 27,
+              "hour": 17,
+              "minute": 11,
+              "second": 45,
+              "tz_before_gmt": false,
+              "tz_hour": 1,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 114,
+          "offset_start": 119,
+          "offset_end": 153
+        },
+        {
+          "name": "mime_version",
+          "value": {
+            "Text": "1.0"
+          },
+          "offset_field": 153,
+          "offset_start": 166,
+          "offset_end": 172
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "related",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------related"
+                }
+              ]
+            }
+          },
+          "offset_field": 172,
+          "offset_start": 185,
+          "offset_end": 239
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 241,
+      "offset_end": 1036
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "alternative",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "------------alternative"
+                }
+              ]
+            }
+          },
+          "offset_field": 264,
+          "offset_start": 277,
+          "offset_end": 339
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": [
+                {
+                  "name": "charset",
+                  "value": "UTF-8"
+                },
+                {
+                  "name": "format",
+                  "value": "flowed"
+                }
+              ]
+            }
+          },
+          "offset_field": 339,
+          "offset_start": 352,
+          "offset_end": 395
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "8bit"
+          },
+          "offset_field": 395,
+          "offset_start": 421,
+          "offset_end": 428
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "Plain Text\r\n\r\n--------------alternative\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n<html>\r\n  <head>\r\n    <meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\">\r\n  </head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n    HTML Body<br>\r\n    <img src=\"cid:part1\" alt=\"\"><br>\r\n  </body>\r\n</html>\r\n\r\n--------------alternative\r\n"
+      },
+      "offset_header": 264,
+      "offset_body": 430,
+      "offset_end": 797
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "image",
+              "c_subtype": "png",
+              "attributes": null
+            }
+          },
+          "offset_field": 822,
+          "offset_start": 835,
+          "offset_end": 847
+        },
+        {
+          "name": "content_transfer_encoding",
+          "value": {
+            "Text": "base64"
+          },
+          "offset_field": 847,
+          "offset_start": 873,
+          "offset_end": 882
+        },
+        {
+          "name": "content_id",
+          "value": {
+            "Text": "part1"
+          },
+          "offset_field": 882,
+          "offset_start": 893,
+          "offset_end": 903
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Binary": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13,
+          73,
+          72,
+          68,
+          82,
+          0,
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          11,
+          8,
+          2,
+          0,
+          0,
+          0,
+          211,
+          48,
+          107,
+          193,
+          0,
+          0,
+          0,
+          17,
+          73,
+          68,
+          65,
+          84,
+          8,
+          153,
+          99,
+          224,
+          178,
+          46,
+          67,
+          67,
+          12,
+          67,
+          90,
+          8,
+          0,
+          148,
+          33,
+          48,
+          55,
+          230,
+          6,
+          126,
+          38,
+          0,
+          0,
+          0,
+          0,
+          73,
+          69,
+          78,
+          68,
+          174,
+          66,
+          96,
+          130
+        ]
+      },
+      "offset_header": 822,
+      "offset_body": 905,
+      "offset_end": 1009
+    }
+  ]
+}
