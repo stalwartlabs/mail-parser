@@ -201,6 +201,7 @@ and, to run the benchmarks:
 
 - [RFC 822 - Standard for ARPA Internet Text Messages](https://datatracker.ietf.org/doc/html/rfc822)
 - [RFC 5322 - Internet Message Format](https://datatracker.ietf.org/doc/html/rfc5322)
+- [RFC 6854 - Group Syntax for Senders](https://datatracker.ietf.org/doc/html/rfc6854)
 - [RFC 2045 - Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies](https://datatracker.ietf.org/doc/html/rfc2045)
 - [RFC 2046 - Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types](https://datatracker.ietf.org/doc/html/rfc2046)
 - [RFC 2047 - MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header Extensions for Non-ASCII Text](https://datatracker.ietf.org/doc/html/rfc2047)
