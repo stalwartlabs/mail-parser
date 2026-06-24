@@ -81,7 +81,7 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
     );
 
     assert_eq!(
-        message.to().unwrap().as_group().unwrap(),
+        message.to().unwrap().as_group(),
         &[
             Group::new(
                 "Colleagues",

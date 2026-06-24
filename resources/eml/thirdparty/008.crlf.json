@@ -15,14 +15,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": null,
-                  "address": "user@domain.org"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": null,
+                    "address": "user@domain.org"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -152,14 +155,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": null,
-                          "address": "sub@domain.org"
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": null,
+                            "address": "sub@domain.org"
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 267,
                   "offset_start": 272,

@@ -146,14 +146,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "admin xyz",
-                  "address": "admin@xyz-webserver.abcd-gestion.local"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "admin xyz",
+                    "address": "admin@xyz-webserver.abcd-gestion.local"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 580,
           "offset_start": 583,
@@ -162,14 +165,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Dummy",
-                  "address": "dummy@xyz-webserver.abcd-gestion.local"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Dummy",
+                    "address": "dummy@xyz-webserver.abcd-gestion.local"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 635,
           "offset_start": 640,

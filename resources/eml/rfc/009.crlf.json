@@ -14,14 +14,17 @@
         {
           "name": "from",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Whomever",
-                  "address": "whoever@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Whomever",
+                    "address": "whoever@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
@@ -30,14 +33,17 @@
         {
           "name": "to",
           "value": {
-            "Address": {
-              "List": [
-                {
-                  "name": "Someone",
-                  "address": "someone@example.com"
-                }
-              ]
-            }
+            "Address": [
+              {
+                "name": null,
+                "addresses": [
+                  {
+                    "name": "Someone",
+                    "address": "someone@example.com"
+                  }
+                ]
+              }
+            ]
           },
           "offset_field": 38,
           "offset_start": 41,
@@ -223,14 +229,17 @@
                 {
                   "name": "from",
                   "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "Someone Else",
-                          "address": null
-                        }
-                      ]
-                    }
+                    "Address": [
+                      {
+                        "name": null,
+                        "addresses": [
+                          {
+                            "name": "Someone Else",
+                            "address": null
+                          }
+                        ]
+                      }
+                    ]
                   },
                   "offset_field": 606,
                   "offset_start": 611,
