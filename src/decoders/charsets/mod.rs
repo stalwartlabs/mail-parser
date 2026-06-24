@@ -5,9 +5,9 @@
  */
 
 pub mod map;
-pub mod multi_byte;
-pub mod single_byte;
-pub mod utf;
+mod multi_byte;
+mod single_byte;
+mod utf;
 
 pub type DecoderFnc = fn(&[u8]) -> String;
 
