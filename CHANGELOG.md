@@ -1,6 +1,7 @@
 mail-parser 0.11.5
 ================================
 - Fix: Address names containing LF are not parsed correctly (#149)
+- Added `Dkim2Signature` and `MessageInstance` to support DKIM2 headers.
 
 mail-parser 0.11.4
 ================================

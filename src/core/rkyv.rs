@@ -80,6 +80,8 @@ impl ArchivedHeaderName<'_> {
             ArchivedHeaderName::ArcMessageSignature => 39,
             ArchivedHeaderName::ArcSeal => 40,
             ArchivedHeaderName::DkimSignature => 41,
+            ArchivedHeaderName::Dkim2Signature => 42,
+            ArchivedHeaderName::MessageInstance => 43,
         }
     }
 
@@ -126,6 +128,8 @@ impl ArchivedHeaderName<'_> {
             ArchivedHeaderName::ArcMessageSignature => "ARC-Message-Signature",
             ArchivedHeaderName::ArcSeal => "ARC-Seal",
             ArchivedHeaderName::DkimSignature => "DKIM-Signature",
+            ArchivedHeaderName::Dkim2Signature => "DKIM2-Signature",
+            ArchivedHeaderName::MessageInstance => "Message-Instance",
             ArchivedHeaderName::Other(v) => v.as_str(),
         }
     }
@@ -205,6 +209,8 @@ impl PartialEq for ArchivedHeaderName<'_> {
             (Self::ArcMessageSignature, Self::ArcMessageSignature) => true,
             (Self::ArcSeal, Self::ArcSeal) => true,
             (Self::DkimSignature, Self::DkimSignature) => true,
+            (Self::Dkim2Signature, Self::Dkim2Signature) => true,
+            (Self::MessageInstance, Self::MessageInstance) => true,
             _ => false,
         }
     }
@@ -270,6 +276,8 @@ impl From<&ArchivedHeaderName<'_>> for HeaderName<'static> {
             ArchivedHeaderName::ArcMessageSignature => HeaderName::ArcMessageSignature,
             ArchivedHeaderName::ArcSeal => HeaderName::ArcSeal,
             ArchivedHeaderName::DkimSignature => HeaderName::DkimSignature,
+            ArchivedHeaderName::Dkim2Signature => HeaderName::Dkim2Signature,
+            ArchivedHeaderName::MessageInstance => HeaderName::MessageInstance,
         }
     }
 }

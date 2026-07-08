@@ -294,6 +294,8 @@ impl PartialEq for HeaderName<'_> {
             (Self::ArcMessageSignature, Self::ArcMessageSignature) => true,
             (Self::ArcSeal, Self::ArcSeal) => true,
             (Self::DkimSignature, Self::DkimSignature) => true,
+            (Self::Dkim2Signature, Self::Dkim2Signature) => true,
+            (Self::MessageInstance, Self::MessageInstance) => true,
             _ => false,
         }
     }
@@ -365,6 +367,8 @@ impl HeaderName<'_> {
             HeaderName::ArcMessageSignature => HeaderName::ArcMessageSignature,
             HeaderName::ArcSeal => HeaderName::ArcSeal,
             HeaderName::DkimSignature => HeaderName::DkimSignature,
+            HeaderName::Dkim2Signature => HeaderName::Dkim2Signature,
+            HeaderName::MessageInstance => HeaderName::MessageInstance,
         }
     }
 
@@ -412,6 +416,8 @@ impl HeaderName<'_> {
             HeaderName::ArcMessageSignature => HeaderName::ArcMessageSignature,
             HeaderName::ArcSeal => HeaderName::ArcSeal,
             HeaderName::DkimSignature => HeaderName::DkimSignature,
+            HeaderName::Dkim2Signature => HeaderName::Dkim2Signature,
+            HeaderName::MessageInstance => HeaderName::MessageInstance,
         }
     }
 
@@ -472,6 +478,8 @@ impl HeaderName<'_> {
             HeaderName::ArcMessageSignature => "ARC-Message-Signature",
             HeaderName::ArcSeal => "ARC-Seal",
             HeaderName::DkimSignature => "DKIM-Signature",
+            HeaderName::Dkim2Signature => "DKIM2-Signature",
+            HeaderName::MessageInstance => "Message-Instance",
             HeaderName::Other(_) => "",
         }
     }
@@ -519,6 +527,8 @@ impl HeaderName<'_> {
             HeaderName::ArcMessageSignature => "ARC-Message-Signature".len(),
             HeaderName::ArcSeal => "ARC-Seal".len(),
             HeaderName::DkimSignature => "DKIM-Signature".len(),
+            HeaderName::Dkim2Signature => "DKIM2-Signature".len(),
+            HeaderName::MessageInstance => "Message-Instance".len(),
             HeaderName::Other(other) => other.len(),
         }
     }
@@ -590,6 +600,8 @@ impl HeaderName<'_> {
             HeaderName::ArcMessageSignature => 39,
             HeaderName::ArcSeal => 40,
             HeaderName::DkimSignature => 41,
+            HeaderName::Dkim2Signature => 42,
+            HeaderName::MessageInstance => 43,
         }
     }
 }

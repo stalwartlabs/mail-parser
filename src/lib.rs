@@ -260,6 +260,8 @@ pub enum HeaderName<'x> {
     ArcAuthenticationResults,
     ArcMessageSignature,
     ArcSeal,
+    Dkim2Signature,
+    MessageInstance,
 }
 
 /// Parsed header value.
