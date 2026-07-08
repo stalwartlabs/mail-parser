@@ -1,3 +1,7 @@
+mail-parser 0.11.5
+================================
+- Fix: Address names containing LF are not parsed correctly (#149)
+
 mail-parser 0.11.4
 ================================
 - Add `Message::received_all()` to iterate over all Received header fields (#146)

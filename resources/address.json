@@ -777,5 +777,16 @@
         }
       ]
     }
+  },
+  {
+    "header": "\"John\r\n Doe\" <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "John Doe",
+          "address": "a@b.com"
+        }
+      ]
+    }
   }
 ]

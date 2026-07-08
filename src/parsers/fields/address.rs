@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use std::borrow::Cow;
-
 use crate::{Addr, Address, Group, HeaderValue, parsers::MessageStream};
+use std::borrow::Cow;
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 enum AddressState {
@@ -213,6 +212,13 @@ impl<'x> MessageStream<'x> {
             match ch {
                 b'\n' => {
                     parser.add_token(self, false);
+                    if parser.state == AddressState::Quote {
+                        if self.peek_next_is_space() {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
                     if self.try_next_is_space() {
                         if !parser.is_token_start {
                             parser.is_token_start = true;
