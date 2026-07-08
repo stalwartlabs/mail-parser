@@ -19,6 +19,8 @@ mod tests {
     fn decode_charset() {
         let inputs = [
             ("iso-8859-1", b"\xe1\xe9\xed\xf3\xfa".to_vec(), "áéíóú"),
+            ("iso-8859-1", b"\x805.4bn".to_vec(), "€5.4bn"),
+            ("latin1", b"\x805.4bn".to_vec(), "€5.4bn"),
             ("iso-8859-5", b"\xbf\xe0\xd8\xd2\xd5\xe2, \xdc\xd8\xe0".to_vec(), "Привет, мир"),
             ("iso-8859-6", b"\xe5\xd1\xcd\xc8\xc7 \xc8\xc7\xe4\xd9\xc7\xe4\xe5".to_vec(),"مرحبا بالعالم"),
             ("iso-8859-7", b"\xc3\xe5\xe9\xdc \xf3\xef\xf5 \xca\xfc\xf3\xec\xe5".to_vec(),"Γειά σου Κόσμε"),

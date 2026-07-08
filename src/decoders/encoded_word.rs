@@ -119,6 +119,7 @@ mod tests {
                 true,
             ),
             ("?ISO-8859-1?Q?Olle_J=E4rnefors?=", "Olle Järnefors", true),
+            ("?iso-8859-1?Q?=805.4bn?=", "€5.4bn", true),
             (
                 "?ISO-8859-1?Q?Patrik_F=E4ltstr=F6m?=",
                 "Patrik Fältström",
