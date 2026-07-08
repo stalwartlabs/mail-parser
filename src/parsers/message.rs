@@ -407,8 +407,17 @@ impl MessageParser {
                             //raw_message[state.offset_header..offset_end].as_ref().into();
 
                             if let Some(part) = prev_message.parts.get_mut(state.part_id as usize) {
-                                part.body = PartType::Message(message);
                                 part.offset_end = offset_end as u32;
+                                if message.is_empty() {
+                                    part.is_encoding_problem = true;
+                                    part.body = PartType::Text(String::from_utf8_lossy(
+                                        raw_message
+                                            .get(part.offset_body as usize..offset_end)
+                                            .unwrap_or_default(),
+                                    ));
+                                } else {
+                                    part.body = PartType::Message(message);
+                                }
                             } else {
                                 debug_assert!(false, "Invalid part ID, could not find message.");
                             }
@@ -493,8 +502,34 @@ impl MessageParser {
                 message.raw_message = raw_message.into(); //raw_message[state.offset_header..stream.offset()].as_ref().into();
 
                 if let Some(part) = prev_message.parts.get_mut(state.part_id as usize) {
-                    part.body = PartType::Message(message);
                     part.offset_end = stream.offset() as u32;
+                    if message.is_empty() {
+                        part.is_encoding_problem = true;
+                        let raw_text = raw_message.get(part.offset_body as usize..stream.offset());
+                        let text = match raw_text
+                            .and_then(|bytes| std::str::from_utf8(bytes).ok())
+                            .and_then(|text| {
+                                state
+                                    .mime_boundary
+                                    .as_deref()
+                                    .and_then(|b| std::str::from_utf8(b).ok())
+                                    .and_then(|boundary| {
+                                        text.rsplit_once(boundary)
+                                            .and_then(|(text, _)| text.strip_suffix("--"))
+                                    })
+                                    .map(|text| {
+                                        let text = text.strip_suffix('\n').unwrap_or(text);
+                                        text.strip_suffix('\r').unwrap_or(text)
+                                    })
+                            }) {
+                            Some(text) => Cow::Borrowed(text),
+                            _ => String::from_utf8_lossy(raw_text.unwrap_or_default()),
+                        };
+
+                        part.body = PartType::Text(text);
+                    } else {
+                        part.body = PartType::Message(message);
+                    }
                 } else {
                     debug_assert!(false, "Invalid part ID, could not find message.");
                 }

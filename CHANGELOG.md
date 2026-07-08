@@ -2,6 +2,7 @@ mail-parser 0.11.5
 ================================
 - Fix: Address names containing LF are not parsed correctly (#149)
 - Fix: Decode the `iso-8859-1` label as `windows-1252` per the WHATWG Encoding Standard (#131)
+- Fix: `panic` with messages containing corrupted eml attachments (#120).
 - Recognize additional charset labels supported by `encoding_rs` (#123)
 - Added `Dkim2Signature` and `MessageInstance` to support DKIM2 headers.
 

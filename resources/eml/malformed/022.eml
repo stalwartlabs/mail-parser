@@ -1,0 +1,14 @@
+From: a@example.com
+Subject: broken rfc822 attachment
+Content-Type: multipart/mixed; boundary="BOUND"
+
+--BOUND
+Content-Type: text/plain
+
+hello
+--BOUND
+Content-Type: message/rfc822
+Content-Disposition: attachment; filename="broken.eml"
+
+this attachment is not a valid eml, sorry!
+--BOUND--

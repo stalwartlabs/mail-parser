@@ -1,0 +1,136 @@
+{
+  "html_body": [
+    1
+  ],
+  "text_body": [
+    1
+  ],
+  "attachments": [
+    2
+  ],
+  "parts": [
+    {
+      "headers": [
+        {
+          "name": "from",
+          "value": {
+            "Address": {
+              "List": [
+                {
+                  "name": null,
+                  "address": "a@example.com"
+                }
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 20
+        },
+        {
+          "name": "subject",
+          "value": {
+            "Text": "broken rfc822 attachment"
+          },
+          "offset_field": 20,
+          "offset_start": 28,
+          "offset_end": 54
+        },
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "multipart",
+              "c_subtype": "mixed",
+              "attributes": [
+                {
+                  "name": "boundary",
+                  "value": "BOUND"
+                }
+              ]
+            }
+          },
+          "offset_field": 54,
+          "offset_start": 67,
+          "offset_end": 102
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Multipart": [
+          1,
+          2
+        ]
+      },
+      "offset_header": 0,
+      "offset_body": 103,
+      "offset_end": 289
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "text",
+              "c_subtype": "plain",
+              "attributes": null
+            }
+          },
+          "offset_field": 111,
+          "offset_start": 124,
+          "offset_end": 136
+        }
+      ],
+      "is_encoding_problem": false,
+      "body": {
+        "Text": "hello"
+      },
+      "offset_header": 111,
+      "offset_body": 137,
+      "offset_end": 142
+    },
+    {
+      "headers": [
+        {
+          "name": "content_type",
+          "value": {
+            "ContentType": {
+              "c_type": "message",
+              "c_subtype": "rfc822",
+              "attributes": null
+            }
+          },
+          "offset_field": 151,
+          "offset_start": 164,
+          "offset_end": 180
+        },
+        {
+          "name": "content_disposition",
+          "value": {
+            "ContentType": {
+              "c_type": "attachment",
+              "c_subtype": null,
+              "attributes": [
+                {
+                  "name": "filename",
+                  "value": "broken.eml"
+                }
+              ]
+            }
+          },
+          "offset_field": 180,
+          "offset_start": 200,
+          "offset_end": 235
+        }
+      ],
+      "is_encoding_problem": true,
+      "body": {
+        "Text": "this attachment is not a valid eml, sorry!"
+      },
+      "offset_header": 151,
+      "offset_body": 236,
+      "offset_end": 289
+    }
+  ]
+}
