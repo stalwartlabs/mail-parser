@@ -21,6 +21,10 @@ mod tests {
             ("iso-8859-1", b"\xe1\xe9\xed\xf3\xfa".to_vec(), "áéíóú"),
             ("iso-8859-1", b"\x805.4bn".to_vec(), "€5.4bn"),
             ("latin1", b"\x805.4bn".to_vec(), "€5.4bn"),
+            ("iso88591", b"\x805.4bn".to_vec(), "€5.4bn"),
+            ("us-ascii", b"\x805.4bn".to_vec(), "€5.4bn"),
+            ("iso8859-5", b"\xbf\xe0\xd8\xd2\xd5\xe2, \xdc\xd8\xe0".to_vec(), "Привет, мир"),
+            ("cp1252", b"\xa1El \xf1and\xfa comi\xf3 \xf1oquis!".to_vec(), "¡El ñandú comió ñoquis!"),
             ("iso-8859-5", b"\xbf\xe0\xd8\xd2\xd5\xe2, \xdc\xd8\xe0".to_vec(), "Привет, мир"),
             ("iso-8859-6", b"\xe5\xd1\xcd\xc8\xc7 \xc8\xc7\xe4\xd9\xc7\xe4\xe5".to_vec(),"مرحبا بالعالم"),
             ("iso-8859-7", b"\xc3\xe5\xe9\xdc \xf3\xef\xf5 \xca\xfc\xf3\xec\xe5".to_vec(),"Γειά σου Κόσμε"),
@@ -59,6 +63,14 @@ mod tests {
             ("gbk", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
             #[cfg(feature = "full_encoding")]
             ("gb18030", b"\xc4\xe3\xba\xc3\xa3\xac\xca\xc0\xbd\xe7".to_vec(),"你好，世界"),
+            #[cfg(feature = "full_encoding")]
+            ("x-mac-cyrillic", b"\x8f\xf0\xe8\xe2\xe5\xf2".to_vec(),"Привет"),
+            #[cfg(feature = "full_encoding")]
+            ("x-user-defined", b"\x80\xff".to_vec(),"\u{f780}\u{f7ff}"),
+            #[cfg(feature = "full_encoding")]
+            ("iso-2022-kr", b"\x1b$)Cabcd".to_vec(),"\u{fffd}"),
+            #[cfg(feature = "full_encoding")]
+            ("hz-gb-2312", b"~{...~}".to_vec(),"\u{fffd}"),
             ];
 
         for input in inputs {

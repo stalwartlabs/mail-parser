@@ -240,7 +240,7 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Html": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\n�To: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nMessage-ID: <multi-001@example.test>\nDate: Tue, 7 Apr 2026 10:00:01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n"
+        "Html": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nþTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nMessage-ID: <multi-001@example.test>\nDate: Tue, 7 Apr 2026 10:00:01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n"
       },
       "offset_header": 1411,
       "offset_body": 1454,

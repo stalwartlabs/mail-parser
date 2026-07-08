@@ -135,3 +135,42 @@ pub(crate) fn decoder_ibm866(bytes: &[u8]) -> String {
         String::from_utf8_lossy(bytes).into_owned()
     }
 }
+
+#[inline(always)]
+pub(crate) fn decoder_x_mac_cyrillic(bytes: &[u8]) -> String {
+    #[cfg(feature = "full_encoding")]
+    {
+        multi_byte_decoder(X_MAC_CYRILLIC.new_decoder(), bytes)
+    }
+
+    #[cfg(not(feature = "full_encoding"))]
+    {
+        String::from_utf8_lossy(bytes).into_owned()
+    }
+}
+
+#[inline(always)]
+pub(crate) fn decoder_x_user_defined(bytes: &[u8]) -> String {
+    #[cfg(feature = "full_encoding")]
+    {
+        multi_byte_decoder(X_USER_DEFINED.new_decoder(), bytes)
+    }
+
+    #[cfg(not(feature = "full_encoding"))]
+    {
+        String::from_utf8_lossy(bytes).into_owned()
+    }
+}
+
+#[inline(always)]
+pub(crate) fn decoder_replacement(bytes: &[u8]) -> String {
+    #[cfg(feature = "full_encoding")]
+    {
+        multi_byte_decoder(REPLACEMENT.new_decoder(), bytes)
+    }
+
+    #[cfg(not(feature = "full_encoding"))]
+    {
+        String::from_utf8_lossy(bytes).into_owned()
+    }
+}
