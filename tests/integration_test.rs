@@ -150,3 +150,147 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         "Book about ☕ tables.gif"
     );
 }
+
+#[cfg(feature = "cli")]
+mod test_cli {
+    use std::{
+        fs,
+        io::{stdin, IsTerminal, Write},
+        path::Path,
+        process::{Command, Stdio},
+    };
+
+    use serde_json::Value;
+
+    const BIN: &str = env!("CARGO_BIN_EXE_mail-parser");
+
+    fn fixture(name: &str) -> String {
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("resources/eml/rfc")
+            .join(name)
+            .to_string_lossy()
+            .into_owned()
+    }
+
+    fn run_with_stdin(args: &[&str], input: Vec<u8>) -> (bool, String) {
+        let mut child = Command::new(BIN)
+            .args(args)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null())
+            .spawn()
+            .expect("failed to spawn process");
+
+        child
+            .stdin
+            .take()
+            .unwrap()
+            .write_all(&input)
+            .expect("failed to write stdin");
+
+        let out = child.wait_with_output().expect("failed to wait");
+
+        let success = out.status.success();
+        let out = String::from_utf8_lossy(&out.stdout).into_owned();
+
+        (success, out)
+    }
+
+    /// Run the binary with args, inheriting the test process's stdin.
+    ///
+    /// The path and inline modes require stdin to be a terminal so
+    /// the binary can distinguish between "message provided as arg"
+    /// and "read from pipe".  Returns `None` when the test process
+    /// itself has no terminal stdin (e.g. in CI), allowing those
+    /// tests to be skipped gracefully.
+    fn run_with_tty_stdin(args: &[&str]) -> Option<(bool, String)> {
+        if !stdin().is_terminal() {
+            return None;
+        }
+
+        let out = Command::new(BIN)
+            .args(args)
+            .stdin(Stdio::inherit())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null())
+            .output()
+            .expect("failed to run process");
+
+        let success = out.status.success();
+        let out = String::from_utf8_lossy(&out.stdout).into_owned();
+
+        Some((success, out))
+    }
+
+    fn subject_of(json: &Value) -> &str {
+        json["parts"][0]["headers"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|h| h["name"] == "subject")
+            .expect("subject header not found")["value"]["Text"]
+            .as_str()
+            .unwrap()
+    }
+
+    #[test]
+    fn message_as_stdin() {
+        let eml = fs::read(fixture("001.eml")).expect("failed to read fixture");
+        let (ok, stdout) = run_with_stdin(&[], eml);
+        assert!(ok, "process did not exit successfully");
+
+        let json: Value = serde_json::from_str(&stdout).expect("stdout is not valid JSON");
+        assert_eq!(subject_of(&json), "whatever");
+    }
+
+    #[test]
+    fn message_as_path() {
+        let Some((ok, stdout)) = run_with_tty_stdin(&[&fixture("001.eml")]) else {
+            eprintln!("skipped: no terminal stdin");
+            return;
+        };
+        assert!(ok, "process did not exit successfully");
+
+        let json: Value = serde_json::from_str(&stdout).expect("stdout is not valid JSON");
+        assert_eq!(subject_of(&json), "whatever");
+    }
+
+    #[test]
+    fn inline_message() {
+        let msg = "From: Art Vandelay <art@vandelay.com>\nSubject: Inline test\n\nHello";
+        let Some((ok, stdout)) = run_with_tty_stdin(&[msg]) else {
+            eprintln!("skipped: no terminal stdin");
+            return;
+        };
+        assert!(ok, "process did not exit successfully");
+
+        let json: Value = serde_json::from_str(&stdout).expect("stdout is not valid JSON");
+        assert_eq!(subject_of(&json), "Inline test");
+    }
+
+    #[test]
+    fn pretty_flag() {
+        let eml = fs::read(fixture("001.eml")).expect("failed to read fixture");
+
+        let (ok_compact, compact) = run_with_stdin(&[], eml.clone());
+        let (ok_pretty, pretty) = run_with_stdin(&["--pretty"], eml);
+
+        assert!(ok_compact && ok_pretty, "process did not exit successfully");
+
+        assert_eq!(
+            compact.lines().count(),
+            1,
+            "compact output must be a single line"
+        );
+
+        assert!(
+            pretty.lines().count() > 1,
+            "pretty output must span multiple lines"
+        );
+
+        let a: Value = serde_json::from_str(&compact).expect("compact is not valid JSON");
+        let b: Value = serde_json::from_str(&pretty).expect("pretty is not valid JSON");
+
+        assert_eq!(a, b, "compact and pretty must represent the same data");
+    }
+}
