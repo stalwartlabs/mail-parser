@@ -53,6 +53,7 @@ fn mime_type(
             "text" => match content_type.subtype() {
                 Some("plain") => (false, true, true, MimeType::TextPlain),
                 Some("html") => (false, true, true, MimeType::TextHtml),
+                Some("calendar") => (false, true, true, MimeType::TextOther),
                 _ => (false, false, true, MimeType::TextOther),
             },
             "image" | "audio" | "video" => (false, true, false, MimeType::Inline),
