@@ -499,6 +499,17 @@ mod tests {
             let datetime = MessageStream::new(test.header.as_bytes())
                 .parse_date()
                 .into_datetime();
+
+            if let Some(datetime) = &datetime {
+                if datetime.is_valid() {
+                    let folding_ws = datetime.to_rfc822().replace(" ", " \t\r\n\t  ");
+                    let dt = MessageStream::new(folding_ws.as_bytes())
+                        .parse_date()
+                        .into_datetime();
+                    assert_eq!(Some(datetime), dt.as_ref(), "{}", &test.header);
+                }
+            }
+
             assert_eq!(datetime, test.expected, "failed for {:?}", test.header);
 
             match datetime {
