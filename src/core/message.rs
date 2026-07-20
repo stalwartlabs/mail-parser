@@ -128,12 +128,24 @@ impl<'x> Message<'x> {
             .and_then(|a| a.as_address())
     }
 
+    /// Returns all BCC header fields, permitted by [4.5.3 Obsolete Destination Address Fields](https://www.rfc-editor.org/info/rfc5322/#section-4.5.3)
+    pub fn all_bcc(&self) -> impl Iterator<Item = &Address<'x>> {
+        self.header_values(HeaderName::Bcc)
+            .filter_map(|a| a.as_address())
+    }
+
     /// Returns the CC header field
     pub fn cc(&self) -> Option<&Address<'x>> {
         self.parts[0]
             .headers
             .header_value(&HeaderName::Cc)
             .and_then(|a| a.as_address())
+    }
+
+    /// Returns all CC header fields, permitted by [4.5.3 Obsolete Destination Address Fields](https://www.rfc-editor.org/info/rfc5322/#section-4.5.3)
+    pub fn all_cc(&self) -> impl Iterator<Item = &Address<'x>> {
+        self.header_values(HeaderName::Cc)
+            .filter_map(|a| a.as_address())
     }
 
     /// Returns all Comments header fields
@@ -384,6 +396,12 @@ impl<'x> Message<'x> {
             .headers
             .header_value(&HeaderName::To)
             .and_then(|a| a.as_address())
+    }
+
+    /// Returns all To header fields, permitted by [4.5.3 Obsolete Destination Address Fields](https://www.rfc-editor.org/info/rfc5322/#section-4.5.3)
+    pub fn all_to(&self) -> impl Iterator<Item = &Address<'x>> {
+        self.header_values(HeaderName::To)
+            .filter_map(|a| a.as_address())
     }
 
     /// Returns a preview of the message body
