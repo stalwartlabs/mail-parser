@@ -1,3 +1,7 @@
+mail-parser 0.11.6
+================================
+- Fix: Missing whitespace between a quoted name and a following encoded word (#150)
+
 mail-parser 0.11.5
 ================================
 - Fix: Address names containing LF are not parsed correctly (#149)

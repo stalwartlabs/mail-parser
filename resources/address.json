@@ -788,5 +788,82 @@
         }
       ]
     }
+  },
+  {
+    "header": "\"Serge B, Chair, HR\" =?utf-8?b?U3ltcG9zaXVtL1hwb+KEog==?= conference <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "Serge B, Chair, HR Symposium/Xpo™ conference",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "\"John\" =?utf-8?q?Doe?= <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "John Doe",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "<a@b.com> =?utf-8?q?Doe?=\n",
+    "expected": {
+      "List": [
+        {
+          "name": "Doe",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "Name (comment) =?utf-8?q?Doe?= <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "Name Doe (comment)",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "=?utf-8?q?a?= =?utf-8?q?b?= <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "ab",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "=?utf-8?q?Hello?= <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "Hello",
+          "address": "a@b.com"
+        }
+      ]
+    }
+  },
+  {
+    "header": "\"foo =?utf-8?q?bar?=\" <a@b.com>\n",
+    "expected": {
+      "List": [
+        {
+          "name": "foo bar",
+          "address": "a@b.com"
+        }
+      ]
+    }
   }
 ]

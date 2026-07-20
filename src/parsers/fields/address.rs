@@ -22,6 +22,7 @@ pub struct AddressParser<'x> {
     is_token_email: bool,
     is_token_start: bool,
     is_escaped: bool,
+    last_is_encoded: bool,
 
     name_tokens: Vec<Cow<'x, str>>,
     mail_tokens: Vec<Cow<'x, str>>,
@@ -37,7 +38,7 @@ pub struct AddressParser<'x> {
 }
 
 impl<'x> AddressParser<'x> {
-    pub fn add_token(&mut self, stream: &MessageStream<'x>, add_trail_space: bool) {
+    pub fn add_token(&mut self, stream: &MessageStream<'x>) {
         if self.token_start > 0 {
             let token = String::from_utf8_lossy(&stream.data[self.token_start - 1..self.token_end]);
             let mut add_space = false;
@@ -64,15 +65,28 @@ impl<'x> AddressParser<'x> {
 
             list.push(token);
 
-            if add_trail_space {
-                list.push(" ".into());
-            }
-
             self.token_start = 0;
             self.is_token_email = false;
             self.is_token_start = true;
             self.is_escaped = false;
+            self.last_is_encoded = false;
         }
+    }
+
+    pub fn add_rfc2047(&mut self, token: String) {
+        let add_space = !self.last_is_encoded && self.state != AddressState::Quote;
+        let list = if self.state != AddressState::Comment {
+            &mut self.name_tokens
+        } else {
+            &mut self.comment_tokens
+        };
+
+        if add_space && !list.is_empty() {
+            list.push(" ".into());
+        }
+
+        list.push(token.into());
+        self.last_is_encoded = true;
     }
 
     pub fn add_address(&mut self) {
@@ -194,6 +208,7 @@ impl<'x> MessageStream<'x> {
             is_token_email: false,
             is_token_start: true,
             is_escaped: false,
+            last_is_encoded: true,
 
             name_tokens: Vec::with_capacity(3),
             mail_tokens: Vec::with_capacity(3),
@@ -211,7 +226,7 @@ impl<'x> MessageStream<'x> {
         while let Some(ch) = self.next() {
             match ch {
                 b'\n' => {
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     if parser.state == AddressState::Quote {
                         if self.peek_next_is_space() {
                             continue;
@@ -233,25 +248,25 @@ impl<'x> MessageStream<'x> {
                         if parser.state == AddressState::Quote {
                             parser.token_end = self.offset() - 1;
                         }
-                        parser.add_token(self, false);
+                        parser.add_token(self);
                     }
                     parser.is_escaped = true;
                     continue;
                 }
                 b',' if parser.state == AddressState::Name => {
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     parser.add_address();
                     continue;
                 }
                 b'<' if parser.state == AddressState::Name => {
                     parser.is_token_email = false;
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     parser.state_stack.push(AddressState::Name);
                     parser.state = AddressState::Address;
                     continue;
                 }
                 b'>' if parser.state == AddressState::Address => {
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     parser.state = parser.state_stack.pop().unwrap();
                     continue;
                 }
@@ -259,11 +274,11 @@ impl<'x> MessageStream<'x> {
                     AddressState::Name => {
                         parser.state_stack.push(AddressState::Name);
                         parser.state = AddressState::Quote;
-                        parser.add_token(self, false);
+                        parser.add_token(self);
                         continue;
                     }
                     AddressState::Quote => {
-                        parser.add_token(self, false);
+                        parser.add_token(self);
                         parser.state = parser.state_stack.pop().unwrap();
                         continue;
                     }
@@ -275,14 +290,8 @@ impl<'x> MessageStream<'x> {
                 b'=' if parser.is_token_start && !parser.is_escaped && self.peek_char(b'?') => {
                     self.checkpoint();
                     if let Some(token) = self.decode_rfc2047() {
-                        let add_space = parser.state != AddressState::Quote; // Make borrow-checker happy
-                        parser.add_token(self, add_space);
-                        (if parser.state != AddressState::Comment {
-                            &mut parser.name_tokens
-                        } else {
-                            &mut parser.comment_tokens
-                        })
-                        .push(token.into());
+                        parser.add_token(self);
+                        parser.add_rfc2047(token);
                         continue;
                     }
                     self.restore();
@@ -308,27 +317,29 @@ impl<'x> MessageStream<'x> {
                 b'(' if parser.state != AddressState::Quote && !parser.is_escaped => {
                     parser.state_stack.push(parser.state);
                     if parser.state != AddressState::Comment {
-                        parser.add_token(self, false);
+                        parser.add_token(self);
                         parser.state = AddressState::Comment;
+                        parser.last_is_encoded = false;
                         continue;
                     }
                 }
                 b')' if parser.state == AddressState::Comment && !parser.is_escaped => {
                     let new_state = parser.state_stack.pop().unwrap();
                     if parser.state != new_state {
-                        parser.add_token(self, false);
+                        parser.add_token(self);
                         parser.state = new_state;
+                        parser.last_is_encoded = false;
                         continue;
                     }
                 }
                 b':' if parser.state == AddressState::Name && !parser.is_escaped => {
                     parser.add_group();
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     parser.add_group_details();
                     continue;
                 }
                 b';' if parser.state == AddressState::Name => {
-                    parser.add_token(self, false);
+                    parser.add_token(self);
                     parser.add_address();
                     parser.add_group();
                     continue;
