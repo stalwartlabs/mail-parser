@@ -8,7 +8,10 @@ use std::borrow::Cow;
 
 use crate::{
     Attribute, ContentType, HeaderValue,
-    decoders::{charsets::map::charset_decoder, hex::decode_hex},
+    decoders::{
+        charsets::{DecoderFnc, map::charset_decoder},
+        hex::decode_hex,
+    },
     parsers::MessageStream,
 };
 
@@ -22,7 +25,23 @@ enum ContentState {
     Comment,
 }
 
-type Continuation<'x> = (Cow<'x, str>, u32, Cow<'x, str>);
+/// A single RFC 2231 continuation section of a parameter value. The charset
+/// decode is deferred until every section has been collected, so it holds the
+/// section's raw payload rather than a decoded string.
+struct Continuation<'x> {
+    name: Cow<'x, str>,
+    position: u32,
+    part: ContinuationPart<'x>,
+    /// Charset label parsed from this section's own `charset'lang'` prefix.
+    charset: Option<Cow<'x, str>>,
+}
+
+enum ContinuationPart<'x> {
+    /// Percent-decoded raw octets of an encoded (`name*N*=`) section.
+    Encoded(Vec<u8>),
+    /// Verbatim text of a literal (`name*N=`) section.
+    Literal(Cow<'x, str>),
+}
 
 struct ContentTypeParser<'x> {
     state: ContentState,
@@ -171,7 +190,7 @@ impl<'x> ContentTypeParser<'x> {
             });
         } else {
             let attr_name = self.attr_name.take().unwrap();
-            let mut value = if let Some(value) = value {
+            let value = if let Some(value) = value {
                 if has_values {
                     Cow::from(self.values.concat()) + value
                 } else {
@@ -181,40 +200,46 @@ impl<'x> ContentTypeParser<'x> {
                 self.values.concat().into()
             };
 
-            if self.is_encoded_attribute {
-                if let (true, decoded_bytes) = decode_hex(value.as_bytes()) {
-                    value = if let Some(decoder) = self
-                        .attr_charset
-                        .as_ref()
-                        .and_then(|c| charset_decoder(c.as_bytes()))
-                    {
-                        decoder(&decoded_bytes).into()
-                    } else {
-                        String::from_utf8(decoded_bytes)
-                            .unwrap_or_else(|e| String::from_utf8_lossy(e.as_bytes()).into_owned())
-                            .into()
-                    }
-                }
+            // Keep the raw payload and defer the charset decode to
+            // `merge_continuations`: percent-decode each encoded section to
+            // octets now, concatenate every section's octets, then decode once.
+            // Decoding a section in isolation mangles a multi-octet character
+            // split across sections (RFC 2231 §4.1) and loses the charset that
+            // only section 0 carries.
+            let part = if self.is_encoded_attribute {
                 self.is_encoded_attribute = false;
+                match decode_hex(value.as_bytes()) {
+                    (true, decoded_bytes) => ContinuationPart::Encoded(decoded_bytes),
+                    (false, _) => ContinuationPart::Literal(value),
+                }
+            } else {
+                ContinuationPart::Literal(value)
+            };
+
+            let continuation = Continuation {
+                name: attr_name.clone(),
+                position: self.attr_position,
+                part,
+                charset: self.attr_charset.take(),
+            };
+            if let Some(continuations) = self.continuations.as_mut() {
+                continuations.push(continuation);
+            } else {
+                self.continuations = Some(vec![continuation]);
             }
 
-            if self.attr_position > 0 {
-                let continuation = (attr_name, self.attr_position, value);
-                if let Some(continuations) = self.continuations.as_mut() {
-                    continuations.push(continuation);
-                } else {
-                    self.continuations = Some(vec![continuation]);
-                }
-
-                self.attr_position = 0;
-            } else {
+            // Anchor section 0 in `attributes` at its parse position so the
+            // merged parameter keeps its original ordering; the decoded value
+            // is filled in by `merge_continuations`.
+            if self.attr_position == 0 {
                 self.attributes.push(Attribute {
                     name: attr_name,
-                    value,
+                    value: Cow::default(),
                 });
             }
+
+            self.attr_position = 0;
             self.is_continuation = false;
-            self.attr_charset = None;
         }
 
         if has_values {
@@ -239,15 +264,70 @@ impl<'x> ContentTypeParser<'x> {
     }
 
     fn merge_continuations(&mut self) {
-        let continuations = self.continuations.as_mut().unwrap();
-        continuations.sort();
-        for (key, _, value) in continuations.drain(..) {
-            if let Some(old) = self.attributes.iter_mut().find(|a| a.name == key) {
-                old.value = format!("{}{value}", old.value).into();
+        let mut continuations = self.continuations.take().unwrap();
+        continuations.sort_by(|a, b| a.name.cmp(&b.name).then(a.position.cmp(&b.position)));
+
+        let mut idx = 0;
+        while idx < continuations.len() {
+            let end = idx
+                + continuations[idx..]
+                    .iter()
+                    .take_while(|c| c.name == continuations[idx].name)
+                    .count();
+            let group = &continuations[idx..end];
+
+            // The `charset'lang'` prefix belongs on section 0 (RFC 2231 §4.1);
+            // fall back to any section that carries one, since some mailers
+            // repeat it on every section.
+            let decoder = group
+                .iter()
+                .find(|c| c.position == 0 && c.charset.is_some())
+                .or_else(|| group.iter().find(|c| c.charset.is_some()))
+                .and_then(|c| c.charset.as_ref())
+                .and_then(|c| charset_decoder(c.as_bytes()));
+
+            let mut result = String::new();
+            let mut octets: Vec<u8> = Vec::new();
+            for c in group {
+                match &c.part {
+                    ContinuationPart::Encoded(bytes) => octets.extend_from_slice(bytes),
+                    ContinuationPart::Literal(text) => {
+                        Self::flush_octets(&mut result, &mut octets, decoder);
+                        result.push_str(text);
+                    }
+                }
+            }
+            Self::flush_octets(&mut result, &mut octets, decoder);
+
+            let name = continuations[idx].name.clone();
+            if let Some(anchor) = self.attributes.iter_mut().find(|a| a.name == name) {
+                anchor.value = result.into();
             } else {
-                self.attributes.push(Attribute { name: key, value });
+                self.attributes.push(Attribute {
+                    name,
+                    value: result.into(),
+                });
+            }
+            idx = end;
+        }
+    }
+
+    /// Charset-decode the concatenated octets collected so far and append them
+    /// to `result`. Without a resolved charset, fall back to UTF-8 like the
+    /// per-section path did.
+    fn flush_octets(result: &mut String, octets: &mut Vec<u8>, decoder: Option<DecoderFnc>) {
+        if octets.is_empty() {
+            return;
+        }
+        if let Some(decoder) = decoder {
+            result.push_str(&decoder(octets));
+        } else {
+            match std::str::from_utf8(octets) {
+                Ok(s) => result.push_str(s),
+                Err(_) => result.push_str(&String::from_utf8_lossy(octets)),
             }
         }
+        octets.clear();
     }
 }
 

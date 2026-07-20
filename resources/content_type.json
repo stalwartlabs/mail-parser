@@ -479,6 +479,58 @@
     }
   },
   {
+    "header": "application/x-stuff; name*0*=UTF-8''%E2%98; name*1*=%83.txt\n",
+    "expected": {
+      "c_type": "application",
+      "c_subtype": "x-stuff",
+      "attributes": [
+        [
+          "name",
+          "☃.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "application/x-stuff; name*0*=ISO-8859-1''%E9; name*1*=%E8.txt\n",
+    "expected": {
+      "c_type": "application",
+      "c_subtype": "x-stuff",
+      "attributes": [
+        [
+          "name",
+          "éè.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "application/x-stuff; name*1*=%A9; name*0*=ISO-8859-1''%E9\n",
+    "expected": {
+      "c_type": "application",
+      "c_subtype": "x-stuff",
+      "attributes": [
+        [
+          "name",
+          "é©"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "application/x-stuff; name*0*=ISO-8859-1''caf%E9; name*1=-tag\n",
+    "expected": {
+      "c_type": "application",
+      "c_subtype": "x-stuff",
+      "attributes": [
+        [
+          "name",
+          "café-tag"
+        ]
+      ]
+    }
+  },
+  {
     "header": " image/png;\n   name=\"=?utf-8?q?=E3=83=8F=E3=83=AD=E3=83=BC=E3=83=BB=E3=83=AF=E3=83=BC=E3=83=AB=E3=83=89?=.png\"\n",
     "expected": {
       "c_type": "image",
