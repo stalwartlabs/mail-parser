@@ -3,17 +3,17 @@
     1,
     2,
     3,
-    4,
-    5
+    4
   ],
   "text_body": [
     1,
     2,
     3,
-    4,
+    4
+  ],
+  "attachments": [
     5
   ],
-  "attachments": [],
   "parts": [
     {
       "headers": [
@@ -241,13 +241,13 @@
           "offset_end": 626
         }
       ],
-      "is_encoding_problem": false,
+      "is_encoding_problem": true,
       "body": {
-        "Text": "invalid"
+        "Text": "invalid--1--\r\n"
       },
       "offset_header": 550,
       "offset_body": 628,
-      "offset_end": 635
+      "offset_end": 642
     }
   ]
 }

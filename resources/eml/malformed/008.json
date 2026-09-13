@@ -1,12 +1,8 @@
 {
-  "html_body": [
-    2
-  ],
-  "text_body": [
-    2
-  ],
+  "html_body": [],
+  "text_body": [],
   "attachments": [
-    3
+    2
   ],
   "parts": [
     {
@@ -64,8 +60,7 @@
       "is_encoding_problem": false,
       "body": {
         "Multipart": [
-          2,
-          3
+          2
         ]
       },
       "offset_header": 51,
@@ -88,36 +83,12 @@
           "offset_end": 125
         }
       ],
-      "is_encoding_problem": false,
+      "is_encoding_problem": true,
       "body": {
-        "Text": "body"
+        "Text": "body\n--ab\nContent-Type: text/html\n\nbody2\n"
       },
       "offset_header": 100,
       "offset_body": 126,
-      "offset_end": 130
-    },
-    {
-      "headers": [
-        {
-          "name": "content_type",
-          "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": null
-            }
-          },
-          "offset_field": 136,
-          "offset_start": 149,
-          "offset_end": 160
-        }
-      ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "body2\n"
-      },
-      "offset_header": 134,
-      "offset_body": 161,
       "offset_end": 167
     }
   ]

@@ -40,6 +40,11 @@ impl<'x> MessageStream<'x> {
     }
 
     #[inline(always)]
+    pub(crate) fn is_at_line_start(&self) -> bool {
+        self.offset() == 0 || self.data.get(self.offset() - 1) == Some(&b'\n')
+    }
+
+    #[inline(always)]
     pub fn remaining(&self) -> usize {
         self.data.len() - self.offset()
     }
@@ -86,6 +91,35 @@ impl<'x> MessageStream<'x> {
         } else {
             false
         }
+    }
+
+    /// Skips a MIME boundary name after the two leading hyphens have already
+    /// been consumed.
+    ///
+    /// MIME boundaries are only valid at the beginning of a line. The bytes
+    /// following the boundary name must also be a delimiter line ending or a
+    /// closing boundary marker; otherwise a body string such as
+    /// `--boundary-name` would be mistaken for a boundary named `boundary`.
+    #[inline(always)]
+    pub(crate) fn try_skip_boundary(&mut self, boundary: &[u8], at_line_start: bool) -> bool {
+        if !at_line_start
+            || boundary.is_empty()
+            || self.peek_bytes(boundary.len()) != Some(boundary)
+        {
+            return false;
+        }
+
+        let suffix = self
+            .data
+            .get(self.offset() + boundary.len()..)
+            .unwrap_or_default();
+
+        if !is_valid_boundary_suffix(suffix) {
+            return false;
+        }
+
+        self.skip_bytes(boundary.len());
+        true
     }
 
     #[inline(always)]
@@ -139,6 +173,22 @@ impl<'x> MessageStream<'x> {
     pub fn is_eof(&mut self) -> bool {
         self.iter.peek().is_none()
     }
+}
+
+#[inline(always)]
+fn is_valid_boundary_suffix(mut suffix: &[u8]) -> bool {
+    while matches!(suffix.first(), Some(b' ' | b'\t')) {
+        suffix = &suffix[1..];
+    }
+
+    if suffix.starts_with(b"--") {
+        suffix = &suffix[2..];
+        while matches!(suffix.first(), Some(b' ' | b'\t')) {
+            suffix = &suffix[1..];
+        }
+    }
+
+    suffix.is_empty() || matches!(suffix.first(), Some(b'\n')) || suffix.starts_with(b"\r\n")
 }
 
 impl<'x> Iterator for MessageStream<'x> {

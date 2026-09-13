@@ -150,3 +150,24 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
         "Book about ☕ tables.gif"
     );
 }
+
+#[test]
+fn boundary_markers_inside_body_are_not_delimiters() {
+    let input = br#"Content-Type: multipart/mixed; boundary="BND"
+
+--BND
+Content-Type: text/plain
+
+line --BND in the body
+--BNDX
+--BND not a delimiter
+--BND--
+"#;
+
+    let message = MessageParser::default().parse(input).unwrap();
+
+    assert_eq!(
+        message.body_text(0).unwrap(),
+        "line --BND in the body\n--BNDX\n--BND not a delimiter"
+    );
+}

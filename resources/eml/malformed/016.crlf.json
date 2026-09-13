@@ -1,16 +1,12 @@
 {
   "html_body": [
-    3,
-    4,
-    5
+    3
   ],
   "text_body": [
-    3,
-    4,
-    5
+    3
   ],
   "attachments": [
-    6
+    4
   ],
   "parts": [
     {
@@ -100,9 +96,7 @@
       "body": {
         "Multipart": [
           3,
-          4,
-          5,
-          6
+          4
         ]
       },
       "offset_header": 426,
@@ -127,58 +121,10 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Text": "1"
+        "Text": "1\r\n--1234567890123456789012345678901234567890123456789012345678901234567890123456789012\r\nContent-Type: text/plain\r\n\r\n22\r\n--123456789012345678901234567890123456789012345678901234567890123456789012345678901\r\nContent-Type: text/plain\r\n\r\n333"
       },
       "offset_header": 636,
       "offset_body": 664,
-      "offset_end": 665
-    },
-    {
-      "headers": [
-        {
-          "name": "content_type",
-          "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
-          "offset_field": 753,
-          "offset_start": 766,
-          "offset_end": 779
-        }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "22"
-      },
-      "offset_header": 749,
-      "offset_body": 781,
-      "offset_end": 783
-    },
-    {
-      "headers": [
-        {
-          "name": "content_type",
-          "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
-          "offset_field": 870,
-          "offset_start": 883,
-          "offset_end": 896
-        }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "333"
-      },
-      "offset_header": 867,
-      "offset_body": 898,
       "offset_end": 901
     },
     {

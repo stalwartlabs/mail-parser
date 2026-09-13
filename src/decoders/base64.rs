@@ -179,6 +179,8 @@ impl<'x> MessageStream<'x> {
         let mut last_ch = b'\n';
         let mut before_last_ch = 0;
         let mut end_pos = self.offset();
+        let mut current_at_line_start = self.is_at_line_start();
+        let mut last_ch_at_line_start = false;
 
         self.checkpoint();
 
@@ -224,7 +226,9 @@ impl<'x> MessageStream<'x> {
                     b' ' | b'\t' | b'\r' => (),
                     b'-' => {
                         if last_ch == b'-' {
-                            return if !boundary.is_empty() && self.try_skip(boundary) {
+                            return if !boundary.is_empty()
+                                && self.try_skip_boundary(boundary, last_ch_at_line_start)
+                            {
                                 buf.shrink_to_fit();
                                 (
                                     if before_last_ch == b'\n' {
@@ -247,6 +251,8 @@ impl<'x> MessageStream<'x> {
                 }
             }
 
+            last_ch_at_line_start = current_at_line_start;
+            current_at_line_start = ch == b'\n';
             before_last_ch = last_ch;
             last_ch = ch;
         }
@@ -550,7 +556,7 @@ mod tests {
                 "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\r\n--boundary\n",
                 "áéíóú",
             ),
-            ("w6HDqcOtw7PDug==--boundary", "áéíóú"),
+            ("w6HDqcOtw7PDug==\n--boundary", "áéíóú"),
             ("w6HDqcOtw7PDug==\n--boundary--", "áéíóú"),
             (
                 "w\n6\nH\nD\nq\nc\nO\nt\nw\n7\n P\tD u g\n==\n--boundary",

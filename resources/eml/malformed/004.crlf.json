@@ -2,7 +2,7 @@
   "html_body": [],
   "text_body": [],
   "attachments": [
-    2
+    0
   ],
   "parts": [
     {
@@ -28,67 +28,10 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Multipart": [
-          1
-        ]
+        "Text": "--ab\r\nContent-Type: multipart/mixed; boundary=\"a\"\r\n\r\n--ac\r\nContent-Type: text/plain\r\n\r\nbody\r\n"
       },
       "offset_header": 0,
       "offset_body": 47,
-      "offset_end": 140
-    },
-    {
-      "headers": [
-        {
-          "name": "content_type",
-          "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
-              "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "a"
-                }
-              ]
-            }
-          },
-          "offset_field": 53,
-          "offset_start": 66,
-          "offset_end": 98
-        }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          2
-        ]
-      },
-      "offset_header": 50,
-      "offset_body": 100,
-      "offset_end": 140
-    },
-    {
-      "headers": [
-        {
-          "name": "content_type",
-          "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
-            }
-          },
-          "offset_field": 106,
-          "offset_start": 119,
-          "offset_end": 132
-        }
-      ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "body\r\n"
-      },
-      "offset_header": 103,
-      "offset_body": 134,
       "offset_end": 140
     }
   ]

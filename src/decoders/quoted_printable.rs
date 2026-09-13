@@ -101,6 +101,8 @@ impl<'x> MessageStream<'x> {
         let mut ws_count = 0;
         let mut end_pos = self.offset();
         let mut crlf = b"\n".as_ref();
+        let mut current_at_line_start = self.is_at_line_start();
+        let mut last_ch_at_line_start = false;
 
         self.checkpoint();
 
@@ -133,7 +135,10 @@ impl<'x> MessageStream<'x> {
                 b'\r' => {
                     crlf = b"\r\n".as_ref();
                 }
-                b'-' if !boundary.is_empty() && last_ch == b'-' && self.try_skip(boundary) => {
+                b'-' if !boundary.is_empty()
+                    && last_ch == b'-'
+                    && self.try_skip_boundary(boundary, last_ch_at_line_start) =>
+                {
                     if before_last_ch == b'\n' {
                         buf.truncate(buf.len() - (crlf.len() + 1));
                     } else {
@@ -180,6 +185,8 @@ impl<'x> MessageStream<'x> {
                 },
             }
 
+            last_ch_at_line_start = current_at_line_start;
+            current_at_line_start = ch == b'\n';
             before_last_ch = last_ch;
             last_ch = ch;
         }
@@ -408,6 +415,10 @@ mod tests {
                     "\t\r\nbar\r\nfoo =\r\n=62\r\nfoo  \r\nbar=\r\n\r\nfoo_bar\r\n\r\n--boundary"
                 ),
                 "hello\r\nbar\r\nfoo\tbar\r\nfoo\t \tb\r\nfoo bar\r\nfoo b\r\nfoo\r\nbar\r\nfoo_bar\r\n",
+            ),
+            (
+                "prefix --boundary\r\nrest\r\n--boundary",
+                "prefix --boundary\r\nrest",
             ),
         ] {
             let mut s = MessageStream::new(encoded_str.as_bytes());

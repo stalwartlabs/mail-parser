@@ -15,11 +15,19 @@ impl<'x> MessageStream<'x> {
 
             self.checkpoint();
 
+            let mut current_at_line_start = self.is_at_line_start();
+            let mut last_ch_at_line_start = false;
+
             while let Some(&ch) = self.next() {
-                if ch == b'-' && last_ch == b'-' && self.try_skip(boundary) {
+                if ch == b'-'
+                    && last_ch == b'-'
+                    && self.try_skip_boundary(boundary, last_ch_at_line_start)
+                {
                     return true;
                 }
 
+                last_ch_at_line_start = current_at_line_start;
+                current_at_line_start = ch == b'\n';
                 last_ch = ch;
             }
 
@@ -34,6 +42,9 @@ impl<'x> MessageStream<'x> {
         let mut offset_pos = self.offset();
         self.checkpoint();
 
+        let mut current_at_line_start = self.is_at_line_start();
+        let mut last_ch_at_line_start = false;
+
         while let Some(&ch) = self.next() {
             if ch == b'\n' {
                 offset_pos = if last_ch == b'\r' {
@@ -41,10 +52,15 @@ impl<'x> MessageStream<'x> {
                 } else {
                     self.offset() - 1
                 };
-            } else if ch == b'-' && last_ch == b'-' && self.try_skip(boundary) {
+            } else if ch == b'-'
+                && last_ch == b'-'
+                && self.try_skip_boundary(boundary, last_ch_at_line_start)
+            {
                 return offset_pos.into();
             }
 
+            last_ch_at_line_start = current_at_line_start;
+            current_at_line_start = ch == b'\n';
             last_ch = ch;
         }
 
@@ -61,6 +77,9 @@ impl<'x> MessageStream<'x> {
 
         self.checkpoint();
 
+        let mut current_at_line_start = self.is_at_line_start();
+        let mut last_ch_at_line_start = false;
+
         while let Some(&ch) = self.next() {
             if ch == b'\n' {
                 end_pos = if last_ch == b'\r' {
@@ -71,7 +90,7 @@ impl<'x> MessageStream<'x> {
             } else if ch == b'-'
                 && !boundary.is_empty()
                 && last_ch == b'-'
-                && self.try_skip(boundary)
+                && self.try_skip_boundary(boundary, last_ch_at_line_start)
             {
                 if before_last_ch != b'\n' {
                     end_pos = self.offset() - boundary.len() - 2;
@@ -79,6 +98,8 @@ impl<'x> MessageStream<'x> {
                 return (end_pos, self.bytes(start_pos..end_pos).into());
             }
 
+            last_ch_at_line_start = current_at_line_start;
+            current_at_line_start = ch == b'\n';
             before_last_ch = last_ch;
             last_ch = ch;
         }
@@ -99,6 +120,9 @@ impl<'x> MessageStream<'x> {
         let mut before_last_ch = 0;
         let mut end_pos = self.offset();
 
+        let mut current_at_line_start = self.is_at_line_start();
+        let mut last_ch_at_line_start = false;
+
         if let Some(boundary) = boundary {
             while let Some(&ch) = self.next() {
                 if ch == b'\n' {
@@ -107,13 +131,18 @@ impl<'x> MessageStream<'x> {
                     } else {
                         self.offset() - 1
                     };
-                } else if ch == b'-' && last_ch == b'-' && self.try_skip(boundary) {
+                } else if ch == b'-'
+                    && last_ch == b'-'
+                    && self.try_skip_boundary(boundary, last_ch_at_line_start)
+                {
                     if before_last_ch != b'\n' {
                         end_pos = self.offset() - boundary.len() - 2;
                     }
                     return (end_pos, true);
                 }
 
+                last_ch_at_line_start = current_at_line_start;
+                current_at_line_start = ch == b'\n';
                 before_last_ch = last_ch;
                 last_ch = ch;
             }

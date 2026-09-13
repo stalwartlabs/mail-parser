@@ -5,9 +5,7 @@
   "text_body": [
     1
   ],
-  "attachments": [
-    2
-  ],
+  "attachments": [],
   "parts": [
     {
       "headers": [
@@ -33,8 +31,7 @@
       "is_encoding_problem": false,
       "body": {
         "Multipart": [
-          1,
-          2
+          1
         ]
       },
       "offset_header": 0,
@@ -86,21 +83,11 @@
       ],
       "is_encoding_problem": false,
       "body": {
-        "Text": ""
+        "Text": "--ab--"
       },
       "offset_header": 52,
       "offset_body": 151,
-      "offset_end": 151
-    },
-    {
-      "headers": [],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": ""
-      },
-      "offset_header": 154,
-      "offset_body": 168,
-      "offset_end": 168
+      "offset_end": 157
     }
   ]
 }
