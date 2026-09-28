@@ -488,5 +488,561 @@
       "tz_hour": 14,
       "tz_minute": 0
     }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +5",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 -5\r\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +5 \n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 5
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +530\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37\n",
+    "expected": null
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 \n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 June 2003 10:52:37 +0200",
+    "expected": null
+  },
+  {
+    "header": "01-Jan-2021 10:52:37 +0200",
+    "expected": null
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 est",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": " Fri, 07 Oct 1994 16:15:05 -0700 (PDT)\r\n",
+    "expected": {
+      "year": 1994,
+      "month": 10,
+      "day": 7,
+      "hour": 16,
+      "minute": 15,
+      "second": 5,
+      "tz_before_gmt": true,
+      "tz_hour": 7,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Thu, 10 Jul 1997 14:53:31 Z\nX-y: -0500",
+    "expected": {
+      "year": 1997,
+      "month": 7,
+      "day": 10,
+      "hour": 14,
+      "minute": 53,
+      "second": 31,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Xul 2003 10:52:37 +0200",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +0200 foo-bar",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +0200; x",
+    "expected": null
+  },
+  {
+    "header": "Wed, 27 Jun 99 04:11 GMT \n",
+    "expected": {
+      "year": 1999,
+      "month": 6,
+      "day": 27,
+      "hour": 4,
+      "minute": 11,
+      "second": 0,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Wed, 27 Jun 99 04:11 GMT\n",
+    "expected": null
+  },
+  {
+    "header": "Mon, 5 Jan 2004 10:00:00 +0100 (GMT+01:00)",
+    "expected": {
+      "year": 2004,
+      "month": 1,
+      "day": 5,
+      "hour": 10,
+      "minute": 0,
+      "second": 0,
+      "tz_before_gmt": false,
+      "tz_hour": 1,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": " Thu, 10 Jul 1997 14:53:31 Z\nFrom: x@y\n",
+    "expected": {
+      "year": 1997,
+      "month": 7,
+      "day": 10,
+      "hour": 14,
+      "minute": 53,
+      "second": 31,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": " Tue, 1 Jul 2003 10:52:37 +0200 (CEST)",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 GMT",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "1 Jul 2003 10:52 +0200",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 0,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37",
+    "expected": null
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 (UTC)\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 32 Jul 2003 25:61:61 +0200",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 32,
+      "hour": 25,
+      "minute": 61,
+      "second": 61,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Xul 2003 10:52:37 -0000",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "1 Jul 121 10:52:37 +0200",
+    "expected": {
+      "year": 121,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "1 Jul 49 10:52:37 +0200",
+    "expected": {
+      "year": 2049,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "1 Jul 50 10:52:37 +0200",
+    "expected": {
+      "year": 1950,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +0200 x-y",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +0200 foo-",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 EST\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 PDT (Pacific)",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 7,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +05\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +9\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 9,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +020",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +0530\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 5,
+      "tz_minute": 30
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 5\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +02\r0\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +05 (IST)\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 0,
+      "tz_minute": 5
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +530 \n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 5,
+      "tz_minute": 30
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +1 x-\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 0,
+      "tz_minute": 1
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 +3(7 +5",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 6,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 5+,",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": false,
+      "tz_hour": 2,
+      "tz_minute": 0
+    }
+  },
+  {
+    "header": "Tue, 1 Jul 2003 10:52:37 -+5\n",
+    "expected": {
+      "year": 2003,
+      "month": 7,
+      "day": 1,
+      "hour": 10,
+      "minute": 52,
+      "second": 37,
+      "tz_before_gmt": true,
+      "tz_hour": 5,
+      "tz_minute": 0
+    }
   }
 ]

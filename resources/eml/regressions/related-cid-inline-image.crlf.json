@@ -1,0 +1,249 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        2
+      ],
+      "html_body": [
+        3
+      ],
+      "attachments": [
+        4
+      ],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        4
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 77,
+      "offset_end": 520,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "related",
+              "attributes": [
+                [
+                  "boundary",
+                  "r"
+                ],
+                [
+                  "type",
+                  "multipart/alternative"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 75
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        2,
+        3
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 82,
+      "offset_body": 133,
+      "offset_end": 287,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "a"
+                ]
+              ]
+            }
+          },
+          "offset_field": 82,
+          "offset_start": 95,
+          "offset_end": 131
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 1,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 138,
+      "offset_body": 166,
+      "offset_end": 186,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 138,
+          "offset_start": 151,
+          "offset_end": 164
+        }
+      ],
+      "text": "See the chart below.",
+      "decode_problems": []
+    },
+    {
+      "id": 3,
+      "message": 0,
+      "parent": 1,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 193,
+      "offset_body": 220,
+      "offset_end": 280,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
+              "attributes": []
+            }
+          },
+          "offset_field": 193,
+          "offset_start": 206,
+          "offset_end": 218
+        }
+      ],
+      "text": "<p>See the chart below.</p><img src=\"cid:image001.png@01DC\">",
+      "decode_problems": []
+    },
+    {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "inline_binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "attachment",
+        "inline"
+      ],
+      "role": "attachment",
+      "offset_header": 294,
+      "offset_body": 499,
+      "offset_end": 511,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "image",
+              "subtype": "png",
+              "attributes": [
+                [
+                  "name",
+                  "image001.png"
+                ]
+              ]
+            }
+          },
+          "offset_field": 294,
+          "offset_start": 307,
+          "offset_end": 340
+        },
+        {
+          "name": "Content-Description",
+          "value": {
+            "text": "image001.png"
+          },
+          "offset_field": 340,
+          "offset_start": 360,
+          "offset_end": 375
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
+              "attributes": [
+                [
+                  "filename",
+                  "image001.png"
+                ]
+              ]
+            }
+          },
+          "offset_field": 375,
+          "offset_start": 395,
+          "offset_end": 429
+        },
+        {
+          "name": "Content-ID",
+          "value": {
+            "text_list": [
+              "image001.png@01DC"
+            ]
+          },
+          "offset_field": 429,
+          "offset_start": 440,
+          "offset_end": 462
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 462,
+          "offset_start": 488,
+          "offset_end": 497
+        }
+      ],
+      "binary": "iVBORw0KGgo=",
+      "decode_problems": []
+    }
+  ]
+}

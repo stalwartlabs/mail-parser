@@ -1,0 +1,11 @@
+Content-Type: multipart/alternative; boundary=a
+
+--a
+Content-Type: text/plain
+
+plain
+--a
+Content-Type: text/html; name=page.html
+
+<p>html</p>
+--a--

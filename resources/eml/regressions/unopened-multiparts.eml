@@ -1,0 +1,15 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+body
+--m
+Content-Type: multipart/alternative
+
+no boundary
+--m
+Content-Type: multipart/related; boundary=never
+
+no delimiter
+--m--

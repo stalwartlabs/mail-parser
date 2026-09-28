@@ -1,0 +1,23 @@
+Content-Type: multipart/related; boundary=r
+
+--r
+Content-Type: text/html
+
+<img src="cid:a"><img src="cid:b">
+--r
+Content-Type: image/png
+Content-ID: <a>
+
+A
+--r
+Content-Type: image/png
+Content-Disposition: attachment
+Content-ID: <b>
+
+B
+--r
+Content-Type: image/gif
+Content-Disposition: x-unknown
+
+C
+--r--

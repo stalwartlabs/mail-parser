@@ -1,24 +1,93 @@
 {
-  "html_body": [],
-  "text_body": [],
-  "attachments": [
-    2,
-    3
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        2,
+        4,
+        6
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 3,
+      "container": 2,
+      "source": "raw",
+      "text_body": [
+        3
+      ],
+      "html_body": [
+        3
+      ],
+      "attachments": [],
+      "has_attachments": false
+    },
+    {
+      "id": 2,
+      "root": 5,
+      "container": 4,
+      "source": "raw",
+      "text_body": [
+        5
+      ],
+      "html_body": [
+        5
+      ],
+      "attachments": [],
+      "has_attachments": false
+    },
+    {
+      "id": 3,
+      "root": 7,
+      "container": 6,
+      "source": "raw",
+      "text_body": [
+        7
+      ],
+      "html_body": [
+        7
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        6
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 306,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "1"
-                }
+                [
+                  "boundary",
+                  "1"
+                ]
               ]
             }
           },
@@ -26,30 +95,38 @@
           "offset_start": 13,
           "offset_end": 45
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 47,
-      "offset_end": 306
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        2,
+        4
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 52,
+      "offset_body": 99,
+      "offset_end": 234,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "2"
-                }
+                [
+                  "boundary",
+                  "2"
+                ]
               ]
             }
           },
@@ -57,133 +134,203 @@
           "offset_start": 65,
           "offset_end": 97
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          2,
-          3
-        ]
-      },
-      "offset_header": 52,
-      "offset_body": 99,
-      "offset_end": 306
+      ]
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 1,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 104,
+      "offset_body": 136,
+      "offset_end": 165,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
             }
           },
           "offset_field": 104,
           "offset_start": 117,
           "offset_end": 134
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": null
-                    }
-                  },
-                  "offset_field": 136,
-                  "offset_start": 149,
-                  "offset_end": 162
-                }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Text": "1"
-              },
-              "offset_header": 136,
-              "offset_body": 164,
-              "offset_end": 165
-            }
-          ]
-        }
-      },
-      "offset_header": 104,
-      "offset_body": 136,
-      "offset_end": 165
+      ]
     },
     {
+      "id": 3,
+      "message": 1,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 136,
+      "offset_body": 164,
+      "offset_end": 165,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 136,
+          "offset_start": 149,
+          "offset_end": 162
+        }
+      ],
+      "text": "1",
+      "decode_problems": []
+    },
+    {
+      "id": 4,
+      "message": 0,
+      "parent": 1,
+      "kind": "message",
+      "nested": 2,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 172,
+      "offset_body": 204,
+      "offset_end": 234,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
             }
           },
           "offset_field": 172,
           "offset_start": 185,
           "offset_end": 202
         }
+      ]
+    },
+    {
+      "id": 5,
+      "message": 2,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "missing_delimiter"
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": null
-                    }
-                  },
-                  "offset_field": 204,
-                  "offset_start": 217,
-                  "offset_end": 230
-                }
-              ],
-              "is_encoding_problem": true,
-              "body": {
-                "Text": "22\r\n--1\r\nContent-Type: message/rfc822\r\n\r\nContent-Type: text/plain\r\n\r\n333\r\n"
-              },
-              "offset_header": 204,
-              "offset_body": 232,
-              "offset_end": 306
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 204,
+      "offset_body": 232,
+      "offset_end": 234,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
-          ]
+          },
+          "offset_field": 204,
+          "offset_start": 217,
+          "offset_end": 230
         }
-      },
-      "offset_header": 172,
-      "offset_body": 204,
-      "offset_end": 306
+      ],
+      "text": "22",
+      "decode_problems": []
+    },
+    {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 3,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 241,
+      "offset_body": 273,
+      "offset_end": 306,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
+            }
+          },
+          "offset_field": 241,
+          "offset_start": 254,
+          "offset_end": 271
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "message": 3,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "missing_delimiter"
+      ],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 273,
+      "offset_body": 301,
+      "offset_end": 306,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 273,
+          "offset_start": 286,
+          "offset_end": 299
+        }
+      ],
+      "text": "333\r\n",
+      "decode_problems": []
     }
   ]
 }

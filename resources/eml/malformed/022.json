@@ -1,52 +1,76 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": true
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 103,
+      "offset_end": 289,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": null,
                   "address": "a@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 20
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "broken rfc822 attachment"
+            "text": "broken rfc822 attachment"
           },
           "offset_field": 20,
           "offset_start": 28,
           "offset_end": 54
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "BOUND"
-                }
+                [
+                  "boundary",
+                  "BOUND"
+                ]
               ]
             }
           },
@@ -54,27 +78,31 @@
           "offset_start": 67,
           "offset_end": 102
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 103,
-      "offset_end": 289
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 111,
+      "offset_body": 137,
+      "offset_end": 142,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
           },
           "offset_field": 111,
@@ -82,23 +110,33 @@
           "offset_end": 136
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "hello"
-      },
-      "offset_header": 111,
-      "offset_body": 137,
-      "offset_end": 142
+      "text": "hello",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "no_blank_line"
+      ],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 151,
+      "offset_body": 236,
+      "offset_end": 278,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
             }
           },
           "offset_field": 151,
@@ -106,16 +144,16 @@
           "offset_end": 180
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
               "attributes": [
-                {
-                  "name": "filename",
-                  "value": "broken.eml"
-                }
+                [
+                  "filename",
+                  "broken.eml"
+                ]
               ]
             }
           },
@@ -124,13 +162,8 @@
           "offset_end": 235
         }
       ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "this attachment is not a valid eml, sorry!"
-      },
-      "offset_header": 151,
-      "offset_body": 236,
-      "offset_end": 289
+      "text": "this attachment is not a valid eml, sorry!",
+      "decode_problems": []
     }
   ]
 }

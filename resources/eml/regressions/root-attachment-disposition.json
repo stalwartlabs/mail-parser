@@ -1,0 +1,65 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        0
+      ],
+      "has_attachments": true
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "no_blank_line"
+      ],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 0,
+      "offset_body": 57,
+      "offset_end": 57,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 25
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
+              "attributes": []
+            }
+          },
+          "offset_field": 25,
+          "offset_start": 45,
+          "offset_end": 57
+        }
+      ],
+      "text": "",
+      "decode_problems": []
+    }
+  ]
+}

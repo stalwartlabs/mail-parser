@@ -1,33 +1,60 @@
 {
-  "html_body": [
-    1,
-    2,
-    3,
-    4,
-    5
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "html_body": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1,
-    2,
-    3,
-    4,
-    5
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 63,
+      "offset_end": 610,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "1"
-                }
+                [
+                  "boundary",
+                  "1"
+                ]
               ]
             }
           },
@@ -36,51 +63,52 @@
           "offset_end": 44
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 44,
           "offset_start": 57,
           "offset_end": 62
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 63,
-      "offset_end": 610
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 67,
+      "offset_body": 145,
+      "offset_end": 171,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "binary"
+            "text": "binary"
           },
           "offset_field": 67,
           "offset_start": 93,
           "offset_end": 101
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-16le"
-                }
+                [
+                  "charset",
+                  "utf-16le"
+                ]
               ]
             }
           },
@@ -89,36 +117,45 @@
           "offset_end": 144
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Test message\n"
-      },
-      "offset_header": 67,
-      "offset_body": 145,
-      "offset_end": 171
+      "text": "Test message\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 176,
+      "offset_body": 254,
+      "offset_end": 291,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 176,
           "offset_start": 202,
           "offset_end": 210
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-16be"
-                }
+                [
+                  "charset",
+                  "utf-16be"
+                ]
               ]
             }
           },
@@ -127,36 +164,45 @@
           "offset_end": 253
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Test message\n"
-      },
-      "offset_header": 176,
-      "offset_body": 254,
-      "offset_end": 291
+      "text": "Test message\n",
+      "decode_problems": []
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 296,
+      "offset_body": 374,
+      "offset_end": 411,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 296,
           "offset_start": 322,
           "offset_end": 330
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-16le"
-                }
+                [
+                  "charset",
+                  "utf-16le"
+                ]
               ]
             }
           },
@@ -165,36 +211,45 @@
           "offset_end": 373
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Test message\n"
-      },
-      "offset_header": 296,
-      "offset_body": 374,
-      "offset_end": 411
+      "text": "Test message\n",
+      "decode_problems": []
     },
     {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 416,
+      "offset_body": 492,
+      "offset_end": 517,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 416,
           "offset_start": 442,
           "offset_end": 450
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "EUC-JP"
-                }
+                [
+                  "charset",
+                  "EUC-JP"
+                ]
               ]
             }
           },
@@ -203,36 +258,47 @@
           "offset_end": 491
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "『世界人権宣言』"
-      },
-      "offset_header": 416,
-      "offset_body": 492,
-      "offset_end": 517
+      "text": "『世界人権宣言』",
+      "decode_problems": []
     },
     {
+      "id": 5,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "fallback_delimiter"
+      ],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 522,
+      "offset_body": 597,
+      "offset_end": 604,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "binary"
+            "text": "binary"
           },
           "offset_field": 522,
           "offset_start": 548,
           "offset_end": 556
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -241,13 +307,8 @@
           "offset_end": 596
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "invalid"
-      },
-      "offset_header": 522,
-      "offset_body": 597,
-      "offset_end": 604
+      "text": "invalid",
+      "decode_problems": []
     }
   ]
 }

@@ -4,149 +4,172 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use mail_parser::*;
+mod support;
+
+use mail_parser::{Address, MessageParser, PartKind};
+use support::regression;
+
+const README_EXAMPLE: &str = "readme-example";
 
 #[test]
 fn test_api() {
-    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
-To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
-    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
-Date: Sat, 20 Nov 2021 14:22:01 -0800
-Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=
-Content-Type: multipart/mixed; boundary="festivus";
+    let raw = regression(README_EXAMPLE);
+    let message = MessageParser::default()
+        .parse(&raw)
+        .expect("the message parses");
+    let headers = MessageParser::default()
+        .parse_headers(&raw)
+        .expect("the headers parse");
 
---festivus
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: base64
-
-PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle
-HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm
-cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
-gJiN4MjYzQTs8L3A+PC9odG1sPg==
---festivus
-Content-Type: message/rfc822
-
-From: "Cosmo Kramer" <kramer@kramerica.com>
-Subject: Exporting my book about coffee tables
-Content-Type: multipart/mixed; boundary="giddyup";
-
---giddyup
-Content-Type: text/plain; charset="utf-16"
-Content-Transfer-Encoding: quoted-printable
-
-=FF=FE=0C!5=D8"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8"=DD =005=D8"=
-=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =
-=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8"=
-=DD5=D8=1E=DD5=D80=DD5=D8"=DD!=00
---giddyup
-Content-Type: image/gif; name*1="about "; name*0="Book ";
-              name*2*=utf-8''%e2%98%95 tables.gif
-Content-Transfer-Encoding: Base64
-Content-Disposition: attachment
-
-R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
---giddyup--
---festivus--
-"#;
-
-    // Default parser
-    let message = MessageParser::default().parse(input).unwrap();
-    let headers = MessageParser::default().parse_headers(input).unwrap();
-    let custom_message = MessageParser::default()
-        .with_minimal_headers()
-        .parse(input)
-        .unwrap();
-
-    assert_eq!(message.headers(), headers.headers());
-    assert_eq!(message.headers(), custom_message.headers());
-    assert_eq!(message.parts.len(), 3);
-    assert_eq!(headers.parts.len(), 1);
-    assert_eq!(message.parts.len(), custom_message.parts.len());
-    assert_eq!(message.parts, custom_message.parts);
+    assert_eq!(message.headers().len(), headers.headers().len());
+    for (full, only) in message.headers().iter().zip(headers.headers().iter()) {
+        assert_eq!(full.name(), only.name());
+        assert_eq!(full.raw_value(), only.raw_value());
+        assert_eq!(full.offset_start(), only.offset_start());
+    }
+    assert_eq!(message.messages().len(), 2);
+    assert_eq!(message.parts().len(), 6);
+    assert_eq!(headers.parts().len(), 1);
 
     assert_eq!(
-        bincode::deserialize::<Vec<Header>>(
-            &bincode::serialize(&message.parts[0].headers).unwrap()
-        )
-        .unwrap(),
-        message.parts[0].headers
-    );
-
-    assert_eq!(
-        message.from().unwrap().first().unwrap(),
-        &Addr::new(
-            "Art Vandelay (Vandelay Industries)".into(),
-            "art@vandelay.com"
-        )
-    );
-
-    assert_eq!(
-        message.to().unwrap().as_group().unwrap(),
-        &[
-            Group::new(
-                "Colleagues",
-                vec![Addr::new("James Smythe".into(), "james@vandelay.com")]
-            ),
-            Group::new(
-                "Friends",
-                vec![
-                    Addr::new(None, "jane@example.com"),
-                    Addr::new("John Smîth".into(), "john@example.com"),
-                ]
-            )
-        ]
-    );
-
-    assert_eq!(
-        message.date().unwrap().to_rfc3339(),
-        "2021-11-20T14:22:01-08:00"
-    );
-
-    assert_eq!(
-        message.subject().unwrap(),
-        "Why not both importing AND exporting? ☺"
-    );
-
-    assert_eq!(
-        message.body_html(0).unwrap(),
-        concat!(
+        message.body_html(0).as_deref(),
+        Some(concat!(
             "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
             "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
             " why not do both? &#x263A;</p></html>"
+        ))
+    );
+    assert_eq!(
+        message.body_text(0).as_deref(),
+        Some(concat!(
+            "I was thinking about quitting the \u{201c}exporting\u{201d} to focus just on the",
+            " \u{201c}importing\u{201d},\nbut then I thought, why not do both? \u{263a}\n"
+        ))
+    );
+
+    let container = message.attachments().next().expect("attachment");
+    let PartKind::Message(nested) = container.kind() else {
+        panic!("expected a nested message");
+    };
+    assert_eq!(nested.id(), 1);
+    assert_eq!(
+        nested.body_text(0).as_deref(),
+        Some(
+            "\u{210c}\u{1d522}\u{1d529}\u{1d52d} \u{1d52a}\u{1d522} \u{1d522}\u{1d535}\u{1d52d}\u{1d52c}\u{1d52f}\u{1d531} \u{1d52a}\u{1d536} \u{1d51f}\u{1d52c}\u{1d52c}\u{1d528} \u{1d52d}\u{1d529}\u{1d522}\u{1d51e}\u{1d530}\u{1d522}!"
+        )
+    );
+    assert_eq!(
+        nested.body_html(0).as_deref(),
+        Some(
+            "<html><body>\u{210c}\u{1d522}\u{1d529}\u{1d52d} \u{1d52a}\u{1d522} \u{1d522}\u{1d535}\u{1d52d}\u{1d52c}\u{1d52f}\u{1d531} \u{1d52a}\u{1d536} \u{1d51f}\u{1d52c}\u{1d52c}\u{1d528} \u{1d52d}\u{1d529}\u{1d522}\u{1d51e}\u{1d530}\u{1d522}!</body></html>"
         )
     );
 
+    let nested_attachment = nested.attachments().next().expect("nested attachment");
+    assert_eq!(nested_attachment.decoded_len(), 42);
+    assert_eq!(nested_attachment.decoded().len(), 42);
     assert_eq!(
-        message.body_text(0).unwrap(),
-        concat!(
-            "I was thinking about quitting the “exporting” to focus just on the",
-            " “importing”,\nbut then I thought, why not do both? ☺\n"
-        )
+        nested_attachment.attachment_name(),
+        Some("Book about \u{2615} tables.gif")
     );
+}
 
-    let nested_message = message.attachment(0).unwrap().message().unwrap();
+#[cfg(all(feature = "serde", feature = "full_encoding"))]
+mod full_messages {
+    use crate::support::{snapshot_inputs, snapshot_messages};
+    use mail_parser::MessageParser;
+    use std::fs;
 
+    #[test]
+    fn parse_full_messages() {
+        let parser = MessageParser::new();
+        let mut failed = Vec::new();
+        for path in snapshot_messages() {
+            let raw = fs::read(&path).expect("the message is readable");
+            for (input, extension) in snapshot_inputs(&raw) {
+                let json = serde_json::to_string_pretty(&parser.parse(&input))
+                    .expect("the message serializes");
+                let expected = path.with_extension(extension);
+                if fs::read(&expected).ok().as_deref() != Some(json.as_bytes()) {
+                    let output = expected.with_extension("failed");
+                    fs::write(&output, &json).expect("the output is writable");
+                    failed.push(output.display().to_string());
+                }
+            }
+        }
+        assert!(
+            failed.is_empty(),
+            "{} parses differ from their fixture; the parsed messages were saved to:\n{}",
+            failed.len(),
+            failed.join("\n")
+        );
+    }
+}
+
+#[test]
+fn test_api_field_parsers() {
+    let raw = regression(README_EXAMPLE);
+    let message = MessageParser::default()
+        .parse(&raw)
+        .expect("the message parses");
+
+    let from = message.from().and_then(|from| from.first()).expect("from");
+    assert_eq!(from.name(), Some("Art Vandelay (Vandelay Industries)"));
+    assert_eq!(from.address(), Some("art@vandelay.com"));
+
+    let groups: Vec<_> = message
+        .to()
+        .expect("to")
+        .iter()
+        .map(|address| match address {
+            Address::Group(group) => (
+                group.name().map(str::to_string),
+                group
+                    .mailboxes()
+                    .map(|mailbox| {
+                        (
+                            mailbox.name().map(str::to_string),
+                            mailbox.address().map(str::to_string),
+                        )
+                    })
+                    .collect::<Vec<_>>(),
+            ),
+            Address::Mailbox(_) => panic!("expected groups"),
+        })
+        .collect();
     assert_eq!(
-        nested_message.subject().unwrap(),
-        "Exporting my book about coffee tables"
+        groups,
+        [
+            (
+                Some("Colleagues".to_string()),
+                vec![(
+                    Some("James Smythe".to_string()),
+                    Some("james@vandelay.com".to_string())
+                )]
+            ),
+            (
+                Some("Friends".to_string()),
+                vec![
+                    (None, Some("jane@example.com".to_string())),
+                    (
+                        Some("John Sm\u{ee}th".to_string()),
+                        Some("john@example.com".to_string())
+                    ),
+                ]
+            ),
+        ]
     );
-
     assert_eq!(
-        nested_message.body_text(0).unwrap(),
-        "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
+        message.date().map(|date| date.to_rfc3339()).as_deref(),
+        Some("2021-11-20T14:22:01-08:00")
     );
-
     assert_eq!(
-        nested_message.body_html(0).unwrap(),
-        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
+        message.subject(),
+        Some("Why not both importing AND exporting? \u{263a}")
     );
-
-    let nested_attachment = nested_message.attachment(0).unwrap();
-
-    assert_eq!(nested_attachment.len(), 42);
-
+    let container = message.attachments().next().expect("attachment");
     assert_eq!(
-        nested_attachment.attachment_name().unwrap(),
-        "Book about ☕ tables.gif"
+        container.nested().and_then(|nested| nested.subject()),
+        Some("Exporting my book about coffee tables")
     );
 }

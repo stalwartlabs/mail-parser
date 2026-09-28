@@ -1,0 +1,65 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 39,
+      "offset_end": 44,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": null,
+                  "address": "good@x.com"
+                }
+              }
+            ]
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 17
+        },
+        {
+          "name": "::  From",
+          "value": {
+            "text": "evil@x.com"
+          },
+          "offset_field": 17,
+          "offset_start": 26,
+          "offset_end": 38
+        }
+      ],
+      "text": "body\n",
+      "decode_problems": []
+    }
+  ]
+}

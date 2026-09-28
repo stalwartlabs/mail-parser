@@ -1,0 +1,77 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1
+      ],
+      "encoding": "none",
+      "flags": [
+        "fallback_delimiter"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 38,
+      "offset_end": 109,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": null,
+              "attributes": [
+                [
+                  "boundary",
+                  "b5"
+                ]
+              ]
+            }
+          },
+          "offset_field": 2,
+          "offset_start": 15,
+          "offset_end": 37
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 70,
+      "offset_body": 71,
+      "offset_end": 102,
+      "headers": [],
+      "text": "5\nContent-Type:message/rfc822\n\n",
+      "decode_problems": []
+    }
+  ]
+}

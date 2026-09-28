@@ -1,0 +1,19 @@
+Content-Type: multipart/alternative; boundary=a
+
+--a
+Content-Type: text/plain
+
+plain
+--a
+Content-Type: multipart/related; boundary=r
+
+--r
+Content-Type: text/html
+
+<p>html</p>
+--r
+Content-Type: image/png
+
+image
+--r--
+--a--

@@ -1,0 +1,130 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        1
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 2,
+      "container": 1,
+      "source": "raw",
+      "text_body": [
+        2
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 43,
+      "offset_end": 99,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "b"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 42
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 47,
+      "offset_body": 77,
+      "offset_end": 92,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
+            }
+          },
+          "offset_field": 47,
+          "offset_start": 60,
+          "offset_end": 76
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "message": 1,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "no_blank_line"
+      ],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 77,
+      "offset_body": 92,
+      "offset_end": 92,
+      "headers": [
+        {
+          "name": "Subject",
+          "value": {
+            "text": "nested"
+          },
+          "offset_field": 77,
+          "offset_start": 85,
+          "offset_end": 93
+        }
+      ],
+      "text": "",
+      "decode_problems": []
+    }
+  ]
+}

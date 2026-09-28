@@ -64,5 +64,131 @@
     "expected": [
       "m"
     ]
+  },
+  {
+    "header": "<a<b>c>\n",
+    "expected": [
+      "a<b"
+    ]
+  },
+  {
+    "header": "foo <bar\n",
+    "expected": [
+      "foo"
+    ]
+  },
+  {
+    "header": "<bar\n",
+    "expected": null
+  },
+  {
+    "header": "foo <> bar\n",
+    "expected": [
+      "foo <> bar"
+    ]
+  },
+  {
+    "header": "a>b\n",
+    "expected": [
+      "a>b"
+    ]
+  },
+  {
+    "header": ">\n",
+    "expected": null
+  },
+  {
+    "header": "<<a>>\n",
+    "expected": [
+      "a"
+    ]
+  },
+  {
+    "header": "< a b >\n",
+    "expected": [
+      "a b"
+    ]
+  },
+  {
+    "header": "<a\r\n b>\r\n",
+    "expected": [
+      "a\r\n b"
+    ]
+  },
+  {
+    "header": "<a@b>",
+    "expected": [
+      "a@b"
+    ]
+  },
+  {
+    "header": "  <a@b>  <c@d>",
+    "expected": [
+      "a@b",
+      "c@d"
+    ]
+  },
+  {
+    "header": "<a@b>,<c@d>\n",
+    "expected": [
+      "a@b",
+      "c@d"
+    ]
+  },
+  {
+    "header": "x <a@b> y\n",
+    "expected": [
+      "a@b"
+    ]
+  },
+  {
+    "header": "<>\n <x@y>\n",
+    "expected": [
+      "x@y"
+    ]
+  },
+  {
+    "header": "<a@b>\n\n<c@d>\n",
+    "expected": [
+      "a@b"
+    ]
+  },
+  {
+    "header": "(comment) <a@b> (other)\n",
+    "expected": [
+      "a@b"
+    ]
+  },
+  {
+    "header": "\n",
+    "expected": null
+  },
+  {
+    "header": "",
+    "expected": null
+  },
+  {
+    "header": "   \r\n",
+    "expected": null
+  },
+  {
+    "header": "< \r\n >\n",
+    "expected": null
+  },
+  {
+    "header": "<aé@b>\n",
+    "expected": [
+      "aé@b"
+    ]
+  },
+  {
+    "header": "<a@b\n",
+    "expected": null
+  },
+  {
+    "header": "a@b <c\n <d@e>\n",
+    "expected": [
+      "c\n <d@e"
+    ]
   }
 ]

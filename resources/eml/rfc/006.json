@@ -1,66 +1,90 @@
 {
-  "html_body": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 149,
+      "offset_end": 616,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": null,
                   "address": "sender@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 25
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": null,
                   "address": "recipient@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 25,
           "offset_start": 28,
           "offset_end": 51
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Multipart Email Example"
+            "text": "Multipart Email Example"
           },
           "offset_field": 51,
           "offset_start": 59,
           "offset_end": 84
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "boundary-string"
-                }
+                [
+                  "boundary",
+                  "boundary-string"
+                ]
               ]
             }
           },
@@ -68,31 +92,35 @@
           "offset_start": 97,
           "offset_end": 148
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 149,
-      "offset_end": 616
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "inline"
+      ],
+      "role": "text_body",
+      "offset_header": 167,
+      "offset_body": 282,
+      "offset_end": 369,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-8"
-                }
+                [
+                  "charset",
+                  "utf-8"
+                ]
               ]
             }
           },
@@ -101,21 +129,21 @@
           "offset_end": 209
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 209,
           "offset_start": 235,
           "offset_end": 253
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
+              "attributes": []
             }
           },
           "offset_field": 253,
@@ -123,27 +151,36 @@
           "offset_end": 281
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n"
-      },
-      "offset_header": 167,
-      "offset_body": 282,
-      "offset_end": 369
+      "text": "Plain text email goes here!\nThis is the fallback if email client does not support HTML\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "html_body",
+        "inline"
+      ],
+      "role": "html_body",
+      "offset_header": 388,
+      "offset_body": 502,
+      "offset_end": 595,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-8"
-                }
+                [
+                  "charset",
+                  "utf-8"
+                ]
               ]
             }
           },
@@ -152,21 +189,21 @@
           "offset_end": 429
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 429,
           "offset_start": 455,
           "offset_end": 473
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
-              "attributes": null
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
+              "attributes": []
             }
           },
           "offset_field": 473,
@@ -174,13 +211,8 @@
           "offset_end": 501
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n"
-      },
-      "offset_header": 388,
-      "offset_body": 502,
-      "offset_end": 595
+      "text": "<h1>This is the HTML Section!</h1>\n<p>This is what displays in most modern email clients</p>\n",
+      "decode_problems": []
     }
   ]
 }

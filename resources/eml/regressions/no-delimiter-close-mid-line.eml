@@ -1,0 +1,4 @@
+Content-Type: multipart/mixed; boundary=b
+
+no delimiter at all x--b--
+tail

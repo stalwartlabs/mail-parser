@@ -1,0 +1,23 @@
+Content-Type: multipart/related; boundary=r; type="multipart/alternative"
+
+--r
+Content-Type: multipart/alternative; boundary=a
+
+--a
+Content-Type: text/plain
+
+See the chart below.
+--a
+Content-Type: text/html
+
+<p>See the chart below.</p><img src="cid:image001.png@01DC">
+--a--
+--r
+Content-Type: image/png; name="image001.png"
+Content-Description: image001.png
+Content-Disposition: inline; filename="image001.png"
+Content-ID: <image001.png@01DC>
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgo=
+--r--

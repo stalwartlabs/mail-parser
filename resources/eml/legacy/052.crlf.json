@@ -1,59 +1,82 @@
 {
-  "html_body": [
-    0
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    0
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 434,
+      "offset_end": 1186,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "doug@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Heinz M�ller",
                   "address": "mueller@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 40,
           "offset_start": 43,
           "offset_end": 82
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
+            "text": "Die Hasen und die Fr�sche (Microsoft Outlook 00)"
           },
           "offset_field": 82,
           "offset_start": 90,
           "offset_end": 141
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -70,75 +93,66 @@
           "offset_end": 180
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
+            "text_list": [
+              "NDBBIAKOPKHFGPLCODIGOEKDCHAA.doug@example.com"
+            ]
           },
           "offset_field": 180,
           "offset_start": 191,
           "offset_end": 241
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "3 (Normal)"
+            "text": "3 (Normal)"
           },
           "offset_field": 241,
           "offset_start": 252,
           "offset_end": 265
         },
         {
-          "name": {
-            "other": "X-MSMail-Priority"
-          },
+          "name": "X-MSMail-Priority",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 265,
           "offset_start": 283,
           "offset_end": 292
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+            "text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
           },
           "offset_field": 292,
           "offset_start": 301,
           "offset_end": 354
         },
         {
-          "name": "importance",
+          "name": "Importance",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 354,
           "offset_start": 365,
           "offset_end": 374
         },
         {
-          "name": {
-            "other": "X-MimeOLE"
-          },
+          "name": "X-MimeOLE",
           "value": {
-            "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+            "text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
           },
           "offset_field": 374,
           "offset_start": 384,
           "offset_end": 432
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Die Hasen und die Fr�sche\r\n\r\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der Tod\r\nselbst. Auf, la�t uns ein f�r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\r\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt erschreckte\r\neine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\r\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\r\n\r\n"
-      },
-      "offset_header": 0,
-      "offset_body": 434,
-      "offset_end": 1186
+      "text": "Die Hasen und die Fr�sche\r\n\r\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der\r\nAdler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der Tod\r\nselbst. Auf, la�t uns ein f�r allemal sterben.\"\r\n\r\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\r\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt erschreckte\r\neine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs schnellste\r\nuntertauchten.\r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\r\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\r\n\r\n",
+      "decode_problems": [
+        "malformed_charset"
+      ]
     }
   ]
 }

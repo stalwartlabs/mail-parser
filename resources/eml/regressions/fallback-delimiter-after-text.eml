@@ -1,0 +1,8 @@
+Content-Type: multipart/mixed; boundary=b
+
+junk --b
+Content-Type: text/html
+
+<p>hi</p>
+--b--
+trailer

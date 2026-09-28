@@ -4,10 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use mail_parser::*;
+use mail_parser::{Address, Mailbox, MessageParser, MessagePart, PartKind};
 
-fn main() {
-    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
+const MESSAGE: &[u8] = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
 To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
     jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
 Date: Sat, 20 Nov 2021 14:22:01 -0800
@@ -48,92 +47,125 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 --festivus--
 "#;
 
-    let message = MessageParser::default().parse(input).unwrap();
+fn main() {
+    let message = MessageParser::new()
+        .parse(MESSAGE)
+        .expect("the message parses");
 
-    // Parses addresses (including comments), lists and groups
-    assert_eq!(
-        message.from().unwrap().first().unwrap(),
-        &Addr::new(
-            "Art Vandelay (Vandelay Industries)".into(),
-            "art@vandelay.com"
-        )
-    );
+    println!("Subject: {}", message.subject().unwrap_or_default());
+    if let Some(date) = message.date() {
+        println!("Date: {}", date.to_rfc3339());
+    }
+    for sender in message.from().into_iter().flat_map(|from| from.mailboxes()) {
+        println!("From: {}", display(sender));
+    }
+    for recipient in message.to().into_iter().flat_map(|to| to.iter()) {
+        match recipient {
+            Address::Mailbox(mailbox) => println!("To: {}", display(mailbox)),
+            Address::Group(group) => {
+                println!("To group {}:", group.name().unwrap_or_default());
+                for member in group.mailboxes() {
+                    println!("    {}", display(member));
+                }
+            }
+        }
+    }
 
-    assert_eq!(
-        message.to().unwrap().as_group().unwrap(),
-        &[
-            Group::new(
-                "Colleagues",
-                vec![Addr::new("James Smythe".into(), "james@vandelay.com")]
-            ),
-            Group::new(
-                "Friends",
-                vec![
-                    Addr::new(None, "jane@example.com"),
-                    Addr::new("John Smîth".into(), "john@example.com"),
-                ]
+    println!("\nHeader fields as written, with their parsed values:");
+    for header in message.headers().iter() {
+        println!("  {}: {:?}", header.raw_name(), header.value());
+    }
+
+    println!("\nText body (HTML converted to text):");
+    for text in message.text_bodies() {
+        println!("{text}");
+    }
+    println!("\nHTML body:");
+    for html in message.html_bodies() {
+        println!("{html}");
+    }
+
+    println!("\nEvery part of every message, in document order:");
+    for part in message.parts() {
+        describe(part);
+    }
+
+    if let Some(multipart) = message.part_by_boundary("giddyup") {
+        println!(
+            "\nThe boundary \"giddyup\" belongs to part {}, which has {} children",
+            multipart.id(),
+            multipart.children().len()
+        );
+    }
+
+    for attachment in message.attachments() {
+        let PartKind::Message(nested) = attachment.kind() else {
+            continue;
+        };
+        println!(
+            "\nNested message {}: {}",
+            nested.id(),
+            nested.subject().unwrap_or_default()
+        );
+        for text in nested.text_bodies() {
+            println!("  text: {text}");
+        }
+        for file in nested.attachments() {
+            println!(
+                "  attachment {:?}: {} bytes",
+                file.attachment_name().unwrap_or_default(),
+                file.decoded_len()
+            );
+        }
+    }
+}
+
+fn display(mailbox: Mailbox<'_>) -> String {
+    let address = mailbox.address().unwrap_or_default();
+    match mailbox.name() {
+        Some(name) => format!("{name} <{address}>"),
+        None => address.to_string(),
+    }
+}
+
+fn describe(part: MessagePart<'_>) {
+    let content_type = part
+        .content_type()
+        .map(|content_type| {
+            format!(
+                "{}/{}",
+                content_type.ctype(),
+                content_type.subtype().unwrap_or_default()
             )
-        ]
+        })
+        .unwrap_or_else(|| "text/plain".to_string());
+    let summary = match part.kind() {
+        PartKind::Multipart => format!(
+            "boundary {:?}, {} children",
+            part.boundary().unwrap_or_default(),
+            part.children().len()
+        ),
+        PartKind::Message(nested) => format!("holds message {}", nested.id()),
+        PartKind::Text | PartKind::Html => match part.text_checked() {
+            Some((text, problems)) if problems.is_empty() => {
+                format!("{} characters", text.chars().count())
+            }
+            Some((text, problems)) => format!(
+                "{} characters, decoding problems: {problems:?}",
+                text.chars().count()
+            ),
+            None => String::new(),
+        },
+        PartKind::Binary | PartKind::InlineBinary => format!(
+            "{} bytes as written, {} decoded",
+            part.raw_body().len(),
+            part.decoded_len()
+        ),
+    };
+    println!(
+        "  part {} of message {} ({content_type}, {:?}): {summary}",
+        part.id(),
+        part.message().id(),
+        part.role()
     );
-
-    assert_eq!(
-        message.date().unwrap().to_rfc3339(),
-        "2021-11-20T14:22:01-08:00"
-    );
-
-    // RFC2047 support for encoded text in message readers
-    assert_eq!(
-        message.subject().unwrap(),
-        "Why not both importing AND exporting? ☺"
-    );
-
-    // HTML and text body parts are returned conforming to RFC8621, Section 4.1.4
-    assert_eq!(
-        message.body_html(0).unwrap(),
-        concat!(
-            "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to ",
-            "focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought,",
-            " why not do both? &#x263A;</p></html>"
-        )
-    );
-
-    // HTML parts are converted to plain text (and viceversa) when missing
-    assert_eq!(
-        message.body_text(0).unwrap(),
-        concat!(
-            "I was thinking about quitting the “exporting” to focus just on the",
-            " “importing”,\nbut then I thought, why not do both? ☺\n"
-        )
-    );
-
-    // Supports nested messages as well as multipart/digest
-    let nested_message = message.attachment(0).unwrap().message().unwrap();
-
-    assert_eq!(
-        nested_message.subject().unwrap(),
-        "Exporting my book about coffee tables"
-    );
-
-    // Handles UTF-* as well as many legacy encodings
-    assert_eq!(
-        nested_message.body_text(0).unwrap(),
-        "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!"
-    );
-    assert_eq!(
-        nested_message.body_html(0).unwrap(),
-        "<html><body>ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!</body></html>"
-    );
-
-    let nested_attachment = nested_message.attachment(0).unwrap();
-
-    assert_eq!(nested_attachment.len(), 42);
-
-    // Full RFC2231 support for continuations and character sets
-    assert_eq!(
-        nested_attachment.attachment_name().unwrap(),
-        "Book about ☕ tables.gif"
-    );
-
-    // Integrates with Serde
-    println!("{}", serde_json::to_string_pretty(&message).unwrap());
 }

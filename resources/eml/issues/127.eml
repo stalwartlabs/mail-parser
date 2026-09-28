@@ -1,0 +1,41 @@
+From: Boundary Tester <tester@example.com>
+To: Recipient <recipient@example.com>
+Subject: Boundaries of every part
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="outer-mixed"
+
+This is the preamble.
+--outer-mixed
+Content-Type: multipart/alternative; boundary="inner-alternative"
+
+--inner-alternative
+Content-Type: text/plain; charset=us-ascii
+
+Plain version.
+--inner-alternative
+Content-Type: text/html; charset=us-ascii
+
+<p>HTML version.</p>
+--inner-alternative--
+Alternative epilogue.
+--outer-mixed
+Content-Type: message/rfc822
+Content-Disposition: inline
+
+From: Nested Sender <nested@example.com>
+Subject: Nested message
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="nested-mixed"
+
+--nested-mixed
+Content-Type: text/plain; charset=us-ascii
+
+Nested text.
+--nested-mixed
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+
+AAECAw==
+--nested-mixed--
+--outer-mixed--
+Outer epilogue.

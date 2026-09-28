@@ -1,70 +1,99 @@
 {
-  "html_body": [
-    1,
-    2,
-    3,
-    6,
-    8,
-    9
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        4,
+        8,
+        9
+      ],
+      "html_body": [
+        1,
+        2,
+        3,
+        6,
+        8,
+        9
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    4,
-    8,
-    9
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 398,
+      "offset_end": 2804,
       "headers": [
         {
-          "name": {
-            "other": "Fro"
-          },
+          "name": "Fro",
           "value": {
-            "Text": "uMmlti Sender <multi@example.test>"
+            "text": "uMmlti Sender <multi@example.test>"
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "rimap-test",
                   "address": "rimap-test@example.test"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 40,
           "offset_start": 43,
           "offset_end": 81
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Sprint 3 multipart fixture"
+            "text": "Sprint 3 multipart fixture"
           },
           "offset_field": 81,
           "offset_start": 89,
           "offset_end": 117
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "multi-001@example.test"
+            "text_list": [
+              "multi-001@example.test"
+            ]
           },
           "offset_field": 117,
           "offset_start": 128,
           "offset_end": 154
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2026,
               "month": 4,
               "day": 7,
@@ -81,27 +110,29 @@
           "offset_end": 210
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Sprint 3 multipart fixture"
+            "text": "Sprint 3 multipart fixture"
           },
           "offset_field": 210,
           "offset_start": 218,
           "offset_end": 246
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "multi-001@example.test"
+            "text_list": [
+              "multi-001@example.test"
+            ]
           },
           "offset_field": 246,
           "offset_start": 257,
           "offset_end": 283
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2026,
               "month": 4,
               "day": 7,
@@ -118,25 +149,25 @@
           "offset_end": 320
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 320,
           "offset_start": 333,
           "offset_end": 338
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "boundary42"
-                }
+                [
+                  "boundary",
+                  "boundary42"
+                ]
               ]
             }
           },
@@ -144,34 +175,34 @@
           "offset_start": 351,
           "offset_end": 397
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 398,
-      "offset_end": 2804
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 831,
+      "offset_body": 874,
+      "offset_end": 1201,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -180,27 +211,35 @@
           "offset_end": 873
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nM01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n\n--Boundary42\nContent-Type: text/plain; charset=us-ascii\nJPlain text body of the multipart fixture.\n"
-      },
-      "offset_header": 831,
-      "offset_body": 874,
-      "offset_end": 1201
+      "text": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nM01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n\n--Boundary42\nContent-Type: text/plain; charset=us-ascii\nJPlain text body of the multipart fixture.\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 1215,
+      "offset_body": 1258,
+      "offset_end": 1397,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -209,27 +248,35 @@
           "offset_end": 1257
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixtur\n"
-      },
-      "offset_header": 1215,
-      "offset_body": 1258,
-      "offset_end": 1397
+      "text": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixtur\n",
+      "decode_problems": []
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 1411,
+      "offset_body": 1454,
+      "offset_end": 1746,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -238,27 +285,35 @@
           "offset_end": 1453
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nþTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nMessage-ID: <multi-001@example.test>\nDate: Tue, 7 Apr 2026 10:00:01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n"
-      },
-      "offset_header": 1411,
-      "offset_body": 1454,
-      "offset_end": 1746
+      "text": "<p>HTML body of the multiparuMmlti Sender <multi@example.test>\nþTo: rimap-test <rimap-test@example.test>\nSubject: Sprint 3 multipart fixture\nMessage-ID: <multi-001@example.test>\nDate: Tue, 7 Apr 2026 10:00:01 +0000\nMIME-Version: 1.0\nContent-Type: multipart/alternative; boundary=\"boundary42\"\n",
+      "decode_problems": []
     },
     {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 1760,
+      "offset_body": 1847,
+      "offset_end": 1847,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -267,54 +322,68 @@
           "offset_end": 1803
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": ""
-      },
-      "offset_header": 1760,
-      "offset_body": 1847,
-      "offset_end": 1847
+      "text": "",
+      "decode_problems": []
     },
     {
+      "id": 5,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        6,
+        7
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 1860,
+      "offset_body": 2136,
+      "offset_end": 2804,
       "headers": [
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "rimap-test",
                   "address": "rimap-test@example.test"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 1907,
           "offset_start": 1910,
           "offset_end": 1948
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Sprint 3 multipart fixture"
+            "text": "Sprint 3 multipart fixture"
           },
           "offset_field": 1948,
           "offset_start": 1956,
           "offset_end": 1984
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "multi-001@example.test"
+            "text_list": [
+              "multi-001@example.test"
+            ]
           },
           "offset_field": 1984,
           "offset_start": 1995,
           "offset_end": 2021
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2026,
               "month": 4,
               "day": 7,
@@ -331,25 +400,25 @@
           "offset_end": 2058
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 2058,
           "offset_start": 2071,
           "offset_end": 2076
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "boundary42"
-                }
+                [
+                  "boundary",
+                  "boundary42"
+                ]
               ]
             }
           },
@@ -357,31 +426,34 @@
           "offset_start": 2089,
           "offset_end": 2135
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          6,
-          7
-        ]
-      },
-      "offset_header": 1860,
-      "offset_body": 2136,
-      "offset_end": 2803
+      ]
     },
     {
+      "id": 6,
+      "message": 0,
+      "parent": 5,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 2249,
+      "offset_body": 2292,
+      "offset_end": 2336,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -390,54 +462,66 @@
           "offset_end": 2291
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<p>HTML body of the multiparuMmlti Sendure.\n"
-      },
-      "offset_header": 2249,
-      "offset_body": 2292,
-      "offset_end": 2336
+      "text": "<p>HTML body of the multiparuMmlti Sendure.\n",
+      "decode_problems": []
     },
     {
+      "id": 7,
+      "message": 0,
+      "parent": 5,
+      "kind": "multipart",
+      "children": [
+        8,
+        9
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 2350,
+      "offset_body": 2626,
+      "offset_end": 2804,
       "headers": [
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "rimap-test",
                   "address": "rimap-test@example.test"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 2397,
           "offset_start": 2400,
           "offset_end": 2438
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Sprint 3 multipart fixture"
+            "text": "Sprint 3 multipart fixture"
           },
           "offset_field": 2438,
           "offset_start": 2446,
           "offset_end": 2474
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "multi-001@example.test"
+            "text_list": [
+              "multi-001@example.test"
+            ]
           },
           "offset_field": 2474,
           "offset_start": 2485,
           "offset_end": 2511
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2026,
               "month": 4,
               "day": 7,
@@ -454,25 +538,25 @@
           "offset_end": 2548
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 2548,
           "offset_start": 2561,
           "offset_end": 2566
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "boundary42"
-                }
+                [
+                  "boundary",
+                  "boundary42"
+                ]
               ]
             }
           },
@@ -480,37 +564,45 @@
           "offset_start": 2579,
           "offset_end": 2625
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          8,
-          9
-        ]
-      },
-      "offset_header": 2350,
-      "offset_body": 2626,
-      "offset_end": 2803
+      ]
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": ""
-      },
+      "id": 8,
+      "message": 0,
+      "parent": 7,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "copied_body",
       "offset_header": 2739,
       "offset_body": 2763,
-      "offset_end": 2763
+      "offset_end": 2763,
+      "headers": [],
+      "text": "",
+      "decode_problems": []
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": ""
-      },
+      "id": 9,
+      "message": 0,
+      "parent": 7,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "copied_body",
       "offset_header": 2776,
       "offset_body": 2789,
-      "offset_end": 2789
+      "offset_end": 2789,
+      "headers": [],
+      "text": "",
+      "decode_problems": []
     }
   ]
 }

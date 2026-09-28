@@ -1,0 +1,67 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 103,
+      "offset_end": 109,
+      "headers": [
+        {
+          "name": "Subject",
+          "value": {
+            "text": "café au lait"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 42
+        },
+        {
+          "name": "Comments",
+          "value": {
+            "text": "plain"
+          },
+          "offset_field": 42,
+          "offset_start": 51,
+          "offset_end": 59
+        },
+        {
+          "name": "Content-Description",
+          "value": {
+            "text": "[x]é"
+          },
+          "offset_field": 59,
+          "offset_start": 79,
+          "offset_end": 101
+        }
+      ],
+      "text": "body\r\n",
+      "decode_problems": []
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 3,
+      "container": 2,
+      "source": "raw",
+      "text_body": [
+        4
+      ],
+      "html_body": [
+        4
+      ],
+      "attachments": [
+        5
+      ],
+      "has_attachments": true
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 356,
+      "offset_end": 1496,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "Art Vandelay (Vandelay Industries)",
+                  "address": "art@vandelay.com"
+                }
+              }
+            ]
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 61
+        },
+        {
+          "name": "To",
+          "value": {
+            "address": [
+              {
+                "group": {
+                  "name": "Colleagues",
+                  "mailboxes": [
+                    {
+                      "name": "James Smythe",
+                      "address": "james@vandelay.com"
+                    }
+                  ]
+                }
+              },
+              {
+                "group": {
+                  "name": "Friends",
+                  "mailboxes": [
+                    {
+                      "name": null,
+                      "address": "jane@example.com"
+                    },
+                    {
+                      "name": "John Smîth",
+                      "address": "john@example.com"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "offset_field": 61,
+          "offset_start": 64,
+          "offset_end": 197
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 2021,
+              "month": 11,
+              "day": 20,
+              "hour": 14,
+              "minute": 22,
+              "second": 1,
+              "tz_before_gmt": true,
+              "tz_hour": 8,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 197,
+          "offset_start": 202,
+          "offset_end": 236
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "Why not both importing AND exporting? ☺"
+          },
+          "offset_field": 236,
+          "offset_start": 244,
+          "offset_end": 301
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "festivus"
+                ]
+              ]
+            }
+          },
+          "offset_field": 301,
+          "offset_start": 314,
+          "offset_end": 354
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 368,
+      "offset_body": 450,
+      "offset_end": 692,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
+              "attributes": [
+                [
+                  "charset",
+                  "us-ascii"
+                ]
+              ]
+            }
+          },
+          "offset_field": 368,
+          "offset_start": 381,
+          "offset_end": 413
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 413,
+          "offset_start": 439,
+          "offset_end": 448
+        }
+      ],
+      "text": "<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought, why not do both? &#x263A;</p></html>",
+      "decode_problems": []
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 706,
+      "offset_body": 738,
+      "offset_end": 1480,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
+            }
+          },
+          "offset_field": 706,
+          "offset_start": 719,
+          "offset_end": 736
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "message": 1,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        4,
+        5
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 738,
+      "offset_body": 885,
+      "offset_end": 1480,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "Cosmo Kramer",
+                  "address": "kramer@kramerica.com"
+                }
+              }
+            ]
+          },
+          "offset_field": 738,
+          "offset_start": 743,
+          "offset_end": 783
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "Exporting my book about coffee tables"
+          },
+          "offset_field": 783,
+          "offset_start": 791,
+          "offset_end": 831
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "giddyup"
+                ]
+              ]
+            }
+          },
+          "offset_field": 831,
+          "offset_start": 844,
+          "offset_end": 883
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "message": 1,
+      "parent": 3,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 896,
+      "offset_body": 987,
+      "offset_end": 1218,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-16"
+                ]
+              ]
+            }
+          },
+          "offset_field": 896,
+          "offset_start": 909,
+          "offset_end": 940
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "quoted-printable"
+          },
+          "offset_field": 940,
+          "offset_start": 966,
+          "offset_end": 985
+        }
+      ],
+      "text": "ℌ𝔢𝔩𝔭 𝔪𝔢 𝔢𝔵𝔭𝔬𝔯𝔱 𝔪𝔶 𝔟𝔬𝔬𝔨 𝔭𝔩𝔢𝔞𝔰𝔢!",
+      "decode_problems": []
+    },
+    {
+      "id": 5,
+      "message": 1,
+      "parent": 3,
+      "kind": "binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 1231,
+      "offset_body": 1411,
+      "offset_end": 1467,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "image",
+              "subtype": "gif",
+              "attributes": [
+                [
+                  "name",
+                  "Book about ☕ tables.gif"
+                ]
+              ]
+            }
+          },
+          "offset_field": 1231,
+          "offset_start": 1244,
+          "offset_end": 1341
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "Base64"
+          },
+          "offset_field": 1341,
+          "offset_start": 1367,
+          "offset_end": 1376
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
+              "attributes": []
+            }
+          },
+          "offset_field": 1376,
+          "offset_start": 1396,
+          "offset_end": 1409
+        }
+      ],
+      "binary": "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+      "decode_problems": []
+    }
+  ]
+}

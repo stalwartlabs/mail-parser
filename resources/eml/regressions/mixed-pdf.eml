@@ -1,0 +1,11 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+text
+--m
+Content-Type: application/pdf
+
+pdf
+--m--

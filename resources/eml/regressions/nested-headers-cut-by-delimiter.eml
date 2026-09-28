@@ -1,0 +1,7 @@
+Content-Type: multipart/mixed; boundary=b
+
+--b
+Content-Type: message/rfc822
+
+Subject: nested
+--b--

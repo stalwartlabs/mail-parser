@@ -1,29 +1,55 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 367,
+      "offset_end": 2378,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "392367BC.3D075C95@example.com"
+            "text_list": [
+              "392367BC.3D075C95@example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 44
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -40,88 +66,84 @@
           "offset_end": 82
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 82,
           "offset_start": 87,
           "offset_end": 123
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Mozilla 4.7 [en] (WinNT; I)"
+            "text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 123,
           "offset_start": 132,
           "offset_end": 161
         },
         {
-          "name": {
-            "other": "X-Accept-Language"
-          },
+          "name": "X-Accept-Language",
           "value": {
-            "Text": "en"
+            "text": "en"
           },
           "offset_field": 161,
           "offset_start": 179,
           "offset_end": 183
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 183,
           "offset_start": 196,
           "offset_end": 201
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "blow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 201,
           "offset_start": 204,
           "offset_end": 233
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Test message from Netscape Communicator 4.7"
+            "text": "Test message from Netscape Communicator 4.7"
           },
           "offset_field": 233,
           "offset_start": 241,
           "offset_end": 286
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "------------CA611088711119FBDB3473B4"
-                }
+                [
+                  "boundary",
+                  "------------CA611088711119FBDB3473B4"
+                ]
               ]
             }
           },
@@ -129,31 +151,35 @@
           "offset_start": 299,
           "offset_end": 366
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 367,
-      "offset_end": 2378
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 451,
+      "offset_body": 527,
+      "offset_end": 1280,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -162,40 +188,49 @@
           "offset_end": 494
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 494,
           "offset_start": 520,
           "offset_end": 526
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race."
-      },
-      "offset_header": 451,
-      "offset_body": 527,
-      "offset_end": 1280
+      "text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "attachment",
+        "inline"
+      ],
+      "role": "attachment",
+      "offset_header": 1320,
+      "offset_body": 1542,
+      "offset_end": 2335,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "iso-8859-1"
-                },
-                {
-                  "name": "name",
-                  "value": "HasenundFrösche.txt"
-                }
+                [
+                  "charset",
+                  "iso-8859-1"
+                ],
+                [
+                  "name",
+                  "HasenundFrösche.txt"
+                ]
               ]
             }
           },
@@ -204,25 +239,25 @@
           "offset_end": 1415
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 1415,
           "offset_start": 1441,
           "offset_end": 1459
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
               "attributes": [
-                {
-                  "name": "filename",
-                  "value": "HasenundFrösche.txt"
-                }
+                [
+                  "filename",
+                  "HasenundFrösche.txt"
+                ]
               ]
             }
           },
@@ -231,13 +266,8 @@
           "offset_end": 1541
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n"
-      },
-      "offset_header": 1320,
-      "offset_body": 1542,
-      "offset_end": 2335
+      "text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \n\n",
+      "decode_problems": []
     }
   ]
 }

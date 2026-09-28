@@ -1,33 +1,71 @@
 {
-  "html_body": [],
-  "text_body": [],
-  "attachments": [
-    1,
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        1,
+        2
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 3,
+      "container": 2,
+      "source": "raw",
+      "text_body": [
+        5
+      ],
+      "html_body": [
+        4
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 136,
+      "offset_end": 600,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": null,
                   "address": "user@domain.org"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 23
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2007,
               "month": 3,
               "day": 24,
@@ -44,25 +82,25 @@
           "offset_end": 62
         },
         {
-          "name": "mime_version",
+          "name": "Mime-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 62,
           "offset_start": 75,
           "offset_end": 81
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "foo bar"
-                }
+                [
+                  "boundary",
+                  "foo bar"
+                ]
               ]
             }
           },
@@ -70,31 +108,34 @@
           "offset_start": 94,
           "offset_end": 134
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 136,
-      "offset_end": 600
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 169,
+      "offset_body": 217,
+      "offset_end": 224,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "x-myown",
+            "content_type": {
+              "type": "text",
+              "subtype": "x-myown",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -103,171 +144,184 @@
           "offset_end": 215
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "hello\r\n"
-      },
-      "offset_header": 169,
-      "offset_body": 217,
-      "offset_end": 224
+      "text": "hello\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 237,
+      "offset_body": 269,
+      "offset_end": 567,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
             }
           },
           "offset_field": 237,
           "offset_start": 250,
           "offset_end": 267
         }
+      ]
+    },
+    {
+      "id": 3,
+      "message": 1,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        4,
+        5
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            1
-          ],
-          "text_body": [
-            2
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "from",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": null,
-                          "address": "sub@domain.org"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 269,
-                  "offset_start": 274,
-                  "offset_end": 291
-                },
-                {
-                  "name": "date",
-                  "value": {
-                    "DateTime": {
-                      "year": 2012,
-                      "month": 8,
-                      "day": 12,
-                      "hour": 12,
-                      "minute": 34,
-                      "second": 56,
-                      "tz_before_gmt": false,
-                      "tz_hour": 3,
-                      "tz_minute": 0
-                    }
-                  },
-                  "offset_field": 291,
-                  "offset_start": 296,
-                  "offset_end": 330
-                },
-                {
-                  "name": "subject",
-                  "value": {
-                    "Text": "submsg"
-                  },
-                  "offset_field": 330,
-                  "offset_start": 338,
-                  "offset_end": 347
-                },
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "multipart",
-                      "c_subtype": "alternative",
-                      "attributes": [
-                        {
-                          "name": "boundary",
-                          "value": "sub1"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 347,
-                  "offset_start": 360,
-                  "offset_end": 401
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 269,
+      "offset_body": 403,
+      "offset_end": 567,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": null,
+                  "address": "sub@domain.org"
                 }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Multipart": [
-                  1,
-                  2
-                ]
-              },
-              "offset_header": 269,
-              "offset_body": 403,
-              "offset_end": 567
-            },
-            {
-              "headers": [
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "html",
-                      "attributes": null
-                    }
-                  },
-                  "offset_field": 430,
-                  "offset_start": 443,
-                  "offset_end": 455
-                }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Html": "<p>Hello world</p>\r\n"
-              },
-              "offset_header": 430,
-              "offset_body": 457,
-              "offset_end": 477
-            },
-            {
-              "headers": [
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": null
-                    }
-                  },
-                  "offset_field": 487,
-                  "offset_start": 500,
-                  "offset_end": 513
-                }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Text": "Hello another world\r\n"
-              },
-              "offset_header": 487,
-              "offset_body": 515,
-              "offset_end": 536
+              }
+            ]
+          },
+          "offset_field": 269,
+          "offset_start": 274,
+          "offset_end": 291
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 2012,
+              "month": 8,
+              "day": 12,
+              "hour": 12,
+              "minute": 34,
+              "second": 56,
+              "tz_before_gmt": false,
+              "tz_hour": 3,
+              "tz_minute": 0
             }
-          ]
+          },
+          "offset_field": 291,
+          "offset_start": 296,
+          "offset_end": 330
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "submsg"
+          },
+          "offset_field": 330,
+          "offset_start": 338,
+          "offset_end": 347
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "sub1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 347,
+          "offset_start": 360,
+          "offset_end": 401
         }
-      },
-      "offset_header": 237,
-      "offset_body": 269,
-      "offset_end": 567
+      ]
+    },
+    {
+      "id": 4,
+      "message": 1,
+      "parent": 3,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 430,
+      "offset_body": 457,
+      "offset_end": 477,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
+              "attributes": []
+            }
+          },
+          "offset_field": 430,
+          "offset_start": 443,
+          "offset_end": 455
+        }
+      ],
+      "text": "<p>Hello world</p>\r\n",
+      "decode_problems": []
+    },
+    {
+      "id": 5,
+      "message": 1,
+      "parent": 3,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 487,
+      "offset_body": 515,
+      "offset_end": 536,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 487,
+          "offset_start": 500,
+          "offset_end": 513
+        }
+      ],
+      "text": "Hello another world\r\n",
+      "decode_problems": []
     }
   ]
 }

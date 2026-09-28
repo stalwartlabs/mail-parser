@@ -1,59 +1,82 @@
 {
-  "html_body": [
-    0
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    0
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 594,
+      "offset_end": 1401,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "doug@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 40
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Heinz Müller",
                   "address": "mueller@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 40,
           "offset_start": 43,
           "offset_end": 101
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
+            "text": "Die Hasen und die Frösche (Microsoft Outlook 00)"
           },
           "offset_field": 101,
           "offset_start": 109,
           "offset_end": 185
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -70,34 +93,36 @@
           "offset_end": 224
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
+            "text_list": [
+              "NDBBIAKOPKHFGPLCODIGCEKECHAA.doug@example.com"
+            ]
           },
           "offset_field": 224,
           "offset_start": 235,
           "offset_end": 285
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 285,
           "offset_start": 298,
           "offset_end": 304
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "Windows-1252"
-                }
+                [
+                  "charset",
+                  "Windows-1252"
+                ]
               ]
             }
           },
@@ -106,75 +131,62 @@
           "offset_end": 356
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 356,
           "offset_start": 382,
           "offset_end": 401
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "3 (Normal)"
+            "text": "3 (Normal)"
           },
           "offset_field": 401,
           "offset_start": 412,
           "offset_end": 425
         },
         {
-          "name": {
-            "other": "X-MSMail-Priority"
-          },
+          "name": "X-MSMail-Priority",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 425,
           "offset_start": 443,
           "offset_end": 452
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+            "text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
           },
           "offset_field": 452,
           "offset_start": 461,
           "offset_end": 514
         },
         {
-          "name": "importance",
+          "name": "Importance",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 514,
           "offset_start": 525,
           "offset_end": 534
         },
         {
-          "name": {
-            "other": "X-MimeOLE"
-          },
+          "name": "X-MimeOLE",
           "value": {
-            "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+            "text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
           },
           "offset_field": 534,
           "offset_start": 544,
           "offset_end": 592
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n"
-      },
-      "offset_header": 0,
-      "offset_body": 594,
-      "offset_end": 1401
+      "text": "Die Hasen und die Frösche\r\n\r\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der Tod selbst. Auf, laßt uns ein für allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu; allein das außerordentliche Getöse und ihre wunderbare Gestalt erschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs schnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein wenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere, welche also wohl noch unglücklicher sein müssen als wir.\" \r\n",
+      "decode_problems": []
     }
   ]
 }

@@ -1,0 +1,150 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": true
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 243,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "related",
+              "attributes": [
+                [
+                  "boundary",
+                  "r"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 52,
+      "offset_body": 79,
+      "offset_end": 116,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
+              "attributes": []
+            }
+          },
+          "offset_field": 52,
+          "offset_start": 65,
+          "offset_end": 77
+        }
+      ],
+      "text": "<p>Newsletter</p><img src=\"cid:logo\">",
+      "decode_problems": []
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "inline_binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "attachment",
+        "inline"
+      ],
+      "role": "attachment",
+      "offset_header": 123,
+      "offset_body": 222,
+      "offset_end": 234,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "image",
+              "subtype": "png",
+              "attributes": [
+                [
+                  "name",
+                  "logo.png"
+                ]
+              ]
+            }
+          },
+          "offset_field": 123,
+          "offset_start": 136,
+          "offset_end": 165
+        },
+        {
+          "name": "Content-ID",
+          "value": {
+            "text_list": [
+              "logo"
+            ]
+          },
+          "offset_field": 165,
+          "offset_start": 176,
+          "offset_end": 185
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 185,
+          "offset_start": 211,
+          "offset_end": 220
+        }
+      ],
+      "binary": "iVBORw0KGgo=",
+      "decode_problems": []
+    }
+  ]
+}

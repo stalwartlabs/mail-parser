@@ -1,25 +1,50 @@
 {
-  "html_body": [
-    1
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 99,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "1"
-                }
+                [
+                  "boundary",
+                  "1"
+                ]
               ]
             }
           },
@@ -27,26 +52,31 @@
           "offset_start": 13,
           "offset_end": 45
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 47,
-      "offset_end": 99
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 52,
+      "offset_body": 80,
+      "offset_end": 92,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
           },
           "offset_field": 52,
@@ -54,13 +84,8 @@
           "offset_end": 78
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "hello, world"
-      },
-      "offset_header": 52,
-      "offset_body": 80,
-      "offset_end": 92
+      "text": "hello, world",
+      "decode_problems": []
     }
   ]
 }

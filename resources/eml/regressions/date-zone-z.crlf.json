@@ -1,0 +1,59 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 37,
+      "offset_end": 48,
+      "headers": [
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 1997,
+              "month": 7,
+              "day": 10,
+              "hour": 14,
+              "minute": 53,
+              "second": 31,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 5,
+          "offset_end": 35
+        }
+      ],
+      "text": "From: x@y\r\n",
+      "decode_problems": []
+    }
+  ]
+}

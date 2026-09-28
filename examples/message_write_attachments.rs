@@ -4,10 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use mail_parser::*;
+use mail_parser::{MessageParser, MessagePart};
+use std::{
+    env, fs, io,
+    path::{Path, PathBuf},
+};
 
-fn main() {
-    let input = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
+const MESSAGE: &[u8] = br#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
 To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
     jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
 Date: Sat, 20 Nov 2021 14:22:01 -0800
@@ -24,7 +27,7 @@ cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
 gJiN4MjYzQTs8L3A+PC9odG1sPg==
 --festivus
 Content-Type: message/rfc822; name="Exporting my book about coffee tables.eml"
-Content-Disposition: inline; filename="Exporting my book about coffee tables.eml"  
+Content-Disposition: inline; filename="Exporting my book about coffee tables.eml"
 Content-Transfer-Encoding: 7bit
 
 From: "Cosmo Kramer" <kramer@kramerica.com>
@@ -50,19 +53,41 @@ R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
 --festivus--
 "#;
 
-    write_attachments(&MessageParser::default().parse(input).unwrap());
+fn main() -> io::Result<()> {
+    let directory = env::args_os().nth(1).map_or_else(
+        || env::temp_dir().join("mail-parser-attachments"),
+        PathBuf::from,
+    );
+    fs::create_dir_all(&directory)?;
+
+    let message = MessageParser::new()
+        .parse(MESSAGE)
+        .expect("the message parses");
+    for part in message.parts().filter(|part| part.is_attachment()) {
+        let path = directory.join(file_name(part));
+        fs::write(&path, part.decoded())?;
+        println!(
+            "{} ({} bytes, attachment of message {})",
+            path.display(),
+            part.decoded_len(),
+            part.message().id()
+        );
+    }
+    Ok(())
 }
 
-fn write_attachments(message: &Message) {
-    for attachment in message.attachments() {
-        if !attachment.is_message() {
-            std::fs::write(
-                attachment.attachment_name().unwrap_or("Untitled"),
-                attachment.contents(),
-            )
-            .unwrap();
-        } else {
-            write_attachments(attachment.message().unwrap());
-        }
-    }
+fn file_name(part: MessagePart<'_>) -> PathBuf {
+    let name = part
+        .attachment_name()
+        .map(str::to_string)
+        .or_else(|| {
+            part.nested()
+                .and_then(|nested| nested.subject())
+                .map(|subject| format!("{subject}.eml"))
+        })
+        .unwrap_or_default();
+    Path::new(&name).file_name().map_or_else(
+        || PathBuf::from(format!("part-{}", part.id())),
+        PathBuf::from,
+    )
 }

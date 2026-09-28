@@ -1224,5 +1224,233 @@
       "c_type": "text",
       "c_subtype": "plain"
     }
+  },
+  {
+    "header": "attachment; filename*=utf-8''O'Brien.txt\n",
+    "expected": {
+      "c_type": "attachment",
+      "c_subtype": null,
+      "attributes": [
+        [
+          "filename",
+          "O'Brien.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "text/plain",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": null
+    }
+  },
+  {
+    "header": "TEXT/HTML; CHARSET=UTF-8\r\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "html",
+      "attributes": [
+        [
+          "charset",
+          "UTF-8"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "image/png; name=\"=?utf-8?q?caf=C3=A9?=.png\"\n",
+    "expected": {
+      "c_type": "image",
+      "c_subtype": "png",
+      "attributes": [
+        [
+          "name",
+          "café.png"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "image/png; name=\"=?x?q?caf=C3=A9?=.png\"\n",
+    "expected": {
+      "c_type": "image",
+      "c_subtype": "png",
+      "attributes": [
+        [
+          "name",
+          "café.png"
+        ]
+      ]
+    }
+  },
+  {
+    "header": "application/pdf; name*=\"iso-8859-1''abc%\"\n",
+    "expected": {
+      "c_type": "application",
+      "c_subtype": "pdf",
+      "attributes": [
+        [
+          "name",
+          "abc"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*0*=utf-8''%E2%98; name*1*=%95.txt\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "☕.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*0*=iso-8859-1''caf; name*1*=%E9.txt\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*0*=utf-8''caf%C3; name*1*=%A9.txt\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*1*=%A9.txt; name*0*=utf-8''caf%C3\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*0*=utf-16le''%41%00; name*1=bc\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "Abc"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*0=\"a\"; name*2=\"c\"; name*1=\"b\"\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "abc"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*=utf-8''caf%C3%A9\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; title*0*=us-ascii'en'a; title*1*=us-ascii'en'b\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "title-language",
+          "en"
+        ],
+        [
+          "title",
+          "ab"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*=iso-8859-1'en'caf%E9\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name-language",
+          "en"
+        ],
+        [
+          "name",
+          "café"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*1=\"b\"; name=\"x\"; name*0=\"a\"\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "xb"
+        ],
+        [
+          "name",
+          "a"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " attachment;\n filename*0*=utf-8''%E2%98%95%20tables%20and%20%E2;\n filename*1*=%98%95%20chairs.gif\n",
+    "expected": {
+      "c_type": "attachment",
+      "c_subtype": null,
+      "attributes": [
+        [
+          "filename",
+          "☕ tables and ☕ chairs.gif"
+        ]
+      ]
+    }
   }
 ]

@@ -1,27 +1,52 @@
 {
-  "html_body": [
-    0
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    0
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 386,
+      "offset_end": 1140,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "392362D8.B650789F@example.com"
+            "text_list": [
+              "392362D8.B650789F@example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 44
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -38,99 +63,93 @@
           "offset_end": 82
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 82,
           "offset_start": 87,
           "offset_end": 123
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Mozilla 4.7 [en] (WinNT; I)"
+            "text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 123,
           "offset_start": 132,
           "offset_end": 161
         },
         {
-          "name": {
-            "other": "X-Accept-Language"
-          },
+          "name": "X-Accept-Language",
           "value": {
-            "Text": "en"
+            "text": "en"
           },
           "offset_field": 161,
           "offset_start": 179,
           "offset_end": 183
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 183,
           "offset_start": 196,
           "offset_end": 201
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "blow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 201,
           "offset_start": 204,
           "offset_end": 233
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Test message from Netscape Communicator 4.7"
+            "text": "Test message from Netscape Communicator 4.7"
           },
           "offset_field": 233,
           "offset_start": 241,
           "offset_end": 286
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "1 (Highest)"
+            "text": "1 (Highest)"
           },
           "offset_field": 286,
           "offset_start": 297,
           "offset_end": 310
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -139,22 +158,17 @@
           "offset_end": 353
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 353,
           "offset_start": 379,
           "offset_end": 385
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.\n"
-      },
-      "offset_header": 0,
-      "offset_body": 386,
-      "offset_end": 1140
+      "text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.\n",
+      "decode_problems": []
     }
   ]
 }

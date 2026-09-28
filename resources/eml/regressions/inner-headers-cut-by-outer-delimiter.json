@@ -1,0 +1,126 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        2
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 43,
+      "offset_end": 107,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "a"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 42
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        2
+      ],
+      "encoding": "none",
+      "flags": [
+        "unterminated"
+      ],
+      "roles": [],
+      "role": "container",
+      "offset_header": 47,
+      "offset_body": 90,
+      "offset_end": 100,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "b"
+                ]
+              ]
+            }
+          },
+          "offset_field": 47,
+          "offset_start": 60,
+          "offset_end": 89
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 1,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "missing_delimiter",
+        "no_blank_line"
+      ],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 94,
+      "offset_body": 100,
+      "offset_end": 100,
+      "headers": [
+        {
+          "name": "X-Y",
+          "value": {
+            "text": "z"
+          },
+          "offset_field": 94,
+          "offset_start": 98,
+          "offset_end": 101
+        }
+      ],
+      "text": "",
+      "decode_problems": []
+    }
+  ]
+}

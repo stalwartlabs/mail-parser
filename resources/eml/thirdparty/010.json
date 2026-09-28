@@ -1,47 +1,70 @@
 {
-  "html_body": [
-    1
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 146,
+      "offset_end": 255,
       "headers": [
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "こんにちは"
+            "text": "こんにちは"
           },
           "offset_field": 0,
           "offset_start": 8,
           "offset_end": 42
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 42,
           "offset_start": 55,
           "offset_end": 60
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "1"
-                },
-                {
-                  "name": "comment",
-                  "value": "人権の無視及"
-                }
+                [
+                  "boundary",
+                  "1"
+                ],
+                [
+                  "comment",
+                  "人権の無視及"
+                ]
               ]
             }
           },
@@ -49,26 +72,31 @@
           "offset_start": 73,
           "offset_end": 145
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 146,
-      "offset_end": 255
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 150,
+      "offset_body": 231,
+      "offset_end": 249,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
           },
           "offset_field": 150,
@@ -76,31 +104,28 @@
           "offset_end": 175
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "binary"
+            "text": "binary"
           },
           "offset_field": 175,
           "offset_start": 201,
           "offset_end": 209
         },
         {
-          "name": "content_language",
+          "name": "Content-Language",
           "value": {
-            "Text": "ja"
+            "text_list": [
+              "ja"
+            ]
           },
           "offset_field": 209,
           "offset_start": 226,
           "offset_end": 230
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "人権の無視及"
-      },
-      "offset_header": 150,
-      "offset_body": 231,
-      "offset_end": 249
+      "text": "人権の無視及",
+      "decode_problems": []
     }
   ]
 }

@@ -1,88 +1,116 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": true
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 346,
+      "offset_end": 612,
       "headers": [
         {
-          "name": "return_path",
+          "name": "Return-Path",
           "value": {
-            "Text": "test@example.org"
+            "text_list": [
+              "test@example.org"
+            ]
           },
           "offset_field": 0,
           "offset_start": 12,
           "offset_end": 33
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Hello world"
+            "text": "Hello world"
           },
           "offset_field": 33,
           "offset_start": 41,
           "offset_end": 55
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Test User",
                   "address": "test@example.org"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 55,
           "offset_start": 60,
           "offset_end": 91
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Another User",
                   "address": "test2@example.org"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 91,
           "offset_start": 94,
           "offset_end": 129
         },
         {
-          "name": "message_id",
+          "name": "Message-Id",
           "value": {
-            "Text": "1.2.3.4@example"
+            "text_list": [
+              "1.2.3.4@example"
+            ]
           },
           "offset_field": 129,
           "offset_start": 140,
           "offset_end": 160
         },
         {
-          "name": "mime_version",
+          "name": "Mime-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 160,
           "offset_start": 173,
           "offset_end": 179
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2007,
               "month": 5,
               "day": 23,
@@ -99,24 +127,24 @@
           "offset_end": 218
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "signed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "signed",
               "attributes": [
-                {
-                  "name": "micalg",
-                  "value": "pgp-sha1"
-                },
-                {
-                  "name": "protocol",
-                  "value": "application/pgp-signature"
-                },
-                {
-                  "name": "boundary",
-                  "value": "=-GNQXLhuj24Pl1aCkk4/d"
-                }
+                [
+                  "micalg",
+                  "pgp-sha1"
+                ],
+                [
+                  "protocol",
+                  "application/pgp-signature"
+                ],
+                [
+                  "boundary",
+                  "=-GNQXLhuj24Pl1aCkk4/d"
+                ]
               ]
             }
           },
@@ -124,27 +152,31 @@
           "offset_start": 231,
           "offset_end": 344
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 346,
-      "offset_end": 612
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 372,
+      "offset_body": 445,
+      "offset_end": 480,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
           },
           "offset_field": 372,
@@ -152,36 +184,44 @@
           "offset_end": 398
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 398,
           "offset_start": 424,
           "offset_end": 443
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "There was a day \r\na happy day\r\n"
-      },
-      "offset_header": 372,
-      "offset_body": 445,
-      "offset_end": 480
+      "text": "There was a day \r\na happy day\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 508,
+      "offset_body": 571,
+      "offset_end": 580,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "application",
-              "c_subtype": "pgp-signature",
+            "content_type": {
+              "type": "application",
+              "subtype": "pgp-signature",
               "attributes": [
-                {
-                  "name": "name",
-                  "value": "signature.asc"
-                }
+                [
+                  "name",
+                  "signature.asc"
+                ]
               ]
             }
           },
@@ -190,23 +230,8 @@
           "offset_end": 569
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Binary": [
-          105,
-          110,
-          118,
-          97,
-          108,
-          105,
-          100,
-          13,
-          10
-        ]
-      },
-      "offset_header": 508,
-      "offset_body": 571,
-      "offset_end": 580
+      "binary": "aW52YWxpZA0K",
+      "decode_problems": []
     }
   ]
 }

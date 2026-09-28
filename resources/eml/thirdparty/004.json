@@ -1,35 +1,63 @@
 {
-  "html_body": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "html_body": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 63,
+      "offset_end": 704,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "1"
-                }
+                [
+                  "boundary",
+                  "1"
+                ]
               ]
             }
           },
@@ -38,52 +66,52 @@
           "offset_end": 44
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 44,
           "offset_start": 57,
           "offset_end": 62
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 63,
-      "offset_end": 704
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 67,
+      "offset_body": 140,
+      "offset_end": 174,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "6bit"
+            "text": "6bit"
           },
           "offset_field": 67,
           "offset_start": 93,
           "offset_end": 99
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -92,36 +120,47 @@
           "offset_end": 139
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move black king to queen's bishop\n"
-      },
-      "offset_header": 67,
-      "offset_body": 140,
-      "offset_end": 174
+      "text": "Move black king to queen's bishop\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 179,
+      "offset_body": 259,
+      "offset_end": 281,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bits"
+            "text": "7bits"
           },
           "offset_field": 179,
           "offset_start": 205,
           "offset_end": 218
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -130,36 +169,47 @@
           "offset_end": 258
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move ♚ to ♛'s ♝\n"
-      },
-      "offset_header": 179,
-      "offset_body": 259,
-      "offset_end": 281
+      "text": "Move ♚ to ♛'s ♝\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 286,
+      "offset_body": 360,
+      "offset_end": 382,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "8 bit"
+            "text": "8 bit"
           },
           "offset_field": 286,
           "offset_start": 312,
           "offset_end": 319
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -168,36 +218,47 @@
           "offset_end": 359
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move ♚ to ♛'s ♝\n"
-      },
-      "offset_header": 286,
-      "offset_body": 360,
-      "offset_end": 382
+      "text": "Move ♚ to ♛'s ♝\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     },
     {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 387,
+      "offset_body": 461,
+      "offset_end": 483,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7-bit"
+            "text": "7-bit"
           },
           "offset_field": 387,
           "offset_start": 413,
           "offset_end": 420
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -206,36 +267,47 @@
           "offset_end": 460
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move ♚ to ♛'s ♝\n"
-      },
-      "offset_header": 387,
-      "offset_body": 461,
-      "offset_end": 483
+      "text": "Move ♚ to ♛'s ♝\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     },
     {
+      "id": 5,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 488,
+      "offset_body": 562,
+      "offset_end": 584,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "8-bit"
+            "text": "8-bit"
           },
           "offset_field": 488,
           "offset_start": 514,
           "offset_end": 521
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -244,34 +316,47 @@
           "offset_end": 561
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move ♚ to ♛'s ♝\n"
-      },
-      "offset_header": 488,
-      "offset_body": 562,
-      "offset_end": 584
+      "text": "Move ♚ to ♛'s ♝\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     },
     {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 589,
+      "offset_body": 657,
+      "offset_end": 697,
       "headers": [
         {
-          "name": "content_transfer_encoding",
-          "value": "Empty",
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": ""
+          },
           "offset_field": 589,
           "offset_start": 615,
           "offset_end": 616
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -280,13 +365,10 @@
           "offset_end": 656
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n"
-      },
-      "offset_header": 589,
-      "offset_body": 657,
-      "offset_end": 697
+      "text": "Move =E2=99=9A to =E2=99=9B's =E2=99=9D\n",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
     }
   ]
 }

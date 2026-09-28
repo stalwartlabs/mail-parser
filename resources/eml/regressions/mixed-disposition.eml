@@ -1,0 +1,23 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+hello
+--m
+Content-Type: image/png
+
+A
+--m
+Content-Type: application/pdf
+Content-Disposition: inline
+
+B
+--m
+Content-Type: message/rfc822
+Content-Disposition: inline
+
+Subject: x
+
+y
+--m--

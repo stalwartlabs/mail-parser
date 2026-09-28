@@ -1,0 +1,57 @@
+From: X <X@X.org>
+To: Y <Y@Y.org>
+Date: Mon, 13 Feb 2018 12:00:00 -0400
+Subject: Example inline
+Mime-Version: 1.0
+Content-Type: multipart/related; boundary="_005_C4D89E21F64B_"
+
+--_005_C4D89E21F64B_
+Content-Type: multipart/alternative;
+	boundary="_000_C4D89E21F64B_"
+
+
+--_000_C4D89E21F64B_
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+[cid:3302530593_302033]
+
+[cid:3302530593_275216]
+
+--_000_C4D89E21F64B_
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+<IMG src=3D"cid:3302530593_302033" >
+<IMG src=3D"cid:3302530593_275216" >
+</BODY>
+</HTML>
+
+--_000_C4D89E21F64B_--
+
+--_005_C4D89E21F64B_
+Content-Type: image/jpeg
+Content-Transfer-Encoding: plain
+Content-Disposition: inline;
+	filename="image.jpg"
+Content-Description: image.jpg
+Content-ID: <3302530593_302033>
+
+A
+
+--_005_C4D89E21F64B_
+Content-Type: image/jpeg
+Content-Transfer-Encoding: plain
+Content-Disposition: inline;
+	filename="image.jpg"
+Content-Description: image.jpg
+Content-ID: <3302530593_275216>
+
+B
+
+--_005_C4D89E21F64B_--

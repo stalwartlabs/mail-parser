@@ -1,0 +1,70 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 34,
+      "offset_end": 39,
+      "headers": [
+        {
+          "name": "X-Empty",
+          "value": {
+            "text": ""
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 9
+        },
+        {
+          "name": "From",
+          "value": null,
+          "offset_field": 9,
+          "offset_start": 14,
+          "offset_end": 15
+        },
+        {
+          "name": "Date",
+          "value": null,
+          "offset_field": 15,
+          "offset_start": 20,
+          "offset_end": 21
+        },
+        {
+          "name": "Message-ID",
+          "value": null,
+          "offset_field": 21,
+          "offset_start": 32,
+          "offset_end": 33
+        }
+      ],
+      "text": "body\n",
+      "decode_problems": []
+    }
+  ]
+}

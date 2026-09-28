@@ -1,0 +1,6 @@
+From: sender@example.com
+To: <x@y.com>, last: a@b.c;
+Subject: issue 98
+Content-Type: text/plain
+
+body

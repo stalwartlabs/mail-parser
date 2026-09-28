@@ -3,3 +3,5 @@
 perf.*
 *.svg
 Cargo.lock
+.ignore
+*.failed

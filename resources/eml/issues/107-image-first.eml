@@ -1,0 +1,46 @@
+Message-ID: <39235EAD.E48E2160@example.com>
+Date: Wed, 17 May 2000 23:08:29 -0400
+From: Doug Sauder <dwsauder@example.com>
+MIME-Version: 1.0
+To: Joe Blow <blow@example.com>
+Subject: Inline image before the alternative
+Content-Type: multipart/mixed;
+ boundary="------------C78F594988075E36AE03C243"
+
+This is a multi-part message in MIME format.
+--------------C78F594988075E36AE03C243
+Content-Type: image/png;
+ name="greenball.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="greenball.png"
+
+iVBORw0KGgo=
+--------------C78F594988075E36AE03C243
+Content-Type: multipart/alternative;
+ boundary="------------D74AE2393FB01D1B284AE257"
+
+
+--------------D74AE2393FB01D1B284AE257
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Die Hasen und die Froesche
+
+--------------D74AE2393FB01D1B284AE257
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html><b>Die Hasen und die Fr&ouml;sche</b></html>
+
+--------------D74AE2393FB01D1B284AE257--
+
+--------------C78F594988075E36AE03C243
+Content-Type: image/png;
+ name="blueball.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="blueball.png"
+
+iVBORw0KGgo=
+--------------C78F594988075E36AE03C243--

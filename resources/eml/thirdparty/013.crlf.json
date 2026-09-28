@@ -1,28 +1,50 @@
 {
-  "html_body": [
-    3,
-    4,
-    5,
-    6
-  ],
-  "text_body": [
-    2,
-    4,
-    5,
-    6
-  ],
-  "attachments": [
-    4,
-    5,
-    6
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "html_body": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        4,
+        5,
+        6
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 161,
+      "offset_end": 1028,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -39,25 +61,25 @@
           "offset_end": 39
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 39,
           "offset_start": 52,
           "offset_end": 58
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "166091464015.94FEC6.541095"
-                }
+                [
+                  "boundary",
+                  "166091464015.94FEC6.541095"
+                ]
               ]
             }
           },
@@ -66,34 +88,37 @@
           "offset_end": 126
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 126,
           "offset_start": 152,
           "offset_end": 159
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          4,
-          5,
-          6
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 161,
-      "offset_end": 1028
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        2,
+        3
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 193,
+      "offset_body": 362,
+      "offset_end": 639,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -110,25 +135,25 @@
           "offset_end": 232
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 232,
           "offset_start": 245,
           "offset_end": 251
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "166091464014.8cee04D8.541095"
-                }
+                [
+                  "boundary",
+                  "166091464014.8cee04D8.541095"
+                ]
               ]
             }
           },
@@ -137,32 +162,35 @@
           "offset_end": 327
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 327,
           "offset_start": 353,
           "offset_end": 360
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          2,
-          3
-        ]
-      },
-      "offset_header": 193,
-      "offset_body": 362,
-      "offset_end": 639
+      ]
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 1,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 396,
+      "offset_body": 482,
+      "offset_end": 483,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -179,21 +207,21 @@
           "offset_end": 435
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 435,
           "offset_start": 448,
           "offset_end": 454
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
             }
           },
           "offset_field": 454,
@@ -201,20 +229,28 @@
           "offset_end": 480
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "a"
-      },
-      "offset_header": 396,
-      "offset_body": 482,
-      "offset_end": 483
+      "text": "a",
+      "decode_problems": []
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 1,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 517,
+      "offset_body": 602,
+      "offset_end": 603,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -231,21 +267,21 @@
           "offset_end": 556
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 556,
           "offset_start": 569,
           "offset_end": 575
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
+              "attributes": []
             }
           },
           "offset_field": 575,
@@ -253,20 +289,29 @@
           "offset_end": 600
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "b"
-      },
-      "offset_header": 517,
-      "offset_body": 602,
-      "offset_end": 603
+      "text": "b",
+      "decode_problems": []
     },
     {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "media_body",
+      "offset_header": 671,
+      "offset_body": 757,
+      "offset_end": 758,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -283,21 +328,21 @@
           "offset_end": 710
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 710,
           "offset_start": 723,
           "offset_end": 729
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg",
-              "attributes": null
+            "content_type": {
+              "type": "image",
+              "subtype": "jpeg",
+              "attributes": []
             }
           },
           "offset_field": 729,
@@ -305,22 +350,29 @@
           "offset_end": 755
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "InlineBinary": [
-          99
-        ]
-      },
-      "offset_header": 671,
-      "offset_body": 757,
-      "offset_end": 758
+      "binary": "Yw==",
+      "decode_problems": []
     },
     {
+      "id": 5,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "media_body",
+      "offset_header": 790,
+      "offset_body": 875,
+      "offset_end": 876,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -337,21 +389,21 @@
           "offset_end": 829
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 829,
           "offset_start": 842,
           "offset_end": 848
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "audio",
-              "c_subtype": "mp3",
-              "attributes": null
+            "content_type": {
+              "type": "audio",
+              "subtype": "mp3",
+              "attributes": []
             }
           },
           "offset_field": 848,
@@ -359,22 +411,29 @@
           "offset_end": 873
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "InlineBinary": [
-          100
-        ]
-      },
-      "offset_header": 790,
-      "offset_body": 875,
-      "offset_end": 876
+      "binary": "ZA==",
+      "decode_problems": []
     },
     {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "media_body",
+      "offset_header": 908,
+      "offset_body": 993,
+      "offset_end": 994,
       "headers": [
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2022,
               "month": 8,
               "day": 19,
@@ -391,21 +450,21 @@
           "offset_end": 947
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 947,
           "offset_start": 960,
           "offset_end": 966
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "video",
-              "c_subtype": "avi",
-              "attributes": null
+            "content_type": {
+              "type": "video",
+              "subtype": "avi",
+              "attributes": []
             }
           },
           "offset_field": 966,
@@ -413,15 +472,8 @@
           "offset_end": 991
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "InlineBinary": [
-          101
-        ]
-      },
-      "offset_header": 908,
-      "offset_body": 993,
-      "offset_end": 994
+      "binary": "ZQ==",
+      "decode_problems": []
     }
   ]
 }

@@ -1,53 +1,105 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    3,
-    4
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        3,
+        5
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 4,
+      "container": 3,
+      "source": "raw",
+      "text_body": [
+        4
+      ],
+      "html_body": [
+        4
+      ],
+      "attachments": [],
+      "has_attachments": false
+    },
+    {
+      "id": 2,
+      "root": 6,
+      "container": 5,
+      "source": "raw",
+      "text_body": [
+        6
+      ],
+      "html_body": [
+        6
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 222,
+      "offset_end": 762,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Moderator-Address",
                   "address": null
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 25
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Recipient-List",
                   "address": null
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 25,
           "offset_start": 28,
           "offset_end": 45
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 1994,
               "month": 3,
               "day": 22,
@@ -64,34 +116,34 @@
           "offset_end": 84
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Internet Digest, volume 42"
+            "text": "Internet Digest, volume 42"
           },
           "offset_field": 84,
           "offset_start": 92,
           "offset_end": 121
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 121,
           "offset_start": 134,
           "offset_end": 140
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "---- main boundary ----"
-                }
+                [
+                  "boundary",
+                  "---- main boundary ----"
+                ]
               ]
             }
           },
@@ -99,41 +151,55 @@
           "offset_start": 153,
           "offset_end": 220
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 222,
-      "offset_end": 762
+      ]
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "...Introductory text or table of contents...\r\n"
-      },
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
       "offset_header": 249,
       "offset_body": 251,
-      "offset_end": 297
+      "offset_end": 297,
+      "headers": [],
+      "text": "...Introductory text or table of contents...\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        3,
+        5
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 326,
+      "offset_body": 408,
+      "offset_end": 731,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "digest",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "digest",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "---- next message ----"
-                }
+                [
+                  "boundary",
+                  "---- next message ----"
+                ]
               ]
             }
           },
@@ -141,167 +207,169 @@
           "offset_start": 339,
           "offset_end": 406
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          3,
-          4
-        ]
-      },
-      "offset_header": 326,
-      "offset_body": 408,
-      "offset_end": 731
+      ]
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "from",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "someone-else",
-                          "address": null
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 436,
-                  "offset_start": 441,
-                  "offset_end": 456
-                },
-                {
-                  "name": "date",
-                  "value": {
-                    "DateTime": {
-                      "year": 1993,
-                      "month": 3,
-                      "day": 26,
-                      "hour": 11,
-                      "minute": 13,
-                      "second": 32,
-                      "tz_before_gmt": false,
-                      "tz_hour": 2,
-                      "tz_minute": 0
-                    }
-                  },
-                  "offset_field": 456,
-                  "offset_start": 461,
-                  "offset_end": 495
-                },
-                {
-                  "name": "subject",
-                  "value": {
-                    "Text": "my opinion"
-                  },
-                  "offset_field": 495,
-                  "offset_start": 503,
-                  "offset_end": 516
-                }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Text": "...body goes here ...\r\n"
-              },
-              "offset_header": 436,
-              "offset_body": 518,
-              "offset_end": 541
-            }
-          ]
-        }
-      },
+      "id": 3,
+      "message": 0,
+      "parent": 2,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
       "offset_header": 434,
       "offset_body": 436,
-      "offset_end": 541
+      "offset_end": 541,
+      "headers": []
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "from",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "someone-else-again",
-                          "address": null
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 571,
-                  "offset_start": 576,
-                  "offset_end": 597
-                },
-                {
-                  "name": "date",
-                  "value": {
-                    "DateTime": {
-                      "year": 1993,
-                      "month": 3,
-                      "day": 26,
-                      "hour": 10,
-                      "minute": 7,
-                      "second": 13,
-                      "tz_before_gmt": true,
-                      "tz_hour": 5,
-                      "tz_minute": 0
-                    }
-                  },
-                  "offset_field": 597,
-                  "offset_start": 602,
-                  "offset_end": 636
-                },
-                {
-                  "name": "subject",
-                  "value": {
-                    "Text": "my different opinion"
-                  },
-                  "offset_field": 636,
-                  "offset_start": 644,
-                  "offset_end": 667
+      "id": 4,
+      "message": 1,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 436,
+      "offset_body": 518,
+      "offset_end": 541,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "someone-else",
+                  "address": null
                 }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Text": "... another body goes here ...\r\n"
-              },
-              "offset_header": 571,
-              "offset_body": 669,
-              "offset_end": 701
+              }
+            ]
+          },
+          "offset_field": 436,
+          "offset_start": 441,
+          "offset_end": 456
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 1993,
+              "month": 3,
+              "day": 26,
+              "hour": 11,
+              "minute": 13,
+              "second": 32,
+              "tz_before_gmt": false,
+              "tz_hour": 2,
+              "tz_minute": 0
             }
-          ]
+          },
+          "offset_field": 456,
+          "offset_start": 461,
+          "offset_end": 495
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "my opinion"
+          },
+          "offset_field": 495,
+          "offset_start": 503,
+          "offset_end": 516
         }
-      },
+      ],
+      "text": "...body goes here ...\r\n",
+      "decode_problems": []
+    },
+    {
+      "id": 5,
+      "message": 0,
+      "parent": 2,
+      "kind": "message",
+      "nested": 2,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
       "offset_header": 569,
       "offset_body": 571,
-      "offset_end": 701
+      "offset_end": 701,
+      "headers": []
+    },
+    {
+      "id": 6,
+      "message": 2,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 571,
+      "offset_body": 669,
+      "offset_end": 701,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "someone-else-again",
+                  "address": null
+                }
+              }
+            ]
+          },
+          "offset_field": 571,
+          "offset_start": 576,
+          "offset_end": 597
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 1993,
+              "month": 3,
+              "day": 26,
+              "hour": 10,
+              "minute": 7,
+              "second": 13,
+              "tz_before_gmt": true,
+              "tz_hour": 5,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 597,
+          "offset_start": 602,
+          "offset_end": 636
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "my different opinion"
+          },
+          "offset_field": 636,
+          "offset_start": 644,
+          "offset_end": 667
+        }
+      ],
+      "text": "... another body goes here ...\r\n",
+      "decode_problems": []
     }
   ]
 }

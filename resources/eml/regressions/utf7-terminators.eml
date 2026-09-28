@@ -1,0 +1,27 @@
+Content-Type: multipart/mixed; boundary=b
+
+--b
+Content-Type: text/plain; charset=utf-7
+
++AKM.
+--b
+Content-Type: text/plain; charset=utf-7
+
+x +AKM y
+--b
+Content-Type: text/plain; charset=utf-7
+
++AKM, then
+--b
+Content-Type: text/plain; charset=utf-7
+
+1 +- 1
+--b
+Content-Type: text/plain; charset=utf-7
+
++AKM-x
+--b
+Content-Type: text/plain; charset=utf-7
+
++AKM--x
+--b--

@@ -1,0 +1,139 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2
+      ],
+      "html_body": [
+        1,
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 45,
+      "offset_end": 159,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "m"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 43
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 50,
+      "offset_body": 78,
+      "offset_end": 82,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": []
+            }
+          },
+          "offset_field": 50,
+          "offset_start": 63,
+          "offset_end": 76
+        }
+      ],
+      "text": "text",
+      "decode_problems": []
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "inline_binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body",
+        "inline"
+      ],
+      "role": "media_body",
+      "offset_header": 89,
+      "offset_body": 145,
+      "offset_end": 150,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "image",
+              "subtype": "png",
+              "attributes": []
+            }
+          },
+          "offset_field": 89,
+          "offset_start": 102,
+          "offset_end": 114
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
+              "attributes": []
+            }
+          },
+          "offset_field": 114,
+          "offset_start": 134,
+          "offset_end": 143
+        }
+      ],
+      "binary": "aW1hZ2U=",
+      "decode_problems": []
+    }
+  ]
+}

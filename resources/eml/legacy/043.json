@@ -1,27 +1,53 @@
 {
-  "html_body": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 427,
+      "offset_end": 2423,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "392359CF.DFF4527@example.com"
+            "text_list": [
+              "392359CF.DFF4527@example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 43
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -38,88 +64,84 @@
           "offset_end": 81
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 81,
           "offset_start": 86,
           "offset_end": 122
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Mozilla 4.7 [en] (WinNT; I)"
+            "text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 122,
           "offset_start": 131,
           "offset_end": 160
         },
         {
-          "name": {
-            "other": "X-Accept-Language"
-          },
+          "name": "X-Accept-Language",
           "value": {
-            "Text": "en"
+            "text": "en"
           },
           "offset_field": 160,
           "offset_start": 178,
           "offset_end": 182
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 182,
           "offset_start": 195,
           "offset_end": 200
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Heinz Müller",
                   "address": "mueller@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 200,
           "offset_start": 203,
           "offset_end": 258
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
+            "text": "Die Hasen und die Frösche (Netscape Communicator 4.7)"
           },
           "offset_field": 258,
           "offset_start": 266,
           "offset_end": 340
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "------------9D454F23DA86BCD63FA3805F"
-                }
+                [
+                  "boundary",
+                  "------------9D454F23DA86BCD63FA3805F"
+                ]
               ]
             }
           },
@@ -127,31 +149,34 @@
           "offset_start": 353,
           "offset_end": 426
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 427,
-      "offset_end": 2423
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 467,
+      "offset_body": 557,
+      "offset_end": 1334,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "iso-8859-1"
-                }
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
               ]
             }
           },
@@ -160,36 +185,44 @@
           "offset_end": 512
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 512,
           "offset_start": 538,
           "offset_end": 556
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n"
-      },
-      "offset_header": 467,
-      "offset_body": 557,
-      "offset_end": 1334
+      "text": "Die Hasen und die Frösche\n\nDie Hasen klagten einst über ihre mißliche Lage; \"wir leben\", sprach ein\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist ärger als der\nTod selbst. Auf, laßt uns ein für allemal sterben.\"\n\nIn einem nahen Teich wollten sie sich nun ersäufen; sie eilten ihm zu;\nallein das außerordentliche Getöse und ihre wunderbare Gestalt\nerschreckte eine Menge Frösche, die am Ufer saßen, so sehr, daß sie aufs\nschnellste untertauchten.\n\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ersäufen noch ein\nwenig aufschieben, denn auch uns fürchten, wie ihr seht, einige Tiere,\nwelche also wohl noch unglücklicher sein müssen als wir.\"\n\n\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 1374,
+      "offset_body": 1449,
+      "offset_end": 2381,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -198,22 +231,17 @@
           "offset_end": 1416
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 1416,
           "offset_start": 1442,
           "offset_end": 1448
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n<html>\n<b>Die Hasen und die Fr&ouml;sche</b>\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\nsehr, da&szlig; sie aufs schnellste untertauchten.\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\nals wir.\"\n<br>&nbsp;\n<br>&nbsp;</html>\n"
-      },
-      "offset_header": 1374,
-      "offset_body": 1449,
-      "offset_end": 2381
+      "text": "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n<html>\n<b>Die Hasen und die Fr&ouml;sche</b>\n<p>Die Hasen klagten einst &uuml;ber ihre mi&szlig;liche Lage; \"wir leben\",\nsprach ein Redner, \"in steter Furcht vor Menschen und Tieren, eine Beute\nder Hunde, der Adler, ja fast aller Raubtiere! Unsere stete Angst ist &auml;rger\nals der Tod selbst. Auf, la&szlig;t uns ein f&uuml;r allemal sterben.\"\n<p>In einem nahen Teich wollten sie sich nun ers&auml;ufen; sie eilten\nihm zu; allein das au&szlig;erordentliche Get&ouml;se und ihre wunderbare\nGestalt erschreckte eine Menge Fr&ouml;sche, die am Ufer sa&szlig;en, so\nsehr, da&szlig; sie aufs schnellste untertauchten.\n<p>\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers&auml;ufen\nnoch ein wenig aufschieben, denn auch uns f&uuml;rchten, wie ihr seht,\neinige Tiere, welche also wohl noch ungl&uuml;cklicher sein m&uuml;ssen\nals wir.\"\n<br>&nbsp;\n<br>&nbsp;</html>\n",
+      "decode_problems": []
     }
   ]
 }

@@ -1,0 +1,187 @@
+Return-Path: <bounce-84-48213@news.example.com>
+Received: from mta7.news.example.com (mta7.news.example.com [198.51.100.87])
+	by mx2.example.org (Postfix) with ESMTPS id 3Rk8pT0nWzC1v
+	for <john@example.org>; Thu, 8 Feb 2024 09:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=news.example.com;
+	s=nl2024; t=1707383722; bh=Wp3cQ9xM1oL7bV0yH4nJ2eR8sT5kA6dZ1gF3uY0qX7c=;
+	h=Date:From:To:Subject:List-Unsubscribe;
+	b=Hn4Kd8pQ2wR7yT0mB5vX9cJ1sL6zA3fG8eN2hU5rP0qD7tW1yM4bV6xK9nC3jS8oL
+	 T2aF5gH1uY7dZ0pR4wQ9mE6vB3xN8kJ1cS5tA0yG7hL2rU4iM9nP6bX3fD8zW1qV5=
+MIME-Version: 1.0
+Date: Thu, 8 Feb 2024 09:15:20 +0000
+Message-ID: <nl-84-48213.1707383720@news.example.com>
+From: Example Platform <newsletter@news.example.com>
+To: John Doe <john@example.org>
+Reply-To: Example Platform Support <support@example.com>
+Subject: =?utf-8?Q?What_shipped_this_quarter_=E2=80=93_issue_84?=
+List-Id: Example Platform Newsletter <newsletter.news.example.com>
+List-Unsubscribe: <https://news.example.com/unsubscribe?uid=48213&h=6f1c0a>, <mailto:unsub-48213@news.example.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Precedence: bulk
+X-Campaign-Id: 84
+X-Mailer: Example Broadcast 7.2
+Content-Type: multipart/alternative; boundary="=_nl84_boundary_"
+
+--=_nl84_boundary_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+What shipped this quarter -- Example Platform newsletter, issue 84
+
+Quarterly platform update
+  We shipped 42 improvements this quarter, including a rewritten indexer,
+  faster full-text search and a new billing dashboard.
+  https://news.example.com/r/2024/q3-platform-update?uid=48213&src=nl
+
+Migrating to the v3 API
+  The v2 API enters maintenance on 1 March. This guide walks through the
+  four breaking changes and how to adapt your client.
+  https://docs.example.com/guides/v3-migration?utm_source=newsletter
+
+Customer story: Vandelay Industries
+  How a mid-size importer cut their nightly batch window from six hours to
+  eleven minutes.
+  https://news.example.com/r/stories/vandelay?uid=48213
+
+Webinar: scaling mailbox storage
+  Join our storage team on 14 February for a live walkthrough of tiered
+  blob storage and a Q&A.
+  https://events.example.com/webinars/mailbox-storage-2024
+
+Security advisory ADV-2024-0112
+  A moderate-severity issue in the attachment scanner has been fixed in
+  3.8.4. Upgrading is recommended.
+  https://security.example.com/advisories/ADV-2024-0112
+
+Hiring: senior systems engineer
+  We are looking for someone who enjoys profilers, flame graphs and shaving
+  microseconds off hot loops.
+  https://careers.example.com/jobs/senior-systems-engineer
+
+--
+Unsubscribe: https://news.example.com/unsubscribe?uid=48213&h=6f1c0a
+Example Platform Inc., 500 Market Street, Suite 900, San Francisco, CA 94105
+
+--=_nl84_boundary_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Example Platform Newsletter, issue 84</title>
+<style type="text/css">
+  body { margin:0; padding:0; background:#f2f4f7; }
+  table { border-collapse:collapse; }
+  img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+  a.cta:hover { background:#0f47bd !important; }
+  @media only screen and (max-width:600px) {
+    .wrap { width:100% !important; }
+    .stack { display:block !important; width:100% !important; }
+    h1 { font-size:24px !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background:#101828 !important; }
+    .card { background:#1d2939 !important; }
+    h1, h2 { color:#f9fafb !important; }
+    p { color:#d0d5dd !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f2f4f7;">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f2f4f7;">
+  Issue 84: the v3 API migration guide, a security advisory, and a webinar on mailbox storage.
+  &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f4f7;">
+  <tr><td align="center" style="padding:28px 12px;">
+    <table role="presentation" class="wrap card" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.1);">
+      <tr>
+        <td style="padding:24px 24px 8px 24px;" align="left">
+          <img src="https://cdn.example.com/assets/logo-2x.png" width="132" height="28" alt="Example Platform">
+          <p style="margin:16px 0 0 0;font:400 13px/1.4 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#667085;">Issue 84 &middot; February 2024</p>
+          <h1 style="margin:6px 0 0 0;font:700 28px/1.2 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">What shipped this quarter</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://news.example.com/r/2024/q3-platform-update?uid=48213&amp;src=nl" style="color:#101828;text-decoration:none;">Quarterly platform update</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">We shipped 42 improvements this quarter, including a rewritten indexer, faster full-text search and a new billing dashboard.</p>
+          <a href="https://news.example.com/r/2024/q3-platform-update?uid=48213&amp;src=nl" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://docs.example.com/guides/v3-migration?utm_source=newsletter&amp;utm_medium=email" style="color:#101828;text-decoration:none;">Migrating to the v3 API</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">The v2 API enters maintenance on 1 March. This guide walks through the four breaking changes and how to adapt your client.</p>
+          <a href="https://docs.example.com/guides/v3-migration?utm_source=newsletter&amp;utm_medium=email" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://news.example.com/r/stories/vandelay?uid=48213" style="color:#101828;text-decoration:none;">Customer story: Vandelay Industries</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">How a mid-size importer cut their nightly batch window from six hours to eleven minutes.</p>
+          <a href="https://news.example.com/r/stories/vandelay?uid=48213" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://events.example.com/webinars/mailbox-storage-2024" style="color:#101828;text-decoration:none;">Webinar: scaling mailbox storage</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">Join our storage team on 14 February for a live walkthrough of tiered blob storage and a Q&amp;A.</p>
+          <a href="https://events.example.com/webinars/mailbox-storage-2024" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://security.example.com/advisories/ADV-2024-0112" style="color:#101828;text-decoration:none;">Security advisory ADV-2024-0112</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">A moderate-severity issue in the attachment scanner has been fixed in 3.8.4. Upgrading is recommended.</p>
+          <a href="https://security.example.com/advisories/ADV-2024-0112" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px 24px;border-bottom:1px solid #e4e7ec;">
+          <h2 style="margin:0 0 8px 0;font:600 18px/1.3 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101828;">
+            <a href="https://careers.example.com/jobs/senior-systems-engineer" style="color:#101828;text-decoration:none;">Hiring: senior systems engineer</a>
+          </h2>
+          <p style="margin:0 0 12px 0;font:400 15px/1.55 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#475467;">We are looking for someone who enjoys profilers, flame graphs and shaving microseconds off hot loops.</p>
+          <a href="https://careers.example.com/jobs/senior-systems-engineer" style="display:inline-block;padding:8px 16px;background:#155eef;color:#ffffff;border-radius:6px;font:600 14px/1 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;text-decoration:none;">Read more</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:20px 24px;background:#f9fafb;" align="center">
+          <p style="margin:0 0 8px 0;font:400 13px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#667085;">
+            You are receiving this because you subscribed at
+            <a href="https://www.example.com/newsletter" style="color:#155eef;">example.com/newsletter</a>.
+          </p>
+          <p style="margin:0;font:400 13px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#667085;">
+            <a href="https://news.example.com/unsubscribe?uid=48213&amp;h=6f1c0a" style="color:#667085;text-decoration:underline;">Unsubscribe</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://news.example.com/preferences?uid=48213" style="color:#667085;text-decoration:underline;">Email preferences</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://www.example.com/privacy" style="color:#667085;text-decoration:underline;">Privacy</a>
+          </p>
+          <p style="margin:12px 0 0 0;font:400 12px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#98a2b3;">
+            Example Platform Inc., 500 Market Street, Suite 900, San Francisco, CA 94105, USA
+          </p>
+          <img src="https://news.example.com/o/48213/84.gif" width="1" height="1" alt="">
+        </td>
+      </tr>
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>
+
+--=_nl84_boundary_--

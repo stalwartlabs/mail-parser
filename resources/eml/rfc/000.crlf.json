@@ -1,66 +1,109 @@
 {
-  "html_body": [
-    1,
-    2
-  ],
-  "text_body": [
-    1,
-    2
-  ],
-  "attachments": [
-    4,
-    5,
-    6,
-    7
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "html_body": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "attachments": [
+        6,
+        7
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 8,
+      "container": 7,
+      "source": "raw",
+      "text_body": [
+        8
+      ],
+      "html_body": [
+        8
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3,
+        6,
+        7
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 247,
+      "offset_end": 1925,
       "headers": [
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 0,
           "offset_start": 13,
           "offset_end": 19
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Nathaniel Borenstein",
                   "address": "nsb@nsb.fv.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 19,
           "offset_start": 24,
           "offset_end": 64
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Ned Freed",
                   "address": "ned@innosoft.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 64,
           "offset_start": 67,
           "offset_end": 98
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 1994,
               "month": 10,
               "day": 7,
@@ -77,25 +120,25 @@
           "offset_end": 143
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "A multipart example"
+            "text": "A multipart example"
           },
           "offset_field": 143,
           "offset_start": 151,
           "offset_end": 173
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "unique-boundary-1"
-                }
+                [
+                  "boundary",
+                  "unique-boundary-1"
+                ]
               ]
             }
           },
@@ -103,44 +146,54 @@
           "offset_start": 186,
           "offset_end": 245
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3,
-          6,
-          7
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 247,
-      "offset_end": 1925
+      ]
     },
     {
-      "headers": [],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "... Some text appears here ...\r\n\r\n[Note that the blank between the boundary and the start\r\nof the text in this part means no header fields were\r\ngiven and this is text in the US-ASCII character set.\r\nIt could have been done with explicit typing as in the\r\nnext part.]\r\n"
-      },
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
       "offset_header": 547,
       "offset_body": 549,
-      "offset_end": 818
+      "offset_end": 818,
+      "headers": [],
+      "text": "... Some text appears here ...\r\n\r\n[Note that the blank between the boundary and the start\r\nof the text in this part means no header fields were\r\ngiven and this is text in the US-ASCII character set.\r\nIt could have been done with explicit typing as in the\r\nnext part.]\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 841,
+      "offset_body": 887,
+      "offset_end": 1001,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "US-ASCII"
-                }
+                [
+                  "charset",
+                  "US-ASCII"
+                ]
               ]
             }
           },
@@ -149,27 +202,37 @@
           "offset_end": 885
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "This could have been part of the previous part, but\r\nillustrates explicit versus implicit typing of body\r\nparts.\r\n"
-      },
-      "offset_header": 841,
-      "offset_body": 887,
-      "offset_end": 1001
+      "text": "This could have been part of the previous part, but\r\nillustrates explicit versus implicit typing of body\r\nparts.\r\n",
+      "decode_problems": []
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "multipart",
+      "children": [
+        4,
+        5
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 1024,
+      "offset_body": 1088,
+      "offset_end": 1416,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "parallel",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "parallel",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "unique-boundary-2"
-                }
+                [
+                  "boundary",
+                  "unique-boundary-2"
+                ]
               ]
             }
           },
@@ -177,27 +240,31 @@
           "offset_start": 1037,
           "offset_end": 1086
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          4,
-          5
-        ]
-      },
-      "offset_header": 1024,
-      "offset_body": 1088,
-      "offset_end": 1416
+      ]
     },
     {
+      "id": 4,
+      "message": 0,
+      "parent": 3,
+      "kind": "binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "media_body",
+      "offset_header": 1109,
+      "offset_body": 1173,
+      "offset_end": 1260,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "audio",
-              "c_subtype": "basic",
-              "attributes": null
+            "content_type": {
+              "type": "audio",
+              "subtype": "basic",
+              "attributes": []
             }
           },
           "offset_field": 1109,
@@ -205,32 +272,43 @@
           "offset_end": 1136
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 1136,
           "offset_start": 1162,
           "offset_end": 1171
         }
       ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "... base64-encoded 8000 Hz single-channel\r\n    mu-law-format audio data goes here ...\r\n"
-      },
-      "offset_header": 1109,
-      "offset_body": 1173,
-      "offset_end": 1260
+      "binary": "base64encoded8000Hzsinglechannelmulawformataudiodatagoeshere",
+      "decode_problems": [
+        "malformed_transfer_encoding"
+      ]
     },
     {
+      "id": 5,
+      "message": 0,
+      "parent": 3,
+      "kind": "binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "media_body",
+      "offset_header": 1283,
+      "offset_body": 1346,
+      "offset_end": 1391,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "jpeg",
-              "attributes": null
+            "content_type": {
+              "type": "image",
+              "subtype": "jpeg",
+              "attributes": []
             }
           },
           "offset_field": 1283,
@@ -238,32 +316,42 @@
           "offset_end": 1309
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 1309,
           "offset_start": 1335,
           "offset_end": 1344
         }
       ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "... base64-encoded image data goes here ...\r\n"
-      },
-      "offset_header": 1283,
-      "offset_body": 1346,
-      "offset_end": 1391
+      "binary": "base64encodedimagedatagoesherQ==",
+      "decode_problems": [
+        "malformed_transfer_encoding"
+      ]
     },
     {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 1439,
+      "offset_body": 1470,
+      "offset_end": 1615,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "enriched",
-              "attributes": null
+            "content_type": {
+              "type": "text",
+              "subtype": "enriched",
+              "attributes": []
             }
           },
           "offset_field": 1439,
@@ -271,126 +359,127 @@
           "offset_end": 1468
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "This is <bold><italic>enriched.</italic></bold>\r\n<smaller>as defined in RFC 1896</smaller>\r\n\r\nIsn't it\r\n<bigger><bigger>cool?</bigger></bigger>\r\n"
-      },
-      "offset_header": 1439,
-      "offset_body": 1470,
-      "offset_end": 1615
+      "text": "This is <bold><italic>enriched.</italic></bold>\r\n<smaller>as defined in RFC 1896</smaller>\r\n\r\nIsn't it\r\n<bigger><bigger>cool?</bigger></bigger>\r\n",
+      "decode_problems": []
     },
     {
+      "id": 7,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 1638,
+      "offset_body": 1670,
+      "offset_end": 1900,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
-              "attributes": null
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
             }
           },
           "offset_field": 1638,
           "offset_start": 1651,
           "offset_end": 1668
         }
+      ]
+    },
+    {
+      "id": 8,
+      "message": 1,
+      "parent": null,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [
-            0
-          ],
-          "text_body": [
-            0
-          ],
-          "attachments": [],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "from",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "mailbox in US-ASCII",
-                          "address": null
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 1670,
-                  "offset_start": 1675,
-                  "offset_end": 1699
-                },
-                {
-                  "name": "to",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "address in US-ASCII",
-                          "address": null
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 1699,
-                  "offset_start": 1702,
-                  "offset_end": 1726
-                },
-                {
-                  "name": "subject",
-                  "value": {
-                    "Text": "(subject in US-ASCII)"
-                  },
-                  "offset_field": 1726,
-                  "offset_start": 1734,
-                  "offset_end": 1758
-                },
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "text",
-                      "c_subtype": "plain",
-                      "attributes": [
-                        {
-                          "name": "charset",
-                          "value": "ISO-8859-1"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 1758,
-                  "offset_start": 1771,
-                  "offset_end": 1804
-                },
-                {
-                  "name": "content_transfer_encoding",
-                  "value": {
-                    "Text": "Quoted-printable"
-                  },
-                  "offset_field": 1804,
-                  "offset_start": 1830,
-                  "offset_end": 1849
+      "role": "text_body",
+      "offset_header": 1670,
+      "offset_body": 1851,
+      "offset_end": 1900,
+      "headers": [
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "mailbox in US-ASCII",
+                  "address": null
                 }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Text": "... Additional text in ISO-8859-1 goes here ...\r\n"
-              },
-              "offset_header": 1670,
-              "offset_body": 1851,
-              "offset_end": 1900
+              }
+            ]
+          },
+          "offset_field": 1670,
+          "offset_start": 1675,
+          "offset_end": 1699
+        },
+        {
+          "name": "To",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "address in US-ASCII",
+                  "address": null
+                }
+              }
+            ]
+          },
+          "offset_field": 1699,
+          "offset_start": 1702,
+          "offset_end": 1726
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "(subject in US-ASCII)"
+          },
+          "offset_field": 1726,
+          "offset_start": 1734,
+          "offset_end": 1758
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "ISO-8859-1"
+                ]
+              ]
             }
-          ]
+          },
+          "offset_field": 1758,
+          "offset_start": 1771,
+          "offset_end": 1804
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "Quoted-printable"
+          },
+          "offset_field": 1804,
+          "offset_start": 1830,
+          "offset_end": 1849
         }
-      },
-      "offset_header": 1638,
-      "offset_body": 1670,
-      "offset_end": 1900
+      ],
+      "text": "... Additional text in ISO-8859-1 goes here ...\r\n",
+      "decode_problems": []
     }
   ]
 }

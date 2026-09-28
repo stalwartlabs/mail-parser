@@ -1,0 +1,12 @@
+Content-Type: multipart/alternative; boundary=a
+
+--a
+Content-Type: text/plain
+Content-Disposition: attachment
+
+plain
+--a
+Content-Type: text/html
+
+<p>html</p>
+--a--

@@ -1,0 +1,11 @@
+From: Art Vandelay <art@vandelay.com>
+To: Colleagues <colleagues@vandelay.com>
+Subject: HTML only alternative
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="festivus"
+
+--festivus
+Content-Type: text/html; charset="us-ascii"
+
+<html><p>I was thinking about quitting the &ldquo;exporting&rdquo; to focus just on the &ldquo;importing&rdquo;,</p><p>but then I thought, why not do both?</p></html>
+--festivus--

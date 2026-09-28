@@ -4,12 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
+//! Maildir and Maildir++ folders.
+
 use std::{
     fs, io,
     path::{Path, PathBuf},
 };
 
 /// Maildir folder iterator
+#[derive(Debug)]
 pub struct FolderIterator<'x> {
     inbox: Option<MessageIterator>,
     it_stack: Vec<fs::ReadDir>,
@@ -18,6 +21,7 @@ pub struct FolderIterator<'x> {
 }
 
 /// Maildir message iterator
+#[derive(Debug)]
 pub struct MessageIterator {
     name: Option<String>,
     cur_it: fs::ReadDir,
@@ -36,11 +40,17 @@ pub struct Message {
 /// Flags of Maildir message
 #[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd, Ord)]
 pub enum Flag {
+    /// `P`: the message was resent, forwarded or bounced.
     Passed,
+    /// `R`: the message was replied to.
     Replied,
+    /// `S`: the message was read.
     Seen,
+    /// `T`: the message is marked for deletion.
     Trashed,
+    /// `D`: the message is a draft.
     Draft,
+    /// `F`: the message is flagged.
     Flagged,
 }
 
@@ -118,7 +128,8 @@ impl Iterator for FolderIterator<'_> {
         }
 
         loop {
-            let entry = match self.it_stack.last_mut().unwrap().next() {
+            let entries = self.it_stack.last_mut()?;
+            let entry = match entries.next() {
                 Some(Ok(entry)) => entry,
                 Some(Err(err)) => return Some(Err(err)),
                 None => {
@@ -338,13 +349,13 @@ mod tests {
                 .join("maildir"),
             ".".into(),
         )
-        .unwrap()
+        .expect("maildir exists")
         {
-            let folder = folder.unwrap();
+            let folder = folder.expect("folder is readable");
             let name = folder.name().unwrap_or("INBOX").to_string();
 
             for message in folder {
-                let mut message = message.unwrap();
+                let mut message = message.expect("message is readable");
                 assert_ne!(message.internal_date(), 0);
                 assert!(message.path.exists());
                 message.internal_date = 0;

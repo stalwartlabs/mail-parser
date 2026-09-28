@@ -1,0 +1,12 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+body
+--m
+Content-Type: text/plain
+Content-Disposition: inline; filename=notes.txt
+
+notes
+--m--

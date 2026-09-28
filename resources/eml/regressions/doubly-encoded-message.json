@@ -1,0 +1,148 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        0
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 1,
+      "container": 0,
+      "source": {
+        "decoded": 0
+      },
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        1
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 2,
+      "root": 2,
+      "container": 1,
+      "source": {
+        "decoded": 0
+      },
+      "text_body": [
+        2
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 0,
+      "offset_body": 64,
+      "offset_end": 133,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 29
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 29,
+          "offset_start": 55,
+          "offset_end": 63
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 1,
+      "parent": null,
+      "kind": "message",
+      "nested": 2,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 0,
+      "offset_body": 30,
+      "offset_end": 51,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": []
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 29
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "message": 2,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 30,
+      "offset_body": 46,
+      "offset_end": 51,
+      "headers": [
+        {
+          "name": "Subject",
+          "value": {
+            "text": "inner"
+          },
+          "offset_field": 30,
+          "offset_start": 38,
+          "offset_end": 45
+        }
+      ],
+      "text": "body\n",
+      "decode_problems": []
+    }
+  ]
+}

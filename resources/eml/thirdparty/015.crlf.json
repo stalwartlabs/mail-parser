@@ -1,56 +1,124 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2,
+        4,
+        6
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 1,
+      "root": 3,
+      "container": 2,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        3
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 2,
+      "root": 5,
+      "container": 4,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        5
+      ],
+      "has_attachments": true
+    },
+    {
+      "id": 3,
+      "root": 7,
+      "container": 6,
+      "source": "raw",
+      "text_body": [
+        7
+      ],
+      "html_body": [
+        7
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 10644,
+      "offset_end": 20239,
       "headers": [
         {
-          "name": "return_path",
+          "name": "Return-Path",
           "value": {
-            "Text": "jsterr@proxforge.de"
+            "text_list": [
+              "jsterr@proxforge.de"
+            ]
           },
           "offset_field": 0,
           "offset_start": 12,
           "offset_end": 36
         },
         {
-          "name": "authentication_results",
+          "name": "Authentication-Results",
           "value": {
-            "Text": "gmx.net; dkim=pass header.i=@proxforge.de"
+            "text": "gmx.net; dkim=pass header.i=@proxforge.de"
           },
           "offset_field": 36,
           "offset_start": 59,
           "offset_end": 104
         },
         {
-          "name": "authentication_results",
+          "name": "Authentication-Results",
           "value": {
-            "Text": "gmx.net; dkim=pass header.i=@proxforge.de"
+            "text": "gmx.net; dkim=pass header.i=@proxforge.de"
           },
           "offset_field": 104,
           "offset_start": 127,
           "offset_end": 172
         },
         {
-          "name": "received",
+          "name": "Received",
           "value": {
-            "Received": {
+            "received": {
               "from": {
-                "Name": "mail.proxdocs.de"
+                "name": "mail.proxdocs.de"
               },
               "from_ip": "159.195.48.175",
               "from_iprev": null,
               "by": {
-                "Name": "mx-ha.gmx.net"
+                "name": "mx-ha.gmx.net"
               },
-              "for_": "jonas.sterr@gmx.net",
+              "for": "jonas.sterr@gmx.net",
               "with": "ESMTPS",
               "tls_version": null,
               "tls_cipher": null,
@@ -77,36 +145,36 @@
           "offset_end": 380
         },
         {
-          "name": "dkim_signature",
+          "name": "DKIM-Signature",
           "value": {
-            "Text": "v=1; a=rsa-sha256; s=202512r; d=proxforge.de; c=relaxed/relaxed;\r\n\th=Message-ID:Subject:To:From:Date; t=1771018820; bh=3DVQev0rnzsjiS18K0C6ooW\r\n\tRAOJw4r7pXxCK8W5rko0=; b=JrERzRo7EhsilmRGVgzSSu2t0YJ4Z+sT9qTgzHMoSqHmLDiE9I\r\n\tNbKRrleVsnCD8Al/EBGQGOQElAaEMEA24cajD7HdeLqXfh8KLGZEEgjZNFNYlagnCuOdDmCt8Mw\r\n\t/hvvtAnMw312DaRfHmtbIsJYo14Qp2lPryzZDMxfpfkbVRZd/aY5MjJKSxaQg1/Vfr+ZNPpMazc\r\n\tIbiEVPwM7+1mDZ4KiBKAsoqFmHB/2rWUJHRCMO8NGtkzu3WxQNUgvcb9cKbkVL933N9jA34iI/W\r\n\ts2S2EJsYHTj94N+yu/UYxP77BO3YB6NE8leSv2PH/HXigTxVSSXsnDAfVU1ZhOQkZyg==;"
+            "text": "v=1; a=rsa-sha256; s=202512r; d=proxforge.de; c=relaxed/relaxed;\r\n\th=Message-ID:Subject:To:From:Date; t=1771018820; bh=3DVQev0rnzsjiS18K0C6ooW\r\n\tRAOJw4r7pXxCK8W5rko0=; b=JrERzRo7EhsilmRGVgzSSu2t0YJ4Z+sT9qTgzHMoSqHmLDiE9I\r\n\tNbKRrleVsnCD8Al/EBGQGOQElAaEMEA24cajD7HdeLqXfh8KLGZEEgjZNFNYlagnCuOdDmCt8Mw\r\n\t/hvvtAnMw312DaRfHmtbIsJYo14Qp2lPryzZDMxfpfkbVRZd/aY5MjJKSxaQg1/Vfr+ZNPpMazc\r\n\tIbiEVPwM7+1mDZ4KiBKAsoqFmHB/2rWUJHRCMO8NGtkzu3WxQNUgvcb9cKbkVL933N9jA34iI/W\r\n\ts2S2EJsYHTj94N+yu/UYxP77BO3YB6NE8leSv2PH/HXigTxVSSXsnDAfVU1ZhOQkZyg==;"
           },
           "offset_field": 380,
           "offset_start": 395,
           "offset_end": 925
         },
         {
-          "name": "dkim_signature",
+          "name": "DKIM-Signature",
           "value": {
-            "Text": "v=1; a=ed25519-sha256; s=202512e; d=proxforge.de; c=relaxed/relaxed;\r\n\th=Message-ID:Subject:To:From:Date; t=1771018820; bh=3DVQev0rnzsjiS18K0C6ooW\r\n\tRAOJw4r7pXxCK8W5rko0=; b=eCgn1xsJ+/rANY9vSBsSCEJz6YdNERmeE4iP7VhkKQFfVftEKD\r\n\t5wyLyA2tHh0f00ik7TOjbSZ7bo4oQa03aOCA==;"
+            "text": "v=1; a=ed25519-sha256; s=202512e; d=proxforge.de; c=relaxed/relaxed;\r\n\th=Message-ID:Subject:To:From:Date; t=1771018820; bh=3DVQev0rnzsjiS18K0C6ooW\r\n\tRAOJw4r7pXxCK8W5rko0=; b=eCgn1xsJ+/rANY9vSBsSCEJz6YdNERmeE4iP7VhkKQFfVftEKD\r\n\t5wyLyA2tHh0f00ik7TOjbSZ7bo4oQa03aOCA==;"
           },
           "offset_field": 925,
           "offset_start": 940,
           "offset_end": 1209
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 1209,
           "offset_start": 1222,
           "offset_end": 1228
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2026,
               "month": 2,
               "day": 13,
@@ -123,86 +191,86 @@
           "offset_end": 1267
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Jonas Sterr - ProxForge",
                   "address": "jsterr@proxforge.de"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 1267,
           "offset_start": 1272,
           "offset_end": 1320
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Jonas Sterr",
                   "address": "jonas.sterr@gmx.net"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 1320,
           "offset_start": 1323,
           "offset_end": 1359
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Re: (#5290765) Proxmox Shop E-Mails"
+            "text": "Re: (#5290765) Proxmox Shop E-Mails"
           },
           "offset_field": 1359,
           "offset_start": 1367,
           "offset_end": 1405
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "7da78721a8a234894af702fe25fc64a5@proxforge.de"
+            "text_list": [
+              "7da78721a8a234894af702fe25fc64a5@proxforge.de"
+            ]
           },
           "offset_field": 1405,
           "offset_start": 1416,
           "offset_end": 1466
         },
         {
-          "name": {
-            "other": "X-Sender"
-          },
+          "name": "X-Sender",
           "value": {
-            "Text": "jsterr@proxforge.de"
+            "text": "jsterr@proxforge.de"
           },
           "offset_field": 1466,
           "offset_start": 1475,
           "offset_end": 1497
         },
         {
-          "name": "organization",
+          "name": "Organization",
           "value": {
-            "Text": "ProxForge"
+            "text": "ProxForge"
           },
           "offset_field": 1497,
           "offset_start": 1510,
           "offset_end": 1522
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "=_2d98f6c3ddf4b54299ae2604b2717254"
-                }
+                [
+                  "boundary",
+                  "=_2d98f6c3ddf4b54299ae2604b2717254"
+                ]
               ]
             }
           },
@@ -211,65 +279,65 @@
           "offset_end": 1602
         },
         {
-          "name": {
-            "other": "Envelope-To"
-          },
+          "name": "Envelope-To",
           "value": {
-            "Text": "<jonas.sterr@gmx.net>"
+            "text": "<jonas.sterr@gmx.net>"
           },
           "offset_field": 1602,
           "offset_start": 1614,
           "offset_end": 1638
         },
         {
-          "name": {
-            "other": "UI-InboundReport"
-          },
+          "name": "UI-InboundReport",
           "value": {
-            "Text": "unknown:2;M01:P0:KBHYSPmQwK8=;oojtM0FZyAHR7/Y3mgLFUSQnTi9t\r\n PQY8CE13YZiKoSyqF9S9wDRJFgJbDLvvGwMob/QZbKaNo3Zrvy6xSsTvz7GZOnFVvGYDDmGI0\r\n G+YbrmggIUnC7kCF8YeWHQ6m71Icss82mG8K2t5gD8AUVw2OjnPGELAUWzuVwHzyLWFfszw7I\r\n p8Zz8mEwnLlD620qJ03DpRQb/1IGzue+IVWW9vwNOky/GuCj9fi3eTOOVeDDi5jtedU1JFfsC\r\n qLmyJWlF/oEEJM90HkWxsAalNGUrCNJPMVm4JiSn07nx2tq9JyO9Mxwh2OrhPB7L3UFbBNzCl\r\n q2ypMrTz1q1ax2iX3rmz6QKnNoD/qg6lMM0BSxspK6X3IsDXAhiMOpMYOX2MbApwzSyYRCCFU\r\n leaqO+wq5g6tQ7EEtHKD1flIkTaAoK+wkDsMMy0TCX1p5+QXwb7rRNOsupBFMhmPBj/G/eaK3\r\n mkRmkgXCjJ0An9U0aO+x4jIVWBPambJeZD8HpsAUBVNFokOpQMBadbKyaeYdiG0+bFSA1GqAk\r\n pLFgntEx4hOy/smV4v5EPG3FBALoRVjx09EORbOAchLK+R2UaeaN/6Z2EUCew1YaRqoimX5JK\r\n OOmqJJC6hsuH9LqR4XeI2/NAJzKHZedUvMNI1IJlcWX7aIEYqM6YRa0mAIyPnnNUr/Me9GTr+\r\n c3wZS1Un6zWPFC6HZ8S9Z5TT4DRPDp/TFbkaBKDYsXeRWtmKJDIBNaNQfNTSAmKkYHfSiAVX9\r\n USc2o1l/g+IlkRW04GddrnFzORzsRtW/kruLqhHtWF36ZESkkz+M9+Stvl5m4mxl91PVyTc99\r\n BzBeTu/+XJJi3kExsOnsuB09B9mekryPlA3p1YpIshCDzSicvAOJubqsFJ6epiiW6jSpih/bM\r\n KQ/u/zEsD4ORwTckjjY5UEEfvmP/Nkn1AbmasZXwL82L44p6zSx+NssJqCLuNVZyyBWLmJ/LO\r\n eqtSx45KC+PN1nwGS0GcYCSsyZJzA1mfh582MRgmWeyOlnJUenBqdkbCLFLxE+xOHTHy1N3Cm\r\n 1X4ioXNoCcSpvnDRC7nlZXCTqX0xyjD9ES7Ei3XfK4tggRwzHwXwKX7Zb2/kA1azWaNLBBxl1\r\n 53MRCbUA7h8A/pQcki9rsO8Jz+ZpP2ofwnFkJ2R90BSTjEQo0JLYyxd0/0tvVXEPQDhhUa6/z\r\n uVC0SYouusMl7exE/KhWzfMofegEBnmuSx2pWCQl6BokTQytQ6rsgsD9L9QkIwNXtT+qcDhR7\r\n cgdVDRWrU0gtkL9oVZO87VK9frmVzwQfXOVgKaL+tQ4zAEz74NObu9ZY7T8mjN2mJ2WlZMaVR\r\n fjUdsuoV/Grqz1LdECcnP799gMw4OnNuQgtgRTd1w1j9NM1JzxJduwRyM62VS18GEmz7COKPX\r\n TrUy/nUiURIghC6t5CHFEVCL+t8mwtdSgflw6w2Bjv2xR4h8iScr5qI7XQBBJxS0v2NO6iHfT\r\n 3yQwmHU+x0h2L6MUZ5TmIOI1mCoupItmFPKer8eVbubzay0oZdfbSo3k+z9HtXwWiZzkY06ba\r\n /CaK71GBhjhE/1wE0WRGBVkOEa1GnsUTLg3D7EklvAuMzs9pot1CliY7yhCFNQHjqXfWQ+OGu\r\n e9Ktp1kC0FO/b26KzyasKGmZjAv0S0qqReNa90Oj10DjVM+Oq6gL1J3243K6SZDAQO++PacwR\r\n YZrvKnDbfKW/xjN3jpRjeOCUFIVYZeQgafabZ6OMrqRdMZ12QamtF44hmmlw+LCdaweCry2de\r\n obcOURJ3dmYCx0aL/BxuaKh2Ft4njoIMhV21ngSPc0+NPMg3zG1SLw/2icd322SxSQWpLn6HX\r\n TYj6XcVUMFvPPsP4+6av/9v4ztuA8D+SsBjTzBm+rpRJ18t9nYhimOe5gvNnZgOm3HN81VO4+\r\n PYWQiUkn/SQkkRB4DIFc8a6vb95v6gaTTwZnrLWovUrg1yIHnyHFCfDuP1j4WMXDM/93lzOgz\r\n KEgD0lYCxML/kozvdUVeiZQ7OtMcolNt1+0cXaTvloNIfdEVoJMIpaliXzpwO57tjtcjOFgSf\r\n jN9iiV3hjXj5qeXZ0+MXw7vpDg3PwJLzna6U5st+dUjyLUtrfFOnTKWc307xR9JYceD3Ljxld\r\n lZ6i+KszIZfRiIZ5Cmn38i8o+bWcUZfuP3Vlc9FYD2aw6m85/0SyYxbptMKfBSa8oR30k5nQP\r\n 79BXqsvECuz/ZcZZFsL15y3SRMQS61o71/xUnNzYpSQzF2EzS9nbt5HOqXAC0pqo/aGqdI3oe\r\n fIIHRQfpvRmDLcQdlbB0teQ+xUQNpcRSPAw24uKJTUdqEZXSWT7KvPwZd4qGZv7He6mTtXGGc\r\n Av67XX+ZkaezmsZiuMgle3gdJiAEbCIprbJ66pcQDcU/DQVXjwYAEMDhU5rS1h6iPzGwGFWev\r\n Ix1YN90ndl8SVdBUw5UTHKfjI91Ri00X/CFN4YlL3J4D91PfH3W9x465Z+hv+wpcj13GtlKbO\r\n l6Xpir8pYLFAw7AV3xkgQTI66tSiTXED1LXOuHbmwOGW400AOQ2RZabAMcacZJdRfLVyXsjPu\r\n nkDuGe5Qigy34THwdH8/Xj7a4MK4ih/GXdhCiMQ2hn8DvbVxQWGiFWCUUJaWtujdN2DaaLQw5\r\n j3wDOoS7cD8WgEU68++Lg+DP4ryZtHb+vPaxsYdzbn8tR4jOdCBAxMhJ8Z1z+xrb/JzIUfACB\r\n jMYLuUg7Rj5gqzZ+G2p2bs3mD8rnMnkHwh/Xaxo7rwAxf7B8q2pSIaZgdzdpEhxqc0JwlrPu6\r\n MJYQWeJ+dHkn2iTuAkvwRZBOwaPBspgD0nwNIPODnsC5lg9pWtciWcNWzSm6O8eNrOsj1qkrB\r\n oMB7GgY2VOyVA9UQtp4ZhmhIhm08BM6y0X1o63Sh1KBgJVLmOFgvnWv2s/0sQ4CV6Wep6kxWo\r\n 9dr9g9UcrMQ2E7PqJRqG08CUM1WUjtxZupzGqFcC66l/nnK4+96Nr6DuIeE1nwReSVwlZnfWP\r\n UhN/17QwLqGvTAWxbkbEzp2UqwqpGq2VrR1hoBuJPZx0CGtr6lVvwpRqIdxwhM7QPDv+V+Nsc\r\n 3NzNYG/Yz+2Cf2Ib6G+V5b8GpKiLgR5r00kYyUapSavELNinCNyKt764s5BxaaS9T0ak+aB+G\r\n FLCUeYsxGrLkuHnuwZdaW3x/CAnv9IZuC5Y2Vkjm1LKJyQ1xGAJPovuj/MntW81q5S4Dot2qU\r\n gWGtBMqekAlRvXjI8Wr4RGcjyQ7jPMxf1VyCVyPrftozBaTgtl624VhqfoaunRRYzYG/RtQSM\r\n tFnjsneH2TY8bj4rCOghnJR6eqS57ac39iYIzUOHsOVHT2qxWA8DXdWpfnpwMHJ55ZWcFbs2Z\r\n yoy9Wgr+7bzpABc9Syk/7JHOPL4houfWSeZom3KWFYFSVkMQZTLiyfPOxkWsCJ7mDJ/F3DRdd\r\n Q8H+t1LuWcPovkVsYA2K70ExrChVR/bmvB+5Ya5Ed2J6Tl53lgYZV1Sl8XlYcv+GBCnYCwTx1\r\n 49gAzjzrwHeyP6FfX1MZXG82gvAriN2odabGtz9hqGX9HCh1CffRrPR7gqs+W2a2lx23QlQMp\r\n hs7t2wG4VejcshP+7Kit9zCiLsZQPg2Apn5Ee3zUAelyZbTBN6a4zIUDrUbPgYu7J/Fzr61u2\r\n PX7goJ1VDeB9WX9zpUJi4CXI1OU/ON+jrkvg22wU7gp4RdXJylgM9GLjBq18eUFLkiav/012T\r\n 52nlGnc7dhcwyVud/pq2mYjULCYXgaszl1L9b7JnlVOMRnYZMyNqIDHRrpnZ0N9lbuKGNrcqs\r\n IfB8iIiYcjjqiWlNSIpaU8mdwlWuc+D2F/Gk+Oa//u7DoCyH/w7nWp5VVS5gB/i0z7a7x95T+\r\n IMxOUms+wRatGDO75YHrSXA83PjKyxU4/5A9d3ppY3B+cgVduUG0lkXh4Y/PBzrK/QY9KyGzf\r\n jSJauR6qp4zfbNI0SGwcmrLM2tC2nSOxEvCq72gLIBLzH7hict5iQn0v3QOA3NEkwcBxdwree\r\n 0YC5B9Me/iyrXzv4ileedwC5CB9WRiZqTJJvUdqdPLgQr9hEEfY7f3255iXwNF1HBPghyyxm2\r\n CZex5MTNb1tzQCR3xE+gItL+2E4oaoRMWiTRWRZNYsktBnRL7JMwvFmSRXwJxdMN11RpRJi2R\r\n z37GviMoUvOtaDmj7Yvqvxk7xBA6iqyHX3MC7t1dsXcTbHPb4aCQY7oUj4HNuaAAYOUI0EVNx\r\n sOmPxptupvKbCmdDnzREnWIz5jv378EDUpKIlIsOmIOhpxi81gAevEigeVCA9wstM/e9mcDii\r\n LfekTt7+7dQHZ+8WdWFWyA66sYRQ1UDgFEI7R3RAC7TirzTTrEvqbscm2NSdCz0r8rPGkzrXF\r\n eLLzkN7FeeYoTjsZhsTEBv1i3Mw2xtlKCpdVJu9aW+A+zGqLVcTEfA1n//tFTOYYaMATpShaT\r\n kO9nkkFB+HyRUGL7zDdtEoO1JOQvjs+7ZtGpOSDWFHAaWJfAdvrEKg1mOBKjfSbkaTfAZaNnt\r\n yfkCS96MtGRQcuiQ/N2CneYqHeU/dU/AltRD3QZqO1v576jMAPf5yBfUjPQXSljKc1ZGRiPoU\r\n R/TY5M3c7BtjGii7TG5CNj8tq59C0FPseWXritpkiYY/11p4LqmwwCiG58jGZGwK31DJksa8s\r\n zu2d7AnQSDC+iY1uyBNXOXE7t29ZDR0+kwXV22wA65vE8ltl4ni4+Tzz7b6rHc2HDxo/kVSKP\r\n 9/zj98cRW/cvqQ1S5o6hSS/ebY96u/l1RkwRvvnZCkLIsdE5Fpqwqi5bUoLbohxHUcLKlaQxC\r\n mJE4N0E5u3cl6l2Xv2H2zBt/YZOz0yusE4QC8i5JIGblydgi3rkFahZWjHGUFehGvohmeb3Cp\r\n TwimI2bWifYRjqqZphI8y76B4LpQFH3WvcDpfvd1fNEVHSqlU15rppj14ejWkq0ORPG2NfBBO\r\n 704JfDns3eUUUiAi2EdfgRqb90F6OYJqH8YxJ+mu7tBecH3816X8K9W48n7wZMSVqL3udxcKL\r\n ChW36RqwcZityv42rMdrEb1q0h9/aLXgfhmVQC5a7l6R8mhjppfwZVz6RxDKNsPjC9KPtplpy\r\n Tlropd05gSUXe0ZMhASch3GN7Ghu1SAKHdUZwNuXLLw+D5gv4avbsw2tcX2Z21iMDRrfJfm3z\r\n hSKLiGbs4zZZXmPRSU3SIvohrYHLyGfMWl26tXrvDyOGpbCkw+6AWTDr968s/j13QtxnaqKqg\r\n +NOklUrxfT2yVRe9mY/uEeCoyjzv7LuhI+CupBoshJ8ssL3mWFZUO/GawxntwwnsAsowKSalG\r\n uOtDpZlvUrysRcTjdJdKYGRyiuZkCKpiYh8p/zB56L7vzrHkgn7yJIgmEKDuKXFIFE/7wbRZi\r\n jFYN80KrzvGx0Y4Pg2MhdSUNwqlY53KVcl1Zec6MF0FMFEri5X/BHohPYU2z6vcbAdlccsrRh\r\n 92lT1kqcifHR3rp6XPApO/EhbBt8iUsIBJU8ovROTuTNFHNmFWJ539GrhnYHX6cjqAPbk/AJZ\r\n 8Hjtxv5vr+MUdFh0q//3PkioJli/OEhuLjhv3dJOSjpBh7DhJk4HDPHqOxEDbdHOzu7xgUM95\r\n 4lDba9XujiCGydn9Fy7Ml4Hq0n6CHQZ20GPQlQt1tjW6yqAYfZqgn8QVfv4qLBsXIJMnEDRjV\r\n RFIWmUFDJ5Cnz+Ba6vRIVGxxPGbh4k9wBmidV/l6GGbWdzofgGsqIPkGHbGugFrW/CERhbz3w\r\n mGrPG5p/Zh5cpUd2gHi1TuNFN1NbRbCdzbr+43/ZHoeZ7sj1ryLy2bDGAssFzEykUTkbc3HJl\r\n t6gBc3XFHAuhpPawsG78GQDrI3J7rhBc3zmR1SQJYK37Xp4O+2BWJfF7X0W++J5XDFDsDQPMq\r\n 3/qx+Bo22qm0ysa/AJYH7w6DB6LnFVsW7eqp3sa6oCouZ8UG8PoK0qsJnc6afHpERgOvYWQRa\r\n e/uD8rYOjlpYF6Bd73IpfZg3OQSc5d+8IYR4bomqjAPfmSZ3v7udYR3PZv9riJsJgLoNnZdD/\r\n N8cbXB0HxE8DWlcQstqpDNSB0h6WRCKXZxEIn37Gotz+4DIwWXVyccsH0g0bZnzUU83UJ9sBf\r\n UfwR1wic6wa1KDd2sYajH4M3jAVE2UUSY2fv6Lv+4BmSg6LdLUWl74npe2Kzway1v+2PCKD5t\r\n k5OnZK/J5io3NjLf5Ex67hnrWiJ9C031edxqvTiKbHowSrJoxlyVburh0+oF/s4re0vdprDuY\r\n 0iPFQIdFF6yqs9+Av2qTUtUjYkiGbxfAzBm4BO8sdjMtMlGk38yK3O+w+jfup3EDzOEzfdqfU\r\n K0sn6IBrdTdTPRE5FDmnipxvm0ayy+u3MmM+ursqvVA6s3ZuQQUVEAIYu0IpskmxwzHPHAe3j\r\n PH/v2K/akPg/4yO+POE+TcwOxa6y8YxQ0Fk0WwVEerA+uDMN6FNY+rcmZqkss4BYPzfAqKEBT\r\n kT7FHG6MnoQozq+mU/yx9SiKR+yHxFJjDDMXjOhy68PX7kgGgBgrqXkA90yt7keoVjgWAPh5d\r\n +NZ6HTUy/V9pJ/t0+Kh/H+wJ7dTId6YOQFXzW0mDDWjH+HU5h7bau5b2FKZGFq+w0bEJDwWwM\r\n fK4YEln/gvi/KvVTyGB4SgMIPs+rHZuWBW541Ny/o/9v/0ZXFK7GRqgkSpGPdPUsxvn2eZ3XF\r\n H3MPB2MlcghXUMrHwzVPIfEU60sUGjwBANMlXDgQoeVWyavoYSpfbcTuEirXEfkSoUaMQs85U\r\n vnbMq3Ax7mO6yQhYQ6ynXX1G5j9JNawGwA6Y0FZS6Tb9dU9mE+lSRdDkbeA4kqHBH7bbTdkEM\r\n KjX83DF7B921h/ShEym3Sn9w4kpYSwXzB05uiaqfzG3MS7GRSwMzvSpavIzkbAKaPa7p9fAoZ\r\n V7yIGdVNKuYurpBbxz94bZ6KMX0mmkIUf2uviTd7+vLqgWm+15ZyibwD3PblIrT+egzxHgiR3\r\n ZpUSMbu/HqBGZcaK1bukut1i2eNTJxXLIOcfJ4CNnMDkRgXZsTL0QUKKtTP/dI+AeW2fH8aLd\r\n 2de8SvQ0x/e9LGtmnQm1FaFbimxt9HR+uRZdkGkP96sI2DUVeURRreIAEYwgbw2DclTcQeirh\r\n K5dw/E2dEqjR4t3e7ahCdgG9hsCY1TblIi+Zw4hgunZakq+t/yyuSn6A8Q7lA2S09f5xxcVXJ\r\n RZTeB/8IDhYlSbURqczkRiFN4C/o+K/dkuxrNoMh4X1vN8PBsxnJQqdeJjsGrtxnlnI6omjnD\r\n CGveCwsZEwDjAwSO6gOA6FvclRpCEBgzKj3rhhf97on4zA0yJ1JVng8uEiAudiaF0yYQIRH7I\r\n l5VW1MXjAmqinRp1BYBoEGD7Axka3++sPLqNbngQaFmE7l16/GYv47fxuMl88EKTtcWnAFhtj\r\n o2Oz30pg+kyBP8nWjCRVmt4Tv/+oKRmv9sjv8PVdDC3vjvfkQwhVkra1OgIHPM+tRLvmtQPKT\r\n LZ++Bs1dLb97dPiwe+8UA5QqFWhcRORG0DCqU4UrHiD+Yk8JaBMP4Ks9YtN9hArvGDQ60YzMT\r\n THG1tv5o2GZsp9ovwTaMZo6jzx4wCZpgADr/8RkvlBmAKCJMSUVdI8U3ellae3hTlLfVqpDs8\r\n br2yQgihgfoLDGw58TteO7BihK7AEebKoM2+K7ZmJ0YNhMkdZMtEjruBk9dJYP5eMte09M+G6\r\n uaVtX4X7tf3HBR0fg6zpgnSpdCHJN21nHOoNwkj/6AZSFH8K3Y3Mwo0MFYo0t/5xN5Y8uLkvc\r\n J8uI7Ci38vjrAHjywpmGKpHVFe+VUpVFw5Y3kMctwWdMs1X3zNqMnNXPNx8P1X4j3hZouvaXZ\r\n jl6KL1auX87jUIIx8KBY+Az6IdMFKA/+QNUN9k9ZXQut7JElmbJOAM0MS/8+n7j8htEWAY3eK\r\n sjDbOfbE/dzC6H9TUqW71P1uTvO96tyIFp4eZfXqbpcaHQ9hJQieMKxq20b6bjUXqrJqQ8n9N\r\n fEvTnHzkQZCgoTYK+YZb3QWlBXHWIBSVxiz/FdoC1QZjXq4uQ9amMAmTPFnFfDwr3bOtNWOml\r\n 4+jeHw0qg+27LQDgeKH+mXQD5VsNxs5Ty+Uh0qaEemAKvBBhFoSmfPwZnalSBx5NgSQ9axY1h\r\n TRozDNCn741oASwcYwlCgrtzTkQPl4fLZiN+BjYgzFoGLz4E+38tB44iQ3ehe2qzSaDlCsgrU\r\n dR5Wp8AgGclrbH0A3D7ITUHYG6Ip0WTgAoZpS63TNu/mZADzgXdl6eaxcy67QtJUhBE2vUH3Q\r\n 2RfgxKKq9N8cmUZ8tbJEDOWt2u2aqHxRLlhIf4p7K4ctfdDSDC/qrtKHmPBNL4J4/hFWFo/55\r\n VyaX+6XpCRPlJUGdi/o3EtGMpLvbscJJkT8PFjFpyCW7jW7ojDE5ANbgkzB7fuhN8Q9Z1SJh1\r\n xXNB8hqSpOnw0r2C0Nb4tx+Sf7zrd7XqrW2Enpw9BnBWSRTg4K6dbl1k8laPyNsyES75IUva2\r\n xx5r0uEYUyjCGaKcQxEEAiyCQR4jw=="
+            "text": "unknown:2;M01:P0:KBHYSPmQwK8=;oojtM0FZyAHR7/Y3mgLFUSQnTi9t\r\n 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\r\n xx5r0uEYUyjCGaKcQxEEAiyCQR4jw=="
           },
           "offset_field": 1638,
           "offset_start": 1655,
           "offset_end": 10642
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 10644,
-      "offset_end": 20239
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 10682,
+      "offset_body": 10775,
+      "offset_end": 12349,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "8bit"
+            "text": "8bit"
           },
           "offset_field": 10682,
           "offset_start": 10708,
           "offset_end": 10715
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                },
-                {
-                  "name": "format",
-                  "value": "flowed"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ],
+                [
+                  "format",
+                  "flowed"
+                ]
               ]
             }
           },
@@ -278,36 +346,45 @@
           "offset_end": 10773
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Hallo Stoiko,\r\n\r\nalles klar, deine Reply Mail war jetzt nicht im Spam - office-reply.txt\r\nund eine E-Mail von Daniela vor ein paar Tagen war es auch nicht: \r\ntraining-mail.txt\r\nund die Ursprungs-Mail ausm Shop die im Spam landete - shop-mail.txt\r\n\r\nVergleicht man die Spam-Scores:\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nURI_COUNT_ODD (0.50),\r\nDMARC_NA (1.00),\r\nFORGED_RCVD_TRAIL (1.00),\r\nMID_RHS_MATCH_FROM (1.00)\r\nX-Spam-Score: ham, score=3.30\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nDMARC_NA (1.00),\r\nFORGED_RCVD_TRAIL (1.00),\r\nMID_RHS_MATCH_FROM (1.00)\r\nX-Spam-Score: ham, score=2.80\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nXM_UA_NO_VERSION (0.01),\r\nDMARC_NA (1.00),\r\nPARTS_DIFFER (1.00),\r\nSUBJ_EXCESS_QP (1.20),\r\nHTML_SHORT_LINK_IMG_1 (2.00)\r\nX-Spam-Score: spam, score=5.01\r\n\r\ndann liegt der Unterschied primär im \"HTML_SHORT_LINK_IMG_1\" und \r\n\"PARTS_DIFFER\" und \"SUBJ_EXCESS_QP\". Hab da mals recherchiert klingt \r\nnach komischen \"Einschätzugen\" - Encoding Sachen aus den Titeln, kurze \r\nImage-Links mit kurzer Domain und Unterschiede zwischen HTML und \r\nText-Version. Kann ich schwer beurteilen, auffällig ist aber, dass die \r\nnicht Shop-E-Mail diese Scores NICHT haben.\r\n\r\nDas ganze Spam-Filtering usw. passiert komplett über Stalwart. Auf den \r\nhabe ich vor 3 Monaten gewechselt. Stalwart selbst verwendet selbst \r\nsicherlich im Unterbau einige dieser Technologien - habe selbst nichts \r\naber ergänzt oder modifiziert an den Defaults.\r\n\r\nBeste Grüße\r\n\r\n--\r\nJonas Sterr\r\nInhaber | ProxForge\r\n\r\n📧 E-Mail: jsterr@proxforge.de\r\n📧 Training: training@proxforge.de\r\n"
-      },
-      "offset_header": 10682,
-      "offset_body": 10775,
-      "offset_end": 12349
+      "text": "Hallo Stoiko,\r\n\r\nalles klar, deine Reply Mail war jetzt nicht im Spam - office-reply.txt\r\nund eine E-Mail von Daniela vor ein paar Tagen war es auch nicht: \r\ntraining-mail.txt\r\nund die Ursprungs-Mail ausm Shop die im Spam landete - shop-mail.txt\r\n\r\nVergleicht man die Spam-Scores:\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nURI_COUNT_ODD (0.50),\r\nDMARC_NA (1.00),\r\nFORGED_RCVD_TRAIL (1.00),\r\nMID_RHS_MATCH_FROM (1.00)\r\nX-Spam-Score: ham, score=3.30\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nDMARC_NA (1.00),\r\nFORGED_RCVD_TRAIL (1.00),\r\nMID_RHS_MATCH_FROM (1.00)\r\nX-Spam-Score: ham, score=2.80\r\n\r\nX-Spam-Result: SPF_ALLOW (-0.20),\r\nXM_UA_NO_VERSION (0.01),\r\nDMARC_NA (1.00),\r\nPARTS_DIFFER (1.00),\r\nSUBJ_EXCESS_QP (1.20),\r\nHTML_SHORT_LINK_IMG_1 (2.00)\r\nX-Spam-Score: spam, score=5.01\r\n\r\ndann liegt der Unterschied primär im \"HTML_SHORT_LINK_IMG_1\" und \r\n\"PARTS_DIFFER\" und \"SUBJ_EXCESS_QP\". Hab da mals recherchiert klingt \r\nnach komischen \"Einschätzugen\" - Encoding Sachen aus den Titeln, kurze \r\nImage-Links mit kurzer Domain und Unterschiede zwischen HTML und \r\nText-Version. Kann ich schwer beurteilen, auffällig ist aber, dass die \r\nnicht Shop-E-Mail diese Scores NICHT haben.\r\n\r\nDas ganze Spam-Filtering usw. passiert komplett über Stalwart. Auf den \r\nhabe ich vor 3 Monaten gewechselt. Stalwart selbst verwendet selbst \r\nsicherlich im Unterbau einige dieser Technologien - habe selbst nichts \r\naber ergänzt oder modifiziert an den Defaults.\r\n\r\nBeste Grüße\r\n\r\n--\r\nJonas Sterr\r\nInhaber | ProxForge\r\n\r\n📧 E-Mail: jsterr@proxforge.de\r\n📧 Training: training@proxforge.de\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 1,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 12389,
+      "offset_body": 12556,
+      "offset_end": 14787,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "8bit"
+            "text": "8bit"
           },
           "offset_field": 12389,
           "offset_start": 12415,
           "offset_end": 12422
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "rfc822",
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
               "attributes": [
-                {
-                  "name": "name",
-                  "value": "training-mail.txt"
-                }
+                [
+                  "name",
+                  "training-mail.txt"
+                ]
               ]
             }
           },
@@ -316,20 +393,20 @@
           "offset_end": 12478
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "attachment",
-              "c_subtype": null,
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
               "attributes": [
-                {
-                  "name": "filename",
-                  "value": "training-mail.txt"
-                },
-                {
-                  "name": "size",
-                  "value": "2231"
-                }
+                [
+                  "filename",
+                  "training-mail.txt"
+                ],
+                [
+                  "size",
+                  "2231"
+                ]
               ]
             }
           },
@@ -337,548 +414,875 @@
           "offset_start": 12498,
           "offset_end": 12554
         }
+      ]
+    },
+    {
+      "id": 3,
+      "message": 1,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "no_blank_line"
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Message": {
-          "html_body": [],
-          "text_body": [],
-          "attachments": [
-            0
-          ],
-          "parts": [
-            {
-              "headers": [
-                {
-                  "name": "delivered_to",
-                  "value": {
-                    "Text": "user@mailserver.de"
-                  },
-                  "offset_field": 14992,
-                  "offset_start": 15005,
-                  "offset_end": 15026
-                },
-                {
-                  "name": {
-                    "other": "X-Spam-Status"
-                  },
-                  "value": {
-                    "Text": "No"
-                  },
-                  "offset_field": 15026,
-                  "offset_start": 15040,
-                  "offset_end": 15045
-                },
-                {
-                  "name": "received",
-                  "value": {
-                    "Received": {
-                      "from": {
-                        "Name": "proxmox-new.maurer-it.com"
-                      },
-                      "from_ip": "94.136.29.106",
-                      "from_iprev": "proxmox-new.maurer-it.com",
-                      "by": {
-                        "Name": "mail.mailserver.de"
-                      },
-                      "for_": null,
-                      "with": "ESMTPS",
-                      "tls_version": "TLSv1_3",
-                      "tls_cipher": "TLS13_AES_256_GCM_SHA384",
-                      "id": "4096222BDC73C13",
-                      "ident": null,
-                      "helo": null,
-                      "helo_cmd": null,
-                      "via": null,
-                      "date": {
-                        "year": 2026,
-                        "month": 2,
-                        "day": 13,
-                        "hour": 10,
-                        "minute": 26,
-                        "second": 4,
-                        "tz_before_gmt": false,
-                        "tz_hour": 0,
-                        "tz_minute": 0
-                      }
-                    }
-                  },
-                  "offset_field": 15045,
-                  "offset_start": 15054,
-                  "offset_end": 15350
-                },
-                {
-                  "name": "authentication_results",
-                  "value": {
-                    "Text": "mail.mailserver.de;\r\n    spf=none (mail.mailserver.de: no SPF records found for postmaster@proxmox-new.maurer-it.com) smtp.helo=proxmox-new.maurer-it.com;\r\n    spf=pass (mail.mailserver.de: domain of office@proxmox.com designates 94.136.29.106 as permitted sender) smtp.mailfrom=office@proxmox.com;\r\n    iprev=pass policy.iprev=94.136.29.106;\r\n    dmarc=none header.from=proxmox.com policy.dmarc=none"
-                  },
-                  "offset_field": 15350,
-                  "offset_start": 15373,
-                  "offset_end": 15776
-                },
-                {
-                  "name": "received_spf",
-                  "value": {
-                    "Text": "pass (mail.mailserver.de: domain of office@proxmox.com designates 94.136.29.106 as permitted sender)\r\n    receiver=mail.mailserver.de; client-ip=94.136.29.106; envelope-from=\"office@proxmox.com\"; helo=proxmox-new.maurer-it.com;"
-                  },
-                  "offset_field": 15776,
-                  "offset_start": 15789,
-                  "offset_end": 16019
-                },
-                {
-                  "name": {
-                    "other": "X-Spam-Result"
-                  },
-                  "value": {
-                    "Text": "SPF_ALLOW (-0.20),\r\n    ARC_NA (0.00),\r\n    DKIM_NA (0.00),\r\n    DNSWL_BLOCKED (0.00),\r\n    FROM_EQ_ENV_FROM (0.00),\r\n    FROM_HAS_DN (0.00),\r\n    MID_RHS_MATCH_ENV_FROM (0.00),\r\n    PREVIOUSLY_DELIVERED (0.00),\r\n    RBL_SENDERSCORE_REPUT_BLOCKED (0.00),\r\n    RCPT_COUNT_ONE (0.00),\r\n    RCPT_IN_BODY (0.00),\r\n    RCVD_COUNT_ONE (0.00),\r\n    RCVD_TLS_LAST (0.00),\r\n    SOURCE_ASN_48943 (0.00),\r\n    TO_DN_NONE (0.00),\r\n    TO_MATCH_ENVRCPT_ALL (0.00),\r\n    URI_COUNT_ODD (0.50),\r\n    DMARC_NA (1.00),\r\n    FORGED_RCVD_TRAIL (1.00),\r\n    MID_RHS_MATCH_FROM (1.00)"
-                  },
-                  "offset_field": 16019,
-                  "offset_start": 16033,
-                  "offset_end": 16598
-                },
-                {
-                  "name": {
-                    "other": "X-Spam-Score"
-                  },
-                  "value": {
-                    "Text": "ham, score=3.30"
-                  },
-                  "offset_field": 16598,
-                  "offset_start": 16611,
-                  "offset_end": 16629
-                },
-                {
-                  "name": "return_path",
-                  "value": {
-                    "Text": "office@proxmox.com"
-                  },
-                  "offset_field": 16629,
-                  "offset_start": 16641,
-                  "offset_end": 16664
-                },
-                {
-                  "name": "received",
-                  "value": {
-                    "Received": {
-                      "from": {
-                        "Name": "proxmox-new.maurer-it.com"
-                      },
-                      "from_ip": "127.0.0.1",
-                      "from_iprev": "localhost.localdomain",
-                      "by": {
-                        "Name": "proxmox-new.maurer-it.com"
-                      },
-                      "for_": "user@mailserver.de",
-                      "with": "ESMTP",
-                      "tls_version": null,
-                      "tls_cipher": null,
-                      "id": "1C36444F59",
-                      "ident": null,
-                      "helo": null,
-                      "helo_cmd": null,
-                      "via": null,
-                      "date": {
-                        "year": 2026,
-                        "month": 2,
-                        "day": 13,
-                        "hour": 11,
-                        "minute": 26,
-                        "second": 4,
-                        "tz_before_gmt": false,
-                        "tz_hour": 1,
-                        "tz_minute": 0
-                      }
-                    }
-                  },
-                  "offset_field": 16664,
-                  "offset_start": 16673,
-                  "offset_end": 16880
-                },
-                {
-                  "name": "from",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": "Proxmox Server Solutions GmbH",
-                          "address": "office@proxmox.com"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 16880,
-                  "offset_start": 16885,
-                  "offset_end": 16938
-                },
-                {
-                  "name": "to",
-                  "value": {
-                    "Address": {
-                      "List": [
-                        {
-                          "name": null,
-                          "address": "user@mailserver.de"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 16938,
-                  "offset_start": 16941,
-                  "offset_end": 16962
-                },
-                {
-                  "name": "subject",
-                  "value": {
-                    "Text": "RE: (#5290765) Proxmox Shop E-Mails"
-                  },
-                  "offset_field": 16962,
-                  "offset_start": 16970,
-                  "offset_end": 17008
-                },
-                {
-                  "name": "auto_submitted",
-                  "value": {
-                    "Text": "auto-generated"
-                  },
-                  "offset_field": 17008,
-                  "offset_start": 17023,
-                  "offset_end": 17040
-                },
-                {
-                  "name": {
-                    "other": "X-Auto-Response-Suppress"
-                  },
-                  "value": {
-                    "Text": "All"
-                  },
-                  "offset_field": 17040,
-                  "offset_start": 17065,
-                  "offset_end": 17071
-                },
-                {
-                  "name": "references",
-                  "value": {
-                    "TextList": [
-                      "tickets/35323930373635@pobo.intra.proxmox.com",
-                      "f5ce60407059d7e4a1a287650059aa36@mailserver.de"
-                    ]
-                  },
-                  "offset_field": 17071,
-                  "offset_start": 17082,
-                  "offset_end": 17186
-                },
-                {
-                  "name": "in_reply_to",
-                  "value": {
-                    "Text": "tickets/35323930373635@pobo.intra.proxmox.com"
-                  },
-                  "offset_field": 17186,
-                  "offset_start": 17198,
-                  "offset_end": 17248
-                },
-                {
-                  "name": "message_id",
-                  "value": {
-                    "Text": "214c803d66ce9428e8e68ada78c9b308@proxmox.com"
-                  },
-                  "offset_field": 17248,
-                  "offset_start": 17259,
-                  "offset_end": 17308
-                },
-                {
-                  "name": "mime_version",
-                  "value": {
-                    "Text": "1.0"
-                  },
-                  "offset_field": 17308,
-                  "offset_start": 17321,
-                  "offset_end": 17327
-                },
-                {
-                  "name": "date",
-                  "value": {
-                    "DateTime": {
-                      "year": 2026,
-                      "month": 2,
-                      "day": 13,
-                      "hour": 10,
-                      "minute": 26,
-                      "second": 2,
-                      "tz_before_gmt": false,
-                      "tz_hour": 0,
-                      "tz_minute": 0
-                    }
-                  },
-                  "offset_field": 17327,
-                  "offset_start": 17332,
-                  "offset_end": 17366
-                },
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "multipart",
-                      "c_subtype": "alternative",
-                      "attributes": [
-                        {
-                          "name": "boundary",
-                          "value": "qOqVarFP"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 17366,
-                  "offset_start": 17379,
-                  "offset_end": 17423
-                },
-                {
-                  "name": "content_transfer_encoding",
-                  "value": {
-                    "Text": "8bit"
-                  },
-                  "offset_field": 17461,
-                  "offset_start": 17487,
-                  "offset_end": 17494
-                },
-                {
-                  "name": "content_type",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "message",
-                      "c_subtype": "rfc822",
-                      "attributes": [
-                        {
-                          "name": "name",
-                          "value": "shop-mail.txt"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 17494,
-                  "offset_start": 17507,
-                  "offset_end": 17546
-                },
-                {
-                  "name": "content_disposition",
-                  "value": {
-                    "ContentType": {
-                      "c_type": "attachment",
-                      "c_subtype": null,
-                      "attributes": [
-                        {
-                          "name": "filename",
-                          "value": "shop-mail.txt"
-                        },
-                        {
-                          "name": "size",
-                          "value": "2577"
-                        }
-                      ]
-                    }
-                  },
-                  "offset_field": 17546,
-                  "offset_start": 17566,
-                  "offset_end": 17618
-                }
-              ],
-              "is_encoding_problem": false,
-              "body": {
-                "Message": {
-                  "html_body": [
-                    0
-                  ],
-                  "text_body": [
-                    0
-                  ],
-                  "attachments": [],
-                  "parts": [
-                    {
-                      "headers": [
-                        {
-                          "name": "delivered_to",
-                          "value": {
-                            "Text": "user@mailserver.de"
-                          },
-                          "offset_field": 17620,
-                          "offset_start": 17633,
-                          "offset_end": 17654
-                        },
-                        {
-                          "name": {
-                            "other": "X-Spam-Status"
-                          },
-                          "value": {
-                            "Text": "Yes"
-                          },
-                          "offset_field": 17654,
-                          "offset_start": 17668,
-                          "offset_end": 17674
-                        },
-                        {
-                          "name": "received",
-                          "value": {
-                            "Received": {
-                              "from": {
-                                "Name": "firstgate.proxmox.com"
-                              },
-                              "from_ip": "212.224.123.68",
-                              "from_iprev": "firstgate.proxmox.com",
-                              "by": null,
-                              "for_": null,
-                              "with": null,
-                              "tls_version": null,
-                              "tls_cipher": null,
-                              "ident": null,
-                              "helo": null,
-                              "helo_cmd": null,
-                              "via": null,
-                              "date": null
-                            }
-                          },
-                          "offset_field": 17674,
-                          "offset_start": 17683,
-                          "offset_end": 17782
-                        },
-                        {
-                          "name": {
-                            "other": "Thu, 12 Feb 2026 12"
-                          },
-                          "value": {
-                            "Text": "21:04 +0000"
-                          },
-                          "offset_field": 17907,
-                          "offset_start": 17927,
-                          "offset_end": 17940
-                        },
-                        {
-                          "name": "authentication_results",
-                          "value": {
-                            "Text": "mail.mailserver.de;"
-                          },
-                          "offset_field": 17940,
-                          "offset_start": 17963,
-                          "offset_end": 17985
-                        },
-                        {
-                          "name": {
-                            "other": "spf=none (mail.mailserver.de"
-                          },
-                          "value": {
-                            "Text": "no SPF records found for postmaster@firstgate.proxmox.com) smtp.helo=firstgate.proxmox.com;"
-                          },
-                          "offset_field": 17985,
-                          "offset_start": 18014,
-                          "offset_end": 18108
-                        },
-                        {
-                          "name": {
-                            "other": "spf=pass (mail.mailserver.de"
-                          },
-                          "value": {
-                            "Text": "domain of sales@proxmox.com designates 212.224.123.68 as permitted sender) smtp.mailfrom=sales@proxmox.com;"
-                          },
-                          "offset_field": 18108,
-                          "offset_start": 18137,
-                          "offset_end": 18247
-                        },
-                        {
-                          "name": "received_spf",
-                          "value": {
-                            "Text": "pass (mail.mailserver.de: domain of sales@proxmox.com designates 212.224.123.68 as permitted sender)"
-                          },
-                          "offset_field": 18342,
-                          "offset_start": 18355,
-                          "offset_end": 18458
-                        },
-                        {
-                          "name": {
-                            "other": "X-Spam-Result"
-                          },
-                          "value": {
-                            "Text": "SPF_ALLOW (-0.20),"
-                          },
-                          "offset_field": 18577,
-                          "offset_start": 18591,
-                          "offset_end": 18612
-                        },
-                        {
-                          "name": {
-                            "other": "X-Spam-Score"
-                          },
-                          "value": {
-                            "Text": "spam, score=5.01"
-                          },
-                          "offset_field": 19275,
-                          "offset_start": 19288,
-                          "offset_end": 19307
-                        },
-                        {
-                          "name": "return_path",
-                          "value": {
-                            "Text": "sales@proxmox.com"
-                          },
-                          "offset_field": 19307,
-                          "offset_start": 19319,
-                          "offset_end": 19341
-                        },
-                        {
-                          "name": "received",
-                          "value": {
-                            "Received": {
-                              "from": {
-                                "Name": "firstgate.proxmox.com"
-                              },
-                              "from_ip": "127.0.0.1",
-                              "from_iprev": null,
-                              "by": null,
-                              "for_": null,
-                              "with": null,
-                              "tls_version": null,
-                              "tls_cipher": null,
-                              "ident": null,
-                              "helo": null,
-                              "helo_cmd": null,
-                              "via": null,
-                              "date": null
-                            }
-                          },
-                          "offset_field": 19341,
-                          "offset_start": 19350,
-                          "offset_end": 19403
-                        },
-                        {
-                          "name": {
-                            "other": "Thu, 12 Feb 2026 13"
-                          },
-                          "value": {
-                            "Text": "21:03 +0100 (CET)"
-                          },
-                          "offset_field": 19464,
-                          "offset_start": 19484,
-                          "offset_end": 19503
-                        }
-                      ],
-                      "is_encoding_problem": false,
-                      "body": {
-                        "Text": "To: Vorname Nachname <user@mailserver.de>\r\nSubject: =?us-ascii?Q?[Ticket_ID:_255909]_Bestellung:_Proxmox_VE_inkl?=\r\n=?us-ascii?Q?._Trainings-Plus_Rabatt_(?=\r\nDate: Thu, 12 Feb 2026 13:21:03 +0100\r\nFrom: Proxmox Server Solutions GmbH Sales and General Requests <sales@proxmox.com>\r\nReply-To: Proxmox Server Solutions GmbH Sales and General Requests <sales@proxmox.com>\r\nMessage-ID: <BUedpiSJ22k9KJibNOeWYnUU0lAAdQj81VXUNhh4Q@shop.proxmox.com>\r\nX-Mailer: Proxmox Server Solutions GmbH\r\nAuto-Submitted: auto-generated\r\nX-Auto-Response-Suppress: All\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative;\r\nboundary=\"b1_BUedpiSJ22k9KJibNOeWYnUU0lAAdQj81VXUNhh4Q\"\r\nContent-Transfer-Encoding: 8bit"
-                      },
-                      "offset_header": 17620,
-                      "offset_body": 19505,
-                      "offset_end": 20197
-                    }
-                  ]
-                }
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 12556,
+      "offset_body": 14787,
+      "offset_end": 14787,
+      "headers": [
+        {
+          "name": "Delivered-To",
+          "value": {
+            "text": "user@mailserver.de"
+          },
+          "offset_field": 12556,
+          "offset_start": 12569,
+          "offset_end": 12590
+        },
+        {
+          "name": "X-Spam-Status",
+          "value": {
+            "text": "No"
+          },
+          "offset_field": 12590,
+          "offset_start": 12604,
+          "offset_end": 12609
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "proxmox-new.maurer-it.com"
               },
-              "offset_header": 14992,
-              "offset_body": 17620,
-              "offset_end": 20237
+              "from_ip": "94.136.29.106",
+              "from_iprev": "proxmox-new.maurer-it.com",
+              "by": {
+                "name": "mail.mailserver.de"
+              },
+              "for": null,
+              "with": "ESMTPS",
+              "tls_version": "TLSv1_3",
+              "tls_cipher": "TLS13_AES_256_GCM_SHA384",
+              "id": "4084ACAF0E46C13",
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2026,
+                "month": 2,
+                "day": 11,
+                "hour": 17,
+                "minute": 45,
+                "second": 8,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
             }
-          ]
+          },
+          "offset_field": 12609,
+          "offset_start": 12618,
+          "offset_end": 12914
+        },
+        {
+          "name": "Authentication-Results",
+          "value": {
+            "text": "mail.mailserver.de;\r\n    spf=none (mail.mailserver.de: no SPF records found for postmaster@proxmox-new.maurer-it.com) smtp.helo=proxmox-new.maurer-it.com;\r\n    spf=pass (mail.mailserver.de: domain of training@proxmox.com designates 94.136.29.106 as permitted sender) smtp.mailfrom=training@proxmox.com;\r\n    iprev=pass policy.iprev=94.136.29.106;\r\n    dmarc=none header.from=proxmox.com policy.dmarc=none"
+          },
+          "offset_field": 12914,
+          "offset_start": 12937,
+          "offset_end": 13344
+        },
+        {
+          "name": "Received-SPF",
+          "value": {
+            "text": "pass (mail.mailserver.de: domain of training@proxmox.com designates 94.136.29.106 as permitted sender)\r\n    receiver=mail.mailserver.de; client-ip=94.136.29.106; envelope-from=\"training@proxmox.com\"; helo=proxmox-new.maurer-it.com;"
+          },
+          "offset_field": 13344,
+          "offset_start": 13357,
+          "offset_end": 13591
+        },
+        {
+          "name": "X-Spam-Result",
+          "value": {
+            "text": "SPF_ALLOW (-0.20),\r\n    ARC_NA (0.00),\r\n    DKIM_NA (0.00),\r\n    DNSWL_BLOCKED (0.00),\r\n    FROM_EQ_ENV_FROM (0.00),\r\n    FROM_HAS_DN (0.00),\r\n    HTML_SHORT_2 (0.00),\r\n    MID_RHS_MATCH_ENV_FROM (0.00),\r\n    PREVIOUSLY_DELIVERED (0.00),\r\n    RBL_SENDERSCORE_REPUT_BLOCKED (0.00),\r\n    RBL_SPAMHAUS_BLOCKED_OPENRESOLVER (0.00),\r\n    RCPT_COUNT_ONE (0.00),\r\n    RCVD_COUNT_ONE (0.00),\r\n    RCVD_TLS_LAST (0.00),\r\n    SOURCE_ASN_48943 (0.00),\r\n    TO_DN_NONE (0.00),\r\n    TO_MATCH_ENVRCPT_ALL (0.00),\r\n    DMARC_NA (1.00),\r\n    FORGED_RCVD_TRAIL (1.00),\r\n    MID_RHS_MATCH_FROM (1.00)"
+          },
+          "offset_field": 13591,
+          "offset_start": 13605,
+          "offset_end": 14190
+        },
+        {
+          "name": "X-Spam-Score",
+          "value": {
+            "text": "ham, score=2.80"
+          },
+          "offset_field": 14190,
+          "offset_start": 14203,
+          "offset_end": 14221
+        },
+        {
+          "name": "Return-Path",
+          "value": {
+            "text_list": [
+              "training@proxmox.com"
+            ]
+          },
+          "offset_field": 14221,
+          "offset_start": 14233,
+          "offset_end": 14258
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "proxmox-new.maurer-it.com"
+              },
+              "from_ip": "127.0.0.1",
+              "from_iprev": "localhost.localdomain",
+              "by": {
+                "name": "proxmox-new.maurer-it.com"
+              },
+              "for": "user@mailserver.de",
+              "with": "ESMTP",
+              "tls_version": null,
+              "tls_cipher": null,
+              "id": "611CB551DD",
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2026,
+                "month": 2,
+                "day": 11,
+                "hour": 18,
+                "minute": 45,
+                "second": 7,
+                "tz_before_gmt": false,
+                "tz_hour": 1,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 14258,
+          "offset_start": 14267,
+          "offset_end": 14474
+        },
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "Proxmox Server Solutions GmbH",
+                  "address": "training@proxmox.com"
+                }
+              }
+            ]
+          },
+          "offset_field": 14474,
+          "offset_start": 14479,
+          "offset_end": 14534
+        },
+        {
+          "name": "To",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": null,
+                  "address": "user@mailserver.de"
+                }
+              }
+            ]
+          },
+          "offset_field": 14534,
+          "offset_start": 14537,
+          "offset_end": 14558
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "Exciting updates for our training partnership"
+          },
+          "offset_field": 14558,
+          "offset_start": 14566,
+          "offset_end": 14614
+        },
+        {
+          "name": "Message-ID",
+          "value": {
+            "text_list": [
+              "1d31155548f0f6ff18a140490261872d@proxmox.com"
+            ]
+          },
+          "offset_field": 14614,
+          "offset_start": 14625,
+          "offset_end": 14674
+        },
+        {
+          "name": "MIME-Version",
+          "value": {
+            "text": "1.0"
+          },
+          "offset_field": 14674,
+          "offset_start": 14687,
+          "offset_end": 14693
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 2026,
+              "month": 2,
+              "day": 11,
+              "hour": 17,
+              "minute": 45,
+              "second": 3,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 14693,
+          "offset_start": 14698,
+          "offset_end": 14732
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "1N0DHcvl"
+                ]
+              ]
+            }
+          },
+          "offset_field": 14732,
+          "offset_start": 14745,
+          "offset_end": 14789
         }
-      },
-      "offset_header": 12389,
-      "offset_body": 12556,
-      "offset_end": 20237
+      ],
+      "text": "",
+      "decode_problems": []
+    },
+    {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 2,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 14827,
+      "offset_body": 14992,
+      "offset_end": 17421,
+      "headers": [
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "8bit"
+          },
+          "offset_field": 14827,
+          "offset_start": 14853,
+          "offset_end": 14860
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": [
+                [
+                  "name",
+                  "office-reply.txt"
+                ]
+              ]
+            }
+          },
+          "offset_field": 14860,
+          "offset_start": 14873,
+          "offset_end": 14915
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
+              "attributes": [
+                [
+                  "filename",
+                  "office-reply.txt"
+                ],
+                [
+                  "size",
+                  "2429"
+                ]
+              ]
+            }
+          },
+          "offset_field": 14915,
+          "offset_start": 14935,
+          "offset_end": 14990
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "message": 2,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [
+        "no_blank_line"
+      ],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 14992,
+      "offset_body": 17421,
+      "offset_end": 17421,
+      "headers": [
+        {
+          "name": "Delivered-To",
+          "value": {
+            "text": "user@mailserver.de"
+          },
+          "offset_field": 14992,
+          "offset_start": 15005,
+          "offset_end": 15026
+        },
+        {
+          "name": "X-Spam-Status",
+          "value": {
+            "text": "No"
+          },
+          "offset_field": 15026,
+          "offset_start": 15040,
+          "offset_end": 15045
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "proxmox-new.maurer-it.com"
+              },
+              "from_ip": "94.136.29.106",
+              "from_iprev": "proxmox-new.maurer-it.com",
+              "by": {
+                "name": "mail.mailserver.de"
+              },
+              "for": null,
+              "with": "ESMTPS",
+              "tls_version": "TLSv1_3",
+              "tls_cipher": "TLS13_AES_256_GCM_SHA384",
+              "id": "4096222BDC73C13",
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2026,
+                "month": 2,
+                "day": 13,
+                "hour": 10,
+                "minute": 26,
+                "second": 4,
+                "tz_before_gmt": false,
+                "tz_hour": 0,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 15045,
+          "offset_start": 15054,
+          "offset_end": 15350
+        },
+        {
+          "name": "Authentication-Results",
+          "value": {
+            "text": "mail.mailserver.de;\r\n    spf=none (mail.mailserver.de: no SPF records found for postmaster@proxmox-new.maurer-it.com) smtp.helo=proxmox-new.maurer-it.com;\r\n    spf=pass (mail.mailserver.de: domain of office@proxmox.com designates 94.136.29.106 as permitted sender) smtp.mailfrom=office@proxmox.com;\r\n    iprev=pass policy.iprev=94.136.29.106;\r\n    dmarc=none header.from=proxmox.com policy.dmarc=none"
+          },
+          "offset_field": 15350,
+          "offset_start": 15373,
+          "offset_end": 15776
+        },
+        {
+          "name": "Received-SPF",
+          "value": {
+            "text": "pass (mail.mailserver.de: domain of office@proxmox.com designates 94.136.29.106 as permitted sender)\r\n    receiver=mail.mailserver.de; client-ip=94.136.29.106; envelope-from=\"office@proxmox.com\"; helo=proxmox-new.maurer-it.com;"
+          },
+          "offset_field": 15776,
+          "offset_start": 15789,
+          "offset_end": 16019
+        },
+        {
+          "name": "X-Spam-Result",
+          "value": {
+            "text": "SPF_ALLOW (-0.20),\r\n    ARC_NA (0.00),\r\n    DKIM_NA (0.00),\r\n    DNSWL_BLOCKED (0.00),\r\n    FROM_EQ_ENV_FROM (0.00),\r\n    FROM_HAS_DN (0.00),\r\n    MID_RHS_MATCH_ENV_FROM (0.00),\r\n    PREVIOUSLY_DELIVERED (0.00),\r\n    RBL_SENDERSCORE_REPUT_BLOCKED (0.00),\r\n    RCPT_COUNT_ONE (0.00),\r\n    RCPT_IN_BODY (0.00),\r\n    RCVD_COUNT_ONE (0.00),\r\n    RCVD_TLS_LAST (0.00),\r\n    SOURCE_ASN_48943 (0.00),\r\n    TO_DN_NONE (0.00),\r\n    TO_MATCH_ENVRCPT_ALL (0.00),\r\n    URI_COUNT_ODD (0.50),\r\n    DMARC_NA (1.00),\r\n    FORGED_RCVD_TRAIL (1.00),\r\n    MID_RHS_MATCH_FROM (1.00)"
+          },
+          "offset_field": 16019,
+          "offset_start": 16033,
+          "offset_end": 16598
+        },
+        {
+          "name": "X-Spam-Score",
+          "value": {
+            "text": "ham, score=3.30"
+          },
+          "offset_field": 16598,
+          "offset_start": 16611,
+          "offset_end": 16629
+        },
+        {
+          "name": "Return-Path",
+          "value": {
+            "text_list": [
+              "office@proxmox.com"
+            ]
+          },
+          "offset_field": 16629,
+          "offset_start": 16641,
+          "offset_end": 16664
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "proxmox-new.maurer-it.com"
+              },
+              "from_ip": "127.0.0.1",
+              "from_iprev": "localhost.localdomain",
+              "by": {
+                "name": "proxmox-new.maurer-it.com"
+              },
+              "for": "user@mailserver.de",
+              "with": "ESMTP",
+              "tls_version": null,
+              "tls_cipher": null,
+              "id": "1C36444F59",
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": {
+                "year": 2026,
+                "month": 2,
+                "day": 13,
+                "hour": 11,
+                "minute": 26,
+                "second": 4,
+                "tz_before_gmt": false,
+                "tz_hour": 1,
+                "tz_minute": 0
+              }
+            }
+          },
+          "offset_field": 16664,
+          "offset_start": 16673,
+          "offset_end": 16880
+        },
+        {
+          "name": "From",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": "Proxmox Server Solutions GmbH",
+                  "address": "office@proxmox.com"
+                }
+              }
+            ]
+          },
+          "offset_field": 16880,
+          "offset_start": 16885,
+          "offset_end": 16938
+        },
+        {
+          "name": "To",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": null,
+                  "address": "user@mailserver.de"
+                }
+              }
+            ]
+          },
+          "offset_field": 16938,
+          "offset_start": 16941,
+          "offset_end": 16962
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "RE: (#5290765) Proxmox Shop E-Mails"
+          },
+          "offset_field": 16962,
+          "offset_start": 16970,
+          "offset_end": 17008
+        },
+        {
+          "name": "Auto-Submitted",
+          "value": {
+            "text": "auto-generated"
+          },
+          "offset_field": 17008,
+          "offset_start": 17023,
+          "offset_end": 17040
+        },
+        {
+          "name": "X-Auto-Response-Suppress",
+          "value": {
+            "text": "All"
+          },
+          "offset_field": 17040,
+          "offset_start": 17065,
+          "offset_end": 17071
+        },
+        {
+          "name": "References",
+          "value": {
+            "text_list": [
+              "tickets/35323930373635@pobo.intra.proxmox.com",
+              "f5ce60407059d7e4a1a287650059aa36@mailserver.de"
+            ]
+          },
+          "offset_field": 17071,
+          "offset_start": 17082,
+          "offset_end": 17186
+        },
+        {
+          "name": "In-Reply-To",
+          "value": {
+            "text_list": [
+              "tickets/35323930373635@pobo.intra.proxmox.com"
+            ]
+          },
+          "offset_field": 17186,
+          "offset_start": 17198,
+          "offset_end": 17248
+        },
+        {
+          "name": "Message-ID",
+          "value": {
+            "text_list": [
+              "214c803d66ce9428e8e68ada78c9b308@proxmox.com"
+            ]
+          },
+          "offset_field": 17248,
+          "offset_start": 17259,
+          "offset_end": 17308
+        },
+        {
+          "name": "MIME-Version",
+          "value": {
+            "text": "1.0"
+          },
+          "offset_field": 17308,
+          "offset_start": 17321,
+          "offset_end": 17327
+        },
+        {
+          "name": "Date",
+          "value": {
+            "date_time": {
+              "year": 2026,
+              "month": 2,
+              "day": 13,
+              "hour": 10,
+              "minute": 26,
+              "second": 2,
+              "tz_before_gmt": false,
+              "tz_hour": 0,
+              "tz_minute": 0
+            }
+          },
+          "offset_field": 17327,
+          "offset_start": 17332,
+          "offset_end": 17366
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
+              "attributes": [
+                [
+                  "boundary",
+                  "qOqVarFP"
+                ]
+              ]
+            }
+          },
+          "offset_field": 17366,
+          "offset_start": 17379,
+          "offset_end": 17423
+        }
+      ],
+      "text": "",
+      "decode_problems": []
+    },
+    {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "message",
+      "nested": 3,
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 17461,
+      "offset_body": 17620,
+      "offset_end": 20197,
+      "headers": [
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "8bit"
+          },
+          "offset_field": 17461,
+          "offset_start": 17487,
+          "offset_end": 17494
+        },
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "message",
+              "subtype": "rfc822",
+              "attributes": [
+                [
+                  "name",
+                  "shop-mail.txt"
+                ]
+              ]
+            }
+          },
+          "offset_field": 17494,
+          "offset_start": 17507,
+          "offset_end": 17546
+        },
+        {
+          "name": "Content-Disposition",
+          "value": {
+            "content_type": {
+              "type": "attachment",
+              "subtype": null,
+              "attributes": [
+                [
+                  "filename",
+                  "shop-mail.txt"
+                ],
+                [
+                  "size",
+                  "2577"
+                ]
+              ]
+            }
+          },
+          "offset_field": 17546,
+          "offset_start": 17566,
+          "offset_end": 17618
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "message": 3,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 17620,
+      "offset_body": 19505,
+      "offset_end": 20197,
+      "headers": [
+        {
+          "name": "Delivered-To",
+          "value": {
+            "text": "user@mailserver.de"
+          },
+          "offset_field": 17620,
+          "offset_start": 17633,
+          "offset_end": 17654
+        },
+        {
+          "name": "X-Spam-Status",
+          "value": {
+            "text": "Yes"
+          },
+          "offset_field": 17654,
+          "offset_start": 17668,
+          "offset_end": 17674
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "firstgate.proxmox.com"
+              },
+              "from_ip": "212.224.123.68",
+              "from_iprev": "firstgate.proxmox.com",
+              "by": null,
+              "for": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "id": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": null
+            }
+          },
+          "offset_field": 17674,
+          "offset_start": 17683,
+          "offset_end": 17782
+        },
+        {
+          "name": "Thu, 12 Feb 2026 12",
+          "value": {
+            "text": "21:04 +0000"
+          },
+          "offset_field": 17907,
+          "offset_start": 17927,
+          "offset_end": 17940
+        },
+        {
+          "name": "Authentication-Results",
+          "value": {
+            "text": "mail.mailserver.de;"
+          },
+          "offset_field": 17940,
+          "offset_start": 17963,
+          "offset_end": 17985
+        },
+        {
+          "name": "spf=none (mail.mailserver.de",
+          "value": {
+            "text": "no SPF records found for postmaster@firstgate.proxmox.com) smtp.helo=firstgate.proxmox.com;"
+          },
+          "offset_field": 17985,
+          "offset_start": 18014,
+          "offset_end": 18108
+        },
+        {
+          "name": "spf=pass (mail.mailserver.de",
+          "value": {
+            "text": "domain of sales@proxmox.com designates 212.224.123.68 as permitted sender) smtp.mailfrom=sales@proxmox.com;"
+          },
+          "offset_field": 18108,
+          "offset_start": 18137,
+          "offset_end": 18247
+        },
+        {
+          "name": "Received-SPF",
+          "value": {
+            "text": "pass (mail.mailserver.de: domain of sales@proxmox.com designates 212.224.123.68 as permitted sender)"
+          },
+          "offset_field": 18342,
+          "offset_start": 18355,
+          "offset_end": 18458
+        },
+        {
+          "name": "X-Spam-Result",
+          "value": {
+            "text": "SPF_ALLOW (-0.20),"
+          },
+          "offset_field": 18577,
+          "offset_start": 18591,
+          "offset_end": 18612
+        },
+        {
+          "name": "X-Spam-Score",
+          "value": {
+            "text": "spam, score=5.01"
+          },
+          "offset_field": 19275,
+          "offset_start": 19288,
+          "offset_end": 19307
+        },
+        {
+          "name": "Return-Path",
+          "value": {
+            "text_list": [
+              "sales@proxmox.com"
+            ]
+          },
+          "offset_field": 19307,
+          "offset_start": 19319,
+          "offset_end": 19341
+        },
+        {
+          "name": "Received",
+          "value": {
+            "received": {
+              "from": {
+                "name": "firstgate.proxmox.com"
+              },
+              "from_ip": "127.0.0.1",
+              "from_iprev": null,
+              "by": null,
+              "for": null,
+              "with": null,
+              "tls_version": null,
+              "tls_cipher": null,
+              "id": null,
+              "ident": null,
+              "helo": null,
+              "helo_cmd": null,
+              "via": null,
+              "date": null
+            }
+          },
+          "offset_field": 19341,
+          "offset_start": 19350,
+          "offset_end": 19403
+        },
+        {
+          "name": "Thu, 12 Feb 2026 13",
+          "value": {
+            "text": "21:03 +0100 (CET)"
+          },
+          "offset_field": 19464,
+          "offset_start": 19484,
+          "offset_end": 19503
+        }
+      ],
+      "text": "To: Vorname Nachname <user@mailserver.de>\r\nSubject: =?us-ascii?Q?[Ticket_ID:_255909]_Bestellung:_Proxmox_VE_inkl?=\r\n=?us-ascii?Q?._Trainings-Plus_Rabatt_(?=\r\nDate: Thu, 12 Feb 2026 13:21:03 +0100\r\nFrom: Proxmox Server Solutions GmbH Sales and General Requests <sales@proxmox.com>\r\nReply-To: Proxmox Server Solutions GmbH Sales and General Requests <sales@proxmox.com>\r\nMessage-ID: <BUedpiSJ22k9KJibNOeWYnUU0lAAdQj81VXUNhh4Q@shop.proxmox.com>\r\nX-Mailer: Proxmox Server Solutions GmbH\r\nAuto-Submitted: auto-generated\r\nX-Auto-Response-Suppress: All\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative;\r\nboundary=\"b1_BUedpiSJ22k9KJibNOeWYnUU0lAAdQj81VXUNhh4Q\"\r\nContent-Transfer-Encoding: 8bit",
+      "decode_problems": []
     }
   ]
 }

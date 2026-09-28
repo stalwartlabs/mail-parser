@@ -55,5 +55,197 @@
       "and also",
       "ascii terms"
     ]
+  },
+  {
+    "header": "a, b\n",
+    "expected": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "header": "a,,b\n",
+    "expected": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "header": " , \n",
+    "expected": null
+  },
+  {
+    "header": "",
+    "expected": null
+  },
+  {
+    "header": "a\n b, c\n",
+    "expected": [
+      "a b",
+      "c"
+    ]
+  },
+  {
+    "header": "a\r\n \r\n b\r\n",
+    "expected": [
+      "a b"
+    ]
+  },
+  {
+    "header": "a\rb, c\n",
+    "expected": [
+      "a\rb",
+      "c"
+    ]
+  },
+  {
+    "header": "x=?utf-8?q?a?=\n",
+    "expected": [
+      "x=?utf-8?q?a?="
+    ]
+  },
+  {
+    "header": "a, \"b, c\", d\n",
+    "expected": [
+      "a",
+      "\"b",
+      "c\"",
+      "d"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?a?==?utf-8?q?b?=\n",
+    "expected": [
+      "ab"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?a?=b\n",
+    "expected": [
+      "a b"
+    ]
+  },
+  {
+    "header": "a =?utf-8?q?b?= c\n",
+    "expected": [
+      "a b c"
+    ]
+  },
+  {
+    "header": "a\n =?utf-8?q?b?=\n",
+    "expected": [
+      "ab"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?a?=\n b\n",
+    "expected": [
+      "a b"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?a,b?=, c\n",
+    "expected": [
+      "a,b",
+      "c"
+    ]
+  },
+  {
+    "header": "=?utf-8?q??=\n",
+    "expected": [
+      ""
+    ]
+  },
+  {
+    "header": "=?utf-8?q??=, a\n",
+    "expected": [
+      "",
+      "a"
+    ]
+  },
+  {
+    "header": "en-US",
+    "expected": [
+      "en-US"
+    ]
+  },
+  {
+    "header": "a =?utf-8?q?b?=",
+    "expected": [
+      "a b"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?a?= x =?utf-8?q?b?=\n",
+    "expected": [
+      "a x b"
+    ]
+  },
+  {
+    "header": "=?iso-8859-1?q?caf=E9?= =?utf-8?q?=C3=A9?=\n",
+    "expected": [
+      "caféé"
+    ]
+  },
+  {
+    "header": "a =?utf-8?q?bad=ZZ?= c\n",
+    "expected": [
+      "a =?utf-8?q?bad=ZZ?= c"
+    ]
+  },
+  {
+    "header": "=?x?q?a?=\n",
+    "expected": [
+      "a"
+    ]
+  },
+  {
+    "header": "=?utf 8?q?a?=\n",
+    "expected": [
+      "=?utf 8?q?a?="
+    ]
+  },
+  {
+    "header": "=?utf-8?q?abc=?=\n",
+    "expected": [
+      "=?utf-8?q?abc=?="
+    ]
+  },
+  {
+    "header": "=?utf-8?b?w6k?=\n",
+    "expected": [
+      "é"
+    ]
+  },
+  {
+    "header": "=?utf-8?q?caf=C3?= =?UTF-8?q?=A9?=\n",
+    "expected": [
+      "café"
+    ]
+  },
+  {
+    "header": "en",
+    "expected": [
+      "en"
+    ]
+  },
+  {
+    "header": "a,\r\n b",
+    "expected": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "header": "=?utf-8?b?w6k=?==?utf-8?q?=C3?=\r\n =?utf-8?q?=A9?=\n",
+    "expected": [
+      "éé"
+    ]
+  },
+  {
+    "header": "x =?utf-8?q?=C3?= =?utf-8?q?=A9?= y\n",
+    "expected": [
+      "x é y"
+    ]
   }
 ]

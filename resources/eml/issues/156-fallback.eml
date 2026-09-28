@@ -1,0 +1,10 @@
+Content-Type: multipart/mixed; boundary="BND"
+
+--BND
+Content-Type: text/plain
+
+first part
+--BND
+Content-Type: text/plain
+
+second part ends here--BND--

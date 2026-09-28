@@ -1,59 +1,83 @@
 {
-  "html_body": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    1
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 516,
+      "offset_end": 2831,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "doug@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 39
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "jblow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 39,
           "offset_start": 42,
           "offset_end": 74
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Test message from Microsoft Outlook 00"
+            "text": "Test message from Microsoft Outlook 00"
           },
           "offset_field": 74,
           "offset_start": 82,
           "offset_end": 122
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -70,34 +94,36 @@
           "offset_end": 160
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
+            "text_list": [
+              "NDBBIAKOPKHFGPLCODIGCEKFCHAA.doug@example.com"
+            ]
           },
           "offset_field": 160,
           "offset_start": 171,
           "offset_end": 220
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 220,
           "offset_start": 233,
           "offset_end": 238
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "----=_NextPart_000_0005_01BFC037.799BEF60"
-                }
+                [
+                  "boundary",
+                  "----=_NextPart_000_0005_01BFC037.799BEF60"
+                ]
               ]
             }
           },
@@ -106,83 +132,78 @@
           "offset_end": 329
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "3 (Normal)"
+            "text": "3 (Normal)"
           },
           "offset_field": 329,
           "offset_start": 340,
           "offset_end": 352
         },
         {
-          "name": {
-            "other": "X-MSMail-Priority"
-          },
+          "name": "X-MSMail-Priority",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 352,
           "offset_start": 370,
           "offset_end": 378
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
+            "text": "Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)"
           },
           "offset_field": 378,
           "offset_start": 387,
           "offset_end": 439
         },
         {
-          "name": "importance",
+          "name": "Importance",
           "value": {
-            "Text": "Normal"
+            "text": "Normal"
           },
           "offset_field": 439,
           "offset_start": 450,
           "offset_end": 458
         },
         {
-          "name": {
-            "other": "X-MimeOLE"
-          },
+          "name": "X-MimeOLE",
           "value": {
-            "Text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
+            "text": "Produced By Microsoft MimeOLE V5.00.2314.1300"
           },
           "offset_field": 458,
           "offset_start": 468,
           "offset_end": 515
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 516,
-      "offset_end": 2831
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body"
+      ],
+      "role": "text_body",
+      "offset_header": 606,
+      "offset_body": 699,
+      "offset_end": 1484,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "iso-8859-1"
-                }
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
               ]
             }
           },
@@ -191,36 +212,44 @@
           "offset_end": 654
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 654,
           "offset_start": 680,
           "offset_end": 698
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n"
-      },
-      "offset_header": 606,
-      "offset_body": 699,
-      "offset_end": 1484
+      "text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.  \n\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "html",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "html_body"
+      ],
+      "role": "html_body",
+      "offset_header": 1529,
+      "offset_body": 1621,
+      "offset_end": 2784,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "html",
+            "content_type": {
+              "type": "text",
+              "subtype": "html",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "iso-8859-1"
-                }
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
               ]
             }
           },
@@ -229,22 +258,17 @@
           "offset_end": 1576
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 1576,
           "offset_start": 1602,
           "offset_end": 1620
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Html": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n"
-      },
-      "offset_header": 1529,
-      "offset_body": 1621,
-      "offset_end": 2784
+      "text": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n<HTML><HEAD>\n<META content=\"text/html; charset=iso-8859-1\" http-equiv=Content-Type>\n<META content=\"MSHTML 5.00.2314.1000\" name=GENERATOR></HEAD>\n<BODY>\n<DIV><FONT face=Arial size=2><BR>The Hare and the Tortoise <BR>&nbsp;<BR>A HARE \none day ridiculed the short feet and slow pace of the Tortoise, who replied, \nlaughing:&nbsp; \"Though you be swift as the wind, I will beat you in a \nrace.\"&nbsp; The Hare, believing her assertion to be simply impossible, assented \nto the proposal; and they agreed that the Fox should choose the course and fix \nthe goal.&nbsp; On the day appointed for the race the two started \ntogether.&nbsp; The Tortoise never for a moment stopped, but went on with a slow \nbut steady pace straight to the end of the course.&nbsp; The Hare, lying down by \nthe wayside, fell fast asleep.&nbsp; At last waking up, and moving as fast as he \ncould, he saw the Tortoise had reached the goal, and was comfortably dozing \nafter her fatigue.&nbsp; <BR>&nbsp;<BR>Slow but steady wins the race.&nbsp; \n<BR></FONT></DIV></BODY></HTML>\n",
+      "decode_problems": []
     }
   ]
 }

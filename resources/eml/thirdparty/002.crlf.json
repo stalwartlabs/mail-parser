@@ -1,29 +1,54 @@
 {
-  "html_body": [
-    1,
-    2
-  ],
-  "text_body": [
-    1,
-    2
-  ],
-  "attachments": [
-    3
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2,
+        3
+      ],
+      "html_body": [
+        1,
+        2,
+        3
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 386,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "foo"
-                }
+                [
+                  "boundary",
+                  "foo"
+                ]
               ]
             }
           },
@@ -31,41 +56,44 @@
           "offset_start": 13,
           "offset_end": 45
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 47,
-      "offset_end": 386
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 54,
+      "offset_body": 142,
+      "offset_end": 165,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 54,
           "offset_start": 80,
           "offset_end": 99
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-8"
-                }
+                [
+                  "charset",
+                  "utf-8"
+                ]
               ]
             }
           },
@@ -74,36 +102,45 @@
           "offset_end": 140
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "päivää\r\n"
-      },
-      "offset_header": 54,
-      "offset_body": 142,
-      "offset_end": 165
+      "text": "päivää\r\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 174,
+      "offset_body": 252,
+      "offset_end": 280,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 174,
           "offset_start": 200,
           "offset_end": 209
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-8"
-                }
+                [
+                  "charset",
+                  "utf-8"
+                ]
               ]
             }
           },
@@ -112,36 +149,47 @@
           "offset_end": 250
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "yötä vaan.\n�\t�"
-      },
-      "offset_header": 174,
-      "offset_body": 252,
-      "offset_end": 280
+      "text": "yötä vaan.\n�\t��",
+      "decode_problems": [
+        "malformed_charset"
+      ]
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 289,
+      "offset_body": 367,
+      "offset_end": 375,
       "headers": [
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 289,
           "offset_start": 315,
           "offset_end": 324
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "utf-8"
-                }
+                [
+                  "charset",
+                  "utf-8"
+                ]
               ]
             }
           },
@@ -150,13 +198,11 @@
           "offset_end": 365
         }
       ],
-      "is_encoding_problem": true,
-      "body": {
-        "Text": "?garbage"
-      },
-      "offset_header": 289,
-      "offset_body": 367,
-      "offset_end": 375
+      "text": "���j\u0007",
+      "decode_problems": [
+        "malformed_transfer_encoding",
+        "malformed_charset"
+      ]
     }
   ]
 }

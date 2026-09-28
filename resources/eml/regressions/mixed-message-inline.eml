@@ -1,0 +1,14 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+text
+--m
+Content-Type: message/rfc822
+Content-Disposition: inline
+
+Subject: inner
+
+inner body
+--m--

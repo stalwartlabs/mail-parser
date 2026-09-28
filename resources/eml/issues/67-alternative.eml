@@ -1,0 +1,17 @@
+From: Sender <sender@example.com>
+To: Recipient <recipient@example.com>
+Subject: Plain text with an inline image as its alternative
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="alt"
+
+--alt
+Content-Type: text/plain; charset=us-ascii
+
+The text version.
+--alt
+Content-Type: image/png
+Content-Disposition: inline; filename="version.png"
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgo=
+--alt--

@@ -4,71 +4,81 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use mail_parser::{HeaderName, MessageParser};
+use mail_parser::{HeaderForm, HeaderName, MessageParser};
 
-const MESSAGE: &str = r#"From: Art Vandelay <art@vandelay.com> (Vandelay Industries)
-To: "Colleagues": "James Smythe" <james@vandelay.com>; Friends:
-    jane@example.com, =?UTF-8?Q?John_Sm=C3=AEth?= <john@example.com>;
-Date: Sat, 20 Nov 2021 14:22:01 -0800
-Subject: Why not both importing AND exporting? =?utf-8?b?4pi6?=
-Content-Type: multipart/mixed; boundary="festivus";
-
---festivus
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: base64
-
-PGh0bWw+PHA+SSB3YXMgdGhpbmtpbmcgYWJvdXQgcXVpdHRpbmcgdGhlICZsZHF1bztle
-HBvcnRpbmcmcmRxdW87IHRvIGZvY3VzIGp1c3Qgb24gdGhlICZsZHF1bztpbXBvcnRpbm
-cmcmRxdW87LDwvcD48cD5idXQgdGhlbiBJIHRob3VnaHQsIHdoeSBub3QgZG8gYm90aD8
-gJiN4MjYzQTs8L3A+PC9odG1sPg==
---festivus
-Content-Type: message/rfc822
-
-From: "Cosmo Kramer" <kramer@kramerica.com>
-Subject: Exporting my book about coffee tables
-Content-Type: multipart/mixed; boundary="giddyup";
-
---giddyup
-Content-Type: text/plain; charset="utf-16"
-Content-Transfer-Encoding: quoted-printable
-
-=FF=FE=0C!5=D8"=DD5=D8)=DD5=D8-=DD =005=D8*=DD5=D8"=DD =005=D8"=
-=DD5=D85=DD5=D8-=DD5=D8,=DD5=D8/=DD5=D81=DD =005=D8*=DD5=D86=DD =
-=005=D8=1F=DD5=D8,=DD5=D8,=DD5=D8(=DD =005=D8-=DD5=D8)=DD5=D8"=
-=DD5=D8=1E=DD5=D80=DD5=D8"=DD!=00
---giddyup
-Content-Type: image/gif; name*1="about "; name*0="Book ";
-              name*2*=utf-8''%e2%98%95 tables.gif
-Content-Transfer-Encoding: Base64
-Content-Disposition: attachment
-
-R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
---giddyup--
---festivus--
-"#;
+const MESSAGE: &[u8] = b"Received: from mx.example.com (mx.example.com [192.0.2.1])\r\n\
+\tby mail.example.org with ESMTPS id 4F2A1; Sat, 20 Nov 2021 14:22:05 -0800\r\n\
+From: Art Vandelay <art@vandelay.com>\r\n\
+To: jane@example.com\r\n\
+Subject: Latex imports\r\n\
+X-Sender: Kel Varnsen <kel@vandelay.com>\r\n\
+X-Tags: latex, import, export\r\n\
+X-Mailer: Vandelay Mail 1.0\r\n\
+X-Internal-Note: kept, but not parsed\r\n\
+\r\n\
+Please see the attached catalog.\r\n";
 
 fn main() {
-    // Parse only the message headers
-    let _headers = MessageParser::new()
+    let parser = MessageParser::new()
+        .header(HeaderName::Received, HeaderForm::Raw)
+        .header("X-Sender", HeaderForm::Addresses)
+        .header("X-Tags", HeaderForm::CommaList)
+        .unknown_headers(HeaderForm::Ignore)
+        .max_depth(16)
+        .max_parts(100);
+    let message = parser.parse(MESSAGE).expect("the message parses");
+
+    println!("Header fields with the configured forms:");
+    for header in message.headers().iter() {
+        println!("  {}: {:?}", header.raw_name(), header.value());
+    }
+
+    let received = message
+        .headers()
+        .get(HeaderName::Received)
+        .expect("a Received field");
+    let parsed = received.parse_as(HeaderForm::Received);
+    if let Some(trace) = parsed.value().as_received() {
+        println!(
+            "\nReceived, parsed on demand: from {:?} by {:?} with {:?}, id {:?}",
+            trace.from(),
+            trace.by(),
+            trace.with(),
+            trace.id()
+        );
+    }
+
+    let headers_only = MessageParser::new()
         .parse_headers(MESSAGE)
-        .unwrap()
-        .headers();
+        .expect("the header block parses");
+    println!(
+        "\nparse_headers: {} header fields, body at byte {}",
+        headers_only.headers().len(),
+        headers_only.root_part().offset_body()
+    );
 
-    // Parse only the message body, ignoring all headers (except MIME headers, which are required to parse the body)
-    let _message = MessageParser::new()
-        .with_mime_headers()
-        .default_header_ignore()
-        .parse(MESSAGE)
-        .unwrap();
-
-    // Parse only To, From, Date, and Subject headers. All other headers are parsed as raw.
-    let _message = MessageParser::new()
-        .with_mime_headers()
-        .header_text(HeaderName::Subject)
-        .header_address(HeaderName::From)
-        .header_address(HeaderName::To)
-        .header_date(HeaderName::Date)
-        .default_header_raw()
-        .parse(MESSAGE)
-        .unwrap();
+    println!("\nHeader values parsed on their own:");
+    let addresses =
+        HeaderForm::Addresses.parse(b" Ann <ann@example.com>, team: bob@example.com;\r\n");
+    if let Some(list) = addresses.value().as_address() {
+        for mailbox in list.mailboxes() {
+            println!(
+                "  mailbox {:?} {:?}",
+                mailbox.name().unwrap_or_default(),
+                mailbox.address().unwrap_or_default()
+            );
+        }
+    }
+    let date = HeaderForm::Date.parse(b" Sat, 20 Nov 2021 14:22:01 -0800\r\n");
+    if let Some(date) = date.value().as_datetime() {
+        println!("  date {} ({})", date.to_rfc3339(), date.to_timestamp());
+    }
+    let ids = HeaderForm::MessageIds.parse(b" <first@example.com>\r\n <second@example.com>\r\n");
+    if let Some(ids) = ids.value().as_text_list() {
+        for id in ids.iter() {
+            println!("  message id {id}");
+        }
+    }
+    let subject = HeaderForm::Text.parse(b" =?utf-8?q?caf=C3=A9?= au lait\r\n");
+    println!("  text {:?}", subject.value().as_text().unwrap_or_default());
 }

@@ -1,27 +1,52 @@
 {
-  "html_body": [
-    0
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    0
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 406,
+      "offset_end": 1208,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "392363E1.2AC47AB3@example.com"
+            "text_list": [
+              "392363E1.2AC47AB3@example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 45
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -38,99 +63,93 @@
           "offset_end": 84
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 84,
           "offset_start": 89,
           "offset_end": 126
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Mozilla 4.7 [en] (WinNT; I)"
+            "text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 126,
           "offset_start": 135,
           "offset_end": 165
         },
         {
-          "name": {
-            "other": "X-Accept-Language"
-          },
+          "name": "X-Accept-Language",
           "value": {
-            "Text": "en"
+            "text": "en"
           },
           "offset_field": 165,
           "offset_start": 183,
           "offset_end": 188
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 188,
           "offset_start": 201,
           "offset_end": 207
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "blow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 207,
           "offset_start": 210,
           "offset_end": 240
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Test message from Netscape Communicator 4.7"
+            "text": "Test message from Netscape Communicator 4.7"
           },
           "offset_field": 240,
           "offset_start": 248,
           "offset_end": 294
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "5 (Lowest)"
+            "text": "5 (Lowest)"
           },
           "offset_field": 294,
           "offset_start": 305,
           "offset_end": 318
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ]
               ]
             }
           },
@@ -139,22 +158,19 @@
           "offset_end": 359
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "quoted-printable"
+            "text": "quoted-printable"
           },
           "offset_field": 359,
           "offset_start": 385,
           "offset_end": 404
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "Die Hasen und die Fr�sche\r\n\r\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\r\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\r\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\r\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\r\n"
-      },
-      "offset_header": 0,
-      "offset_body": 406,
-      "offset_end": 1208
+      "text": "Die Hasen und die Fr�sche\r\n\r\nDie Hasen klagten einst �ber ihre mi�liche Lage; \"wir leben\", sprach ein\r\nRedner, \"in steter Furcht vor Menschen und Tieren, eine Beute der Hunde,\r\nder Adler, ja fast aller Raubtiere! Unsere stete Angst ist �rger als der\r\nTod selbst. Auf, la�t uns ein f�r allemal sterben.\" \r\n\r\nIn einem nahen Teich wollten sie sich nun ers�ufen; sie eilten ihm zu;\r\nallein das au�erordentliche Get�se und ihre wunderbare Gestalt\r\nerschreckte eine Menge Fr�sche, die am Ufer sa�en, so sehr, da� sie aufs\r\nschnellste untertauchten. \r\n\r\n\"Halt\", rief nun eben dieser Sprecher, \"wir wollen das Ers�ufen noch ein\r\nwenig aufschieben, denn auch uns f�rchten, wie ihr seht, einige Tiere,\r\nwelche also wohl noch ungl�cklicher sein m�ssen als wir.\"\r\n",
+      "decode_problems": [
+        "malformed_charset"
+      ]
     }
   ]
 }

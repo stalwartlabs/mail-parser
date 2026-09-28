@@ -1,2 +1,5 @@
 These test files are Copyright (c) 2003-2018 Dovecot authors, licensed under MIT.
 See the COPYING file at https://github.com/dovecot/core/blob/master/COPYING
+
+Except 023.eml, a minimized fuzzer input reported against mail-parser 0.11
+(it made the parser panic), added as a regression test.

@@ -85,11 +85,11 @@
   },
   {
     "header": "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb3JpZ2luYWwgc3ViamVjdA==?=\n",
-    "expected": "[SUSPECTED SPAM] This is the original subject"
+    "expected": "[SUSPECTED SPAM]This is the original subject"
   },
   {
     "header": "Some text =?utf-8?Q??=here\n",
-    "expected": "Some text  here"
+    "expected": "Some text here"
   },
   {
     "header": "=?ISO-8859-1?Q?a?==?ISO-8859-1?Q?b?==?ISO-8859-1?Q?c?= =?ISO-8859-1?Q?d?=\n",
@@ -109,14 +109,110 @@
   },
   {
     "header": "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\n 3JpZ2luYWwgc3ViamVjdA==?=\n",
-    "expected": "[SUSPECTED SPAM] This is the original subject"
+    "expected": "[SUSPECTED SPAM]This is the original subject"
   },
   {
     "header": "[SUSPECTED SPAM]=?utf-8?B?VGhpcyBpcyB0aGUgb\r\n 3JpZ2luYWwgc3ViamVjdA==?=\r\n",
-    "expected": "[SUSPECTED SPAM] This is the original subject"
+    "expected": "[SUSPECTED SPAM]This is the original subject"
   },
   {
     "header": "Les Communs - =?utf-8?Q?R=C3=A9capitulatif?= de la\r\n =?utf-8?Q?r=C3=A9servation?= 13510164434879\r\n",
     "expected": "Les Communs - Récapitulatif de la réservation 13510164434879"
+  },
+  {
+    "header": " Why not both importing AND exporting? =?utf-8?b?4pi6?=\r\n",
+    "expected": "Why not both importing AND exporting? ☺"
+  },
+  {
+    "header": "[SPAM]=?utf-8?q?caf=C3=A9?=\n",
+    "expected": "[SPAM]café"
+  },
+  {
+    "header": "=?utf-8?q?caf=C3=A9?=suffix\n",
+    "expected": "cafésuffix"
+  },
+  {
+    "header": "x   =?utf-8?q?a?=   y\n",
+    "expected": "x   a   y"
+  },
+  {
+    "header": "x\t=?utf-8?q?a?=\ty\n",
+    "expected": "x\ta\ty"
+  },
+  {
+    "header": "=?utf-8?q?a?=  \r\n  =?utf-8?q?b?=\r\n",
+    "expected": "ab"
+  },
+  {
+    "header": "=?utf-8?q?a?=\r\n b\r\n",
+    "expected": "a b"
+  },
+  {
+    "header": "a\r\n =?utf-8?q?b?=\r\n",
+    "expected": "a b"
+  },
+  {
+    "header": "=?utf-8?q?caf=C3?= =?UTF-8?q?=A9?=\n",
+    "expected": "café"
+  },
+  {
+    "header": "=?utf-8?b?w6k?=\n",
+    "expected": "é"
+  },
+  {
+    "header": "=?x?q?a?=\n",
+    "expected": "a"
+  },
+  {
+    "header": "=?utf-8?q??=\n",
+    "expected": ""
+  },
+  {
+    "header": "=?utf-8?q?a?= =?utf-8?q?=ZZ?=\n",
+    "expected": "a =?utf-8?q?=ZZ?="
+  },
+  {
+    "header": "=?iso-8859-1?q?caf=E9?= =?utf-8?q?!?=\n",
+    "expected": "café!"
+  },
+  {
+    "header": "=?utf-8?q?a b\tc?=\n",
+    "expected": "a b\tc"
+  },
+  {
+    "header": "  \r\n\t\n",
+    "expected": ""
+  },
+  {
+    "header": "",
+    "expected": ""
+  },
+  {
+    "header": " no final newline",
+    "expected": "no final newline"
+  },
+  {
+    "header": "a\rb\n",
+    "expected": "a b"
+  },
+  {
+    "header": "a   b\t\tc\n",
+    "expected": "a   b\t\tc"
+  },
+  {
+    "header": "folded \r\n\t line\r\n",
+    "expected": "folded line"
+  },
+  {
+    "header": "a = b =? c\n",
+    "expected": "a = b =? c"
+  },
+  {
+    "header": "été\r\n €\n",
+    "expected": "été €"
+  },
+  {
+    "header": " \r\n",
+    "expected": ""
   }
 ]

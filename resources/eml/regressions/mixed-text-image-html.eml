@@ -1,0 +1,15 @@
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/plain
+
+first
+--m
+Content-Type: image/png
+
+image
+--m
+Content-Type: text/html
+
+<p>third</p>
+--m--

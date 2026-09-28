@@ -1,60 +1,79 @@
 {
-  "html_body": [
-    0
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
   ],
-  "text_body": [
-    0
-  ],
-  "attachments": [],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 400,
+      "offset_end": 1159,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-Id",
           "value": {
-            "Text": "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
+            "text_list": [
+              "4.2.0.58.20000519011207.00a8cd70@pop.example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 63
         },
         {
-          "name": {
-            "other": "X-Sender"
-          },
+          "name": "X-Sender",
           "value": {
-            "Text": "dwsauder@pop.example.com (Unverified)"
+            "text": "dwsauder@pop.example.com (Unverified)"
           },
           "offset_field": 63,
           "offset_start": 72,
           "offset_end": 111
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
+            "text": "QUALCOMM Windows Eudora Pro Version 4.2.0.58"
           },
           "offset_field": 111,
           "offset_start": 120,
           "offset_end": 167
         },
         {
-          "name": {
-            "other": "X-Priority"
-          },
+          "name": "X-Priority",
           "value": {
-            "Text": "5 (Lowest)"
+            "text": "5 (Lowest)"
           },
           "offset_field": 167,
           "offset_start": 178,
           "offset_end": 190
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 19,
@@ -71,66 +90,66 @@
           "offset_end": 228
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "blow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 228,
           "offset_start": 231,
           "offset_end": 260
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 260,
           "offset_start": 265,
           "offset_end": 301
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "The Hare and the Tortoise"
+            "text": "The Hare and the Tortoise"
           },
           "offset_field": 301,
           "offset_start": 309,
           "offset_end": 336
         },
         {
-          "name": "mime_version",
+          "name": "Mime-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 336,
           "offset_start": 349,
           "offset_end": 354
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -139,13 +158,8 @@
           "offset_end": 399
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Hare and the Tortoise \n  \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n  \nSlow but steady wins the race.  \n\n"
-      },
-      "offset_header": 0,
-      "offset_body": 400,
-      "offset_end": 1159
+      "text": "\nThe Hare and the Tortoise \n  \nA HARE one day ridiculed the short feet and slow pace of the Tortoise, who replied, laughing:  \"Though you be swift as the wind, I will beat you in a race.\"  The Hare, believing her assertion to be simply impossible, assented to the proposal; and they agreed that the Fox should choose the course and fix the goal.  On the day appointed for the race the two started together.  The Tortoise never for a moment stopped, but went on with a slow but steady pace straight to the end of the course.  The Hare, lying down by the wayside, fell fast asleep.  At last waking up, and moving as fast as he could, he saw the Tortoise had reached the goal, and was comfortably dozing after her fatigue.  \n  \nSlow but steady wins the race.  \n\n",
+      "decode_problems": []
     }
   ]
 }

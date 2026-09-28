@@ -1,61 +1,85 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": true
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 221,
+      "offset_end": 1038,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "test",
                   "address": "test@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 30
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "test multipart, related first"
+            "text": "test multipart, related first"
           },
           "offset_field": 30,
           "offset_start": 38,
           "offset_end": 69
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "test2",
                   "address": "test2@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 69,
           "offset_start": 72,
           "offset_end": 99
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2016,
               "month": 2,
               "day": 27,
@@ -72,25 +96,25 @@
           "offset_end": 137
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 137,
           "offset_start": 150,
           "offset_end": 155
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "related",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "related",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "------------related"
-                }
+                [
+                  "boundary",
+                  "------------related"
+                ]
               ]
             }
           },
@@ -98,31 +122,35 @@
           "offset_start": 168,
           "offset_end": 220
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 221,
-      "offset_end": 1038
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 243,
+      "offset_body": 404,
+      "offset_end": 809,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "------------alternative"
-                }
+                [
+                  "boundary",
+                  "------------alternative"
+                ]
               ]
             }
           },
@@ -131,20 +159,20 @@
           "offset_end": 316
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "UTF-8"
-                },
-                {
-                  "name": "format",
-                  "value": "flowed"
-                }
+                [
+                  "charset",
+                  "UTF-8"
+                ],
+                [
+                  "format",
+                  "flowed"
+                ]
               ]
             }
           },
@@ -153,32 +181,41 @@
           "offset_end": 371
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "8bit"
+            "text": "8bit"
           },
           "offset_field": 371,
           "offset_start": 397,
           "offset_end": 403
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "áóúäöüß\n\n--------------alternative\nContent-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n\n  <!-- This also needs to work when there is no html tag -->\n  <head>\n    <meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\">\n  </head>\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\n    áóúäöüß<br>\n    <img src=\"cid:part1\" alt=\"\"><br>\n  </body>\n\n--------------alternative\n"
-      },
-      "offset_header": 243,
-      "offset_body": 404,
-      "offset_end": 809
+      "text": "áóúäöüß\n\n--------------alternative\nContent-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n\n  <!-- This also needs to work when there is no html tag -->\n  <head>\n    <meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\">\n  </head>\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\n    áóúäöüß<br>\n    <img src=\"cid:part1\" alt=\"\"><br>\n  </body>\n\n--------------alternative\n",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "inline_binary",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "attachment",
+        "inline"
+      ],
+      "role": "attachment",
+      "offset_header": 832,
+      "offset_body": 911,
+      "offset_end": 1013,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "image",
-              "c_subtype": "png",
-              "attributes": null
+            "content_type": {
+              "type": "image",
+              "subtype": "png",
+              "attributes": []
             }
           },
           "offset_field": 832,
@@ -186,106 +223,28 @@
           "offset_end": 856
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "base64"
+            "text": "base64"
           },
           "offset_field": 856,
           "offset_start": 882,
           "offset_end": 890
         },
         {
-          "name": "content_id",
+          "name": "Content-ID",
           "value": {
-            "Text": "part1"
+            "text_list": [
+              "part1"
+            ]
           },
           "offset_field": 890,
           "offset_start": 901,
           "offset_end": 910
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Binary": [
-          137,
-          80,
-          78,
-          71,
-          13,
-          10,
-          26,
-          10,
-          0,
-          0,
-          0,
-          13,
-          73,
-          72,
-          68,
-          82,
-          0,
-          0,
-          0,
-          6,
-          0,
-          0,
-          0,
-          11,
-          8,
-          2,
-          0,
-          0,
-          0,
-          211,
-          48,
-          107,
-          193,
-          0,
-          0,
-          0,
-          17,
-          73,
-          68,
-          65,
-          84,
-          8,
-          153,
-          99,
-          224,
-          178,
-          46,
-          67,
-          67,
-          12,
-          67,
-          90,
-          8,
-          0,
-          148,
-          33,
-          48,
-          55,
-          230,
-          6,
-          126,
-          38,
-          0,
-          0,
-          0,
-          0,
-          73,
-          69,
-          78,
-          68,
-          174,
-          66,
-          96,
-          130
-        ]
-      },
-      "offset_header": 832,
-      "offset_body": 911,
-      "offset_end": 1013
+      "binary": "iVBORw0KGgoAAAANSUhEUgAAAAYAAAALCAIAAADTMGvBAAAAEUlEQVQImWPgsi5DQwxDWggAlCEwN+YGfiYAAAAASUVORK5CYII=",
+      "decode_problems": []
     }
   ]
 }

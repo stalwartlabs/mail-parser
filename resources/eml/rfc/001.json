@@ -1,91 +1,118 @@
 {
-  "html_body": [],
-  "text_body": [],
-  "attachments": [
-    1,
-    2,
-    3
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [],
+      "html_body": [],
+      "attachments": [
+        1,
+        2,
+        3
+      ],
+      "has_attachments": true
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 198,
+      "offset_end": 1108,
       "headers": [
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Whomever",
                   "address": null
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 0,
           "offset_start": 5,
           "offset_end": 15
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Someone",
                   "address": null
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 15,
           "offset_start": 18,
           "offset_end": 27
         },
         {
-          "name": "date",
-          "value": "Empty",
+          "name": "Date",
+          "value": null,
           "offset_field": 27,
           "offset_start": 32,
           "offset_end": 42
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "whatever"
+            "text": "whatever"
           },
           "offset_field": 42,
           "offset_start": 50,
           "offset_end": 60
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 60,
           "offset_start": 73,
           "offset_end": 78
         },
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "id1@host.com"
+            "text_list": [
+              "id1@host.com"
+            ]
           },
           "offset_field": 78,
           "offset_start": 89,
           "offset_end": 105
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "alternative",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "alternative",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "42"
-                }
+                [
+                  "boundary",
+                  "42"
+                ]
               ]
             }
           },
@@ -94,60 +121,64 @@
           "offset_end": 154
         },
         {
-          "name": "content_id",
+          "name": "Content-ID",
           "value": {
-            "Text": "id001@guppylake.bellcore.com"
+            "text_list": [
+              "id001@guppylake.bellcore.com"
+            ]
           },
           "offset_field": 154,
           "offset_start": 165,
           "offset_end": 197
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2,
-          3
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 198,
-      "offset_end": 1108
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 203,
+      "offset_body": 433,
+      "offset_end": 512,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "external-body",
+            "content_type": {
+              "type": "message",
+              "subtype": "external-body",
               "attributes": [
-                {
-                  "name": "name",
-                  "value": "BodyFormats.ps"
-                },
-                {
-                  "name": "site",
-                  "value": "thumper.bellcore.com"
-                },
-                {
-                  "name": "mode",
-                  "value": "image"
-                },
-                {
-                  "name": "access-type",
-                  "value": "ANON-FTP"
-                },
-                {
-                  "name": "directory",
-                  "value": "pub"
-                },
-                {
-                  "name": "expiration",
-                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                }
+                [
+                  "name",
+                  "BodyFormats.ps"
+                ],
+                [
+                  "site",
+                  "thumper.bellcore.com"
+                ],
+                [
+                  "mode",
+                  "image"
+                ],
+                [
+                  "access-type",
+                  "ANON-FTP"
+                ],
+                [
+                  "directory",
+                  "pub"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
               ]
             }
           },
@@ -156,119 +187,47 @@
           "offset_end": 432
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Binary": [
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          116,
-          121,
-          112,
-          101,
-          58,
-          32,
-          97,
-          112,
-          112,
-          108,
-          105,
-          99,
-          97,
-          116,
-          105,
-          111,
-          110,
-          47,
-          112,
-          111,
-          115,
-          116,
-          115,
-          99,
-          114,
-          105,
-          112,
-          116,
-          10,
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          73,
-          68,
-          58,
-          32,
-          60,
-          105,
-          100,
-          52,
-          50,
-          64,
-          103,
-          117,
-          112,
-          112,
-          121,
-          108,
-          97,
-          107,
-          101,
-          46,
-          98,
-          101,
-          108,
-          108,
-          99,
-          111,
-          114,
-          101,
-          46,
-          99,
-          111,
-          109,
-          62,
-          10
-        ]
-      },
-      "offset_header": 203,
-      "offset_body": 433,
-      "offset_end": 512
+      "binary": "Q29udGVudC10eXBlOiBhcHBsaWNhdGlvbi9wb3N0c2NyaXB0CkNvbnRlbnQtSUQ6IDxpZDQyQGd1cHB5bGFrZS5iZWxsY29yZS5jb20+Cg==",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 518,
+      "offset_body": 736,
+      "offset_end": 815,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "external-body",
+            "content_type": {
+              "type": "message",
+              "subtype": "external-body",
               "attributes": [
-                {
-                  "name": "access-type",
-                  "value": "local-file"
-                },
-                {
-                  "name": "name",
-                  "value": "/u/nsb/writing/rfcs/RFC-MIME.ps"
-                },
-                {
-                  "name": "site",
-                  "value": "thumper.bellcore.com"
-                },
-                {
-                  "name": "expiration",
-                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                }
+                [
+                  "access-type",
+                  "local-file"
+                ],
+                [
+                  "name",
+                  "/u/nsb/writing/rfcs/RFC-MIME.ps"
+                ],
+                [
+                  "site",
+                  "thumper.bellcore.com"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
               ]
             }
           },
@@ -277,115 +236,43 @@
           "offset_end": 735
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Binary": [
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          116,
-          121,
-          112,
-          101,
-          58,
-          32,
-          97,
-          112,
-          112,
-          108,
-          105,
-          99,
-          97,
-          116,
-          105,
-          111,
-          110,
-          47,
-          112,
-          111,
-          115,
-          116,
-          115,
-          99,
-          114,
-          105,
-          112,
-          116,
-          10,
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          73,
-          68,
-          58,
-          32,
-          60,
-          105,
-          100,
-          52,
-          50,
-          64,
-          103,
-          117,
-          112,
-          112,
-          121,
-          108,
-          97,
-          107,
-          101,
-          46,
-          98,
-          101,
-          108,
-          108,
-          99,
-          111,
-          114,
-          101,
-          46,
-          99,
-          111,
-          109,
-          62,
-          10
-        ]
-      },
-      "offset_header": 518,
-      "offset_body": 736,
-      "offset_end": 815
+      "binary": "Q29udGVudC10eXBlOiBhcHBsaWNhdGlvbi9wb3N0c2NyaXB0CkNvbnRlbnQtSUQ6IDxpZDQyQGd1cHB5bGFrZS5iZWxsY29yZS5jb20+Cg==",
+      "decode_problems": []
     },
     {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 821,
+      "offset_body": 1002,
+      "offset_end": 1099,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "message",
-              "c_subtype": "external-body",
+            "content_type": {
+              "type": "message",
+              "subtype": "external-body",
               "attributes": [
-                {
-                  "name": "access-type",
-                  "value": "mail-server"
-                },
-                {
-                  "name": "server",
-                  "value": "listserv@bogus.bitnet"
-                },
-                {
-                  "name": "expiration",
-                  "value": "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
-                }
+                [
+                  "access-type",
+                  "mail-server"
+                ],
+                [
+                  "server",
+                  "listserv@bogus.bitnet"
+                ],
+                [
+                  "expiration",
+                  "Fri, 14 Jun 1991 19:13:14 -0400 (EDT)"
+                ]
               ]
             }
           },
@@ -394,111 +281,8 @@
           "offset_end": 1001
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Binary": [
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          116,
-          121,
-          112,
-          101,
-          58,
-          32,
-          97,
-          112,
-          112,
-          108,
-          105,
-          99,
-          97,
-          116,
-          105,
-          111,
-          110,
-          47,
-          112,
-          111,
-          115,
-          116,
-          115,
-          99,
-          114,
-          105,
-          112,
-          116,
-          10,
-          67,
-          111,
-          110,
-          116,
-          101,
-          110,
-          116,
-          45,
-          73,
-          68,
-          58,
-          32,
-          60,
-          105,
-          100,
-          52,
-          50,
-          64,
-          103,
-          117,
-          112,
-          112,
-          121,
-          108,
-          97,
-          107,
-          101,
-          46,
-          98,
-          101,
-          108,
-          108,
-          99,
-          111,
-          114,
-          101,
-          46,
-          99,
-          111,
-          109,
-          62,
-          10,
-          10,
-          103,
-          101,
-          116,
-          32,
-          82,
-          70,
-          67,
-          45,
-          77,
-          73,
-          77,
-          69,
-          46,
-          68,
-          79,
-          67,
-          10
-        ]
-      },
-      "offset_header": 821,
-      "offset_body": 1002,
-      "offset_end": 1099
+      "binary": "Q29udGVudC10eXBlOiBhcHBsaWNhdGlvbi9wb3N0c2NyaXB0CkNvbnRlbnQtSUQ6IDxpZDQyQGd1cHB5bGFrZS5iZWxsY29yZS5jb20+CgpnZXQgUkZDLU1JTUUuRE9DCg==",
+      "decode_problems": []
     }
   ]
 }

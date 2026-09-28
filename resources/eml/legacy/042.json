@@ -1,29 +1,55 @@
 {
-  "html_body": [
-    1
-  ],
-  "text_body": [
-    1
-  ],
-  "attachments": [
-    2
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1
+      ],
+      "html_body": [
+        1
+      ],
+      "attachments": [
+        2
+      ],
+      "has_attachments": false
+    }
   ],
   "parts": [
     {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 367,
+      "offset_end": 2314,
       "headers": [
         {
-          "name": "message_id",
+          "name": "Message-ID",
           "value": {
-            "Text": "3923686C.99FB5E36@example.com"
+            "text_list": [
+              "3923686C.99FB5E36@example.com"
+            ]
           },
           "offset_field": 0,
           "offset_start": 11,
           "offset_end": 44
         },
         {
-          "name": "date",
+          "name": "Date",
           "value": {
-            "DateTime": {
+            "date_time": {
               "year": 2000,
               "month": 5,
               "day": 17,
@@ -40,88 +66,84 @@
           "offset_end": 82
         },
         {
-          "name": "from",
+          "name": "From",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Doug Sauder",
                   "address": "dwsauder@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 82,
           "offset_start": 87,
           "offset_end": 123
         },
         {
-          "name": {
-            "other": "X-Mailer"
-          },
+          "name": "X-Mailer",
           "value": {
-            "Text": "Mozilla 4.7 [en] (WinNT; I)"
+            "text": "Mozilla 4.7 [en] (WinNT; I)"
           },
           "offset_field": 123,
           "offset_start": 132,
           "offset_end": 161
         },
         {
-          "name": {
-            "other": "X-Accept-Language"
-          },
+          "name": "X-Accept-Language",
           "value": {
-            "Text": "en"
+            "text": "en"
           },
           "offset_field": 161,
           "offset_start": 179,
           "offset_end": 183
         },
         {
-          "name": "mime_version",
+          "name": "MIME-Version",
           "value": {
-            "Text": "1.0"
+            "text": "1.0"
           },
           "offset_field": 183,
           "offset_start": 196,
           "offset_end": 201
         },
         {
-          "name": "to",
+          "name": "To",
           "value": {
-            "Address": {
-              "List": [
-                {
+            "address": [
+              {
+                "mailbox": {
                   "name": "Joe Blow",
                   "address": "blow@example.com"
                 }
-              ]
-            }
+              }
+            ]
           },
           "offset_field": 201,
           "offset_start": 204,
           "offset_end": 233
         },
         {
-          "name": "subject",
+          "name": "Subject",
           "value": {
-            "Text": "Test message from Netscape Communicator 4.7"
+            "text": "Test message from Netscape Communicator 4.7"
           },
           "offset_field": 233,
           "offset_start": 241,
           "offset_end": 286
         },
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "multipart",
-              "c_subtype": "mixed",
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
               "attributes": [
-                {
-                  "name": "boundary",
-                  "value": "------------77060D866A66DC8D0921E051"
-                }
+                [
+                  "boundary",
+                  "------------77060D866A66DC8D0921E051"
+                ]
               ]
             }
           },
@@ -129,31 +151,35 @@
           "offset_start": 299,
           "offset_end": 366
         }
-      ],
-      "is_encoding_problem": false,
-      "body": {
-        "Multipart": [
-          1,
-          2
-        ]
-      },
-      "offset_header": 0,
-      "offset_body": 367,
-      "offset_end": 2314
+      ]
     },
     {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 451,
+      "offset_body": 527,
+      "offset_end": 1280,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ]
               ]
             }
           },
@@ -162,40 +188,49 @@
           "offset_end": 494
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 494,
           "offset_start": 520,
           "offset_end": 526
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race."
-      },
-      "offset_header": 451,
-      "offset_body": 527,
-      "offset_end": 1280
+      "text": "\nThe Hare and the Tortoise \n \nA HARE one day ridiculed the short feet and slow pace of the Tortoise,\nwho replied, laughing:  \"Though you be swift as the wind, I will beat\nyou in a race.\"  The Hare, believing her assertion to be simply\nimpossible, assented to the proposal; and they agreed that the Fox\nshould choose the course and fix the goal.  On the day appointed for the\nrace the two started together.  The Tortoise never for a moment stopped,\nbut went on with a slow but steady pace straight to the end of the\ncourse.  The Hare, lying down by the wayside, fell fast asleep.  At last\nwaking up, and moving as fast as he could, he saw the Tortoise had\nreached the goal, and was comfortably dozing after her fatigue.  \n \nSlow but steady wins the race.",
+      "decode_problems": []
     },
     {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment",
+        "inline"
+      ],
+      "role": "attachment",
+      "offset_header": 1320,
+      "offset_body": 1484,
+      "offset_end": 2271,
       "headers": [
         {
-          "name": "content_type",
+          "name": "Content-Type",
           "value": {
-            "ContentType": {
-              "c_type": "text",
-              "c_subtype": "plain",
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
               "attributes": [
-                {
-                  "name": "charset",
-                  "value": "us-ascii"
-                },
-                {
-                  "name": "name",
-                  "value": "farmerandstork.txt"
-                }
+                [
+                  "charset",
+                  "us-ascii"
+                ],
+                [
+                  "name",
+                  "farmerandstork.txt"
+                ]
               ]
             }
           },
@@ -204,25 +239,25 @@
           "offset_end": 1391
         },
         {
-          "name": "content_transfer_encoding",
+          "name": "Content-Transfer-Encoding",
           "value": {
-            "Text": "7bit"
+            "text": "7bit"
           },
           "offset_field": 1391,
           "offset_start": 1417,
           "offset_end": 1423
         },
         {
-          "name": "content_disposition",
+          "name": "Content-Disposition",
           "value": {
-            "ContentType": {
-              "c_type": "inline",
-              "c_subtype": null,
+            "content_type": {
+              "type": "inline",
+              "subtype": null,
               "attributes": [
-                {
-                  "name": "filename",
-                  "value": "farmerandstork.txt"
-                }
+                [
+                  "filename",
+                  "farmerandstork.txt"
+                ]
               ]
             }
           },
@@ -231,13 +266,8 @@
           "offset_end": 1483
         }
       ],
-      "is_encoding_problem": false,
-      "body": {
-        "Text": "\nThe Farmer and the Stork \n \nA FARMER placed nets on his newly-sown plowlands and caught a\nnumber of Cranes, which came to pick up his seed.  With them he\ntrapped a Stork that had fractured his leg in the net and was\nearnestly beseeching the Farmer to spare his life.  \"Pray save\nme, Master,\" he said, \"and let me go free this once.  My broken\nlimb should excite your pity.  Besides, I am no Crane, I am a\nStork, a bird of excellent character; and see how I love and\nslave for my father and mother.  Look too, at my feathers--\nthey are not the least like those of a Crane.\"   The Farmer \nlaughed aloud and said, \"It may be all as you say, I only know \nthis:  I have taken you with these robbers, the Cranes, and you \nmust die in their company.\"  \n \nBirds of a feather flock together.   \n"
-      },
-      "offset_header": 1320,
-      "offset_body": 1484,
-      "offset_end": 2271
+      "text": "\nThe Farmer and the Stork \n \nA FARMER placed nets on his newly-sown plowlands and caught a\nnumber of Cranes, which came to pick up his seed.  With them he\ntrapped a Stork that had fractured his leg in the net and was\nearnestly beseeching the Farmer to spare his life.  \"Pray save\nme, Master,\" he said, \"and let me go free this once.  My broken\nlimb should excite your pity.  Besides, I am no Crane, I am a\nStork, a bird of excellent character; and see how I love and\nslave for my father and mother.  Look too, at my feathers--\nthey are not the least like those of a Crane.\"   The Farmer \nlaughed aloud and said, \"It may be all as you say, I only know \nthis:  I have taken you with these robbers, the Cranes, and you \nmust die in their company.\"  \n \nBirds of a feather flock together.   \n",
+      "decode_problems": []
     }
   ]
 }

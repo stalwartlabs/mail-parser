@@ -346,7 +346,7 @@
         "Name": "scwsout1.nai.com"
       },
       "date": {
-        "year": 1910,
+        "year": 2010,
         "month": 7,
         "day": 2,
         "hour": 18,
@@ -2260,7 +2260,7 @@
       "id": "xma093673",
       "via": "smap",
       "date": {
-        "year": 1903,
+        "year": 2003,
         "month": 3,
         "day": 26,
         "hour": 20,
@@ -2289,7 +2289,7 @@
       "helo_cmd": "Helo",
       "via": "smap",
       "date": {
-        "year": 1904,
+        "year": 2004,
         "month": 2,
         "day": 27,
         "hour": 14,
@@ -2940,7 +2940,7 @@
       "id": "smtpdEDUB8h",
       "via": "SMTP",
       "date": {
-        "year": 1914,
+        "year": 2014,
         "month": 13,
         "day": 11,
         "hour": 50,
@@ -2965,7 +2965,7 @@
       "id": "smtpd1PBsZT",
       "via": "SMTP",
       "date": {
-        "year": 1915,
+        "year": 2015,
         "month": 13,
         "day": 11,
         "hour": 38,
@@ -3192,7 +3192,7 @@
       },
       "for_": "asrg@ietf.org",
       "date": {
-        "year": 1903,
+        "year": 2003,
         "month": 3,
         "day": 20,
         "hour": 10,
@@ -3714,7 +3714,7 @@
       },
       "helo_cmd": "Helo",
       "date": {
-        "year": 1914,
+        "year": 2014,
         "month": 14,
         "day": 9,
         "hour": 36,
@@ -4453,6 +4453,178 @@
         "minute": 0,
         "second": 0,
         "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "",
+    "expected": null
+  },
+  {
+    "header": "  \r\n",
+    "expected": null
+  },
+  {
+    "header": "(comment only)\n",
+    "expected": null
+  },
+  {
+    "header": "from x by y",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "by": {
+        "Name": "y"
+      }
+    }
+  },
+  {
+    "header": "from : by y\n",
+    "expected": {
+      "from": {
+        "Name": ":"
+      },
+      "by": {
+        "Name": "y"
+      }
+    }
+  },
+  {
+    "header": "from x (\"(\" [10.0.0.1])\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "from_ip": "10.0.0.1"
+    }
+  },
+  {
+    "header": "from x (helo=[::1] ident=me) id 5; 1 Jan 2020 10:11:12 -9999\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "id": "5",
+      "ident": "me",
+      "helo": {
+        "IpAddr": "::1"
+      },
+      "helo_cmd": "Helo",
+      "date": {
+        "year": 2020,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": true,
+        "tz_hour": 99,
+        "tz_minute": 99
+      }
+    }
+  },
+  {
+    "header": "from x (y (z [10.0.0.1]) 10.0.0.2)\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "from_ip": "10.0.0.1"
+    }
+  },
+  {
+    "header": "from x; Sun, 1 Jan 03 10:11:12 -0600\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "date": {
+        "year": 2003,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": true,
+        "tz_hour": 6,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x; 1 Jan 49 10:11:12 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "date": {
+        "year": 2049,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x; 1 Jan 50 10:11:12 +0100\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "date": {
+        "year": 1950,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": false,
+        "tz_hour": 1,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x; 1 Jan 0 10:11:12 +0000\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "date": {
+        "year": 2000,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": false,
+        "tz_hour": 0,
+        "tz_minute": 0
+      }
+    }
+  },
+  {
+    "header": "from x; 1 Jan 2020 10:11:12\n",
+    "expected": {
+      "from": {
+        "Name": "x"
+      },
+      "date": {
+        "year": 2020,
+        "month": 1,
+        "day": 1,
+        "hour": 10,
+        "minute": 11,
+        "second": 12,
+        "tz_before_gmt": true,
         "tz_hour": 0,
         "tz_minute": 0
       }

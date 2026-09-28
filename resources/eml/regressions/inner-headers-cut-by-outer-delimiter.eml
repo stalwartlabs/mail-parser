@@ -1,0 +1,8 @@
+Content-Type: multipart/mixed; boundary=a
+
+--a
+Content-Type: multipart/mixed; boundary=b
+
+--b
+X-Y: z
+--a--

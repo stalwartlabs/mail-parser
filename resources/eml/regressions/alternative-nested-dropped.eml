@@ -1,0 +1,23 @@
+Content-Type: multipart/alternative; boundary=a
+
+--a
+Content-Type: multipart/mixed; boundary=m
+
+--m
+Content-Type: text/html
+
+<p>first</p>
+--m
+Content-Type: multipart/alternative; boundary=b
+
+--b
+Content-Type: text/plain
+
+second
+--b
+Content-Type: text/html
+
+<p>second</p>
+--b--
+--m--
+--a--

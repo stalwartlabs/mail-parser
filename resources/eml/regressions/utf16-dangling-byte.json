@@ -1,0 +1,139 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2
+      ],
+      "html_body": [
+        1,
+        2
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 43,
+      "offset_end": 156,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "b"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 42
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 47,
+      "offset_body": 91,
+      "offset_end": 96,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-16le"
+                ]
+              ]
+            }
+          },
+          "offset_field": 47,
+          "offset_start": 60,
+          "offset_end": 90
+        }
+      ],
+      "text": "ab�",
+      "decode_problems": [
+        "malformed_charset"
+      ]
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 101,
+      "offset_body": 145,
+      "offset_end": 149,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-16le"
+                ]
+              ]
+            }
+          },
+          "offset_field": 101,
+          "offset_start": 114,
+          "offset_end": 144
+        }
+      ],
+      "text": "a�",
+      "decode_problems": [
+        "malformed_charset"
+      ]
+    }
+  ]
+}

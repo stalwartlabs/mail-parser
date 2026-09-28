@@ -1,0 +1,13 @@
+Content-Type: multipart/related; boundary=r
+
+--r
+Content-Type: text/html
+
+<p>Newsletter</p><img src="cid:logo">
+--r
+Content-Type: image/png; name="logo.png"
+Content-ID: <logo>
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgo=
+--r--
