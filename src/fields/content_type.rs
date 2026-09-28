@@ -209,19 +209,6 @@ fn name_token(bytes: &[u8], at: usize) -> Option<Token> {
 static VALUE_STOPS: ByteSet = ByteSet::excluding(&CLASSES, VALUE);
 static QUOTED_STOPS: ByteSet = ByteSet::excluding(&CLASSES, QUOTED);
 
-fn value_end(kernel: Kernel, bytes: &[u8], mut at: usize, stops: &ByteSet) -> Option<usize> {
-    loop {
-        let end = kernel
-            .first_in_set(stops, bytes, at, bytes.len())
-            .unwrap_or(bytes.len());
-        match bytes.get(end..).unwrap_or_default() {
-            [b'=', b'?', ..] => return None,
-            [b'=', ..] => at = end + 1,
-            _ => return Some(end),
-        }
-    }
-}
-
 fn skip_blank(bytes: &[u8], mut at: usize) -> usize {
     loop {
         match bytes.get(at..).unwrap_or_default() {
@@ -247,302 +234,319 @@ fn at_end(bytes: &[u8], at: usize) -> bool {
     )
 }
 
-fn simple_shape(kernel: Kernel, bytes: &[u8]) -> Option<Simple> {
-    let ctype = name_token(bytes, skip_blank(bytes, 0))?;
-    let mut simple = Simple {
-        ctype,
-        subtype: None,
-        params: [SimpleParam::default(); MAX_SIMPLE_PARAMS],
-        len: 0,
-    };
-    let mut at = ctype.end;
-    if bytes.get(at) == Some(&b'/') {
-        let subtype = name_token(bytes, at + 1)?;
-        simple.subtype = Some(subtype);
-        at = subtype.end;
+impl Kernel {
+    fn value_end(self, bytes: &[u8], mut at: usize, stops: &ByteSet) -> Option<usize> {
+        loop {
+            let end = self
+                .first_in_set(stops, bytes, at, bytes.len())
+                .unwrap_or(bytes.len());
+            match bytes.get(end..).unwrap_or_default() {
+                [b'=', b'?', ..] => return None,
+                [b'=', ..] => at = end + 1,
+                _ => return Some(end),
+            }
+        }
     }
-    loop {
-        at = skip_blank(bytes, at);
-        if at_end(bytes, at) {
-            return Some(simple);
-        }
-        if bytes.get(at) != Some(&b';') {
-            return None;
-        }
-        at = skip_blank(bytes, at + 1);
-        if at_end(bytes, at) {
-            return Some(simple);
-        }
-        let name = name_token(bytes, at)?;
-        at = skip_space(bytes, name.end);
-        if bytes.get(at) != Some(&b'=') {
-            return None;
-        }
-        at = skip_space(bytes, at + 1);
-        let value = if bytes.get(at) == Some(&b'"') {
-            let end = value_end(kernel, bytes, at + 1, &QUOTED_STOPS)?;
-            if bytes.get(end) != Some(&b'"') {
-                return None;
-            }
-            let value = (at + 1, end);
-            at = end + 1;
-            (end > value.0).then_some(value)
-        } else {
-            let end = value_end(kernel, bytes, at, &VALUE_STOPS)?;
-            if end == at {
-                return None;
-            }
-            let value = (at, end);
-            at = end;
-            Some(value)
+
+    fn simple_content_type(self, bytes: &[u8]) -> Option<Simple> {
+        let ctype = name_token(bytes, skip_blank(bytes, 0))?;
+        let mut simple = Simple {
+            ctype,
+            subtype: None,
+            params: [SimpleParam::default(); MAX_SIMPLE_PARAMS],
+            len: 0,
         };
-        *simple.params.get_mut(simple.len)? = SimpleParam { name, value };
-        simple.len += 1;
-    }
-}
-
-fn parse_simple(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Option<Value> {
-    let base = value.start;
-    let simple = simple_shape(ctx.kernel(), ctx.src().get(value)?)?;
-    let lowercase = |ctx: &mut FieldCtx<'_>, token: Token| {
-        ctx.lowercase_scanned(base + token.start..base + token.end, token.upper)
-    };
-    let ctype = lowercase(ctx, simple.ctype);
-    let subtype = simple.subtype.map(|subtype| lowercase(ctx, subtype));
-    let params = ctx.params_mark();
-    for param in simple.params.get(..simple.len).unwrap_or_default() {
-        let name = lowercase(ctx, param.name);
-        if let Some((start, end)) = param.value {
-            let value = ctx.borrow(base + start..base + end);
-            ctx.push_param(name, value);
+        let mut at = ctype.end;
+        if bytes.get(at) == Some(&b'/') {
+            let subtype = name_token(bytes, at + 1)?;
+            simple.subtype = Some(subtype);
+            at = subtype.end;
+        }
+        loop {
+            at = skip_blank(bytes, at);
+            if at_end(bytes, at) {
+                return Some(simple);
+            }
+            if bytes.get(at) != Some(&b';') {
+                return None;
+            }
+            at = skip_blank(bytes, at + 1);
+            if at_end(bytes, at) {
+                return Some(simple);
+            }
+            let name = name_token(bytes, at)?;
+            at = skip_space(bytes, name.end);
+            if bytes.get(at) != Some(&b'=') {
+                return None;
+            }
+            at = skip_space(bytes, at + 1);
+            let value = if bytes.get(at) == Some(&b'"') {
+                let end = self.value_end(bytes, at + 1, &QUOTED_STOPS)?;
+                if bytes.get(end) != Some(&b'"') {
+                    return None;
+                }
+                let value = (at + 1, end);
+                at = end + 1;
+                (end > value.0).then_some(value)
+            } else {
+                let end = self.value_end(bytes, at, &VALUE_STOPS)?;
+                if end == at {
+                    return None;
+                }
+                let value = (at, end);
+                at = end;
+                Some(value)
+            };
+            *simple.params.get_mut(simple.len)? = SimpleParam { name, value };
+            simple.len += 1;
         }
     }
-    Some(ctx.content_type(ctype, subtype, params))
 }
 
-pub(crate) fn parse_content_type(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    match parse_simple(ctx, value.clone()) {
-        Some(parsed) => parsed,
-        None => parse_state_machine(ctx, value),
-    }
-}
-
-fn parse_state_machine(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let src = ctx.src();
-    let end = value.end.min(src.len());
-    let mut parser = Parser {
-        state: State::Type,
-        outer_state: State::Type,
-        comment_depth: 0,
-        c_type: None,
-        c_subtype: None,
-        attr_name: None,
-        attr_charset: None,
-        attr_position: 0,
-        params: ctx.params_mark(),
-        sections: ctx.data.scratch.continuations.len(),
-        budget: MAX_PARAMS,
-        has_continued: false,
-        has_languages: false,
-        token: None,
-        values: ctx.take_text_scratch(),
-        has_values: false,
-        is_continuation: false,
-        is_encoded_attribute: false,
-        is_escaped: false,
-        remove_crlf: false,
-        is_token_start: true,
-        apostrophes: 0,
-    };
-
-    let mut pos = value.start;
-    while let Some(&ch) = src.get(pos).filter(|_| pos < end) {
-        let index = pos;
-        pos += 1;
-        match ch {
-            b' ' | b'\t' => {
-                parser.is_token_start = true;
-                if parser.state == State::AttributeQuotedValue {
-                    parser.extend_token(index);
-                }
-                continue;
+impl FieldCtx<'_> {
+    fn parse_simple_content_type(&mut self, value: Range<usize>) -> Option<Value> {
+        let base = value.start;
+        let simple = self.kernel().simple_content_type(self.src().get(value)?)?;
+        let lowercase = |ctx: &mut FieldCtx<'_>, token: Token| {
+            ctx.lowercase_scanned(base + token.start..base + token.end, token.upper)
+        };
+        let ctype = lowercase(self, simple.ctype);
+        let subtype = simple.subtype.map(|subtype| lowercase(self, subtype));
+        let params = self.params_mark();
+        for param in simple.params.get(..simple.len).unwrap_or_default() {
+            let name = lowercase(self, param.name);
+            if let Some((start, end)) = param.value {
+                let value = self.borrow(base + start..base + end);
+                self.push_param(name, value);
             }
-            b'\n' => {
-                let next_is_space = pos < end && matches!(src.get(pos), Some(b' ' | b'\t'));
-                match parser.state {
-                    State::Type | State::AttributeName | State::SubType => {
-                        parser.add_attribute(ctx);
+        }
+        Some(self.content_type(ctype, subtype, params))
+    }
+
+    pub(crate) fn parse_content_type(&mut self, value: Range<usize>) -> Value {
+        match self.parse_simple_content_type(value.clone()) {
+            Some(parsed) => parsed,
+            None => self.parse_content_type_state_machine(value),
+        }
+    }
+
+    fn parse_content_type_state_machine(&mut self, value: Range<usize>) -> Value {
+        let src = self.src();
+        let end = value.end.min(src.len());
+        let mut parser = Parser {
+            state: State::Type,
+            outer_state: State::Type,
+            comment_depth: 0,
+            c_type: None,
+            c_subtype: None,
+            attr_name: None,
+            attr_charset: None,
+            attr_position: 0,
+            params: self.params_mark(),
+            sections: self.data.scratch.continuations.len(),
+            budget: MAX_PARAMS,
+            has_continued: false,
+            has_languages: false,
+            token: None,
+            values: self.take_text_scratch(),
+            has_values: false,
+            is_continuation: false,
+            is_encoded_attribute: false,
+            is_escaped: false,
+            remove_crlf: false,
+            is_token_start: true,
+            apostrophes: 0,
+        };
+
+        let mut pos = value.start;
+        while let Some(&ch) = src.get(pos).filter(|_| pos < end) {
+            let index = pos;
+            pos += 1;
+            match ch {
+                b' ' | b'\t' => {
+                    parser.is_token_start = true;
+                    if parser.state == State::AttributeQuotedValue {
+                        parser.extend_token(index);
                     }
-                    State::AttributeValue => parser.add_value(ctx),
-                    State::AttributeQuotedValue => {
-                        if next_is_space {
-                            pos += 1;
-                            parser.remove_crlf = true;
+                    continue;
+                }
+                b'\n' => {
+                    let next_is_space = pos < end && matches!(src.get(pos), Some(b' ' | b'\t'));
+                    match parser.state {
+                        State::Type | State::AttributeName | State::SubType => {
+                            parser.add_attribute(self);
+                        }
+                        State::AttributeValue => parser.add_value(self),
+                        State::AttributeQuotedValue => {
+                            if next_is_space {
+                                pos += 1;
+                                parser.remove_crlf = true;
+                                continue;
+                            }
+                            parser.add_value(self);
+                        }
+                        State::Comment => (),
+                    }
+                    if next_is_space {
+                        if parser.state == State::Type {
                             continue;
                         }
-                        parser.add_value(ctx);
-                    }
-                    State::Comment => (),
-                }
-                if next_is_space {
-                    if parser.state == State::Type {
+                        parser.state = State::AttributeName;
+                        pos += 1;
+                        parser.is_token_start = true;
                         continue;
                     }
-                    parser.state = State::AttributeName;
-                    pos += 1;
-                    parser.is_token_start = true;
+                    return parser.finish(self);
+                }
+                b'/' if parser.state == State::Type => {
+                    parser.add_attribute(self);
+                    parser.state = State::SubType;
                     continue;
                 }
-                return parser.finish(ctx);
-            }
-            b'/' if parser.state == State::Type => {
-                parser.add_attribute(ctx);
-                parser.state = State::SubType;
-                continue;
-            }
-            b';' => match parser.state {
-                State::Type | State::SubType | State::AttributeName => {
-                    parser.add_attribute(ctx);
-                    parser.state = State::AttributeName;
-                    continue;
-                }
-                State::AttributeValue => {
-                    if !parser.is_escaped {
-                        parser.add_value(ctx);
+                b';' => match parser.state {
+                    State::Type | State::SubType | State::AttributeName => {
+                        parser.add_attribute(self);
                         parser.state = State::AttributeName;
+                        continue;
+                    }
+                    State::AttributeValue => {
+                        if !parser.is_escaped {
+                            parser.add_value(self);
+                            parser.state = State::AttributeName;
+                        } else {
+                            parser.is_escaped = false;
+                        }
+                        continue;
+                    }
+                    _ => (),
+                },
+                b'*' if parser.state == State::AttributeName => {
+                    if !parser.is_continuation {
+                        parser.is_continuation = parser.add_attribute(self);
+                    } else if !parser.is_encoded_attribute {
+                        parser.add_attr_position(self);
+                        parser.is_encoded_attribute = true;
+                    } else {
+                        parser.reset();
+                    }
+                    continue;
+                }
+                b'=' => match parser.state {
+                    State::AttributeName => {
+                        if !parser.is_continuation {
+                            if !parser.add_attribute(self) {
+                                continue;
+                            }
+                        } else if !parser.is_encoded_attribute {
+                            parser.is_encoded_attribute = !parser.add_attr_position(self);
+                        } else {
+                            parser.reset();
+                        }
+                        parser.state = State::AttributeValue;
+                        parser.apostrophes = 0;
+                        continue;
+                    }
+                    State::AttributeValue | State::AttributeQuotedValue
+                        if parser.is_token_start && src.get(pos) == Some(&b'?') =>
+                    {
+                        if let Some(consumed) = parser.encoded_word(self, index, end) {
+                            pos = index + consumed;
+                            continue;
+                        }
+                    }
+                    _ => (),
+                },
+                b'"' => match parser.state {
+                    State::AttributeValue => {
+                        parser.is_token_start = true;
+                        parser.state = State::AttributeQuotedValue;
+                        continue;
+                    }
+                    State::AttributeQuotedValue => {
+                        if !parser.is_escaped {
+                            parser.add_value(self);
+                            parser.state = State::AttributeName;
+                            continue;
+                        }
+                        parser.is_escaped = false;
+                    }
+                    _ => continue,
+                },
+                b'\\' => match parser.state {
+                    State::AttributeQuotedValue | State::AttributeValue => {
+                        if !parser.is_escaped {
+                            parser.add_partial_value(self, Some(index));
+                            parser.is_escaped = true;
+                            continue;
+                        }
+                        parser.is_escaped = false;
+                    }
+                    State::Comment => parser.is_escaped = !parser.is_escaped,
+                    _ => continue,
+                },
+                b'\''
+                    if parser.is_encoded_attribute
+                        && !parser.is_escaped
+                        && parser.apostrophes < 2
+                        && matches!(
+                            parser.state,
+                            State::AttributeValue | State::AttributeQuotedValue
+                        ) =>
+                {
+                    parser.add_attribute_parameter(self);
+                    continue;
+                }
+                b'(' if parser.state != State::AttributeQuotedValue => {
+                    if !parser.is_escaped {
+                        match parser.state {
+                            State::Type | State::AttributeName | State::SubType => {
+                                parser.add_attribute(self);
+                            }
+                            State::AttributeValue => parser.add_value(self),
+                            _ => (),
+                        }
+                        if parser.state == State::Comment {
+                            parser.comment_depth += 1;
+                        } else {
+                            parser.outer_state = parser.state;
+                            parser.comment_depth = 1;
+                            parser.state = State::Comment;
+                        }
                     } else {
                         parser.is_escaped = false;
                     }
                     continue;
                 }
-                _ => (),
-            },
-            b'*' if parser.state == State::AttributeName => {
-                if !parser.is_continuation {
-                    parser.is_continuation = parser.add_attribute(ctx);
-                } else if !parser.is_encoded_attribute {
-                    parser.add_attr_position(ctx);
-                    parser.is_encoded_attribute = true;
-                } else {
-                    parser.reset();
-                }
-                continue;
-            }
-            b'=' => match parser.state {
-                State::AttributeName => {
-                    if !parser.is_continuation {
-                        if !parser.add_attribute(ctx) {
-                            continue;
+                b')' if parser.state == State::Comment => {
+                    if !parser.is_escaped {
+                        parser.comment_depth -= 1;
+                        if parser.comment_depth == 0 {
+                            parser.state = parser.outer_state;
                         }
-                    } else if !parser.is_encoded_attribute {
-                        parser.is_encoded_attribute = !parser.add_attr_position(ctx);
-                    } else {
                         parser.reset();
-                    }
-                    parser.state = State::AttributeValue;
-                    parser.apostrophes = 0;
-                    continue;
-                }
-                State::AttributeValue | State::AttributeQuotedValue
-                    if parser.is_token_start && src.get(pos) == Some(&b'?') =>
-                {
-                    if let Some(consumed) = parser.encoded_word(ctx, index, end) {
-                        pos = index + consumed;
-                        continue;
-                    }
-                }
-                _ => (),
-            },
-            b'"' => match parser.state {
-                State::AttributeValue => {
-                    parser.is_token_start = true;
-                    parser.state = State::AttributeQuotedValue;
-                    continue;
-                }
-                State::AttributeQuotedValue => {
-                    if !parser.is_escaped {
-                        parser.add_value(ctx);
-                        parser.state = State::AttributeName;
-                        continue;
-                    }
-                    parser.is_escaped = false;
-                }
-                _ => continue,
-            },
-            b'\\' => match parser.state {
-                State::AttributeQuotedValue | State::AttributeValue => {
-                    if !parser.is_escaped {
-                        parser.add_partial_value(ctx, Some(index));
-                        parser.is_escaped = true;
-                        continue;
-                    }
-                    parser.is_escaped = false;
-                }
-                State::Comment => parser.is_escaped = !parser.is_escaped,
-                _ => continue,
-            },
-            b'\''
-                if parser.is_encoded_attribute
-                    && !parser.is_escaped
-                    && parser.apostrophes < 2
-                    && matches!(
-                        parser.state,
-                        State::AttributeValue | State::AttributeQuotedValue
-                    ) =>
-            {
-                parser.add_attribute_parameter(ctx);
-                continue;
-            }
-            b'(' if parser.state != State::AttributeQuotedValue => {
-                if !parser.is_escaped {
-                    match parser.state {
-                        State::Type | State::AttributeName | State::SubType => {
-                            parser.add_attribute(ctx);
-                        }
-                        State::AttributeValue => parser.add_value(ctx),
-                        _ => (),
-                    }
-                    if parser.state == State::Comment {
-                        parser.comment_depth += 1;
                     } else {
-                        parser.outer_state = parser.state;
-                        parser.comment_depth = 1;
-                        parser.state = State::Comment;
+                        parser.is_escaped = false;
                     }
-                } else {
-                    parser.is_escaped = false;
+                    continue;
                 }
-                continue;
+                b'\r' => continue,
+                _ => (),
             }
-            b')' if parser.state == State::Comment => {
-                if !parser.is_escaped {
-                    parser.comment_depth -= 1;
-                    if parser.comment_depth == 0 {
-                        parser.state = parser.outer_state;
-                    }
-                    parser.reset();
-                } else {
-                    parser.is_escaped = false;
-                }
-                continue;
-            }
-            b'\r' => continue,
-            _ => (),
+
+            parser.is_escaped = false;
+            parser.is_token_start = false;
+            parser.extend_token(index);
         }
 
-        parser.is_escaped = false;
-        parser.is_token_start = false;
-        parser.extend_token(index);
-    }
-
-    match parser.state {
-        State::Type | State::AttributeName | State::SubType => {
-            parser.add_attribute(ctx);
+        match parser.state {
+            State::Type | State::AttributeName | State::SubType => {
+                parser.add_attribute(self);
+            }
+            State::AttributeValue | State::AttributeQuotedValue => parser.add_value(self),
+            State::Comment => (),
         }
-        State::AttributeValue | State::AttributeQuotedValue => parser.add_value(ctx),
-        State::Comment => (),
+        parser.finish(self)
     }
-    parser.finish(ctx)
 }
 
 impl Parser {
@@ -582,11 +586,10 @@ impl Parser {
         if self.attr_charset.is_none() {
             self.attr_charset = Some(part);
         } else if self.take_budget() {
-            let name = language_name(ctx, self.attr_name);
+            let name = ctx.language_name(self.attr_name);
             let index = self.param_count(ctx);
             ctx.push_param(name, part);
-            record(
-                ctx,
+            ctx.record_continuation(
                 name,
                 Key::new(Class::Language, index, Kind::Plain),
                 Str::NONE,
@@ -697,15 +700,14 @@ impl Parser {
                     (Class::First, index)
                 };
                 if let Some(charset) = charset {
-                    record(
-                        ctx,
+                    ctx.record_continuation(
                         attr_name,
                         Key::new(class, index, Kind::Charset),
                         charset,
                     );
                 }
                 let kind = if encoded { Kind::Encoded } else { Kind::Plain };
-                record(ctx, attr_name, Key::new(class, index, kind), value);
+                ctx.record_continuation(attr_name, Key::new(class, index, kind), value);
             }
         }
         self.reset();
@@ -753,7 +755,7 @@ impl Parser {
         } = self;
         ctx.put_text_scratch(values);
         if has_continued || has_languages {
-            assemble(ctx, params, sections);
+            ctx.assemble_params(params, sections);
         }
         ctx.data.scratch.continuations.truncate(sections);
         match c_type {
@@ -766,140 +768,142 @@ impl Parser {
     }
 }
 
-fn record(ctx: &mut FieldCtx<'_>, name: Str, key: Key, value: Str) {
-    ctx.data.scratch.continuations.push((name, key.0, value));
-}
+impl FieldCtx<'_> {
+    fn record_continuation(&mut self, name: Str, key: Key, value: Str) {
+        self.data.scratch.continuations.push((name, key.0, value));
+    }
 
-fn language_name(ctx: &mut FieldCtx<'_>, attr: Option<Str>) -> Str {
-    let mut name = ctx.take_bytes_scratch();
-    name.extend_from_slice(attr.map_or("unknown", |attr| ctx.resolve(attr)).as_bytes());
-    name.extend_from_slice(LANGUAGE_SUFFIX);
-    let text = ctx.push_lossy(&name);
-    ctx.put_bytes_scratch(name);
-    text
-}
+    fn language_name(&mut self, attr: Option<Str>) -> Str {
+        let mut name = self.take_bytes_scratch();
+        name.extend_from_slice(attr.map_or("unknown", |attr| self.resolve(attr)).as_bytes());
+        name.extend_from_slice(LANGUAGE_SUFFIX);
+        let text = self.push_lossy(&name);
+        self.put_bytes_scratch(name);
+        text
+    }
 
-fn assemble(ctx: &mut FieldCtx<'_>, params: u32, mark: usize) {
-    let mut entries = std::mem::take(&mut ctx.data.scratch.continuations);
-    entries.extend(
-        ctx.params_since(params)
-            .iter()
-            .zip(0..)
-            .map(|(param, index)| {
-                (
-                    param.name,
-                    Key::new(Class::Param, index, Kind::Plain).0,
-                    Str::NONE,
-                )
-            }),
-    );
-    let mut text = ctx.take_text_scratch();
-    let mut bytes = ctx.take_bytes_scratch();
-    let mut removed = false;
-    if let Some(ours) = entries.get_mut(mark..) {
-        ours.sort_unstable_by(|a, b| {
-            ctx.resolve(a.0)
-                .cmp(ctx.resolve(b.0))
-                .then(a.1.cmp(&b.1))
-                .then_with(|| ctx.resolve(a.2).cmp(ctx.resolve(b.2)))
-        });
-        let mut rest: &[Entry] = ours;
-        while let Some(first) = rest.first() {
-            let name = ctx.resolve(first.0);
-            let len = rest
+    fn assemble_params(&mut self, params: u32, mark: usize) {
+        let mut entries = std::mem::take(&mut self.data.scratch.continuations);
+        entries.extend(
+            self.params_since(params)
                 .iter()
-                .take_while(|entry| ctx.resolve(entry.0) == name)
-                .count();
-            let (run, tail) = rest.split_at(len);
-            rest = tail;
-            removed |= assemble_run(ctx, params, run, &mut text, &mut bytes);
-        }
-    }
-    if removed {
-        ctx.drop_removed_params(params);
-    }
-    ctx.put_text_scratch(text);
-    ctx.put_bytes_scratch(bytes);
-    ctx.data.scratch.continuations = entries;
-}
-
-fn assemble_run(
-    ctx: &mut FieldCtx<'_>,
-    params: u32,
-    run: &[Entry],
-    text: &mut String,
-    bytes: &mut Vec<u8>,
-) -> bool {
-    let first = run
-        .first()
-        .map(Key::of)
-        .filter(|key| key.class() == Class::Param)
-        .map(Key::index);
-    let mut removed = false;
-    for key in run.iter().map(Key::of) {
-        if key.class() == Class::Language && Some(key.index()) != first {
-            ctx.remove_param(params + key.index());
-            removed = true;
-        }
-    }
-    let Some(continued) = run
-        .iter()
-        .position(|entry| Key::of(entry).class() == Class::Continued)
-    else {
-        return removed;
-    };
-    let (head, continuations) = run.split_at(continued);
-    let leading = head.iter().filter(|entry| {
-        let key = Key::of(entry);
-        key.class() == Class::First && Some(key.index()) == first
-    });
-    text.clear();
-    if let Some(index) = first
-        && leading.clone().next().is_none()
-        && let Some(base) = ctx.params_since(params + index).first()
-    {
-        text.push_str(ctx.resolve(base.value));
-    }
-    let sections = leading.chain(continuations);
-    let charset = sections
-        .clone()
-        .find(|entry| Key::of(entry).kind() == Kind::Charset)
-        .map(|entry| entry.2);
-    join_sections(ctx, sections, charset, text, bytes);
-    let value = ctx.push_str(text);
-    match first {
-        Some(index) => ctx.set_param_value(params + index, value),
-        None => {
-            if let Some(&(name, ..)) = run.first() {
-                ctx.push_param(name, value);
+                .zip(0..)
+                .map(|(param, index)| {
+                    (
+                        param.name,
+                        Key::new(Class::Param, index, Kind::Plain).0,
+                        Str::NONE,
+                    )
+                }),
+        );
+        let mut text = self.take_text_scratch();
+        let mut bytes = self.take_bytes_scratch();
+        let mut removed = false;
+        if let Some(ours) = entries.get_mut(mark..) {
+            ours.sort_unstable_by(|a, b| {
+                self.resolve(a.0)
+                    .cmp(self.resolve(b.0))
+                    .then(a.1.cmp(&b.1))
+                    .then_with(|| self.resolve(a.2).cmp(self.resolve(b.2)))
+            });
+            let mut rest: &[Entry] = ours;
+            while let Some(first) = rest.first() {
+                let name = self.resolve(first.0);
+                let len = rest
+                    .iter()
+                    .take_while(|entry| self.resolve(entry.0) == name)
+                    .count();
+                let (run, tail) = rest.split_at(len);
+                rest = tail;
+                removed |= self.assemble_param_run(params, run, &mut text, &mut bytes);
             }
         }
+        if removed {
+            self.drop_removed_params(params);
+        }
+        self.put_text_scratch(text);
+        self.put_bytes_scratch(bytes);
+        self.data.scratch.continuations = entries;
     }
-    removed
-}
 
-fn join_sections<'e>(
-    ctx: &FieldCtx<'_>,
-    sections: impl Iterator<Item = &'e Entry>,
-    charset: Option<Str>,
-    text: &mut String,
-    bytes: &mut Vec<u8>,
-) {
-    let label = charset
-        .map_or("", |charset| ctx.resolve(charset))
-        .as_bytes();
-    for entry in sections {
-        let raw = ctx.resolve(entry.2);
-        match Key::of(entry).kind() {
-            Kind::Charset => {}
-            Kind::Encoded if percent_decode_append(raw.as_bytes(), bytes) => {}
-            Kind::Encoded | Kind::Plain => {
-                flush_encoded(label, bytes, text);
-                text.push_str(raw);
+    fn assemble_param_run(
+        &mut self,
+        params: u32,
+        run: &[Entry],
+        text: &mut String,
+        bytes: &mut Vec<u8>,
+    ) -> bool {
+        let first = run
+            .first()
+            .map(Key::of)
+            .filter(|key| key.class() == Class::Param)
+            .map(Key::index);
+        let mut removed = false;
+        for key in run.iter().map(Key::of) {
+            if key.class() == Class::Language && Some(key.index()) != first {
+                self.remove_param(params + key.index());
+                removed = true;
             }
         }
+        let Some(continued) = run
+            .iter()
+            .position(|entry| Key::of(entry).class() == Class::Continued)
+        else {
+            return removed;
+        };
+        let (head, continuations) = run.split_at(continued);
+        let leading = head.iter().filter(|entry| {
+            let key = Key::of(entry);
+            key.class() == Class::First && Some(key.index()) == first
+        });
+        text.clear();
+        if let Some(index) = first
+            && leading.clone().next().is_none()
+            && let Some(base) = self.params_since(params + index).first()
+        {
+            text.push_str(self.resolve(base.value));
+        }
+        let sections = leading.chain(continuations);
+        let charset = sections
+            .clone()
+            .find(|entry| Key::of(entry).kind() == Kind::Charset)
+            .map(|entry| entry.2);
+        self.join_sections(sections, charset, text, bytes);
+        let value = self.push_str(text);
+        match first {
+            Some(index) => self.set_param_value(params + index, value),
+            None => {
+                if let Some(&(name, ..)) = run.first() {
+                    self.push_param(name, value);
+                }
+            }
+        }
+        removed
     }
-    flush_encoded(label, bytes, text);
+
+    fn join_sections<'e>(
+        &self,
+        sections: impl Iterator<Item = &'e Entry>,
+        charset: Option<Str>,
+        text: &mut String,
+        bytes: &mut Vec<u8>,
+    ) {
+        let label = charset
+            .map_or("", |charset| self.resolve(charset))
+            .as_bytes();
+        for entry in sections {
+            let raw = self.resolve(entry.2);
+            match Key::of(entry).kind() {
+                Kind::Charset => {}
+                Kind::Encoded if percent_decode_append(raw.as_bytes(), bytes) => {}
+                Kind::Encoded | Kind::Plain => {
+                    flush_encoded(label, bytes, text);
+                    text.push_str(raw);
+                }
+            }
+        }
+        flush_encoded(label, bytes, text);
+    }
 }
 
 fn flush_encoded(label: &[u8], bytes: &mut Vec<u8>, text: &mut String) {
@@ -911,7 +915,6 @@ fn flush_encoded(label: &[u8], bytes: &mut Vec<u8>, text: &mut String) {
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_simple, parse_state_machine};
     use crate::{
         HeaderName, MessageParser,
         fields::{FieldCtx, tests::load_tests},
@@ -947,14 +950,14 @@ mod tests {
 
     fn compare(input: &[u8]) -> bool {
         let mut slow = MessageData::default();
-        let expected = parse_state_machine(&mut FieldCtx::new(input, &mut slow), 0..input.len());
+        let expected =
+            FieldCtx::new(input, &mut slow).parse_content_type_state_machine(0..input.len());
         let mut accepted = false;
         for kernel in Kernel::available() {
             let mut fast = MessageData::default();
-            let Some(value) = parse_simple(
-                &mut FieldCtx::with_kernel(input, &mut fast, kernel),
-                0..input.len(),
-            ) else {
+            let Some(value) = FieldCtx::with_kernel(input, &mut fast, kernel)
+                .parse_simple_content_type(0..input.len())
+            else {
                 assert!(!accepted, "{:?}", String::from_utf8_lossy(input));
                 continue;
             };

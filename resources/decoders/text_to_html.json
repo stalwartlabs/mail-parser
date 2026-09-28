@@ -1,0 +1,14 @@
+[
+  {
+    "input": "hello\nworld\n",
+    "expected": "<html><body>hello<br/>world<br/></body></html>"
+  },
+  {
+    "input": "using <>\n",
+    "expected": "<html><body>using &lt;&gt;<br/></body></html>"
+  },
+  {
+    "input": "a & b\r\n",
+    "expected": "<html><body>a &amp; b<br/></body></html>"
+  }
+]

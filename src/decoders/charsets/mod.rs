@@ -163,9 +163,9 @@ impl Charset {
             Decoder::Utf8 => utf8::decode(bytes),
             Decoder::Utf7 => utf7::decode(bytes),
             Decoder::Utf16Bom => Cow::Owned(utf16::decode_bom(bytes)),
-            Decoder::Utf16(endian) => Cow::Owned(utf16::decode(bytes, endian)),
-            Decoder::SingleByte(table) => single_byte::decode(table, bytes),
-            Decoder::MultiByte(encoding) => multi_byte::decode(encoding, bytes),
+            Decoder::Utf16(endian) => Cow::Owned(endian.decode(bytes)),
+            Decoder::SingleByte(table) => table.decode(bytes),
+            Decoder::MultiByte(encoding) => encoding.decode(bytes),
         }
     }
 
@@ -176,9 +176,9 @@ impl Charset {
             Decoder::Utf8 => return utf8::decode_owned(bytes),
             Decoder::Utf7 => utf7::decode(&bytes),
             Decoder::Utf16Bom => return utf16::decode_bom(&bytes),
-            Decoder::Utf16(endian) => return utf16::decode(&bytes, endian),
-            Decoder::SingleByte(table) => single_byte::decode(table, &bytes),
-            Decoder::MultiByte(encoding) => multi_byte::decode(encoding, &bytes),
+            Decoder::Utf16(endian) => return endian.decode(&bytes),
+            Decoder::SingleByte(table) => table.decode(&bytes),
+            Decoder::MultiByte(encoding) => encoding.decode(&bytes),
         };
         let text = match decoded {
             Cow::Owned(text) => return text,
@@ -196,11 +196,9 @@ impl Charset {
             Decoder::Utf8 => utf8::decode(utf8::complete_prefix(bytes)),
             Decoder::Utf7 => utf7::decode(utf7::complete_prefix(bytes)),
             Decoder::Utf16Bom => Cow::Owned(utf16::decode_bom(utf16::complete_prefix_bom(bytes))),
-            Decoder::Utf16(endian) => {
-                Cow::Owned(utf16::decode(utf16::complete_prefix(bytes, endian), endian))
-            }
-            Decoder::SingleByte(table) => single_byte::decode(table, bytes),
-            Decoder::MultiByte(encoding) => multi_byte::decode_prefix(encoding, bytes),
+            Decoder::Utf16(endian) => Cow::Owned(endian.decode(endian.complete_prefix(bytes))),
+            Decoder::SingleByte(table) => table.decode(bytes),
+            Decoder::MultiByte(encoding) => encoding.decode_prefix(bytes),
         }
     }
 
@@ -211,9 +209,9 @@ impl Charset {
             Decoder::Utf8 => utf8::decode_append(bytes, out),
             Decoder::Utf7 => utf7::decode_append(bytes, out),
             Decoder::Utf16Bom => utf16::decode_bom_append(bytes, out),
-            Decoder::Utf16(endian) => utf16::decode_append(bytes, endian, out),
-            Decoder::SingleByte(table) => single_byte::decode_append(table, bytes, out),
-            Decoder::MultiByte(encoding) => multi_byte::decode_append(encoding, bytes, out),
+            Decoder::Utf16(endian) => endian.decode_append(bytes, out),
+            Decoder::SingleByte(table) => table.decode_append(bytes, out),
+            Decoder::MultiByte(encoding) => encoding.decode_append(bytes, out),
         }
     }
 
@@ -221,7 +219,8 @@ impl Charset {
         cfg!(feature = "full_encoding") || !matches!(self.decoder(), Decoder::MultiByte(_))
     }
 
-    pub(crate) fn decode_checked(self, bytes: &[u8]) -> (Cow<'_, str>, bool) {
+    /// Converts `bytes` to text like [`Charset::decode`] and reports whether any sequence was not valid in the charset.
+    pub fn decode_checked(self, bytes: &[u8]) -> (Cow<'_, str>, bool) {
         match self.decoder() {
             Decoder::Utf8 => utf8::decode_checked(bytes),
             Decoder::Utf7 => utf7::decode_checked(bytes),
@@ -230,15 +229,15 @@ impl Charset {
                 (Cow::Owned(text), malformed)
             }
             Decoder::Utf16(endian) => {
-                let (text, malformed) = utf16::decode_checked(bytes, endian);
+                let (text, malformed) = endian.decode_checked(bytes);
                 (Cow::Owned(text), malformed)
             }
             Decoder::SingleByte(table) => {
-                let text = single_byte::decode(table, bytes);
+                let text = table.decode(bytes);
                 let malformed = text.contains(char::REPLACEMENT_CHARACTER);
                 (text, malformed)
             }
-            Decoder::MultiByte(encoding) => multi_byte::decode_checked(encoding, bytes),
+            Decoder::MultiByte(encoding) => encoding.decode_checked(bytes),
         }
     }
 
@@ -255,6 +254,23 @@ impl Charset {
             (utf8::decode_owned(bytes), malformed)
         } else {
             (text.to_owned(), malformed)
+        }
+    }
+
+    pub(crate) fn decode_cow(self, bytes: Cow<'_, [u8]>) -> Cow<'_, str> {
+        match bytes {
+            Cow::Borrowed(bytes) => self.decode(bytes),
+            Cow::Owned(bytes) => Cow::Owned(self.decode_owned(bytes)),
+        }
+    }
+
+    pub(crate) fn decode_cow_checked(self, bytes: Cow<'_, [u8]>) -> (Cow<'_, str>, bool) {
+        match bytes {
+            Cow::Borrowed(bytes) => self.decode_checked(bytes),
+            Cow::Owned(bytes) => {
+                let (text, malformed) = self.decode_owned_checked(bytes);
+                (Cow::Owned(text), malformed)
+            }
         }
     }
 
@@ -443,13 +459,15 @@ mod tests {
         Charset::Replacement,
     ];
 
+    const CHECKED_SAMPLES: usize = if cfg!(miri) { 30 } else { 3_000 };
+
     #[test]
     fn checked_decoding_returns_the_same_text() {
         let alphabet =
             b"aZ09 +-/=\r\n\x00\x1b$B(\x80\x81\xa4\xa5\xbf\xc3\xa9\xd8\xdc\xe9\xef\xfe\xff";
         let mut rng = Rng(0x0dec_0de0_c4ec_4ed0);
         for charset in ALL {
-            for _ in 0..3000 {
+            for _ in 0..CHECKED_SAMPLES {
                 let len = rng.below(24);
                 let bytes: Vec<u8> = (0..len)
                     .map(|_| {

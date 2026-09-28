@@ -29,8 +29,10 @@ static MONTH_MAP: [u8; 31] = [
     5, 0, 0, 0, 10, 3, 0, 0, 0, 7, 1, 0, 0, 0, 12, 6, 0, 0, 0, 8, 4, 0, 0, 0, 2, 9, 0, 0, 0, 0, 11,
 ];
 
-pub(crate) fn parse_date(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    parse_bytes(ctx.bytes(value)).map_or(Value::Empty, Value::DateTime)
+impl FieldCtx<'_> {
+    pub(crate) fn parse_date(&mut self, value: Range<usize>) -> Value {
+        parse_bytes(self.bytes(value)).map_or(Value::Empty, Value::DateTime)
+    }
 }
 
 pub(crate) fn parse_bytes(bytes: &[u8]) -> Option<DateTime> {

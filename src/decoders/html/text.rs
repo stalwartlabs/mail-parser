@@ -26,6 +26,30 @@ const fn delimiters(bytes: &[u8]) -> [bool; 256] {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Tag {
+    Break,
+    Paragraph,
+    Head,
+    Style,
+    Script,
+    Template,
+}
+
+impl Tag {
+    fn parse(name: &[u8]) -> Option<Tag> {
+        hashify::map_ignore_case!(name, Tag,
+            "br" => Tag::Break,
+            "p" => Tag::Paragraph,
+            "head" => Tag::Head,
+            "style" => Tag::Style,
+            "script" => Tag::Script,
+            "template" => Tag::Template,
+        )
+        .copied()
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Mode {
     Complete,
     Preview { limit: usize },
@@ -112,22 +136,21 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
                 if tag_token_pos == NAMED_TAG
                     && let Some(tag) = bytes.get(token_start..token_end + 1)
                 {
-                    if tag.eq_ignore_ascii_case(b"br")
-                        || (is_tag_close && tag.eq_ignore_ascii_case(b"p"))
-                    {
-                        if sink.newline() {
-                            return true;
+                    match Tag::parse(tag) {
+                        Some(found @ (Tag::Break | Tag::Paragraph))
+                            if found == Tag::Break || is_tag_close =>
+                        {
+                            if sink.newline() {
+                                return true;
+                            }
+                            is_after_space = false;
+                            is_new_line = true;
                         }
-                        is_after_space = false;
-                        is_new_line = true;
-                    } else if tag.eq_ignore_ascii_case(b"head") {
-                        in_head = !is_tag_close;
-                    } else if tag.eq_ignore_ascii_case(b"style") {
-                        in_style = !is_tag_close;
-                    } else if tag.eq_ignore_ascii_case(b"script") {
-                        in_script = !is_tag_close;
-                    } else if tag.eq_ignore_ascii_case(b"template") {
-                        in_template = !is_tag_close;
+                        Some(Tag::Head) => in_head = !is_tag_close,
+                        Some(Tag::Style) => in_style = !is_tag_close,
+                        Some(Tag::Script) => in_script = !is_tag_close,
+                        Some(Tag::Template) => in_template = !is_tag_close,
+                        Some(Tag::Break | Tag::Paragraph) | None => {}
                     }
                 }
                 in_tag = false;

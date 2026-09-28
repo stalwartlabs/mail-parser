@@ -284,36 +284,38 @@ struct Parser<'x> {
     group: Option<OpenGroup>,
 }
 
-pub(crate) fn parse_address(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let mark = ctx.address_mark();
-    let src = ctx.src();
-    let mut parser = Parser {
-        src,
-        end: value.end.min(src.len()),
-        state: State::Name,
-        outer: State::Name,
-        depth: 0,
-        token: None,
-        email: false,
-        token_start: true,
-        escaped: false,
-        last_encoded: true,
-        name: Acc::EMPTY,
-        mail: Acc::EMPTY,
-        comment: Acc::EMPTY,
-        records: 0,
-        raw: ctx.take_bytes_scratch(),
-        text: ctx.take_text_scratch(),
-        pending: None,
-        group: None,
-    };
-    parser.run(ctx, value.start);
-    parser.add_token();
-    parser.add_address(ctx);
-    parser.close_group(ctx);
-    ctx.put_bytes_scratch(parser.raw);
-    ctx.put_text_scratch(parser.text);
-    ctx.address_list(mark)
+impl FieldCtx<'_> {
+    pub(crate) fn parse_address(&mut self, value: Range<usize>) -> Value {
+        let mark = self.address_mark();
+        let src = self.src();
+        let mut parser = Parser {
+            src,
+            end: value.end.min(src.len()),
+            state: State::Name,
+            outer: State::Name,
+            depth: 0,
+            token: None,
+            email: false,
+            token_start: true,
+            escaped: false,
+            last_encoded: true,
+            name: Acc::EMPTY,
+            mail: Acc::EMPTY,
+            comment: Acc::EMPTY,
+            records: 0,
+            raw: self.take_bytes_scratch(),
+            text: self.take_text_scratch(),
+            pending: None,
+            group: None,
+        };
+        parser.run(self, value.start);
+        parser.add_token();
+        parser.add_address(self);
+        parser.close_group(self);
+        self.put_bytes_scratch(parser.raw);
+        self.put_text_scratch(parser.text);
+        self.address_list(mark)
+    }
 }
 
 impl<'x> Parser<'x> {

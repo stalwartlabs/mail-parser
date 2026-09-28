@@ -64,10 +64,12 @@ pub(crate) fn first_byte(mask: u64) -> usize {
 mod tests {
     use super::*;
 
+    const SAMPLES: usize = if cfg!(miri) { 1_000 } else { 100_000 };
+
     #[test]
     fn masks_match_byte_tests() {
         let mut rng = crate::scan::tests::Rng(0x0123_4567_89ab_cdef);
-        for _ in 0..100_000 {
+        for _ in 0..SAMPLES {
             let bytes: [u8; WORD] = std::array::from_fn(|_| rng.below(256) as u8);
             let word = u64::from_le_bytes(bytes);
             let first = |mask: u64| (mask != 0).then(|| first_byte(mask));

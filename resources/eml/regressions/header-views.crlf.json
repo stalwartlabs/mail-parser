@@ -1,0 +1,86 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 65,
+      "offset_end": 69,
+      "headers": [
+        {
+          "name": "Subject",
+          "value": {
+            "text": "hello"
+          },
+          "offset_field": 0,
+          "offset_start": 8,
+          "offset_end": 16
+        },
+        {
+          "name": "X-Te�st",
+          "value": {
+            "text": "value"
+          },
+          "offset_field": 16,
+          "offset_start": 24,
+          "offset_end": 32
+        },
+        {
+          "name": "Reply-To",
+          "value": {
+            "address": [
+              {
+                "mailbox": {
+                  "name": null,
+                  "address": "a@b"
+                }
+              }
+            ]
+          },
+          "offset_field": 32,
+          "offset_start": 41,
+          "offset_end": 47
+        },
+        {
+          "name": "Keywords",
+          "value": {
+            "text_list": [
+              "a",
+              "b"
+            ]
+          },
+          "offset_field": 47,
+          "offset_start": 56,
+          "offset_end": 63
+        }
+      ],
+      "text": "body",
+      "decode_problems": []
+    }
+  ]
+}

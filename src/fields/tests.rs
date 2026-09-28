@@ -4,18 +4,39 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use super::{FieldCtx, HeaderForm, first_field, parse_value};
+use super::{FieldCtx, HeaderForm, first_field};
 use crate::{DateTime, HeaderValue, store::MessageData, view::Resolver};
 use serde_json::{Value as Json, json};
 use std::path::PathBuf;
 
-pub(crate) fn load_tests(name: &str) -> Vec<(String, Json)> {
+pub(crate) fn load_cases(name: &str) -> Vec<Json> {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("resources")
         .join(name);
     let bytes = std::fs::read(&path).expect("fixture file");
-    let tests: Vec<Json> = serde_json::from_slice(&bytes).expect("valid JSON");
-    tests
+    serde_json::from_slice(&bytes).expect("valid JSON")
+}
+
+pub(crate) fn case_text<'x>(case: &'x Json, key: &str) -> &'x str {
+    case.get(key)
+        .and_then(Json::as_str)
+        .unwrap_or_else(|| panic!("{key:?} is a string in {case}"))
+}
+
+pub(crate) fn load_text_pairs(name: &str) -> Vec<(String, String)> {
+    load_cases(name)
+        .iter()
+        .map(|case| {
+            (
+                case_text(case, "input").to_string(),
+                case_text(case, "expected").to_string(),
+            )
+        })
+        .collect()
+}
+
+pub(crate) fn load_tests(name: &str) -> Vec<(String, Json)> {
+    load_cases(name)
         .into_iter()
         .filter_map(|test| {
             Some((
@@ -108,7 +129,7 @@ fn ignored_values() {
 fn stored(form: HeaderForm, input: &[u8]) -> (bool, Option<String>, Option<DateTime>) {
     let range = first_field(input, 0..input.len());
     let mut data = MessageData::default();
-    let value = parse_value(form, &mut FieldCtx::new(input, &mut data), range);
+    let value = form.parse_field(&mut FieldCtx::new(input, &mut data), range);
     let value = HeaderValue::new(Resolver::new(input, &data.strings), &data, value);
     (
         value.is_empty(),

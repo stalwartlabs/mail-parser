@@ -15,6 +15,22 @@ use crate::{
 use encodify::base64;
 use std::fmt::Write;
 
+macro_rules! regression {
+    ($name:literal) => {
+        include_bytes!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/resources/eml/regressions/",
+            $name,
+            ".eml"
+        ))
+        .as_slice()
+    };
+}
+
+const MULTIPART: &[u8] = regression!("multipart-basic");
+const NESTED_INLINE: &[u8] = regression!("nested-inline-message");
+const NESTED_ENCODED: &[u8] = regression!("nested-encoded-message");
+
 fn parse(raw: &[u8]) -> Message<'_> {
     MessageParser::new().parse(raw).expect("message parses")
 }
@@ -111,7 +127,7 @@ fn text_of(message: &Message<'_>, part: u32) -> String {
 
 #[test]
 fn single_part_offsets() {
-    let raw = b"From: a@b\nSubject: Hi\n\nbody\n";
+    let raw = regression!("single-part-offsets");
     let message = parse(raw);
     assert_eq!(message.parts().len(), 1);
     let root = message.root_part();
@@ -143,7 +159,7 @@ fn single_part_offsets() {
 
 #[test]
 fn header_block_edge_cases() {
-    let message = parse(b"Sub ject: x\n:Weird: v\nfoo bar\n baz: qux\nX-Custom : y\n\nbody");
+    let message = parse(regression!("header-block-edge-cases"));
     let names: Vec<_> = message
         .headers()
         .iter()
@@ -172,7 +188,7 @@ fn header_block_edge_cases() {
     assert!(message.headers().is_empty());
     assert_eq!(message.root_part().raw_body(), b" body");
 
-    let message = parse(b"Subject: last");
+    let message = parse(regression!("header-only-no-line-break"));
     assert_eq!(message.subject(), Some("last"));
     assert!(
         message
@@ -181,7 +197,7 @@ fn header_block_edge_cases() {
             .contains(PartFlags::NO_BLANK_LINE)
     );
 
-    let message = parse(b"Subject: a\r\n   \r\nFrom: x\r\n\r\nbody");
+    let message = parse(regression!("blank-continuation-in-header-block"));
     assert_eq!(message.headers().len(), 2);
     assert_eq!(message.root_part().raw_body(), b"body");
 
@@ -197,10 +213,6 @@ fn header_block_edge_cases() {
             .is_none()
     );
 }
-
-const MULTIPART: &[u8] = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n\
-preamble\n--b\nContent-Type: text/plain\n\nhello\n--b\nContent-Type: text/html\n\n<p>x</p>\n\
---b--\nepilogue\n";
 
 #[test]
 fn multipart_structure() {
@@ -232,8 +244,7 @@ fn multipart_structure() {
 
 #[test]
 fn delimiter_rule() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"BND\"\n\n--BND\nContent-Type: text/plain\n\n\
-visit --BND for details\n--BNDX not a delimiter\n--BND \t\nContent-Type: text/plain\n\nsecond\n--BND--";
+    let raw = regression!("delimiter-rule");
     let message = parse(raw);
     assert_eq!(
         text_of(&message, 1),
@@ -245,14 +256,14 @@ visit --BND for details\n--BNDX not a delimiter\n--BND \t\nContent-Type: text/pl
 
 #[test]
 fn fallback_and_missing_delimiters() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"1\"\n\n--1\nContent-Type: text/plain\n\ntext invalid--1--\n";
+    let raw = regression!("fallback-delimiter-mid-line");
     let message = parse(raw);
     let part = message.part(1).expect("part");
     assert_eq!(text_of(&message, 1), "text invalid");
     assert!(part.flags().contains(PartFlags::FALLBACK_DELIMITER));
     assert!(message.root_part().flags().is_empty());
 
-    let raw = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n--b\nContent-Type: text/plain\n\nno end\n";
+    let raw = regression!("missing-close-delimiter");
     let message = parse(raw);
     let part = message.part(1).expect("part");
     assert!(part.flags().contains(PartFlags::MISSING_DELIMITER));
@@ -264,7 +275,7 @@ fn fallback_and_missing_delimiters() {
             .contains(PartFlags::UNTERMINATED)
     );
 
-    let raw = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n--b\nContent-Type: text/plain\n--b\nContent-Type: text/plain\n\nok\n--b--\n";
+    let raw = regression!("part-without-blank-line");
     let message = parse(raw);
     let first = message.part(1).expect("part");
     assert!(first.flags().contains(PartFlags::NO_BLANK_LINE));
@@ -274,9 +285,7 @@ fn fallback_and_missing_delimiters() {
 
 #[test]
 fn inner_multipart_closed_by_outer_delimiter() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"outer\"\n\n--outer\n\
-Content-Type: multipart/alternative; boundary=\"inner\"\n\n--inner\nContent-Type: text/plain\n\na\n\
---outer\nContent-Type: text/plain\n\nb\n--outer--\n";
+    let raw = regression!("inner-multipart-closed-by-outer");
     let message = parse(raw);
     assert_eq!(message.parts().len(), 4);
     assert!(
@@ -293,10 +302,6 @@ Content-Type: multipart/alternative; boundary=\"inner\"\n\n--inner\nContent-Type
         Some(0)
     );
 }
-
-const NESTED_INLINE: &[u8] = b"Content-Type: multipart/mixed; boundary=\"outer\"\n\n--outer\n\
-Content-Type: text/plain\n\nintro\n--outer\nContent-Type: message/rfc822\n\n\
-Subject: nested\nContent-Type: text/plain\n\nnested body\n--outer--\n";
 
 #[test]
 fn nested_inline_message() {
@@ -330,19 +335,9 @@ fn nested_inline_message() {
     }
 }
 
-fn encoded_message(subject: &str, body: &str) -> String {
-    format!(
-        "Content-Type: multipart/mixed; boundary=\"outer\"\n\n--outer\n\
-Content-Type: message/rfc822\nContent-Transfer-Encoding: base64\n\n{}\n\
---outer\nContent-Type: text/plain\n\nafter\n--outer--\n",
-        base64::MIME.encode(format!("Subject: {subject}\n\n{body}"))
-    )
-}
-
 #[test]
 fn nested_encoded_message() {
-    let raw = encoded_message("inner", "inner body\n");
-    for raw in [raw.as_bytes().to_vec(), with_crlf(raw.as_bytes())] {
+    for raw in [NESTED_ENCODED.to_vec(), with_crlf(NESTED_ENCODED)] {
         let message = parse(&raw);
         assert_eq!(message.messages().len(), 2);
         assert_eq!(message.parts().len(), 4);
@@ -429,18 +424,14 @@ fn encoded_inside_encoded_and_limits() {
 
 #[test]
 fn empty_nested_messages() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n--b\nContent-Type: message/rfc822\n\n--b--\n";
+    let raw = regression!("empty-nested-message-in-multipart");
     let message = parse(raw);
     assert_eq!(message.messages().len(), 1);
     let part = message.part(1).expect("part");
     assert!(part.flags().contains(PartFlags::NO_BLANK_LINE));
     assert!(part.nested().is_none());
 
-    let raw = format!(
-        "Content-Type: message/rfc822\nContent-Transfer-Encoding: base64\n\n{}\n",
-        base64::MIME.encode("no headers at all")
-    );
-    let message = parse(raw.as_bytes());
+    let message = parse(regression!("encoded-message-without-header"));
     assert_eq!(message.messages().len(), 1);
     let root = message.root_part();
     assert!(matches!(root.kind(), PartKind::Binary));
@@ -450,8 +441,7 @@ fn empty_nested_messages() {
 
 #[test]
 fn depth_and_part_limits() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"a\"\n\n--a\n\
-Content-Type: multipart/mixed; boundary=\"b\"\n\n--b\nContent-Type: text/plain\n\ndeep\n--b--\n--a--\n";
+    let raw = regression!("nested-multipart-depth");
     let message = MessageParser::new()
         .max_depth(2)
         .parse(raw)
@@ -506,7 +496,7 @@ fn buffer_reuse_and_ownership() {
         MULTIPART,
         b"",
         NESTED_INLINE,
-        b"Subject: x\n\nbody".as_slice(),
+        regression!("subject-and-body"),
     ] {
         let Some(reused) = parser.parse_with(raw, &mut buffers) else {
             assert!(parser.parse(raw).is_none());
@@ -526,8 +516,7 @@ fn buffer_reuse_and_ownership() {
 
 #[test]
 fn unknown_headers_apply_to_vendor_names() {
-    let raw = b"X-Mailer: =?utf-8?q?caf=C3=A9?=\nX-Priority: =?utf-8?q?1?=\n\
-X-Custom: =?utf-8?q?a?=\nOrganization: =?utf-8?q?o?=\nSubject: =?utf-8?q?s?=\n\nbody";
+    let raw = regression!("vendor-encoded-words");
     let values = |parser: MessageParser| {
         let message = parser.parse(raw).expect("parses");
         message
@@ -621,10 +610,7 @@ fn truncated_inputs_never_panic() {
 
 #[test]
 fn decoding_accessors() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n--b\n\
-Content-Type: text/plain; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable\n\n\
-caf=E9 soft=\n break\n--b\nContent-Type: application/octet-stream\nContent-Transfer-Encoding: base64\n\n\
-SGVs\nbG8=\n--b--\n";
+    let raw = regression!("decoding-accessors");
     let message = parse(raw);
     let text = message.part(1).expect("text");
     assert_eq!(text.encoding(), crate::Encoding::QuotedPrintable);
@@ -648,7 +634,7 @@ SGVs\nbG8=\n--b--\n";
 
 #[test]
 fn header_views() {
-    let raw = b"Subject: hello\nX-Te\xffst: value\nReply-To: a@b\nKeywords: a, b\n\nbody";
+    let raw = regression!("header-views");
     let message = parse(raw);
     let headers = message.headers();
     assert_eq!(headers.len(), 4);
@@ -671,16 +657,7 @@ fn header_views() {
 
 #[test]
 fn decode_problems() {
-    let raw = b"Content-Type: multipart/mixed; boundary=\"b\"\n\n\
---b\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: base64\n\nY2Fmw6k=\n\
---b\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: base64\n\nY2Fm-w6k=\n\
---b\nContent-Type: text/plain; charset=iso-8859-1\nContent-Transfer-Encoding: quoted-printable\n\ncaf=E9 =ZZ\n\
---b\nContent-Type: text/plain; charset=x-unknown\n\ncaf\xc3\xa9\n\
---b\nContent-Type: text/plain; charset=utf-8\n\ncaf\xe9\n\
---b\nContent-Type: application/octet-stream\nContent-Transfer-Encoding: x-uuencode\n\nbegin 644 x\n\
---b\nContent-Type: text/plain; charset=\"iso-8859-3\"\nContent-Transfer-Encoding: 8BIT (raw)\n\n\xa5\n\
---b\nContent-Type: text/plain; charset=shift_jis\n\n\x83n\n\
---b--\n";
+    let raw = regression!("decode-problems");
     let message = parse(raw);
     let shift_jis = if cfg!(feature = "full_encoding") {
         ("\u{30cf}", DecodeProblems::default())
@@ -806,13 +783,12 @@ fn serialize_message() {
         json["parts"][0]["headers"][0]["value"]["content_type"]["attributes"][0],
         serde_json::json!(["boundary", "outer"])
     );
-    let raw = encoded_message("inner", "inner body\n");
-    let message = parse(raw.as_bytes());
+    let message = parse(NESTED_ENCODED);
     let json = serde_json::to_value(&message).expect("serializes");
     assert_eq!(json["messages"][1]["source"]["decoded"], 1);
     let binary = MessageParser::new()
         .max_encoded_nesting(0)
-        .parse(raw.as_bytes())
+        .parse(NESTED_ENCODED)
         .expect("parses");
     let json = serde_json::to_value(&binary).expect("serializes");
     assert_eq!(json["parts"][1]["kind"], "binary");
@@ -840,8 +816,7 @@ fn mutated_inputs_never_panic() {
         b"\"",
     ];
     let mut rng = crate::scan::tests::Rng(0x0123_4567_89ab_cdef);
-    let encoded = encoded_message("m", "body\n").into_bytes();
-    let seeds: [&[u8]; 3] = [MULTIPART, NESTED_INLINE, &encoded];
+    let seeds = [MULTIPART, NESTED_INLINE, NESTED_ENCODED];
     for seed in seeds {
         for _ in 0..1500 {
             let mut raw = seed.to_vec();

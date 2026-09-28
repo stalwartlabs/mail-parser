@@ -13,25 +13,36 @@ use encodify::rfc2047::decode_text_append_with;
 use memchr::{memchr2, memchr3_iter};
 use std::ops::Range;
 
-#[inline]
-pub(crate) fn parse_unstructured(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let value = ctx.trim_fws(value);
-    if value.is_empty() {
-        return Value::Text(Str::EMPTY);
+impl FieldCtx<'_> {
+    #[inline]
+    pub(crate) fn parse_unstructured(&mut self, value: Range<usize>) -> Value {
+        let value = self.trim_fws(value);
+        if value.is_empty() {
+            return Value::Text(Str::EMPTY);
+        }
+        let shape = Shape::of(self.bytes(value.clone()));
+        Value::Text(self.shaped_text(value, shape))
     }
-    let shape = Shape::of(ctx.bytes(value.clone()));
-    Value::Text(shaped(ctx, value, shape))
-}
 
-fn shaped(ctx: &mut FieldCtx<'_>, value: Range<usize>, shape: Shape) -> Str {
-    let bytes = ctx.bytes(value.clone());
-    match shape {
-        Shape::Line => ctx.borrow(value),
-        Shape::Folded => match simdutf8::basic::from_utf8(bytes) {
-            Ok(text) => ctx.push_with(|pool| unfold(text, pool)),
-            Err(_) => decode(ctx, bytes),
-        },
-        Shape::Encoded => decode(ctx, bytes),
+    fn shaped_text(&mut self, value: Range<usize>, shape: Shape) -> Str {
+        let bytes = self.bytes(value.clone());
+        match shape {
+            Shape::Line => self.borrow(value),
+            Shape::Folded => match simdutf8::basic::from_utf8(bytes) {
+                Ok(text) => self.push_with(|pool| unfold(text, pool)),
+                Err(_) => self.decode_encoded_text(bytes),
+            },
+            Shape::Encoded => self.decode_encoded_text(bytes),
+        }
+    }
+
+    fn decode_encoded_text(&mut self, bytes: &[u8]) -> Str {
+        let mut scratch = self.take_bytes_scratch();
+        let text = self.push_with(|pool| {
+            decode_text_append_with(bytes, charsets::decode_append, &mut scratch, pool);
+        });
+        self.put_bytes_scratch(scratch);
+        text
     }
 }
 
@@ -42,7 +53,7 @@ pub(crate) struct Pending {
 
 impl Pending {
     pub(crate) fn parse(self, ctx: &mut FieldCtx<'_>) -> Value {
-        Value::Text(shaped(ctx, self.value, self.shape))
+        Value::Text(ctx.shaped_text(self.value, self.shape))
     }
 }
 
@@ -95,18 +106,9 @@ fn unfold(text: &str, out: &mut String) {
     out.push_str(rest);
 }
 
-fn decode(ctx: &mut FieldCtx<'_>, bytes: &[u8]) -> Str {
-    let mut scratch = ctx.take_bytes_scratch();
-    let text = ctx.push_with(|pool| {
-        decode_text_append_with(bytes, charsets::decode_append, &mut scratch, pool);
-    });
-    ctx.put_bytes_scratch(scratch);
-    text
-}
-
 #[cfg(test)]
 mod tests {
-    use super::{Shape, parse_unstructured};
+    use super::Shape;
     use crate::{
         HeaderForm, MessageParser,
         decoders::charsets,
@@ -119,7 +121,7 @@ mod tests {
     fn parse(input: &[u8]) -> Option<String> {
         let mut data = MessageData::default();
         let mut ctx = FieldCtx::new(input, &mut data);
-        let Value::Text(text) = parse_unstructured(&mut ctx, 0..input.len()) else {
+        let Value::Text(text) = ctx.parse_unstructured(0..input.len()) else {
             return None;
         };
         Some(ctx.resolve(text).to_string())
@@ -187,7 +189,7 @@ mod tests {
             (b" caf\xe9\n", true),
         ] {
             let mut data = MessageData::default();
-            let value = parse_unstructured(&mut FieldCtx::new(input, &mut data), 0..input.len());
+            let value = FieldCtx::new(input, &mut data).parse_unstructured(0..input.len());
             assert!(matches!(value, Value::Text(_)), "{input:?}");
             assert_eq!(!data.strings.is_empty(), pooled, "{input:?}");
         }
@@ -269,7 +271,7 @@ mod tests {
         let input = b" =?utf-8?q?caf=C3=A9?= =?utf-8?b?w6k=?=\n";
         let mut data = MessageData::default();
         for _ in 0..2 {
-            let value = parse_unstructured(&mut FieldCtx::new(input, &mut data), 0..input.len());
+            let value = FieldCtx::new(input, &mut data).parse_unstructured(0..input.len());
             let Value::Text(text) = value else {
                 panic!("text expected");
             };

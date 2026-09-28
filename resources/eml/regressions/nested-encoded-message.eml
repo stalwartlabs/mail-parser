@@ -1,0 +1,13 @@
+Content-Type: multipart/mixed; boundary="outer"
+
+--outer
+Content-Type: message/rfc822
+Content-Transfer-Encoding: base64
+
+U3ViamVjdDogaW5uZXIKCmlubmVyIGJvZHkK
+
+--outer
+Content-Type: text/plain
+
+after
+--outer--

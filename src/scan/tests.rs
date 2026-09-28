@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use super::{ByteSet, Kernel, set};
+use super::{ByteSet, Kernel};
 use std::path::PathBuf;
 
 const ALPHABET: &[u8] = b"\n\n\n\r\r---- \ta";
-const ITERATIONS: usize = 3_000;
+const ITERATIONS: usize = if cfg!(miri) { 20 } else { 3_000 };
+const SET_ITERATIONS: usize = if cfg!(miri) { 4 } else { 400 };
+const SAMPLE_STEP: usize = if cfg!(miri) { 9 } else { 1 };
 const MAX_LEN: usize = 300;
 
 pub(crate) struct Rng(pub(crate) u64);
@@ -136,7 +138,7 @@ fn kernels_match_scalar_on_adversarial_input() {
         b"-----------------------------------",
     ];
     for pattern in patterns {
-        for pad in 0..70 {
+        for pad in (0..70).step_by(SAMPLE_STEP) {
             for tail in 0..3 {
                 let mut hay = vec![b'x'; pad];
                 hay.extend_from_slice(pattern);
@@ -200,7 +202,7 @@ fn agree_on_sets(hay: &[u8]) {
                 from + 40,
                 usize::MAX,
             ] {
-                let expected = set::first_in_set(set, hay, from, end);
+                let expected = set.first_in(hay, from, end);
                 let window = hay.get(from..end.min(hay.len())).unwrap_or_default();
                 let naive = hay
                     .get(from..end.min(hay.len()))
@@ -211,7 +213,7 @@ fn agree_on_sets(hay: &[u8]) {
                     .unwrap_or_default()
                     .iter()
                     .any(|byte| set.marks(*byte));
-                let stop = set::stop_in_set(set, hay, from, end);
+                let stop = set.stop_in(hay, from, end);
                 assert_eq!((stop.at, stop.marked), (expected, marked));
                 for kernel in Kernel::available() {
                     assert_eq!(
@@ -281,7 +283,7 @@ fn excluding_sets_are_exact() {
         for kernel in Kernel::available() {
             assert_eq!(
                 kernel.first_in_set(&NOT_ALNUM, &hay, from, hay.len()),
-                set::first_in_set(&NOT_ALNUM, &hay, from, hay.len()),
+                NOT_ALNUM.first_in(&hay, from, hay.len()),
                 "{} from {from}",
                 kernel.name()
             );
@@ -293,7 +295,7 @@ fn excluding_sets_are_exact() {
 fn set_kernels_match_scalar() {
     let alphabet: &[u8] = b"aaaaaaaaaa@<>\"\\,;:=()\n\r \t\x00\x7f\x80\xc3\xff0/";
     let mut rng = Rng(0x9e37_79b9_7f4a_7c15);
-    for _ in 0..400 {
+    for _ in 0..SET_ITERATIONS {
         let len = rng.below(90);
         let hay: Vec<u8> = (0..len)
             .map(|_| {
@@ -305,7 +307,7 @@ fn set_kernels_match_scalar() {
             .collect();
         agree_on_sets(&hay);
     }
-    for len in 0..40 {
+    for len in (0..40).step_by(SAMPLE_STEP) {
         for hit in 0..len {
             let mut hay = vec![b'a'; len];
             if let Some(byte) = hay.get_mut(hit) {

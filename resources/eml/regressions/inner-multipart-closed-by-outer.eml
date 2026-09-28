@@ -1,0 +1,14 @@
+Content-Type: multipart/mixed; boundary="outer"
+
+--outer
+Content-Type: multipart/alternative; boundary="inner"
+
+--inner
+Content-Type: text/plain
+
+a
+--outer
+Content-Type: text/plain
+
+b
+--outer--

@@ -198,87 +198,43 @@ fn truncate_markup(html: &str, max_len: usize) -> String {
 
 #[cfg(test)]
 mod tests {
+    use crate::fields::tests::{case_text, load_cases};
+    use serde_json::Value as Json;
     use std::borrow::Cow;
 
-    #[test]
-    fn text_preview() {
-        let text_1 = concat!(
-            "J'interdis aux marchands de vanter trop leurs marchandises. ",
-            "Car ils se fontvite pédagogues et t'enseignent comme but ce qui ",
-            "n'est par essence qu'un moyen, et te trompant ainsi sur la route ",
-            "à suivre les voilà bientôt qui te dégradent, car si leur musique ",
-            "est vulgaire ils te fabriquent pour te la vendre une âme vulgaire.\n",
-            "\u{2014} Antoine de Saint-Exupéry, Citadelle (1948)"
-        );
-        let text_2 = concat!(
-            "長沮、桀溺耦而耕，孔子過之，使子路問津焉。長沮曰：「夫執輿者為誰？」",
-            "子路曰：「為孔丘。」曰：「是魯孔丘與？」曰：「是也。」曰：「是知津矣。」問於桀溺，",
-            "桀溺曰：「子為誰？」曰：「為仲由。」曰：「是魯孔丘之徒與？」對曰：「然。",
-            "」曰：「滔滔者天下皆是也，而誰以易之？且而與其從辟人之士也，豈若從",
-            "辟世之士哉？」耰而不輟。子路行以告。夫子憮然曰：「鳥獸不可與同群，吾非斯人之徒",
-            "與而誰與？天下有道，丘不與易也。」",
-            "子路從而後，遇丈人，以杖荷蓧。子路問曰：「子見夫子乎？」丈人曰：「四體不勤，",
-            "五穀不分。孰為夫子？」植其杖而芸。子路拱而立。止子路宿，殺雞為黍而食之，見其二",
-            "子焉。明日，子路行以告。子曰：「隱者也。」使子路反見之。至則行矣。子路曰：「",
-            "不仕無義。長幼之節，不可廢也；君臣之義，如之何其廢之？欲潔其身，而亂大倫。君",
-            "子之仕也，行其義也。道之不行，已知之矣。」"
-        );
-
-        assert_eq!(
-            super::truncate_text(text_1, 110),
-            "J'interdis aux marchands de vanter trop leurs marchandises. Car ils se fontvite pédagogues et t'enseignent..."
-        );
-
-        assert_eq!(
-            super::truncate_text(text_2, 110),
-            "長沮、桀溺耦而耕，孔子過之，使子路問津焉。長沮曰：「夫執輿者為誰？」子..."
-        );
+    fn truncations(name: &str) -> Vec<(String, usize, String)> {
+        load_cases(name)
+            .iter()
+            .map(|case| {
+                let max_len = case
+                    .get("max_len")
+                    .and_then(Json::as_u64)
+                    .and_then(|len| usize::try_from(len).ok())
+                    .unwrap_or_else(|| panic!("\"max_len\" is a length in {case}"));
+                (
+                    case_text(case, "input").to_string(),
+                    max_len,
+                    case_text(case, "expected").to_string(),
+                )
+            })
+            .collect()
     }
 
     #[test]
-    fn html_truncate() {
-        for (html, expected_result) in [
-            (
-                "<html>hello<br/>world<br/></html>",
-                "<html>hello<br/>world...",
-            ),
-            ("<html>using &lt;><br/></html>", "<html>using &lt;><br/>..."),
-            (
-                "test <not br/>tag<br />test <not br/>tag<br />",
-                "test <not br/>tag...",
-            ),
-            (
-                "<>< ><tag\n/>>hello    world< br \n />",
-                "<>< ><tag\n/>>hello    ...",
-            ),
-            (
-                concat!(
-                    "<head><title>ignore head</title><not head>xyz</not head></head>",
-                    "<h1>&lt;body&gt;</h1>"
-                ),
-                "<head><title>ignore he...",
-            ),
-            (
-                concat!(
-                    "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; ",
-                    "don&apos;t hurt me.</p>"
-                ),
-                "<p>what is &heartsuit;...",
-            ),
-            (
-                "<!-- <> < < < -->the actual<!--> text",
-                "<!-- <> < < < -->the a...",
-            ),
-            (
-                "   < p >  hello < / p > < p > world < / p >   !!! < br > ",
-                "   < p >  hello ...",
-            ),
-            (
-                " <p>please unsubscribe <a href=#>here</a>.</p> ",
-                " <p>please unsubscribe...",
-            ),
-        ] {
-            assert_eq!(super::truncate_html(html, 25), expected_result);
+    fn truncate_text_fixtures() {
+        let tests = truncations("decoders/truncate_text.json");
+        assert_eq!(tests.len(), 2);
+        for (input, max_len, expected) in tests {
+            assert_eq!(super::truncate_text(&input, max_len), expected, "{input:?}");
+        }
+    }
+
+    #[test]
+    fn truncate_html_fixtures() {
+        let tests = truncations("decoders/truncate_html.json");
+        assert_eq!(tests.len(), 9);
+        for (input, max_len, expected) in tests {
+            assert_eq!(super::truncate_html(&input, max_len), expected, "{input:?}");
         }
     }
 

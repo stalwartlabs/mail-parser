@@ -333,7 +333,48 @@ assert_eq!(subject.as_deref(), Some("moved"));
 
 ## Performance
 
-**[PLACEHOLDER: performance section, to be written after the final benchmarks against 0.11 and against other Rust and C/C++ parsers.]**
+mail-parser is compared with the most used email parsers in Rust ([mailparse](https://crates.io/crates/mailparse) 0.17.0) and C/C++ ([GMime](https://github.com/jstedfast/gmime) 3.2.15, [VMime](https://github.com/kisli/vmime) at commit 5b01911, [libEtPan!](https://github.com/dinhvh/libetpan) 1.10.1 and the `lib-mail` parser of [Dovecot](https://github.com/dovecot/core) 2.4.5). Every library parses one message per call, as a user would, and does the same work:
+
+- `full`: parse, then read every leaf body decoded, with charset conversion to UTF-8 for text parts.
+- `headers`: parse, then read the decoded Subject, the first From address, the Date as a timestamp and the Message-ID.
+- `structure`: parse, then read the content type of every MIME part.
+
+Nested messages are parsed in every workload, by the library itself when it returns them as bytes. Measured on an Apple M4 (Mac mini, macOS 26.6, rustc 1.98.1, Apple clang 21 with `-O3`), median of three runs.
+
+How many times faster mail-parser is than each library (geometric mean over the corpora in the tables below, `structure` over those of the `headers` table, with the range):
+
+| Workload | mailparse | GMime | VMime | libEtPan! | Dovecot |
+|---|---:|---:|---:|---:|---:|
+| `full` | 3.0x (1.3 to 4.6) | 31x (13 to 177) | 20x (7.8 to 80) | 15x (5.7 to 69) | 9.3x (4.4 to 24) |
+| `headers` | 3.2x (2.6 to 5.5) | 14x (8.1 to 20) | 33x (13 to 131) | 19x (7.5 to 59) | 5.2x (2.5 to 16) |
+| `structure` | 2.8x (2.1 to 5.3) | 14x (8.2 to 21) | 31x (11 to 117) | 17x (6.5 to 60) | 3.9x (2.0 to 16) |
+
+Throughput in MiB/s (input size divided by time):
+
+`full`:
+
+| Corpus | mail-parser | mailparse | GMime | VMime | libEtPan! | Dovecot |
+|---|---:|---:|---:|---:|---:|---:|
+| Test suite (123 messages) | **1,597** | 558 | 75 | 20 | 93 | 153 |
+| Enron (3,000 messages) | **2,420** | 942 | 65 | 70 | 96 | 366 |
+| Large attachments | **12,747** | 2,781 | 960 | 380 | 185 | 522 |
+| Newsletters | **2,942** | 638 | 113 | 299 | 257 | 353 |
+| Long header blocks | **1,989** | 556 | 116 | 230 | 352 | 391 |
+| Forwarded messages | **2,639** | 897 | 79 | 152 | 150 | 606 |
+| 1 MB plain text | **17,171** | 13,732 | 97 | 2,212 | 2,796 | 856 |
+
+`headers`:
+
+| Corpus | mail-parser | mailparse | GMime | VMime | libEtPan! | Dovecot |
+|---|---:|---:|---:|---:|---:|---:|
+| Test suite (123 messages) | **2,089** | 687 | 122 | 16 | 176 | 514 |
+| Enron (3,000 messages) | **2,638** | 873 | 132 | 137 | 266 | 480 |
+| Large attachments | **80,868** | 31,344 | 4,662 | 1,471 | 1,362 | 5,205 |
+| Newsletters | **25,529** | 4,671 | 2,178 | 643 | 522 | 3,074 |
+| Long header blocks | **3,805** | 1,483 | 469 | 299 | 508 | 1,390 |
+| Forwarded messages | **2,962** | 924 | 226 | 161 | 153 | 1,179 |
+
+mail-parser does not decode a body until it is read, which is why `headers` and `structure` reach tens of GB/s on messages with large bodies. The benchmark, the equivalence check of the work each library does, and the tables for every workload and corpus (including LF input) are in [`benches/compare`](benches/compare/README.md); the results are in [`benches/compare/results`](benches/compare/results/summary.md).
 
 ## Feature flags
 
@@ -349,7 +390,7 @@ No feature is enabled by default. The minimum supported Rust version is 1.98.
 To run the test suite, including the comparison of every message under `resources/eml/` with its expected JSON (in LF and CRLF form; a mismatch writes the parsed message to a `.failed` file next to it):
 
 ```bash
- $ cargo test --features full_encoding,serde
+ $ cargo test --all-features
 ```
 
 and without optional features:
@@ -358,13 +399,41 @@ and without optional features:
  $ cargo test
 ```
 
-**[PLACEHOLDER: fuzzing and Miri commands, to be written after the final fuzzing and Miri runs.]**
-
-To run the micro-benchmarks of the SIMD kernels and of string resolution:
+To fuzz the parser (requires [cargo-fuzz](https://crates.io/crates/cargo-fuzz) and a nightly toolchain), optionally seeding the corpus with the test messages:
 
 ```bash
+ $ cargo +nightly fuzz run parse -- -dict=fuzz/mime.dict -max_len=65536 -timeout=20
+ $ mkdir -p fuzz/corpus/parse
+ $ cargo +nightly fuzz run parse fuzz/corpus/parse resources/eml -- -dict=fuzz/mime.dict -max_len=65536 -timeout=20
+```
+
+The other targets are `limits` (parser limits), `fields` (header field parsers), `charsets` (charset and HTML decoders), `kernels` (every SIMD kernel against the scalar one) and `mbox` (mbox reader); `kernels`, `fields` and `charsets` use `-max_len=4096`, `limits` uses `-max_len=16384` and `mbox` uses `-max_len=65536`.
+
+To run the unit tests that exercise `unsafe` code under [Miri](https://github.com/rust-lang/miri) (the tests use fewer samples under Miri), natively and on x86-64 with the AVX2 kernels:
+
+```bash
+ $ MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test --lib -- store:: decoders::charsets::
+ $ MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test --lib -- scan::
+ $ MIRIFLAGS=-Zmiri-disable-isolation RUSTFLAGS="-Ctarget-feature=+avx2" cargo +nightly miri test --lib --target x86_64-unknown-linux-gnu -- scan::
+```
+
+On macOS, the x86-64 run also needs `CC_x86_64_unknown_linux_gnu=clang AR_x86_64_unknown_linux_gnu=ar CFLAGS_x86_64_unknown_linux_gnu=-ffreestanding`. Miri does not implement every NEON instruction used by encodify, so the parser tests run under Miri with its portable code: add `RUSTFLAGS="--cfg encodify_scalar"` and `-- parser::`.
+
+The benchmarks read the Enron maildir and the Stalwart SMTP test messages, which `scripts/fetch-corpora.sh` downloads into `target/corpora` (or the directory named by `MAIL_PARSER_CORPORA`) and checks against `scripts/corpora.sha256`; a missing corpus is skipped with a warning. To download them and run the micro-benchmarks of the SIMD kernels and of string resolution:
+
+```bash
+ $ scripts/fetch-corpora.sh enron stalwart
  $ cargo bench --bench kernels
  $ cargo bench --bench resolve
+```
+
+To reproduce the comparison with other parsers (requires a C/C++ toolchain, GLib and cmake; see [`benches/compare`](benches/compare/README.md)):
+
+```bash
+ $ scripts/fetch-corpora.sh enron stalwart
+ $ cd benches/compare
+ $ vendor/build.sh
+ $ ./run.sh
 ```
 
 ## Conformed RFCs

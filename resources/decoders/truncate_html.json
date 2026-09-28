@@ -1,0 +1,47 @@
+[
+  {
+    "input": "<html>hello<br/>world<br/></html>",
+    "max_len": 25,
+    "expected": "<html>hello<br/>world..."
+  },
+  {
+    "input": "<html>using &lt;><br/></html>",
+    "max_len": 25,
+    "expected": "<html>using &lt;><br/>..."
+  },
+  {
+    "input": "test <not br/>tag<br />test <not br/>tag<br />",
+    "max_len": 25,
+    "expected": "test <not br/>tag..."
+  },
+  {
+    "input": "<>< ><tag\n/>>hello    world< br \n />",
+    "max_len": 25,
+    "expected": "<>< ><tag\n/>>hello    ..."
+  },
+  {
+    "input": "<head><title>ignore head</title><not head>xyz</not head></head><h1>&lt;body&gt;</h1>",
+    "max_len": 25,
+    "expected": "<head><title>ignore he..."
+  },
+  {
+    "input": "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; don&apos;t hurt me.</p>",
+    "max_len": 25,
+    "expected": "<p>what is &heartsuit;..."
+  },
+  {
+    "input": "<!-- <> < < < -->the actual<!--> text",
+    "max_len": 25,
+    "expected": "<!-- <> < < < -->the a..."
+  },
+  {
+    "input": "   < p >  hello < / p > < p > world < / p >   !!! < br > ",
+    "max_len": 25,
+    "expected": "   < p >  hello ..."
+  },
+  {
+    "input": " <p>please unsubscribe <a href=#>here</a>.</p> ",
+    "max_len": 25,
+    "expected": " <p>please unsubscribe..."
+  }
+]

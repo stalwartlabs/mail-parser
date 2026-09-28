@@ -6,7 +6,7 @@
 
 //! Mbox files.
 
-use crate::{DateTime, MONTH};
+use crate::DateTime;
 use memchr::{memchr, memmem::Finder, memrchr};
 use std::io::{self, BufRead};
 
@@ -182,11 +182,22 @@ fn internal_date(date: &str) -> u64 {
     for (pos, part) in date.split_whitespace().enumerate() {
         match pos {
             1 => {
-                dt.month = MONTH
-                    .iter()
-                    .zip(1..)
-                    .find(|(name, _)| part.eq_ignore_ascii_case(name))
-                    .map_or(u8::MAX, |(_, month)| month);
+                dt.month = hashify::map_ignore_case!(part.as_bytes(), u8,
+                    "jan" => 1,
+                    "feb" => 2,
+                    "mar" => 3,
+                    "apr" => 4,
+                    "may" => 5,
+                    "jun" => 6,
+                    "jul" => 7,
+                    "aug" => 8,
+                    "sep" => 9,
+                    "oct" => 10,
+                    "nov" => 11,
+                    "dec" => 12,
+                )
+                .copied()
+                .unwrap_or(u8::MAX);
             }
             2 => dt.day = part.parse().unwrap_or(u8::MAX),
             3 => {
@@ -250,23 +261,7 @@ mod tests {
     use crate::scan::tests::Rng;
     use std::io::{self, BufRead, BufReader, Read};
 
-    const MBOX: &[u8] = br#"From god@heaven.af.mil Sat Jan  3 01:05:34 1996
-Message 1
-
-From cras@irccrew.org  Tue Jul 23 19:39:23 2002
-Message 2
-
-From test@test.com Tue Aug  6 13:34:34 2002
-Message 3
->From hello
->>From world
->>>From test
-
-From other@domain.com Mon Jan 15  15:30:00  2018
-Message 4
-> From
->F
-"#;
+    const MBOX: &[u8] = include_bytes!("../../resources/mbox/sample.mbox");
 
     fn expected() -> Vec<Message> {
         vec![

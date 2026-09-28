@@ -150,7 +150,7 @@ impl Iterator for FolderIterator<'_> {
                     path.file_name()
                         .and_then(|name| name.to_str())
                         .and_then(|name| {
-                            if !["cur", "new", "tmp"].contains(&name) {
+                            if !hashify::set!(name.as_bytes(), "cur", "new", "tmp") {
                                 if let Some(prefix) = self.prefix {
                                     name.strip_prefix(prefix)
                                 } else {

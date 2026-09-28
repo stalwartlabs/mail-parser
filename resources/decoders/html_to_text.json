@@ -1,0 +1,50 @@
+[
+  {
+    "input": "<html>hello<br/>world<br/></html>",
+    "expected": "hello\nworld\n"
+  },
+  {
+    "input": "<html>using &lt;><br/></html>",
+    "expected": "using <>\n"
+  },
+  {
+    "input": "test <not br/>tag<br />",
+    "expected": "test tag\n"
+  },
+  {
+    "input": "<>< ><tag\n/>>hello    world< br \n />",
+    "expected": ">hello world\n"
+  },
+  {
+    "input": "<head><title>ignore head</title><not head>xyz</not head></head><h1>&lt;body&gt;</h1>",
+    "expected": "<body>"
+  },
+  {
+    "input": "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; don&apos;t hurt me.</p>",
+    "expected": "what is ♥?\nßĂΒγ don't hurt me.\n"
+  },
+  {
+    "input": "<!--[if mso]><style type=\"text/css\">body, table, td, a, p, span, ul, li {font-family: Arial, sans-serif!important;}</style><![endif]-->this is <!-- <> < < < < ignore  > -> here -->the actual<!--> text",
+    "expected": "this is the actual text"
+  },
+  {
+    "input": "   < p >  hello < / p > < p > world < / p >   !!! < br > ",
+    "expected": "hello\nworld\n!!!\n"
+  },
+  {
+    "input": " <p>please unsubscribe <a href=#>here</a>.</p> ",
+    "expected": "please unsubscribe here.\n"
+  },
+  {
+    "input": "<style>body{color:red}</style><div>Hello</div>",
+    "expected": "Hello"
+  },
+  {
+    "input": "<style>body{color:red}</style><div>Hello</div><script>alert('x')</script><div>World</div>",
+    "expected": "HelloWorld"
+  },
+  {
+    "input": "<div>Hello</div><template><div>Hidden</div><style>.x{}</style></template><div>World</div>",
+    "expected": "HelloWorld"
+  }
+]

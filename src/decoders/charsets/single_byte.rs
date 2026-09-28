@@ -61,107 +61,110 @@ impl Table {
     }
 }
 
-pub(super) fn decode<'x>(table: &Table, bytes: &'x [u8]) -> Cow<'x, str> {
-    if bytes.len() <= SMALL_CHUNK {
-        if ascii_len(bytes) == bytes.len() {
-            return Cow::Borrowed(as_ascii_str(bytes));
-        }
-        let mut out = String::with_capacity(bytes.len() * MAX_CHAR_LEN);
-        push_short(table, bytes, &mut out);
-        return Cow::Owned(out);
-    }
-    match split_ascii(bytes) {
-        (ascii, []) => Cow::Borrowed(ascii),
-        (ascii, rest) => {
-            let non_ascii = non_ascii_count(rest);
-            let mut out =
-                String::with_capacity(ascii.len() + rest.len() + non_ascii * EXTRA_BYTES_PER_CHAR);
-            out.push_str(ascii);
-            push_decoded(table, rest, non_ascii, &mut out);
-            Cow::Owned(out)
-        }
-    }
-}
-
-pub(super) fn decode_append(table: &Table, bytes: &[u8], out: &mut String) {
-    if bytes.len() <= SMALL_CHUNK {
-        out.reserve(bytes.len() * MAX_CHAR_LEN);
-        push_short(table, bytes, out);
-        return;
-    }
-    let (ascii, rest) = split_ascii(bytes);
-    let non_ascii = non_ascii_count(rest);
-    out.reserve(ascii.len() + rest.len() + non_ascii * EXTRA_BYTES_PER_CHAR);
-    out.push_str(ascii);
-    push_decoded(table, rest, non_ascii, out);
-}
-
-fn push_decoded(table: &Table, bytes: &[u8], non_ascii: usize, out: &mut String) {
-    if non_ascii * SPARSE_RATIO < bytes.len() {
-        push_runs(table, bytes, out);
-    } else if bytes.len() <= SMALL_CHUNK {
-        push_short(table, bytes, out);
-    } else {
-        push_chunks::<LARGE_CHUNK, LARGE_MASK, { LARGE_MASK + 1 + ENTRY_LEN }>(table, bytes, out);
-    }
-}
-
-fn push_short(table: &Table, bytes: &[u8], out: &mut String) {
-    if bytes.len() <= TINY_CHUNK {
-        push_chunks::<TINY_CHUNK, TINY_MASK, { TINY_MASK + 1 + ENTRY_LEN }>(table, bytes, out);
-    } else {
-        push_chunks::<SMALL_CHUNK, SMALL_MASK, { SMALL_MASK + 1 + ENTRY_LEN }>(table, bytes, out);
-    }
-}
-
-fn push_runs(table: &Table, mut bytes: &[u8], out: &mut String) {
-    while let Some((&byte, rest)) = bytes.split_first() {
-        out.push(table.chars[usize::from(byte)]);
-        let (ascii, rest) = split_ascii(rest);
-        out.push_str(ascii);
-        bytes = rest;
-    }
-}
-
-fn push_chars(table: &Table, bytes: &[u8], out: &mut String) {
-    for &byte in bytes {
-        out.push(table.chars[usize::from(byte)]);
-    }
-}
-
-fn push_chunks<const CHUNK: usize, const MASK: usize, const BUFFER: usize>(
-    table: &Table,
-    bytes: &[u8],
-    out: &mut String,
-) {
-    const {
-        assert!(CHUNK * MAX_CHAR_LEN <= MASK && (MASK + 1).is_power_of_two());
-        assert!(BUFFER == MASK + 1 + ENTRY_LEN && BUFFER >= SIMD_VALIDATION_LEN);
-    };
-    let mut buffer = [0u8; BUFFER];
-    let single_chunk = bytes.len() <= CHUNK;
-    for chunk in bytes.chunks(CHUNK) {
-        let mut len = 0;
-        for &byte in chunk {
-            let entry = table.encoded[usize::from(byte)];
-            let start = len & MASK;
-            if let Some(slot) = buffer.get_mut(start..start + ENTRY_LEN) {
-                slot.copy_from_slice(&entry);
+impl Table {
+    pub(super) fn decode<'x>(&self, bytes: &'x [u8]) -> Cow<'x, str> {
+        if bytes.len() <= SMALL_CHUNK {
+            if ascii_len(bytes) == bytes.len() {
+                return Cow::Borrowed(as_ascii_str(bytes));
             }
-            len = start + usize::from(entry[LENGTH_BYTE]);
+            let mut out = String::with_capacity(bytes.len() * MAX_CHAR_LEN);
+            self.push_short(bytes, &mut out);
+            return Cow::Owned(out);
         }
-        let validated = if single_chunk {
-            len.max(SIMD_VALIDATION_LEN)
+        match split_ascii(bytes) {
+            (ascii, []) => Cow::Borrowed(ascii),
+            (ascii, rest) => {
+                let non_ascii = non_ascii_count(rest);
+                let mut out = String::with_capacity(
+                    ascii.len() + rest.len() + non_ascii * EXTRA_BYTES_PER_CHAR,
+                );
+                out.push_str(ascii);
+                self.push_decoded(rest, non_ascii, &mut out);
+                Cow::Owned(out)
+            }
+        }
+    }
+
+    pub(super) fn decode_append(&self, bytes: &[u8], out: &mut String) {
+        if bytes.len() <= SMALL_CHUNK {
+            out.reserve(bytes.len() * MAX_CHAR_LEN);
+            self.push_short(bytes, out);
+            return;
+        }
+        let (ascii, rest) = split_ascii(bytes);
+        let non_ascii = non_ascii_count(rest);
+        out.reserve(ascii.len() + rest.len() + non_ascii * EXTRA_BYTES_PER_CHAR);
+        out.push_str(ascii);
+        self.push_decoded(rest, non_ascii, out);
+    }
+
+    fn push_decoded(&self, bytes: &[u8], non_ascii: usize, out: &mut String) {
+        if non_ascii * SPARSE_RATIO < bytes.len() {
+            self.push_runs(bytes, out);
+        } else if bytes.len() <= SMALL_CHUNK {
+            self.push_short(bytes, out);
         } else {
-            len
+            self.push_chunks::<LARGE_CHUNK, LARGE_MASK, { LARGE_MASK + 1 + ENTRY_LEN }>(bytes, out);
+        }
+    }
+
+    fn push_short(&self, bytes: &[u8], out: &mut String) {
+        if bytes.len() <= TINY_CHUNK {
+            self.push_chunks::<TINY_CHUNK, TINY_MASK, { TINY_MASK + 1 + ENTRY_LEN }>(bytes, out);
+        } else {
+            self.push_chunks::<SMALL_CHUNK, SMALL_MASK, { SMALL_MASK + 1 + ENTRY_LEN }>(bytes, out);
+        }
+    }
+
+    fn push_runs(&self, mut bytes: &[u8], out: &mut String) {
+        while let Some((&byte, rest)) = bytes.split_first() {
+            out.push(self.chars[usize::from(byte)]);
+            let (ascii, rest) = split_ascii(rest);
+            out.push_str(ascii);
+            bytes = rest;
+        }
+    }
+
+    fn push_chars(&self, bytes: &[u8], out: &mut String) {
+        for &byte in bytes {
+            out.push(self.chars[usize::from(byte)]);
+        }
+    }
+
+    fn push_chunks<const CHUNK: usize, const MASK: usize, const BUFFER: usize>(
+        &self,
+        bytes: &[u8],
+        out: &mut String,
+    ) {
+        const {
+            assert!(CHUNK * MAX_CHAR_LEN <= MASK && (MASK + 1).is_power_of_two());
+            assert!(BUFFER == MASK + 1 + ENTRY_LEN && BUFFER >= SIMD_VALIDATION_LEN);
         };
-        match buffer
-            .get(..validated)
-            .and_then(|bytes| from_utf8(bytes).ok())
-            .and_then(|text| text.get(..len))
-        {
-            Some(text) => out.push_str(text),
-            None => push_chars(table, chunk, out),
+        let mut buffer = [0u8; BUFFER];
+        let single_chunk = bytes.len() <= CHUNK;
+        for chunk in bytes.chunks(CHUNK) {
+            let mut len = 0;
+            for &byte in chunk {
+                let entry = self.encoded[usize::from(byte)];
+                let start = len & MASK;
+                if let Some(slot) = buffer.get_mut(start..start + ENTRY_LEN) {
+                    slot.copy_from_slice(&entry);
+                }
+                len = start + usize::from(entry[LENGTH_BYTE]);
+            }
+            let validated = if single_chunk {
+                len.max(SIMD_VALIDATION_LEN)
+            } else {
+                len
+            };
+            match buffer
+                .get(..validated)
+                .and_then(|bytes| from_utf8(bytes).ok())
+                .and_then(|text| text.get(..len))
+            {
+                Some(text) => out.push_str(text),
+                None => self.push_chars(chunk, out),
+            }
         }
     }
 }

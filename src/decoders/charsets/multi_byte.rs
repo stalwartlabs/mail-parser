@@ -49,27 +49,54 @@ impl MultiByte {
             MultiByte::Replacement => REPLACEMENT,
         }
     }
-}
 
-#[cfg(feature = "full_encoding")]
-pub(super) fn decode(charset: MultiByte, bytes: &[u8]) -> Cow<'_, str> {
-    charset.encoding().decode(bytes).0
-}
+    pub(super) fn decode(self, bytes: &[u8]) -> Cow<'_, str> {
+        self.encoding().decode(bytes).0
+    }
 
-#[cfg(feature = "full_encoding")]
-pub(super) fn decode_checked(charset: MultiByte, bytes: &[u8]) -> (Cow<'_, str>, bool) {
-    let (text, _, malformed) = charset.encoding().decode(bytes);
-    (text, malformed)
-}
+    pub(super) fn decode_checked(self, bytes: &[u8]) -> (Cow<'_, str>, bool) {
+        let (text, _, malformed) = self.encoding().decode(bytes);
+        (text, malformed)
+    }
 
-#[cfg(feature = "full_encoding")]
-pub(super) fn decode_append(charset: MultiByte, bytes: &[u8], out: &mut String) {
-    if !matches!(charset, MultiByte::Iso2022Jp | MultiByte::Replacement)
-        && let (ascii, []) = super::ascii::split_ascii(bytes)
-    {
-        out.push_str(ascii);
-    } else {
-        decode_with(charset.encoding().new_decoder(), bytes, out);
+    pub(super) fn decode_append(self, bytes: &[u8], out: &mut String) {
+        if !matches!(self, MultiByte::Iso2022Jp | MultiByte::Replacement)
+            && let (ascii, []) = super::ascii::split_ascii(bytes)
+        {
+            out.push_str(ascii);
+        } else {
+            decode_with(self.encoding().new_decoder(), bytes, out);
+        }
+    }
+
+    pub(super) fn decode_prefix(self, bytes: &[u8]) -> Cow<'_, str> {
+        if !matches!(self, MultiByte::Iso2022Jp | MultiByte::Replacement)
+            && let (ascii, []) = super::ascii::split_ascii(bytes)
+        {
+            return Cow::Borrowed(ascii);
+        }
+        let mut decoder = self.encoding().new_decoder();
+        let mut out = String::with_capacity(
+            decoder
+                .max_utf8_buffer_length(bytes.len())
+                .unwrap_or(bytes.len())
+                .max(MIN_ROOM),
+        );
+        let mut rest = bytes;
+        loop {
+            let (result, read, _) = decoder.decode_to_string(rest, &mut out, false);
+            rest = rest.get(read..).unwrap_or_default();
+            if result == CoderResult::InputEmpty {
+                break;
+            }
+            out.reserve(
+                decoder
+                    .max_utf8_buffer_length(rest.len())
+                    .unwrap_or(rest.len())
+                    .max(MIN_ROOM),
+            );
+        }
+        Cow::Owned(out)
     }
 }
 
@@ -90,53 +117,21 @@ pub(super) fn decode_with(mut decoder: Decoder, mut bytes: &[u8], out: &mut Stri
     }
 }
 
-#[cfg(feature = "full_encoding")]
-pub(super) fn decode_prefix(charset: MultiByte, bytes: &[u8]) -> Cow<'_, str> {
-    if !matches!(charset, MultiByte::Iso2022Jp | MultiByte::Replacement)
-        && let (ascii, []) = super::ascii::split_ascii(bytes)
-    {
-        return Cow::Borrowed(ascii);
+#[cfg(not(feature = "full_encoding"))]
+impl MultiByte {
+    pub(super) fn decode_prefix(self, bytes: &[u8]) -> Cow<'_, str> {
+        super::utf8::decode(super::utf8::complete_prefix(bytes))
     }
-    let mut decoder = charset.encoding().new_decoder();
-    let mut out = String::with_capacity(
-        decoder
-            .max_utf8_buffer_length(bytes.len())
-            .unwrap_or(bytes.len())
-            .max(MIN_ROOM),
-    );
-    let mut rest = bytes;
-    loop {
-        let (result, read, _) = decoder.decode_to_string(rest, &mut out, false);
-        rest = rest.get(read..).unwrap_or_default();
-        if result == CoderResult::InputEmpty {
-            break;
-        }
-        out.reserve(
-            decoder
-                .max_utf8_buffer_length(rest.len())
-                .unwrap_or(rest.len())
-                .max(MIN_ROOM),
-        );
+
+    pub(super) fn decode(self, bytes: &[u8]) -> Cow<'_, str> {
+        super::utf8::decode(bytes)
     }
-    Cow::Owned(out)
-}
 
-#[cfg(not(feature = "full_encoding"))]
-pub(super) fn decode_prefix(_: MultiByte, bytes: &[u8]) -> Cow<'_, str> {
-    super::utf8::decode(super::utf8::complete_prefix(bytes))
-}
+    pub(super) fn decode_checked(self, bytes: &[u8]) -> (Cow<'_, str>, bool) {
+        super::utf8::decode_checked(bytes)
+    }
 
-#[cfg(not(feature = "full_encoding"))]
-pub(super) fn decode(_: MultiByte, bytes: &[u8]) -> Cow<'_, str> {
-    super::utf8::decode(bytes)
-}
-
-#[cfg(not(feature = "full_encoding"))]
-pub(super) fn decode_checked(_: MultiByte, bytes: &[u8]) -> (Cow<'_, str>, bool) {
-    super::utf8::decode_checked(bytes)
-}
-
-#[cfg(not(feature = "full_encoding"))]
-pub(super) fn decode_append(_: MultiByte, bytes: &[u8], out: &mut String) {
-    super::utf8::decode_append(bytes, out);
+    pub(super) fn decode_append(self, bytes: &[u8], out: &mut String) {
+        super::utf8::decode_append(bytes, out);
+    }
 }

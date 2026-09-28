@@ -1,0 +1,6 @@
+/target/
+/vendor/downloads/
+/vendor/build/
+/vendor/prefix/
+/vendor/logs/
+!/Cargo.lock

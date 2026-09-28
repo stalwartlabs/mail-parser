@@ -1,0 +1,74 @@
+[
+  {
+    "input": "hello (fwd)",
+    "expected": "hello"
+  },
+  {
+    "input": " hello (fwd)(fwd)",
+    "expected": "hello"
+  },
+  {
+    "input": "hello (wg) (fwd) (fwd)",
+    "expected": "hello"
+  },
+  {
+    "input": "(fwd)(fwd)",
+    "expected": ""
+  },
+  {
+    "input": "(fwd)hello(fwd)",
+    "expected": "(fwd)hello"
+  },
+  {
+    "input": "  hello  ",
+    "expected": "hello"
+  },
+  {
+    "input": "  hello world   ",
+    "expected": "hello world"
+  },
+  {
+    "input": "",
+    "expected": ""
+  },
+  {
+    "input": "    ",
+    "expected": ""
+  },
+  {
+    "input": "hello ()(fwd)",
+    "expected": "hello ()"
+  },
+  {
+    "input": "(hello)",
+    "expected": "(hello)"
+  },
+  {
+    "input": "hello () (fwd) ()(fwd)",
+    "expected": "hello () (fwd) ()"
+  },
+  {
+    "input": ")(",
+    "expected": ")("
+  },
+  {
+    "input": " 你好世界(fwd) ",
+    "expected": "你好世界"
+  },
+  {
+    "input": "你好世界 (轉寄)",
+    "expected": "你好世界"
+  },
+  {
+    "input": "merhaba (i̇letilen)",
+    "expected": "merhaba"
+  },
+  {
+    "input": "hello(fwd",
+    "expected": "hello(fwd"
+  },
+  {
+    "input": "hello(fwd))",
+    "expected": "hello(fwd))"
+  }
+]

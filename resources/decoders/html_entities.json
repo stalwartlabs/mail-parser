@@ -1,0 +1,38 @@
+[
+  {
+    "input": "&lt;",
+    "expected": "<"
+  },
+  {
+    "input": "&#32;",
+    "expected": " "
+  },
+  {
+    "input": "&#x20;",
+    "expected": " "
+  },
+  {
+    "input": "&nbsp;",
+    "expected": " "
+  },
+  {
+    "input": "&CounterClockwiseContourIntegral;",
+    "expected": "∳"
+  },
+  {
+    "input": "&curvearrowright;",
+    "expected": "↷"
+  },
+  {
+    "input": "&rarr;",
+    "expected": "→"
+  },
+  {
+    "input": "&#xFFFFFFF;",
+    "expected": "�"
+  },
+  {
+    "input": "&hmmm",
+    "expected": "&hmmm"
+  }
+]

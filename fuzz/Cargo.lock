@@ -35,6 +35,8 @@ checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
 [[package]]
 name = "encodify"
 version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4fda1e5c788c2b59096e152ad1a76ce72a2ab80c75985eb94ca82de0b6555db7"
 dependencies = [
  "memchr",
  "simdutf8",

@@ -151,21 +151,6 @@ fn folded_field(src: &[u8], mut line: usize, field_end: usize) -> Fold {
     Fold::Continue
 }
 
-fn declared_encoding(value: &[u8]) -> Encoding {
-    let token = value
-        .split(|&byte| byte == b'(')
-        .next()
-        .unwrap_or_default()
-        .trim_ascii();
-    if token.eq_ignore_ascii_case(b"base64") {
-        Encoding::Base64
-    } else if token.eq_ignore_ascii_case(b"quoted-printable") {
-        Encoding::QuotedPrintable
-    } else {
-        Encoding::None
-    }
-}
-
 impl Builder<'_, '_> {
     pub(super) fn header_block(&mut self, src: &[u8], offset: usize) -> Block {
         let mut mime = Mime::default();
@@ -274,8 +259,7 @@ impl Builder<'_, '_> {
         };
         let parsed = match form {
             HeaderForm::Ignore => Value::Empty,
-            form => fields::parse_value(
-                form,
+            form => form.parse_field(
                 &mut FieldCtx::with_kernel(src, self.data, self.kernel),
                 value.clone(),
             ),
@@ -296,7 +280,8 @@ impl Builder<'_, '_> {
             Some(CONTENT_TYPE) => mime.content_type = content_type,
             Some(CONTENT_DISPOSITION) => mime.disposition = content_type,
             Some(CONTENT_TRANSFER_ENCODING) => {
-                mime.encoding = declared_encoding(src.get(value).unwrap_or_default());
+                mime.encoding =
+                    Encoding::parse(src.get(value).unwrap_or_default()).unwrap_or_default();
             }
             _ => {}
         }
@@ -305,7 +290,7 @@ impl Builder<'_, '_> {
 
 #[cfg(test)]
 mod tests {
-    use super::{declared_encoding, field_name, split_name};
+    use super::{field_name, split_name};
     use crate::{Encoding, header_name, scan::tests::Rng};
     use std::ops::Range;
 
@@ -412,13 +397,25 @@ mod tests {
 
     #[test]
     fn transfer_encodings() {
-        assert_eq!(declared_encoding(b" base64\r\n"), Encoding::Base64);
-        assert_eq!(declared_encoding(b" BASE64 (comment)\n"), Encoding::Base64);
         assert_eq!(
-            declared_encoding(b"\r\n Quoted-Printable\r\n"),
+            Encoding::parse(b" base64\r\n").unwrap_or_default(),
+            Encoding::Base64
+        );
+        assert_eq!(
+            Encoding::parse(b" BASE64 (comment)\n").unwrap_or_default(),
+            Encoding::Base64
+        );
+        assert_eq!(
+            Encoding::parse(b"\r\n Quoted-Printable\r\n").unwrap_or_default(),
             Encoding::QuotedPrintable
         );
-        assert_eq!(declared_encoding(b" 8bit\n"), Encoding::None);
-        assert_eq!(declared_encoding(b" base64;\n"), Encoding::None);
+        assert_eq!(
+            Encoding::parse(b" 8bit\n").unwrap_or_default(),
+            Encoding::None
+        );
+        assert_eq!(
+            Encoding::parse(b" base64;\n").unwrap_or_default(),
+            Encoding::None
+        );
     }
 }

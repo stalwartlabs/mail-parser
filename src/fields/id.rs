@@ -9,32 +9,34 @@ use crate::store::Value;
 use memchr::memchr2_iter;
 use std::ops::Range;
 
-#[inline]
-pub(crate) fn parse_id(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let bytes = ctx.bytes(value.clone());
-    let base = value.start;
-    let mark = ctx.text_items_mark();
-    let mut open = None;
-    for at in memchr2_iter(b'<', b'>', bytes) {
-        match (open, bytes.get(at)) {
-            (None, Some(b'<')) => open = Some(at + 1),
-            (Some(start), Some(b'>')) => {
-                if let Some(id) = trim(bytes, start..at, is_id_byte) {
-                    let item = ctx.borrow(base + id.start..base + id.end);
-                    ctx.push_text_item(item);
+impl FieldCtx<'_> {
+    #[inline]
+    pub(crate) fn parse_id(&mut self, value: Range<usize>) -> Value {
+        let bytes = self.bytes(value.clone());
+        let base = value.start;
+        let mark = self.text_items_mark();
+        let mut open = None;
+        for at in memchr2_iter(b'<', b'>', bytes) {
+            match (open, bytes.get(at)) {
+                (None, Some(b'<')) => open = Some(at + 1),
+                (Some(start), Some(b'>')) => {
+                    if let Some(id) = trim(bytes, start..at, is_id_byte) {
+                        let item = self.borrow(base + id.start..base + id.end);
+                        self.push_text_item(item);
+                    }
+                    open = None;
                 }
-                open = None;
+                _ => (),
             }
-            _ => (),
         }
+        if self.text_items_mark() == mark
+            && let Some(bare) = bare_span(bytes)
+        {
+            let item = self.borrow(base + bare.start..base + bare.end);
+            self.push_text_item(item);
+        }
+        self.text_list(mark)
     }
-    if ctx.text_items_mark() == mark
-        && let Some(bare) = bare_span(bytes)
-    {
-        let item = ctx.borrow(base + bare.start..base + bare.end);
-        ctx.push_text_item(item);
-    }
-    ctx.text_list(mark)
 }
 
 fn is_id_byte(byte: &u8) -> bool {
@@ -78,7 +80,6 @@ fn bare_span(bytes: &[u8]) -> Option<Range<usize>> {
 
 #[cfg(test)]
 pub(crate) mod tests {
-    use super::parse_id;
     use crate::{
         HeaderForm, HeaderValue,
         fields::{FieldCtx, tests::load_tests},
@@ -152,12 +153,12 @@ pub(crate) mod tests {
         let source = b"Message-ID: <abc@host>\r\nReferences: <x\xff@y> <z@w>\r\n";
         let mut data = MessageData::default();
         assert!(matches!(
-            parse_id(&mut FieldCtx::new(source, &mut data), 11..24),
+            FieldCtx::new(source, &mut data).parse_id(11..24),
             Value::TextList(_)
         ));
         assert!(data.strings.is_empty());
         assert!(matches!(
-            parse_id(&mut FieldCtx::new(source, &mut data), 36..source.len()),
+            FieldCtx::new(source, &mut data).parse_id(36..source.len()),
             Value::TextList(_)
         ));
         assert_eq!(data.strings, "x\u{fffd}@y");

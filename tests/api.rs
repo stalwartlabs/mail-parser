@@ -355,3 +355,27 @@ fn header_keys_find_what_names_find() {
         );
     }
 }
+
+#[test]
+fn known_transfer_encoding_matches_the_decode_problem() {
+    for (field, known) in [
+        ("", true),
+        ("Content-Transfer-Encoding: 8bit\r\n", true),
+        ("Content-Transfer-Encoding: BASE64 (comment)\r\n", true),
+        ("Content-Transfer-Encoding: x-uuencode\r\n", false),
+    ] {
+        let raw = format!("Subject: s\r\n{field}\r\nbody\r\n");
+        let message = MessageParser::new()
+            .parse(raw.as_bytes())
+            .expect("a message");
+        let part = message.root_part();
+        assert_eq!(part.has_known_transfer_encoding(), known, "{field:?}");
+        assert_eq!(
+            part.decoded_checked()
+                .1
+                .contains(DecodeProblems::UNKNOWN_TRANSFER_ENCODING),
+            !known,
+            "{field:?}"
+        );
+    }
+}

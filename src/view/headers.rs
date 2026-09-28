@@ -203,7 +203,10 @@ impl<'m> Headers<'m> {
             entry.name == id
         } else {
             entry.name == OTHER_NAME
-                && raw_name(self.resolver, self.data, entry).eq_ignore_ascii_case(name)
+                && self
+                    .resolver
+                    .raw_header_name(self.data, entry)
+                    .eq_ignore_ascii_case(name)
         }
     }
 
@@ -502,26 +505,26 @@ impl<'m> Headers<'m> {
     }
 }
 
-fn raw_name<'m>(resolver: Resolver<'m>, data: &'m MessageData, entry: &HeaderEntry) -> &'m str {
-    if entry.other_name != NONE {
-        return data
-            .text_items
-            .get(entry.other_name as usize)
-            .map_or("", |text| resolver.str(*text));
+impl<'m> Resolver<'m> {
+    fn raw_header_name(self, data: &'m MessageData, entry: &HeaderEntry) -> &'m str {
+        if entry.other_name != NONE {
+            return data
+                .text_items
+                .get(entry.other_name as usize)
+                .map_or("", |text| self.str(*text));
+        }
+        let start = entry.offset_field as usize;
+        let region = self
+            .source()
+            .get(start..(entry.offset_start as usize).saturating_sub(1))
+            .unwrap_or_default();
+        let canonical = header_name::canonical(entry.name);
+        if region == canonical.as_bytes() {
+            return canonical;
+        }
+        let name = header_name::trim_blank_end(region);
+        self.borrow(start..start + name.len()).unwrap_or_default()
     }
-    let start = entry.offset_field as usize;
-    let region = resolver
-        .source()
-        .get(start..(entry.offset_start as usize).saturating_sub(1))
-        .unwrap_or_default();
-    let canonical = header_name::canonical(entry.name);
-    if region == canonical.as_bytes() {
-        return canonical;
-    }
-    let name = header_name::trim_blank_end(region);
-    resolver
-        .borrow(start..start + name.len())
-        .unwrap_or_default()
 }
 
 impl<'m> Header<'m> {
@@ -536,7 +539,7 @@ impl<'m> Header<'m> {
 
     /// The name as written in the message, original case kept.
     pub fn raw_name(&self) -> &'m str {
-        raw_name(self.resolver, self.data, self.entry)
+        self.resolver.raw_header_name(self.data, self.entry)
     }
 
     /// The value, parsed with the form the parser used for this name.

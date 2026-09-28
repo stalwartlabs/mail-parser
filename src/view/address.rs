@@ -89,10 +89,12 @@ impl PartialEq for AddressRun<'_> {
 
 impl Eq for AddressRun<'_> {}
 
-fn mailbox<'m>(resolver: Resolver<'m>, entry: &AddressEntry) -> Mailbox<'m> {
-    Mailbox {
-        name: resolver.opt(entry.name),
-        address: resolver.opt(entry.address),
+impl<'m> Resolver<'m> {
+    fn mailbox(self, entry: &AddressEntry) -> Mailbox<'m> {
+        Mailbox {
+            name: self.opt(entry.name),
+            address: self.opt(entry.address),
+        }
     }
 }
 
@@ -124,7 +126,7 @@ impl<'m> AddressList<'m> {
                 }))
             } else {
                 rest = tail;
-                Some(Address::Mailbox(mailbox(resolver, first)))
+                Some(Address::Mailbox(resolver.mailbox(first)))
             }
         })
     }
@@ -135,7 +137,7 @@ impl<'m> AddressList<'m> {
         self.items
             .iter()
             .filter(|entry| !entry.is_group())
-            .map(move |entry| mailbox(resolver, entry))
+            .map(move |entry| resolver.mailbox(entry))
     }
 
     /// The first mailbox, groups flattened.
@@ -229,7 +231,7 @@ impl<'m> Iterator for AddressRun<'m> {
     fn next(&mut self) -> Option<Mailbox<'m>> {
         let (first, rest) = self.items.split_first()?;
         self.items = rest;
-        Some(mailbox(self.resolver, first))
+        Some(self.resolver.mailbox(first))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
@@ -241,7 +243,7 @@ impl DoubleEndedIterator for AddressRun<'_> {
     fn next_back(&mut self) -> Option<Self::Item> {
         let (last, rest) = self.items.split_last()?;
         self.items = rest;
-        Some(mailbox(self.resolver, last))
+        Some(self.resolver.mailbox(last))
     }
 }
 

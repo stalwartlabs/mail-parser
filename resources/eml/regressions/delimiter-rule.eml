@@ -1,0 +1,12 @@
+Content-Type: multipart/mixed; boundary="BND"
+
+--BND
+Content-Type: text/plain
+
+visit --BND for details
+--BNDX not a delimiter
+--BND 	
+Content-Type: text/plain
+
+second
+--BND--

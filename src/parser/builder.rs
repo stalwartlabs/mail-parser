@@ -10,7 +10,7 @@ use super::{
     delimiter::{Dashed, Delimiter, dashed_boundary},
 };
 use crate::{
-    Encoding, decoders,
+    Encoding,
     scan::Kernel,
     store::{
         ContentTypeEntry, KindTag, MessageData, MessageEntry, MessageId, NONE, PartEntry, PartId,
@@ -533,11 +533,8 @@ impl<'p, 'd> Builder<'p, 'd> {
             } else {
                 self.finish_leaf(part_id, message, &end, None, roles);
                 let mut decoded = Vec::new();
-                decoders::transfer_decode_append(
-                    src.get(end.body).unwrap_or_default(),
-                    end.encoding,
-                    &mut decoded,
-                );
+                end.encoding
+                    .decode_append(src.get(end.body).unwrap_or_default(), &mut decoded);
                 return Next::Enter(Enter {
                     decoded,
                     part: part_id,

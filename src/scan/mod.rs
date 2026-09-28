@@ -160,26 +160,26 @@ impl Kernel {
         end: usize,
     ) -> Option<usize> {
         match self.0 {
-            Backend::Scalar | Backend::Memchr => set::first_in_set(set, hay, from, end),
+            Backend::Scalar | Backend::Memchr => set.first_in(hay, from, end),
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
-            Backend::Neon => neon::first_in_set(set, hay, from, end),
+            Backend::Neon => set.neon_first_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Sse2 => x86::sse2_first_in_set(set, hay, from, end),
+            Backend::Sse2 => set.sse2_first_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Avx2 => x86::avx2_first_in_set(set, hay, from, end),
+            Backend::Avx2 => set.avx2_first_in(hay, from, end),
         }
     }
 
     #[inline]
     pub(crate) fn stop_in_set(self, set: &ByteSet, hay: &[u8], from: usize, end: usize) -> Stop {
         match self.0 {
-            Backend::Scalar | Backend::Memchr => set::stop_in_set(set, hay, from, end),
+            Backend::Scalar | Backend::Memchr => set.stop_in(hay, from, end),
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
-            Backend::Neon => neon::stop_in_set(set, hay, from, end),
+            Backend::Neon => set.neon_stop_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Sse2 => x86::sse2_stop_in_set(set, hay, from, end),
+            Backend::Sse2 => set.sse2_stop_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Avx2 => x86::avx2_stop_in_set(set, hay, from, end),
+            Backend::Avx2 => set.avx2_stop_in(hay, from, end),
         }
     }
 }

@@ -1,0 +1,432 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8
+      ],
+      "html_body": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8
+      ],
+      "attachments": [
+        6
+      ],
+      "has_attachments": true
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "multipart",
+      "children": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "encoding": "none",
+      "flags": [],
+      "roles": [],
+      "role": "container",
+      "offset_header": 0,
+      "offset_body": 47,
+      "offset_end": 716,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "multipart",
+              "subtype": "mixed",
+              "attributes": [
+                [
+                  "boundary",
+                  "b"
+                ]
+              ]
+            }
+          },
+          "offset_field": 0,
+          "offset_start": 13,
+          "offset_end": 45
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 52,
+      "offset_body": 130,
+      "offset_end": 138,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 52,
+          "offset_start": 65,
+          "offset_end": 93
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 93,
+          "offset_start": 119,
+          "offset_end": 128
+        }
+      ],
+      "text": "café",
+      "decode_problems": []
+    },
+    {
+      "id": 2,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "base64",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 145,
+      "offset_body": 223,
+      "offset_end": 232,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 145,
+          "offset_start": 158,
+          "offset_end": 186
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "base64"
+          },
+          "offset_field": 186,
+          "offset_start": 212,
+          "offset_end": 221
+        }
+      ],
+      "text": "café",
+      "decode_problems": [
+        "malformed_transfer_encoding"
+      ]
+    },
+    {
+      "id": 3,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "quoted-printable",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 239,
+      "offset_body": 332,
+      "offset_end": 342,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-1"
+                ]
+              ]
+            }
+          },
+          "offset_field": 239,
+          "offset_start": 252,
+          "offset_end": 285
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "quoted-printable"
+          },
+          "offset_field": 285,
+          "offset_start": 311,
+          "offset_end": 330
+        }
+      ],
+      "text": "café =ZZ",
+      "decode_problems": [
+        "malformed_transfer_encoding"
+      ]
+    },
+    {
+      "id": 4,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 349,
+      "offset_body": 396,
+      "offset_end": 401,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "x-unknown"
+                ]
+              ]
+            }
+          },
+          "offset_field": 349,
+          "offset_start": 362,
+          "offset_end": 394
+        }
+      ],
+      "text": "café",
+      "decode_problems": [
+        "unknown_charset"
+      ]
+    },
+    {
+      "id": 5,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 408,
+      "offset_body": 451,
+      "offset_end": 455,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "utf-8"
+                ]
+              ]
+            }
+          },
+          "offset_field": 408,
+          "offset_start": 421,
+          "offset_end": 449
+        }
+      ],
+      "text": "caf�",
+      "decode_problems": [
+        "malformed_charset"
+      ]
+    },
+    {
+      "id": 6,
+      "message": 0,
+      "parent": 0,
+      "kind": "binary",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "attachment"
+      ],
+      "role": "attachment",
+      "offset_header": 462,
+      "offset_body": 543,
+      "offset_end": 554,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "application",
+              "subtype": "octet-stream",
+              "attributes": []
+            }
+          },
+          "offset_field": 462,
+          "offset_start": 475,
+          "offset_end": 502
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "x-uuencode"
+          },
+          "offset_field": 502,
+          "offset_start": 528,
+          "offset_end": 541
+        }
+      ],
+      "binary": "YmVnaW4gNjQ0IHg=",
+      "decode_problems": [
+        "unknown_transfer_encoding"
+      ]
+    },
+    {
+      "id": 7,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 561,
+      "offset_body": 650,
+      "offset_end": 651,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "iso-8859-3"
+                ]
+              ]
+            }
+          },
+          "offset_field": 561,
+          "offset_start": 574,
+          "offset_end": 609
+        },
+        {
+          "name": "Content-Transfer-Encoding",
+          "value": {
+            "text": "8BIT (raw)"
+          },
+          "offset_field": 609,
+          "offset_start": 635,
+          "offset_end": 648
+        }
+      ],
+      "text": "�",
+      "decode_problems": [
+        "malformed_charset"
+      ]
+    },
+    {
+      "id": 8,
+      "message": 0,
+      "parent": 0,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 658,
+      "offset_body": 705,
+      "offset_end": 707,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": {
+            "content_type": {
+              "type": "text",
+              "subtype": "plain",
+              "attributes": [
+                [
+                  "charset",
+                  "shift_jis"
+                ]
+              ]
+            }
+          },
+          "offset_field": 658,
+          "offset_start": 671,
+          "offset_end": 703
+        }
+      ],
+      "text": "ハ",
+      "decode_problems": []
+    }
+  ]
+}

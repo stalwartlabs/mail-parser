@@ -1,0 +1,12 @@
+[
+  {
+    "input": "J'interdis aux marchands de vanter trop leurs marchandises. Car ils se fontvite pédagogues et t'enseignent comme but ce qui n'est par essence qu'un moyen, et te trompant ainsi sur la route à suivre les voilà bientôt qui te dégradent, car si leur musique est vulgaire ils te fabriquent pour te la vendre une âme vulgaire.\n\u2014 Antoine de Saint-Exupéry, Citadelle (1948)",
+    "max_len": 110,
+    "expected": "J'interdis aux marchands de vanter trop leurs marchandises. Car ils se fontvite pédagogues et t'enseignent..."
+  },
+  {
+    "input": "長沮、桀溺耦而耕，孔子過之，使子路問津焉。長沮曰：「夫執輿者為誰？」子路曰：「為孔丘。」曰：「是魯孔丘與？」曰：「是也。」曰：「是知津矣。」問於桀溺，桀溺曰：「子為誰？」曰：「為仲由。」曰：「是魯孔丘之徒與？」對曰：「然。」曰：「滔滔者天下皆是也，而誰以易之？且而與其從辟人之士也，豈若從辟世之士哉？」耰而不輟。子路行以告。夫子憮然曰：「鳥獸不可與同群，吾非斯人之徒與而誰與？天下有道，丘不與易也。」子路從而後，遇丈人，以杖荷蓧。子路問曰：「子見夫子乎？」丈人曰：「四體不勤，五穀不分。孰為夫子？」植其杖而芸。子路拱而立。止子路宿，殺雞為黍而食之，見其二子焉。明日，子路行以告。子曰：「隱者也。」使子路反見之。至則行矣。子路曰：「不仕無義。長幼之節，不可廢也；君臣之義，如之何其廢之？欲潔其身，而亂大倫。君子之仕也，行其義也。道之不行，已知之矣。」",
+    "max_len": 110,
+    "expected": "長沮、桀溺耦而耕，孔子過之，使子路問津焉。長沮曰：「夫執輿者為誰？」子..."
+  }
+]

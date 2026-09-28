@@ -1,0 +1,30 @@
+[
+  {
+    "input": "<head><meta charset=Windows-1252></head><body>\u2014</body>",
+    "expected": "<head><meta charset=utf-8></head><body>\u2014</body>"
+  },
+  {
+    "input": "<head><meta charset=\"Windows-1252\"></head><body>\u2014</body>",
+    "expected": "<head><meta charset=\"utf-8\"></head><body>\u2014</body>"
+  },
+  {
+    "input": "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\"></head><body>\u2014</body>",
+    "expected": "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>\u2014</body>"
+  },
+  {
+    "input": "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=&quot;Windows-1252&quot;\"></head><body>\u2014</body>",
+    "expected": "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=&quot;utf-8&quot;\"></head><body>\u2014</body>"
+  },
+  {
+    "input": "<head><meta charset=\"utf-8\"></head><body>x</body>",
+    "expected": "<head><meta charset=\"utf-8\"></head><body>x</body>"
+  },
+  {
+    "input": "<body><meta charset=Windows-1252></body>",
+    "expected": "<body><meta charset=Windows-1252></body>"
+  },
+  {
+    "input": "plain text",
+    "expected": "plain text"
+  }
+]

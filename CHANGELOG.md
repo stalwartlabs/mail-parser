@@ -14,7 +14,7 @@ A rewrite of the parser for performance, with a new read-only API. Breaking chan
 - Part roles (#107): `MessagePart::role()` (`PartRole`) gives every part exactly one role, and `MessageRef::other_parts()` returns the parts in no list.
 - `MessageRef::has_attachments()`, the RFC 8621 `hasAttachment` rule: an attachment without `Content-Disposition: inline`.
 - `MessagePart::html_utf8()` and `strip_charset_meta()` (#109): the HTML with its `<meta>` charset declarations rewritten to UTF-8, looking only before `<body`. The default decoding does not scan HTML.
-- `MessagePart::id()`, `message()`, `parent()`, `kind()` (`PartKind`), `children()`, `nested()`, `flags()` (`PartFlags`), `has_problems()`, `in_text_body()`, `in_html_body()`, `is_attachment()`, `is_inline()`, `encoding()` and `content_transfer_encoding()`.
+- `MessagePart::id()`, `message()`, `parent()`, `kind()` (`PartKind`), `children()`, `nested()`, `flags()` (`PartFlags`), `has_problems()`, `in_text_body()`, `in_html_body()`, `is_attachment()`, `is_inline()`, `encoding()`, `content_transfer_encoding()` and `has_known_transfer_encoding()`.
 - `PartFlags` records damaged structure: `MISSING_DELIMITER`, `FALLBACK_DELIMITER`, `NO_BLANK_LINE`, `UNTERMINATED`, `NESTING_LIMIT` and `LIMIT_REACHED`.
 - `Headers`, a view of the header fields of any part: `iter()`, `get()`, `all()`, `contains()`, `value()`, `has_known()`, `len()` and the typed getters. `Header::raw_name()` keeps the spelling of the name found in the message, `Header::raw_value()` returns the bytes after the colon, and `Header::parse_as()` parses a field again in another form.
 - `HeaderForm::parse()` parses a header value on its own into a `ParsedValue`. `HeaderForm` gains `CommaList`, `ContentType`, `Received` and `Ignore`.
@@ -23,7 +23,8 @@ A rewrite of the parser for performance, with a new read-only API. Breaking chan
 - `MessageParser::header()` sets the form of one header field and `unknown_headers()` the form of unknown fields; `max_depth()`, `max_parts()` and `max_encoded_nesting()` set the limits (64, 10,000 and 3 by default). After the part limit, the rest of the input stays in the part flagged `LIMIT_REACHED`: the last part when it is a leaf of the innermost open multipart, else that multipart, or the `message/rfc822` part whose nested message had no part yet; the containers left open are not flagged `UNTERMINATED`.
 - `HeaderName::key()` resolves a name once into a `HeaderKey`, for `Headers::all_key()` and `Headers::get_key()`, which skip the name lookup that `all()` and `get()` do on every call.
 - 112 header names from Stalwart's metadata list are `HeaderName` variants: `X-Mailer`, `User-Agent`, `Precedence`, `X-Priority`, the `X-MS-Exchange`, `X-Google` and `X-GitHub` fields and others.
-- `Charset`, with `from_label()`, `decode()`, `decode_owned()` and `decode_append()`, and `decoders::charsets::decode()` and `decode_append()`.
+- `Charset`, with `from_label()`, `decode()`, `decode_owned()`, `decode_append()` and `decode_checked()`, and `decoders::charsets::decode()` and `decode_append()`.
+- `Encoding::decode()`, `decode_checked()`, `decode_append()` and `decoded_len()` decode a body stored apart from its message exactly as `MessagePart::decoded()` does.
 - `PartId` and `MessageId`, and `From<Encoding> for u8`.
 - Value equality for `HeaderValue`, `TextList`, `AddressList`, `ContentType`, `Received` and `ParsedValue`; `Debug` output that shows the content of the views; `Debug` for the mailbox iterators. `Message`, `MessageParser` and the views are `Send + Sync`, and `Message<'x>` is covariant in `'x`.
 

@@ -1,0 +1,722 @@
+[
+  {
+    "input": "re: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "re:re: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "re:fwd: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "fwd[5]:re[5]: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "fwd[99]:  re[40]: hello",
+    "expected": "hello"
+  },
+  {
+    "input": ": hello",
+    "expected": ": hello"
+  },
+  {
+    "input": "re:: hello",
+    "expected": ": hello"
+  },
+  {
+    "input": "[10] hello",
+    "expected": "hello"
+  },
+  {
+    "input": "fwd[a]: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "re:",
+    "expected": ""
+  },
+  {
+    "input": "re::",
+    "expected": ":"
+  },
+  {
+    "input": "",
+    "expected": ""
+  },
+  {
+    "input": " ",
+    "expected": ""
+  },
+  {
+    "input": "回复: 轉寄: 轉寄",
+    "expected": "轉寄"
+  },
+  {
+    "input": "aw[50]: wg: aw[1]: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "res: rv: enc: továbbítás: ",
+    "expected": ""
+  },
+  {
+    "input": "[fwd: hello world]",
+    "expected": "hello world"
+  },
+  {
+    "input": "re: enc: re[5]: [fwd: hello world]",
+    "expected": "hello world"
+  },
+  {
+    "input": "[fwd: re: fw: hello world]",
+    "expected": "hello world"
+  },
+  {
+    "input": "[fwd: hello world]: another text",
+    "expected": ": another text"
+  },
+  {
+    "input": "[fwd: re: fwd:] another text",
+    "expected": "another text"
+  },
+  {
+    "input": "[hello world]",
+    "expected": "[hello world]"
+  },
+  {
+    "input": "re: fwd[9]: [hello world]",
+    "expected": "[hello world]"
+  },
+  {
+    "input": "[mailing-list] hello world",
+    "expected": "hello world"
+  },
+  {
+    "input": "[mailing-list] re: hello world",
+    "expected": "hello world"
+  },
+  {
+    "input": "[mailing-list] wg[8]:re:  hello world",
+    "expected": "hello world"
+  },
+  {
+    "input": "hello [world]",
+    "expected": "hello [world]"
+  },
+  {
+    "input": " [hello] [world] ",
+    "expected": "[hello] [world]"
+  },
+  {
+    "input": "[mailing-list] hello [world]",
+    "expected": "hello [world]"
+  },
+  {
+    "input": "[hello [world]",
+    "expected": "[hello [world]"
+  },
+  {
+    "input": "[]hello [world]",
+    "expected": "hello [world]"
+  },
+  {
+    "input": "[fwd: re: re:] fwd[6]:re:  fw:",
+    "expected": ""
+  },
+  {
+    "input": "[fwd hello] world hello",
+    "expected": "world hello"
+  },
+  {
+    "input": "[fwd: مرحبا بالعالم]",
+    "expected": "مرحبا بالعالم"
+  },
+  {
+    "input": "[fwd: hello world] مرحبا بالعالم",
+    "expected": "مرحبا بالعالم"
+  },
+  {
+    "input": "  hello world  ",
+    "expected": "hello world"
+  },
+  {
+    "input": "[mailing-list] wg[8]:re:  hello world (fwd)(fwd)",
+    "expected": "hello world"
+  },
+  {
+    "input": "[fwd: re: fw: hello world (fwd)]",
+    "expected": "hello world"
+  },
+  {
+    "input": "res: rv: enc: továbbítás: hello world (doorst)",
+    "expected": "hello world"
+  },
+  {
+    "input": "[fwd: re: re: (fwd)] fwd[6]:re:  fw: (fwd)",
+    "expected": ""
+  },
+  {
+    "input": "z: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "yn: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "yan: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "ilt: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "Ynt: Re: Yan: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "ans: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "ΑΠΝΤ: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "meeting: hello",
+    "expected": "meeting: hello"
+  },
+  {
+    "input": "urgent: hello",
+    "expected": "urgent: hello"
+  },
+  {
+    "input": "bug 123: hello",
+    "expected": "bug 123: hello"
+  },
+  {
+    "input": "12:30 meeting",
+    "expected": "12:30 meeting"
+  },
+  {
+    "input": "no re: foobar",
+    "expected": "no re: foobar"
+  },
+  {
+    "input": "re: no re: foobar",
+    "expected": "no re: foobar"
+  },
+  {
+    "input": "re-check: hello",
+    "expected": "re-check: hello"
+  },
+  {
+    "input": "q3: results",
+    "expected": "q3: results"
+  },
+  {
+    "input": "http://example.com/page",
+    "expected": "http://example.com/page"
+  },
+  {
+    "input": "ftp://example.com",
+    "expected": "ftp://example.com"
+  },
+  {
+    "input": "note: remember this",
+    "expected": "remember this"
+  },
+  {
+    "input": "hi: there",
+    "expected": "there"
+  },
+  {
+    "input": "Re: hello",
+    "expected": "hello"
+  },
+  {
+    "input": "RES: olá",
+    "expected": "olá"
+  },
+  {
+    "input": "Resposta: olá",
+    "expected": "olá"
+  },
+  {
+    "input": "RV: hola",
+    "expected": "hola"
+  },
+  {
+    "input": "Respuesta: hola",
+    "expected": "hola"
+  },
+  {
+    "input": "ENC: olá",
+    "expected": "olá"
+  },
+  {
+    "input": "Encaminhado: olá",
+    "expected": "olá"
+  },
+  {
+    "input": "RÉF: bonjour",
+    "expected": "bonjour"
+  },
+  {
+    "input": "Rép: bonjour",
+    "expected": "bonjour"
+  },
+  {
+    "input": "TR: bonjour",
+    "expected": "bonjour"
+  },
+  {
+    "input": "Transfert: bonjour",
+    "expected": "bonjour"
+  },
+  {
+    "input": "AW: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Antwort: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "WG: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Weitergeleitet: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Antw: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Doorst: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Doorgestuurd: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "SV: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "Svar: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "VS: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "Videresendt: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "VB: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "Vidarebefordrat: hej",
+    "expected": "hej"
+  },
+  {
+    "input": "VS: moi",
+    "expected": "moi"
+  },
+  {
+    "input": "Vastaus: moi",
+    "expected": "moi"
+  },
+  {
+    "input": "VL: moi",
+    "expected": "moi"
+  },
+  {
+    "input": "Välitetty: moi",
+    "expected": "moi"
+  },
+  {
+    "input": "ED: tere",
+    "expected": "tere"
+  },
+  {
+    "input": "Edastatud: tere",
+    "expected": "tere"
+  },
+  {
+    "input": "FS: halló",
+    "expected": "halló"
+  },
+  {
+    "input": "Framsenda: halló",
+    "expected": "halló"
+  },
+  {
+    "input": "Vá: szia",
+    "expected": "szia"
+  },
+  {
+    "input": "Válasz: szia",
+    "expected": "szia"
+  },
+  {
+    "input": "Továbbítás: szia",
+    "expected": "szia"
+  },
+  {
+    "input": "R: ciao",
+    "expected": "ciao"
+  },
+  {
+    "input": "RIF: ciao",
+    "expected": "ciao"
+  },
+  {
+    "input": "I: ciao",
+    "expected": "ciao"
+  },
+  {
+    "input": "Inoltro: ciao",
+    "expected": "ciao"
+  },
+  {
+    "input": "Odp: cześć",
+    "expected": "cześć"
+  },
+  {
+    "input": "Odpowiedź: cześć",
+    "expected": "cześć"
+  },
+  {
+    "input": "PD: cześć",
+    "expected": "cześć"
+  },
+  {
+    "input": "Podaj dalej: cześć",
+    "expected": "cześć"
+  },
+  {
+    "input": "Odg: bok",
+    "expected": "bok"
+  },
+  {
+    "input": "Odgovor: bok",
+    "expected": "bok"
+  },
+  {
+    "input": "ΑΠ: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "ΣΧΕΤ: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "Απάντηση: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "ΠΡΘ: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "Προωθημένο: γεια",
+    "expected": "γεια"
+  },
+  {
+    "input": "YNT: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "Yanıt: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "İLT: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "İletilen: merhaba",
+    "expected": "merhaba"
+  },
+  {
+    "input": "Atb: sveiki",
+    "expected": "sveiki"
+  },
+  {
+    "input": "Atbilde: sveiki",
+    "expected": "sveiki"
+  },
+  {
+    "input": "Pārs: sveiki",
+    "expected": "sveiki"
+  },
+  {
+    "input": "Pārsūtīts: sveiki",
+    "expected": "sveiki"
+  },
+  {
+    "input": "Ats: labas",
+    "expected": "labas"
+  },
+  {
+    "input": "Atsakymas: labas",
+    "expected": "labas"
+  },
+  {
+    "input": "Persiųsta: labas",
+    "expected": "labas"
+  },
+  {
+    "input": "ATB: helo",
+    "expected": "helo"
+  },
+  {
+    "input": "Ateb: helo",
+    "expected": "helo"
+  },
+  {
+    "input": "YML: helo",
+    "expected": "helo"
+  },
+  {
+    "input": "Ymlaen: helo",
+    "expected": "helo"
+  },
+  {
+    "input": "BLS: halo",
+    "expected": "halo"
+  },
+  {
+    "input": "Balas: halo",
+    "expected": "halo"
+  },
+  {
+    "input": "TRS: halo",
+    "expected": "halo"
+  },
+  {
+    "input": "Teruskan: halo",
+    "expected": "halo"
+  },
+  {
+    "input": "השב: שלום",
+    "expected": "שלום"
+  },
+  {
+    "input": "תשובה: שלום",
+    "expected": "שלום"
+  },
+  {
+    "input": "הועבר: שלום",
+    "expected": "שלום"
+  },
+  {
+    "input": "העברה: שלום",
+    "expected": "שלום"
+  },
+  {
+    "input": "رد: مرحبا",
+    "expected": "مرحبا"
+  },
+  {
+    "input": "إعادة توجيه: مرحبا",
+    "expected": "مرحبا"
+  },
+  {
+    "input": "پاسخ: سلام",
+    "expected": "سلام"
+  },
+  {
+    "input": "Отв: привет",
+    "expected": "привет"
+  },
+  {
+    "input": "Ответ: привет",
+    "expected": "привет"
+  },
+  {
+    "input": "Пересылка: привет",
+    "expected": "привет"
+  },
+  {
+    "input": "Переслано: привет",
+    "expected": "привет"
+  },
+  {
+    "input": "Відп: привіт",
+    "expected": "привіт"
+  },
+  {
+    "input": "Відповідь: привіт",
+    "expected": "привіт"
+  },
+  {
+    "input": "Отг: здравей",
+    "expected": "здравей"
+  },
+  {
+    "input": "Препратено: здравей",
+    "expected": "здравей"
+  },
+  {
+    "input": "回复: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "答复: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "转发: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "回覆: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "轉寄: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "返信: こんにちは",
+    "expected": "こんにちは"
+  },
+  {
+    "input": "転送: こんにちは",
+    "expected": "こんにちは"
+  },
+  {
+    "input": "회신: 안녕하세요",
+    "expected": "안녕하세요"
+  },
+  {
+    "input": "답장: 안녕하세요",
+    "expected": "안녕하세요"
+  },
+  {
+    "input": "전달: 안녕하세요",
+    "expected": "안녕하세요"
+  },
+  {
+    "input": "ตอบกลับ: สวัสดี",
+    "expected": "สวัสดี"
+  },
+  {
+    "input": "ส่งต่อ: สวัสดี",
+    "expected": "สวัสดี"
+  },
+  {
+    "input": "பதில்: வணக்கம்",
+    "expected": "வணக்கம்"
+  },
+  {
+    "input": "முன்னனுப்பு: வணக்கம்",
+    "expected": "வணக்கம்"
+  },
+  {
+    "input": "Trả lời: xin chào",
+    "expected": "xin chào"
+  },
+  {
+    "input": "Chuyển tiếp: xin chào",
+    "expected": "xin chào"
+  },
+  {
+    "input": "Ynt: Re: Ynt: teklif",
+    "expected": "teklif"
+  },
+  {
+    "input": "Re: Ynt: Re: teklif",
+    "expected": "teklif"
+  },
+  {
+    "input": "AW: SV: Re: VS: hallo",
+    "expected": "hallo"
+  },
+  {
+    "input": "Fwd: Re: Sv: Re: SV: vms rename Unix mode fixes",
+    "expected": "vms rename Unix mode fixes"
+  },
+  {
+    "input": "Re: RE: Re: Perl_peep recursion exceeds",
+    "expected": "Perl_peep recursion exceeds"
+  },
+  {
+    "input": "İlt: Ynt: rapor",
+    "expected": "rapor"
+  },
+  {
+    "input": "回复: Re: 转发: 你好",
+    "expected": "你好"
+  },
+  {
+    "input": "Odp: Re: Odp: cześć",
+    "expected": "cześć"
+  },
+  {
+    "input": "understanding merge history",
+    "expected": "understanding merge history"
+  },
+  {
+    "input": "Re: Alias of constant passed to sub",
+    "expected": "Alias of constant passed to sub"
+  },
+  {
+    "input": "[PATCH] merging make_ext and make_ext_cross",
+    "expected": "merging make_ext and make_ext_cross"
+  },
+  {
+    "input": "Re: [PATCH] Parallel testing conflict",
+    "expected": "Parallel testing conflict"
+  },
+  {
+    "input": "Re: [PATCH] Fwd: deprecate UNIVERSAL->import",
+    "expected": "deprecate UNIVERSAL->import"
+  },
+  {
+    "input": "Re[2]: another reply",
+    "expected": "another reply"
+  },
+  {
+    "input": "Re[peat]: another reply",
+    "expected": "another reply"
+  },
+  {
+    "input": "non breaking space",
+    "expected": "non breaking space"
+  },
+  {
+    "input": "回复: test no ascii",
+    "expected": "test no ascii"
+  },
+  {
+    "input": "re: non breaking space",
+    "expected": "non breaking space"
+  },
+  {
+    "input": "\nfoo\rbar \tbaz ",
+    "expected": "foo\rbar \tbaz"
+  },
+  {
+    "input": "how about the weather [SEC=UNOFFICIAL]",
+    "expected": "how about the weather [SEC=UNOFFICIAL]"
+  },
+  {
+    "input": "unmatched left] foobar",
+    "expected": "unmatched left] foobar"
+  }
+]

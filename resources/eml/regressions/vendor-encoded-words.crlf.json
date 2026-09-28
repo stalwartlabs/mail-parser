@@ -1,0 +1,85 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 140,
+      "offset_end": 144,
+      "headers": [
+        {
+          "name": "X-Mailer",
+          "value": {
+            "text": "=?utf-8?q?caf=C3=A9?="
+          },
+          "offset_field": 0,
+          "offset_start": 9,
+          "offset_end": 33
+        },
+        {
+          "name": "X-Priority",
+          "value": {
+            "text": "=?utf-8?q?1?="
+          },
+          "offset_field": 33,
+          "offset_start": 44,
+          "offset_end": 60
+        },
+        {
+          "name": "X-Custom",
+          "value": {
+            "text": "=?utf-8?q?a?="
+          },
+          "offset_field": 60,
+          "offset_start": 69,
+          "offset_end": 85
+        },
+        {
+          "name": "Organization",
+          "value": {
+            "text": "=?utf-8?q?o?="
+          },
+          "offset_field": 85,
+          "offset_start": 98,
+          "offset_end": 114
+        },
+        {
+          "name": "Subject",
+          "value": {
+            "text": "s"
+          },
+          "offset_field": 114,
+          "offset_start": 122,
+          "offset_end": 138
+        }
+      ],
+      "text": "body",
+      "decode_problems": []
+    }
+  ]
+}

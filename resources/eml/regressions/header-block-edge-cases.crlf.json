@@ -1,0 +1,76 @@
+{
+  "messages": [
+    {
+      "id": 0,
+      "root": 0,
+      "container": null,
+      "source": "raw",
+      "text_body": [
+        0
+      ],
+      "html_body": [
+        0
+      ],
+      "attachments": [],
+      "has_attachments": false
+    }
+  ],
+  "parts": [
+    {
+      "id": 0,
+      "message": 0,
+      "parent": null,
+      "kind": "text",
+      "encoding": "none",
+      "flags": [],
+      "roles": [
+        "text_body",
+        "html_body"
+      ],
+      "role": "text_body",
+      "offset_header": 0,
+      "offset_body": 60,
+      "offset_end": 64,
+      "headers": [
+        {
+          "name": "Sub ject",
+          "value": {
+            "text": "x"
+          },
+          "offset_field": 0,
+          "offset_start": 9,
+          "offset_end": 13
+        },
+        {
+          "name": ":Weird",
+          "value": {
+            "text": "v"
+          },
+          "offset_field": 13,
+          "offset_start": 20,
+          "offset_end": 24
+        },
+        {
+          "name": "baz",
+          "value": {
+            "text": "qux"
+          },
+          "offset_field": 34,
+          "offset_start": 38,
+          "offset_end": 44
+        },
+        {
+          "name": "X-Custom",
+          "value": {
+            "text": "y"
+          },
+          "offset_field": 44,
+          "offset_start": 54,
+          "offset_end": 58
+        }
+      ],
+      "text": "body",
+      "decode_problems": []
+    }
+  ]
+}

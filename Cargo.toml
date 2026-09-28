@@ -11,12 +11,13 @@ homepage = "https://github.com/stalwartlabs/mail-parser"
 keywords = ["email", "mail", "parser", "parse", "mime"]
 categories = ["email", "parser-implementations"]
 readme = "README.md"
+exclude = ["benches/compare"]
 
 [dependencies]
 hashify = "0.3"
 memchr = "2.8"
 simdutf8 = "0.1"
-encodify = { path = "../encodify" }
+encodify = { version = "1.0" }
 encoding_rs = { version = "0.8", optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
 

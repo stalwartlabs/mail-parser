@@ -1,0 +1,15 @@
+Content-Type: multipart/mixed; boundary="b"
+
+--b
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+caf=E9 soft=
+ break
+--b
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+
+SGVs
+bG8=
+--b--

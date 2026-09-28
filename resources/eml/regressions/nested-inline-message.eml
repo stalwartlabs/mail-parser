@@ -1,0 +1,14 @@
+Content-Type: multipart/mixed; boundary="outer"
+
+--outer
+Content-Type: text/plain
+
+intro
+--outer
+Content-Type: message/rfc822
+
+Subject: nested
+Content-Type: text/plain
+
+nested body
+--outer--

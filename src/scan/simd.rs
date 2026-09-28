@@ -8,7 +8,7 @@
 
 use super::{
     scalar,
-    set::{self, ByteSet, Stop},
+    set::{ByteSet, Stop},
 };
 
 pub(crate) trait Vector: Copy {
@@ -210,60 +210,121 @@ pub(crate) unsafe fn field_end<V: Vector>(tail: &[u8]) -> Option<usize> {
     scalar::field_end(tail, offset)
 }
 
-/// First byte of `set` in `hay[from..end]`, testing `SET_WIDTH` bytes per
-/// call of `mask_at`.
-///
-/// # Safety
-///
-/// `mask_at` must read at most `SET_WIDTH` bytes from the pointer it gets
-/// and must otherwise be sound to call on the running CPU: this function
-/// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
-#[inline(always)]
-pub(crate) unsafe fn first_in_set(
-    set: &ByteSet,
-    hay: &[u8],
-    from: usize,
-    end: usize,
-    bits_per_byte: u32,
-    mask_at: impl Fn(*const u8) -> u64,
-) -> Option<usize> {
-    let end = end.min(hay.len());
-    if from >= end {
-        return None;
-    }
-    let ptr = hay.as_ptr();
-    let first = |offset: usize, mask: u64| {
-        let hit = offset + (mask.trailing_zeros() / bits_per_byte) as usize;
-        (hit < end).then_some(hit)
-    };
-    let mut offset = from;
-    while offset + SET_WIDTH <= hay.len() {
-        // SAFETY: the loop condition keeps `offset + SET_WIDTH` within
-        // `hay.len()`, so `ptr + offset` and the `SET_WIDTH` bytes that
-        // `mask_at` reads from it lie inside `hay`. `offset` starts below
-        // `end <= hay.len()` and the loop returns once it reaches `end`, so
-        // the addition cannot overflow.
-        let mask = mask_at(unsafe { ptr.add(offset) });
-        if mask != 0 {
-            return first(offset, mask);
-        }
-        offset += SET_WIDTH;
-        if offset >= end {
+impl ByteSet {
+    /// First byte of the set in `hay[from..end]`, testing `SET_WIDTH` bytes per
+    /// call of `mask_at`.
+    ///
+    /// # Safety
+    ///
+    /// `mask_at` must read at most `SET_WIDTH` bytes from the pointer it gets
+    /// and must otherwise be sound to call on the running CPU: this function
+    /// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
+    #[inline(always)]
+    pub(super) unsafe fn simd_first_in(
+        &self,
+        hay: &[u8],
+        from: usize,
+        end: usize,
+        bits_per_byte: u32,
+        mask_at: impl Fn(*const u8) -> u64,
+    ) -> Option<usize> {
+        let end = end.min(hay.len());
+        if from >= end {
             return None;
         }
-    }
-    match hay.len().checked_sub(SET_WIDTH) {
-        Some(base) => {
-            let skipped = (offset - base) as u32 * bits_per_byte;
-            // SAFETY: `base` is `hay.len() - SET_WIDTH` and the subtraction
-            // did not underflow, so the `SET_WIDTH` bytes at `ptr + base` are
-            // the last ones of `hay`. The loop exited with
-            // `offset + SET_WIDTH > hay.len()`, so `offset > base` and the
-            // shift drops the bytes before `offset`.
-            let mask = mask_at(unsafe { ptr.add(base) }) >> skipped;
-            if mask != 0 { first(offset, mask) } else { None }
+        let ptr = hay.as_ptr();
+        let first = |offset: usize, mask: u64| {
+            let hit = offset + (mask.trailing_zeros() / bits_per_byte) as usize;
+            (hit < end).then_some(hit)
+        };
+        let mut offset = from;
+        while offset + SET_WIDTH <= hay.len() {
+            // SAFETY: the loop condition keeps `offset + SET_WIDTH` within
+            // `hay.len()`, so `ptr + offset` and the `SET_WIDTH` bytes that
+            // `mask_at` reads from it lie inside `hay`. `offset` starts below
+            // `end <= hay.len()` and the loop returns once it reaches `end`, so
+            // the addition cannot overflow.
+            let mask = mask_at(unsafe { ptr.add(offset) });
+            if mask != 0 {
+                return first(offset, mask);
+            }
+            offset += SET_WIDTH;
+            if offset >= end {
+                return None;
+            }
         }
-        None => set::first_in_set(set, hay, offset, end),
+        match hay.len().checked_sub(SET_WIDTH) {
+            Some(base) => {
+                let skipped = (offset - base) as u32 * bits_per_byte;
+                // SAFETY: `base` is `hay.len() - SET_WIDTH` and the subtraction
+                // did not underflow, so the `SET_WIDTH` bytes at `ptr + base` are
+                // the last ones of `hay`. The loop exited with
+                // `offset + SET_WIDTH > hay.len()`, so `offset > base` and the
+                // shift drops the bytes before `offset`.
+                let mask = mask_at(unsafe { ptr.add(base) }) >> skipped;
+                if mask != 0 { first(offset, mask) } else { None }
+            }
+            None => self.first_in(hay, offset, end),
+        }
+    }
+
+    /// First byte of the stop set in `hay[from..end]`, and whether a marked byte
+    /// comes before it, testing `SET_WIDTH` bytes per call of `masks_at`.
+    ///
+    /// # Safety
+    ///
+    /// `masks_at` must read at most `SET_WIDTH` bytes from the pointer it gets
+    /// and must otherwise be sound to call on the running CPU: this function
+    /// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
+    #[inline(always)]
+    pub(super) unsafe fn simd_stop_in(
+        &self,
+        hay: &[u8],
+        from: usize,
+        end: usize,
+        bits_per_byte: u32,
+        masks_at: impl Fn(*const u8) -> (u64, u64),
+    ) -> Stop {
+        let end = end.min(hay.len());
+        let mut marked = false;
+        let mut offset = from;
+        while offset < end {
+            let base = if offset + SET_WIDTH <= hay.len() {
+                offset
+            } else {
+                match hay.len().checked_sub(SET_WIDTH) {
+                    Some(base) => base,
+                    None => {
+                        let rest = self.stop_in(hay, offset, end);
+                        return Stop {
+                            at: rest.at,
+                            marked: marked || rest.marked,
+                        };
+                    }
+                }
+            };
+            let skipped = (offset - base) as u32 * bits_per_byte;
+            // SAFETY: `base` is `offset` when `offset + SET_WIDTH <= hay.len()`,
+            // else `hay.len() - SET_WIDTH` when that does not underflow (a
+            // shorter `hay` returned through the safe `ByteSet::stop_in` above),
+            // so the `SET_WIDTH` bytes that `masks_at` reads from
+            // `hay.as_ptr() + base` lie inside `hay`. `offset < end <= hay.len()`
+            // keeps `offset + SET_WIDTH` from overflowing.
+            let (stops, marks) = masks_at(unsafe { hay.as_ptr().add(base) });
+            let valid = low_bits(end - offset, bits_per_byte);
+            let stops = (stops >> skipped) & valid;
+            let marks = (marks >> skipped) & valid;
+            if stops != 0 {
+                let first = stops.trailing_zeros() / bits_per_byte;
+                return Stop {
+                    at: Some(offset + first as usize),
+                    marked: marked || marks & low_bits(first as usize, bits_per_byte) != 0,
+                };
+            }
+            marked |= marks != 0;
+            offset = base + SET_WIDTH;
+        }
+        Stop { at: None, marked }
     }
 }
 
@@ -273,63 +334,4 @@ fn low_bits(bytes: usize, bits_per_byte: u32) -> u64 {
         Ok(bits) if bits < u64::BITS => (1 << bits) - 1,
         _ => u64::MAX,
     }
-}
-
-/// First byte of the stop set in `hay[from..end]`, and whether a marked byte
-/// comes before it, testing `SET_WIDTH` bytes per call of `masks_at`.
-///
-/// # Safety
-///
-/// `masks_at` must read at most `SET_WIDTH` bytes from the pointer it gets
-/// and must otherwise be sound to call on the running CPU: this function
-/// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
-#[inline(always)]
-pub(crate) unsafe fn stop_in_set(
-    set: &ByteSet,
-    hay: &[u8],
-    from: usize,
-    end: usize,
-    bits_per_byte: u32,
-    masks_at: impl Fn(*const u8) -> (u64, u64),
-) -> Stop {
-    let end = end.min(hay.len());
-    let mut marked = false;
-    let mut offset = from;
-    while offset < end {
-        let base = if offset + SET_WIDTH <= hay.len() {
-            offset
-        } else {
-            match hay.len().checked_sub(SET_WIDTH) {
-                Some(base) => base,
-                None => {
-                    let rest = set::stop_in_set(set, hay, offset, end);
-                    return Stop {
-                        at: rest.at,
-                        marked: marked || rest.marked,
-                    };
-                }
-            }
-        };
-        let skipped = (offset - base) as u32 * bits_per_byte;
-        // SAFETY: `base` is `offset` when `offset + SET_WIDTH <= hay.len()`,
-        // else `hay.len() - SET_WIDTH` when that does not underflow (a
-        // shorter `hay` returned through the safe `set::stop_in_set` above),
-        // so the `SET_WIDTH` bytes that `masks_at` reads from
-        // `hay.as_ptr() + base` lie inside `hay`. `offset < end <= hay.len()`
-        // keeps `offset + SET_WIDTH` from overflowing.
-        let (stops, marks) = masks_at(unsafe { hay.as_ptr().add(base) });
-        let valid = low_bits(end - offset, bits_per_byte);
-        let stops = (stops >> skipped) & valid;
-        let marks = (marks >> skipped) & valid;
-        if stops != 0 {
-            let first = stops.trailing_zeros() / bits_per_byte;
-            return Stop {
-                at: Some(offset + first as usize),
-                marked: marked || marks & low_bits(first as usize, bits_per_byte) != 0,
-            };
-        }
-        marked |= marks != 0;
-        offset = base + SET_WIDTH;
-    }
-    Stop { at: None, marked }
 }

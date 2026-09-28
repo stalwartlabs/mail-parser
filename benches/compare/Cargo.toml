@@ -1,0 +1,40 @@
+[package]
+name = "mail-parser-compare"
+description = "Throughput comparison of mail-parser with other Rust and C/C++ email parsers"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+publish = false
+
+[workspace]
+
+[dependencies]
+mail-parser = { path = "../..", features = ["full_encoding"] }
+mail-parser-011 = { package = "mail-parser", version = "=0.11.9", features = ["full_encoding"] }
+mailparse = "=0.17.0"
+serde_json = "1.0"
+
+[dev-dependencies]
+criterion = { version = "0.8", default-features = false, features = ["cargo_bench_support"] }
+
+[build-dependencies]
+cc = "1"
+pkg-config = "0.3"
+
+[[bench]]
+name = "compare"
+harness = false
+
+[lints.rust]
+rust_2018_idioms = { level = "deny", priority = -1 }
+unsafe_code = "deny"
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+unwrap_used = "deny"
+
+[profile.release]
+debug = "line-tables-only"
+
+[profile.bench]
+debug = "line-tables-only"

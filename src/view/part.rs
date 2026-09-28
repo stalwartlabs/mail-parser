@@ -517,20 +517,20 @@ impl<'m> MessagePart<'m> {
     /// kept as written. [`MessagePart::decoded_checked`] also reports those
     /// problems.
     pub fn decoded(&self) -> Cow<'m, [u8]> {
-        decoders::transfer_decode(self.raw_body(), self.entry.encoding)
+        self.entry.encoding.decode(self.raw_body())
     }
 
     /// Appends the transfer-decoded body to `out`, for reusing a buffer in
     /// a loop.
     pub fn decode_into(&self, out: &mut Vec<u8>) {
-        decoders::transfer_decode_append(self.raw_body(), self.entry.encoding, out)
+        self.entry.encoding.decode_append(self.raw_body(), out)
     }
 
     /// Length of the transfer-decoded body. Base64 and quoted-printable
     /// bodies are measured without being decoded, except base64 with bytes
     /// outside the alphabet.
     pub fn decoded_len(&self) -> usize {
-        decoders::transfer_decoded_len(self.raw_body(), self.entry.encoding)
+        self.entry.encoding.decoded_len(self.raw_body())
     }
 
     /// [`MessagePart::decoded`] together with the problems found while
@@ -539,8 +539,7 @@ impl<'m> MessagePart<'m> {
     /// returns; `decoded()` stays the faster call when the problems are not
     /// needed.
     pub fn decoded_checked(&self) -> (Cow<'m, [u8]>, DecodeProblems) {
-        let (decoded, malformed) =
-            decoders::transfer_decode_checked(self.raw_body(), self.entry.encoding);
+        let (decoded, malformed) = self.entry.encoding.decode_checked(self.raw_body());
         let mut problems = DecodeProblems::default();
         if malformed {
             problems |= DecodeProblems::MALFORMED_TRANSFER_ENCODING;
@@ -551,14 +550,24 @@ impl<'m> MessagePart<'m> {
         (decoded, problems)
     }
 
-    fn has_known_transfer_encoding(&self) -> bool {
+    /// False when the part declares a Content-Transfer-Encoding other than
+    /// `7bit`, `8bit`, `binary`, `base64` or `quoted-printable`, the
+    /// condition [`DecodeProblems::UNKNOWN_TRANSFER_ENCODING`] reports,
+    /// without decoding the body. True when the field is absent.
+    pub fn has_known_transfer_encoding(&self) -> bool {
         self.headers()
             .get(HeaderName::ContentTransferEncoding)
-            .is_none_or(|header| decoders::is_known_transfer_encoding(header.raw_value()))
+            .is_none_or(|header| Encoding::parse(header.raw_value()).is_some())
     }
 
     fn charset(&self) -> Option<&'m str> {
         self.content_type()?.attribute("charset")
+    }
+
+    fn text_charset(&self) -> Charset {
+        self.charset()
+            .and_then(|label| Charset::from_label(label.as_bytes()))
+            .unwrap_or_default()
     }
 
     /// The text of a text or HTML part: transfer-decoded, then converted
@@ -568,7 +577,7 @@ impl<'m> MessagePart<'m> {
     /// [`MessagePart::text_checked`] also reports decoding problems.
     pub fn text(&self) -> Option<Cow<'m, str>> {
         self.is_text()
-            .then(|| decoders::to_text(self.decoded(), decoders::charset(self.charset())))
+            .then(|| self.text_charset().decode_cow(self.decoded()))
     }
 
     /// [`MessagePart::text`] together with the problems found while decoding
@@ -592,7 +601,7 @@ impl<'m> MessagePart<'m> {
         if !charset.is_supported() {
             problems |= DecodeProblems::UNKNOWN_CHARSET;
         }
-        let (text, malformed) = decoders::to_text_checked(decoded, charset);
+        let (text, malformed) = charset.decode_cow_checked(decoded);
         if malformed {
             problems |= DecodeProblems::MALFORMED_CHARSET;
         }
@@ -611,10 +620,10 @@ impl<'m> MessagePart<'m> {
         limit: decoders::Limit,
     ) -> Option<decoders::TextPrefix<'m>> {
         self.is_text().then(|| {
-            decoders::text_prefix(
+            decoders::TextPrefix::decode(
                 self.raw_body(),
                 self.entry.encoding,
-                decoders::charset(self.charset()),
+                self.text_charset(),
                 limit,
             )
         })
@@ -626,7 +635,7 @@ impl<'m> MessagePart<'m> {
         if !self.is_text() {
             return false;
         }
-        decoders::charset(self.charset()).decode_append(&self.decoded(), out);
+        self.text_charset().decode_append(&self.decoded(), out);
         true
     }
 

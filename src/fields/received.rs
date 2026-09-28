@@ -14,12 +14,14 @@ use std::{
     ops::Range,
 };
 
-pub(crate) fn parse_received(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let entry = Grammar::new(ctx, value).run();
-    if entry == ReceivedEntry::EMPTY {
-        Value::Empty
-    } else {
-        ctx.received(entry)
+impl FieldCtx<'_> {
+    pub(crate) fn parse_received(&mut self, value: Range<usize>) -> Value {
+        let entry = Grammar::new(self, value).run();
+        if entry == ReceivedEntry::EMPTY {
+            Value::Empty
+        } else {
+            self.received(entry)
+        }
     }
 }
 
@@ -55,10 +57,6 @@ const MAX_COLONS: u8 = 7;
 const UNSET: i64 = i64::MAX;
 const MAX_KEYWORD: usize = 11;
 const MIN_CIPHER: usize = 7;
-const DAY_NAMES: [&[u8; 3]; 7] = [b"mon", b"tue", b"wed", b"thu", b"fri", b"sat", b"sun"];
-const CIPHER_PREFIXES: [&[u8; 3]; 8] = [
-    b"rsa", b"ecd", b"dhe", b"psk", b"srp", b"aes", b"des", b"tls",
-];
 
 static CLASS: [u16; 256] = {
     let mut table = [0; 256];
@@ -380,27 +378,32 @@ impl Kind {
             if mask & !(ALNUM | MINUS) != 0 {
                 return Kind::Word;
             }
-            match alnum {
-                b"localesmtp" => Kind::Protocol(Protocol::ESMTP),
-                b"localesmtps" | b"esmtptls" => Kind::Protocol(Protocol::ESMTPS),
-                b"localbsmtp" => Kind::Protocol(Protocol::SMTP),
-                _ => Kind::Word,
-            }
+            hashify::map!(alnum, Kind,
+                "localesmtp" => Kind::Protocol(Protocol::ESMTP),
+                "localesmtps" => Kind::Protocol(Protocol::ESMTPS),
+                "esmtptls" => Kind::Protocol(Protocol::ESMTPS),
+                "localbsmtp" => Kind::Protocol(Protocol::SMTP),
+            )
+            .copied()
+            .unwrap_or(Kind::Word)
         } else {
-            let version = match alnum {
-                b"tls10" => return Kind::Tls(TlsVersion::TLSv1_0),
-                b"tls11" => return Kind::Tls(TlsVersion::TLSv1_1),
-                b"tls12" => return Kind::Tls(TlsVersion::TLSv1_2),
-                b"tls13" => return Kind::Tls(TlsVersion::TLSv1_3),
-                b"tlsv10" => TlsVersion::TLSv1_0,
-                b"tlsv11" => TlsVersion::TLSv1_1,
-                b"tlsv12" => TlsVersion::TLSv1_2,
-                b"tlsv13" => TlsVersion::TLSv1_3,
-                b"dtls10" | b"dtlsv10" => TlsVersion::DTLSv1_0,
-                b"dtls12" | b"dtlsv12" => TlsVersion::DTLSv1_2,
-                b"dtls13" | b"dtlsv13" => TlsVersion::DTLSv1_3,
-                _ => return Kind::Word,
-            };
+            let version = hashify::fnc_map!(alnum,
+                "tls10" => return Kind::Tls(TlsVersion::TLSv1_0),
+                "tls11" => return Kind::Tls(TlsVersion::TLSv1_1),
+                "tls12" => return Kind::Tls(TlsVersion::TLSv1_2),
+                "tls13" => return Kind::Tls(TlsVersion::TLSv1_3),
+                "tlsv10" => TlsVersion::TLSv1_0,
+                "tlsv11" => TlsVersion::TLSv1_1,
+                "tlsv12" => TlsVersion::TLSv1_2,
+                "tlsv13" => TlsVersion::TLSv1_3,
+                "dtls10" => TlsVersion::DTLSv1_0,
+                "dtlsv10" => TlsVersion::DTLSv1_0,
+                "dtls12" => TlsVersion::DTLSv1_2,
+                "dtlsv12" => TlsVersion::DTLSv1_2,
+                "dtls13" => TlsVersion::DTLSv1_3,
+                "dtlsv13" => TlsVersion::DTLSv1_3,
+                _ => return Kind::Word
+            );
             if mask & MINUS == 0 {
                 Kind::Tls(version)
             } else {
@@ -555,7 +558,9 @@ impl Token {
                 None => return false,
             }
         }
-        CIPHER_PREFIXES.contains(&&prefix)
+        hashify::set!(
+            prefix, "rsa", "ecd", "dhe", "psk", "srp", "aes", "des", "tls"
+        )
     }
 }
 
@@ -778,10 +783,7 @@ impl<'a> Cursor<'a> {
 }
 
 fn is_day_name(token: &[u8]) -> bool {
-    token.len() == 3
-        && DAY_NAMES
-            .iter()
-            .any(|name| token.eq_ignore_ascii_case(*name))
+    hashify::set_ignore_case!(token, "mon", "tue", "wed", "thu", "fri", "sat", "sun")
 }
 
 fn digits(token: &[u8], max: usize) -> Option<i64> {

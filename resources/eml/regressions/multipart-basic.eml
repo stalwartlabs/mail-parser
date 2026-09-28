@@ -1,0 +1,13 @@
+Content-Type: multipart/mixed; boundary="b"
+
+preamble
+--b
+Content-Type: text/plain
+
+hello
+--b
+Content-Type: text/html
+
+<p>x</p>
+--b--
+epilogue

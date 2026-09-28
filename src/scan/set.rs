@@ -153,25 +153,25 @@ impl ByteSet {
     pub(super) fn marked(&self) -> &[u8] {
         self.marked.get(..self.marked_len).unwrap_or_default()
     }
-}
 
-pub(crate) fn first_in_set(set: &ByteSet, hay: &[u8], from: usize, end: usize) -> Option<usize> {
-    hay.get(from..end.min(hay.len()))?
-        .iter()
-        .position(|&byte| set.contains(byte))
-        .map(|pos| pos + from)
-}
+    pub(crate) fn first_in(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
+        hay.get(from..end.min(hay.len()))?
+            .iter()
+            .position(|&byte| self.contains(byte))
+            .map(|pos| pos + from)
+    }
 
-pub(crate) fn stop_in_set(set: &ByteSet, hay: &[u8], from: usize, end: usize) -> Stop {
-    let mut marked = false;
-    let at = hay
-        .get(from..end.min(hay.len()))
-        .unwrap_or_default()
-        .iter()
-        .position(|&byte| {
-            marked |= set.marks(byte);
-            set.contains(byte)
-        })
-        .map(|pos| pos + from);
-    Stop { at, marked }
+    pub(crate) fn stop_in(&self, hay: &[u8], from: usize, end: usize) -> Stop {
+        let mut marked = false;
+        let at = hay
+            .get(from..end.min(hay.len()))
+            .unwrap_or_default()
+            .iter()
+            .position(|&byte| {
+                marked |= self.marks(byte);
+                self.contains(byte)
+            })
+            .map(|pos| pos + from);
+        Stop { at, marked }
+    }
 }

@@ -70,6 +70,20 @@ impl HeaderForm {
     pub fn parse(self, value: &[u8]) -> ParsedValue<'_> {
         ParsedValue::new(self, value, 0..value.len())
     }
+
+    pub(crate) fn parse_field(self, ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
+        match self {
+            HeaderForm::Raw => ctx.parse_raw(value),
+            HeaderForm::Text => ctx.parse_unstructured(value),
+            HeaderForm::Addresses => ctx.parse_address(value),
+            HeaderForm::MessageIds => ctx.parse_id(value),
+            HeaderForm::CommaList => ctx.parse_comma_list(value),
+            HeaderForm::Date => ctx.parse_date(value),
+            HeaderForm::ContentType => ctx.parse_content_type(value),
+            HeaderForm::Received => ctx.parse_received(value),
+            HeaderForm::Ignore => Value::Empty,
+        }
+    }
 }
 
 /// A header value parsed on its own, outside a message, by
@@ -95,7 +109,7 @@ impl<'x> ParsedValue<'x> {
                 .map_or(Value::Empty, Value::DateTime),
             HeaderForm::Raw => match raw::borrowed(source, range.clone()) {
                 Some(value) => value,
-                None => return Self::stored(source, |ctx| raw::parse_raw(ctx, range)),
+                None => return Self::stored(source, |ctx| ctx.parse_raw(range)),
             },
             HeaderForm::Text => match unstructured::standalone(source, range) {
                 Ok(value) => value,
@@ -106,7 +120,7 @@ impl<'x> ParsedValue<'x> {
             | HeaderForm::CommaList
             | HeaderForm::ContentType
             | HeaderForm::Received => {
-                return Self::stored(source, |ctx| parse_value(form, ctx, range));
+                return Self::stored(source, |ctx| form.parse_field(ctx, range));
             }
         };
         ParsedValue {
@@ -188,20 +202,6 @@ pub(crate) fn trim_fws(src: &[u8], range: Range<usize>) -> Range<usize> {
     match (start, end) {
         (Some(start), Some(end)) => range.start + start..range.start + end + 1,
         _ => range.start..range.start,
-    }
-}
-
-pub(crate) fn parse_value(form: HeaderForm, ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    match form {
-        HeaderForm::Raw => raw::parse_raw(ctx, value),
-        HeaderForm::Text => unstructured::parse_unstructured(ctx, value),
-        HeaderForm::Addresses => address::parse_address(ctx, value),
-        HeaderForm::MessageIds => id::parse_id(ctx, value),
-        HeaderForm::CommaList => list::parse_comma_list(ctx, value),
-        HeaderForm::Date => date::parse_date(ctx, value),
-        HeaderForm::ContentType => content_type::parse_content_type(ctx, value),
-        HeaderForm::Received => received::parse_received(ctx, value),
-        HeaderForm::Ignore => Value::Empty,
     }
 }
 

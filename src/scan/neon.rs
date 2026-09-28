@@ -93,52 +93,54 @@ pub(crate) fn field_end(hay: &[u8], from: usize) -> Option<usize> {
     unsafe { simd::field_end::<uint8x16_t>(hay.get(from..)?) }.map(|pos| pos + from)
 }
 
-#[inline]
-pub(crate) fn first_in_set(set: &ByteSet, hay: &[u8], from: usize, end: usize) -> Option<usize> {
-    // SAFETY: NEON is enabled at compile time (the module is built only with
-    // `target_feature = "neon"`). `set.low` and `set.high` are `[u8; 16]`, so
-    // their loads read exactly their 16 bytes. `simd::first_in_set` passes the
-    // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
-    // and the closure reads those 16 bytes with one `vld1q_u8`.
-    unsafe {
-        let low = vld1q_u8(set.low.as_ptr());
-        let high = vld1q_u8(set.high.as_ptr());
-        let nibble = vdupq_n_u8(0x0f);
-        let stops = vdupq_n_u8(set.stops);
-        simd::first_in_set(set, hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
-            let bytes = vld1q_u8(at);
-            let buckets = vandq_u8(
-                vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
-                vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
-            );
-            vtstq_u8(buckets, stops).mask()
-        })
+impl ByteSet {
+    #[inline]
+    pub(super) fn neon_first_in(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
+        // SAFETY: NEON is enabled at compile time (the module is built only with
+        // `target_feature = "neon"`). `self.low` and `self.high` are `[u8; 16]`, so
+        // their loads read exactly their 16 bytes. `ByteSet::simd_first_in` passes the
+        // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
+        // and the closure reads those 16 bytes with one `vld1q_u8`.
+        unsafe {
+            let low = vld1q_u8(self.low.as_ptr());
+            let high = vld1q_u8(self.high.as_ptr());
+            let nibble = vdupq_n_u8(0x0f);
+            let stops = vdupq_n_u8(self.stops);
+            self.simd_first_in(hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
+                let bytes = vld1q_u8(at);
+                let buckets = vandq_u8(
+                    vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
+                    vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
+                );
+                vtstq_u8(buckets, stops).mask()
+            })
+        }
     }
-}
 
-#[inline]
-pub(crate) fn stop_in_set(set: &ByteSet, hay: &[u8], from: usize, end: usize) -> Stop {
-    // SAFETY: NEON is enabled at compile time (the module is built only with
-    // `target_feature = "neon"`). `set.low` and `set.high` are `[u8; 16]`, so
-    // their loads read exactly their 16 bytes. `simd::stop_in_set` passes the
-    // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
-    // and the closure reads those 16 bytes with one `vld1q_u8`.
-    unsafe {
-        let low = vld1q_u8(set.low.as_ptr());
-        let high = vld1q_u8(set.high.as_ptr());
-        let nibble = vdupq_n_u8(0x0f);
-        let stops = vdupq_n_u8(set.stops);
-        let marks = vdupq_n_u8(set.marks);
-        simd::stop_in_set(set, hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
-            let bytes = vld1q_u8(at);
-            let buckets = vandq_u8(
-                vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
-                vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
-            );
-            (
-                vtstq_u8(buckets, stops).mask(),
-                vtstq_u8(buckets, marks).mask(),
-            )
-        })
+    #[inline]
+    pub(super) fn neon_stop_in(&self, hay: &[u8], from: usize, end: usize) -> Stop {
+        // SAFETY: NEON is enabled at compile time (the module is built only with
+        // `target_feature = "neon"`). `self.low` and `self.high` are `[u8; 16]`, so
+        // their loads read exactly their 16 bytes. `ByteSet::simd_stop_in` passes the
+        // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
+        // and the closure reads those 16 bytes with one `vld1q_u8`.
+        unsafe {
+            let low = vld1q_u8(self.low.as_ptr());
+            let high = vld1q_u8(self.high.as_ptr());
+            let nibble = vdupq_n_u8(0x0f);
+            let stops = vdupq_n_u8(self.stops);
+            let marks = vdupq_n_u8(self.marks);
+            self.simd_stop_in(hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
+                let bytes = vld1q_u8(at);
+                let buckets = vandq_u8(
+                    vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
+                    vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
+                );
+                (
+                    vtstq_u8(buckets, stops).mask(),
+                    vtstq_u8(buckets, marks).mask(),
+                )
+            })
+        }
     }
 }

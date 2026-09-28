@@ -10,51 +10,53 @@ use encodify::rfc2047::EncodedWord;
 use memchr::{memchr, memchr_iter, memchr3, memmem};
 use std::{iter::once, ops::Range};
 
-pub(crate) fn parse_comma_list(ctx: &mut FieldCtx<'_>, value: Range<usize>) -> Value {
-    let mark = ctx.text_items_mark();
-    let range = ctx.trim_fws(value);
-    let bytes = ctx.bytes(range.clone());
-    if memchr3(b',', b'=', b'\n', bytes).is_none() {
-        if !range.is_empty() {
-            let text = ctx.borrow(range);
-            ctx.push_text_item(text);
+impl FieldCtx<'_> {
+    pub(crate) fn parse_comma_list(&mut self, value: Range<usize>) -> Value {
+        let mark = self.text_items_mark();
+        let range = self.trim_fws(value);
+        let bytes = self.bytes(range.clone());
+        if memchr3(b',', b'=', b'\n', bytes).is_none() {
+            if !range.is_empty() {
+                let text = self.borrow(range);
+                self.push_text_item(text);
+            }
+        } else if memchr_iter(b'=', bytes).any(|at| bytes.get(at + 1) == Some(&b'?')) {
+            ListParser::run(self, range);
+        } else {
+            let mut start = 0;
+            for end in memchr_iter(b',', bytes).chain(once(bytes.len())) {
+                self.push_plain_item(range.start + start..range.start + end);
+                start = end + 1;
+            }
         }
-    } else if memchr_iter(b'=', bytes).any(|at| bytes.get(at + 1) == Some(&b'?')) {
-        ListParser::run(ctx, range);
-    } else {
-        let mut start = 0;
-        for end in memchr_iter(b',', bytes).chain(once(bytes.len())) {
-            push_plain_item(ctx, range.start + start..range.start + end);
-            start = end + 1;
-        }
+        self.text_list(mark)
     }
-    ctx.text_list(mark)
-}
 
-fn push_plain_item(ctx: &mut FieldCtx<'_>, item: Range<usize>) {
-    let item = ctx.trim_fws(item);
-    if item.is_empty() {
-        return;
+    fn push_plain_item(&mut self, item: Range<usize>) {
+        let item = self.trim_fws(item);
+        if item.is_empty() {
+            return;
+        }
+        let bytes = self.bytes(item.clone());
+        let text = if memchr(b'\n', bytes).is_none() {
+            self.borrow(item)
+        } else {
+            self.push_with(|pool| {
+                let mut lines = bytes
+                    .split(|&byte| byte == b'\n')
+                    .map(trim_wsp)
+                    .filter(|line| !line.is_empty());
+                if let Some(first) = lines.next() {
+                    push_utf8_lossy(pool, first);
+                }
+                for line in lines {
+                    pool.push(' ');
+                    push_utf8_lossy(pool, line);
+                }
+            })
+        };
+        self.push_text_item(text);
     }
-    let bytes = ctx.bytes(item.clone());
-    let text = if memchr(b'\n', bytes).is_none() {
-        ctx.borrow(item)
-    } else {
-        ctx.push_with(|pool| {
-            let mut lines = bytes
-                .split(|&byte| byte == b'\n')
-                .map(trim_wsp)
-                .filter(|line| !line.is_empty());
-            if let Some(first) = lines.next() {
-                push_utf8_lossy(pool, first);
-            }
-            for line in lines {
-                pool.push(' ');
-                push_utf8_lossy(pool, line);
-            }
-        })
-    };
-    ctx.push_text_item(text);
 }
 
 fn trim_wsp(mut text: &[u8]) -> &[u8] {
