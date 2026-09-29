@@ -409,15 +409,17 @@ To fuzz the parser (requires [cargo-fuzz](https://crates.io/crates/cargo-fuzz) a
 
 The other targets are `limits` (parser limits), `fields` (header field parsers), `charsets` (charset and HTML decoders), `kernels` (every SIMD kernel against the scalar one) and `mbox` (mbox reader); `kernels`, `fields` and `charsets` use `-max_len=4096`, `limits` uses `-max_len=16384` and `mbox` uses `-max_len=65536`.
 
-To run the unit tests that exercise `unsafe` code under [Miri](https://github.com/rust-lang/miri) (the tests use fewer samples under Miri), natively and on x86-64 with the AVX2 kernels:
+To run the unit tests under [Miri](https://github.com/rust-lang/miri) (the tests use fewer samples under Miri; each line takes about an hour): the span resolver and the charset decoders, the SIMD kernels natively and on x86-64 (SSE2 only, then AVX2), and the parser. Miri does not implement every NEON instruction used by encodify, so the parser tests use its portable code (`--cfg encodify_scalar`, encodify 1.0.1 or later):
 
 ```bash
  $ MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test --lib -- store:: decoders::charsets::
  $ MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test --lib -- scan::
+ $ MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test --lib --target x86_64-unknown-linux-gnu -- scan::
  $ MIRIFLAGS=-Zmiri-disable-isolation RUSTFLAGS="-Ctarget-feature=+avx2" cargo +nightly miri test --lib --target x86_64-unknown-linux-gnu -- scan::
+ $ MIRIFLAGS=-Zmiri-disable-isolation RUSTFLAGS="--cfg encodify_scalar" cargo +nightly miri test --lib -- parser:: --skip truncated_inputs_never_panic --skip mutated_inputs_never_panic
 ```
 
-On macOS, the x86-64 run also needs `CC_x86_64_unknown_linux_gnu=clang AR_x86_64_unknown_linux_gnu=ar CFLAGS_x86_64_unknown_linux_gnu=-ffreestanding`. Miri does not implement every NEON instruction used by encodify, so the parser tests run under Miri with its portable code: add `RUSTFLAGS="--cfg encodify_scalar"` and `-- parser::`.
+On macOS, the x86-64 runs also need `CC_x86_64_unknown_linux_gnu=clang AR_x86_64_unknown_linux_gnu=ar CFLAGS_x86_64_unknown_linux_gnu=-ffreestanding`.
 
 The benchmarks read the Enron maildir and the Stalwart SMTP test messages, which `scripts/fetch-corpora.sh` downloads into `target/corpora` (or the directory named by `MAIL_PARSER_CORPORA`) and checks against `scripts/corpora.sha256`; a missing corpus is skipped with a warning. To download them and run the micro-benchmarks of the SIMD kernels and of string resolution:
 

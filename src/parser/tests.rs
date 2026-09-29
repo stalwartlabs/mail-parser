@@ -9,7 +9,7 @@ use crate::{
     MessageParser, PartFlags, PartKind, Source,
     scan::{
         Kernel,
-        tests::{fixture_files, with_crlf, with_lf},
+        tests::{FIXTURE_STEP, fixture_files, with_crlf, with_lf},
     },
 };
 use encodify::base64;
@@ -578,7 +578,7 @@ fn message_is_send_sync_and_covariant() {
 #[test]
 fn fixtures_parse_with_every_kernel() {
     let files = fixture_files();
-    assert!(files.len() > 100);
+    assert!(files.len() > 100 / FIXTURE_STEP);
     for file in files {
         for raw in [with_lf(&file), with_crlf(&file)] {
             let reference = MessageParser::new()

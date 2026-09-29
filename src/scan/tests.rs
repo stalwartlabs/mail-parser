@@ -11,6 +11,8 @@ const ALPHABET: &[u8] = b"\n\n\n\r\r---- \ta";
 const ITERATIONS: usize = if cfg!(miri) { 20 } else { 3_000 };
 const SET_ITERATIONS: usize = if cfg!(miri) { 4 } else { 400 };
 const SAMPLE_STEP: usize = if cfg!(miri) { 9 } else { 1 };
+const FROM_STEP: usize = if cfg!(miri) { 5 } else { 1 };
+pub(crate) const FIXTURE_STEP: usize = if cfg!(miri) { 8 } else { 1 };
 const MAX_LEN: usize = 300;
 
 pub(crate) struct Rng(pub(crate) u64);
@@ -71,7 +73,7 @@ fn agree_on_sample(kernel: Kernel, hay: &[u8]) {
 }
 
 pub(crate) fn fixture_files() -> Vec<Vec<u8>> {
-    let mut files = Vec::new();
+    let mut paths = Vec::new();
     let mut dirs = vec![PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources/eml")];
     while let Some(dir) = dirs.pop() {
         let Ok(entries) = std::fs::read_dir(&dir) else {
@@ -80,14 +82,17 @@ pub(crate) fn fixture_files() -> Vec<Vec<u8>> {
         for path in entries.flatten().map(|entry| entry.path()) {
             if path.is_dir() {
                 dirs.push(path);
-            } else if path.extension().is_some_and(|ext| ext == "eml")
-                && let Ok(bytes) = std::fs::read(&path)
-            {
-                files.push(bytes);
+            } else if path.extension().is_some_and(|ext| ext == "eml") {
+                paths.push(path);
             }
         }
     }
-    files
+    paths.sort_unstable();
+    paths
+        .iter()
+        .step_by(FIXTURE_STEP)
+        .filter_map(|path| std::fs::read(path).ok())
+        .collect()
 }
 
 pub(crate) fn with_crlf(bytes: &[u8]) -> Vec<u8> {
@@ -192,7 +197,7 @@ const SETS: [ByteSet; 7] = [
 
 fn agree_on_sets(hay: &[u8]) {
     for set in &SETS {
-        for from in 0..=hay.len() + 1 {
+        for from in (0..=hay.len() + 1).step_by(FROM_STEP) {
             for end in [
                 from,
                 from + 1,

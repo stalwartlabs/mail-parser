@@ -174,7 +174,9 @@ fn owned_str(bytes: Vec<u8>) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::Str;
+    use super::{Str, validated_string};
+
+    const LONG_NON_ASCII_CHARS: usize = 100;
 
     #[test]
     fn borrow_validates_utf8() {
@@ -184,6 +186,19 @@ mod tests {
         assert!(Str::borrow(source, 0..2).is_none());
         assert!(Str::borrow(source, 0..100).is_none());
         assert!(Str::borrow(b"\xff\xfe", 0..2).is_none());
+    }
+
+    #[test]
+    fn long_non_ascii_input_validates() {
+        let text = "\u{e9}".repeat(LONG_NON_ASCII_CHARS);
+        let source = text.as_bytes();
+        let span = Str::borrow(source, 0..source.len()).expect("valid");
+        assert_eq!(span.resolve(source, ""), text);
+        assert!(Str::borrow(source, 1..source.len()).is_none());
+        assert_eq!(
+            validated_string(source.to_vec()).as_deref(),
+            Ok(text.as_str())
+        );
     }
 
     #[test]
