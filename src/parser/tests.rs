@@ -309,6 +309,13 @@ fn nested_inline_message() {
         let message = parse(&raw);
         assert_eq!(message.messages().len(), 2);
         assert_eq!(message.parts().len(), 4);
+        assert_eq!(
+            message.header_count(),
+            message
+                .parts()
+                .map(|part| part.headers().len())
+                .sum::<usize>()
+        );
         let container = message.part(2).expect("container");
         let nested = container.nested().expect("nested");
         assert_eq!(nested.subject(), Some("nested"));

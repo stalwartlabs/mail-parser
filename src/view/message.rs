@@ -432,8 +432,12 @@ impl<'x> Message<'x> {
         self.ctx().part(id)
     }
 
-    /// The multipart part whose `boundary` parameter is `boundary` (issue
-    /// #127); a linear scan over the parts.
+    /// The number of header fields of every part of every message.
+    pub fn header_count(&self) -> usize {
+        self.data.headers.len()
+    }
+
+    /// The multipart part whose `boundary` parameter is `boundary`
     pub fn part_by_boundary(&self, boundary: &str) -> Option<MessagePart<'_>> {
         self.parts().find(|part| part.boundary() == Some(boundary))
     }
