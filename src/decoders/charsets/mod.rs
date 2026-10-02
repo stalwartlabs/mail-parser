@@ -70,7 +70,9 @@ pub enum Charset {
     Iso8859_7,
     /// ISO-8859-8 (Hebrew).
     Iso8859_8,
-    /// ISO-8859-9 (Latin-5, Turkish).
+    /// ISO-8859-9 (Latin-5, Turkish), strictly as the standard defines it.
+    /// No label resolves here: `iso-8859-9` and its aliases resolve to
+    /// [`Charset::Windows1254`], the superset senders actually send.
     Iso8859_9,
     /// ISO-8859-10 (Latin-6, Nordic).
     Iso8859_10,
@@ -109,7 +111,9 @@ pub enum Charset {
     Macintosh,
     /// IBM code page 850 (DOS Latin-1).
     Ibm850,
-    /// TIS-620 (Thai).
+    /// TIS-620 (Thai), strictly as the standard defines it. No label resolves
+    /// here: `tis-620` and `iso-8859-11` resolve to [`Charset::Windows874`],
+    /// the superset senders actually send.
     Tis620,
     /// Shift_JIS (Japanese); needs the `full_encoding` feature.
     ShiftJis,
@@ -125,7 +129,8 @@ pub enum Charset {
     Gbk,
     /// ISO-2022-JP (Japanese); needs the `full_encoding` feature.
     Iso2022Jp,
-    /// windows-874 (Thai); needs the `full_encoding` feature.
+    /// windows-874 (Thai). Also the target of the `tis-620` and `iso-8859-11`
+    /// labels, since senders use them for code page 874 bytes.
     Windows874,
     /// IBM code page 866 (DOS Cyrillic); needs the `full_encoding` feature.
     Ibm866,
@@ -315,7 +320,7 @@ impl Charset {
             Charset::Gb18030 => Decoder::MultiByte(MultiByte::Gb18030),
             Charset::Gbk => Decoder::MultiByte(MultiByte::Gbk),
             Charset::Iso2022Jp => Decoder::MultiByte(MultiByte::Iso2022Jp),
-            Charset::Windows874 => Decoder::MultiByte(MultiByte::Windows874),
+            Charset::Windows874 => Decoder::SingleByte(&tables::WINDOWS_874),
             Charset::Ibm866 => Decoder::MultiByte(MultiByte::Ibm866),
             Charset::XMacCyrillic => Decoder::MultiByte(MultiByte::XMacCyrillic),
             Charset::XUserDefined => Decoder::MultiByte(MultiByte::XUserDefined),
@@ -628,6 +633,23 @@ mod tests {
             ("ibm850", b"\x9b\x9c\x9d\x9e".to_vec(),"ø£Ø×"),
             ("koi8-r", b"\xf0\xd2\xc9\xd7\xc5\xd4, \xcd\xc9\xd2".to_vec(),"Привет, мир"),
             ("koi8-u", b"\xf0\xd2\xc9\xd7\xa6\xd4 \xf3\xd7\xa6\xd4".to_vec(),"Привіт Світ"),
+            // Positions that ISO 8859-7:2003 added over the 1987 edition.
+            ("iso-8859-7", b"\xa4\xa5\xaa".to_vec(),"€₯ͺ"),
+            // 0xa5 and 0xab were transposed.
+            ("iso-8859-16", b"\xa5\xab".to_vec(),"„«"),
+            // 0xdb became the euro sign in Mac OS 8.5; 0xf0 is the Apple logo.
+            ("macintosh", b"\xc6\xcd\xdb\xf0\xf6\xf7".to_vec(),"∆Õ€\u{f8ff}ˆ˜"),
+            // Hebrew point holam haser for vav, a later windows-1255 addition.
+            ("windows-1255", b"\xca".to_vec(),"\u{5ba}"),
+            // The iso-8859-9 and tis-620 labels resolve to the Windows
+            // supersets, so bytes in 0x80..=0xa0 decode instead of being lost.
+            ("iso-8859-9", b"\x93Merhaba\x94 \x96 d\xfcnya".to_vec(),"“Merhaba” – dünya"),
+            ("iso-8859-9", b"\x805.4bn".to_vec(),"€5.4bn"),
+            ("latin5", b"\x805.4bn".to_vec(),"€5.4bn"),
+            ("tis-620", b"\x93\xca\xc7\xd1\xca\xb4\xd5\x94".to_vec(),"“สวัสดี”"),
+            ("iso-8859-11", b"\x805.4bn".to_vec(),"€5.4bn"),
+            // Thai text decodes as before; only the 0x80..=0xa0 band changed.
+            ("tis-620", b"\xc3\xcb\xd1\xca".to_vec(),"รหัส"),
             ("utf-7", b"+ZYeB9FH6ckh5Pg-, 1980.".to_vec(),"文致出版社, 1980."),
             ("utf-16le", b"\xcf0\xed0\xfc0\xfb0\xef0\xfc0\xeb0\xc90".to_vec(),"ハロー・ワールド"),
             ("utf-16be", b"0\xcf0\xed0\xfc0\xfb0\xef0\xfc0\xeb0\xc9".to_vec(),"ハロー・ワールド"),
@@ -642,6 +664,14 @@ mod tests {
             ("euc-jp", b"\xa5\xcf\xa5\xed\xa1\xbc\xa1\xa6\xa5\xef\xa1\xbc\xa5\xeb\xa5\xc9".to_vec(),"ハロー・ワールド"),
             #[cfg(feature = "full_encoding")]
             ("euc-kr", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
+            #[cfg(feature = "full_encoding")]
+            ("cp949", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
+            #[cfg(feature = "full_encoding")]
+            ("uhc", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
+            #[cfg(feature = "full_encoding")]
+            ("x-windows-949", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
+            #[cfg(feature = "full_encoding")]
+            ("windows-949", b"\xbe\xc8\xb3\xe7\xc7\xcf\xbc\xbc\xbf\xe4 \xbc\xbc\xb0\xe8".to_vec(),"안녕하세요 세계"),
             #[cfg(feature = "full_encoding")]
             ("iso-2022-jp", b"\x1b$B%O%m!<!&%o!<%k%I\x1b(B".to_vec(),"ハロー・ワールド"),
             #[cfg(feature = "full_encoding")]
@@ -760,6 +790,9 @@ mod tests {
             "iso-ir-149",
             "big5-hkscs",
             "windows-949",
+            "cp949",
+            "uhc",
+            "x-windows-949",
             "csisolatin9",
             "csiso88596e",
             "csiso88598e",

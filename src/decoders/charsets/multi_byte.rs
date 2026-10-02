@@ -9,7 +9,7 @@ use std::borrow::Cow;
 #[cfg(feature = "full_encoding")]
 use encoding_rs::{
     BIG5, CoderResult, Decoder, EUC_JP, EUC_KR, Encoding, GB18030, GBK, IBM866, ISO_2022_JP,
-    REPLACEMENT, SHIFT_JIS, WINDOWS_874, X_MAC_CYRILLIC, X_USER_DEFINED,
+    REPLACEMENT, SHIFT_JIS, X_MAC_CYRILLIC, X_USER_DEFINED,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -21,7 +21,6 @@ pub(super) enum MultiByte {
     Gb18030,
     Gbk,
     Iso2022Jp,
-    Windows874,
     Ibm866,
     XMacCyrillic,
     XUserDefined,
@@ -42,7 +41,6 @@ impl MultiByte {
             MultiByte::Gb18030 => GB18030,
             MultiByte::Gbk => GBK,
             MultiByte::Iso2022Jp => ISO_2022_JP,
-            MultiByte::Windows874 => WINDOWS_874,
             MultiByte::Ibm866 => IBM866,
             MultiByte::XMacCyrillic => X_MAC_CYRILLIC,
             MultiByte::XUserDefined => X_USER_DEFINED,
