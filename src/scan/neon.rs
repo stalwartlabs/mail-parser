@@ -8,9 +8,11 @@
 
 use super::{
     set::{ByteSet, Stop},
-    simd::{self, Vector},
+    simd::{self, Table, Vector},
 };
 use core::arch::aarch64::*;
+
+const NIBBLE: u8 = 0x0f;
 
 impl Vector for uint8x16_t {
     const BYTES: usize = 16;
@@ -77,6 +79,42 @@ impl Vector for uint8x16_t {
     }
 }
 
+impl Table for uint8x16_t {
+    #[inline(always)]
+    unsafe fn table(entries: &[u8; 16]) -> Self {
+        // SAFETY: the module is built only with `target_feature = "neon"`, so
+        // NEON is part of the compilation target and present at run time.
+        // `entries` is 16 bytes, exactly what the load reads.
+        unsafe { vld1q_u8(entries.as_ptr()) }
+    }
+
+    #[inline(always)]
+    unsafe fn lookup_low(self, table: Self) -> Self {
+        // SAFETY: the module is built only with `target_feature = "neon"`, so
+        // NEON is part of the compilation target and present at run time. The
+        // intrinsics work on registers only, and the mask keeps every index
+        // below 16, so no lane selects outside `table`.
+        unsafe { vqtbl1q_u8(table, vandq_u8(self, vdupq_n_u8(NIBBLE))) }
+    }
+
+    #[inline(always)]
+    unsafe fn lookup_high(self, table: Self) -> Self {
+        // SAFETY: the module is built only with `target_feature = "neon"`, so
+        // NEON is part of the compilation target and present at run time. The
+        // intrinsics work on registers only, and shifting a byte right by four
+        // leaves every index below 16, so no lane selects outside `table`.
+        unsafe { vqtbl1q_u8(table, vshrq_n_u8::<4>(self)) }
+    }
+
+    #[inline(always)]
+    unsafe fn test_mask(self, mask: Self) -> u64 {
+        // SAFETY: the module is built only with `target_feature = "neon"`, so
+        // NEON is part of the compilation target and present at run time. The
+        // intrinsics work on registers only.
+        unsafe { vtstq_u8(self, mask).mask() }
+    }
+}
+
 #[inline]
 pub(crate) fn dash_line(hay: &[u8], from: usize) -> Option<usize> {
     // SAFETY: NEON is enabled at compile time (the module is built only
@@ -96,50 +134,38 @@ pub(crate) fn field_end(hay: &[u8], from: usize) -> Option<usize> {
 impl ByteSet {
     #[inline]
     pub(super) fn neon_first_in(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
-        // SAFETY: NEON is enabled at compile time (the module is built only with
-        // `target_feature = "neon"`). `self.low` and `self.high` are `[u8; 16]`, so
-        // their loads read exactly their 16 bytes. `ByteSet::simd_first_in` passes the
-        // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
-        // and the closure reads those 16 bytes with one `vld1q_u8`.
+        // SAFETY: NEON is enabled at compile time (the module is built only
+        // with `target_feature = "neon"`), which is what `uint8x16_t` needs as
+        // both a `Vector` and a `Table`. `self.low` and `self.high` are
+        // `[u8; 16]`, the size `Table::table` reads, and the closure reads the
+        // `V::BYTES` bytes that `simd_first_in` guarantees behind the pointer it
+        // gets.
         unsafe {
-            let low = vld1q_u8(self.low.as_ptr());
-            let high = vld1q_u8(self.high.as_ptr());
-            let nibble = vdupq_n_u8(0x0f);
-            let stops = vdupq_n_u8(self.stops);
-            self.simd_first_in(hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
-                let bytes = vld1q_u8(at);
-                let buckets = vandq_u8(
-                    vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
-                    vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
-                );
-                vtstq_u8(buckets, stops).mask()
+            let low = uint8x16_t::table(&self.low);
+            let high = uint8x16_t::table(&self.high);
+            let stops = uint8x16_t::splat(self.stops);
+            self.simd_first_in::<uint8x16_t>(hay, from, end, |at| {
+                simd::buckets::<uint8x16_t>(at, low, high).test_mask(stops)
             })
         }
     }
 
     #[inline]
     pub(super) fn neon_stop_in(&self, hay: &[u8], from: usize, end: usize) -> Stop {
-        // SAFETY: NEON is enabled at compile time (the module is built only with
-        // `target_feature = "neon"`). `self.low` and `self.high` are `[u8; 16]`, so
-        // their loads read exactly their 16 bytes. `ByteSet::simd_stop_in` passes the
-        // closure only pointers with `SET_WIDTH` (16) bytes of `hay` behind them,
-        // and the closure reads those 16 bytes with one `vld1q_u8`.
+        // SAFETY: NEON is enabled at compile time (the module is built only
+        // with `target_feature = "neon"`), which is what `uint8x16_t` needs as
+        // both a `Vector` and a `Table`. `self.low` and `self.high` are
+        // `[u8; 16]`, the size `Table::table` reads, and the closure reads the
+        // `V::BYTES` bytes that `simd_stop_in` guarantees behind the pointer it
+        // gets.
         unsafe {
-            let low = vld1q_u8(self.low.as_ptr());
-            let high = vld1q_u8(self.high.as_ptr());
-            let nibble = vdupq_n_u8(0x0f);
-            let stops = vdupq_n_u8(self.stops);
-            let marks = vdupq_n_u8(self.marks);
-            self.simd_stop_in(hay, from, end, uint8x16_t::BITS_PER_BYTE, |at| {
-                let bytes = vld1q_u8(at);
-                let buckets = vandq_u8(
-                    vqtbl1q_u8(low, vandq_u8(bytes, nibble)),
-                    vqtbl1q_u8(high, vshrq_n_u8::<4>(bytes)),
-                );
-                (
-                    vtstq_u8(buckets, stops).mask(),
-                    vtstq_u8(buckets, marks).mask(),
-                )
+            let low = uint8x16_t::table(&self.low);
+            let high = uint8x16_t::table(&self.high);
+            let stops = uint8x16_t::splat(self.stops);
+            let marks = uint8x16_t::splat(self.marks);
+            self.simd_stop_in::<uint8x16_t>(hay, from, end, |at| {
+                let buckets = simd::buckets::<uint8x16_t>(at, low, high);
+                (buckets.test_mask(stops), buckets.test_mask(marks))
             })
         }
     }

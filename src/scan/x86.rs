@@ -8,9 +8,11 @@
 
 use super::{
     set::{ByteSet, Stop},
-    simd::{self, Vector},
+    simd::{self, Table, Vector},
 };
 use core::arch::x86_64::*;
+
+const NIBBLE: i8 = 0x0f;
 
 impl Vector for __m128i {
     const BYTES: usize = 16;
@@ -71,6 +73,51 @@ impl Vector for __m128i {
         // SSE2 is part of the compilation target and present at run time.
         // The intrinsic works on registers only.
         unsafe { _mm_movemask_epi8(self) as u32 as u64 }
+    }
+}
+
+impl Table for __m128i {
+    #[inline(always)]
+    unsafe fn table(entries: &[u8; 16]) -> Self {
+        // SAFETY: the module is built only with `target_feature = "sse2"`, so
+        // SSE2 is part of the compilation target and present at run time.
+        // `entries` is 16 bytes, exactly what the unaligned load reads.
+        unsafe { _mm_loadu_si128(entries.as_ptr().cast()) }
+    }
+
+    #[inline(always)]
+    unsafe fn lookup_low(self, table: Self) -> Self {
+        // SAFETY: our caller guarantees the CPU supports SSSE3, which
+        // `_mm_shuffle_epi8` needs; the other intrinsics need only SSE2. All
+        // three work on registers only, and the mask keeps every shuffle index
+        // below 16, so no lane selects outside `table`.
+        unsafe { _mm_shuffle_epi8(table, _mm_and_si128(self, _mm_set1_epi8(NIBBLE))) }
+    }
+
+    #[inline(always)]
+    unsafe fn lookup_high(self, table: Self) -> Self {
+        // SAFETY: our caller guarantees the CPU supports SSSE3, which
+        // `_mm_shuffle_epi8` needs; the other intrinsics need only SSE2. All
+        // four work on registers only, and the mask keeps every shuffle index
+        // below 16, so no lane selects outside `table`.
+        unsafe {
+            _mm_shuffle_epi8(
+                table,
+                _mm_and_si128(_mm_srli_epi16::<4>(self), _mm_set1_epi8(NIBBLE)),
+            )
+        }
+    }
+
+    #[inline(always)]
+    unsafe fn test_mask(self, mask: Self) -> u64 {
+        // SAFETY: the module is built only with `target_feature = "sse2"`, so
+        // SSE2 is part of the compilation target and present at run time. The
+        // intrinsics work on registers only.
+        unsafe {
+            let hits = _mm_and_si128(self, mask);
+            let zeros = _mm_movemask_epi8(_mm_cmpeq_epi8(hits, _mm_setzero_si128()));
+            u64::from(!(zeros as u32) & 0xffff)
+        }
     }
 }
 
@@ -201,10 +248,10 @@ impl ByteSet {
         // SAFETY: the module is built only with `target_feature = "sse2"`, so
         // SSE2 is present, and the closure uses only SSE2 intrinsics and the
         // `__m128i` methods. `ByteSet::simd_first_in` passes the closure only
-        // pointers with `SET_WIDTH` (16) bytes of `hay` behind them, and
-        // `__m128i::load` reads those 16 bytes.
+        // pointers with `__m128i::BYTES` bytes of `hay` behind them, and
+        // `__m128i::load` reads those bytes.
         unsafe {
-            self.simd_first_in(hay, from, end, __m128i::BITS_PER_BYTE, |at| {
+            self.simd_first_in::<__m128i>(hay, from, end, |at| {
                 let bytes = __m128i::load(at);
                 self.members()
                     .iter()
@@ -218,41 +265,64 @@ impl ByteSet {
 
     /// # Safety
     ///
+    /// The running CPU must support SSSE3.
+    #[target_feature(enable = "ssse3")]
+    unsafe fn ssse3_first_in_impl(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
+        // SAFETY: our caller guarantees the CPU supports SSSE3 and this
+        // function enables it, which covers what `__m128i` needs: SSE2 as a `Vector` and SSSE3 as a `Table`.
+        // The closure is defined here so that it inherits the enabled feature,
+        // and reads the `V::BYTES` bytes that `simd_first_in` guarantees behind the
+        // pointer it gets.
+        unsafe {
+            let low = __m128i::table(&self.low);
+            let high = __m128i::table(&self.high);
+            let stops = __m128i::splat(self.stops);
+            self.simd_first_in::<__m128i>(hay, from, end, |at| {
+                simd::buckets::<__m128i>(at, low, high).test_mask(stops)
+            })
+        }
+    }
+
+    #[inline]
+    pub(super) fn ssse3_first_in(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
+        // SAFETY: the CPU supports SSSE3. This method is reached only from
+        // the `Kernel` dispatch in `scan/mod.rs` on `Backend::Ssse3`: it is
+        // `pub(super)` in `x86`, a private module of `scan`, `Backend` and the
+        // field of `Kernel` are private to `scan`, and `Kernel::best` and
+        // `Kernel::available` build that back end only after
+        // `is_x86_feature_detected!("ssse3")` returned true.
+        unsafe { self.ssse3_first_in_impl(hay, from, end) }
+    }
+
+    /// # Safety
+    ///
     /// The running CPU must support AVX2.
     #[target_feature(enable = "avx2")]
     unsafe fn avx2_first_in_impl(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
-        // SAFETY: our caller guarantees the CPU supports AVX2, and this function
-        // enables it; AVX2 implies SSSE3 (`_mm_shuffle_epi8`) and SSE2, the only
-        // instruction sets used here. `self.low` and `self.high` are `[u8; 16]`, so
-        // their unaligned 16-byte loads stay inside them. `ByteSet::simd_first_in`
-        // passes the closure only pointers with `SET_WIDTH` (16) bytes of `hay`
-        // behind them, and the closure reads those 16 bytes with one unaligned
-        // load.
+        // SAFETY: our caller guarantees the CPU supports AVX2 and this
+        // function enables it, which implies both instruction sets `__m128i`
+        // needs: SSE2 as a `Vector` and SSSE3 as a `Table`. Enabling AVX2 keeps
+        // these 128-bit operations VEX-encoded, so they do not pay an AVX to SSE
+        // transition. The closure is defined here so that it inherits the
+        // enabled feature, and reads the `V::BYTES` bytes that `simd_first_in`
+        // guarantees behind the pointer it gets.
         unsafe {
-            let low = _mm_loadu_si128(self.low.as_ptr().cast());
-            let high = _mm_loadu_si128(self.high.as_ptr().cast());
-            let nibble = _mm_set1_epi8(0x0f);
-            let stops = _mm_set1_epi8(self.stops as i8);
-            let zero = _mm_setzero_si128();
-            self.simd_first_in(hay, from, end, __m128i::BITS_PER_BYTE, |at| {
-                let bytes = _mm_loadu_si128(at.cast());
-                let buckets = _mm_and_si128(
-                    _mm_shuffle_epi8(low, _mm_and_si128(bytes, nibble)),
-                    _mm_shuffle_epi8(high, _mm_and_si128(_mm_srli_epi16::<4>(bytes), nibble)),
-                );
-                let hits = _mm_and_si128(buckets, stops);
-                u64::from(!(_mm_movemask_epi8(_mm_cmpeq_epi8(hits, zero)) as u32) & 0xffff)
+            let low = __m128i::table(&self.low);
+            let high = __m128i::table(&self.high);
+            let stops = __m128i::splat(self.stops);
+            self.simd_first_in::<__m128i>(hay, from, end, |at| {
+                simd::buckets::<__m128i>(at, low, high).test_mask(stops)
             })
         }
     }
 
     #[inline]
     pub(super) fn avx2_first_in(&self, hay: &[u8], from: usize, end: usize) -> Option<usize> {
-        // SAFETY: the CPU supports AVX2. This method is reached only from the
-        // `Kernel` dispatch in `scan/mod.rs` on `Backend::Avx2`: it is
+        // SAFETY: the CPU supports AVX2. This method is reached only from
+        // the `Kernel` dispatch in `scan/mod.rs` on `Backend::Avx2`: it is
         // `pub(super)` in `x86`, a private module of `scan`, `Backend` and the
         // field of `Kernel` are private to `scan`, and `Kernel::best` and
-        // `Kernel::available` build `Backend::Avx2` only after
+        // `Kernel::available` build that back end only after
         // `is_x86_feature_detected!("avx2")` returned true.
         unsafe { self.avx2_first_in_impl(hay, from, end) }
     }
@@ -265,10 +335,10 @@ impl ByteSet {
         // SAFETY: the module is built only with `target_feature = "sse2"`, so
         // SSE2 is present, and the closure uses only SSE2 intrinsics and the
         // `__m128i` methods. `ByteSet::simd_stop_in` passes the closure only
-        // pointers with `SET_WIDTH` (16) bytes of `hay` behind them, and
-        // `__m128i::load` reads those 16 bytes.
+        // pointers with `__m128i::BYTES` bytes of `hay` behind them, and
+        // `__m128i::load` reads those bytes.
         unsafe {
-            self.simd_stop_in(hay, from, end, __m128i::BITS_PER_BYTE, |at| {
+            self.simd_stop_in::<__m128i>(hay, from, end, |at| {
                 let bytes = __m128i::load(at);
                 let any = |members: &[u8]| {
                     members
@@ -285,45 +355,68 @@ impl ByteSet {
 
     /// # Safety
     ///
+    /// The running CPU must support SSSE3.
+    #[target_feature(enable = "ssse3")]
+    unsafe fn ssse3_stop_in_impl(&self, hay: &[u8], from: usize, end: usize) -> Stop {
+        // SAFETY: our caller guarantees the CPU supports SSSE3 and this
+        // function enables it, which covers what `__m128i` needs: SSE2 as a `Vector` and SSSE3 as a `Table`.
+        // The closure is defined here so that it inherits the enabled feature,
+        // and reads the `V::BYTES` bytes that `simd_stop_in` guarantees behind the
+        // pointer it gets.
+        unsafe {
+            let low = __m128i::table(&self.low);
+            let high = __m128i::table(&self.high);
+            let stops = __m128i::splat(self.stops);
+            let marks = __m128i::splat(self.marks);
+            self.simd_stop_in::<__m128i>(hay, from, end, |at| {
+                let buckets = simd::buckets::<__m128i>(at, low, high);
+                (buckets.test_mask(stops), buckets.test_mask(marks))
+            })
+        }
+    }
+
+    #[inline]
+    pub(super) fn ssse3_stop_in(&self, hay: &[u8], from: usize, end: usize) -> Stop {
+        // SAFETY: the CPU supports SSSE3. This method is reached only from
+        // the `Kernel` dispatch in `scan/mod.rs` on `Backend::Ssse3`: it is
+        // `pub(super)` in `x86`, a private module of `scan`, `Backend` and the
+        // field of `Kernel` are private to `scan`, and `Kernel::best` and
+        // `Kernel::available` build that back end only after
+        // `is_x86_feature_detected!("ssse3")` returned true.
+        unsafe { self.ssse3_stop_in_impl(hay, from, end) }
+    }
+
+    /// # Safety
+    ///
     /// The running CPU must support AVX2.
     #[target_feature(enable = "avx2")]
     unsafe fn avx2_stop_in_impl(&self, hay: &[u8], from: usize, end: usize) -> Stop {
-        // SAFETY: our caller guarantees the CPU supports AVX2, and this function
-        // enables it; AVX2 implies SSSE3 (`_mm_shuffle_epi8`) and SSE2, the only
-        // instruction sets used here. `self.low` and `self.high` are `[u8; 16]`, so
-        // their unaligned 16-byte loads stay inside them. `ByteSet::simd_stop_in`
-        // passes the closure only pointers with `SET_WIDTH` (16) bytes of `hay`
-        // behind them, and the closure reads those 16 bytes with one unaligned
-        // load.
+        // SAFETY: our caller guarantees the CPU supports AVX2 and this
+        // function enables it, which implies both instruction sets `__m128i`
+        // needs: SSE2 as a `Vector` and SSSE3 as a `Table`. Enabling AVX2 keeps
+        // these 128-bit operations VEX-encoded, so they do not pay an AVX to SSE
+        // transition. The closure is defined here so that it inherits the
+        // enabled feature, and reads the `V::BYTES` bytes that `simd_stop_in`
+        // guarantees behind the pointer it gets.
         unsafe {
-            let low = _mm_loadu_si128(self.low.as_ptr().cast());
-            let high = _mm_loadu_si128(self.high.as_ptr().cast());
-            let nibble = _mm_set1_epi8(0x0f);
-            let stops = _mm_set1_epi8(self.stops as i8);
-            let marks = _mm_set1_epi8(self.marks as i8);
-            let zero = _mm_setzero_si128();
-            self.simd_stop_in(hay, from, end, __m128i::BITS_PER_BYTE, |at| {
-                let bytes = _mm_loadu_si128(at.cast());
-                let buckets = _mm_and_si128(
-                    _mm_shuffle_epi8(low, _mm_and_si128(bytes, nibble)),
-                    _mm_shuffle_epi8(high, _mm_and_si128(_mm_srli_epi16::<4>(bytes), nibble)),
-                );
-                let bits = |mask| {
-                    let hits = _mm_and_si128(buckets, mask);
-                    u64::from(!(_mm_movemask_epi8(_mm_cmpeq_epi8(hits, zero)) as u32) & 0xffff)
-                };
-                (bits(stops), bits(marks))
+            let low = __m128i::table(&self.low);
+            let high = __m128i::table(&self.high);
+            let stops = __m128i::splat(self.stops);
+            let marks = __m128i::splat(self.marks);
+            self.simd_stop_in::<__m128i>(hay, from, end, |at| {
+                let buckets = simd::buckets::<__m128i>(at, low, high);
+                (buckets.test_mask(stops), buckets.test_mask(marks))
             })
         }
     }
 
     #[inline]
     pub(super) fn avx2_stop_in(&self, hay: &[u8], from: usize, end: usize) -> Stop {
-        // SAFETY: the CPU supports AVX2. This method is reached only from the
-        // `Kernel` dispatch in `scan/mod.rs` on `Backend::Avx2`: it is
+        // SAFETY: the CPU supports AVX2. This method is reached only from
+        // the `Kernel` dispatch in `scan/mod.rs` on `Backend::Avx2`: it is
         // `pub(super)` in `x86`, a private module of `scan`, `Backend` and the
         // field of `Kernel` are private to `scan`, and `Kernel::best` and
-        // `Kernel::available` build `Backend::Avx2` only after
+        // `Kernel::available` build that back end only after
         // `is_x86_feature_detected!("avx2")` returned true.
         unsafe { self.avx2_stop_in_impl(hay, from, end) }
     }

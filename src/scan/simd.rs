@@ -73,10 +73,51 @@ pub(crate) trait Vector: Copy {
     unsafe fn mask(self) -> u64;
 }
 
+/// Byte-table lookup, used to classify bytes by the buckets of a [`ByteSet`].
+///
+/// An implementation can need a larger instruction set than [`Vector`] asks
+/// for the same type: `__m128i` needs SSSE3 here where [`Vector`] needs only
+/// SSE2.
+pub(crate) trait Table: Vector {
+    /// Loads a 16-entry byte table into every 128-bit lane.
+    ///
+    /// # Safety
+    ///
+    /// The running CPU must support the table instruction set of the
+    /// implementing type.
+    unsafe fn table(entries: &[u8; 16]) -> Self;
+
+    /// Replaces every byte of `self` with the `table` entry its low nibble
+    /// selects.
+    ///
+    /// # Safety
+    ///
+    /// The running CPU must support the table instruction set of the
+    /// implementing type.
+    unsafe fn lookup_low(self, table: Self) -> Self;
+
+    /// Replaces every byte of `self` with the `table` entry its high nibble
+    /// selects.
+    ///
+    /// # Safety
+    ///
+    /// The running CPU must support the table instruction set of the
+    /// implementing type.
+    unsafe fn lookup_high(self, table: Self) -> Self;
+
+    /// Packs the lanes where `self & mask` is non-zero into [`Vector::mask`]
+    /// form.
+    ///
+    /// # Safety
+    ///
+    /// The running CPU must support the table instruction set of the
+    /// implementing type.
+    unsafe fn test_mask(self, mask: Self) -> u64;
+}
+
 const UNROLL: usize = 4;
 const DASH_LOOKAHEAD: usize = 2;
 const FOLD_LOOKAHEAD: usize = 1;
-const SET_WIDTH: usize = 16;
 
 #[inline(always)]
 fn first<V: Vector>(mask: u64) -> usize {
@@ -211,21 +252,20 @@ pub(crate) unsafe fn field_end<V: Vector>(tail: &[u8]) -> Option<usize> {
 }
 
 impl ByteSet {
-    /// First byte of the set in `hay[from..end]`, testing `SET_WIDTH` bytes per
+    /// First byte of the set in `hay[from..end]`, testing `V::BYTES` bytes per
     /// call of `mask_at`.
     ///
     /// # Safety
     ///
-    /// `mask_at` must read at most `SET_WIDTH` bytes from the pointer it gets
+    /// `mask_at` must read at most `V::BYTES` bytes from the pointer it gets
     /// and must otherwise be sound to call on the running CPU: this function
-    /// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
+    /// passes it only pointers with `V::BYTES` bytes of `hay` behind them.
     #[inline(always)]
-    pub(super) unsafe fn simd_first_in(
+    pub(super) unsafe fn simd_first_in<V: Vector>(
         &self,
         hay: &[u8],
         from: usize,
         end: usize,
-        bits_per_byte: u32,
         mask_at: impl Fn(*const u8) -> u64,
     ) -> Option<usize> {
         let end = end.min(hay.len());
@@ -234,13 +274,13 @@ impl ByteSet {
         }
         let ptr = hay.as_ptr();
         let first = |offset: usize, mask: u64| {
-            let hit = offset + (mask.trailing_zeros() / bits_per_byte) as usize;
+            let hit = offset + (mask.trailing_zeros() / V::BITS_PER_BYTE) as usize;
             (hit < end).then_some(hit)
         };
         let mut offset = from;
-        while offset + SET_WIDTH <= hay.len() {
-            // SAFETY: the loop condition keeps `offset + SET_WIDTH` within
-            // `hay.len()`, so `ptr + offset` and the `SET_WIDTH` bytes that
+        while offset + V::BYTES <= hay.len() {
+            // SAFETY: the loop condition keeps `offset + V::BYTES` within
+            // `hay.len()`, so `ptr + offset` and the `V::BYTES` bytes that
             // `mask_at` reads from it lie inside `hay`. `offset` starts below
             // `end <= hay.len()` and the loop returns once it reaches `end`, so
             // the addition cannot overflow.
@@ -248,18 +288,18 @@ impl ByteSet {
             if mask != 0 {
                 return first(offset, mask);
             }
-            offset += SET_WIDTH;
+            offset += V::BYTES;
             if offset >= end {
                 return None;
             }
         }
-        match hay.len().checked_sub(SET_WIDTH) {
+        match hay.len().checked_sub(V::BYTES) {
             Some(base) => {
-                let skipped = (offset - base) as u32 * bits_per_byte;
-                // SAFETY: `base` is `hay.len() - SET_WIDTH` and the subtraction
-                // did not underflow, so the `SET_WIDTH` bytes at `ptr + base` are
+                let skipped = (offset - base) as u32 * V::BITS_PER_BYTE;
+                // SAFETY: `base` is `hay.len() - V::BYTES` and the subtraction
+                // did not underflow, so the `V::BYTES` bytes at `ptr + base` are
                 // the last ones of `hay`. The loop exited with
-                // `offset + SET_WIDTH > hay.len()`, so `offset > base` and the
+                // `offset + V::BYTES > hay.len()`, so `offset > base` and the
                 // shift drops the bytes before `offset`.
                 let mask = mask_at(unsafe { ptr.add(base) }) >> skipped;
                 if mask != 0 { first(offset, mask) } else { None }
@@ -269,30 +309,29 @@ impl ByteSet {
     }
 
     /// First byte of the stop set in `hay[from..end]`, and whether a marked byte
-    /// comes before it, testing `SET_WIDTH` bytes per call of `masks_at`.
+    /// comes before it, testing `V::BYTES` bytes per call of `masks_at`.
     ///
     /// # Safety
     ///
-    /// `masks_at` must read at most `SET_WIDTH` bytes from the pointer it gets
+    /// `masks_at` must read at most `V::BYTES` bytes from the pointer it gets
     /// and must otherwise be sound to call on the running CPU: this function
-    /// passes it only pointers with `SET_WIDTH` bytes of `hay` behind them.
+    /// passes it only pointers with `V::BYTES` bytes of `hay` behind them.
     #[inline(always)]
-    pub(super) unsafe fn simd_stop_in(
+    pub(super) unsafe fn simd_stop_in<V: Vector>(
         &self,
         hay: &[u8],
         from: usize,
         end: usize,
-        bits_per_byte: u32,
         masks_at: impl Fn(*const u8) -> (u64, u64),
     ) -> Stop {
         let end = end.min(hay.len());
         let mut marked = false;
         let mut offset = from;
         while offset < end {
-            let base = if offset + SET_WIDTH <= hay.len() {
+            let base = if offset + V::BYTES <= hay.len() {
                 offset
             } else {
-                match hay.len().checked_sub(SET_WIDTH) {
+                match hay.len().checked_sub(V::BYTES) {
                     Some(base) => base,
                     None => {
                         let rest = self.stop_in(hay, offset, end);
@@ -303,28 +342,45 @@ impl ByteSet {
                     }
                 }
             };
-            let skipped = (offset - base) as u32 * bits_per_byte;
-            // SAFETY: `base` is `offset` when `offset + SET_WIDTH <= hay.len()`,
-            // else `hay.len() - SET_WIDTH` when that does not underflow (a
+            let skipped = (offset - base) as u32 * V::BITS_PER_BYTE;
+            // SAFETY: `base` is `offset` when `offset + V::BYTES <= hay.len()`,
+            // else `hay.len() - V::BYTES` when that does not underflow (a
             // shorter `hay` returned through the safe `ByteSet::stop_in` above),
-            // so the `SET_WIDTH` bytes that `masks_at` reads from
+            // so the `V::BYTES` bytes that `masks_at` reads from
             // `hay.as_ptr() + base` lie inside `hay`. `offset < end <= hay.len()`
-            // keeps `offset + SET_WIDTH` from overflowing.
+            // keeps `offset + V::BYTES` from overflowing.
             let (stops, marks) = masks_at(unsafe { hay.as_ptr().add(base) });
-            let valid = low_bits(end - offset, bits_per_byte);
+            let valid = low_bits(end - offset, V::BITS_PER_BYTE);
             let stops = (stops >> skipped) & valid;
             let marks = (marks >> skipped) & valid;
             if stops != 0 {
-                let first = stops.trailing_zeros() / bits_per_byte;
+                let first = stops.trailing_zeros() / V::BITS_PER_BYTE;
                 return Stop {
                     at: Some(offset + first as usize),
-                    marked: marked || marks & low_bits(first as usize, bits_per_byte) != 0,
+                    marked: marked || marks & low_bits(first as usize, V::BITS_PER_BYTE) != 0,
                 };
             }
             marked |= marks != 0;
-            offset = base + SET_WIDTH;
+            offset = base + V::BYTES;
         }
         Stop { at: None, marked }
+    }
+}
+
+/// The bucket byte of every byte at `at`, to be tested against the `stops` and
+/// `marks` of the [`ByteSet`] the tables come from.
+///
+/// # Safety
+///
+/// `at` must be valid for reads of `V::BYTES` bytes, and the running CPU must
+/// support the [`Vector`] and [`Table`] instruction sets of `V`.
+#[inline(always)]
+pub(super) unsafe fn buckets<V: Table>(at: *const u8, low: V, high: V) -> V {
+    // SAFETY: our caller guarantees `at` is readable for `V::BYTES` bytes and
+    // that the running CPU supports `V` as both a `Vector` and a `Table`.
+    unsafe {
+        let bytes = V::load(at);
+        bytes.lookup_low(low).and(bytes.lookup_high(high))
     }
 }
 

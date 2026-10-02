@@ -9,9 +9,9 @@ mod corpus;
 
 use corpus::{LineEnding, Sample};
 use criterion::{BenchmarkId, Criterion, Throughput, criterion_group, criterion_main};
-use mail_parser::scan::Kernel;
+use mail_parser::{HeaderValue, Message, MessageParser, scan::Kernel};
 use memchr::{memchr_iter, memmem};
-use std::{hint::black_box, time::Duration};
+use std::{fmt::Write, hint::black_box, time::Duration};
 
 fn body_of(sample: &Sample) -> &[u8] {
     memmem::find(&sample.bytes, b"\n\n")
@@ -182,6 +182,76 @@ fn field_split(c: &mut Criterion) {
     group.finish();
 }
 
+const ADDRESS_LIST_SIZES: [usize; 3] = [8, 64, 512];
+
+fn address_list(mailboxes: usize) -> Vec<u8> {
+    let mut out = String::from("From: \"Release Bot (automated)\" <bot@example.com>\r\n");
+    for (header, offset) in [("To", 0), ("Cc", 1)] {
+        let _ = write!(out, "{header}: ");
+        for index in 0..mailboxes {
+            if index > 0 {
+                out.push_str(",\r\n ");
+            }
+            let _ = write!(
+                out,
+                "\"Recipient {index} (team {})\" <user{index}@sub{}.example.org>",
+                index % 5,
+                (index + offset) % 7
+            );
+        }
+        out.push_str("\r\n");
+    }
+    out.push_str("Subject: Weekly release\r\nDate: Tue, 3 Sep 2024 10:00:00 +0000\r\n\r\nbody\r\n");
+    out.into_bytes()
+}
+
+fn addresses_of(message: &Message<'_>) -> usize {
+    let mut total = 0;
+    for part in message.parts() {
+        for header in part.headers().iter() {
+            if let HeaderValue::Address(list) = header.value() {
+                total += list
+                    .mailboxes()
+                    .map(|mailbox| {
+                        mailbox.name().map_or(0, str::len) + mailbox.address().map_or(0, str::len)
+                    })
+                    .sum::<usize>();
+            }
+        }
+    }
+    total
+}
+
+fn header_values(c: &mut Criterion) {
+    let parser = MessageParser::new();
+    let mut group = c.benchmark_group("header_values");
+    let mut inputs: Vec<(String, Vec<Vec<u8>>)> = ADDRESS_LIST_SIZES
+        .iter()
+        .map(|&size| (format!("address-list-{size}"), vec![address_list(size)]))
+        .collect();
+    inputs.push((
+        "modern-headers".to_string(),
+        header_messages(LineEnding::Crlf),
+    ));
+    for (name, messages) in inputs {
+        if messages.is_empty() {
+            continue;
+        }
+        let bytes: usize = messages.iter().map(Vec::len).sum();
+        group.throughput(Throughput::Bytes(bytes as u64));
+        group.bench_function(BenchmarkId::new(Kernel::best().name(), name), |b| {
+            b.iter(|| {
+                messages
+                    .iter()
+                    .filter_map(|raw| parser.parse_headers(black_box(raw)))
+                    .map(|message| addresses_of(&message))
+                    .sum::<usize>()
+            })
+        });
+    }
+    group.finish();
+}
+
 fn config() -> Criterion {
     Criterion::default()
         .warm_up_time(Duration::from_millis(500))
@@ -192,6 +262,6 @@ fn config() -> Criterion {
 criterion_group! {
     name = benches;
     config = config();
-    targets = delimiter_scan, blank_line, field_split
+    targets = delimiter_scan, blank_line, field_split, header_values
 }
 criterion_main!(benches);

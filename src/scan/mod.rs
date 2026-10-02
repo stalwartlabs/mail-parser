@@ -55,6 +55,8 @@ enum Backend {
     #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
     Sse2,
     #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
+    Ssse3,
+    #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
     Avx2,
 }
 
@@ -66,7 +68,8 @@ impl Kernel {
     pub const MEMCHR: Kernel = Kernel(Backend::Memchr);
 
     /// The fastest back end supported by the running CPU: NEON on aarch64,
-    /// AVX2 when detected or else SSE2 on x86_64, `memchr` elsewhere.
+    /// AVX2 or else SSSE3 when detected or else SSE2 on x86_64, `memchr`
+    /// elsewhere.
     pub fn best() -> Self {
         #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
         {
@@ -76,6 +79,8 @@ impl Kernel {
         {
             if std::is_x86_feature_detected!("avx2") {
                 Kernel(Backend::Avx2)
+            } else if std::is_x86_feature_detected!("ssse3") {
+                Kernel(Backend::Ssse3)
             } else {
                 Kernel(Backend::Sse2)
             }
@@ -99,6 +104,8 @@ impl Kernel {
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Some(Kernel(Backend::Sse2)),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
+            std::is_x86_feature_detected!("ssse3").then_some(Kernel(Backend::Ssse3)),
+            #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             std::is_x86_feature_detected!("avx2").then_some(Kernel(Backend::Avx2)),
         ]
         .into_iter()
@@ -115,6 +122,8 @@ impl Kernel {
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Sse2 => "sse2",
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
+            Backend::Ssse3 => "ssse3",
+            #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Avx2 => "avx2",
         }
     }
@@ -129,7 +138,7 @@ impl Kernel {
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
             Backend::Neon => neon::dash_line(hay, from),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Sse2 => x86::sse2_dash_line(hay, from),
+            Backend::Sse2 | Backend::Ssse3 => x86::sse2_dash_line(hay, from),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Avx2 => x86::avx2_dash_line(hay, from),
         }
@@ -145,7 +154,7 @@ impl Kernel {
             #[cfg(all(target_arch = "aarch64", target_feature = "neon"))]
             Backend::Neon => neon::field_end(hay, from),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
-            Backend::Sse2 => x86::sse2_field_end(hay, from),
+            Backend::Sse2 | Backend::Ssse3 => x86::sse2_field_end(hay, from),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Avx2 => x86::avx2_field_end(hay, from),
         }
@@ -166,6 +175,8 @@ impl Kernel {
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Sse2 => set.sse2_first_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
+            Backend::Ssse3 => set.ssse3_first_in(hay, from, end),
+            #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Avx2 => set.avx2_first_in(hay, from, end),
         }
     }
@@ -178,6 +189,8 @@ impl Kernel {
             Backend::Neon => set.neon_stop_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Sse2 => set.sse2_stop_in(hay, from, end),
+            #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
+            Backend::Ssse3 => set.ssse3_stop_in(hay, from, end),
             #[cfg(all(target_arch = "x86_64", target_feature = "sse2"))]
             Backend::Avx2 => set.avx2_stop_in(hay, from, end),
         }
