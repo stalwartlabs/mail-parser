@@ -462,6 +462,7 @@ To reproduce the comparison with other parsers (requires a C/C++ toolchain, GLib
 - [RFC 5233 - Sieve Email Filtering: Subaddress Extension](https://datatracker.ietf.org/doc/html/rfc5233)
 - [RFC 8621 - The JSON Meta Application Protocol (JMAP) for Mail (Section 4.1.4)](https://datatracker.ietf.org/doc/html/rfc8621#section-4.1.4)
 - [RFC 5256 - Internet Message Access Protocol - SORT and THREAD Extensions (Section 2.1)](https://datatracker.ietf.org/doc/html/rfc5256#section-2.1)
+- [RFC 6854 - Group Syntax for Senders](https://datatracker.ietf.org/doc/html/rfc6854)
 
 ## Supported Character Sets
 
