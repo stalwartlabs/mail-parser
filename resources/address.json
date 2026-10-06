@@ -1607,7 +1607,7 @@
     "expected": [
       {
         "mailbox": {
-          "name": "x )y",
+          "name": "x)y",
           "address": "a@b.com"
         }
       }
@@ -1844,5 +1844,66 @@
   {
     "header": " \n",
     "expected": null
+  },
+  {
+    "header": "Foo Bar \\(something\\) <foo@bar.com>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "Foo Bar (something)",
+          "address": "foo@bar.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "Foo \\Bar <foo@bar.com>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "Foo Bar",
+          "address": "foo@bar.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "Foo \\(bar <a@b.c>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "Foo (bar",
+          "address": "a@b.c"
+        }
+      }
+    ]
+  },
+  {
+    "header": "A \\(x\\) <a@b.c>, B <d@e.f>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "A (x)",
+          "address": "a@b.c"
+        }
+      },
+      {
+        "mailbox": {
+          "name": "B",
+          "address": "d@e.f"
+        }
+      }
+    ]
+  },
+  {
+    "header": "<a@b.com> (x\\ y)\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "x y",
+          "address": "a@b.com"
+        }
+      }
+    ]
   }
 ]

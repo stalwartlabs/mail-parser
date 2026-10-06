@@ -11,7 +11,7 @@ use crate::{
     store::{Str, Value},
 };
 use encodify::rfc2047::EncodedWord;
-use std::ops::Range;
+use std::{mem, ops::Range};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u8)]
@@ -37,7 +37,7 @@ static STOPS: [u8; 256] = {
     table[b'=' as usize] = EVERYWHERE;
     table[b'"' as usize] = IN_NAME | IN_QUOTE;
     table[b'(' as usize] = IN_NAME | IN_ADDRESS | IN_COMMENT;
-    table[b'\\' as usize] = IN_ADDRESS | IN_QUOTE | IN_COMMENT;
+    table[b'\\' as usize] = EVERYWHERE;
     table[b',' as usize] = IN_NAME;
     table[b'<' as usize] = IN_NAME;
     table[b'@' as usize] = IN_NAME;
@@ -48,7 +48,7 @@ static STOPS: [u8; 256] = {
     table
 };
 
-static SIMPLE_NAME: ByteSet = ByteSet::with_marks(b"\n\r,;<\"(:=", b"@");
+static SIMPLE_NAME: ByteSet = ByteSet::with_marks(b"\n\r,;<\"(:=\\", b"@");
 static SIMPLE_QUOTED: ByteSet = ByteSet::new(b"\n\r\"\\=");
 static SIMPLE_ADDRESS: ByteSet = ByteSet::new(b"\n\r>\\(=");
 
@@ -273,6 +273,7 @@ struct Parser<'x> {
     email: bool,
     token_start: bool,
     escaped: bool,
+    glued: bool,
     last_encoded: bool,
     name: Acc,
     mail: Acc,
@@ -298,6 +299,7 @@ impl FieldCtx<'_> {
             email: false,
             token_start: true,
             escaped: false,
+            glued: false,
             last_encoded: true,
             name: Acc::EMPTY,
             mail: Acc::EMPTY,
@@ -366,6 +368,7 @@ impl<'x> Parser<'x> {
                 b' ' | b'\t' => {
                     let blanks = 1 + after.iter().take_while(|&&byte| is_blank(byte)).count();
                     self.token_start = true;
+                    self.glued &= !self.escaped;
                     self.escaped = false;
                     if self.state == State::Quote {
                         let first = self.token.map_or(pos, |(first, _)| first);
@@ -375,6 +378,7 @@ impl<'x> Parser<'x> {
                 }
                 b'\r' => pos += 1,
                 b'\\' if !self.escaped => {
+                    let glued = !self.token_start;
                     if let Some((first, _)) = self.token {
                         if self.state == State::Quote {
                             self.token = Some((first, pos));
@@ -382,6 +386,7 @@ impl<'x> Parser<'x> {
                         self.add_token();
                     }
                     self.escaped = true;
+                    self.glued = glued;
                     pos += 1;
                 }
                 b'=' if self.token_start && !self.escaped && after.first() == Some(&b'?') => {
@@ -516,7 +521,7 @@ impl<'x> Parser<'x> {
             State::Comment => (List::Comment, true),
         };
         self.flush_word(self.raw.len());
-        let space = separated && self.acc(list).count > 0;
+        let space = separated && !mem::take(&mut self.glued) && self.acc(list).count > 0;
         self.add_piece(
             list,
             Piece {
@@ -854,7 +859,7 @@ mod tests {
     #[test]
     fn address_fixtures() {
         let tests = load_tests("address.json");
-        assert_eq!(tests.len(), 127);
+        assert_eq!(tests.len(), 132);
         for (header, expected) in tests {
             assert_eq!(parse(&header), expected, "{header:?}");
             let crlf = header.replace("\r\n", "\n").replace('\n', "\r\n");
