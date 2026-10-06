@@ -123,7 +123,7 @@ mod tests {
     #[test]
     fn html_to_text_fixtures() {
         let tests = load_text_pairs("decoders/html_to_text.json");
-        assert_eq!(tests.len(), 12);
+        assert_eq!(tests.len(), 24);
         for (input, expected) in tests {
             assert_eq!(html_to_text(&input), expected, "{input:?}");
         }

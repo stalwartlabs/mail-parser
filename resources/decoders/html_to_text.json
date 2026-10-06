@@ -46,5 +46,53 @@
   {
     "input": "<div>Hello</div><template><div>Hidden</div><style>.x{}</style></template><div>World</div>",
     "expected": "HelloWorld"
+  },
+  {
+    "input": "<style type=\"text/css\">p { color: red; }</style><p>Hello world</p>",
+    "expected": "Hello world\n"
+  },
+  {
+    "input": "<script type=\"text/javascript\">var x = 1;</script><p>Hello world</p>",
+    "expected": "Hello world\n"
+  },
+  {
+    "input": "<STYLE TYPE=\"text/css\" media=\"screen\">.a{b:c}</STYLE>Hi",
+    "expected": "Hi"
+  },
+  {
+    "input": "<head lang=\"en\"><title>Title</title></head><body class=\"main\">Body</body>",
+    "expected": "Body"
+  },
+  {
+    "input": "<div>Hello</div><template id=\"row\"><div>Hidden</div></template><div>World</div>",
+    "expected": "HelloWorld"
+  },
+  {
+    "input": "line one<br class=\"x\">line two<br style=\"a\" />end",
+    "expected": "line one\nline two\nend"
+  },
+  {
+    "input": "<p class=\"intro\">first</p><p style=\"margin:0\">second</p>",
+    "expected": "first\nsecond\n"
+  },
+  {
+    "input": "<!--[if mso]><style type=\"text/css\">td{}</style><![endif]--><style type=\"text/css\">@media{.a{b:c}}</style><table role=\"presentation\"><tr><td style=\"padding:0\">Sale &amp; more</td></tr></table>",
+    "expected": "Sale & more"
+  },
+  {
+    "input": "<p>Before</p><!----><p>Hello world</p>",
+    "expected": "Before\nHello world\n"
+  },
+  {
+    "input": "a<!-- x --->b<!---->c<!-->d<!--->e<!-- y --!>f",
+    "expected": "abcdef"
+  },
+  {
+    "input": "a<!---!>x--><!--!>y--><!-- z- ->w -->b",
+    "expected": "ab"
+  },
+  {
+    "input": "before<!-- unterminated --",
+    "expected": "before"
   }
 ]

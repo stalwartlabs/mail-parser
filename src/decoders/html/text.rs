@@ -9,7 +9,8 @@ use memchr::{memchr, memchr2};
 use super::decode_entity;
 
 const COMMENT_OPEN: &[u8] = b"--";
-const COMMENT_CLOSE_DASHES: usize = 2;
+const COMMENT_CLOSE: &[u8] = b"--";
+const COMMENT_BANG_CLOSE: &[u8] = b"--!";
 const NAMED_TAG: usize = 1;
 
 static TEXT_DELIMITERS: [bool; 256] = delimiters(b"<&; \t\r\n");
@@ -133,7 +134,7 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
                 continue;
             }
             b'>' if in_tag => {
-                if tag_token_pos == NAMED_TAG
+                if tag_token_pos >= NAMED_TAG
                     && let Some(tag) = bytes.get(token_start..token_end + 1)
                 {
                     match Tag::parse(tag) {
@@ -220,11 +221,15 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
             _ => (),
         }
         if is_token_start {
-            token_start = pos;
             is_token_start = false;
             if in_tag {
                 tag_token_pos += 1;
+                if tag_token_pos > NAMED_TAG {
+                    pos += 1;
+                    continue;
+                }
             }
+            token_start = pos;
         }
         token_end = pos;
         pos += 1;
@@ -255,15 +260,12 @@ fn comment_close(bytes: &[u8], comment_start: usize) -> Option<usize> {
     let mut pos = comment_start;
     loop {
         let close = pos + memchr(b'>', bytes.get(pos..)?)?;
-        let dashes = bytes
-            .get(comment_start..close)
-            .unwrap_or_default()
-            .iter()
-            .rev()
-            .take(COMMENT_CLOSE_DASHES + 1)
-            .take_while(|&&byte| byte == b'-')
-            .count();
-        if dashes == COMMENT_CLOSE_DASHES {
+        let comment = bytes.get(comment_start..close)?;
+        if comment.ends_with(COMMENT_CLOSE)
+            || comment
+                .strip_prefix(COMMENT_OPEN)
+                .is_some_and(|body| body.ends_with(COMMENT_BANG_CLOSE))
+        {
             return Some(close);
         }
         pos = close + 1;
