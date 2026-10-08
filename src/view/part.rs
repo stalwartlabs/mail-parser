@@ -12,6 +12,13 @@ use crate::{
 };
 use std::{borrow::Cow, fmt};
 
+const WHOLE_TEXT_RAW_PER_BYTE: usize = 4;
+const DENSE_WHOLE_TEXT_RAW_PER_BYTE: usize = 10;
+const DENSITY_SAMPLE_BYTES: usize = 4096;
+const DENSE_SAMPLE_BYTES_PER_ESCAPE: usize = 4;
+const DENSITY_COUNT_CHUNK: usize = 64;
+const _: () = assert!(DENSITY_COUNT_CHUNK <= u8::MAX as usize);
+
 /// A MIME part: a header block and a body. Parts are numbered in document
 /// order across nested messages ([`MessagePart::id`]), and every message has
 /// a root part holding its own header fields.
@@ -613,6 +620,42 @@ impl<'m> MessagePart<'m> {
     pub fn text_prefix(&self, max_chars: usize) -> Option<Cow<'m, str>> {
         self.text_prefix_state(decoders::Limit::Chars(max_chars))
             .map(|prefix| prefix.text)
+    }
+
+    /// [`MessagePart::text`] cut at [`str::floor_char_boundary`] of
+    /// `max_bytes`: the longest prefix that is at most `max_bytes` bytes
+    /// long and ends on a character boundary. `None` for other parts.
+    pub fn text_prefix_bytes(&self, max_bytes: usize) -> Option<Cow<'m, str>> {
+        let raw = self.raw_body();
+        let decode_whole = match self.entry.encoding {
+            Encoding::None => false,
+            _ if raw.len() <= max_bytes.saturating_mul(WHOLE_TEXT_RAW_PER_BYTE) => true,
+            _ if raw.len() > max_bytes.saturating_mul(DENSE_WHOLE_TEXT_RAW_PER_BYTE) => false,
+            Encoding::QuotedPrintable => {
+                let sample = raw.get(..DENSITY_SAMPLE_BYTES).unwrap_or(raw);
+                let (chunks, rest) = sample.as_chunks::<DENSITY_COUNT_CHUNK>();
+                let escapes = chunks
+                    .iter()
+                    .map(|chunk| {
+                        usize::from(chunk.iter().map(|&byte| u8::from(byte == b'=')).sum::<u8>())
+                    })
+                    .sum::<usize>()
+                    + rest.iter().filter(|&&byte| byte == b'=').count();
+                escapes * DENSE_SAMPLE_BYTES_PER_ESCAPE > sample.len()
+            }
+            Encoding::Base64 => matches!(
+                self.text_charset(),
+                Charset::Utf16 | Charset::Utf16Le | Charset::Utf16Be
+            ),
+        };
+        let text = if decode_whole {
+            self.text()?
+        } else {
+            self.text_prefix_state(decoders::Limit::Bytes(max_bytes))?
+                .text
+        };
+        let end = text.floor_char_boundary(max_bytes);
+        Some(decoders::truncate(text, end))
     }
 
     pub(crate) fn text_prefix_state(

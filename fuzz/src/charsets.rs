@@ -57,23 +57,29 @@ const LABELS: [&str; 44] = [
 
 const PREVIEW_LENS: [usize; 6] = [0, 1, 6, 7, 20, 300];
 const PREFIX_CHARS: [usize; 5] = [0, 1, 5, 64, 1_000];
+const PREFIX_BYTES: [usize; 6] = [0, 1, 7, 64, 300, 1_000];
 const ELLIPSIS: &str = "...";
 const APPENDED: &str = "appended";
 const HTML_OPEN: &str = "<html><body>";
 const HTML_CLOSE: &str = "</body></html>";
 const MAX_LABEL: usize = 48;
+const BOMS: [&[u8]; 3] = [b"\xef\xbb\xbf", b"\xff\xfe", b"\xfe\xff"];
 
 #[derive(Debug, Clone, Copy)]
 enum Transfer {
     Identity,
     Base64,
     QuotedPrintable,
+    RawBase64,
+    RawQuotedPrintable,
 }
 
-const TRANSFERS: [(Transfer, &str); 3] = [
+const TRANSFERS: [(Transfer, &str); 5] = [
     (Transfer::Identity, "8bit"),
     (Transfer::Base64, "base64"),
     (Transfer::QuotedPrintable, "quoted-printable"),
+    (Transfer::RawBase64, "base64"),
+    (Transfer::RawQuotedPrintable, "quoted-printable"),
 ];
 
 pub fn check(data: &[u8]) {
@@ -124,13 +130,33 @@ fn labels(label: &[u8], charset: Option<Charset>, bytes: &[u8]) {
     debug(&charset);
 }
 
+fn sniffs_bom(charset: Charset) -> bool {
+    matches!(
+        charset,
+        Charset::ShiftJis
+            | Charset::Big5
+            | Charset::EucJp
+            | Charset::EucKr
+            | Charset::Gb18030
+            | Charset::Gbk
+            | Charset::Iso2022Jp
+            | Charset::Ibm866
+            | Charset::XMacCyrillic
+            | Charset::XUserDefined
+            | Charset::Replacement
+    )
+}
+
 fn conversions(charset: Charset, bytes: &[u8]) -> Cow<'_, str> {
     let decoded = charset.decode(bytes);
     valid(&decoded);
     if let Cow::Borrowed(text) = &decoded {
-        assert_eq!(
-            text.as_bytes(),
-            bytes,
+        assert!(
+            text.as_bytes() == bytes
+                || sniffs_bom(charset)
+                    && BOMS
+                        .iter()
+                        .any(|bom| bytes.strip_prefix(*bom) == Some(text.as_bytes())),
             "borrowed text differs from its bytes"
         );
     }
@@ -155,7 +181,9 @@ fn in_message(label: &str, transfer: Transfer, name: &str, bytes: &[u8], decoded
     )
     .into_bytes();
     match transfer {
-        Transfer::Identity => raw.extend_from_slice(bytes),
+        Transfer::Identity | Transfer::RawBase64 | Transfer::RawQuotedPrintable => {
+            raw.extend_from_slice(bytes)
+        }
         Transfer::Base64 => raw.extend_from_slice(base64::MIME.encode(bytes).as_bytes()),
         Transfer::QuotedPrintable => raw.extend_from_slice(qp::BINARY.encode(bytes).as_bytes()),
     }
@@ -165,7 +193,7 @@ fn in_message(label: &str, transfer: Transfer, name: &str, bytes: &[u8], decoded
     walk::check_message(&message);
     let part = message.root().root_part();
     let body = part.decoded();
-    if !matches!(transfer, Transfer::QuotedPrintable) {
+    if matches!(transfer, Transfer::Identity | Transfer::Base64) {
         assert_eq!(body.as_ref(), bytes, "{transfer:?} body");
     }
     let text = part.text().expect("a text/plain part has text");
@@ -183,6 +211,31 @@ fn in_message(label: &str, transfer: Transfer, name: &str, bytes: &[u8], decoded
             "{label} {transfer:?} text_prefix({max_chars})"
         );
     }
+    for max_bytes in
+        PREFIX_BYTES
+            .into_iter()
+            .chain([text.len().saturating_sub(1), text.len(), text.len() + 1])
+    {
+        assert_eq!(
+            part.text_prefix_bytes(max_bytes).as_deref(),
+            Some(byte_prefix(&text, max_bytes)),
+            "{label} {transfer:?} text_prefix_bytes({max_bytes})"
+        );
+        let probe = part
+            .text_prefix_bytes(max_bytes + char::MAX_LEN_UTF8)
+            .expect("a text/plain part has text");
+        assert_eq!(
+            probe.len() > max_bytes,
+            text.len() > max_bytes,
+            "{label} {transfer:?} text_prefix_bytes({max_bytes} + {})",
+            char::MAX_LEN_UTF8
+        );
+    }
+}
+
+fn byte_prefix(text: &str, max_bytes: usize) -> &str {
+    text.get(..text.floor_char_boundary(max_bytes))
+        .unwrap_or(text)
 }
 
 fn text_functions(text: &str) {

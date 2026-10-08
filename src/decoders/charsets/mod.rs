@@ -899,6 +899,26 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "full_encoding")]
+    #[test]
+    fn encoding_rs_charsets_drop_a_utf8_bom() {
+        for (bytes, expected) in [
+            (&b"\xef\xbb\xbf"[..], ""),
+            (b"\xef\xbb\xbfabc\xd0\x96", "abc\u{416}"),
+        ] {
+            for charset in [Charset::Ibm866, Charset::ShiftJis, Charset::XMacCyrillic] {
+                let decoded = charset.decode(bytes);
+                assert!(matches!(decoded, Cow::Borrowed(_)), "{charset:?} {bytes:?}");
+                assert_eq!(decoded, expected, "{charset:?} {bytes:?}");
+                assert_eq!(charset.decode_owned(bytes.to_vec()), expected);
+                let mut appended = String::from("<");
+                charset.decode_append(bytes, &mut appended);
+                assert_eq!(appended.strip_prefix('<'), Some(expected));
+                assert_eq!(charset.decode_checked(bytes).0, expected);
+            }
+        }
+    }
+
     #[test]
     fn utf16_dangling_byte_is_replaced() {
         for (charset, bytes, expected) in [

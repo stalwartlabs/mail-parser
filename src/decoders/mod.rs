@@ -19,7 +19,7 @@ use crate::Encoding;
 use encodify::{base64, qp};
 use std::borrow::Cow;
 
-pub(crate) use prefix::{Limit, TextPrefix};
+pub(crate) use prefix::{Limit, TextPrefix, truncate};
 
 impl Encoding {
     pub(crate) fn parse(value: &[u8]) -> Option<Encoding> {
