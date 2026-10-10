@@ -149,6 +149,11 @@ macro_rules! header_getters {
             self.$target().sender()
         }
 
+        /// Every From field, in document order.
+        pub fn all_from(&self) -> impl Iterator<Item = AddressList<$lt>> $($captures)* {
+            self.$target().all_from()
+        }
+
         /// Every To field, in document order.
         pub fn all_to(&self) -> impl Iterator<Item = AddressList<$lt>> $($captures)* {
             self.$target().all_to()

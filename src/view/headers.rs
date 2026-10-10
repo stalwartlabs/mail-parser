@@ -362,6 +362,11 @@ impl<'m> Headers<'m> {
         self.address(HeaderId::Sender)
     }
 
+    /// Every From field, in document order.
+    pub fn all_from(&self) -> impl Iterator<Item = AddressList<'m>> + use<'m> {
+        self.all_addresses(HeaderName::From)
+    }
+
     /// Every To field, in document order.
     pub fn all_to(&self) -> impl Iterator<Item = AddressList<'m>> + use<'m> {
         self.all_addresses(HeaderName::To)
