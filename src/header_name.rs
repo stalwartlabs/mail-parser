@@ -78,6 +78,7 @@ macro_rules! header_names {
 }
 
 pub(crate) const OTHER_ID: u16 = u16::MAX;
+const CONTENT_PREFIX: &[u8] = b"content-";
 pub(crate) const FIRST_VENDOR: u16 = HeaderId::XOriginalTo as u16;
 
 header_names! {
@@ -492,6 +493,30 @@ impl<'x> HeaderName<'x> {
         )
     }
 
+    /// Whether this is any `Content-*` header field, known or not: the
+    /// fields that describe a part's content and do not survive replacing it.
+    pub fn is_content_header(&self) -> bool {
+        match self {
+            HeaderName::ContentDescription
+            | HeaderName::ContentId
+            | HeaderName::ContentLanguage
+            | HeaderName::ContentLocation
+            | HeaderName::ContentTransferEncoding
+            | HeaderName::ContentType
+            | HeaderName::ContentDisposition
+            | HeaderName::ContentAlternative
+            | HeaderName::ContentDuration
+            | HeaderName::ContentFeatures
+            | HeaderName::ContentMd5
+            | HeaderName::ContentTranslationType => true,
+            HeaderName::Other(name) => name
+                .as_bytes()
+                .get(..CONTENT_PREFIX.len())
+                .is_some_and(|prefix| prefix.eq_ignore_ascii_case(CONTENT_PREFIX)),
+            _ => false,
+        }
+    }
+
     /// Whether the default parser yields a structured value for this name.
     pub fn is_structured(&self) -> bool {
         matches!(
@@ -677,6 +702,21 @@ mod tests {
         }
         assert_eq!(KNOWN_NAMES, 252);
         assert_eq!(MAX_NAME_LEN, 62);
+    }
+
+    #[test]
+    fn content_headers_match_the_content_prefix() {
+        // every known Content-* name, and only those, is a content header
+        for (variant, lowercase) in VARIANTS.iter().zip(LOWERCASE.iter()) {
+            assert_eq!(
+                variant.is_content_header(),
+                lowercase.starts_with("content-"),
+                "{lowercase}"
+            );
+        }
+        assert!(HeaderName::Other("CONTENT-Base".into()).is_content_header());
+        assert!(!HeaderName::Other("Contents".into()).is_content_header());
+        assert!(!HeaderName::MimeVersion.is_content_header());
     }
 
     #[test]
