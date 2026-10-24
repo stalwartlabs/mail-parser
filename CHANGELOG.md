@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-10-24
 
 A rewrite of the parser for performance, with a new read-only API. Breaking changes are listed under Changed and Removed; the table at the end of this entry maps the 0.11 API to 1.0.
 
