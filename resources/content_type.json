@@ -1452,5 +1452,87 @@
         ]
       ]
     }
+  },
+  {
+    "header": " image/png; name=\r\n\t\"logo.png\"\r\n",
+    "expected": {
+      "c_type": "image",
+      "c_subtype": "png",
+      "attributes": [
+        [
+          "name",
+          "logo.png"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " attachment; filename=\n logo.png\n",
+    "expected": {
+      "c_type": "attachment",
+      "c_subtype": null,
+      "attributes": [
+        [
+          "filename",
+          "logo.png"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " multipart/mixed; boundary=\r\n\t\"X\"; type=text/plain\r\n",
+    "expected": {
+      "c_type": "multipart",
+      "c_subtype": "mixed",
+      "attributes": [
+        [
+          "boundary",
+          "X"
+        ],
+        [
+          "type",
+          "text/plain"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " attachment; filename*0=\"long \"; filename*1*=\n name.txt\n",
+    "expected": {
+      "c_type": "attachment",
+      "c_subtype": null,
+      "attributes": [
+        [
+          "filename",
+          "long name.txt"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name=\n =?utf-8?q?caf=C3=A9?=\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café"
+        ]
+      ]
+    }
+  },
+  {
+    "header": " text/plain; name*=\n utf-8''caf%C3%A9\n",
+    "expected": {
+      "c_type": "text",
+      "c_subtype": "plain",
+      "attributes": [
+        [
+          "name",
+          "café"
+        ]
+      ]
+    }
   }
 ]

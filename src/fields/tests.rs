@@ -81,7 +81,7 @@ fn normalize(expected: Json) -> Json {
 #[test]
 fn content_type_fixtures() {
     let tests = load_tests("content_type.json");
-    assert_eq!(tests.len(), 120);
+    assert_eq!(tests.len(), 126);
     for (header, expected) in tests {
         let parsed = HeaderForm::ContentType.parse(header.as_bytes());
         assert_eq!(

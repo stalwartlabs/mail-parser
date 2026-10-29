@@ -1,7 +1,7 @@
 [package]
 name = "mail-parser"
 description = "Fast and robust e-mail parsing library for Rust"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 rust-version = "1.98"
 authors = [ "Stalwart Labs <hello@stalw.art>"]

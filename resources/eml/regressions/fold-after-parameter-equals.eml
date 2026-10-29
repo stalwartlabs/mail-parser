@@ -1,0 +1,12 @@
+From: a@example.com
+Content-Type: multipart/mixed; boundary=
+	"X"
+
+--X
+Content-Type: image/png; name=
+	"logo.png"
+Content-Disposition: attachment; filename=
+ logo.png
+
+x
+--X--

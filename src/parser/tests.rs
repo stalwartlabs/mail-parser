@@ -243,6 +243,25 @@ fn multipart_structure() {
 }
 
 #[test]
+fn fold_after_parameter_equals() {
+    let raw = regression!("fold-after-parameter-equals");
+    for raw in [raw.to_vec(), with_crlf(raw)] {
+        let message = parse(&raw);
+        let root = message.root_part();
+        assert!(matches!(root.kind(), PartKind::Multipart));
+        assert_eq!(root.boundary(), Some("X"));
+        let image = message.part(1).expect("part");
+        assert_eq!(image.attachment_name(), Some("logo.png"));
+        assert_eq!(
+            image
+                .content_type()
+                .and_then(|content_type| content_type.attribute("name")),
+            Some("logo.png")
+        );
+    }
+}
+
+#[test]
 fn delimiter_rule() {
     let raw = regression!("delimiter-rule");
     let message = parse(raw);

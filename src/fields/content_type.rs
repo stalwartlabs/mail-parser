@@ -279,7 +279,7 @@ impl Kernel {
             if bytes.get(at) != Some(&b'=') {
                 return None;
             }
-            at = skip_space(bytes, at + 1);
+            at = skip_blank(bytes, at + 1);
             let value = if bytes.get(at) == Some(&b'"') {
                 let end = self.value_end(bytes, at + 1, &QUOTED_STOPS)?;
                 if bytes.get(end) != Some(&b'"') {
@@ -376,7 +376,14 @@ impl FieldCtx<'_> {
                         State::Type | State::AttributeName | State::SubType => {
                             parser.add_attribute(self);
                         }
-                        State::AttributeValue => parser.add_value(self),
+                        State::AttributeValue => {
+                            if next_is_space && parser.token.is_none() && !parser.has_values {
+                                pos += 1;
+                                parser.is_token_start = true;
+                                continue;
+                            }
+                            parser.add_value(self);
+                        }
                         State::AttributeQuotedValue => {
                             if next_is_space {
                                 pos += 1;
@@ -1002,6 +1009,8 @@ mod tests {
             b" text/plain; charset =x\r\n",
             b" text/plain; charset= x\r\n",
             b" text/plain; charset=\r\n x\r\n",
+            b" image/png; name=\r\n\t\"logo.png\"\r\n",
+            b" text/plain; name=\r\n =?utf-8?q?a?=\r\n",
             b" text/plain; boundary=Apple-Mail=_D9E8-1\r\n",
             b" text/plain; name==?utf-8?q?a?=\r\n",
             b" text/plain; name=\"=?utf-8?q?a?=\"\r\n",

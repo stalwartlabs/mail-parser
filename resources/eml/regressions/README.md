@@ -94,3 +94,4 @@ in both feature sets).
 | `decoding-accessors` | `decoding_accessors`: quoted-printable text and base64 binary parts. |
 | `header-views` | `header_views`: a field name with an invalid UTF-8 byte, lookups by name. |
 | `decode-problems` | `decode_problems`: one part per decode problem (transfer encoding, unknown and malformed charsets). |
+| `fold-after-parameter-equals` | #165, `fold_after_parameter_equals`: a folded line right after `=` in the `boundary`, `name` and `filename` parameters. |
