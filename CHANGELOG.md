@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [1.0.1] - Unreleased
+## [1.0.1] - 2026-11-02
 
 ### Fixed
 - A parameter value on a folded line after `=` was read as a new parameter name, losing `name`, `filename` and `boundary` (#165).
