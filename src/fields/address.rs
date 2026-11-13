@@ -35,7 +35,7 @@ static STOPS: [u8; 256] = {
     table[b' ' as usize] = EVERYWHERE;
     table[b'\t' as usize] = EVERYWHERE;
     table[b'=' as usize] = EVERYWHERE;
-    table[b'"' as usize] = IN_NAME | IN_QUOTE;
+    table[b'"' as usize] = IN_NAME | IN_ADDRESS | IN_QUOTE;
     table[b'(' as usize] = IN_NAME | IN_ADDRESS | IN_COMMENT;
     table[b'\\' as usize] = EVERYWHERE;
     table[b',' as usize] = IN_NAME;
@@ -273,6 +273,7 @@ struct Parser<'x> {
     email: bool,
     token_start: bool,
     escaped: bool,
+    address_quoted: bool,
     glued: bool,
     last_encoded: bool,
     name: Acc,
@@ -299,6 +300,7 @@ impl FieldCtx<'_> {
             email: false,
             token_start: true,
             escaped: false,
+            address_quoted: false,
             glued: false,
             last_encoded: true,
             name: Acc::EMPTY,
@@ -377,6 +379,11 @@ impl<'x> Parser<'x> {
                     pos += blanks;
                 }
                 b'\r' => pos += 1,
+                b'\\' if !self.escaped && self.address_quoted && self.state == State::Address => {
+                    self.extend(pos, pos + 1);
+                    self.escaped = true;
+                    pos += 1;
+                }
                 b'\\' if !self.escaped => {
                     let glued = !self.token_start;
                     if let Some((first, _)) = self.token {
@@ -411,6 +418,7 @@ impl<'x> Parser<'x> {
                     pos += 1;
                 }
                 b'>' => {
+                    self.address_quoted = false;
                     self.add_token();
                     self.state = State::Name;
                     pos += 1;
@@ -418,6 +426,11 @@ impl<'x> Parser<'x> {
                 b'"' if !self.escaped && self.state == State::Name => {
                     self.state = State::Quote;
                     self.add_token();
+                    pos += 1;
+                }
+                b'"' if !self.escaped && self.state == State::Address => {
+                    self.address_quoted = !self.address_quoted;
+                    self.extend(pos, pos + 1);
                     pos += 1;
                 }
                 b'"' if !self.escaped => {
@@ -859,7 +872,7 @@ mod tests {
     #[test]
     fn address_fixtures() {
         let tests = load_tests("address.json");
-        assert_eq!(tests.len(), 132);
+        assert_eq!(tests.len(), 136);
         for (header, expected) in tests {
             assert_eq!(parse(&header), expected, "{header:?}");
             let crlf = header.replace("\r\n", "\n").replace('\n', "\r\n");

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.2] - Unreleased
+
+### Fixed
+- A quoted local part inside angle brackets lost its backslashes, so `<"a\"b"@example.com>` gave the address `"a"b"@example.com`. A quoted-pair now stays in the address as written.
+
 ## [1.0.1] - 2026-11-02
 
 ### Fixed
