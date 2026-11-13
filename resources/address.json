@@ -1905,5 +1905,55 @@
         }
       }
     ]
+  },
+  {
+    "header": "<\"a\\\"b\"@example.com>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"a\\\"b\"@example.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "Name <\"a\\\"b\"@example.com>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "Name",
+          "address": "\"a\\\"b\"@example.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "<\"a\\\\b\"@example.com>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"a\\\\b\"@example.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "<\"a\\\"b@c.d>, <e\\f@g.h>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"a\\\"b@c.d"
+        }
+      },
+      {
+        "mailbox": {
+          "name": null,
+          "address": "ef@g.h"
+        }
+      }
+    ]
   }
 ]
