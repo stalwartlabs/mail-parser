@@ -51,6 +51,7 @@ static STOPS: [u8; 256] = {
 static SIMPLE_NAME: ByteSet = ByteSet::with_marks(b"\n\r,;<\"(:=\\", b"@");
 static SIMPLE_QUOTED: ByteSet = ByteSet::new(b"\n\r\"\\=");
 static SIMPLE_ADDRESS: ByteSet = ByteSet::new(b"\n\r>\\(=");
+static QUOTED_LOCAL_PART: ByteSet = ByteSet::new(b"\n\"\\");
 
 fn is_blank(byte: u8) -> bool {
     byte == b' ' || byte == b'\t'
@@ -156,6 +157,22 @@ impl Item<'_> {
                 {
                     from = stop + 1
                 }
+                _ => return None,
+            }
+        }
+    }
+
+    /// The position of the `"` closing the quoted string that opens the item,
+    /// when the string stays on one line and an `@` follows it directly,
+    /// making it the local part of an `addr-spec`.
+    fn quoted_local_part_end(&self) -> Option<usize> {
+        let bytes = self.bytes();
+        let mut from = 1;
+        loop {
+            let stop = self.find(&QUOTED_LOCAL_PART, from)?;
+            match bytes.get(stop..)? {
+                [b'"', b'@', ..] => return Some(stop),
+                [b'\\', escaped, ..] if *escaped != b'\n' => from = stop + 2,
                 _ => return None,
             }
         }
@@ -416,9 +433,23 @@ impl<'x> Parser<'x> {
                     pos += 1;
                 }
                 b'"' if !self.escaped && self.state == State::Name => {
-                    self.state = State::Quote;
-                    self.add_token();
-                    pos += 1;
+                    let quoted = Item {
+                        kernel: ctx.kernel(),
+                        src,
+                        start: pos,
+                        end: self.end,
+                    };
+                    match quoted.quoted_local_part_end() {
+                        Some(close) => {
+                            self.extend(pos, pos + close + 1);
+                            pos += close + 1;
+                        }
+                        None => {
+                            self.state = State::Quote;
+                            self.add_token();
+                            pos += 1;
+                        }
+                    }
                 }
                 b'"' if !self.escaped => {
                     self.add_token();
@@ -859,7 +890,7 @@ mod tests {
     #[test]
     fn address_fixtures() {
         let tests = load_tests("address.json");
-        assert_eq!(tests.len(), 132);
+        assert_eq!(tests.len(), 137);
         for (header, expected) in tests {
             assert_eq!(parse(&header), expected, "{header:?}");
             let crlf = header.replace("\r\n", "\n").replace('\n', "\r\n");

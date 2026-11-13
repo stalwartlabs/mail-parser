@@ -17,6 +17,7 @@ const FIELD_STOPS: u8 = 0x21;
 static SIMPLE_NAME: ByteSet = ByteSet::with_marks(b"\n\r,;<\"(:=", b"@");
 static SIMPLE_QUOTED: ByteSet = ByteSet::new(b"\n\r\"\\=");
 static SIMPLE_ADDRESS: ByteSet = ByteSet::new(b"\n\r>\\(=");
+static QUOTED_LOCAL_PART: ByteSet = ByteSet::new(b"\n\"\\");
 static TOKEN_STOPS: LazyLock<ByteSet> = LazyLock::new(token_stops);
 
 type Scan = fn(Kernel, &[u8], usize) -> Option<usize>;
@@ -38,7 +39,13 @@ pub fn report() {
 
 pub fn check(data: &[u8]) {
     variants(data, SHIFTS, scans);
-    for set in [&SIMPLE_NAME, &SIMPLE_QUOTED, &SIMPLE_ADDRESS, &TOKEN_STOPS] {
+    for set in [
+        &SIMPLE_NAME,
+        &SIMPLE_QUOTED,
+        &SIMPLE_ADDRESS,
+        &QUOTED_LOCAL_PART,
+        &TOKEN_STOPS,
+    ] {
         sets(set, data);
     }
     if let Some((custom, hay)) = custom_sets(data) {

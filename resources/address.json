@@ -1905,5 +1905,71 @@
         }
       }
     ]
+  },
+  {
+    "header": "\"mario rossi\"@pec.example.it\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"mario rossi\"@pec.example.it"
+        }
+      }
+    ]
+  },
+  {
+    "header": "\"mario.rossi\"@pec.example.it, Mario <\"mario rossi\"@pec.example.it>\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"mario.rossi\"@pec.example.it"
+        }
+      },
+      {
+        "mailbox": {
+          "name": "Mario",
+          "address": "\"mario rossi\"@pec.example.it"
+        }
+      }
+    ]
+  },
+  {
+    "header": "\"a\\\"b\"@example.com\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": null,
+          "address": "\"a\\\"b\"@example.com"
+        }
+      }
+    ]
+  },
+  {
+    "header": "mario.\"rossi\"@pec.example.it (Mario)\n",
+    "expected": [
+      {
+        "mailbox": {
+          "name": "Mario",
+          "address": "mario.\"rossi\"@pec.example.it"
+        }
+      }
+    ]
+  },
+  {
+    "header": "Team: \"a b\"@c.d;\n",
+    "expected": [
+      {
+        "group": {
+          "name": "Team",
+          "mailboxes": [
+            {
+              "name": null,
+              "address": "\"a b\"@c.d"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
