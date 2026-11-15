@@ -184,7 +184,41 @@ fn field_split(c: &mut Criterion) {
 
 const ADDRESS_LIST_SIZES: [usize; 3] = [8, 64, 512];
 
-fn address_list(mailboxes: usize) -> Vec<u8> {
+type WriteMailbox = fn(&mut String, usize, usize);
+
+const ADDRESS_LIST_SHAPES: [(&str, WriteMailbox); 2] = [
+    ("address-list", display_name_mailbox),
+    ("quoted-address-list", quoted_mailbox),
+];
+
+fn display_name_mailbox(out: &mut String, index: usize, offset: usize) {
+    let _ = write!(
+        out,
+        "\"Recipient {index} (team {})\" <user{index}@sub{}.example.org>",
+        index % 5,
+        (index + offset) % 7
+    );
+}
+
+fn quoted_mailbox(out: &mut String, index: usize, offset: usize) {
+    let _ = if index.is_multiple_of(2) {
+        write!(
+            out,
+            "\"Recipient {index}\" (team {}) <user{index}@sub{}.example.org>",
+            index % 5,
+            (index + offset) % 7
+        )
+    } else {
+        write!(
+            out,
+            "\"user {index}\"@sub{}.example.org (team {})",
+            (index + offset) % 7,
+            index % 5
+        )
+    };
+}
+
+fn address_list(mailboxes: usize, write_mailbox: WriteMailbox) -> Vec<u8> {
     let mut out = String::from("From: \"Release Bot (automated)\" <bot@example.com>\r\n");
     for (header, offset) in [("To", 0), ("Cc", 1)] {
         let _ = write!(out, "{header}: ");
@@ -192,12 +226,7 @@ fn address_list(mailboxes: usize) -> Vec<u8> {
             if index > 0 {
                 out.push_str(",\r\n ");
             }
-            let _ = write!(
-                out,
-                "\"Recipient {index} (team {})\" <user{index}@sub{}.example.org>",
-                index % 5,
-                (index + offset) % 7
-            );
+            write_mailbox(&mut out, index, offset);
         }
         out.push_str("\r\n");
     }
@@ -225,9 +254,16 @@ fn addresses_of(message: &Message<'_>) -> usize {
 fn header_values(c: &mut Criterion) {
     let parser = MessageParser::new();
     let mut group = c.benchmark_group("header_values");
-    let mut inputs: Vec<(String, Vec<Vec<u8>>)> = ADDRESS_LIST_SIZES
+    let mut inputs: Vec<(String, Vec<Vec<u8>>)> = ADDRESS_LIST_SHAPES
         .iter()
-        .map(|&size| (format!("address-list-{size}"), vec![address_list(size)]))
+        .flat_map(|&(shape, write_mailbox)| {
+            ADDRESS_LIST_SIZES.iter().map(move |&size| {
+                (
+                    format!("{shape}-{size}"),
+                    vec![address_list(size, write_mailbox)],
+                )
+            })
+        })
         .collect();
     inputs.push((
         "modern-headers".to_string(),
