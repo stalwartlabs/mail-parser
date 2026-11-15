@@ -162,9 +162,6 @@ impl Item<'_> {
         }
     }
 
-    /// The position of the `"` closing the quoted string that opens the item,
-    /// when the string stays on one line and an `@` follows it directly,
-    /// making it the local part of an `addr-spec`.
     fn quoted_local_part_end(&self) -> Option<usize> {
         let bytes = self.bytes();
         let mut from = 1;

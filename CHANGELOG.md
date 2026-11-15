@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. This projec
 ## [1.0.2] - Unreleased
 
 ### Fixed
-- An address without angle brackets whose local part is a quoted string, such as `"john smith"@example.com`, was read as the display name `john smith` and the address `@example.com`.
+- An address without angle brackets whose local part is a quoted string, such as `"john smith"@example.com`, was read as the display name `john smith` and the address `@example.com` (#166).
 
 ## [1.0.1] - 2026-11-02
 
