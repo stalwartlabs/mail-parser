@@ -253,7 +253,7 @@ mod tests {
         ));
         assert_eq!(
             super::preview_html("<p>a&#13;b</p>\r\n<p>c</p>", 100),
-            "ab\n c\n"
+            "ab\nc\n"
         );
         assert_eq!(super::preview_html("<p>hello world</p>", 8), "hello...");
         assert_eq!(

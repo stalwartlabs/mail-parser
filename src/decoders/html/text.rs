@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  */
 
-use memchr::{memchr, memchr2};
+use memchr::memchr;
 
 use super::decode_entity;
 
@@ -15,6 +15,7 @@ const NAMED_TAG: usize = 1;
 
 static TEXT_DELIMITERS: [bool; 256] = delimiters(b"<&; \t\r\n");
 static TAG_DELIMITERS: [bool; 256] = delimiters(b"<>/ \t\r\n");
+static ATTRIBUTE_DELIMITERS: [bool; 256] = delimiters(b"<>=");
 
 const fn delimiters(bytes: &[u8]) -> [bool; 256] {
     let mut table = [false; 256];
@@ -94,7 +95,7 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
         let hidden = in_head || in_style || in_script || in_template;
         if in_tag {
             if tag_token_pos > NAMED_TAG {
-                pos = find(bytes, pos, |rest| memchr2(b'<', b'>', rest));
+                pos += run_until(bytes, pos, &ATTRIBUTE_DELIMITERS);
             } else if !is_token_start {
                 let run = run_until(bytes, pos, &TAG_DELIMITERS);
                 if run > 0 {
@@ -121,10 +122,11 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
         match ch {
             b'<' => {
                 if !in_tag && !hidden && !is_token_start {
-                    if sink.emit(token_start, token_end + 1, is_after_space) {
+                    if sink.emit(token_start, token_end + 1, is_after_space && !is_new_line) {
                         return true;
                     }
                     is_after_space = false;
+                    is_new_line = false;
                 }
                 tag_token_pos = 0;
                 in_tag = true;
@@ -157,6 +159,10 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
                 in_tag = false;
                 is_token_start = true;
                 pos += 1;
+                continue;
+            }
+            b'=' if in_tag && tag_token_pos > NAMED_TAG => {
+                pos = attribute_value_end(bytes, pos + 1);
                 continue;
             }
             b'/' if in_tag => {
@@ -254,6 +260,17 @@ fn run_until(bytes: &[u8], pos: usize, delimiters: &[bool; 256]) -> usize {
     rest.iter()
         .position(|&byte| delimiters[usize::from(byte)])
         .unwrap_or(rest.len())
+}
+
+fn attribute_value_end(bytes: &[u8], pos: usize) -> usize {
+    let value = bytes.get(pos..).unwrap_or_default().trim_ascii_start();
+    let after = match value.split_first() {
+        Some((&quote @ (b'"' | b'\''), quoted)) => memchr(quote, quoted)
+            .and_then(|close| quoted.get(close + 1..))
+            .unwrap_or_default(),
+        _ => value,
+    };
+    bytes.len() - after.len()
 }
 
 fn comment_close(bytes: &[u8], comment_start: usize) -> Option<usize> {

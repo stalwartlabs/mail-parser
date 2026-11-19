@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file. This projec
 ### Fixed
 - An address without angle brackets whose local part is a quoted string, such as `"john smith"@example.com`, was read as the display name `john smith` and the address `@example.com` (#166).
 - A quoted local part inside angle brackets lost its backslashes, so `<"a\"b"@example.com>` gave the address `"a"b"@example.com`. A quoted-pair now stays in the address as written (#167).
+- `html_to_text` dropped the space after an element that started a line, so `<b>Hello</b> world` gave `Helloworld`, and put a stray space at the start of the next paragraph (#168).
+- A `>` or `<` inside a quoted attribute value ended the tag, so `<img alt="a > b">` leaked `b">` into the text (#169).
 
 ## [1.0.1] - 2026-11-02
 

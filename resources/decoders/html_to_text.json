@@ -94,5 +94,41 @@
   {
     "input": "before<!-- unterminated --",
     "expected": "before"
+  },
+  {
+    "input": "<b>Hello</b> world",
+    "expected": "Hello world"
+  },
+  {
+    "input": "<a href=u>link</a> text",
+    "expected": "link text"
+  },
+  {
+    "input": "<p>Name: <b>John</b> Smith</p>",
+    "expected": "Name: John Smith\n"
+  },
+  {
+    "input": "<p>a</p>\n<p>b</p>",
+    "expected": "a\nb\n"
+  },
+  {
+    "input": "<img alt=\"a > b\"> after",
+    "expected": "after"
+  },
+  {
+    "input": "<a title='1>0'>t</a>",
+    "expected": "t"
+  },
+  {
+    "input": "<img alt=\"a < b\" src=x>after",
+    "expected": "after"
+  },
+  {
+    "input": "<a href = \"x>y\" class=c>t</a> u",
+    "expected": "t u"
+  },
+  {
+    "input": "a<img alt=\"x>y",
+    "expected": "a"
   }
 ]

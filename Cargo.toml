@@ -43,6 +43,10 @@ harness = false
 name = "text_prefix"
 harness = false
 
+[[bench]]
+name = "html"
+harness = false
+
 [lints.rust]
 rust_2018_idioms = { level = "deny", priority = -1 }
 unsafe_code = "deny"
