@@ -30,7 +30,8 @@ const fn delimiters(bytes: &[u8]) -> [bool; 256] {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Tag {
     Break,
-    Paragraph,
+    Block,
+    Cell,
     Head,
     Style,
     Script,
@@ -41,7 +42,43 @@ impl Tag {
     fn parse(name: &[u8]) -> Option<Tag> {
         hashify::map_ignore_case!(name, Tag,
             "br" => Tag::Break,
-            "p" => Tag::Paragraph,
+            "address" => Tag::Block,
+            "article" => Tag::Block,
+            "aside" => Tag::Block,
+            "blockquote" => Tag::Block,
+            "caption" => Tag::Block,
+            "center" => Tag::Block,
+            "dd" => Tag::Block,
+            "details" => Tag::Block,
+            "div" => Tag::Block,
+            "dl" => Tag::Block,
+            "dt" => Tag::Block,
+            "fieldset" => Tag::Block,
+            "figcaption" => Tag::Block,
+            "figure" => Tag::Block,
+            "footer" => Tag::Block,
+            "form" => Tag::Block,
+            "h1" => Tag::Block,
+            "h2" => Tag::Block,
+            "h3" => Tag::Block,
+            "h4" => Tag::Block,
+            "h5" => Tag::Block,
+            "h6" => Tag::Block,
+            "header" => Tag::Block,
+            "hr" => Tag::Block,
+            "li" => Tag::Block,
+            "main" => Tag::Block,
+            "nav" => Tag::Block,
+            "ol" => Tag::Block,
+            "p" => Tag::Block,
+            "pre" => Tag::Block,
+            "section" => Tag::Block,
+            "summary" => Tag::Block,
+            "table" => Tag::Block,
+            "tr" => Tag::Block,
+            "ul" => Tag::Block,
+            "td" => Tag::Cell,
+            "th" => Tag::Cell,
             "head" => Tag::Head,
             "style" => Tag::Style,
             "script" => Tag::Script,
@@ -140,8 +177,8 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
                     && let Some(tag) = bytes.get(token_start..token_end + 1)
                 {
                     match Tag::parse(tag) {
-                        Some(found @ (Tag::Break | Tag::Paragraph))
-                            if found == Tag::Break || is_tag_close =>
+                        Some(found @ (Tag::Break | Tag::Block))
+                            if !hidden && (found == Tag::Break || !is_new_line) =>
                         {
                             if sink.newline() {
                                 return true;
@@ -153,7 +190,8 @@ fn convert(input: &str, out: &mut String, mode: Mode) -> bool {
                         Some(Tag::Style) => in_style = !is_tag_close,
                         Some(Tag::Script) => in_script = !is_tag_close,
                         Some(Tag::Template) => in_template = !is_tag_close,
-                        Some(Tag::Break | Tag::Paragraph) | None => {}
+                        Some(Tag::Cell) if !hidden => is_after_space = true,
+                        Some(Tag::Break | Tag::Block | Tag::Cell) | None => {}
                     }
                 }
                 in_tag = false;

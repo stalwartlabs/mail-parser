@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - Unreleased
+
+### Fixed
+- `html_to_text` and HTML previews ran words together across block elements, so `<div>One</div><div>Two</div>` gave `OneTwo`. Block elements such as `<div>`, `<li>`, `<tr>` and `<h1>` now end the line and table cells are separated by a space, while a `<br>` or `<p>` inside `<template>`, `<style>` or `<script>` no longer adds a line break (#172).
+
 ## [1.0.2] - 2026-11-23
 
 ### Fixed

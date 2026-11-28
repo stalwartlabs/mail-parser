@@ -17,7 +17,7 @@
   },
   {
     "input": "<head><title>ignore head</title><not head>xyz</not head></head><h1>&lt;body&gt;</h1>",
-    "expected": "<body>"
+    "expected": "<body>\n"
   },
   {
     "input": "<p>what is &heartsuit;?</p><p>&#x000DF;&Abreve;&#914;&gamma; don&apos;t hurt me.</p>",
@@ -37,15 +37,15 @@
   },
   {
     "input": "<style>body{color:red}</style><div>Hello</div>",
-    "expected": "Hello"
+    "expected": "Hello\n"
   },
   {
     "input": "<style>body{color:red}</style><div>Hello</div><script>alert('x')</script><div>World</div>",
-    "expected": "HelloWorld"
+    "expected": "Hello\nWorld\n"
   },
   {
     "input": "<div>Hello</div><template><div>Hidden</div><style>.x{}</style></template><div>World</div>",
-    "expected": "HelloWorld"
+    "expected": "Hello\nWorld\n"
   },
   {
     "input": "<style type=\"text/css\">p { color: red; }</style><p>Hello world</p>",
@@ -65,7 +65,7 @@
   },
   {
     "input": "<div>Hello</div><template id=\"row\"><div>Hidden</div></template><div>World</div>",
-    "expected": "HelloWorld"
+    "expected": "Hello\nWorld\n"
   },
   {
     "input": "line one<br class=\"x\">line two<br style=\"a\" />end",
@@ -77,7 +77,7 @@
   },
   {
     "input": "<!--[if mso]><style type=\"text/css\">td{}</style><![endif]--><style type=\"text/css\">@media{.a{b:c}}</style><table role=\"presentation\"><tr><td style=\"padding:0\">Sale &amp; more</td></tr></table>",
-    "expected": "Sale & more"
+    "expected": "Sale & more\n"
   },
   {
     "input": "<p>Before</p><!----><p>Hello world</p>",
@@ -130,5 +130,37 @@
   {
     "input": "a<img alt=\"x>y",
     "expected": "a"
+  },
+  {
+    "input": "<div>One</div><div>Two</div>",
+    "expected": "One\nTwo\n"
+  },
+  {
+    "input": "<ul><li>One</li><li>Two</li></ul>",
+    "expected": "One\nTwo\n"
+  },
+  {
+    "input": "<table><tr><td>One</td><td>Two</td></tr><tr><td>Three</td></tr></table>",
+    "expected": "One Two\nThree\n"
+  },
+  {
+    "input": "<h1>Title</h1><p>Body</p>",
+    "expected": "Title\nBody\n"
+  },
+  {
+    "input": "Intro<DIV class=\"a\"><Div>nested</div>tail</DIV>end",
+    "expected": "Intro\nnested\ntail\nend"
+  },
+  {
+    "input": "<p>a</p><p></p><hr><p>b<br></p>",
+    "expected": "a\nb\n"
+  },
+  {
+    "input": "<table>\n <tr>\n  <th>Item</th>\n  <th>Price</th>\n </tr>\n</table>",
+    "expected": "Item Price\n"
+  },
+  {
+    "input": "Hello<template><div>a</div><br><td>b</td></template> <style>p{}</style>World<script>\"<br>\"</script>!",
+    "expected": "Hello World!"
   }
 ]

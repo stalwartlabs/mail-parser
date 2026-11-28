@@ -22,8 +22,11 @@ const HTML_SUFFIX: &str = "</body></html>";
 const LINE_BREAK: &str = "<br/>";
 
 /// Converts HTML to plain text: tags are removed, entities decoded and
-/// white space collapsed; `<br>` and `</p>` become line breaks; the content
-/// of `<head>`, `<style>`, `<script>` and `<template>` is skipped.
+/// white space collapsed; `<br>` becomes a line break, the start and end of
+/// a block element (`<p>`, `<div>`, `<li>`, `<tr>`, `<h1>`, ...) end the
+/// current line unless it is empty, and table cells are separated by a
+/// space; the content of `<head>`, `<style>`, `<script>` and `<template>` is
+/// skipped.
 pub fn html_to_text(input: &str) -> String {
     text::html_to_text(input)
 }
@@ -123,7 +126,7 @@ mod tests {
     #[test]
     fn html_to_text_fixtures() {
         let tests = load_text_pairs("decoders/html_to_text.json");
-        assert_eq!(tests.len(), 33);
+        assert_eq!(tests.len(), 41);
         for (input, expected) in tests {
             assert_eq!(html_to_text(&input), expected, "{input:?}");
         }
